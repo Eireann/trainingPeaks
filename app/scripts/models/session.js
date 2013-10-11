@@ -67,7 +67,6 @@ function (_, TP, UserModel, UserAccessRightsModel)
             
             this._refreshToken().done(function()
             {
-                //console.log("REFRESH: DONE: FETCHUSER");
                 self._fetchUser();
             });
         },
@@ -84,8 +83,6 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         _refreshToken: function()
         {
-            //console.log("REFRESH");
-
             if(!(window.apiConfig && window.apiConfig.cmsRoot))
                 throw "No CMSRoot URL found!";
 
@@ -104,14 +101,14 @@ function (_, TP, UserModel, UserAccessRightsModel)
                 if(data.success)
                 {
                     if(data.redirect && data.redirect !== "")
-                        REDIRECT_URL = data.responseText;
+                        REDIRECT_URL = data.redirect;
                     
                     setTimeout(self._refreshToken, REFRESH_INTERVAL);
                 }
                 else
                 {
-                    if(data.responseText && data.responseText !== "")
-                       REDIRECT_URL = data.responseText;
+                    if(data.redirect && data.redirect !== "")
+                       REDIRECT_URL = data.redirect;
 
                     self._redirectToLogin();
                 }
