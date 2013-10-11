@@ -117,7 +117,7 @@ function(
                 {
                     "Lap": lap.name,
                     "Start": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.begin)),
-                    "End": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.end)),
+                    "End": TP.utils.datetime.format.decimalHoursAsTime(Math.floor(lap.end / 1000) / 3600), // round partial seconds down on end time so laps don't overlap as often
                     "Duration": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.elapsedTime)),
                     "Moving Duration": TP.utils.datetime.format.decimalHoursAsTime(lap.movingTime)
                 };

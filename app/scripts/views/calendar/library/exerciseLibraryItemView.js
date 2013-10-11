@@ -120,20 +120,19 @@ function(
 
         showDetails: function()
         {
+            this.model.trigger("select", this.model);
             if(this.detailsView)
             {
                 return;
             }
             this.detailsView = new ExerciseDetailsView({ model: this.model });
             this.listenTo(this.detailsView, "close", this.onDetailsClose);
-            this.onItemSelect();
             this.detailsView.render().alignArrowTo(this.$el);
         },
 
         onDetailsClose: function()
         {
             this.stopListening(this.detailsView);
-            this.onItemUnSelect();
             this.detailsView = null;
         }
 

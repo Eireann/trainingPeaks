@@ -9,6 +9,9 @@
   <parameter name="HomeRoot" >
     <parameterEntry kind="TextFile" scope="apiConfig.js" match="{HOME_ROOT}" />
   </parameter>
+  <parameter name="CMSRoot" >
+    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{CMS_ROOT}" />
+  </parameter>  
   <parameter name="ApiRoot" >
     <parameterEntry kind="TextFile" scope="apiConfig.js" match="{API_ROOT}" />
   </parameter>

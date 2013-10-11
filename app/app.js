@@ -2,7 +2,6 @@ define(
 [
     "underscore",
     "TP",
-    "framework/ajaxAuth",
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/tooltips",
@@ -10,13 +9,10 @@ define(
     "framework/dataManager",
     "dashboard/reportingDataManager",
     "models/session",
-    "shared/models/userModel",
-    "shared/models/userAccessRightsModel",
     "models/buildInfo",
     "models/timeZones",
     "models/clientEventsCollection",
     "controllers/navigationController",
-    "controllers/loginController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
     "views/buildInfoView",
@@ -31,7 +27,6 @@ define(
 function(
     _,
     TP,
-    initializeAjaxAuth,
     ajaxCaching,
     initializeAjaxTimezone,
     enableTooltips,
@@ -39,13 +34,10 @@ function(
     DataManager,
     ReportingDataManager,
     Session,
-    UserModel,
-    UserAccessRightsModel,
     BuildInfoModel,
     TimeZonesModel,
     ClientEventsCollection,
     NavigationController,
-    LoginController,
     CalendarController,
     DashboardController,
     BuildInfoView,
@@ -73,25 +65,58 @@ function(
             }, this);
         });
 
-        // cleanup session and user state
-
-        // cleanup history?
-
         // done
         this.addShutdown(function()
         {
             this.started = false;
         });
+    };
 
+    theApp.setApiConfig = function()
+    {
+        // simple dummy values for testing
+        if (typeof apiConfig === "undefined" || typeof window.apiConfig === "undefined")
+        {
+            apiConfig =
+            {
+                configuration: 'debug',
+                apiRoot: 'localhost:8905',
+                oAuthRoot: 'localhost:8901',
+                homeRoot: "localhost:8905",
+                cmsRoot: "localhost:8905",
+                wwwRoot: 'localhost',
+                buildNumber: "local_no_config",
+                gaAccount: "",
+                coachUpgradeURL: "",
+                upgradeURL:""
+            };
+
+            window.apiConfig = apiConfig;
+        }
+
+        // point to appropriate api server
+        this.apiRoot = apiConfig.apiRoot;
+        this.oAuthRoot = apiConfig.oAuthRoot;
+        this.wwwRoot = apiConfig.wwwRoot;
+
+        // app root for router and history
+        this.root = "";
+
+        // where to find assets dynamically
+        this.assetsRoot = apiConfig.assetsRoot ? apiConfig.assetsRoot : 'assets/';
+
+        // make apiConfig available
+        this.apiConfig = apiConfig;
     };
 
     theApp.resetAppToInitialState = function()
     {
-
-        this.user = new UserModel();
-        this.userAccessRights = new UserAccessRightsModel();
-        this.session = new Session();
         this.addAllShutdowns();
+        this.setApiConfig();
+
+        this.session = new Session();
+        this.user = this.session.user;
+        this.userAccessRights = this.session.userAccessRights;
 
         this.addRegions(
         {
@@ -148,10 +173,15 @@ function(
             });
         });
 
+        // setup token
+        this.addInitializer(function()
+        {
+            this.session.initRefreshToken();
+        });
+
         // setup ajax auth and caching and timezone handling
         this.addInitializer(function()
         {
-            initializeAjaxAuth(this);
             initializeAjaxTimezone();
             if (this.ajaxCachingEnabled)
                 this.ajaxCaching = ajaxCaching.initialize();
@@ -171,22 +201,12 @@ function(
                 var buildInfoView = new BuildInfoView({ model: this.buildInfo });
                 this.infoRegion.show(buildInfoView);
             }
-
         });
 
         // setup time zones
         this.addInitializer(function()
         {
             this.timeZones = new TimeZonesModel();
-        });
-
-        // add a session
-        this.addInitializer(function()
-        {
-            this.user = new UserModel();
-            this.userFetchPromise = new $.Deferred();
-            this.session = new Session();
-            this.setupAuthPromise();
         });
 
         // add data managers
@@ -224,74 +244,36 @@ function(
             }, this);
         });
 
-        this.setupAuthPromise = function()
+        this.addInitializer(function()
         {
             var self = this;
-            this.session.authPromise.done(function()
+
+            this.session.userPromise.done(function()
             {
-                self.fetchUser();
-                self.fetchBuildInfo();
-                self.fetchTimeZones();
+                self.buildInfo.fetch();
+                self.timeZones.fetch();
             });
-            this.session.authPromise.fail(function()
-            {
-                self.setupAuthPromise();
-            });
-        };
+        });
 
-        this.fetchBuildInfo = function()
-        {
-            this.buildInfo.fetch();
-        };
-
-        this.fetchTimeZones = function()
-        {
-            this.timeZones.fetch();
-        };
-
-        this.fetchUser = function()
+        this.addInitializer(function()
         {
             var self = this;
           
-            // fetch user and access rights in parallel ,
-            // fetch athlete settings after user (since we need the athlete id),
-            // wait for all three before resolving
-            // Order is important since user is hopefully cached.
-
-            var userPromise = self.user.fetch();
-            var userAccessPromise = self.userAccessRights.fetch();
-
-            userPromise.done(function()
+            this.session.userPromise.done(function()
             {
-
                 RollbarManager.setUser(self.user);
 
-                var athletePromise = self.fetchAthleteSettings();
+                var athletePromise = self.user.getAthleteSettings().fetch();
 
-                $.when(userAccessPromise, athletePromise)
-                .done(function()
+                $.when(self.session.userAccessPromise, athletePromise).done(function()
                 {
-                    if (self.featureAllowedForUser("alpha1", self.user))
-                    {
-                        self.userFetchPromise.resolve();
-                    }
-                    else
+                    if (!self.featureAllowedForUser("alpha1", self.user))
                     {
                         self.session.logout(notAllowedForAlphaTemplate);
                     }
-                })
-                .fail(function()
-                {
-                    self.userFetchPromise.reject();
                 });
-
-            })
-            .fail(function()
-            {
-                self.userFetchPromise.reject();
             });
-
-        };
+        });
 
         this.featureAllowedForUser = function(feature, user)
         {
@@ -316,11 +298,6 @@ function(
             throw new Error("Feature does not exist");
         };
 
-        this.fetchAthleteSettings = function()
-        {
-            return this.user.getAthleteSettings().fetch();
-        };
-
         // add event tracking
         this.addInitializer(function()
         {
@@ -334,7 +311,6 @@ function(
             this.controllers = {};
 
             this.controllers.navigationController = new NavigationController();
-            this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController({ dataManager: this.dataManagers.calendar });
             this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManagers.reporting });
         });
@@ -437,61 +413,6 @@ function(
                 }
             );
         });
-
-        
-        this.isLive = function()
-        {
-            // if we're in local or dev mode, use DEBUG log level etc
-            // but if we have a 'global', then we're testing with node/jasmine, so don't output debug messages to clutter test output
-            if ((this.apiRoot.indexOf('local') >= 0 || this.apiRoot.indexOf('dev') >= 0))
-                return false;
-
-            return true;
-        };
-
-        this.getBodyElement = function()
-        {
-            if (!this.$body)
-                this.$body = $("body");
-
-            return this.$body;
-        };
-
-        this.reloadApp = function()
-        {
-            window.location.reload();
-        };
-
-        // simple dummy values for testing
-        if (typeof apiConfig === "undefined")
-        {
-            apiConfig = {
-                configuration: 'debug',
-                apiRoot: 'localhost:8905',
-                oAuthRoot: 'localhost:8901',
-                wwwRoot: 'localhost',
-                buildNumber: "local_no_config",
-                gaAccount: "",
-                coachUpgradeURL: "",
-                upgradeURL:""
-            };
-
-            window.apiConfig = apiConfig;
-        }
-
-        // point to appropriate api server
-        this.apiRoot = apiConfig.apiRoot;
-        this.oAuthRoot = apiConfig.oAuthRoot;
-        this.wwwRoot = apiConfig.wwwRoot;
-
-        // app root for router and history
-        this.root = '';
-
-        // where to find assets dynamically
-        this.assetsRoot = apiConfig.assetsRoot ? apiConfig.assetsRoot : 'assets/';
-
-        // make apiConfig available
-        this.apiConfig = apiConfig;
     };
 
     theApp.touchEnabled = false;
@@ -538,11 +459,31 @@ function(
         }
     };
 
+    theApp.isLive = function()
+    {
+        // if we're in local or dev mode, use DEBUG log level etc
+        // but if we have a 'global', then we're testing with node/jasmine, so don't output debug messages to clutter test output
+        if ((this.apiRoot.indexOf('local') >= 0 || this.apiRoot.indexOf('dev') >= 0))
+            return false;
 
+        return true;
+    };
 
-    theApp.resetAppToInitialState();
+    theApp.getBodyElement = function()
+    {
+        if (!this.$body)
+            this.$body = $("body");
+
+        return this.$body;
+    };
+
+    theApp.reloadApp = function()
+    {
+        window.location.reload();
+    };
+
     window.theMarsApp = theApp;
-
+    theApp.resetAppToInitialState();
 
     if (typeof global !== 'undefined')
     {

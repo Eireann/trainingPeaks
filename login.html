@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" style="overflow: hidden;">
+<head>
+<style type="text/css">
+#loginForm
+{
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+}
+
+#loginForm > legend
+{
+    font-family: Verdana;
+    font-weight: normal;
+    color: #AAAAAA;
+    text-transform: uppercase;
+}
+
+#loginForm > input:focus
+{
+    background-color: #FFFFFF;
+}
+
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $("#Submit").click(function()
+    {
+        var urlLUT =
+        {
+            "local": "http://oauth.local.trainingpeaks.com:8900/OAuth/Token",
+            "dev": "http://oauth.dev.trainingpeaks.com/OAuth/Token",
+            "uat": "http://oauth.uat.trainingpeaks.com/OAuth/Token"
+        };
+
+        var data =
+        {
+            grant_type: "password",
+            client_id: "tpMars",
+            client_secret: "44Wz6Em3lcpDSzbZ5WCl2ijZqtAfDUfPU5RMawx6W00=",
+            username: $("input#username").val(),
+            password: $("input#password").val(),
+            response_type: "token",
+            scope: "fitness clientevents users athletes exerciselibrary images groundcontrol baseactivity plans sysinfo metrics zonescalculator"
+        };
+
+        $.ajax(  
+        {
+            url: urlLUT[$("select").val()],
+            data: data,
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded",
+        }).done(function(data)
+        {
+            var token = data.access_token;
+            localStorage.setItem("local_access_token", token);
+            window.location = "/?env=" + $("select").val()
+        });
+    });
+});
+</script>
+</head>
+
+<body>
+<form method="GET" accept-charset='UTF-8' id="loginForm">
+    <fieldset>
+        <legend>Login</legend>
+        <select>
+            <option value="local">Local</option>
+            <option value="dev" selected>Dev</option>
+            <option value="uat">UAT</option>
+        </select>
+        <label for='username' >Username:</label>
+        <input type='text' name='username' id='username'  maxlength="50" />
+        <label for='password' >Password:</label>
+        <input type='password' name='password' id='password' maxlength="50" />
+        <input type='button' name='Submit' id='Submit' value="Submit"/>
+    </fieldset>
+</form>
+</body>
+
+</html>

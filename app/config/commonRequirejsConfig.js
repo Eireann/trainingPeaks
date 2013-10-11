@@ -1,9 +1,10 @@
 // setup some common config, and then make it available via commonJS or amdrequire
 // in the browser it loads as amdrequire via requirejs,
 // but on node.js it uses commonJS format so we can get it directly instead of async
-(function () {
-
-    var commonConfig = {
+(function ()
+{
+    var commonConfig =
+    {
         paths:
         {
 
