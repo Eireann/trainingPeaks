@@ -95,21 +95,20 @@ function (_, TP, UserModel, UserAccessRightsModel)
                 url: window.apiConfig.cmsRoot + "/refresh",
                 type: "GET",
                 contentType: "application/json",
-                crossDomain: true
+                crossDomain: true,
+                dataType: "json"
             });
 
             promise.done(function(data, textStatus, jqXHR)
             {
-                //console.log("REFRESH: DONE");
-                if(data.responseText && data.responseText !== "")
-                    REDIRECT_URL = data.responseText;
-                
-                setTimeout(self._refreshToken, REFRESH_INTERVAL);
-            }).fail(function(data, textStatus, jqXHR)
-            {
-                //console.log("REFRESH: FAIL");
-                //console.log(arguments);
-                if(data.status === 400)
+                if(data.success)
+                {
+                    if(data.redirect && data.redirect !== "")
+                        REDIRECT_URL = data.responseText;
+                    
+                    setTimeout(self._refreshToken, REFRESH_INTERVAL);
+                }
+                else
                 {
                     if(data.responseText && data.responseText !== "")
                        REDIRECT_URL = data.responseText;
