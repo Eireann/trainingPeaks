@@ -136,8 +136,6 @@ function(
             this.watchForModelChanges();
             this.watchForWindowResize();
 
-            this.watchForViewEvents();
-
             this.handleDetailDataPromise();
         },
 
@@ -162,8 +160,6 @@ function(
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
 
-            this.showMapAndGraph();
-
             // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
@@ -179,7 +175,6 @@ function(
         {
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
-            this.showMapAndGraph();
 
             var self = this;
             setImmediate(function()
@@ -187,49 +182,6 @@ function(
                 self.onViewResize();
             });
  
-        },
-
-        showMapAndGraph: function()
-        {
-
-            var self = this,
-                canShowGraph = this.model.get("detailData").hasSamples(),
-                canShowMap = this.dataParser.hasLatLongData;
-
-            if (canShowMap)
-            {
-                this.layout.showMap();
-                setImmediate(function()
-                {
-                    self.layout.mapRegion.show(self.views.mapView);
-                });
-            } else
-            {
-                this.layout.hideMap();
-            }
-
-            if (canShowGraph)
-            {
-                this.layout.showGraph();
-
-                setImmediate(function()
-                {
-                    self.layout.graphRegion.show(self.views.graphView);
-                    self.expand();
-                });
-                
-            } else
-            {
-                this.layout.hideGraph();
-            }
-
-            if (canShowGraph && canShowMap)
-            {
-                setImmediate(function()
-                {
-                    self.layout.mapAndGraphResizerRegion.show(self.views.mapAndGraphResizerView);
-                });
-            }
         },
 
         preFetchDetailData: function()
@@ -246,16 +198,12 @@ function(
         collapse: function()
         {
             this.disableViewsResize = true;
-            this.views.graphView.trigger("controller:expandCollapse", "collapse");
             this.layout.$el.parent().hide();
         },
+
         expand: function()
         {
             this.disableViewsResize = false;
-            if (this.views.graphView)
-            {
-                this.views.graphView.trigger("controller:expandCollapse", "expand");
-            }
         },
 
         closeViews: function()
@@ -297,42 +245,6 @@ function(
         {
             this.model.off("deviceFileUploaded", this.fetchDetailData, this);
             this.model.get("detailData").off("changeSensorData", this.onSensorDataChange, this);
-        },
-
-        watchForViewEvents: function()
-        {
-            _.each(this.views, function(view, key)
-            {
-                view.on("itemview:resize", this.onViewResize, this);
-                view.on("itemview:resizerDrag", this.onResizerDrag, this);
-                view.on("itemview:requestClose", this.onRequestViewClose, this);
-            }, this);
-            this.on("close", this.stopWatchingViewEvents, this);
-
-        },
-        stopWatchingViewEvents: function()
-        {
-            _.each(this.views, function(view, key)
-            {
-                view.off("itemview:resizerDrag", this.onResizerDrag, this);
-                view.off("itemview:requestClose", this.onRequestViewClose, this);
-                view.on("resize", this.onViewResize, this);
-            }, this);
-
-        },
-        onRequestViewClose: function(view)
-        {
-            view.close();
-        },
-        onResizerDrag: function(top)
-        {
-            // before and during proportion change
-            // set the height offsets caused by dragging
-            var offsetRatio = top/this.layout.$el.parent().height();
-            this.views.mapView.stashHeight(offsetRatio);
-            this.views.graphView.stashHeight(offsetRatio);
-            this.views.mapAndGraphResizerView.setTop(offsetRatio);
-            this.onViewResize();
         },
 
         watchForWindowResize: function()

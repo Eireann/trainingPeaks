@@ -88,7 +88,7 @@ function(
             this.packery.on("dragItemPositioned", _.bind(this._updatePackerySort, this));
             this.children.each(function(itemView)
             {
-                this._setupPackeryDraggable(itemView, this);
+                this._setupPackeryItem(itemView, this);
             }, this);
         },
 
@@ -123,7 +123,7 @@ function(
             if (index >= 0)
             {
                 this.packery.appended(itemView.$el);
-                this._setupPackeryDraggable(itemView, collectionView);
+                this._setupPackeryItem(itemView, collectionView);
             }
             else
             {
@@ -204,8 +204,10 @@ function(
             });
         },
 
-        _setupPackeryDraggable: function(itemView, collectionView)
+        _setupPackeryItem: function(itemView, collectionView)
         {
+            var self = this;
+
             itemView.$el.draggable({ scope: "packery" });
             collectionView.packery.bindUIDraggableEvents(itemView.$el);
 
@@ -270,7 +272,7 @@ function(
             this._updatePackerySort();
 
             this.tmp.view.$el.removeClass("hover"); // TODO: Is this OK or too coupled?
-            this._setupPackeryDraggable(this.tmp.view, this);
+            this._setupPackeryItem(this.tmp.view, this);
             this.tmp = {};
         }
     });

@@ -38,7 +38,7 @@ function(
             {
                 if (!self.model.get('detailData').get('lapsStats'))
                 {
-                    self.trigger("requestClose", self);
+                    self.close();
                 }
             });
         },
