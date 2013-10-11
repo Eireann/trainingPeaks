@@ -461,6 +461,11 @@ function(
 
         _onRangeAdded: function(range, ranges, options)
         {
+            if(range === this.selectedWorkoutStatsForRange)
+            {
+                return;
+            }
+
             var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
             if (!selection)
             {

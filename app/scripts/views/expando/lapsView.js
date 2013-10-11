@@ -5,6 +5,7 @@
     "jquerySelectBox",
     "TP",
     "utilities/workout/formatLapData",
+    "utilities/workout/formatPeakTime",
     "models/workoutStatsForRange",
     "hbs!templates/views/expando/lapsTemplate"
 ],
@@ -14,9 +15,228 @@ function(
     jquerySelectBox,
     TP,
     formatLapData,
+    formatPeakTime,
     WorkoutStatsForRange,
     lapsTemplate)
 {
+
+    var LapView = TP.ItemView.extend(
+    {
+
+        tagName: "li",
+        className: "lap",
+
+        template: _.template('<input type="checkbox"> <span><%= name %></span>'),
+
+        modelEvents:
+        {
+            "change:isFocused": "_onFocusedChange",
+            "change:isSelected": "_onSelectedChange"
+        },
+
+        events:
+        {
+            "click span": "_onClick",
+            "change input": "_onInputChange"
+        },
+
+        initialize: function(options)
+        {
+            this.stateModel = options.stateModel;
+        },
+
+        _onFocusedChange: function()
+        {
+            this.$el.toggleClass("highlight", this.model.get("isFocused"));
+        },
+
+        _onSelectedChange: function()
+        {
+            this.$("input").attr("checked", this.model.get("isSelected"));
+        },
+
+        _onClick: function(e)
+        {
+            this.stateModel.set("statsRange", this.model);
+        },
+
+        _onInputChange: function(e)
+        {
+            if(this.$("input").is(":checked"))
+            {
+                this.stateModel.get("ranges").add(this.model);
+            }
+            else
+            {
+                this.stateModel.get("ranges").remove(this.model);
+            }
+        }
+
+    });
+
+    var LapsView = TP.CompositeView.extend(
+    {
+
+        itemView: LapView,
+        itemViewContainer: ".rangesList ul",
+
+        template:
+        {
+            type: "handlebars",
+            template: lapsTemplate
+        },
+
+        events:
+        {
+            "click .uncheck": "_onUncheckClick",
+            "change select.peakType": "_onPeakTypeChange"
+        },
+
+        initialize: function(options)
+        {
+
+            this.collection = new TP.Collection({ model: WorkoutStatsForRange });
+            this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
+            this.stateModel = options.stateModel;
+
+        },
+
+        serializeData: function()
+        {
+            return {
+                selectOptions: this._getSelectOptions(),
+                hasLapsOrPeaks: true
+            }
+        },
+
+        onRender: function()
+        {
+            setImmediate(function()
+            {
+                this.$("select").selectBoxIt();
+            });
+        },
+
+        onShow: function()
+        {
+            this._updateCollection();
+        },
+
+        _updateCollection: function()
+        {
+            var detailData = this.model.get("detailData").toJSON();
+            var lapRanges = detailData.lapsStats ? detailData.lapsStats : [];
+            _.each(lapRanges, formatLapData.calculateTotalAndMovingTime);
+
+            var totalRange = detailData.totalStats ? detailData.totalStats : null;
+            formatLapData.calculateTotalAndMovingTime(totalRange);
+            
+            var ranges = _.map(_.compact([].concat(lapRanges, [totalRange])), _.bind(this._asRangeModel, this, true));
+
+            var peakType = this.$("select.peakType").val();
+            var peakRanges = peakType ? this._getPeaksData(peakType) : [];
+
+            ranges = ranges.concat(_.map(peakRanges, _.bind(this._asRangeModel, this, false)));
+
+            this.collection.set(ranges);
+        },
+
+        _asRangeModel: function(hasLoaded, attrs)
+        {
+            attrs.workoutId = this.model.id;
+            var range = new WorkoutStatsForRange(attrs);
+            range.hasLoaded = hasLoaded;
+            return range;
+        },
+
+        _onUncheckClick: function(e)
+        {
+            this.stateModel.get("ranges").set([]);
+        },
+
+        templatePeakTypeNames:
+        {
+            distance: "Peak Distance",
+            power: "Peak Power",
+            heartrate: "Peak Heart Rate",
+            speed: "Peak Speed",
+            pace: "Peak Pace",
+            cadence: "Peak Cadence"
+        },
+
+        modelPeakKeys:
+        {
+            distance: "peakSpeedsByDistance",
+            power: "peakPowers",
+            heartrate: "peakHeartRates",
+            speed: "peakSpeeds",
+            pace: "peakSpeeds",
+            cadence: "peakCadences"
+        },
+
+        _getSelectOptions: function()
+        {
+
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges
+            ))
+            {
+                return [];
+            }
+            var detailData = this.model.get("detailData").toJSON();
+
+            var selectOptions = [];
+            _.each(this.modelPeakKeys, function(peakKey, peakName)
+            {
+                if(detailData[peakKey] && detailData[peakKey].length)
+                {
+                    selectOptions.push({
+                        value: peakName,
+                        label: this.templatePeakTypeNames[peakName],
+                    });
+                }
+            }, this);
+
+            return selectOptions;
+
+        },
+
+        _onPeakTypeChange: function()
+        {
+            this._updateCollection();
+        },
+
+        _getPeaksData: function(peakType)
+        {
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges
+                )
+            ){
+                return [];
+            }
+
+            var detailData = this.model.get("detailData").toJSON();
+
+            var metric = this.modelPeakKeys[peakType];
+            var peaksData = detailData[metric] ? detailData[metric] : [];
+
+            return _.map(_.sortBy(peaksData, "interval"), function(peakItem)
+            {
+
+                console.log(peakItem);
+                var range = _.clone(peakItem);
+                range.name = "Peak " + formatPeakTime(peakItem.interval);
+
+                return range;
+
+            });
+
+        }
+
+    });
+
+    return LapsView;
+
     return TP.ItemView.extend(
     {
 
@@ -593,7 +813,6 @@ function(
             var workoutTypeId = this.model.get("workoutTypeValueId");
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
                 return true;
-            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
                 return true;
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
                 return true;
