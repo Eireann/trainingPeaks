@@ -284,7 +284,13 @@ function(
 
         _setupSelectBox: function()
         {
-            this.$("select").selectBoxIt();
+            this.$("select").each(function(i, el)
+            {
+                var $el = $(el);
+                $el.selectBoxIt({
+                    viewport: function(){return $el.closest(".scrollable");}
+                });
+            });
         },
 
         _onICalFocus: function(e)

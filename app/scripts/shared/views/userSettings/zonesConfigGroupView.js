@@ -22,7 +22,7 @@ function(
         className: "zonesConfigGroup",
 
         itemView: ZoneEntryView,
-        itemViewContainer: ".zones",
+        itemViewContainer: ".zones.zonesConfigGroupView",
 
         modelEvents: {},
 

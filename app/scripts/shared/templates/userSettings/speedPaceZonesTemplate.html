@@ -12,13 +12,6 @@
 				<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue" type="text">
 		    </label>
 
-		    <div class="selectBox">
-                 <select>
-                    <option value="speed" name="units">mph</option>
-                    <option value="pace" name="units">min/mi</option>
-                </select>
-            </div>
-
 		    <label class="clickable">
 				<input type="radio" value="speed" name="units">
 				{{ getUnitsLabel "speed" workoutTypeId }}
@@ -38,5 +31,5 @@
 	</fieldset>
 </div>
 
-<div class="zones"></div>
+<div class="zones zonesConfigGroupView"></div>
 <button class="addZone">Add Zone</button>

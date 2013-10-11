@@ -2,6 +2,11 @@
     width: calc(800px + 200px + 52px);
     overflow: hidden; //to hide overlapping portions of titleBar
 
+    .selectBoxWrapper
+    {
+        position:relative;
+    }
+
     .tabbedLayoutNav {
         width: 142px; 
         margin:0;
@@ -130,7 +135,7 @@
             margin-bottom:10px;
             margin-left:15px;
 
-            .selectboxit-container {
+            div {
                 float:left;
             }
 

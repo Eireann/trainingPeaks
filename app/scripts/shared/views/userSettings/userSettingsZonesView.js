@@ -174,7 +174,9 @@ function(
                 if(visible)
                 {
                     $el.show();
-                    $el.selectBoxIt();
+                    $el.selectBoxIt({
+                        viewport: function(){return $el.closest(".scrollable");}
+                    });
                 }
             });
         },

@@ -104,7 +104,7 @@ function(
 
     var CalculatorTabContentView = TP.CompositeView.extend({
 
-        itemViewContainer: ".zones",
+        itemViewContainer: ".zones.zoneCalculatorView",
 
         units: "number",
 
@@ -156,9 +156,16 @@ function(
             this._showInputs();
             this._enableCalculate();
             //this._calculateIfAllInputsAreValid();
+            var self = this;
             setImmediate(function()
             {
-                this.$("select").selectBoxIt();
+                self.$("select").each(function(i, el)
+                {
+                    var $el = $(el);
+                    $el.selectBoxIt({
+                        viewport: function(){return $el.closest(".scrollable");}
+                    });
+                });
             });
         },
 
