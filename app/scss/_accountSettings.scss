@@ -222,6 +222,10 @@
                         margin:0;
                     }
                 }
+
+                .zoneCalculatorView {
+                    float:left;
+                }
             }
 
             .zoneEntry {
@@ -248,14 +252,12 @@
                 margin-bottom:10px;
                 margin-top:12px;
                 @include clearfix;
+                // @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 
                 label {
                     input[type="radio"] {
                         margin:0;
                     }
-
-                    // reset font size
-                    font-size:14px;
                 }
 
                 form {
@@ -265,7 +267,7 @@
                 .zoneSetTitle {
                     display:inline-block;
                     font-family:$fontFamilyRegular;
-                    font-size: $fontSizeSmall;
+                    // font-size: $fontSizeSmall;
                     margin-right:5px;
                 }
 
@@ -774,8 +776,25 @@
     }
 }
 
-.zonesCalculator
-{
+.zonesCalculator {
+
+    .zoneCalculatorLayoutBody {
+        float:left;
+        width:100%;
+        border:1px solid green;
+        div {
+            @include clearfix;
+        }
+    }
+    .zoneCalculatorLayoutFooter {
+        float:left;
+        width:100%;
+        
+        button {
+            margin-top:20px;
+            margin-bottom:2px;
+        }
+    }
  
     @include buttons(0, "auto", $fontSizeSmall);
     button
@@ -860,18 +879,33 @@
         }
     }
 
-    .zones
-    {
+    .zones {
         clear: both;
+        border:1px solid red;
 
-        .zoneCalculatorResult
-        {
-            margin-bottom: 10px;
+        .zoneCalculatorResult {
+            padding:5px;
+            color: $TPGrey3;
+            font-size: $fontSizeSmall;
+            font-family: $fontFamilyRegular;
+            
+            @include labels($fontFamilyRegular, 12px, $TPGrey3, normal);
 
-            label 
-            {
+            label {
                 display: inline-block;
-                width: 400px;
+                min-width: 300px;
+                padding-right: 10px
+            }
+
+            &.threshold {
+                margin-top: 20px;
+                padding-bottom: 5px;
+            }
+
+            &.zone {
+                &:nth-of-type(even) {
+                    background-color:$TPGrey2;
+                }
             }
         }
     }
