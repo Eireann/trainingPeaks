@@ -53,17 +53,6 @@ function (_, TP, UserModel, UserAccessRightsModel)
         initRefreshToken: function()
         {
             var self = this;
-
-            if(localStorage.getItem("local_access_token"))
-            {
-                $(document).ajaxSend(function(event, xhr, settings)
-                {
-                    xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("local_access_token"));
-                });
-
-                this._fetchUser();
-                return;
-            }
             
             this._refreshToken().done(function()
             {
@@ -120,7 +109,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
         _redirectToLogin: function()
         {
             if(REDIRECT_URL)
-                window.location = REDIRECT_URL + "?redirect=" + window.location;
+                window.location = REDIRECT_URL + "?ReturnUrl=" + window.location;
         },
 
         authenticationComplete: function(callback)
