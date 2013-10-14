@@ -1,10 +1,12 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "utilities/workout/formatLapData",
     "hbs!templates/views/expando/statsTemplate"
 ],
 function(
+    _,
     TP,
     formatLapData,
     statsTemplate
@@ -63,6 +65,7 @@ function(
             {
                 var detailData = this.model.get("detailData").toJSON();
                 var lapData = detailData.totalStats ? detailData.totalStats : {};
+                lapData = _.clone(lapData);
                 lapData.name = "Entire Workout";
                 return lapData;
             }

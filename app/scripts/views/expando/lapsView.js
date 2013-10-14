@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "setImmediate",
     "jqueryui/widget",
     "jquerySelectBox",
@@ -9,6 +10,7 @@
     "hbs!templates/views/expando/lapsTemplate"
 ],
 function(
+    _,
     setImmediate,
     jqueryUiWidget,
     jquerySelectBox,
@@ -109,6 +111,7 @@ function(
         getTotalsData: function(detailData)
         {
             var totalData = detailData.totalStats ? detailData.totalStats : {};
+            totalData = _.clone(totalData);
             formatLapData.calculateTotalAndMovingTime(totalData);
 
             totalData.checked = this.checkboxStates.entireWorkout;
@@ -118,12 +121,15 @@ function(
         getLapsData: function(detailData)
         {
             var lapsData = detailData.lapsStats ? detailData.lapsStats : [];
+            var formattedLaps = [];
             _.each(lapsData, function (lapItem, index)
             {
+                lapItem = _.clone(lapItem);
                 formatLapData.calculateTotalAndMovingTime(lapItem);
                 lapItem.checked = this.checkboxStates.laps[index];
+                formattedLaps.push(lapItem);
             }, this);
-            return lapsData;
+            return formattedLaps;
         },
 
         getPeaksData: function(detailData)
