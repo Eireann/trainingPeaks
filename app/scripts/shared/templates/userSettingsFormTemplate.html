@@ -14,9 +14,9 @@
             <input data-modelname="user" type="email" name="email" />
         </div>
 
-        <div class="fieldContain">
+        <div class="fieldContain athleteTypeGender">
             <label class="fieldTitle">{{$ "AthleteType" }}</label>
-            <div class="selectBox">
+            <div class="selectBox athleteType">
                  <select data-modelname="account" name="athleteTypeValue" >
                     <option value="" selected>{{$ "AthleteType" }}</option>                 
                 {{#each athleteTypes}}
@@ -24,15 +24,7 @@
                 {{/each}}
                 </select>
             </div>
-        </div>
-
-        <div class="fieldContain weightGender">
-            {{#comment}}
-            <label class="fieldTitle">{{$ "Weight" }}</label>
-            <input data-modelname="user" type="text" name="weight" />
-            {{/comment}}
-            <label class="fieldTitle"></label>
-            <div class="selectBox">
+            <div class="selectBox gender">
                  <select data-modelname="user" name="gender" >
                     <option value="" selected>{{$ "Gender" }}</option>
                     <option value="m">Male</option>
@@ -40,7 +32,6 @@
                 </select>
             </div>
         </div>
-
 
         <div class="fieldContain">
             <label class="fieldTitle">{{$ "Username" }}</label>

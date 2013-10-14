@@ -493,6 +493,26 @@
                     }
                 }
 
+                &.athleteTypeGender {
+                    .selectBox {
+                        &.athleteType {
+                            width:197px;
+
+                            .selectboxit-container .selectboxit {
+                                width: 197px !important;
+                            }
+                        }
+                        &.gender {
+                            width:135px;
+                            margin-left:7px;
+
+                            .selectboxit-container .selectboxit {
+                                 width: 135px !important;
+                            }
+                        }
+                    }
+                }
+
                 &.birthday {
                     .selectBox {
                         &.birthdayMonth {
@@ -511,7 +531,9 @@
                     }
                 }
 
-                &.weightGender {
+        
+
+                &.athleteType {
                     input[type="text"] {
                         width:197px;
                     }
