@@ -237,7 +237,7 @@ function(
             var detailData = this.model.get("detailData").toJSON();
 
             var selectOptions = [];
-            _.each(this.modelPeakKeys, function(peakKey, peakName)
+            _.each(this._getSelectablePeakTypes(), function(peakKey, peakName)
             {
                 if(detailData[peakKey] && detailData[peakKey].length)
                 {
@@ -282,8 +282,88 @@ function(
 
             }, this);
 
-        }
+        },
 
+        _getSelectablePeakTypes: function()
+        {
+
+            var peakTypes = _.clone(this.modelPeakKeys);
+
+            if (!this._shouldDisplayDistance())
+            {
+                delete peakTypes.distance;
+            }
+
+            if (!this._shouldDisplayPace())
+            {
+                delete peakTypes.pace;
+            }
+
+            if (!this._shouldDisplaySpeed())
+            {
+                delete peakTypes.speed;
+            }
+
+            return peakTypes;
+        },
+
+        _shouldDisplayDistance: function()
+        {
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+            {
+                return true;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+            {
+                return true;
+            }
+            return false;
+        },
+
+        _shouldDisplayPace: function()
+        {
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+            {
+                return true;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+            {
+                return true;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
+            {
+                return true;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Other"))
+            {
+                return true;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Rowing"))
+            {
+                return true;
+            }
+            return false;
+        },
+
+        _shouldDisplaySpeed: function()
+        {
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+            {
+                return false;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+            {
+                return false;
+            }
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
+            {
+                return false;
+            }
+            return true;
+        }
     });
 
     return LapsView;
