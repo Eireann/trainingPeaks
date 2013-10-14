@@ -222,10 +222,6 @@
                         margin:0;
                     }
                 }
-
-                .zoneCalculatorView {
-                    float:left;
-                }
             }
 
             .zoneEntry {
@@ -781,7 +777,6 @@
     .zoneCalculatorLayoutBody {
         float:left;
         width:100%;
-        border:1px solid green;
         div {
             @include clearfix;
         }
@@ -880,21 +875,23 @@
     }
 
     .zones {
-        clear: both;
-        border:1px solid red;
+        float:none;
+        margin:0 auto;
+        width:400px;
 
         .zoneCalculatorResult {
             padding:5px;
             color: $TPGrey3;
             font-size: $fontSizeSmall;
             font-family: $fontFamilyRegular;
+            @include clearfix; 
             
             @include labels($fontFamilyRegular, 12px, $TPGrey3, normal);
 
             label {
                 display: inline-block;
-                min-width: 300px;
-                padding-right: 10px
+                padding-right: 10px;
+                margin:0;
             }
 
             &.threshold {
@@ -906,6 +903,11 @@
                 &:nth-of-type(even) {
                     background-color:$TPGrey2;
                 }
+            }
+
+            .calculatedZoneItem {
+                float:right;
+                text-align:right;            
             }
         }
     }
