@@ -5,7 +5,10 @@
     "jquerySelectBox",
     "TP",
     "utilities/workout/formatLapData",
+    "utilities/workout/formatPeakTime",
+    "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
+    "hbs!templates/views/expando/lapTemplate",
     "hbs!templates/views/expando/lapsTemplate"
 ],
 function(
@@ -14,11 +17,83 @@ function(
     jquerySelectBox,
     TP,
     formatLapData,
+    formatPeakTime,
+    formatPeakDistance,
     WorkoutStatsForRange,
-    lapsTemplate)
+    lapTemplate,
+    lapsTemplate
+)
 {
-    return TP.ItemView.extend(
+
+    var LapView = TP.ItemView.extend(
     {
+
+        tagName: "li",
+        className: "lap",
+
+        template:
+        {
+            type: "handlebars",
+            template: lapTemplate,
+        },
+
+        modelEvents:
+        {
+            "change:isFocused": "_onFocusedChange",
+            "change:isSelected": "_onSelectedChange"
+        },
+
+        events:
+        {
+            "click span": "_onClick",
+            "change input": "_onInputChange"
+        },
+
+        initialize: function(options)
+        {
+            this.stateModel = options.stateModel;
+        },
+
+        onRender: function()
+        {
+            this._onFocusedChange();
+            this._onSelectedChange();
+        },
+
+        _onFocusedChange: function()
+        {
+            this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
+        },
+
+        _onSelectedChange: function()
+        {
+            this.$("input").attr("checked", !!this.model.get("isSelected"));
+        },
+
+        _onClick: function(e)
+        {
+            this.stateModel.set("statsRange", this.model);
+        },
+
+        _onInputChange: function(e)
+        {
+            if(this.$("input").is(":checked"))
+            {
+                this.stateModel.get("ranges").add(this.model);
+            }
+            else
+            {
+                this.stateModel.get("ranges").remove(this.model);
+            }
+        }
+
+    });
+
+    var LapsView = TP.CompositeView.extend(
+    {
+
+        itemView: LapView,
+        itemViewContainer: ".rangesList ul",
 
         template:
         {
@@ -26,211 +101,110 @@ function(
             template: lapsTemplate
         },
 
-        initialEvents: function()
-        {
-            this.model.off("change", this.render);
-        },
-
-        initialize: function()
-        {
-            this.initializeCheckboxes(true);
-            this.once("render", this.onInitialRender, this);
-        },
-
-        onInitialRender: function()
-        {
-            this.watchForWorkoutTypeChange();
-            this.watchForDataChanges();
-            this.watchForControllerEvents();
-        },
-
-        onRender: function()
-        {
-            var self = this;
-
-            setImmediate(function()
-            {
-                self.styleSelectBox();
-            });
-        },
-
-        styleSelectBox: function()
-        {
-            this.$("#peakType").selectBoxIt(
-            {
-                dynamicPositioning: false
-            });
-        },
-
         events:
         {
-            "change #peakType": "onSelectPeakType",
-            "click .lap span": "onLapsClicked",
-            "click .totals span": "onEntireWorkoutClicked",
-            "click .peaks span": "onPeaksClicked",
-            "click .lap .checkbox": "onLapsCheckboxClicked",
-            "click .totals .checkbox": "onEntireWorkoutCheckboxClicked",
-            "click .peaks .checkbox": "onPeaksCheckboxClicked",
-            "click #uncheck": "onUncheckAll"
+            "click .uncheck": "_onUncheckClick",
+            "change select.peakType": "_onPeakTypeChange"
+        },
+
+        initialize: function(options)
+        {
+
+            var self = this;
+
+            if(!options.stateModel)
+            {
+                throw new Error("Laps view requires an expando state model");
+            }
+
+            this.collection = new TP.Collection({ model: WorkoutStatsForRange });
+            this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
+            this.stateModel = options.stateModel;
+
+
+            this.listenTo(this.stateModel.get("ranges"), "add", function(range)
+            {
+                if(range.get("temporary"))
+                {
+                    self.collection.unshift(range);
+                }
+            });
+
+            this.listenTo(this.stateModel.get("ranges"), "remove", function(range)
+            {
+                if(range.get("temporary"))
+                {
+                    self.collection.remove(range);
+                }
+            });
+
         },
 
         serializeData: function()
         {
-            this.getDefaultSelectOption();
-            this.initializeCheckboxes();
+            return {
+                selectOptions: this._getSelectOptions(),
+                hasLapsOrPeaks: true
+            };
+        },
 
+        appendHtml: function(collectionView, itemView, index)
+        {
+            var model = collectionView.collection.at(index + 1);
+            var prevView = model ? collectionView.children.findByModel(model) : null;
+            if(prevView)
+            {
+                prevView.$el.before(itemView.$el);
+            }
+            else
+            {
+                LapsView.__super__.appendHtml.apply(collectionView, arguments);
+            }
+        },
+
+        onRender: function()
+        {
+            setImmediate(function()
+            {
+                this.$("select").selectBoxIt();
+            });
+        },
+
+        onShow: function()
+        {
+            this._updateCollection();
+        },
+
+        _updateCollection: function()
+        {
             var detailData = this.model.get("detailData").toJSON();
+            var lapRanges = detailData.lapsStats ? detailData.lapsStats : [];
+            _.each(lapRanges, formatLapData.calculateTotalAndMovingTime);
 
-            var totals = this.getTotalsData(detailData);
-            var laps = this.getLapsData(detailData);
-            var peaks = this.getPeaksData(detailData);
+            var totalRange = detailData.totalStats ? detailData.totalStats : null;
+            formatLapData.calculateTotalAndMovingTime(totalRange);
+            
+            var ranges = _.map(_.compact([].concat(lapRanges, [totalRange])), _.bind(this._asRangeModel, this, true));
 
-            var selectOptions = this.getSelectOptions(detailData);
+            var peakType = this.$("select.peakType").val();
+            var peakRanges = peakType ? this._getPeaksData(peakType) : [];
 
-            var workoutData = this.model.toJSON();
-            workoutData.rangeTotals = totals;
-            workoutData.rangeLaps = laps;
-            //TODO: get correct peaks on drop down select
-            workoutData.rangePeaks = peaks;
+            ranges = ranges.concat(_.map(peakRanges, _.bind(this._asRangeModel, this, false)));
 
-            if ((totals && totals.totalTime) || (laps && laps.length) || (peaks && peaks.length))
-            {
-                workoutData.hasLapsOrPeaks = true;
-            }
-
-            if (selectOptions && selectOptions.length)
-            {
-                workoutData.selectOptions = selectOptions;
-            }
-
-            return workoutData;
+            this.collection.set(ranges);
         },
 
-        getTotalsData: function(detailData)
+        _asRangeModel: function(hasLoaded, attrs)
         {
-            var totalData = detailData.totalStats ? detailData.totalStats : {};
-            formatLapData.calculateTotalAndMovingTime(totalData);
-
-            totalData.checked = this.checkboxStates.entireWorkout;
-            return totalData;
+            attrs.workoutId = this.model.id;
+            var range = new WorkoutStatsForRange(attrs);
+            range.hasLoaded = hasLoaded;
+            return range;
         },
 
-        getLapsData: function(detailData)
+        _onUncheckClick: function(e)
         {
-            var lapsData = detailData.lapsStats ? detailData.lapsStats : [];
-            _.each(lapsData, function (lapItem, index)
-            {
-                formatLapData.calculateTotalAndMovingTime(lapItem);
-                lapItem.checked = this.checkboxStates.laps[index];
-            }, this);
-            return lapsData;
-        },
-
-        getPeaksData: function(detailData)
-        {
-            if(!theMarsApp.featureAuthorizer.canAccessFeature(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges
-                )
-            ){
-                return [];
-            }
-
-            if (!this.selectedPeakType)
-                return [];
-
-            var metric = this.modelPeakKeys[this.selectedPeakType];
-            var visiblePeaks = this.getEnabledPeaks(this.selectedPeakType);
-            var outputPeaks = [];
-            var peaksData = detailData[metric] ? detailData[metric] : [];
-
-            var units = this.getPeakUnitsLabel();
-            _.each(peaksData, function(peakItem)
-            {
-                if (_.contains(visiblePeaks, peakItem.interval))
-                {
-                    outputPeaks[peakItem.interval] = peakItem;
-                    peakItem.units = units;
-                    if (this.formatMethods[this.selectedPeakType])
-                    {
-                        peakItem.formattedValue = TP.utils.conversion[this.formatMethods[this.selectedPeakType]](peakItem.value, { workoutTypeValueId: this.model.get("workoutTypeValueId") });
-                    } else
-                    {
-                        peakItem.formattedValue = peakItem.value;
-                    }
-                    if (this.selectedPeakType === "distance")
-                    {
-                        peakItem.isDistance = true;
-                        peakItem.isTime = false;
-                    } else
-                    {
-                        peakItem.isDistance = false;
-                        peakItem.isTime = true;
-                    }
-
-                    peakItem.checked = this.checkboxStates.peaks[peakItem.interval];
-                }
-            }, this);
-            return _.compact(outputPeaks);
-        },
-
-        getSelectOptions: function (detailData)
-        {
-            if(!theMarsApp.featureAuthorizer.canAccessFeature(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges
-                )
-            ){
-                return [];
-            }
-
-            var selectOptions = [];
-            _.each(this.getPeakTypes(), function(peakName)
-            {
-                var modelKey = this.modelPeakKeys[peakName];
-                if (detailData[modelKey] && detailData[modelKey].length)
-                {
-                    selectOptions.push({
-                        value: peakName,
-                        label: this.templatePeakTypeNames[peakName],
-                        selected: peakName === this.selectedPeakType
-                    });
-                }
-            }, this);
-
-            return selectOptions;
-        },
-
-        getDefaultSelectOption: function()
-        {
-            if (this.selectedPeakType)
-                return;
-
-            var detailData = this.model.get("detailData");
-
-            this.selectedPeakType = _.find(this.getPeakTypes(), function(peakName)
-            {
-                var modelKey = this.modelPeakKeys[peakName];
-                if (detailData.has(modelKey) && detailData.get(modelKey).length)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }, this);
-
-        },
-
-        getPeakUnitsLabel: function()
-        {
-            if (this.selectedPeakType === "distance")
-            {
-                return TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeValueId"));
-            } else
-            {
-                return TP.utils.units.getUnitsLabel(this.selectedPeakType, this.model.get("workoutTypeValueId"));
-            }
+            this.stateModel.get("ranges").set([]);
         },
 
         templatePeakTypeNames:
@@ -253,331 +227,101 @@ function(
             cadence: "peakCadences"
         },
 
-        getPeakTypes: function()
+        _getSelectOptions: function()
         {
-            var allKeys = ["distance", "pace", "power", "speed", "heartrate", "cadence"];
 
-            if (!this.shouldDisplayDistance())
-                allKeys = _.without(allKeys, "distance");
-
-            if (!this.shouldDisplayPace())
-                allKeys = _.without(allKeys, "pace");
-
-            if (!this.shouldDisplaySpeed())
-                allKeys = _.without(allKeys, "speed");
-
-            return allKeys;
-        },
-
-        formatMethods:
-        {
-            pace: "formatPace",
-            speed: "formatSpeed",
-            distance: "formatPace"
-        },
-
-        onUncheckAll: function()
-        {
-            // render right away so our select box styles nicely instead of waiting for charts to paint
-            this.initializeCheckboxes(true);
-            this.render();
-            this.trigger("unselectall");
-        },
-
-        onUnSelectAll: function()
-        {
-            this.initializeCheckboxes(true);
-            this.render();
-        },
-
-        onSelectPeakType: function ()
-        {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "peakTypeSelected", "eventLabel": "" });
-            
-            this.changePeakType(this.$("#peakType").val());
-        },
-
-        changePeakType: function(newPeakType)
-        {
-            // unselect other peaks
-            this.unselectAllCheckedPeaks(this.selectedPeakType);
-
-            // render, and reselect same peak time ranges
-            this.selectedPeakType = newPeakType;
-            this.render();
-            this.reselectAllCheckedPeaks(this.selectedPeakType);
-
-            // display totals
-            this.selectEntireWorkout();
-        },
-
-        unselectAllCheckedPeaks: function(peakType)
-        {
-            _.each(this.checkboxStates.peaks, function(value, interval)
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges
+            ))
             {
-                if (value)
-                {
-                    var options = {
-                        removeFromSelection: true,
-                        updateCheckboxes: false
-                    };
-                    this.selectPeak(peakType, interval, options);
-                }
-
-            }, this);
-        },
-
-        reselectAllCheckedPeaks: function(peakType)
-        {
-            _.each(this.checkboxStates.peaks, function(value, interval)
-            {
-                if (value)
-                {
-                    var options = {
-                        addToSelection: true,
-                        updateCheckboxes: false
-                    };
-                    this.selectPeak(peakType, interval, options);
-                }
-
-            }, this);
-        },
-
-        selectPeak: function(peakType, peakInterval, options)
-        {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "peakSelected", "eventLabel": "" });
-
-            var peakDataItem = this.findPeak(peakType, peakInterval);
-
-            if (options.updateCheckboxes)
-            {
-                this.checkboxStates.peaks[peakInterval] = options.addToSelection ? true : false;
+                return [];
             }
+            var detailData = this.model.get("detailData").toJSON();
 
-            if (peakDataItem)
+            var selectOptions = [];
+            _.each(this._getSelectablePeakTypes(), function(peakKey, peakName)
             {
-                peakDataItem.workoutId = this.model.id;
-                peakDataItem.name = "Peak " + this.formatPeakName(peakInterval);
-                var statsForRange = this.getWorkoutStatsForRange(peakDataItem);
-                options.dataType = peakType;
-                this.trigger("rangeselected", statsForRange, options, this);
-            }
+                if(detailData[peakKey] && detailData[peakKey].length)
+                {
+                    selectOptions.push({
+                        value: peakName,
+                        label: this.templatePeakTypeNames[peakName],
+                    });
+                }
+            }, this);
+
+            return selectOptions;
+
         },
 
-        findPeak: function(peakType, peakInterval)
+        _onPeakTypeChange: function()
         {
-            // string from dom, need int in model
-            peakInterval = Number(peakInterval);
+            this._updateCollection();
+        },
+
+        _getPeaksData: function(peakType)
+        {
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges
+                )
+            ){
+                return [];
+            }
 
             var detailData = this.model.get("detailData").toJSON();
-            var peakDataSet = detailData[this.modelPeakKeys[peakType]];
 
-            return _.find(peakDataSet, function(item)
+            var metric = this.modelPeakKeys[peakType];
+            var peaksData = detailData[metric] ? detailData[metric] : [];
+
+            // sort
+            peaksData = _.sortBy(peaksData, "interval");
+
+            // remove duplicates
+            peaksData = _.uniq(peaksData, true, function(peakItem)
             {
-                return item.interval === peakInterval;
+                return peakItem.interval;
             });
-        },
 
-        onLapsClicked: function(e)
-        {
-            var self = this;
-            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
-                function()
-                {
-                    self.handleLapsClicked(e);
-                }
-            );
-        },
-
-        handleLapsClicked: function(e)
-        {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "lapClicked", "eventLabel": "" });
-
-            var target = $(e.target);
-            var li = target.closest("li");
-            var lapIndex = li.data("lapindex");
-            var detailData = this.model.get("detailData").toJSON();
-            var lapData = detailData.lapsStats[lapIndex];
-            lapData.workoutId = this.model.id;
-            var statsForRange = this.getWorkoutStatsForRange(lapData);
-            statsForRange.hasLoaded = true;
-
-            var options = {};
-
-            if (target.is("input[type=checkbox]"))
+            // filter by enabled intervals
+            var enabledPeakIntervals = this._getEnabledPeaks(peakType);
+            peaksData = _.filter(peaksData, function(peakItem)
             {
-                if (target.is(":checked"))
-                {
-                    options.addToSelection = true;
-                    this.checkboxStates.laps[lapIndex] = true;
-                } else {
-                    options.removeFromSelection = true;
-                    this.checkboxStates.laps[lapIndex] = false;
-                }
-            }
+                return _.contains(enabledPeakIntervals, peakItem.interval);
+            });
 
-            this.trigger("rangeselected", statsForRange, options, this);
-            this.highlightListItem(li);
-        },
-
-        onLapsCheckboxClicked: function(e)
-        {
-            var self = this;
-            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
-                function()
-                {
-                    self.handleLapsCheckboxClicked(e);
-                }
-            );
-        },
-
-        handleLapsCheckboxClicked: function(e)
-        {
-            var target = $(e.target);
-            var li = target.closest("li");
-            var lapIndex = li.data("lapindex");
-            var detailData = this.model.get("detailData").toJSON();
-            var lapData = detailData.lapsStats[lapIndex];
-            lapData.workoutId = this.model.id;
-            var statsForRange = this.getWorkoutStatsForRange(lapData);
-            statsForRange.hasLoaded = true;
-
-            var options = {};
-
-            if (target.is(":checked"))
+            // configure for view
+            return _.map(peaksData, function(peakItem)
             {
-                options.addToSelection = true;
-                this.checkboxStates.laps[lapIndex] = true;
-            } else {
-                options.removeFromSelection = true;
-                this.checkboxStates.laps[lapIndex] = false;
-            }
 
-            this.trigger("rangeselected", statsForRange, options, this);
-        },
+                var range = _.clone(peakItem);
+                range.name = "Peak " + this._formatPeakName(peakType, peakItem.interval);
+                range.name += " (" + this._formatPeakValue(peakType, peakItem.value, this.model.get("workoutTypeValueId")) + ")";
 
-        onEntireWorkoutClicked: function(e)
-        {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "entireWorkoutClicked", "eventLabel": "" });
+                return range;
 
-            var target = $(e.target);
-            var li = target.closest("li");
-            var options = {};
-            this.selectEntireWorkout(options);
-            this.highlightListItem(li);
-        },
-
-        onEntireWorkoutCheckboxClicked: function(e)
-        {
-            var self = this;
-            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
-                function()
-                {
-                    self.handleEntireWorkoutCheckboxClicked(e);
-                }
-            );
-        },
-
-        handleEntireWorkoutCheckboxClicked: function(e)
-        {
-            var target = $(e.target);
-
-            var options = {};
-
-            if(target.is(":checked"))
-            {
-                options.addToSelection = true;
-                this.checkboxStates.entireWorkout = true;
-            } else
-            {
-                options.removeFromSelection = true;
-                this.checkboxStates.entireWorkout = false;
-            }
-
-            this.selectEntireWorkout(options);
-        },
-
-        selectEntireWorkout: function(options)
-        {
-            var detailData = this.model.get("detailData").toJSON();
-            var entireWorkoutData = detailData.totalStats;
-            entireWorkoutData.workoutId = this.model.id;
-            entireWorkoutData.name = "Entire Workout";
-            var statsForRange = this.getWorkoutStatsForRange(entireWorkoutData);
-            statsForRange.hasLoaded = true;
-
-            this.trigger("rangeselected", statsForRange, options, this);
-        },
-
-        onPeaksClicked: function(e)
-        {
-            var self = this;
-            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
-                function()
-                {
-                    self.handlePeaksClicked(e);
-                }
-            );
-        },
-
-        handlePeaksClicked: function(e)
-        {
-            var target = $(e.target);
-            var li = target.closest("li");
-            var peakInterval = li.data("peakinterval");
-
-            var options = {};
-
-            this.selectPeak(this.selectedPeakType, peakInterval, options);
-            this.highlightListItem(li);
-        },
-        
-        onPeaksCheckboxClicked: function(e)
-        {
-            var target = $(e.target);
-            var li = target.closest("li");
-            var peakInterval = li.data("peakinterval");
-
-            var options = {};
-
-            if (target.is(":checked"))
-            {
-                options = {
-                    updateCheckboxes: true,
-                    addToSelection: true
-                };
-                this.selectPeak(this.selectedPeakType, peakInterval, options);
-            } else
-            {
-                options = {
-                    updateCheckboxes: true,
-                    removeFromSelection: true
-                };
-                this.selectPeak(this.selectedPeakType, peakInterval, options);
-            }
-
-        },
-
-        highlightListItem: function(target)
-        {
-            this.$(".rangesList li").removeClass("highlight");
-            target.addClass("highlight");
-        },
-
-        watchForControllerEvents: function()
-        {
-            this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.on("close", function()
-            {
-                this.off("controller:unselectall", this.onUnSelectAll, this);
             }, this);
+
         },
 
-        getEnabledPeaks: function(selectedPeakType)
+        _formatPeakValue: function(peakType, peakValue, workoutTypeId)
+        {
+            var formatType = peakType === "distance" ? "pace" : peakType;
+            return TP.utils.conversion.formatUnitsValue(formatType, peakValue, { workoutTypeId: workoutTypeId, withLabel: true });
+        },
+
+        _formatPeakName: function(peakType, interval)
+        {
+            if(peakType === "distance")
+            {
+                return formatPeakDistance(interval);
+            }
+            else
+            {
+                return formatPeakTime(interval);
+            }
+        },
+
+        _getEnabledPeaks: function(selectedPeakType)
         {
             if (selectedPeakType === "distance")
             {
@@ -588,145 +332,88 @@ function(
             }
         },
 
-        shouldDisplayDistance: function()
+        _getSelectablePeakTypes: function()
+        {
+
+            var peakTypes = _.clone(this.modelPeakKeys);
+
+            if (!this._shouldDisplayDistance())
+            {
+                delete peakTypes.distance;
+            }
+
+            if (!this._shouldDisplayPace())
+            {
+                delete peakTypes.pace;
+            }
+
+            if (!this._shouldDisplaySpeed())
+            {
+                delete peakTypes.speed;
+            }
+
+            return peakTypes;
+        },
+
+        _shouldDisplayDistance: function()
         {
             var workoutTypeId = this.model.get("workoutTypeValueId");
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+            {
                 return true;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+            {
                 return true;
+            }
             return false;
         },
 
-        shouldDisplayPace: function()
+        _shouldDisplayPace: function()
         {
             var workoutTypeId = this.model.get("workoutTypeValueId");
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+            {
                 return true;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+            {
                 return true;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
+            {
                 return true;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Other"))
+            {
                 return true;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Rowing"))
+            {
                 return true;
+            }
             return false;
         },
 
-        shouldDisplaySpeed: function()
+        _shouldDisplaySpeed: function()
         {
             var workoutTypeId = this.model.get("workoutTypeValueId");
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+            {
                 return false;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+            {
                 return false;
+            }
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
+            {
                 return false;
+            }
             return true;
-        },
-
-        watchForWorkoutTypeChange: function()
-        {
-            this.model.on("change:workoutTypeValueId", this.onWorkoutTypeChange, this);
-            this.on("close", function()
-            {
-                this.model.off("change:workoutTypeValueId", this.onWorkoutTypeChange, this);
-            }, this);
-        },
-
-        onWorkoutTypeChange: function()
-        {
-            this.selectedPeakType = null;
-            this.render();
-        },
-
-        watchForDataChanges: function()
-        {
-            this.model.get("detailData").on("change", this.reset, this);
-            this.on("close", this.stopWatchingDataChanges, this);
-        },
-
-        stopWatchingDataChanges: function()
-        {
-            this.model.get("detailData").off("change", this.reset, this);
-        },
-
-        reset: function()
-        {
-            this.cachedWorkoutStats = {};
-            this.selectedPeakType = null;
-            this.initializeCheckboxes(true);
-            this.render();
-            this.selectEntireWorkout();
-        },
-
-        formatPeakName: function(interval)
-        {
-            if (this.selectedPeakType === "distance")
-            {
-                return TP.utils.workout.formatPeakDistance(interval); 
-            } else {
-                return TP.utils.workout.formatPeakTime(interval);                   
-            }
-        },
-
-        initializeCheckboxes: function(reset)
-        {
-            if(this.checkboxStates && !reset)
-            {
-                return;
-            }
-
-            this.checkboxStates = {
-                entireWorkout: false,
-                laps: [],
-                peaks: {}
-            };
-
-            if (this.model.has("detailData") && this.model.get("detailData").has("lapsStats"))
-            {
-                var laps = this.model.get("detailData").get("lapsStats");
-                _.each(laps, function(lap, index)
-                {
-                    this.checkboxStates.laps[index] = false;
-                }, this);
-            }
-
-            var distancePeaks = this.getEnabledPeaks("distance");
-            var otherPeaks = this.getEnabledPeaks();
-            _.each(distancePeaks, function(peakInterval)
-            {
-                this.checkboxStates.peaks[peakInterval] = false;
-            }, this);
-            _.each(otherPeaks, function(peakInterval)
-            {
-                this.checkboxStates.peaks[peakInterval] = false;
-            }, this);
-        },
-
-        getWorkoutStatsForRange: function(rangeData)
-        {
-
-            if(!this.cachedWorkoutStats)
-            {
-                this.cachedWorkoutStats = {};
-            }
-
-            // combination of name + msOffset start + msOffset end, to create a unique key
-            // name alone doesn't work, because peak 60 seconds cadence vs peak 60 seconds heart rate would have different start/end offsets
-            // start/end offset alone doesn't work, because if you're moving fast enough, 1 mile (1609 meters) will be the same as 1600 meters
-            var rangeKey = rangeData.name + ":" + rangeData.begin + ":" + rangeData.end;
-
-            if(this.cachedWorkoutStats.hasOwnProperty(rangeKey))
-            {
-                return this.cachedWorkoutStats[rangeKey];
-            }
-
-            var stats = new WorkoutStatsForRange(rangeData);
-            this.cachedWorkoutStats[rangeKey] = stats;
-            return stats;
         }
-
     });
+
+    return LapsView;
+
 });

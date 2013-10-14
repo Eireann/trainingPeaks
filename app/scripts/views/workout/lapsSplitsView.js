@@ -13,7 +13,10 @@ function(
     )
 {
     return TP.ItemView.extend(
-    {        
+    {
+
+        className: "expandoLapsSplitsPod",
+
         initialize: function(options)
         {
             if (!options.model)
@@ -35,7 +38,7 @@ function(
             {
                 if (!self.model.get('detailData').get('lapsStats'))
                 {
-                    self.trigger("requestClose", self);
+                    self.close();
                 }
             });
         },

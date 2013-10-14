@@ -7,8 +7,9 @@
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange",
-    "utilities/threeSigFig"
-], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig)
+    "utilities/threeSigFig",
+    "utilities/units/labels"
+], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
 {
     var conversion = {
 
@@ -609,8 +610,22 @@
             options:
                 defaultValue
                 workoutTypeId
+                withLabel
         */
         formatUnitsValue: function(units, value, options)
+        {
+            var string = conversion._formatUnitsValue(units, value, options);
+
+            if(options && options.withLabel)
+            {
+                string += " " + getUnitsLabel(units, conversion.getMySportType(options));
+            }
+
+            return string;
+
+        },
+
+        _formatUnitsValue: function(units, value, options)
         {
 
             if(conversion.valueIsEmpty(value))
