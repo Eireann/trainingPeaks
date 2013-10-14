@@ -109,7 +109,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
         _redirectToLogin: function()
         {
             if(REDIRECT_URL)
-                window.location = REDIRECT_URL + "?ReturnUrl=" + window.location;
+                window.location = REDIRECT_URL + "?ReturnUrl=" + escape(window.location);
         },
 
         authenticationComplete: function(callback)
@@ -119,7 +119,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         logout: function()
         {
-            document.location = window.apiConfig.logoutUrl ? window.apiConfig.logoutUrl : window.apiConfig.cmsRoot + "/logout";
+            document.location = window.apiConfig.cmsRoot + "/logout";
         }
     });
 });
