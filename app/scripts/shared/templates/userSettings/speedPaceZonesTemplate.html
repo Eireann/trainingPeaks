@@ -1,25 +1,35 @@
-<h3>Speed/Pace Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
-<a class="calculate">Calculate</a>
-{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
-
-<div class="zoneSetContain pace">
-	<form class="cf">
-	    <label>
-		<span class="zoneSetTitle">Threshold</span>
-		<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue">
-	    </label>
-
-	    <label>
-		<input type="radio" value="speed" name="units">
-		{{ getUnitsLabel "speed" workoutTypeId }}
-	    </label>
-
-	    <label>
-		<input type="radio" value="pace" name="units" checked>
-		{{ getUnitsLabel "pace" workoutTypeId }}
-	    </label>
-	</form>
+<div class="zoneGroupNameContain">
+	<h3>{{ workoutTypeName workoutTypeId "Default" }}</h3>
+	{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 </div>
 
-<div class="zones"></div>
+<div class="zoneSetContain speed">
+	<fieldset class="zoneSetFieldset">
+		<legend>Threshold Values</legend>
+		<form class="cf">
+		    <label class="zoneValueContain">
+				<span class="zoneSetTitle">Threshold</span>
+				<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue" type="text">
+		    </label>
+
+		    <label class="clickable">
+				<input type="radio" value="speed" name="units">
+				{{ getUnitsLabel "speed" workoutTypeId }}
+		    </label>
+		    <label class="clickable">
+				<input type="radio" value="pace" name="units" checked>
+				{{ getUnitsLabel "pace" workoutTypeId }}
+		    </label>
+		</form>
+	</fieldset>
+</div>
+
+<div class="zoneSetContain">
+	<fieldset class="zoneSetFieldset autoCalc">
+    	<legend>Auto Calculation</legend/>
+    	<div class="calculator"></div>
+	</fieldset>
+</div>
+
+<div class="zones zonesConfigGroupView"></div>
 <button class="addZone">Add Zone</button>

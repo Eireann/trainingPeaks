@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "shared/views/overlayBoxView",
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/zoneCalculatorViews",
@@ -12,7 +11,6 @@
 function(
     _,
     TP,
-    OverlayBoxView,
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     ZoneCalculatorViews,
@@ -33,7 +31,8 @@ function(
 
         units: "power",
 
-        itemView: TP.ItemView.extend({
+        zoneItemView: TP.ItemView.extend({
+            className: "zoneCalculatorResult zone", 
             template: {
                 type: "handlebars",
                 template: powerZoneTemplate
@@ -93,18 +92,34 @@ function(
 
     });
 
+    var EmptyPowerTabView = PowerThresholdTabView.extend({
+        calculators: [],
+        inputs: []
+    });
+
 
     var PowerZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
+
+        className: "tabbedLayout zonesCalculator powerZonesCalculator",
 
         _initializeNavigation: function()
         {
             this.navigation =
             [
                 {
+                    title: "Choose Type",
+                    view: EmptyPowerTabView,
+                    options: {
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
+                    }
+                },
+                {
                     title: "Threshold Power",
                     view: PowerThresholdTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 }
             ];
@@ -112,11 +127,6 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
-
-        className: "powerZonesCalculator zonesCalculator",
-
-        itemView: PowerZonesCalculatorTabbedLayout
-    });
+    return PowerZonesCalculatorTabbedLayout;
 
 });

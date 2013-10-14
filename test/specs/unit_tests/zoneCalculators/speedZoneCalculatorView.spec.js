@@ -25,17 +25,13 @@ function (
             {
                 view = new SpeedZonesCalculatorView({ model: new TP.Model({ threshold: 150 }) });
                 view.render();
+                view.$("select[name=calculatorType]").val("Threshold Speed").trigger("change");
+                view.$("select[name=calculatorDefinitionId]").val("2").trigger("change");
             });
 
             it("Should list some of the available calculator methods", function()
             {
                 expect(view.$el.text()).toContain("Joe Friel for Running");
-            });
-
-            it("Should have an input box for threshold", function()
-            {
-                $threshold = view.$("input[name=threshold]");
-                expect($threshold.length).toBe(1);
             });
 
             it("Should have a calculate button", function()
