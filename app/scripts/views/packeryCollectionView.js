@@ -19,6 +19,7 @@ function(
     if(!$.fn.packery)
     {
         return TP.CollectionView.extend({
+            layout: function() { return; },
             enablePackeryResize: function() { return; },
             disablePackeryResize: function() { return; }
         });
