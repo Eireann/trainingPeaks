@@ -144,67 +144,22 @@
     @include
     nice-scrollbar;
 
-    &.graphHidden
+    .expandoMapPod
     {
-        #expandoGraphRegion
-        {
-            display: none;
-        }
-    }
-
-    &.mapHidden
-    {
-        #expandoMapRegion
-        {
-            display: none;
-        }
-
-        #expandoGraphRegion
-        {
-            height: 600px;
-
-            #plot
-            {
-                height: 565px;
-            }
-        }
-    }
-
-    #expandoMapRegion
-    {
-        height: 320px;
-        width: 100%;
 
         #expandoMap
         {
-            height: 320px;
+            height: 100%;
             width: 100%;
         }
 
     }
 
-    #expandoMapAndGraphResizerRegion
-    {
-        height:11px;
-        width:100%;
-        left:0;
-        
-        background: center center no-repeat $TPGrey1;
-        @extend %resizeIndicatorBG;
-        
-        cursor:row-resize;
-        position:absolute;
-        border-top:1px solid #c2c3c4;
-        border-bottom:1px solid #c2c3c4;
-    }
-
-    #expandoGraphRegion
+    .expandoGraphPod
     {
         padding-top: 15px;
         padding-left: 10px;
         padding-right: 10px;
-        height: 400px;
-        width: 100%;
         overflow:hidden;
         #graphToolbar
         {
@@ -213,7 +168,7 @@
 
         #plot
         {
-            height: 365px;
+            height: calc(100% - 50px);
         }
 
         .graphToolbar
@@ -443,10 +398,10 @@
         }
     }
     
-    #expandoLapsSplitsRegion {
-        float:left;
-        padding:55px 10px;
-        width:100%;
+    .expandoLapsSplitsPod {
+        float: left;
+        padding: 0 10px;
+        width: 100%;
         
         table {
             border-left:none;
@@ -462,7 +417,7 @@
         }
     }
     
-    #expandoChartsRegion {
+    .expandoPackeryRegion {
         width: 100%;
         padding: 0 12px;
         float: left;
@@ -628,9 +583,6 @@
 
     #expandoLapsRegion
     {
-        overflow-y: visible;
-        //@include nice-scrollbar;
-
         .controls
         {
             margin-left: 20px;
@@ -736,5 +688,252 @@
         {
             font-size: $fontSizeMedLarge;
         }
+    }
+}
+
+.expandoPackeryRegion
+{
+    &, .packeryCollection
+    {
+        padding-top: 10px;
+
+        height: 100%;
+        max-height: 100%;
+    }
+}
+
+@for $i from 1 through 6
+{
+    .expandoPod[data-rows="#{$i}"]
+    {
+        height: calc(#{percentage($i / 6)} - 10px);
+    }
+
+    .expandoPod[data-cols="#{$i}"]
+    {
+        width: calc(#{percentage($i / 6)} - 10px);
+    }
+
+}
+
+.sizer
+{
+    @extend .expandoPod[data-rows="1"];
+    @extend .expandoPod[data-cols="1"];
+}
+
+
+.expandoPod {
+
+    position: absolute; 
+    padding: 0;
+
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &.fullScreen
+    {
+        position: absolute;
+        height: auto;
+        width: auto;
+        background-color: $TPGrey1;
+        z-index: 200 !important;
+        opacity: 1;
+        cursor: default;
+
+        .expandoPodButtons
+        {
+            display: block;
+            z-index:2;
+        }
+
+        &:hover, &.hover {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+        }
+    }
+
+
+
+    &:hover, &.hover
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
+        z-index: 2;
+        .expandoPodButtons
+        {
+            display: block;
+            z-index:2;
+        }
+    }
+
+    &.menuOpen
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
+
+        .expandoPodButtons
+        {
+            display: block;
+        }
+
+        &.fullScreen {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+        }
+    }
+
+    &.ui-draggable-dragging
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
+    }
+
+    .epxandoPodHeader
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        display: none;
+
+        &:hover, .hover
+        {
+            display: block;
+            background: white;
+        }
+
+    }
+
+    .expandoPodContent
+    {
+        width: 100%;
+        height: 100%;
+
+        overflow: auto;
+
+        &.invisible
+        {
+            visibility:hidden;
+        }
+
+    }
+
+
+
+    .expandoPodButtons
+    {
+        display:none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 100px;
+
+        .settings, .expand, .close, .collapse
+        {
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            top: 0px;
+        }
+
+        .settings
+        {
+            width: 11px;
+            right: 43px;
+            background: transparent no-repeat 0 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: 0 -17px;
+            }
+
+            &:active {
+                background-position: 0 -17px;
+            }
+        }
+
+        .expand
+        {
+            right: 21px;
+            background: transparent no-repeat -17px 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -17px -17px;
+            }
+
+            &:active {
+                background-position: -17px -17px;
+            }
+        }
+
+        .collapse 
+        {
+            display: none;
+            right: 0px;
+            cursor: pointer;
+            background: transparent no-repeat -34px 0;
+            @extend %chartIconsSpriteBG;
+
+            &:hover {
+                background-position: -34px -17px;
+            }
+
+            &:active {
+                background-position: -34px 0px;
+            }
+
+        }
+
+        .close
+        {
+            right: 0px;
+            background: transparent no-repeat -51px 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -51px -17px;
+            }
+
+            &:active {
+                background-position: -51px 0;
+            }
+        }
+    }
+
+    &.expanded
+    {
+        .expandoPodButtons
+        {
+            .collapse
+            {
+                display: block;
+            }
+
+            .expand
+            {
+                display: none;
+            }
+
+            .close
+            {
+                display: none;
+            }
+
+            .settings
+            {
+                right: 21px;
+            }
+        }
+    }
+
+    // jquery ui adds some opacity to disabled drag state
+    &.ui-state-disabled
+    {
+        opacity: 1;
     }
 }

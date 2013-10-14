@@ -30,7 +30,7 @@ function(
 {
     return TP.ItemView.extend(
     {
-        className: "graphContainer",
+        className: "graphContainer expandoGraphPod",
 
         template:
         {
@@ -51,6 +51,8 @@ function(
 
             if (!options.dataParser)
                 throw "dataParser is required for graph view";
+
+            this.stateModel = options.stateModel;
 
             this.detailDataPromise = options.detailDataPromise;
             this.dataParser = options.dataParser;
@@ -79,7 +81,6 @@ function(
 
                 this.watchForModelChanges();
                 this.watchForControllerEvents();
-                this.watchForControllerResize();
 
                 setImmediate(function()
                 {
@@ -87,7 +88,9 @@ function(
                 });
             }
             else
+            {
                 this.createFlotGraph();
+            }
         },
         
         watchForModelChanges: function()
@@ -116,7 +119,6 @@ function(
                 return;
             
             this.$plot = this.$("#plot");
-            this.$plot.height(this.getDesiredPlotHeight());
             this.drawPlot();
         },
 
@@ -153,6 +155,8 @@ function(
 
             if (this.plot)
                 this.unbindPlotEvents();
+
+            this.$plot.css({ "min-height": 1, "min-width": 1 });
 
             if($.plot)
             {
@@ -365,37 +369,35 @@ function(
                 endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection" });
+            var oldRange = this.selectedWorkoutStatsForRange;
+            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection", temporary: true });
 
-            var options =
+            if(oldRange)
             {
-                addToSelection: true,
-                displayStats: true
-            };
+                this.stateModel.get("ranges").remove(oldRange);
+            }
 
-            this.trigger("unselectall");
-            this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
+            this.stateModel.get("ranges").add(this.selectedWorkoutStatsForRange);
+            this.stateModel.set("statsRange", this.selectedWorkoutStatsForRange);
         },
 
         onPlotUnSelected: function()
         {
             if (!this.zoomed)
-                this.trigger("unselectall");
+            {
+                this.stateModel.get("ranges").remove(this.selectedWorkoutStatsForRange);
+                this.selectedWorkoutStatsForRange = null;
+            }
         },
 
         onPlotHover: function(event, pos, item)
         {
-            var options = {
-                msOffset: pos.x,
-                selected: false
-            };
-
-            this.trigger("graphhover", options);
+            this.stateModel.set("hover", pos.x);
         },
        
         onMouseLeave: function(event)
         {
-            this.trigger("graphleave");
+            this.stateModel.set("hover", null);
         },
 
         enableSeries: function(series)
@@ -433,7 +435,7 @@ function(
 
             this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
-            this.trigger("unselectall");
+            this.stateModel.get("ranges").set([]);
             this.resetZoom();
             this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
@@ -448,7 +450,7 @@ function(
 
             this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
-            this.trigger("unselectall");
+            this.stateModel.get("ranges").set([]);
             this.resetZoom();
             this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
@@ -458,49 +460,53 @@ function(
 
         watchForControllerEvents: function()
         {
-            this.on("controller:rangeselected", this.onRangeSelected, this);
-            this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.on("close", this.stopWatchingControllerEvents, this);
+            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
         },
 
-        stopWatchingControllerEvents: function()
+        _onRangeAdded: function(range, ranges, options)
         {
-            this.off("controller:rangeselected", this.onRangeSelected, this);
-        },
-
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
-        {
-            if (triggeringView === this || !options)
-                return;
-
-            var selection;
-            if (options.removeFromSelection)
+            if(range === this.selectedWorkoutStatsForRange)
             {
-                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
+                return;
+            }
+
+            var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
+            if (!selection)
+            {
+                selection = this.createGraphSelection(range, options);
+                this.addSelectionToGraph(selection);
+            }
+        },
+
+        _onRangeRemoved: function(range, ranges, options)
+        {
+            if(range === this.selectedWorkoutStatsForRange)
+            {
+                this.plot.clearSelection();
+            }
+            else
+            {
+                var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
                 if(selection)
                 {
                     this.removeSelectionFromGraph(selection);
                     this.selections = _.without(this.selections, selection);
                 }
             }
-            else if (options.addToSelection)
-            {
-                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
-                if (!selection)
-                {
-                    this.plot.clearSelection();
-                    selection = this.createGraphSelection(workoutStatsForRange, options);
-                    this.addSelectionToGraph(selection);
+        },
 
-                    if (this.selectedWorkoutStatsForRange)
-                    {
-                        var triggerOptions = {};
-                        triggerOptions.removeFromSelection = true;
-                        this.trigger("rangeselected", this.selectedWorkoutStatsForRange, triggerOptions, this);
-                        this.selectedWorkoutStatsForRange = null;
-                    }
-                }
-            }
+        _onRangesReset: function(ranges, options)
+        {
+            var self = this;
+
+            _.each(this.selections, this.removeSelectionFromGraph, this);
+            this.selections = [];
+            ranges.each(function(range)
+            {
+                self._onRangeAdded(range, ranges, options);
+            });
         },
 
         findGraphSelection: function(begin, end, dataType)
@@ -552,46 +558,6 @@ function(
             this.selections = [];
         },
 
-        getDesiredPlotHeight: function()
-        {
-            if (this.graphHeight)
-                return this.graphHeight - 50;
-            else
-                return this.dataParser.hasLatLongData ? 365 : 565;
-        },
-
-        watchForControllerResize: function ()
-        {
-            this.on("controller:resize", this.setViewSize, this);
-            this.on("close", function ()
-            {
-                this.off("controller:resize", this.setViewSize, this);
-            }, this);
-        },
-
-        setViewSize: function (containerHeight, containerWidth)
-        {
-            var bottomMargin = 10;
-            var heightPercent = this.offsetRatio ? 1-this.offsetRatio : 0.5;
-            var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
-            
-            this.graphHeight = graphHeight;
-            this.$el.closest("#expandoGraphRegion").height(graphHeight);
-
-            var topPadding = 15;
-            var toolbarHeight = 35;
-
-            this.$el.height(graphHeight - topPadding);
-            this.plotHeight = graphHeight - topPadding - toolbarHeight;
-            this.repaintHeight();
-        },
-        repaintHeight: function()
-        {
-            if (this.$plot)
-            {
-                this.$plot.height(this.plotHeight);
-            }
-        },
         stashHeight: function(offsetRatio)
         {
             this.offsetRatio = offsetRatio;

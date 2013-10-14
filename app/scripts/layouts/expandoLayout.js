@@ -15,6 +15,7 @@ function(TP, expandoLayoutTemplate)
 
         regions:
         {
+            packeryRegion: ".expandoPackeryRegion",
             graphRegion: "#expandoGraphRegion",
             mapRegion: "#expandoMapRegion",
             statsRegion: "#expandoStatsRegion",
