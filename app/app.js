@@ -4,6 +4,7 @@ define(
     "TP",
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
+    "framework/ajax402",
     "framework/tooltips",
     "framework/identityMap",
     "framework/dataManager",
@@ -29,6 +30,7 @@ function(
     TP,
     ajaxCaching,
     initializeAjaxTimezone,
+    initializeAjax402,
     enableTooltips,
     IdentityMap,
     DataManager,
@@ -171,6 +173,12 @@ function(
                     {/* IGNORE - we are only trying to report an exception, if reporting doesn't work, we don't care */}
                 }
             });
+        });
+
+        // add ajax 402 handler
+        this.addInitializer(function()
+        {
+            initializeAjax402(this);
         });
 
         // setup token
