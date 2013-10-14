@@ -2318,6 +2318,23 @@
             else
             {
 
+                // TP MICAH:
+                // viewport can be a css selector, a function, or a jquery object
+                var viewport = self.options.viewport ? self.options.viewport : $(window);
+                if(_.isFunction(viewport))
+                {
+                    viewport = viewport();
+                }
+                else if(_.isString(viewport))
+                {
+                    viewport = $(viewport);
+                }
+
+                if(!viewport.length)
+                {
+                    viewport = $(window);
+                }
+
                 // Returns the x and y coordinates of the dropdown list options list relative to the document
                 var listOffsetTop = self.dropdown.offset().top,
 
@@ -2327,13 +2344,18 @@
                     // The height of the dropdown list DOM element
                     selectBoxHeight = self.dropdown.outerHeight(),
 
-                    viewport = self.options["viewport"],
+                    viewportIsWindow = $.isWindow(viewport.get(0)),
 
                     viewportHeight = viewport.height(),
 
-                    viewportScrollTop = $.isWindow(viewport.get(0)) ? viewport.scrollTop() : viewport.offset().top,
+                    viewportTop = viewportIsWindow ? 0 : viewport.offset().top,
 
-                    topToBottom = (listOffsetTop + selectBoxHeight + listHeight <= viewportHeight + viewportScrollTop),
+                    // TP MICAH: use bottom of viewport to see if list would actually visible in viewport
+                    viewportBottom = viewportHeight + viewportTop,
+
+                    viewportScrollTop = viewportIsWindow || viewport.scrollTop() ? viewport.scrollTop() : viewport.offset().top,
+
+                    topToBottom = (listOffsetTop + selectBoxHeight + listHeight <= viewportBottom - 5),
 
                     bottomReached = !topToBottom;
 
@@ -2352,26 +2374,29 @@
 
                     // Sets custom CSS properties to place the dropdown list options directly below the dropdown list
                     self.list.css("top", "auto");
+                    self.list.css("margin-top", 0);
 
                     // TP MICAH: added above/below css classes for more styling flexibility
                     self.list.addClass("below").removeClass("above")
                 }
 
                     // If there is room on the top of the viewport
-                else if ((self.dropdown.offset().top - viewportScrollTop) >= listHeight)
+                else 
                 {
 
                     self.list.css("max-height", listHeight);
 
                     // Sets custom CSS properties to place the dropdown list options directly above the dropdown list
-                    self.list.css("top", (self.dropdown.position().top - self.list.outerHeight()));
+                    //self.list.css("top", self.dropdown.position().top - listHeight);
+                    self.list.css("top", "auto");
+                    self.list.css("margin-top", 0 - listHeight - selectBoxHeight);
 
                     // TP MICAH: added above/below css classes for more styling flexibility
                     self.list.addClass("above").removeClass("below");
 
                 }
 
-                    // If there is not enough room on the top or the bottom
+                /*    // If there is not enough room on the top or the bottom
                 else
                 {
 
@@ -2398,13 +2423,13 @@
                         self.list.css("max-height", listHeight - outsideTopViewport - (selectBoxHeight / 2));
 
                         // Sets custom CSS properties to place the dropdown list options directly above the dropdown list
-                        self.list.css("top", (self.dropdown.position().top - self.list.outerHeight()));
+                        self.list.css("top", ((self.dropdown.position().top - self.list.outerHeight()) + viewportScrollTop));
 
                         // TP MICAH: added above/below css classes for more styling flexibility
                         self.list.addClass("above").removeClass("below")
                     }
 
-                }
+                }*/
 
             }
 

@@ -1,14 +1,24 @@
-<h3>Power Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
-<a class="calculate">Calculate</a>
-{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
-
-<div class="zoneSetContain power">
-	<label>
-	    <span class="zoneSetTitle">Threshold</span>
-	    <input name="threshold" class="numberInput" data-scope="zoneSet"
-	    data-format="zoneValue">
-	</label>
+<div class="zoneGroupNameContain">
+	<h3>{{ workoutTypeName workoutTypeId "Default" }}</h3>
+	{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 </div>
 
-<div class="zones"></div>
+<div class="zoneSetContain power">
+	<fieldset class="zoneSetFieldset">
+		<legend>Threshold Value</legend>
+		<label class="zoneValueContain">
+		    <span class="zoneSetTitle">Threshold</span>
+		    <input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue" type="text">
+		</label>
+	</fieldset>
+</div>
+
+<div class="zoneSetContain autoCalc">
+	<fieldset class="zoneSetFieldset">
+    	<legend>Auto Calculation</legend>
+    	<div class="calculator"></div>
+	</fieldset>
+</div>
+
+<div class="zones zonesConfigGroupView"></div>
 <button class="addZone">Add Zone</button>

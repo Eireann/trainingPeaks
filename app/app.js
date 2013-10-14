@@ -469,6 +469,12 @@ function(
         return true;
     };
 
+    theApp.isLocal = function()
+    {
+        var href = document.location.href;
+        return href && href.indexOf("localhost") >= 0 || href.indexOf("app.local.trainingpeaks.com") >= 0;
+    };
+
     theApp.getBodyElement = function()
     {
         if (!this.$body)
