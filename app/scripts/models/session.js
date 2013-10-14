@@ -53,21 +53,9 @@ function (_, TP, UserModel, UserAccessRightsModel)
         initRefreshToken: function()
         {
             var self = this;
-
-            if(localStorage.getItem("local_access_token"))
-            {
-                $(document).ajaxSend(function(event, xhr, settings)
-                {
-                    xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("local_access_token"));
-                });
-
-                this._fetchUser();
-                return;
-            }
             
             this._refreshToken().done(function()
             {
-                //console.log("REFRESH: DONE: FETCHUSER");
                 self._fetchUser();
             });
         },
@@ -84,8 +72,6 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         _refreshToken: function()
         {
-            //console.log("REFRESH");
-
             if(!(window.apiConfig && window.apiConfig.cmsRoot))
                 throw "No CMSRoot URL found!";
 
@@ -104,14 +90,14 @@ function (_, TP, UserModel, UserAccessRightsModel)
                 if(data.success)
                 {
                     if(data.redirect && data.redirect !== "")
-                        REDIRECT_URL = data.responseText;
+                        REDIRECT_URL = data.redirect;
                     
                     setTimeout(self._refreshToken, REFRESH_INTERVAL);
                 }
                 else
                 {
-                    if(data.responseText && data.responseText !== "")
-                       REDIRECT_URL = data.responseText;
+                    if(data.redirect && data.redirect !== "")
+                       REDIRECT_URL = data.redirect;
 
                     self._redirectToLogin();
                 }
@@ -123,13 +109,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
         _redirectToLogin: function()
         {
             if(REDIRECT_URL)
-            {
-                window.location = REDIRECT_URL + "?redirect=" + window.location;
-            }
-            else if(theMarsApp.isLocal() && window.apiConfig.logoutUrl)
-            {
-                document.location = window.apiConfig.logoutUrl;
-            }
+                window.location = REDIRECT_URL + "?ReturnUrl=" + escape(window.location);
         },
 
         authenticationComplete: function(callback)
@@ -139,7 +119,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         logout: function()
         {
-            document.location = window.apiConfig.logoutUrl ? window.apiConfig.logoutUrl : window.apiConfig.cmsRoot + "/logout";
+            document.location = window.apiConfig.cmsRoot + "/logout";
         }
     });
 });

@@ -60,7 +60,9 @@
             cursor:pointer;
             background: no-repeat -51px 0;
             @extend %spriteButtonsChartModal;
+            
             &:hover {
+                @extend %spriteButtonsChartModal;
                 background: transparent no-repeat -51px -17px;
             }
         }

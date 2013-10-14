@@ -246,8 +246,13 @@ function(
 
         this.addInitializer(function()
         {
-            this.buildInfo.fetch();
-            this.timeZones.fetch();
+            var self = this;
+
+            this.session.userPromise.done(function()
+            {
+                self.buildInfo.fetch();
+                self.timeZones.fetch();
+            });
         });
 
         this.addInitializer(function()
