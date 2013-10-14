@@ -6,6 +6,7 @@
     "TP",
     "utilities/workout/formatLapData",
     "utilities/workout/formatPeakTime",
+    "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
     "hbs!templates/views/expando/lapTemplate",
     "hbs!templates/views/expando/lapsTemplate"
@@ -17,6 +18,7 @@ function(
     TP,
     formatLapData,
     formatPeakTime,
+    formatPeakDistance,
     WorkoutStatsForRange,
     lapTemplate,
     lapsTemplate
@@ -271,17 +273,63 @@ function(
             var metric = this.modelPeakKeys[peakType];
             var peaksData = detailData[metric] ? detailData[metric] : [];
 
-            return _.map(_.sortBy(peaksData, "interval"), function(peakItem)
+            // sort
+            peaksData = _.sortBy(peaksData, "interval");
+
+            // remove duplicates
+            peaksData = _.uniq(peaksData, true, function(peakItem)
+            {
+                return peakItem.interval;
+            });
+
+            // filter by enabled intervals
+            var enabledPeakIntervals = this._getEnabledPeaks(peakType);
+            peaksData = _.filter(peaksData, function(peakItem)
+            {
+                return _.contains(enabledPeakIntervals, peakItem.interval);
+            });
+
+            // configure for view
+            return _.map(peaksData, function(peakItem)
             {
 
                 var range = _.clone(peakItem);
-                range.name = "Peak " + formatPeakTime(peakItem.interval);
-                range.name += " (" + TP.utils.conversion.formatUnitsValue(peakType, peakItem.value, { workoutTypeId: this.model, withLabel: true }) + ")";
+                range.name = "Peak " + this._formatPeakName(peakType, peakItem.interval);
+                range.name += " (" + this._formatPeakValue(peakType, peakItem.value, this.model.get("workoutTypeValueId")) + ")";
 
                 return range;
 
             }, this);
 
+        },
+
+        _formatPeakValue: function(peakType, peakValue, workoutTypeId)
+        {
+            var formatType = peakType === "distance" ? "pace" : peakType;
+            return TP.utils.conversion.formatUnitsValue(formatType, peakValue, { workoutTypeId: workoutTypeId, withLabel: true });
+        },
+
+        _formatPeakName: function(peakType, interval)
+        {
+            if(peakType === "distance")
+            {
+                return formatPeakDistance(interval);
+            }
+            else
+            {
+                return formatPeakTime(interval);
+            }
+        },
+
+        _getEnabledPeaks: function(selectedPeakType)
+        {
+            if (selectedPeakType === "distance")
+            {
+                return [400, 800, 1000, 1600, 1609, 5000, 8047, 10000, 15000, 16094, 21097, 30000, 42195, 50000, 100000];
+            } else
+            {
+                return [2, 5, 10, 12, 20, 30, 60, 90, 120, 300, 360, 600, 720, 1200, 1800, 3600, 5400, 7200, 10800];
+            }
         },
 
         _getSelectablePeakTypes: function()
