@@ -31,6 +31,7 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
         initialize: function()
         {
             this.initializeCoachAndAffiliateCustomizations();
+            this.listenTo(this.model.getAccountSettings(), "change", _.bind(this.render, this));
         },
 
         onUsernameLabelClicked: function(e)
