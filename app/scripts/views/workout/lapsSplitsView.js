@@ -128,7 +128,7 @@ function(
         {
         },
 
-        _buildJSON: function()
+        serializeData: function()
         {
             var workoutDefaults = this._getDefaults(),
                 buildResults = this._buildLapObjects(workoutDefaults),
@@ -299,7 +299,7 @@ function(
         // The other entries will be the laps splits data
         _buildTableData: function()
         {
-            var serialized = this._buildJSON();
+            var serialized = this.serializeData();
             var keyNames = _.map(serialized.headerNames, function(headerName) {
                 var headerNameArray = headerName.split(' ');
                 return [headerNameArray[0].toLowerCase(), headerNameArray.slice(1).join('')].join('');
