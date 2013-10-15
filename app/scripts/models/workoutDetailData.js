@@ -2,9 +2,12 @@
 [
     "underscore",
     "moment",
-    "TP"
+    "TP",
+    "models/workoutStatsForRange",
+    "utilities/workout/formatPeakTime",
+    "utilities/workout/formatPeakDistance",
 ],
-function (_, moment, TP)
+function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistance)
 {
     var WorkoutDetailData = TP.APIBaseModel.extend(
     {
@@ -15,6 +18,11 @@ function (_, moment, TP)
         shortDateFormat: "YYYY-MM-DD",
         timeFormat: "THH:mm:ss",
         longDateFormat: "YYYY-MM-DDTHH:mm:ss",
+
+        initialize: function()
+        {
+            this.rangeCollections = {};
+        },
 
         url: function()
         {
@@ -65,7 +73,101 @@ function (_, moment, TP)
         triggerSensorDataChange: function()
         {
             this.trigger("changeSensorData", this);
+        },
+
+        _rangeKeys:
+        {
+            laps: "lapsStats",
+            distance: "peakSpeedsByDistance",
+            power: "peakPowers",
+            heartrate: "peakHeartRates",
+            speed: "peakSpeeds",
+            pace: "peakSpeeds",
+            cadence: "peakCadences"
+        },
+
+        getRangeCollectionFor: function(rangeType)
+        {
+            var collection = this.rangeCollections[rangeType];
+            if(!collection)
+            {
+                var data = this._getRangeDataFor(rangeType);
+                collection = new TP.Collection(data, { model: WorkoutStatsForRange });
+                this.rangeCollections[rangeType] = collection;
+                this._watchRangeDataFor(rangeType, _.bind(collection.set, collection));
+            }
+            return collection;
+
+        },
+
+        _getRangeDataFor: function(rangeType, onChange)
+        {
+
+            var key = this._rangeKeys[rangeType];
+            if(!key)
+            {
+                throw new Error("Unknown range type: " + rangeType);
+            }
+
+            var ranges = this.get(key);
+
+            if(rangeType !== "laps")
+            {
+                ranges = this._processPeaks(ranges, rangeType);
+            }
+
+            return this._augmentRanges(ranges, rangeType);
+
+        },
+
+        _watchRangeDataFor: function(rangeType, callback)
+        {
+            var key = this._rangeKeys[rangeType];
+            this.on("change:" + key, function(model, value, options)
+            {
+                value = this._augmentRanges(value, rangeType);
+                callback(value);
+            });
+
+        },
+
+        _augmentRanges: function(ranges, rangeType)
+        {
+            var defaults =
+            {
+                workoutId: this.get("workoutId"),
+                hasLoaded: rangeType === "laps"
+            };
+            return _.map(ranges, function(range)
+            {
+                return _.extend({}, defaults, range);
+            });
+        },
+
+        _processPeaks: function(ranges, rangeType)
+        {
+            ranges = _.sortBy(ranges, "interval");
+            ranges = _.uniq(ranges, true, "interval");
+
+            ranges = _.map(ranges, function(range)
+            {
+
+                range = _.clone(range);
+                if(rangeType === "distance")
+                {
+                    range.name = "Peak " + formatPeakDistance(range.interval);
+                }
+                else
+                {
+                    range.name = "Peak " + formatPeakTime(range.interval);
+                }
+                return range;
+
+            });
+
+            return ranges;
         }
+
     });
 
     return WorkoutDetailData;
