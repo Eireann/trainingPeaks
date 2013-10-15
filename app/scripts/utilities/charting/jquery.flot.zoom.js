@@ -73,7 +73,7 @@ function ()
 
             if (!noClear)
             {
-                plot.clearSelection();
+                plot.clearSelection(true);
             }
 
             return true;

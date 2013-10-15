@@ -95,13 +95,7 @@ function(
         
         watchForModelChanges: function()
         {
-            this.model.get("detailData").on("change:flatSamples", this.createFlotGraph, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function()
-        {
-            this.model.get("detailData").off("change:flatSamples", this.createFlotGraph, this);
+            this.listenTo(this.model.get("detailData"), "change:flatSamples", _.bind(this.createFlotGraph, this));
         },
 
         onFirstRender: function()
@@ -146,6 +140,7 @@ function(
             this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
+            this.flotOptions.selection.color = "#00f";
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.zoom.dataParser = this.dataParser;
@@ -162,12 +157,11 @@ function(
             {
                 this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
                 this.bindToPlotEvents();
-                this.highlightOrZoomToPreviousSelection();
+                this._restoreSelection();
             }
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
 
-            
         },
 
         getInitialFilterPeriod: function()
@@ -215,31 +209,10 @@ function(
             
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
 
-            if (!this.plot.getSelection() && this.plot.hasMultiSelection())
-            {
-                var lastSelection = this.plot.getLastMultiSelection();
-                this.plot.hideActiveSelections();
-                this.plot.setSelection(lastSelection.ranges, true);
-                if (this.plot.zoomToSelection(true)) 
-                { 
-                    this.plot.clearSelection(true);
-                    this.zoomed = true;
-                    this.graphToolbar.onGraphZoomed();
-                }
-                else
-                    this.plot.unhideActiveSelections();
-            }
-            else if (this.plot.getSelection())
+            if (this.plot.getSelection() && this.plot.zoomToSelection())
             {
                 this.zoomed = true;
-                if(this.plot.zoomToSelection())
-                {
-                    this.graphToolbar.onGraphZoomed();
-                }
-                else
-                {
-                    this.zoomed = false;
-                }
+                this.graphToolbar.onGraphZoomed();
             }
             else
             {
@@ -255,59 +228,53 @@ function(
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomReset", "eventLabel": "" });
 
             this.plot.resetZoom();
-
-            this.highlightPreviousSelection();
-
             this.zoomed = false;
+            this._restoreSelection();
+
         },
 
-        highlightPreviousSelection: function()
+        _setSelectionToRange: function(range, preventEvent)
         {
-            if (this.selectedWorkoutStatsForRange)
+            var from;
+            var to;
+
+            if(range)
             {
-                var from;
-                var to;
 
                 if (this.currentAxis === "time")
                 {
-                    from = this.selectedWorkoutStatsForRange.get("begin");
-                    to = this.selectedWorkoutStatsForRange.get("end");
+                    from = range.get("begin");
+                    to = range.get("end");
                 }
                 else if (this.currentAxis === "distance")
                 {
-                    from = this.selectedWorkoutStatsForRange.get("plotSelectionFrom");
-                    to = this.selectedWorkoutStatsForRange.get("plotSelectionTo");
+                    from = this.dataParser.getDistanceFromMsOffset(range.get("begin"));
+                    to = this.dataParser.getDistanceFromMsOffset(range.get("end"));
                 }
                 else
-                    throw "GraphView: invalid X Axis type: " + this.currentAxis;
-
-                var ranges =
                 {
-                    xaxis:
-                    {
-                        from: from,
-                        to: to 
-                    }
-                };
-                this.plot.setSelection(ranges, true);
+                    throw new Error("GraphView: invalid X Axis type: " + this.currentAxis);
+                }
+
+                this.plot.setSelection({ xaxis: { from: from, to: to } }, preventEvent);
+            
             }
             else
             {
-                this.plot.hideActiveSelections();
-                this.plot.unhideActiveSelections();
+                this.plot.clearSelection(preventEvent);
             }
         },
 
-        highlightOrZoomToPreviousSelection: function()
+        _restoreSelection: function()
         {
-            if(this.selectedWorkoutStatsForRange)
+            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
+            if (this.zoomed)
             {
-                this.highlightPreviousSelection();
-
-                if (this.zoomed)
-                {
-                    this.zoomGraph();
-                }
+                this.zoomGraph();
+            }
+            if (this.plot)
+            {
+                this.plot.triggerRedrawOverlay();
             }
         },
         
@@ -369,24 +336,15 @@ function(
                 endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            var oldRange = this.selectedWorkoutStatsForRange;
-            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection", temporary: true });
-
-            if(oldRange)
-            {
-                this.stateModel.get("ranges").remove(oldRange);
-            }
-
-            this.stateModel.get("ranges").add(this.selectedWorkoutStatsForRange);
-            this.stateModel.set("statsRange", this.selectedWorkoutStatsForRange);
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
+            this.stateModel.set("primaryRange", range);
         },
 
         onPlotUnSelected: function()
         {
             if (!this.zoomed)
             {
-                this.stateModel.get("ranges").remove(this.selectedWorkoutStatsForRange);
-                this.selectedWorkoutStatsForRange = null;
+                this.stateModel.set("primaryRange", null);
             }
         },
 
@@ -433,11 +391,10 @@ function(
             if (this.currentAxis === "time")
                 return;
 
-            this.selectedWorkoutStatsForRange = null;
-            this.onUnSelectAll();
-            this.stateModel.get("ranges").set([]);
-            this.resetZoom();
-            this.graphToolbar.hideZoomButton();
+//             this.onUnSelectAll();
+//             this.stateModel.get("ranges").set([]);
+//             this.resetZoom();
+//             this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
             this.dataParser.setXAxis("time");
             this.drawPlot();
@@ -448,11 +405,10 @@ function(
             if (this.currentAxis === "distance")
                 return;
 
-            this.selectedWorkoutStatsForRange = null;
-            this.onUnSelectAll();
-            this.stateModel.get("ranges").set([]);
-            this.resetZoom();
-            this.graphToolbar.hideZoomButton();
+            // this.onUnSelectAll();
+            // this.stateModel.get("ranges").set([]);
+            // this.resetZoom();
+            // this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
             this.dataParser.setXAxis("distance");
             this.drawPlot();
@@ -463,15 +419,11 @@ function(
             this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
             this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
             this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onPrimaryRangeChange, this));
         },
 
         _onRangeAdded: function(range, ranges, options)
         {
-            if(range === this.selectedWorkoutStatsForRange)
-            {
-                return;
-            }
-
             var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
             if (!selection)
             {
@@ -482,18 +434,11 @@ function(
 
         _onRangeRemoved: function(range, ranges, options)
         {
-            if(range === this.selectedWorkoutStatsForRange)
+            var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
+            if(selection)
             {
-                this.plot.clearSelection();
-            }
-            else
-            {
-                var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
-                if(selection)
-                {
-                    this.removeSelectionFromGraph(selection);
-                    this.selections = _.without(this.selections, selection);
-                }
+                this.removeSelectionFromGraph(selection);
+                this.selections = _.without(this.selections, selection);
             }
         },
 
@@ -507,6 +452,11 @@ function(
             {
                 self._onRangeAdded(range, ranges, options);
             });
+        },
+
+        _onPrimaryRangeChange: function(stateModel, range, options)
+        {
+            this._setSelectionToRange(range, true);
         },
 
         findGraphSelection: function(begin, end, dataType)
