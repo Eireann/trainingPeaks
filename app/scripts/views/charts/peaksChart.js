@@ -49,6 +49,13 @@ function (
                 this.chartColor = options.chartColor;
 
                 _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
+
+                if(options.stateModel)
+                {
+                    this.stateModel = options.stateModel;
+                    this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._checkAvailableDataChannels, this));
+                    this._checkAvailableDataChannels();
+                }
             },
 
             onRender: function()
@@ -171,6 +178,19 @@ function (
                     }
 
                     return 0;
+            },
+
+            _checkAvailableDataChannels: function()
+            {
+                if(!this.stateModel || !this.dataChannel)
+                {
+                    return;
+                }
+
+                if(!_.contains(this.stateModel.get("availableDataChannels"), this.dataChannel))
+                {
+                    this.close();
+                }
             }
 
         });

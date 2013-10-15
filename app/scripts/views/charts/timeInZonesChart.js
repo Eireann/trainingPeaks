@@ -46,6 +46,13 @@
                     this.toolTipBuilder = options.toolTipBuilder;
 
                     _.bindAll(this, "onHover");
+
+                    if(options.stateModel)
+                    {
+                        this.stateModel = options.stateModel;
+                        this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._checkAvailableDataChannels, this));
+                        this._checkAvailableDataChannels();
+                    }
                 },
                 
                 
@@ -145,6 +152,19 @@
                     var tooltipHTML = tooltipTemplate(tooltipData);
                     $tooltipEl.html(tooltipHTML);
                     toolTipPositioner.updatePosition($tooltipEl, this.plot);
+                },
+
+                _checkAvailableDataChannels: function()
+                {
+                    if(!this.stateModel || !this.dataChannel)
+                    {
+                        return;
+                    }
+
+                    if(!_.contains(this.stateModel.get("availableDataChannels"), this.dataChannel))
+                    {
+                        this.close();
+                    }
                 }
             });
     });

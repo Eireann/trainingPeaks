@@ -104,6 +104,9 @@ function(chartColors, findIndexByMsOffset, conversion)
         {
             if (_.contains(self.disabledSeries, channel))
                 return;
+
+            if(_.contains(self.cutSeries, channel))
+                return;
             
             if (channel === "Distance")
                 return;
@@ -277,6 +280,7 @@ function(chartColors, findIndexByMsOffset, conversion)
     {
         this.xaxis = "time";
         this.disabledSeries = [];
+        this.cutSeries = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
@@ -422,7 +426,26 @@ function(chartColors, findIndexByMsOffset, conversion)
             if (index !== null && index < this.getDataByChannel("Distance").length)
                 return this.getDataByChannel("Distance")[index][1];
             return null;
+        },
+
+        cutChannel: function(channel)
+        {
+            if(!_.contains(this.cutSeries, channel))
+            {
+                this.cutSeries.push(channel);
+            }
+        },
+
+        getCutChannels: function()
+        {
+            return _.clone(this.cutSeries);
+        },
+
+        getAvailableChannels: function()
+        {
+            return _.difference(this.flatSamples.channelMask, this.cutSeries);
         }
+
     });
     
     return DataParser;

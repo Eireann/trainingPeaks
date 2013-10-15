@@ -31,7 +31,8 @@ function(
             this.dataParser = options.dataParser;
             this.stateModel = options.stateModel;
 
-            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onEnableOrDisableSeries, this));
+            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
         },
         
         events:
@@ -73,13 +74,24 @@ function(
             this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
         },
 
-        _onEnableOrDisableSeries: function()
+        _onSeriesChanged: function()
         {
             this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
             _.each(this.stateModel.get("disabledDataChannels"), function(channel)
             {
                 this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
             }, this);
+
+            var availableChannels = this.stateModel.get("availableDataChannels");
+            this.$(".graphSeriesButton").each(function()
+            {
+                var $self = $(this);
+                var seriesName = $self.data("series");
+                if(!_.contains(availableChannels, seriesName))
+                {
+                    $self.remove();
+                }
+            });
         },
         
         onZoomClicked: function()

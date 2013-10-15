@@ -71,6 +71,9 @@ function(
             this.preFetchDetailData();
 
             var stateModel = new ExpandoStateModel();
+            stateModel.set("dataParser", this.dataParser);
+            this.stateModel = stateModel;
+            this._updateDataParserAndStateModel();
 
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
@@ -156,9 +159,7 @@ function(
             this.layout.$el.removeClass("waiting");
 
             var self = this;
-
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser.loadData(flatSamples);
+            this._updateDataParserAndStateModel();
 
             // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
@@ -173,8 +174,7 @@ function(
 
         onSensorDataChange: function()
         {
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser.loadData(flatSamples);
+            this._updateDataParserAndStateModel();
 
             var self = this;
             setImmediate(function()
@@ -272,6 +272,20 @@ function(
             }, this);
 
             this.views.packeryView.layout();
+        },
+
+        _updateDataParserAndStateModel: function()
+        {
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+
+            if(flatSamples)
+            {
+                this.dataParser.loadData(flatSamples);
+            }
+
+            this.stateModel.set("availableDataChannels", _.clone(this.dataParser.getChannelMask()));
+            this.stateModel.set("disabledDataChannels", []);
         }
+
     });
 });

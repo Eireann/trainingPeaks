@@ -12,6 +12,17 @@ function(
     lapsSplitsTemplate
     )
 {
+
+
+    var channelToStatsMap = {
+        Power: ["Avg Power", "Max Power", "NP"],
+        Elevation: ["Elev Gain", "Elev Loss"],
+        Speed: ["Avg Speed", "Avg Pace", "Max Speed", "Max Pace", "NGP"],
+        HeartRate: ["Avg Heart Rate", "Max Heart Rate", "Min Heart Rate"],
+        Torque: ["Min Torque", "Max Torque", "Avg Torque"],
+        Cadence: ["Cad"]
+    };
+
     return TP.ItemView.extend(
     {
 
@@ -24,6 +35,12 @@ function(
                 throw "Model is required for LapsSplitsView";
             }
             this.detailDataPromise = options.detailDataPromise;
+
+            if(options.stateModel)
+            {
+                this.stateModel = options.stateModel;
+                this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this.render, this));
+            }
         },
         template:
         {
@@ -173,6 +190,9 @@ function(
                 lapObject["Work"] = TP.utils.conversion.formatUnitsValue("energy", lap.energy, formatOptions);
                 lapObject["Calories"] = TP.utils.conversion.formatUnitsValue("calories", lap.calories, formatOptions);
 
+                // remove channels that have been cut
+                this._removeCutChannels(lapObject);
+
                 // filter out null values that are null across all rows, and display any remaining null values as "--"
                 var defaultDisplayValue = "--";
                 for (var key in lapObject)
@@ -191,7 +211,7 @@ function(
                 }
 
                 rowData.push(lapObject);
-            });
+            }, this);
             return [rowData, empties];
         },
         _compactLapObjects: function(lapObjects, empties)
@@ -207,6 +227,26 @@ function(
                 });
             });
             return lapObjects;
+        },
+        _removeCutChannels: function(lapObject)
+        {
+            if(!this.stateModel)
+            {
+                return;
+            }
+            var availableChannels = this.stateModel.get("availableDataChannels");
+            _.each(channelToStatsMap, function(lapFieldNames, channelName)
+            {
+                if(!_.contains(availableChannels, channelName))
+                {
+                    _.each(lapFieldNames, function(fieldName){
+                        if(lapObject.hasOwnProperty(fieldName))
+                        {
+                            lapObject[fieldName] = null;
+                        }
+                    });
+                }
+            });
         }
     });
 });

@@ -1,24 +1,27 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "./timeInZonesChart",
     "utilities/charting/chartColors"
 ],
-function(TP, TimeInZonesChartView, chartColors)
+function(_, TP, TimeInZonesChartView, chartColors)
 {
     return TimeInZonesChartView.extend(
     {
         chartColor: chartColors.gradients.pace,
 
+        dataChannel: "Speed",
+
         initialize: function(options)
         {
             this.workoutType = options.workoutType;
             this.constructor.__super__.initialize.call(this,
-            {
+            _.defaults({
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
                 toolTipBuilder: this.toolTipBuilder
-            });
+            }, options));
 
             this.zoneType = options && options.hasOwnProperty("zoneType") ? options.zoneType : "Pace";
             this.model = new TP.Model({

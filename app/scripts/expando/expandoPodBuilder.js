@@ -108,7 +108,8 @@ function(
             return new ViewClass({
                 timeInZones: timeInZones,
                 workoutType: workoutTypeId,
-                zoneType: zoneType
+                zoneType: zoneType,
+                stateModel: options.data.stateModel
             });
         },
 
@@ -155,7 +156,8 @@ function(
                 peaks: peaks,
                 timeInZones: timeInZones,
                 workoutType: workoutTypeId,
-                peaksType: peaksType
+                peaksType: peaksType,
+                stateModel: options.data.stateModel
             });
         }
 

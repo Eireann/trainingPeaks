@@ -46,15 +46,16 @@ function(TP, optionsMenuTemplate)
 
         _showSeries: function()
         {
+            this.close();
             var disabledSeries = _.clone(this.stateModel.get("disabledDataChannels"));
             disabledSeries = _.without(disabledSeries, this.series);
             this.stateModel.set("disabledDataChannels", disabledSeries);
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.series });
-            this.close();
         },
 
         _hideSeries: function()
         {
+            this.close();
             var disabledSeries = _.clone(this.stateModel.get("disabledDataChannels"));
             if(!_.contains(disabledSeries, this.series))
             {
@@ -62,12 +63,14 @@ function(TP, optionsMenuTemplate)
             }
             this.stateModel.set("disabledDataChannels", disabledSeries);
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.series });
-            this.close();
         },
 
         _deleteSeries: function()
         {
-            alert("not implemented");
+            this.close();
+            var dataParser = this.stateModel.get("dataParser");
+            dataParser.cutChannel(this.series);
+            this.stateModel.set("availableDataChannels", _.clone(dataParser.getAvailableChannels()));
         }
 
     });

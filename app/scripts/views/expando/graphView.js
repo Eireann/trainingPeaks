@@ -64,11 +64,8 @@ function(
 
             this.repaintHeight = _.debounce(this.repaintHeight, 200);
 
-
-            this.stateModel.set("availableDataChannels", _.clone(this.dataParser.getChannelMask()));
-            this.stateModel.set("disabledDataChannels", []);
-
-            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onEnableOrDisableSeries, this));
+            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
         },
 
         initialEvents: function()
@@ -404,7 +401,7 @@ function(
             this.stateModel.set("hover", null);
         },
 
-        _onEnableOrDisableSeries: function()
+        _onSeriesChanged: function()
         {
             if (!this.plot)
                 return;           

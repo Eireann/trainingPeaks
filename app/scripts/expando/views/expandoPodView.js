@@ -34,6 +34,7 @@ function(
         {
             this.childView = options.childView;
             this.on("controller:resize", _.bind(this.childView.trigger, this.childView, "controller:resize"));
+            this.listenTo(this.childView, "close", _.bind(this.close, this));
         },
 
         onRender: function()
