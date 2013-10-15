@@ -33,7 +33,7 @@
     @include grid-row();
 
     clear: both;
-    height: 23px;
+    height: 24px;
 
     .workoutStatsColumn
     {
@@ -41,7 +41,7 @@
 	padding-right: 2px;
 	// height: 23px;
 
-	@include inputs(83.5px, 21px, 12px, $fontFamilyRegular);
+	@include inputs(83.5px, 22px, 12px, $fontFamilyRegular);
 	input {
 	    margin: 0;
 	    padding: 0;
