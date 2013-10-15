@@ -2,16 +2,18 @@ define(
 [
     "underscore",
     "TP",
+    "shared/views/selectableLayout",
     "hbs!shared/templates/tabbedLayout"
 ],
 function(
     _,
     TP,
+    SelectableLayout,
     tabbedLayoutTemplate
 )
 {
 
-    var TabbedLayout = TP.Layout.extend({
+    var TabbedLayout = SelectableLayout.extend({
 
         className: "tabbedLayout",
 
@@ -23,29 +25,25 @@ function(
 
         regions:
         {
-            tabbedLayoutBodyRegion: ".tabbedLayoutBody",
-            tabbedLayoutFooterRegion: ".tabbedLayoutFooter"
+            bodyRegion: ".tabbedLayoutBody",
+            footerRegion: ".tabbedLayoutFooter"
+        },
+
+        ui: {
+            navigationContainer: ".tabbedLayoutNav"
         },
 
         constructor: function()
         {
-            TP.Layout.apply(this, arguments);
-            this.on("render", this.renderNav, this);
+            SelectableLayout.apply(this, arguments);
+            this.on("after:switchView", this._updateNavigation, this);
+            this.onScroll = _.bind(_.debounce(this._onScroll, 100), this);
         },
 
-        renderNav: function()
+        _getNavigationElements: function()
         {
+            var navElements = [];
             var self = this;
-
-            if(!this.navigation)
-            {
-                throw new Error("Tabbed Layout requires a navigation config array");
-            }
-
-            var $nav = this.$(".tabbedLayoutNav");
-
-            $nav.empty();
-
             _.each(this.navigation, function(navItem)
             {
                 var $item = $("<li/>");
@@ -55,31 +53,30 @@ function(
 
                 $link.click(function()
                 {
-                    self._setCurrent(navItem, $item);
+                    self._selectView(navItem, $item);
                 });
 
-                $nav.append($item);
+                navElements.push($item);
             }, this);
 
-            this.$(".tabbedLayoutNavLink:first").click();
+            return navElements;
         },
 
-        _setCurrent: function(navItem, $item)
+        _displayDefaultView: function()
         {
-            var self = this;
+            this.$(".tabbedLayoutNavLink:first").trigger("click");
+        },
 
-            this.trigger("before:switchTab");
-            
+        _updateNavigation: function(navItem, $item)
+        {
+
+            // before
             if(this.$current)
             {
                 this.$current.removeClass("active");
-                this.stopListening(this.currentView, "all");
             }
 
-            var view = new navItem.view(navItem.options);
-            this.currentView = view;
-            this.listenTo(view, "all", _.bind(this._passthroughCurrentViewEvent, this));
-            this.tabbedLayoutBodyRegion.show(view);
+            var self = this;
 
             setImmediate(function()
             {
@@ -91,11 +88,12 @@ function(
 
             var $subNav = $("<ul class='tabbedLayoutSubNav'/>");
 
-            var subNavItems = _.result(view, "subNavigation");
+            var subNavItems = _.result(this.currentView, "subNavigation");
 
             _.each(subNavItems, function(subNavItem)
             {
                 var $subItem = $("<li/>");
+                $subItem.data("target", subNavItem.target);
                 var $subLink = $("<span/>").text(subNavItem.title);
 
                 $subItem.append($subLink);
@@ -103,6 +101,8 @@ function(
                 $subLink.click(function()
                 {
                     self._scrollTo(subNavItem, $subItem);
+                    $item.find("ul.tabbedLayoutSubNav .active").removeClass("active");
+                    $subItem.addClass("active");
                 });
 
                 $subNav.append($subItem);
@@ -111,27 +111,60 @@ function(
             $item.append($subNav);
 
             this.$current = $item;
+
             this.$current.addClass("active");
 
-            this.trigger("after:switchTab");
-        },
+            $subNav.find("li:first").addClass("active");
 
-        _passthroughCurrentViewEvent: function(eventName)
-        {
-            var args = Array.prototype.slice.call(arguments, 0);
-            args[0] = "currentview:" + eventName;
-            this.trigger.apply(this, args);
+            this._listenToScroll();
         },
 
         _scrollTo: function(subNavItem, $subItem)
         {
-            var target = this.$(".tabbedLayoutBody").find(subNavItem.target);
+            var target = this.$(".tabbedLayoutBody [data-target=" + subNavItem.target + "]");
             var $container = this.$(".tabbedLayoutBody");
+            var self = this;
+            self.scrolling = true;
             $container.animate({
                 scrollTop: target.position().top + $container.scrollTop()
+            }, {
+                done: function(){self.scrolling = false;}
             });
-        }
+        },
 
+        _listenToScroll: function()
+        {
+            this.$(".tabbedLayoutBody").on("scroll.tabbedLayout", this.onScroll);
+        },
+
+        _stopListeningToScroll: function()
+        {
+            this.$(".tabbedLayoutBody").off("scroll.tabbedLayout");
+        },
+
+        _onScroll: function()
+        {
+            if(this.scrolling)
+            {
+                return;
+            }
+
+            var bodyPosition = this.$(".tabbedLayoutBody").offset();
+            var margin = 15;
+            var topElement = document.elementFromPoint(bodyPosition.left + margin, bodyPosition.top + margin);
+            var scrollTarget = topElement ? $(topElement).closest(".scrollTarget") : null;
+            if(scrollTarget)
+            {
+                var targetName = scrollTarget.data("target");
+                if(targetName)
+                {
+                    this.$("ul.tabbedLayoutSubNav .active").removeClass("active");
+                    this.$("ul.tabbedLayoutSubNav li").filter(function(){
+                        return $(this).data("target") === targetName;
+                    }).addClass("active");
+                }
+            }
+        }
     });
 
     return TabbedLayout;

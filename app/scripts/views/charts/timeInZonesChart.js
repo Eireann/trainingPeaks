@@ -126,7 +126,10 @@
                     this.$chartEl = this.$(".chartContainer");
 
                     if(!this.$chartEl.height())
-                        return;
+                    {
+                        this.$chartEl.css({ "min-height": 1, "min-width": 1 });
+                    }
+
                     
                     if($.plot)
                     {

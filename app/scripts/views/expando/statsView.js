@@ -23,10 +23,12 @@ function(
             template: statsTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
-            this.on("controller:rangeselected", this.onRangeSelected, this);
-            this.on("controller:unselectall", this.onUnSelectAll, this);
+            this.stateModel = options.stateModel;
+
+            this.listenTo(this.stateModel, "change:statsRange", _.bind(this._onStatsRangeChanged, this));
+
             this.model.get("detailData").on("change", this.reset, this);
 
             this.on("close", function(){
@@ -122,24 +124,24 @@ function(
             return this.allPossibleFields;
         },
         
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+        _onStatsRangeChanged: function(stateModel, range)
         {
-            if (!options)
-                return;
-            
-            // we're trying to add or remove it from multi selection - don't show it in stats
-            if ((options.addToSelection || options.removeFromSelection) && !options.displayStats)
+            if(!range)
             {
-                return;
+                this.selectedRangeData = null;
+                this.stopWaitingForStats();
+                this.render();
             }
-
-            this.renderWorkoutStats(workoutStatsForRange);
-
-            // if it hasn't loaded, watch for changes
-            this.stopWaitingForStats();
-            if (!workoutStatsForRange.hasLoaded)
+            else
             {
-                this.waitForStats(workoutStatsForRange);
+                this.renderWorkoutStats(range);
+
+                // if it hasn't loaded, watch for changes
+                this.stopWaitingForStats();
+                if (!range.hasLoaded)
+                {
+                    this.waitForStats(range);
+                }
             }
         },
 
@@ -281,13 +283,6 @@ function(
                 this.$throbber.remove();
                 this.$throbber = null;
             }
-        },
-
-        onUnSelectAll: function()
-        {
-            this.selectedRangeData = null;
-            this.stopWaitingForStats();
-            this.render();
         },
 
         addCommonWorkoutFields: function(lapData)

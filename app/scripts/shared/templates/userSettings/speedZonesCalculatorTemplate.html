@@ -1,27 +1,24 @@
-<h3>{{$ "SelectCalculator" }}</h3>
+<div class="calculatorType">
+    <select name="calculatorType"></select>
+</div>
 
-<ul>
-{{#each calculators}}
-    <li><a class="calculator" data-zoneid="{{ id }}">{{ label }} ({{ numberOfZones }})</a></li>
-{{/each}}
-</ul>
+<div class="calculatorDefinition">
+    <select name="calculatorDefinitionId">
+        <option value="" selected>Choose Method</option>
+    {{#each calculators}}
+        <option value="{{ id }}"{{#if selected}} selected{{/if}}>{{ label }} ({{ numberOfZones }})</option>
+    {{/each}}
+    </select>
+</div>
 
-<h3>{{$ "EnterOptions" }}</h3>
-
-<div class="zoneSetContain speed">
+<div class="speed">
 
     <form class="cf">
 
-        <label class="float clickable"><input type="radio" name="paceOrSpeed" value="speed" class="hundredMeterTab thresholdTab distanceTab" />{{ speedUnits }}</label>
-        <label class="float clickable"><input type="radio" name="paceOrSpeed" value="pace" class="hundredMeterTab thresholdTab distanceTab" />{{ paceUnits }}</label>
 
-        <label class="threshold input disabled">
-            <span class="zoneSetTitle">Threshold</span>
-            <input name="threshold" class="numberInput thresholdTab" data-format="paceOrSpeed" placeholder="Enter threshold speed or pace" />
-        </label>
         <label class="secondsPer100m input disabled">
             <span class="zoneSetTitle">Seconds / 100m</span>
-            <input name="secondsPer100m" class="numberInput hundredMeterTab" data-format="number" placeholder="Enter Seconds/100m" />
+            <input name="secondsPer100m" class="numberInput hundredMeterTab" data-format="number" placeholder="Enter Seconds/100m" type="text" />
         </label>
         <label class="testDistance input disabled">
             <span class="zoneSetTitle">Test Distance</span>
@@ -29,17 +26,17 @@
         </label>
         <label class="speed input disabled clickable">
             <div class="zoneSetTitle">
-                <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="speed" placeholder="Enter speed or pace"/>
+                <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="speed" placeholder="Enter speed or pace" type="text"/>
                 Speed / Pace
             </div>
-            <input name="speed" class="numberInput distanceTab" data-format="paceOrSpeed">
+            <input name="speed" class="numberInput distanceTab" data-format="paceOrSpeed" type="text">
         </label>
         <label class="duration input disabled clickable">
             <div class="zoneSetTitle">
                 <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="duration"/>
                 Duration
             </div>
-            <input name="duration" class="numberInput distanceTab" data-format="duration" value="Enter Duration" />
+            <input name="duration" class="numberInput distanceTab" data-format="duration" value="Enter Duration" type="text" />
         </label>
 
     </form>
@@ -53,4 +50,4 @@
 
 
 
-<div class="zones"></div>
+<div class="zones zoneCalculatorView"></div>

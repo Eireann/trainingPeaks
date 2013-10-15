@@ -31,6 +31,7 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
         initialize: function()
         {
             this.initializeCoachAndAffiliateCustomizations();
+            this.listenTo(this.model.getAccountSettings(), "change", _.bind(this.render, this));
         },
 
         onUsernameLabelClicked: function(e)
@@ -49,16 +50,9 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
 
         onUpgradeClicked: function ()
         {
-            var userType = theMarsApp.user.get("settings.account.userType");
-
-            if (userType === 5)
-            {
-                window.open(theMarsApp.apiConfig.coachUpgradeURL, '_blank');
-            }
-            else if(userType === 6)
-            {
-                window.open(theMarsApp.apiConfig.upgradeURL, '_blank');
-            }
+            var userType = this.model.getAccountSettings().get("userType");
+            var upgradeURL = userType === 5 ? theMarsApp.apiConfig.coachUpgradeURL : theMarsApp.apiConfig.upgradeURL;
+            window.open(upgradeURL.replace("http:","https:"), '_blank');
         }
 
     };

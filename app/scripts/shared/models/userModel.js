@@ -74,21 +74,23 @@ function(
         fetch: function()
         {
             var self = this,
-                superFetch = function()
+            superFetch = function()
+            {
+                var options =
                 {
-                    var options = {
-                        errorHandlers: {
-                            402: _.bind(self.onUserFetchFail, self)
-                        }
-                    };
-
-                    var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
-                    ajaxFetch.done(function()
+                    errorHandlers:
                     {
-                        theMarsApp.session.saveUserToLocalStorage(self);
-                    });
-                    return ajaxFetch;
+                        402: _.bind(self.onUserFetchFail, self)
+                    }
                 };
+
+                var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
+                ajaxFetch.done(function()
+                {
+                    localStorage.setItem("app_user", JSON.stringify(self.attributes));
+                });
+                return ajaxFetch;
+            };
 
             // If the user is saved in localStorage, immediately set that data
             // to this model and return a resolved deferred.
@@ -98,10 +100,18 @@ function(
             if (localStorageUser)
             {
                 returnDeferred = superFetch();
-                try {
-                    this.set(JSON.parse(localStorageUser));
+                try
+                {
+                    var jsonLocalStorageUser = JSON.parse(localStorageUser);
+
+                    this.set(jsonLocalStorageUser);
+
+                    this.populateUserModels(jsonLocalStorageUser);
+
                     returnDeferred = $.Deferred().resolve();
-                } catch(e) {
+                }
+                catch(e)
+                {
                     // if the user refreshes the page while the user is being written to localStorage, it will break the next time you try to read that key.
                     // Here, we return superFetch() deferred because parsing localStorage didn't work
                 }
@@ -258,16 +268,22 @@ function(
             return this.recurringPaymentsCollection;
         },
 
+        populateUserModels: function(data)
+        {
+
+            this.getAccountSettings().set(data.settings.account);
+            this.getAffiliateSettings().set(data.settings.affiliate);
+            this.getCalendarSettings().set(data.settings.calendar);
+            this.getDashboardSettings().set(data.settings.dashboard);
+            this.getMetricsSettings().set(data.settings.metrics);
+            this.getWorkoutSettings().set(data.settings.workout);
+        },
+
         parse: function(resp, options)
         {
             if(resp && resp.settings)
             {
-                this.getAccountSettings().set(resp.settings.account);
-                this.getAffiliateSettings().set(resp.settings.affiliate);
-                this.getCalendarSettings().set(resp.settings.calendar);
-                this.getDashboardSettings().set(resp.settings.dashboard);
-                this.getMetricsSettings().set(resp.settings.metrics);
-                this.getWorkoutSettings().set(resp.settings.workout);
+                this.populateUserModels(resp);
             }
             return resp;
         },

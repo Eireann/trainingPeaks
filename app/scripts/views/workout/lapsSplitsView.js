@@ -18,6 +18,7 @@ function(
 {
     var LapsSplitsView = TP.CompositeView.extend(
     {
+        className: "expandoLapsSplitsPod",
         events:
         {
             "click .btnApply": "handleApply"
@@ -68,7 +69,7 @@ function(
             {
                 if (!self.model.get('detailData').get('lapsStats'))
                 {
-                    self.trigger("requestClose", self);
+                    self.close();
                 }
             });
         },

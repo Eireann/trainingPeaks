@@ -1,31 +1,29 @@
-<h3>{{$ "SelectCalculator" }}</h3>
+<div class="calculatorType">
+    <select name="calculatorType"></select>
+</div>
 
-<ul>
-{{#each calculators}}
-    <li><a class="calculator" data-zoneid="{{ id }}">{{ label }} ({{ numberOfZones }})</a></li>
-{{/each}}
-</ul>
+<div class="calculatorDefinition">
+    <select name="calculatorDefinitionId">
+        <option value="" selected>Choose Method</option>
+    {{#each calculators}}
+        <option value="{{ id }}"{{#if selected}} selected{{/if}}>{{ label }} ({{ numberOfZones }})</option>
+    {{/each}}
+    </select>
+</div>
 
-<h3>{{$ "EnterOptions" }}</h3>
-
-<div class="zoneSetContain power">
+<div class="power">
     <form class="cf">
-    	<label class="threshold input disabled">
-    	    <span class="zoneSetTitle">Threshold Power</span>
-    	    <input name="threshold" class="numberInput" data-format="zoneValue" placeholder="Enter Watts" />
-    	</label>
         <label class="testResult input disabled">
             <span class="zoneSetTitle">Test Result</span>
-            <input name="testResult" class="numberInput" data-format="zoneValue" placeholder="Enter Watts" />
+            <input name="testResult" class="numberInput" data-format="zoneValue" placeholder="Enter Watts" type="text" />
         </label>
     </form>
 
     <div class="buttons">
         <button class="calculate">{{$ "Calculate" }}</button>
     </div>
-    
 </div>
 
 
 
-<div class="zones"></div>
+<div class="zones zoneCalculatorView"></div>

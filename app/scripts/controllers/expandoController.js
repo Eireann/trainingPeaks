@@ -2,6 +2,7 @@
 [
     "setImmediate",
     "TP",
+    "views/packeryCollectionView",
     "utilities/charting/dataParser",
     "layouts/expandoLayout",
     "views/expando/graphView",
@@ -10,9 +11,26 @@
     "views/expando/lapsView",
     "views/expando/chartsView",
     "views/expando/mapAndGraphResizerView",
-    "views/workout/lapsSplitsView"
+    "views/workout/lapsSplitsView",
+    "expando/expandoPodBuilder",
+    "expando/models/expandoStateModel"
 ],
-function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView, MapAndGraphResizerView, LapsSplitsView)
+function(
+    setImmediate,
+    TP,
+    PackeryCollectionView,
+    DataParser,
+    ExpandoLayout,
+    GraphView,
+    MapView,
+    StatsView,
+    LapsView,
+    ChartsView,
+    MapAndGraphResizerView,
+    LapsSplitsView,
+    expandoPodBuilder,
+    ExpandoStateModel
+)
 {
     return TP.Controller.extend(
     {
@@ -52,20 +70,71 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.closeViews();
             this.preFetchDetailData();
 
-            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
-            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
-            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
-            this.views.lapsSplitsView = new LapsSplitsView({model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise});
+            var stateModel = new ExpandoStateModel();
+
+            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
+            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
+
+            var podsCollection = new TP.Collection(
+            [{
+                podType: 1, // Map
+                rows: 3,
+                cols: 6
+            }, {
+                podType: 2, // Graph
+                rows: 3,
+                cols: 6
+            }, {
+                podType: 3, // Laps & Splits,
+                rows: 2,
+                cols: 6
+            }, {
+                podType: 4, // Time In Zones
+                variant: 1, // Heart Rate
+            }, {
+                podType: 5, // Peaks
+                variant: 1, // Heart Rate
+            }, {
+                podType: 4, // Time In Zones
+                variant: 2, // Power
+            }, {
+                podType: 5, // Peaks
+                variant: 2, // Power
+            }, {
+                podType: 4, // Time In Zones
+                variant: 3, // Speed
+            }, {
+                podType: 5, // Peaks
+                variant: 3, // Speed
+            }]);
+
+            var data =
+            {
+                workout: this.model,
+                detailDataPromise: this.prefetchConfig.detailDataPromise,
+                dataParser: this.dataParser,
+                stateModel: stateModel
+            };
+
+            var $sizer = $("<div class='sizer'></div>");
+
+            this.views.packeryView = new PackeryCollectionView({
+                itemView: expandoPodBuilder.buildView,
+                collection: podsCollection,
+                itemViewOptions: { data: data },
+                packery:
+                {
+                    columnWidth: $sizer[0],
+                    rowHeight: $sizer[0],
+                    gutter: 10
+                },
+                resizable: true
+            });
 
             this.layout.$el.addClass("waiting");
 
             this.watchForModelChanges();
             this.watchForWindowResize();
-
-            this.watchForViewEvents();
 
             this.handleDetailDataPromise();
         },
@@ -91,20 +160,13 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
 
-            this.showMapAndGraph();
-
             // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
 
             setImmediate(function()
             {
-                self.layout.chartsRegion.show(self.views.chartsView);
-                self.layout.lapsSplitsRegion.show(self.views.lapsSplitsView);
-            });
-
-            setImmediate(function()
-            {
+                self.layout.packeryRegion.show(self.views.packeryView);
                 self.onViewResize();
             });
         },
@@ -113,7 +175,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         {
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
-            this.showMapAndGraph();
 
             var self = this;
             setImmediate(function()
@@ -121,49 +182,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 self.onViewResize();
             });
  
-        },
-
-        showMapAndGraph: function()
-        {
-
-            var self = this,
-                canShowGraph = this.model.get("detailData").hasSamples(),
-                canShowMap = this.dataParser.hasLatLongData;
-
-            if (canShowMap)
-            {
-                this.layout.showMap();
-                setImmediate(function()
-                {
-                    self.layout.mapRegion.show(self.views.mapView);
-                });
-            } else
-            {
-                this.layout.hideMap();
-            }
-
-            if (canShowGraph)
-            {
-                this.layout.showGraph();
-
-                setImmediate(function()
-                {
-                    self.layout.graphRegion.show(self.views.graphView);
-                    self.expand();
-                });
-                
-            } else
-            {
-                this.layout.hideGraph();
-            }
-
-            if (canShowGraph && canShowMap)
-            {
-                setImmediate(function()
-                {
-                    self.layout.mapAndGraphResizerRegion.show(self.views.mapAndGraphResizerView);
-                });
-            }
         },
 
         preFetchDetailData: function()
@@ -180,16 +198,12 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         collapse: function()
         {
             this.disableViewsResize = true;
-            this.views.graphView.trigger("controller:expandCollapse", "collapse");
             this.layout.$el.parent().hide();
         },
+
         expand: function()
         {
             this.disableViewsResize = false;
-            if (this.views.graphView)
-            {
-                this.views.graphView.trigger("controller:expandCollapse", "expand");
-            }
         },
 
         closeViews: function()
@@ -233,92 +247,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.model.get("detailData").off("changeSensorData", this.onSensorDataChange, this);
         },
 
-        watchForViewEvents: function()
-        {
-            _.each(this.views, function(view, key)
-            {
-                view.on("rangeselected", this.onRangeSelected, this);
-                view.on("unselectall", this.onUnSelectAll, this);
-                view.on("graphhover", this.onGraphHover, this);
-                view.on("graphleave", this.onGraphLeave, this);
-                view.on("resize", this.onViewResize, this);
-                view.on("resizerDrag", this.onResizerDrag, this);
-                view.on("requestClose", this.onRequestViewClose, this);
-            }, this);
-            this.on("close", this.stopWatchingViewEvents, this);
-
-        },
-        stopWatchingViewEvents: function()
-        {
-            _.each(this.views, function(view, key)
-            {
-                view.off("rangeselected", this.onRangeSelected, this);
-                view.off("unselectall", this.onUnSelectAll, this);
-                view.off("graphhover", this.onGraphHover, this);
-                view.off("graphleave", this.onGraphLeave, this);
-                view.off("resizerDrag", this.onResizerDrag, this);
-                view.off("requestClose", this.onRequestViewClose, this);
-                view.on("resize", this.onViewResize, this);
-            }, this);
-
-        },
-        onRequestViewClose: function(view)
-        {
-            view.close();
-        },
-        onResizerDrag: function(top)
-        {
-            // before and during proportion change
-            // set the height offsets caused by dragging
-            var offsetRatio = top/this.layout.$el.parent().height();
-            this.views.mapView.stashHeight(offsetRatio);
-            this.views.graphView.stashHeight(offsetRatio);
-            this.views.mapAndGraphResizerView.setTop(offsetRatio);
-            this.onViewResize();
-        },
-
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
-        {
-
-            _.each(this.views, function(view, key)
-            {
-                view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
-            }, this);
-
-            if (!workoutStatsForRange.hasLoaded)
-            {
-                workoutStatsForRange.fetch().done(function()
-                {
-                    workoutStatsForRange.hasLoaded = true;
-                    // don't retrigger the views, the views can decide if they want to listen or not
-                });
-            }
-        },
-        
-        onGraphHover: function (options)
-        {
-            _.each(this.views, function(view, key)
-            {
-                view.trigger("controller:graphhover", options);
-            }, this);
-        },
-
-        onGraphLeave: function()
-        {
-            _.each(this.views, function (view, key)
-            {
-                view.trigger("controller:graphleave");
-            }, this);
-        },
-        
-        onUnSelectAll: function()
-        {
-            _.each(this.views, function (view, key)
-            {
-                view.trigger("controller:unselectall");
-            }, this);
-        },
-
         watchForWindowResize: function()
         {
             _.bindAll(this, "onViewResize");
@@ -337,12 +265,13 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             {
                 return;
             }
-            var containerHeight = this.layout.$el.parent().height();
-            var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
+
             _.each(this.views, function(view)
             {
-                view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);
+                view.trigger("controller:resize");
             }, this);
+
+            this.views.packeryView.layout();
         }
     });
 });
