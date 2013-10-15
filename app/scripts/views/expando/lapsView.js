@@ -5,7 +5,6 @@
     "jqueryui/widget",
     "jquerySelectBox",
     "TP",
-    "utilities/workout/formatLapData",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
@@ -18,7 +17,6 @@ function(
     jqueryUiWidget,
     jquerySelectBox,
     TP,
-    formatLapData,
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
@@ -119,7 +117,7 @@ function(
                 throw new Error("Laps view requires an expando state model");
             }
 
-            this.collection = new TP.Collection({ model: WorkoutStatsForRange });
+            this.collection = new TP.Collection([], { model: WorkoutStatsForRange });
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             this.stateModel = options.stateModel;
 
@@ -179,14 +177,12 @@ function(
 
         _updateCollection: function()
         {
-            var detailData = this.model.get("detailData").toJSON();
-            var lapRanges = detailData.lapsStats ? detailData.lapsStats : [];
-            _.each(lapRanges, formatLapData.calculateTotalAndMovingTime);
+            var detailData = this.model.get("detailData");
+            var lapRanges = detailData.getRangeCollectionFor("laps");
 
             var totalRange = detailData.totalStats ? detailData.totalStats : null;
-            formatLapData.calculateTotalAndMovingTime(totalRange);
 
-            var ranges = _.map(_.compact([].concat(lapRanges, [totalRange])), _.bind(this._asRangeModel, this, true));
+            var ranges = _.compact([].concat(lapRanges.models, [totalRange ? this._asRangeModel(true, totalRange) : null]));
 
             var peakType = this.$("select.peakType").val();
             var peakRanges = peakType ? this._getPeaksData(peakType) : [];
