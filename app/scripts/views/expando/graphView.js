@@ -63,11 +63,16 @@ function(
             this.firstRender = true;
 
             this.repaintHeight = _.debounce(this.repaintHeight, 200);
+
+
+            this.stateModel.set("availableDataChannels", _.clone(this.dataParser.getChannelMask()));
+            this.stateModel.set("disabledDataChannels", []);
+
+            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onEnableOrDisableSeries, this));
         },
 
         initialEvents: function()
         {
-            this.disabledSeries = [];
             this.model.off("change", this.render);
         },
 
@@ -132,7 +137,7 @@ function(
             }
 
             this.dataParser.workoutTypeValueId = this.model.get("workoutTypeValueId");
-            this.dataParser.setDisabledSeries(this.disabledSeries);
+            this.dataParser.setDisabledSeries(this.stateModel.get("disabledDataChannels"));
 
             var enabledSeries = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(enabledSeries);
@@ -187,11 +192,10 @@ function(
 
         overlayGraphToolbar: function()
         {
-            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser, model: this.model });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser, model: this.model, stateModel: this.stateModel });
 
             this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
-            this.graphToolbar.on("enableSeries", this.enableSeries, this);
-            this.graphToolbar.on("disableSeries", this.disableSeries, this);
+
             this.graphToolbar.on("zoom", this.onToolbarZoom, this);
             this.graphToolbar.on("reset", this.resetZoom, this);
             this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
@@ -400,32 +404,11 @@ function(
             this.stateModel.set("hover", null);
         },
 
-        enableSeries: function(series)
+        _onEnableOrDisableSeries: function()
         {
             if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": series });
-            
-            if(_.contains(this.disabledSeries, series))
-            {
-                this.disabledSeries = _.without(this.disabledSeries, series);
-                this.drawPlot();
-            }
-        },
-        
-        disableSeries: function(series)
-        {
-            if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesDisabled", "eventLabel": series });
-
-            if (!_.contains(this.disabledSeries, series))
-            {
-                this.disabledSeries.push(series);
-                this.drawPlot();
-            }
+                return;           
+            this.drawPlot(); 
         },
 
         enableTimeAxis: function ()

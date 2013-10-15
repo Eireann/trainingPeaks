@@ -1,9 +1,13 @@
 ﻿define(
 [
     "TP",
+    "views/expando/graphSeriesOptionsMenuView",
     "hbs!templates/views/expando/graphToolbar"
 ],
-function(TP, graphToolbarTemplate)
+function(
+         TP,
+         GraphSeriesOptionsMenuView,
+         graphToolbarTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -17,7 +21,17 @@ function(TP, graphToolbarTemplate)
         
         initialize: function(options)
         {
+
+            if (!options.dataParser)
+                throw new Error("dataParser is required for expando graph toolbar view");
+
+            if (!options.stateModel)
+                throw new Error("stateModel is required for expando graph toolbar view");
+
             this.dataParser = options.dataParser;
+            this.stateModel = options.stateModel;
+
+            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onEnableOrDisableSeries, this));
         },
         
         events:
@@ -51,19 +65,21 @@ function(TP, graphToolbarTemplate)
 
         onGraphSeriesButtonClicked: function(event)
         {
-            var clickedButton = $(event.target);
-            var clickedSeries = clickedButton.attr("class").replace("graphSeriesButton ", "").replace("graph", "").replace("Button", "").replace("graphSeriesDisabled", "").trim();
+            var seriesButton = $(event.target);
 
-            if (clickedButton.hasClass("graphSeriesDisabled"))
+            var seriesName = seriesButton.data("series");
+            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView({ model: this.model, parentEl: this.$el, series: seriesName, stateModel: this.stateModel });
+            var offset = seriesButton.offset();
+            this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
+        },
+
+        _onEnableOrDisableSeries: function()
+        {
+            this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
+            _.each(this.stateModel.get("disabledDataChannels"), function(channel)
             {
-                clickedButton.removeClass("graphSeriesDisabled");
-                this.trigger("enableSeries", clickedSeries);
-            }
-            else
-            {
-                clickedButton.addClass("graphSeriesDisabled");
-                this.trigger("disableSeries", clickedSeries);
-            }
+                this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
+            }, this);
         },
         
         onZoomClicked: function()
@@ -106,7 +122,10 @@ function(TP, graphToolbarTemplate)
             var self = this;
             var shownButtons = [];
 
-            _.each(this.dataParser.getChannelMask(), function(channel)
+            var availableChannels = this.stateModel.get("availableDataChannels");
+            var disabledChannels = this.stateModel.get("disabledDataChannels");
+
+            _.each(availableChannels, function(channel)
             {
                 if (channel === "Distance" || channel === "Latitude" || channel === "Longitude")
                     return;
@@ -114,11 +133,16 @@ function(TP, graphToolbarTemplate)
                 var button = self.$(".graph" + channel + "Button");
                 button.show();
                 shownButtons.push(button[0]);
+
+                if(_.contains(disabledChannels, channel))
+                {
+                    button.addClass("graphSeriesDisabled");
+                }
             });
             
             this.$(".graphSeriesButton").not(shownButtons).remove();
 
-            if (_.indexOf(this.dataParser.getChannelMask(), "Distance") === -1)
+            if(!_.contains(availableChannels, "Distance"))
             {
                 this.$(".graphDistanceButton").remove();
                 this.$(".graphTimeButton").remove();

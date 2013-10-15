@@ -443,5 +443,8 @@
 
     "Not Yet Implemented": "Not Yet Implemented",
 
-    "Failed To Save Metric": "Failed To Save Metric"
+    "Failed To Save Metric": "Failed To Save Metric",
+
+    "Show": "Show",
+    "Hide": "Hide"
 }
