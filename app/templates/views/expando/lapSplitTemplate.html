@@ -1,20 +1,3 @@
-<{{customTagName}} class="lap edit">{{lap}}</{{customTagName}}>
-<{{customTagName}}>{{start}}</{{customTagName}}>
-<{{customTagName}}>{{end}}</{{customTagName}}>
-<{{customTagName}}>{{duration}}</{{customTagName}}>
-<{{customTagName}}>{{movingDuration}}</{{customTagName}}>
-<{{customTagName}}>{{miles}}</{{customTagName}}>
-<{{customTagName}}>{{tss}}</{{customTagName}}>
-<{{customTagName}}>{{this.if}}</{{customTagName}}>
-<{{customTagName}}>{{np}}</{{customTagName}}>
-<{{customTagName}}>{{avgPower}}</{{customTagName}}>
-<{{customTagName}}>{{maxPower}}</{{customTagName}}>
-<{{customTagName}}>{{avgHeartRate}}</{{customTagName}}>
-<{{customTagName}}>{{maxHeartRate}}</{{customTagName}}>
-<{{customTagName}}>{{avgSpeed}}</{{customTagName}}>
-<{{customTagName}}>{{maxSpeed}}</{{customTagName}}>
-<{{customTagName}}>{{cad}}</{{customTagName}}>
-<{{customTagName}}>{{elevGain}}</{{customTagName}}>
-<{{customTagName}}>{{elevLoss}}</{{customTagName}}>
-<{{customTagName}}>{{work}}</{{customTagName}}>
-<{{customTagName}}>{{calories}}</{{customTagName}}>
+{{#each lapData}}
+  <{{../customTagName}} class={{this.key}}>{{this.value}}</{{../customTagName}}>
+{{/each}}

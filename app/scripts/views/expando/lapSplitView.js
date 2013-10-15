@@ -16,7 +16,7 @@ function(
     {
         events:
         {
-            "click td.edit": "handleLapClickEditable"
+            "click td.lap": "handleLapClickEditable"
         },
 
         tagName: 'tr',
@@ -28,15 +28,20 @@ function(
 
         serializeData: function()
         {
-            return _.extend({}, this.model.toJSON(), { customTagName: this.customTagName });
+            var data = [];
+            var obj = this.model.toJSON();
+
+            for (var keyName in obj) data.push({key:keyName, value:obj[keyName]});
+
+            return { lapData: data, customTagName: this.customTagName };
         },
 
         handleLapClickEditable: function(e)
         {
+            if($(e.target).hasClass('editing')) return false;
             e.preventDefault();
-            $(e.target).html('<input type=text autofocus=true />');
+            $(e.target).html('<input type=text autofocus=true />').addClass('editing');
             this.model.trigger('expando:lapEdit');
-            this.$('.edit').removeClass('edit');
         }
     });
 });
