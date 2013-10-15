@@ -44,6 +44,8 @@ function(
             "click button.graphTimeButton": "onGraphTimeButtonClicked",
             "click button.graphDistanceButton": "onGraphDistanceButtonClicked"
         },
+ 
+        modelEvents: {},
         
         ui:
         {
@@ -69,7 +71,7 @@ function(
             var seriesButton = $(event.target);
 
             var seriesName = seriesButton.data("series");
-            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView({ model: this.model, parentEl: this.$el, series: seriesName, stateModel: this.stateModel });
+            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView({ model: this.model, parentEl: this.$el, series: seriesName, stateModel: this.stateModel, dataParser: this.dataParser });
             var offset = seriesButton.offset();
             this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
         },

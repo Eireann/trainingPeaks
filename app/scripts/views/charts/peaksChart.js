@@ -30,6 +30,8 @@ function (
                 template: peaksChartTemplate
             },
 
+            modelEvents: {},
+
             initialize: function(options)
             {
                 if (!options.peaks)
@@ -50,11 +52,10 @@ function (
 
                 _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
 
-                if(options.stateModel)
+                if(options && options.stateModel)
                 {
                     this.stateModel = options.stateModel;
-                    this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._checkAvailableDataChannels, this));
-                    this._checkAvailableDataChannels();
+                    this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this.render, this));
                 }
             },
 
@@ -63,17 +64,22 @@ function (
                 if (!this.peaks)
                     return;
 
-                var chartPoints = this.buildPeaksFlotPoints(this.peaks);
-                var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
-                var flotOptions = this.buildFlotChartOptions();
-
-                var self = this;
-
-                // let the html draw first so our container has a height and width
-                setImmediate(function()
+                if(this._hasAvailableDataChannel())
                 {
-                    self.renderPeaksFlotChart(dataSeries, flotOptions);
-                });
+
+                    var chartPoints = this.buildPeaksFlotPoints(this.peaks);
+                    var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
+                    var flotOptions = this.buildFlotChartOptions();
+
+                    var self = this;
+
+                    // let the html draw first so our container has a height and width
+                    setImmediate(function()
+                    {
+                        self.renderPeaksFlotChart(dataSeries, flotOptions);
+                    });
+                }
+
             },
 
             buildPeaksFlotPoints: function(peaks)
@@ -180,16 +186,20 @@ function (
                     return 0;
             },
 
-            _checkAvailableDataChannels: function()
+            _hasAvailableDataChannel: function()
             {
                 if(!this.stateModel || !this.dataChannel)
                 {
-                    return;
+                    return true;
                 }
 
                 if(!_.contains(this.stateModel.get("availableDataChannels"), this.dataChannel))
                 {
-                    this.close();
+                    return false;
+                }
+                else
+                {
+                    return true;
                 }
             }
 

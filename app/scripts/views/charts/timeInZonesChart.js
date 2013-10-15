@@ -30,6 +30,8 @@
                     template: timeInZonesChartTemplate
                 },
 
+                modelEvents: {},
+
                 initialize: function(options)
                 {
                     if (!options.timeInZones)
@@ -47,12 +49,12 @@
 
                     _.bindAll(this, "onHover");
 
-                    if(options.stateModel)
+                    if(options && options.stateModel)
                     {
                         this.stateModel = options.stateModel;
-                        this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._checkAvailableDataChannels, this));
-                        this._checkAvailableDataChannels();
+                        this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this.render, this));
                     }
+
                 },
                 
                 
@@ -61,17 +63,20 @@
                     if (!this.timeInZones)
                         return;
 
-                    var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
-                    var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints, this.chartColor);
-                    var flotOptions = this.buildTimeInZonesFlotChartOptions();
-
-                    var self = this;
-
-                    // let the html draw first so our container has a height and width
-                    setImmediate(function()
+                    if(this._hasAvailableDataChannel())
                     {
-                        self.renderTimeInZonesFlotChart(dataSeries, flotOptions);
-                    });
+                        var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
+                        var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints, this.chartColor);
+                        var flotOptions = this.buildTimeInZonesFlotChartOptions();
+
+                        var self = this;
+
+                        // let the html draw first so our container has a height and width
+                        setImmediate(function()
+                        {
+                            self.renderTimeInZonesFlotChart(dataSeries, flotOptions);
+                        });
+                    }
                 },
 
                 buildTimeInZonesFlotPoints: function(timeInZones)
@@ -154,17 +159,22 @@
                     toolTipPositioner.updatePosition($tooltipEl, this.plot);
                 },
 
-                _checkAvailableDataChannels: function()
+                _hasAvailableDataChannel: function()
                 {
                     if(!this.stateModel || !this.dataChannel)
                     {
-                        return;
+                        return true;
                     }
 
                     if(!_.contains(this.stateModel.get("availableDataChannels"), this.dataChannel))
                     {
-                        this.close();
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
                     }
                 }
+
             });
     });

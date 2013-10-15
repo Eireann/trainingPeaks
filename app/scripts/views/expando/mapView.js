@@ -22,10 +22,7 @@ function (
             template: mapTemplate
         },
 
-        initialEvents: function()
-        {
-            this.model.off("change", this.render);
-        },
+        modelEvents: {}, 
 
         initialize: function(options)
         {

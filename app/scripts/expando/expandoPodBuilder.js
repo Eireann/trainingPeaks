@@ -109,6 +109,7 @@ function(
                 timeInZones: timeInZones,
                 workoutType: workoutTypeId,
                 zoneType: zoneType,
+                model: options.data.workout,
                 stateModel: options.data.stateModel
             });
         },
@@ -157,6 +158,7 @@ function(
                 timeInZones: timeInZones,
                 workoutType: workoutTypeId,
                 peaksType: peaksType,
+                model: options.data.workout,
                 stateModel: options.data.stateModel
             });
         }

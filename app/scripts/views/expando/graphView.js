@@ -42,6 +42,8 @@ function(
             "mouseleave #plot": "onMouseLeave"
         },
 
+        modelEvents: {},
+
         initialize: function(options)
         {
             _.bindAll(this, "createFlotGraph", "onFirstRender");
@@ -66,11 +68,6 @@ function(
 
             this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
             this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
-        },
-
-        initialEvents: function()
-        {
-            this.model.off("change", this.render);
         },
 
         onRender: function()

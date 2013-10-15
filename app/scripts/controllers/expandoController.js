@@ -71,7 +71,6 @@ function(
             this.preFetchDetailData();
 
             var stateModel = new ExpandoStateModel();
-            stateModel.set("dataParser", this.dataParser);
             this.stateModel = stateModel;
             this._updateDataParserAndStateModel();
 

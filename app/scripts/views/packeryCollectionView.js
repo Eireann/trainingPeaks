@@ -48,6 +48,7 @@ function(
             this.tmp = {}; // Placeholder for view being dragged
 
             this.on("show", _.bind(this._setupPackery, this, options));
+            this.on("collection:before:close", this._beforeClose, this);
             this._setupDroppable(options);
 
             _.bindAll(this, "_moveDraggableForPackery");
@@ -55,7 +56,7 @@ function(
 
         layout: function()
         {
-            if(this.packery)
+            if(this.packery && !this.isClosing)
             {
                 this.$el.packery("layout");
                 this._updatePackerySort();
@@ -278,6 +279,11 @@ function(
             this.tmp.view.$el.removeClass("hover"); // TODO: Is this OK or too coupled?
             this._setupPackeryItem(this.tmp.view, this);
             this.tmp = {};
+        },
+
+        _beforeClose: function()
+        {
+            this.isClosing = true;
         }
     });
 

@@ -16,6 +16,7 @@ function(TP, optionsMenuTemplate)
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
+            this.dataParser = options.dataParser;
             this.series = options.series;
         },
 
@@ -68,9 +69,8 @@ function(TP, optionsMenuTemplate)
         _deleteSeries: function()
         {
             this.close();
-            var dataParser = this.stateModel.get("dataParser");
-            dataParser.cutChannel(this.series);
-            this.stateModel.set("availableDataChannels", _.clone(dataParser.getAvailableChannels()));
+            this.dataParser.cutChannel(this.series);
+            this.stateModel.set("availableDataChannels", _.clone(this.dataParser.getAvailableChannels()));
         }
 
     });

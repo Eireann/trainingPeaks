@@ -45,7 +45,7 @@ function (TP, UserSettingsView, accountMenuTemplate)
 
         onSwitchToFlex: function()
         {
-            window.open(window.apiConfig ? window.apiConfig.wwwRoot + "/ui/flextpdefault/flextpdefault.aspx" : "");
+            window.open(window.apiConfig ? window.apiConfig.cmsRoot + "/flex" : "");
             this.close();
         },
         
