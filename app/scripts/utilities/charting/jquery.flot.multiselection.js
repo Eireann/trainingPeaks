@@ -129,7 +129,6 @@ selection: {
             updateSelectionCoordinates(multiSelection);
 
             multiSelection.show = true;
-            multiSelection.dataType = options.dataType;
             multiSelections.push(multiSelection);
             plot.triggerRedrawOverlay();
             return multiSelection;
@@ -211,7 +210,14 @@ selection: {
                             w = Math.abs(multiSelection.second.x - multiSelection.first.x) - 1,
                             h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
-                        setColorBySelectionType(options, multiSelection.dataType, ctx);
+                        // Limit drawing to the currently displayed area (e.g. don't draw over tick labels when zoomed)
+                        if(x < 0) { w += x; x = 0; }
+                        if(y < 0) { h += y; y = 0; }
+                        if(x + w > plot.width()) { w = plot.width() - x; }
+                        if(y + h > plot.height()) { h = plot.height() - y; }
+                        if(w < 0 || h < 0) { return; }
+
+                        setColorBySelectionType(options, ctx);
                         ctx.fillRect(x, y, w, h);
                         ctx.strokeRect(x, y, w, h);
                     }
@@ -221,7 +227,7 @@ selection: {
             ctx.restore();
         }
 
-        function setColorBySelectionType(options, selectionType, ctx)
+        function setColorBySelectionType(options, ctx)
         {
             var colorCode = options.color;
             var c = $.color.parse(colorCode);
