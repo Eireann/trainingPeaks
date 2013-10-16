@@ -117,9 +117,9 @@ function(
  
         },
 
-        createHighlight: function(latLonArray)
+        createHighlight: function(latLonArray, options)
         {
-            var polylineOptions = { color: chartColors.mapSelection };
+            var polylineOptions = _.defaults({}, options, { color: chartColors.mapSelection });
             return this.createPolyline(latLonArray, polylineOptions);
         },
 
