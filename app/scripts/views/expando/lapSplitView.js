@@ -3,12 +3,13 @@ define(
     "underscore",
 
     "TP",
+    "utilities/lapsStats",
 
     "hbs!templates/views/expando/lapSplitTemplate"
 ],
 function(
     _,
-    TP,
+    TP, LapsStats,
     lapSplitTemplate
     )
 {
@@ -28,17 +29,34 @@ function(
 
         serializeData: function()
         {
-            var data = [];
+            var data = [],
+                empties = {};
             var obj = this.model.toJSON();
 
-            for (var keyName in obj) data.push({key:keyName, value:obj[keyName]});
+            LapsStats.formatLapObject(obj, this.workoutDefaults, data, empties);
 
-            return { lapData: data, customTagName: this.customTagName };
+            var allLapData = {};
+            _.each(data[0], function(value, key)
+            {
+                var dataArray = key.split(' ');
+                var keyName = [dataArray[0].toLowerCase(), dataArray.slice(1).join('')].join('');
+
+                allLapData[keyName] = value;
+            });
+
+
+            var subsetLapData = [];
+            _.each(this.keyNames, function(keyName, index)
+                {
+                    subsetLapData.push( { key: keyName, value: allLapData[keyName] } );
+                }, this);
+
+            return { lapData: subsetLapData };
         },
 
         handleLapClickEditable: function(e)
         {
-            if($(e.target).hasClass('editing')) return false;
+            if($(e.currentTarget).hasClass('editing')) return false;
             e.preventDefault();
             $(e.target).html('<input type=text autofocus=true />').addClass('editing');
             this.model.trigger('expando:lapEdit');

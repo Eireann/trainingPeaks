@@ -11,7 +11,7 @@
     "views/expando/lapsView",
     "views/expando/chartsView",
     "views/expando/mapAndGraphResizerView",
-    "views/workout/lapsSplitsView",
+    "views/expando/lapsSplitsView",
     "expando/expandoPodBuilder",
     "expando/models/expandoStateModel"
 ],
@@ -181,7 +181,7 @@ function(
             {
                 self.onViewResize();
             });
- 
+
         },
 
         preFetchDetailData: function()

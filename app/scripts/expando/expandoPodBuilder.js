@@ -12,7 +12,7 @@ define(
     "views/charts/speedPeaksChart",
     "views/expando/graphView",
     "views/expando/mapView",
-    "views/workout/lapsSplitsView"
+    "views/expando/lapsSplitsView"
 ],
 function(
     TP,
@@ -97,7 +97,7 @@ function(
 
             var timeInZones = timeInZonesGenerator(
                 variantName,
-                zonesName, 
+                zonesName,
                 workoutDetailModel,
                 workoutModel
             );
@@ -143,7 +143,7 @@ function(
 
             var timeInZones = timeInZonesGenerator(
                 variantName,
-                zonesName, 
+                zonesName,
                 workoutDetailModel,
                 workoutModel
             );

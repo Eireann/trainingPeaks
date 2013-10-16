@@ -52,6 +52,7 @@ function(
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
+            this.listenTo(this.model, 'change', this.render);
         },
 
         onRender: function()
