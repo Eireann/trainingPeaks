@@ -101,16 +101,38 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
 
         },
 
-        addChannelCut: function(series, channelCutDetails)
+        disableChannel: function(series)
         {
-            var availableChannels = this.has("availableDataChannels") ? this.get("availableDataChannels") : [];            
-            var disabledChannels = this.has("disabledDataChannels") ? this.get("disabledDataChannels") : [];            
+            var disabledSeries = this.get("disabledDataChannels");
+            disabledSeries.push(series);
+            this.set("disabledDataChannels", _.uniq(disabledSeries));
+        },
+
+        enableChannel: function(series)
+        {
+            this.set("disabledDataChannels", _.without(this.get("disabledDataChannels"), series));
+        },
+
+        _addAvailableChannel: function(series)
+        {
+            var availableSeries = this.get("availableDataChannels");
+            availableSeries.push(series);
+            this.set("availableDataChannels", _.uniq(availableSeries));
+        },
+
+        _removeAvailableChannel: function(series)
+        {
+            this.set("availableDataChannels", _.without(this.get("availableDataChannels"), series));
+        },
+
+        cutChannel: function(series, dataParser)
+        {
+            var channelCutDetails = dataParser.cutChannel(series);
             var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
             channelCuts.push(channelCutDetails);
-            disabledChannels.push(series);
-            this.set("disabledDataChannels", disabledChannels);
-            this.set("availableDataChannels", _.difference(availableChannels, disabledChannels));
             this.set("channelCuts", channelCuts);
+            this._removeAvailableChannel(series);
+            this.disableChannel(series);
         },
 
         _rangeKeys:

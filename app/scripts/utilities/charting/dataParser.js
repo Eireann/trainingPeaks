@@ -434,11 +434,8 @@ function(chartColors, findIndexByMsOffset, conversion)
             {
                 this.cutSeries.push(channel);
             }
-        },
 
-        getCutChannels: function()
-        {
-            return _.clone(this.cutSeries);
+            return {};
         },
 
         getAvailableChannels: function()

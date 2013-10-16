@@ -43,51 +43,43 @@ function(
         {
             if(_.contains(this.detailDataModel.get("disabledDataChannels"), this.series))
             {
-                this.$(".hideSeries").addClass("hide");
+                this.$(".hideSeries").remove();
             }
             else
             {
-                this.$(".showSeries").addClass("hide");
+                this.$(".showSeries").remove();
             }
         },
 
         _showSeries: function()
         {
             this.close();
-            var disabledSeries = _.clone(this.detailDataModel.get("disabledDataChannels"));
-            disabledSeries = _.without(disabledSeries, this.series);
-            this.detailDataModel.set("disabledDataChannels", disabledSeries);
+            this.detailDataModel.enableChannel(this.series);
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.series });
         },
 
         _hideSeries: function()
         {
             this.close();
-            var disabledSeries = _.clone(this.detailDataModel.get("disabledDataChannels"));
-            if(!_.contains(disabledSeries, this.series))
-            {
-                disabledSeries.push(this.series);
-            }
-            this.detailDataModel.set("disabledDataChannels", disabledSeries);
+            this.detailDataModel.disableChannel(this.series);
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.series });
         },
 
         _deleteSeries: function()
         {
             this.close();
-            var confirmationView = new UserConfirmationView(
+            this.confirmationView = new UserConfirmationView(
             {
                 template: deleteConfirmationTemplate,
                 model: new TP.Model({ series: this.series })
             });
 
-            confirmationView.render();
+            this.confirmationView.render();
 
             var self = this;
-            confirmationView.on("userConfirmed", function()
+            this.confirmationView.on("userConfirmed", function()
             {
-                var channelCutDetails = self.dataParser.cutChannel(self.series);
-                self.detailDataModel.addChannelCut(self.series, channelCutDetails);
+                self.detailDataModel.cutChannel(self.series, self.dataParser);
             });
 
         }
