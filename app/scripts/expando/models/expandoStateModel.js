@@ -39,10 +39,7 @@ function(
 
                 if(!range.hasLoaded)
                 {
-                    range.fetch().done(function()
-                    {
-                        range.hasLoaded = true;
-                    });
+                    range.fetch();
                 }
             }
         },
