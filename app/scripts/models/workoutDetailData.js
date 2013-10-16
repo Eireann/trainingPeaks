@@ -87,6 +87,17 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             this.trigger("changeSensorData", this);
         },
 
+        _rangeKeys:
+        {
+            laps: "lapsStats",
+            distance: "peakSpeedsByDistance",
+            power: "peakPowers",
+            heartrate: "peakHeartRates",
+            speed: "peakSpeeds",
+            pace: "peakSpeeds",
+            cadence: "peakCadences"
+        },
+
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
@@ -133,17 +144,6 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             this.set("channelCuts", channelCuts);
             this._removeAvailableChannel(series);
             this.disableChannel(series);
-        },
-
-        _rangeKeys:
-        {
-            laps: "lapsStats",
-            distance: "peakSpeedsByDistance",
-            power: "peakPowers",
-            heartrate: "peakHeartRates",
-            speed: "peakSpeeds",
-            pace: "peakSpeeds",
-            cadence: "peakCadences"
         },
 
         _getRangeDataFor: function(rangeType, onChange)

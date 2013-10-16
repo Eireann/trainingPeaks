@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "setImmediate",
     "jqueryui/widget",
     "jquerySelectBox",
@@ -11,6 +12,7 @@
     "hbs!templates/views/expando/lapsTemplate"
 ],
 function(
+    _,
     setImmediate,
     jqueryUiWidget,
     jquerySelectBox,
