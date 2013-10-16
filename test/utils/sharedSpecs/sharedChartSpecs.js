@@ -3,13 +3,13 @@ define(
     "underscore",
     "TP",
     "views/dashboard/dashboardChartBuilder",
-    "dashboard/reportingDataManager"
+    "framework/dataManager"
 ],
 function(
     _,
     TP,
     dashboardChartBuilder,
-    ReportingDataManager
+    DataManager
 )
 {
     return {
@@ -21,7 +21,7 @@ function(
                 var chart, chartSettingsView;
                 beforeEach(function()
                 {
-                    chart = dashboardChartBuilder.buildChartModel(chartAttrs, { dataManager: new ReportingDataManager() });
+                    chart = dashboardChartBuilder.buildChartModel(chartAttrs, { dataManager: new DataManager() });
                     chartSettingsView = chart.createChartSettingsView();
                 });
 
