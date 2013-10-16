@@ -25,9 +25,8 @@ function(
         {
             this.stateModel = options.stateModel;
 
-            this.listenTo(this.stateModel, "change:statsRange", _.bind(this._onStatsRangeChanged, this));
             this.listenTo(this.model.get("detailData"), "change", _.bind(this.reset, this));
-
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onStatsRangeChanged, this));
         },
 
         reset: function()

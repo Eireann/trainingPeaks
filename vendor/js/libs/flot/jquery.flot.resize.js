@@ -37,6 +37,7 @@ can just fix the size of their placeholders.
             plot.resize();
             plot.setupGrid();
             plot.draw();
+            plot.triggerRedrawOverlay();
         }
         
         function bindEvents(plot, eventHolder) {

@@ -146,11 +146,24 @@ function(
         },
 
         // Overrides CollectionView
+        closeChildren: function()
+        {
+            this.packery = null;
+            PackeryCollectionView.__super__.closeChildren.apply(this, arguments);
+        },
+
+        // Overrides CollectionView
         removeChildView: function(view)
         {
-            this.packery.remove(view.el);
+            if(this.packery)
+            {
+                this.packery.remove(view.el);
+            }
             PackeryCollectionView.__super__.removeChildView.apply(this, arguments);
-            this.layout();
+            if(this.packery)
+            {
+                this.layout();
+            }
             return this;
         },
 
