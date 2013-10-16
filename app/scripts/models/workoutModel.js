@@ -220,7 +220,10 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             }
             else
             {
-                var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
+                var clonedAttributes = _.clone(this.attributes);
+                delete clonedAttributes.details;
+                delete clonedAttributes.detailData;
+                var newWorkout = new WorkoutModel(clonedAttributes);
                 var workoutDateMoment = moment(dateToPasteTo);
                 var formattedWorkoutDate = workoutDateMoment.format(TP.utils.datetime.longDateFormat);
                 newWorkout.set("workoutDay", formattedWorkoutDate);
