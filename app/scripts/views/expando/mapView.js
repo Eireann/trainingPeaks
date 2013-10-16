@@ -211,9 +211,13 @@ function (
 
         _onHoverChange: function (state, offset, options)
         {
+            if (!this.dataParser.hasLatLongData)
+            {
+                return;
+            }
             if (!_.isNumber(offset))
             {
-                if (this.dataParser.hasLatLongData) this.hideHoverMarker();
+                this.hideHoverMarker();
             }
             else
             {
