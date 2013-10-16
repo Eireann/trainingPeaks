@@ -134,7 +134,7 @@
 }
 
 
-#expandoLeftColumn
+.expandoLeftColumn
 {
     float: left;
     position:relative;
@@ -464,15 +464,35 @@
     }
 }
 
-#expandoRightColumn
+.expandoRightColumn
 {
     float: right;
     width: 335px;
     overflow-y: scroll;
     @include nice-scrollbar;
 
-    #expandoStatsRegion
+    .expandoEditControlsRegion
     {
+        .expandoEditControls
+        {
+            &.disabled
+            {
+                display:none;
+            }
+        }
+    }
+
+    .expandoStatsRegion
+    {
+
+        .expandoStats
+        {
+            &.disabled
+            {
+                display:none;
+            }
+        }
+
         overflow-x: auto;
         overflow-y: visible;
         font-size: $fontSizeMedium;
@@ -581,8 +601,17 @@
         }
     }
 
-    #expandoLapsRegion
+    .expandoLapsRegion
     {
+
+        .expandoLaps
+        {
+            &.disabled
+            {
+                display: none;
+            }
+        }
+
         .controls
         {
             margin-left: 20px;

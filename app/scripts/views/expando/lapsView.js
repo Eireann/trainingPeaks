@@ -100,6 +100,8 @@ function(
     var LapsView = TP.CompositeView.extend(
     {
 
+        className: "expandoLaps",
+        
         itemView: LapView,
         itemViewContainer: ".rangesList ul",
 
@@ -146,6 +148,8 @@ function(
                 }
             });
 
+            this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this.render, this));
+
         },
 
         serializeData: function()
@@ -176,6 +180,15 @@ function(
             {
                 this.$("select").selectBoxIt();
             });
+
+            if(this.model.get("detailData").has("channelCuts"))
+            {
+                this.$el.addClass("disabled");
+            }
+            else
+            {
+                this.$el.removeClass("disabled");
+            }
         },
 
         onShow: function()

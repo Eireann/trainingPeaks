@@ -24,7 +24,7 @@ function(_, TP, TimeInZonesChartView, chartColors)
             }, options));
 
             this.zoneType = options && options.hasOwnProperty("zoneType") ? options.zoneType : "Pace";
-            this.model = new TP.Model({
+            this.chartModel = new TP.Model({
                 zoneType: this.zoneType
             });
         },

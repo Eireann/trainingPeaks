@@ -22,7 +22,7 @@ function(_, TP, TimeInZonesChartView, chartColors)
                 toolTipBuilder: this.toolTipBuilder
             }, options));
 
-            this.model = new TP.Model({
+            this.chartModel = new TP.Model({
                 zoneType: "Power"
             });
         },

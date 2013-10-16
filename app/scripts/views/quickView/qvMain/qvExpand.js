@@ -193,7 +193,7 @@ function (_, TP, ExpandoController)
             if (this.expanded)
             {
                 var headerHeight = this.$(".QVHeader").outerHeight();
-                this.$("#quickViewExpandedContent, #expandoLeftColumn, #expandoRightColumn").css("height", qvHeight - headerHeight + "px");
+                this.$("#quickViewExpandedContent, .expandoLeftColumn, .expandoRightColumn").css("height", qvHeight - headerHeight + "px");
             } else
             {
 

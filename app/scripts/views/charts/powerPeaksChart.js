@@ -24,7 +24,7 @@ function(_, TP, PeaksChartView, chartColors)
                 toolTipBuilder: this.toolTipBuilder
             }, options));
 
-            this.model = new TP.Model({
+            this.chartModel = new TP.Model({
                 peakType: "Power",
                 yAxisLabel: "Watts"
             });

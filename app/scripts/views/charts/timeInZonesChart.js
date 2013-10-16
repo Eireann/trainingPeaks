@@ -49,14 +49,17 @@
 
                     _.bindAll(this, "onHover");
 
-                    if(options && options.stateModel)
+                    if(options.model)
                     {
-                        this.stateModel = options.stateModel;
-                        this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this.render, this));
+                        this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.render, this));
                     }
 
                 },
-                
+     
+                serializeData: function()
+                {
+                    return this.chartModel.toJSON();
+                },               
                 
                 onRender: function()
                 {
@@ -65,6 +68,7 @@
 
                     if(this._hasAvailableDataChannel())
                     {
+                        this.$el.removeClass("nodata");
                         var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
                         var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints, this.chartColor);
                         var flotOptions = this.buildTimeInZonesFlotChartOptions();
@@ -76,6 +80,10 @@
                         {
                             self.renderTimeInZonesFlotChart(dataSeries, flotOptions);
                         });
+                    }
+                    else
+                    {
+                        this.$el.addClass("nodata");
                     }
                 },
 
@@ -161,12 +169,13 @@
 
                 _hasAvailableDataChannel: function()
                 {
-                    if(!this.stateModel || !this.dataChannel)
+
+                    if(!this.model || !this.model.has("detailData") || !this.dataChannel)
                     {
                         return true;
                     }
 
-                    if(!_.contains(this.stateModel.get("availableDataChannels"), this.dataChannel))
+                    if(!_.contains(this.model.get("detailData").get("availableDataChannels"), this.dataChannel))
                     {
                         return false;
                     }
@@ -175,6 +184,6 @@
                         return true;
                     }
                 }
-
+                
             });
     });

@@ -10,8 +10,8 @@
     "views/expando/statsView",
     "views/expando/lapsView",
     "views/expando/chartsView",
-    "views/expando/mapAndGraphResizerView",
     "views/workout/lapsSplitsView",
+    "views/expando/editControlsView",
     "expando/expandoPodBuilder",
     "expando/models/expandoStateModel"
 ],
@@ -26,8 +26,8 @@ function(
     StatsView,
     LapsView,
     ChartsView,
-    MapAndGraphResizerView,
     LapsSplitsView,
+    EditControlsView,
     expandoPodBuilder,
     ExpandoStateModel
 )
@@ -42,8 +42,8 @@ function(
         initialize: function(options)
         {
             this.model = options.model;
-            this.workoutModel = options.workoutModel;
-            this.workoutDetailsModel = options.workoutDetailsModel;
+            //this.workoutModel = options.workoutModel;
+            //this.workoutDetailsModel = options.workoutDetailsModel;
             this.prefetchConfig = options.prefetchConfig;
 
             this.layout = new ExpandoLayout();
@@ -68,14 +68,14 @@ function(
             }
 
             this.closeViews();
+            this.resetDetailDataEdits();
             this.preFetchDetailData();
 
-            var stateModel = new ExpandoStateModel();
-            this.stateModel = stateModel;
-            this._updateDataParserAndStateModel();
+            this.stateModel = new ExpandoStateModel();
 
-            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
-            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
+            this.views.editControlsView = new EditControlsView({ model: this.model, stateModel: this.stateModel });
+            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
+            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 
             var podsCollection = new TP.Collection(
             [{
@@ -115,7 +115,7 @@ function(
                 workout: this.model,
                 detailDataPromise: this.prefetchConfig.detailDataPromise,
                 dataParser: this.dataParser,
-                stateModel: stateModel
+                stateModel: this.stateModel
             };
 
             var $sizer = $("<div class='sizer'></div>");
@@ -158,11 +158,12 @@ function(
             this.layout.$el.removeClass("waiting");
 
             var self = this;
-            this._updateDataParserAndStateModel();
+            this._updateDataParser();
 
             // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
+            this.layout.editControlsRegion.show(this.views.editControlsView);
 
             setImmediate(function()
             {
@@ -173,7 +174,7 @@ function(
 
         onSensorDataChange: function()
         {
-            this._updateDataParserAndStateModel();
+            this._updateDataParser();
 
             var self = this;
             setImmediate(function()
@@ -181,6 +182,11 @@ function(
                 self.onViewResize();
             });
  
+        },
+
+        resetDetailDataEdits: function()
+        {
+            this.model.get("detailData").reset();
         },
 
         preFetchDetailData: function()
@@ -273,7 +279,7 @@ function(
             this.views.packeryView.layout();
         },
 
-        _updateDataParserAndStateModel: function()
+        _updateDataParser: function()
         {
             var flatSamples = this.model.get("detailData").get("flatSamples");
 
@@ -281,9 +287,6 @@ function(
             {
                 this.dataParser.loadData(flatSamples);
             }
-
-            this.stateModel.set("availableDataChannels", _.clone(this.dataParser.getChannelMask()));
-            this.stateModel.set("disabledDataChannels", []);
         }
 
     });

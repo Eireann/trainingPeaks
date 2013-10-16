@@ -31,8 +31,8 @@ function(
             this.dataParser = options.dataParser;
             this.stateModel = options.stateModel;
 
-            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
-            this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
         },
         
         events:
@@ -79,12 +79,12 @@ function(
         _onSeriesChanged: function()
         {
             this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
-            _.each(this.stateModel.get("disabledDataChannels"), function(channel)
+            _.each(this.model.get("detailData").get("disabledDataChannels"), function(channel)
             {
                 this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
             }, this);
 
-            var availableChannels = this.stateModel.get("availableDataChannels");
+            var availableChannels = this.model.get("detailData").get("availableDataChannels");
             this.$(".graphSeriesButton").each(function()
             {
                 var $self = $(this);
@@ -136,8 +136,8 @@ function(
             var self = this;
             var shownButtons = [];
 
-            var availableChannels = this.stateModel.get("availableDataChannels");
-            var disabledChannels = this.stateModel.get("disabledDataChannels");
+            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+            var disabledChannels = this.model.get("detailData").get("disabledDataChannels");
 
             _.each(availableChannels, function(channel)
             {

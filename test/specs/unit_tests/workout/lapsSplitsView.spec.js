@@ -12,13 +12,15 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 {
 	describe("Laps Splits View", function()
 	{
-		var buildWorkoutModel = function()
+		var allDataChannels = ["Power", "Elevation", "Speed", "HeartRate", "Torque", "Cadence"];
+
+		var buildWorkoutModel = function(availableDataChannels)
 		{
 			return new TP.Model({
 				id: 1234,
 				details: new TP.Model(),
 				workoutTypeValueId: 3,
-				detailData: new TP.Model({lapsStats: detailDataLapsStats})
+				detailData: new TP.Model({lapsStats: detailDataLapsStats, availableDataChannels: availableDataChannels })
 			});
 		},
 		setTSSsource = function(model, tssSource)
@@ -41,90 +43,153 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 
 		describe("serializing data", function()
 		{
-			var requiredAttrs = 
-				[
-					"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Avg Heart Rate",
-					"Max Heart Rate", "Avg Pace", "Cad", "Calories"
-				],
-				model = buildWorkoutModel(),
-				view = new LapsSplitsView({model: model}),
-				serializedData = view.serializeData(),
-				checkAttr = function(attr) {
-					it("Should include " + attr + " in the serialized data", function()
-					{
-						expect(_.contains(serializedData.headerNames, attr)).toBeTruthy();
-					});
-				};
+			describe("with all channels enabled", function()
+			{
+				var requiredAttrs = 
+					[
+						"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Avg Heart Rate",
+						"Max Heart Rate", "Avg Pace", "Cad", "Calories"
+					],
+					model = buildWorkoutModel(allDataChannels),
+					view = new LapsSplitsView({model: model}),
+					serializedData = view.serializeData(),
+					checkAttr = function(attr) {
+						it("Should include " + attr + " in the serialized data", function()
+						{
+							expect(_.contains(serializedData.headerNames, attr)).toBeTruthy();
+						});
+					};
 
-			_.each(requiredAttrs, function(attr)
-			{
-				checkAttr(attr);
+				_.each(requiredAttrs, function(attr)
+				{
+					checkAttr(attr);
+				});
+
+				it("Should serialize six rows of data", function()
+				{
+					expect(serializedData.rowData.length).toBe(6);
+				});
+				it("Should format time appropriately", function()
+				{
+					expect(serializedData.rowData[0][1]).toBe("00:00");
+				});
+				it("Should include NGP for run or walk workouts", function()
+				{
+					model.set({workoutTypeValueId: 3});
+					expect(_.contains(serializedData.headerNames, "NGP")).toBeTruthy();
+				});
+				it("Should exclude NGP for other workout types", function()
+				{
+					model.set({workoutTypeValueId: 1});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "NGP")).toBeFalsy();
+				});
+				it("Should exclude Normalized Power for run and walk workouts", function()
+				{
+					model.set({workoutTypeValueId: 3});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
+				});
+				it("Should include Normalized Power for bike workouts", function()
+				{
+					model.set({workoutTypeValueId: 2});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "NP")).toBeTruthy();
+				});
+				it("Should format TSS label correctly", function()
+				{
+					setTSSsource(model, "RunningTss");
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "rTSS")).toBeTruthy();
+					expect(_.contains(serializedData.headerNames, "TSS")).toBeFalsy();
+				});
+				it("Should show Average Speed for rides (as opposed to Average Pace)", function()
+				{
+					model.set({workoutTypeValueId: 2});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeFalsy();
+					expect(_.contains(serializedData.headerNames, "Avg Speed")).toBeTruthy();
+				});
+				it("Should show Average Pace for runs, walks, and swims (as opposed to Average Speed)", function()
+				{
+					model.set({workoutTypeValueId: 3});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+
+					model.set({workoutTypeValueId: 13});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+
+					model.set({workoutTypeValueId: 1});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+				});
+				it("Should not show maximum cadence for swim workouts", function()
+				{
+					model.set({workoutTypeValueId: 1});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Max Cadence")).toBeFalsy();
+				});
+				it("Should show maximum power for bike workouts", function()
+				{
+					model.set({workoutTypeValueId: 2});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Max Power")).toBeTruthy();
+				});
 			});
 
-			it("Should serialize six rows of data", function()
+			describe("with heart rate channel disabled", function()
 			{
-				expect(serializedData.rowData.length).toBe(6);
-			});
-			it("Should format time appropriately", function()
-			{
-				expect(serializedData.rowData[0][1]).toBe("00:00");
-			});
-			it("Should include NGP for run or walk workouts", function()
-			{
-				model.set({workoutTypeValueId: 3});
-				expect(_.contains(serializedData.headerNames, "NGP")).toBeTruthy();
-			});
-			it("Should exclude NGP for other workout types", function()
-			{
-				model.set({workoutTypeValueId: 1});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "NGP")).toBeFalsy();
-			});
-			it("Should exclude Normalized Power for run and walk workouts", function()
-			{
-				model.set({workoutTypeValueId: 3});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
-			});
-			it("Should format TSS label correctly", function()
-			{
-				setTSSsource(model, "RunningTss");
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "rTSS")).toBeTruthy();
-				expect(_.contains(serializedData.headerNames, "TSS")).toBeFalsy();
-			});
-			it("Should show Average Speed for rides (as opposed to Average Pace)", function()
-			{
-				model.set({workoutTypeValueId: 2});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeFalsy();
-				expect(_.contains(serializedData.headerNames, "Avg Speed")).toBeTruthy();
-			});
-			it("Should show Average Pace for runs, walks, and swims (as opposed to Average Speed)", function()
-			{
-				model.set({workoutTypeValueId: 3});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+				var model = buildWorkoutModel(_.without(allDataChannels, "HeartRate")),
+					view = new LapsSplitsView({model: model}),
+					serializedData = view.serializeData();
 
-				model.set({workoutTypeValueId: 13});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+				it("Should serialize six rows of data", function()
+				{
+					expect(serializedData.rowData.length).toBe(6);
+				});
 
-				model.set({workoutTypeValueId: 1});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+				it("Should exclude Avg Heart Rate", function()
+				{
+					expect(_.contains(serializedData.headerNames, "Avg Heart Rate")).toBeFalsy();
+				});
+
+				it("Should exclude Max Heart Rate", function()
+				{
+					expect(_.contains(serializedData.headerNames, "Max Heart Rate")).toBeFalsy();
+				});
 			});
-			it("Should not show maximum cadence for swim workouts", function()
+
+			describe("with power channel disabled", function()
 			{
-				model.set({workoutTypeValueId: 1});
-				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Max Cadence")).toBeFalsy();
+				var model = buildWorkoutModel(_.without(allDataChannels, "Power")),
+					view = new LapsSplitsView({model: model}),
+					serializedData = view.serializeData();
+
+				it("Should serialize six rows of data", function()
+				{
+					expect(serializedData.rowData.length).toBe(6);
+				});
+
+				it("Should exclude Normalized Power", function()
+				{
+					model.set({workoutTypeValueId: 2});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
+				});
+
+				it("Should exclude Max Power", function()
+				{
+					model.set({workoutTypeValueId: 2});
+					serializedData = view.serializeData();
+					expect(_.contains(serializedData.headerNames, "Max Power")).toBeFalsy();
+				});
 			});
 		});
 
 		describe("ordering data", function()
 		{
-			var model = buildWorkoutModel(),
+			var model = buildWorkoutModel(allDataChannels),
 				view = new LapsSplitsView({model: model}),
 				serializedData = view.serializeData(),
 				checkOrder = function(attr, i, tssType, serializedData) {
@@ -182,7 +247,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			var model, view;
 			beforeEach(function()
 			{
-				model = buildWorkoutModel();
+				model = buildWorkoutModel(allDataChannels);
 				view = new LapsSplitsView({model: model});
 				view.render();
 			});

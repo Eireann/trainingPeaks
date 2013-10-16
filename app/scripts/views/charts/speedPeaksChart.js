@@ -25,7 +25,7 @@ function(_, TP, PeaksChartView, chartColors)
             }, options));
 
             this.peakType = options && options.hasOwnProperty("peakType") ? options.peakType : "Pace";
-            this.model = new TP.Model({
+            this.chartModel = new TP.Model({
                 peakType: this.peakType,
                 yAxisLabel: this.formatPeakUnitsLabel()
             });

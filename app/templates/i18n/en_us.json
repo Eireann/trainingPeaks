@@ -446,5 +446,7 @@
     "Failed To Save Metric": "Failed To Save Metric",
 
     "Show": "Show",
-    "Hide": "Hide"
+    "Hide": "Hide",
+    "ConfirmDeleteSeries1": "Are you sure you want to delete all data for",
+    "ConfirmDeleteSeries2": "All associated data values will be removed."
 }

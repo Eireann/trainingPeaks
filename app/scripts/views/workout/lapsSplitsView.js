@@ -36,11 +36,7 @@ function(
             }
             this.detailDataPromise = options.detailDataPromise;
 
-            if(options.stateModel)
-            {
-                this.stateModel = options.stateModel;
-                this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this.render, this));
-            }
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.render, this));
         },
         template:
         {
@@ -230,11 +226,7 @@ function(
         },
         _removeCutChannels: function(lapObject)
         {
-            if(!this.stateModel)
-            {
-                return;
-            }
-            var availableChannels = this.stateModel.get("availableDataChannels");
+            var availableChannels = this.model.get("detailData").get("availableDataChannels");
             _.each(channelToStatsMap, function(lapFieldNames, channelName)
             {
                 if(!_.contains(availableChannels, channelName))

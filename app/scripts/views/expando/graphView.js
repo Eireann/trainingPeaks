@@ -66,8 +66,8 @@ function(
 
             this.repaintHeight = _.debounce(this.repaintHeight, 200);
 
-            this.listenTo(this.stateModel, "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
-            this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
         },
 
         onRender: function()
@@ -131,7 +131,7 @@ function(
             }
 
             this.dataParser.workoutTypeValueId = this.model.get("workoutTypeValueId");
-            this.dataParser.setDisabledSeries(this.stateModel.get("disabledDataChannels"));
+            this.dataParser.setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
             var enabledSeries = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(enabledSeries);

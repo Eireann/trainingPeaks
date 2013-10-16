@@ -52,11 +52,15 @@ function (
 
                 _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
 
-                if(options && options.stateModel)
+                if(options.model)
                 {
-                    this.stateModel = options.stateModel;
-                    this.listenTo(this.stateModel, "change:availableDataChannels", _.bind(this.render, this));
+                    this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.render, this));
                 }
+            },
+
+            serializeData: function()
+            {
+                return this.chartModel.toJSON();
             },
 
             onRender: function()
@@ -66,7 +70,7 @@ function (
 
                 if(this._hasAvailableDataChannel())
                 {
-
+                    this.$el.removeClass("nodata");
                     var chartPoints = this.buildPeaksFlotPoints(this.peaks);
                     var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
                     var flotOptions = this.buildFlotChartOptions();
@@ -78,6 +82,10 @@ function (
                     {
                         self.renderPeaksFlotChart(dataSeries, flotOptions);
                     });
+                }
+                else
+                {
+                    this.$el.addClass("nodata");
                 }
 
             },
@@ -188,12 +196,13 @@ function (
 
             _hasAvailableDataChannel: function()
             {
-                if(!this.stateModel || !this.dataChannel)
+
+                if(!this.model || !this.model.has("detailData") || !this.dataChannel)
                 {
                     return true;
                 }
 
-                if(!_.contains(this.stateModel.get("availableDataChannels"), this.dataChannel))
+                if(!_.contains(this.model.get("detailData").get("availableDataChannels"), this.dataChannel))
                 {
                     return false;
                 }
