@@ -188,7 +188,7 @@ function(
                 it("Should update when dashboard dates are updated", function()
                 {
                     testHelpers.clearRequests();
-                    theMarsApp.dataManagers.reporting.forceReset();
+                    theMarsApp.dataManager.forceReset();
                     applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2012-01-01", "2016-04-15");
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(true);   
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-01-01/2016-04-15")).toBe(true);
