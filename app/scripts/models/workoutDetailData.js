@@ -4,8 +4,10 @@
     "moment",
     "TP",
     "models/workoutStatsForRange",
+    "utilities/workout/formatPeakTime",
+    "utilities/workout/formatPeakDistance",
 ],
-function (_, moment, TP, WorkoutStatsForRange)
+function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistance)
 {
     var WorkoutDetailData = TP.APIBaseModel.extend(
     {
@@ -101,11 +103,6 @@ function (_, moment, TP, WorkoutStatsForRange)
         _getRangeDataFor: function(rangeType, onChange)
         {
 
-            if(rangeType !== "laps")
-            {
-                // Need to figure out where additional peaks processing belongs
-                throw new Error("Only range type of 'laps' is fully supported'");
-            }
             var key = this._rangeKeys[rangeType];
             if(!key)
             {
@@ -113,7 +110,13 @@ function (_, moment, TP, WorkoutStatsForRange)
             }
 
             var ranges = this.get(key);
-            return this._augmentRanges(ranges);
+
+            if(rangeType !== "laps")
+            {
+                ranges = this._processPeaks(ranges, rangeType);
+            }
+
+            return this._augmentRanges(ranges, rangeType);
 
         },
 
@@ -122,19 +125,47 @@ function (_, moment, TP, WorkoutStatsForRange)
             var key = this._rangeKeys[rangeType];
             this.on("change:" + key, function(model, value, options)
             {
-                value = this._augmentRanges(value);
+                value = this._augmentRanges(value, rangeType);
                 callback(value);
             });
 
         },
 
-        _augmentRanges: function(ranges)
+        _augmentRanges: function(ranges, rangeType)
         {
-            var workoutId = this.get("workoutId");
+            var defaults =
+            {
+                workoutId: this.get("workoutId"),
+                hasLoaded: rangeType === "laps"
+            };
             return _.map(ranges, function(range)
             {
-                return _.extend({ workoutId: workoutId, hasLoaded: true }, range);
+                return _.extend({}, defaults, range);
             });
+        },
+
+        _processPeaks: function(ranges, rangeType)
+        {
+            ranges = _.sortBy(ranges, "interval");
+            ranges = _.uniq(ranges, true, "interval");
+
+            ranges = _.map(ranges, function(range)
+            {
+
+                range = _.clone(range);
+                if(rangeType === "distance")
+                {
+                    range.name = "Peak " + formatPeakDistance(range.interval);
+                }
+                else
+                {
+                    range.name = "Peak " + formatPeakTime(range.interval);
+                }
+                return range;
+
+            });
+
+            return ranges;
         }
 
     });

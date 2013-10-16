@@ -61,6 +61,16 @@ function(
             this._onSelectedChange();
         },
 
+        serializeData: function()
+        {
+            var data = LapView.__super__.serializeData.apply(this, arguments);
+            if(data.formattedValue)
+            {
+                data.name += " (" + data.formattedValue + ")";
+            }
+            return data;
+        },
+
         _onFocusedChange: function()
         {
             this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
@@ -179,25 +189,26 @@ function(
         _updateCollection: function()
         {
             var detailData = this.model.get("detailData");
-            var lapRanges = detailData.getRangeCollectionFor("laps");
+            var lapRanges = detailData.getRangeCollectionFor("laps").models;
 
-            var totalRange = detailData.totalStats ? detailData.totalStats : null;
+            var ranges = lapRanges.slice();
 
-            var ranges = _.compact([].concat(lapRanges.models, [totalRange ? this._asRangeModel(true, totalRange) : null]));
+            if(detailData.get("totalStats"))
+            {
+                ranges.push(this._asRangeModel(detailData.get("totalStats"), { hasLoaded: true, name: "Entire Workout" }));
+            }
 
             var peakType = this.$("select.peakType").val();
-            var peakRanges = peakType ? this._getPeaksData(peakType) : [];
-
-            ranges = ranges.concat(_.map(peakRanges, _.bind(this._asRangeModel, this, false)));
+            ranges = ranges.concat(this._getPeaksData(peakType));
 
             this.collection.set(ranges);
         },
 
-        _asRangeModel: function(hasLoaded, attrs)
+        _asRangeModel: function(attrs, extra)
         {
+            attrs = _.extend({}, attrs, extra);
             attrs.workoutId = this.model.id;
             var range = new WorkoutStatsForRange(attrs);
-            range.hasLoaded = hasLoaded;
             return range;
         },
 
@@ -267,57 +278,28 @@ function(
                 return [];
             }
 
-            var detailData = this.model.get("detailData").toJSON();
-
-            var metric = this.modelPeakKeys[peakType];
-            var peaksData = detailData[metric] ? detailData[metric] : [];
-
-            // sort
-            peaksData = _.sortBy(peaksData, "interval");
-
-            // remove duplicates
-            peaksData = _.uniq(peaksData, true, function(peakItem)
-            {
-                return peakItem.interval;
-            });
+            var ranges = this.model.get("detailData").getRangeCollectionFor(peakType).models;
 
             // filter by enabled intervals
             var enabledPeakIntervals = this._getEnabledPeaks(peakType);
-            peaksData = _.filter(peaksData, function(peakItem)
+            ranges = _.filter(ranges, function(range)
             {
-                return _.contains(enabledPeakIntervals, peakItem.interval);
+                return _.contains(enabledPeakIntervals, range.get("interval"));
             });
 
-            // configure for view
-            return _.map(peaksData, function(peakItem)
+            _.each(ranges, function(range)
             {
-
-                var range = _.clone(peakItem);
-                range.name = "Peak " + this._formatPeakName(peakType, peakItem.interval);
-                range.name += " (" + this._formatPeakValue(peakType, peakItem.value, this.model.get("workoutTypeValueId")) + ")";
-
-                return range;
-
+                var formattedValue = this._formatPeakValue(peakType, range.get("value"), this.model.get("workoutTypeValueId"));
+                range.set("formattedValue", formattedValue);
             }, this);
 
+            return ranges;
         },
 
         _formatPeakValue: function(peakType, peakValue, workoutTypeId)
         {
             var formatType = peakType === "distance" ? "pace" : peakType;
             return TP.utils.conversion.formatUnitsValue(formatType, peakValue, { workoutTypeId: workoutTypeId, withLabel: true });
-        },
-
-        _formatPeakName: function(peakType, interval)
-        {
-            if(peakType === "distance")
-            {
-                return formatPeakDistance(interval);
-            }
-            else
-            {
-                return formatPeakTime(interval);
-            }
         },
 
         _getEnabledPeaks: function(selectedPeakType)
