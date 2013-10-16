@@ -114,5 +114,5 @@ foreach ($mapfile in $mapfiles) {
 $opts = create-rollbarOptions $rollbarDeployEndpoint
 $opts = add-rollbarOptions $opts "environment" $environment
 $opts = add-rollbarOptions $opts "revision" $version
-$opts = add-rollbarOptions $opts "local_username" "AutomatedBuild"
+$opts = add-rollbarOptions $opts "local_username" "$Env:Username"
 execute-process $curl $opts
