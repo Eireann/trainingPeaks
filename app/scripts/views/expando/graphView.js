@@ -231,7 +231,7 @@ function(
         {
             if(!this.zoomRange)
             {
-                return
+                return;
             }
 
             this._setSelectionToRange(this.zoomRange, true, { force: true });
