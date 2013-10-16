@@ -211,24 +211,11 @@ selection: {
                             h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
                         // Limit drawing to the currently displayed area (e.g. don't draw over tick labels when zoomed)
-                        if(x < 0)
-                        {
-                            w += x;
-                            x = 0;
-                        }
-                        if(y < 0)
-                        {
-                            h += y;
-                            y = 0;
-                        }
-                        if(x + w > plot.width())
-                        {
-                            w = plot.width() - x;
-                        }
-                        if(y + h > plot.height())
-                        {
-                            h = plot.height() - y;
-                        }
+                        if(x < 0) { w += x; x = 0; }
+                        if(y < 0) { h += y; y = 0; }
+                        if(x + w > plot.width()) { w = plot.width() - x; }
+                        if(y + h > plot.height()) { h = plot.height() - y; }
+                        if(w < 0 || h < 0) { return; }
 
                         setColorBySelectionType(options, ctx);
                         ctx.fillRect(x, y, w, h);

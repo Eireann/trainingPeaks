@@ -266,14 +266,28 @@ The plugin allso adds the following methods to the plot object:
         }
         
         function setSelection(ranges, preventEvent) {
-            var axis, range, o = plot.getOptions();
+            var o = plot.getOptions();
+
+            selection.ranges = ranges;
+            sanitizeSelection();
+
+            selection.show = true;
+            plot.triggerRedrawOverlay();
+            if (!preventEvent && selectionIsSane())
+                triggerSelectedEvent();
+        }
+
+        function sanitizeSelection() {
+            var range, o = plot.getOptions();
+
+            if(selection.active || !selection.ranges) return;
 
             if (o.selection.mode === "y") {
                 selection.first.x = 0;
                 selection.second.x = plot.width();
             }
             else {
-                range = extractRange(ranges, "x");
+                range = extractRange(selection.ranges, "x");
 
                 selection.first.x = range.axis.p2c(range.from);
                 selection.second.x = range.axis.p2c(range.to);
@@ -285,16 +299,11 @@ The plugin allso adds the following methods to the plot object:
                 selection.second.y = plot.height();
             }
             else {
-                range = extractRange(ranges, "y");
+                range = extractRange(selection.ranges, "y");
 
                 selection.first.y = range.axis.p2c(range.from);
                 selection.second.y = range.axis.p2c(range.to);
             }
-
-            selection.show = true;
-            plot.triggerRedrawOverlay();
-            if (!preventEvent && selectionIsSane())
-                triggerSelectedEvent();
         }
 
         function selectionIsSane() {
@@ -318,6 +327,7 @@ The plugin allso adds the following methods to the plot object:
 
         plot.hooks.drawOverlay.push(function (plot, ctx) {
             // draw selection
+            sanitizeSelection();
             if (selection.show && selectionIsSane()) {
                 var plotOffset = plot.getPlotOffset();
                 var o = plot.getOptions();
@@ -337,6 +347,14 @@ The plugin allso adds the following methods to the plot object:
                     y = Math.min(selection.first.y, selection.second.y) + 0.5,
                     w = Math.abs(selection.second.x - selection.first.x) - 1,
                     h = Math.abs(selection.second.y - selection.first.y) - 1;
+
+
+                // Limit drawing to the currently displayed area (e.g. don't draw over tick labels when zoomed)
+                if(x < 0) { w += x; x = 0; }
+                if(y < 0) { h += y; y = 0; }
+                if(x + w > plot.width()) { w = plot.width() - x; }
+                if(y + h > plot.height()) { h = plot.height() - y; }
+                if(w < 0 || h < 0) { return; }
 
                 ctx.fillRect(x, y, w, h);
                 ctx.strokeRect(x, y, w, h);
