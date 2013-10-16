@@ -44,7 +44,7 @@ function(
 
             this.collection = new TP.Collection(this._buildTableData());
             this.listenTo(this.collection, 'expando:lapEdit', _.bind(this.showApplyButton, this));
-
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this));
         },
 
         // override the default behavior so we can append to the right DOM element
@@ -155,6 +155,12 @@ function(
                 headerNames: headerNames,
                 rowData: rowData
             };
+        },
+
+        _rebuildTable: function()
+        {
+            this.serializeLapsStats();
+            this.collection.reset(this._buildTableData());
         }
         
     });

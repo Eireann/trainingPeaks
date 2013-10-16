@@ -150,7 +150,7 @@ function(
                 }
 
                 rowData.push(lapObject);
-            });
+            }, this);
             return [rowData, empties];
         },
 
