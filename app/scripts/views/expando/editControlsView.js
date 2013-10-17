@@ -38,7 +38,7 @@ function(
 
         onRender: function()
         {
-            if(this.model.get("detailData").get("channelCuts"))
+            if(this.model.get("detailData").hasEdits())
             {
                 this.$el.removeClass("disabled");
             }
@@ -58,8 +58,10 @@ function(
         {
             var params =
             {
-                channelCuts: this.model.get("detailData").get("channelCuts")
+                channelCuts: this.model.get("detailData").getChannelCuts(),
+                lapsStats: this.model.get("detailData").getEditedLapsStats()
             }; 
+
             var command = new SaveWorkoutDetailDataCommand(params);
             command.workoutId = this.model.get('workoutId');
             command.execute()

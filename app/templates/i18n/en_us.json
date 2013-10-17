@@ -449,5 +449,7 @@
     "Show": "Show",
     "Hide": "Hide",
     "ConfirmDeleteSeries1": "Are you sure you want to delete all data for",
-    "ConfirmDeleteSeries2": "All associated data values will be removed."
+    "ConfirmDeleteSeries2": "All associated data values will be removed.",
+    "ClickToEdit": "Click to edit"
+
 }

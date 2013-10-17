@@ -33,6 +33,14 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
             this._dataParser.resetExcludedChannels();
             this._dataParser.loadData(this.get("flatSamples"));
+
+            // reset laps?
+            if(this.get("lapsStatsEdited"))
+            {
+                var augmentedLaps = this._augmentRanges(this.get("lapsStats"), "laps");
+                this.getRangeCollectionFor("laps").reset(augmentedLaps);
+                this.set("lapsStatsEdited", false);
+            }
             
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
@@ -64,7 +72,8 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             "meanMaxSpeeds": null,
             "availableDataChannels": null,
             "disabledDataChannels": null,
-            "channelCuts": null
+            "channelCuts": null,
+            "lapsStatsEdited": false
         },
 
         getDataParser: function()
@@ -110,6 +119,13 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             cadence: "peakCadences"
         },
 
+        _rangeEvents:
+        {
+            laps: {
+                "change:name": "_flagLapsAsEdited"
+            }
+        },
+
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
@@ -119,6 +135,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
                 collection = new TP.Collection(data, { model: WorkoutStatsForRange });
                 this.rangeCollections[rangeType] = collection;
                 this._watchRangeDataFor(rangeType, _.bind(collection.set, collection));
+                this._watchRangeCollectionEvents(collection, rangeType);
             }
             return collection;
 
@@ -175,6 +192,28 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             return matchingChannelCut ? true : false;
         },
 
+        hasEdits: function()
+        {
+            return this.has("channelCuts") || this.get("lapsStatsEdited");
+        },
+
+        getChannelCuts: function()
+        {
+            return this.get("channelCuts");
+        },
+
+        getEditedLapsStats: function()
+        {
+            if(this.get("lapsStatsEdited"))
+            {
+                return this.getRangeCollectionFor("laps").toJSON();
+            }
+            else
+            {
+                return null;
+            }
+        },
+
         _getRangeDataFor: function(rangeType, onChange)
         {
 
@@ -204,6 +243,21 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
                 callback(value);
             });
 
+        },
+
+        _watchRangeCollectionEvents: function(collection, rangeType)
+        {
+            if(!this._rangeEvents.hasOwnProperty(rangeType))
+            {
+                return;
+            }
+
+            var events = this._rangeEvents[rangeType];
+
+            _.each(events, function(methodName, eventName)
+            {
+                this.listenTo(collection, eventName, _.bind(this[methodName], this));
+            }, this);
         },
 
         _augmentRanges: function(ranges, rangeType)
@@ -242,6 +296,11 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             });
 
             return ranges;
+        },
+
+        _flagLapsAsEdited: function()
+        {
+            this.set("lapsStatsEdited", true);
         }
     });
 

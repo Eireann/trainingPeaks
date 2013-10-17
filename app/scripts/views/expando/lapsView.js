@@ -233,7 +233,10 @@ function(
         _updateCollection: function()
         {
             var detailData = this.model.get("detailData");
-            var lapRanges = detailData.getRangeCollectionFor("laps").models;
+            var lapsCollection = detailData.getRangeCollectionFor("laps");
+            var lapRanges = lapsCollection.models;
+
+            this.listenTo(lapsCollection, "reset", _.bind(this._updateCollection, this));
 
             var ranges = lapRanges.slice();
 
