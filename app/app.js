@@ -8,7 +8,6 @@ define(
     "framework/tooltips",
     "framework/identityMap",
     "framework/dataManager",
-    "dashboard/reportingDataManager",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -16,6 +15,7 @@ define(
     "controllers/navigationController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
+    "controllers/homeController",
     "views/buildInfoView",
     "router",
     "utilities/dragAndDropFileUploadWidget",
@@ -34,7 +34,6 @@ function(
     enableTooltips,
     IdentityMap,
     DataManager,
-    ReportingDataManager,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -42,6 +41,7 @@ function(
     NavigationController,
     CalendarController,
     DashboardController,
+    HomeController,
     BuildInfoView,
     Router,
     DragAndDropFileUploadWidget,
@@ -225,20 +225,13 @@ function(
                 resetPatterns: [/athletes\/[0-9]+\/workouts/]
             };
 
-            this.dataManagers = {
-                reporting: new ReportingDataManager(dataManagerOptions),
-                calendar: new DataManager(dataManagerOptions)
-            };
+            this.dataManager = new DataManager(dataManagerOptions);
 
             // reset reporting manager when we save or delete workouts
             this.on("save:model destroy:model", function(model)
             {
                 var modelUrl = _.result(model, "url");
-                _.each(this.dataManagers, function(dataManager)
-                {
-                    dataManager.reset(modelUrl);
-                });
-
+                this.dataManager.reset(modelUrl);
             }, this);
         });
 
@@ -319,8 +312,9 @@ function(
             this.controllers = {};
 
             this.controllers.navigationController = new NavigationController();
-            this.controllers.calendarController = new CalendarController({ dataManager: this.dataManagers.calendar });
-            this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManagers.reporting });
+            this.controllers.calendarController = new CalendarController({ dataManager: this.dataManager });
+            this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManager });
+            this.controllers.homeController = new HomeController({ dataManager: this.dataManager });
         });
 
         this.addInitializer(function()

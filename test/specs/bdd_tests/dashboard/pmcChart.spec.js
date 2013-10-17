@@ -8,7 +8,7 @@ requirejs(
     "views/dashboard/chartUtils",
     "testUtils/sharedSpecs/sharedChartSpecs",
     "views/dashboard/dashboardChartBuilder",
-    "dashboard/reportingDataManager"
+    "framework/dataManager"
 ],
 function(
     _,
@@ -18,7 +18,7 @@ function(
     chartUtils,
     SharedChartSpecs,
     dashboardChartBuilder,
-    ReportingDataManager
+    DataManager
     )
 {
 
@@ -37,7 +37,7 @@ function(
             var chart, chartSettingsView;
             beforeEach(function()
             {
-                chart = dashboardChartBuilder.buildChartModel(chartAttributes, { dataManager: new ReportingDataManager() }); 
+                chart = dashboardChartBuilder.buildChartModel(chartAttributes, { dataManager: new DataManager() }); 
                 spyOn(chart, "save");
             });
 
