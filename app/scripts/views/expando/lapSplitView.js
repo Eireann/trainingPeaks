@@ -58,7 +58,7 @@ function(
         {
             if($(e.currentTarget).hasClass('editing')) return false;
             e.preventDefault();
-            $(e.target).html('<input type=text autofocus=true />').addClass('editing');
+            $(e.target).html('<input type=text/>').addClass('editing');
             this.model.trigger('expando:lapEdit');
         }
     });

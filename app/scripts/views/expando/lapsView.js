@@ -46,13 +46,15 @@ function(
         events:
         {
             "click span": "_onClick",
-            "change input": "_onInputChange"
+            "change input": "_onInputChange",
+            "click .edit": "_onClickEdit",
+            "click .cancel": "_onClickCancel"
         },
 
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
-            this.listenTo(this.model, 'change', this.render);
+            // this.listenTo(this.model, 'change', this.render);
         },
 
         onRender: function()
@@ -74,6 +76,7 @@ function(
         _onFocusedChange: function()
         {
             this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
+            if(!this.$('.editLapName').hasClass('editing')) this.$('.actions').hide();
         },
 
         _onSelectedChange: function()
@@ -84,6 +87,27 @@ function(
         _onClick: function(e)
         {
             this.stateModel.set("primaryRange", this.model);
+            this.$('.actions').show();
+        },
+
+        _onClickEdit: function(e)
+        {
+            $editInput = this.$('.editLapName');
+            if($editInput.hasClass('editing'))
+            {
+                return false;
+            }
+            else
+            {
+                this.previousLapName = $editInput.html();
+                $editInput.html('<input type=text>').addClass('editing');
+            }
+        },
+
+        _onClickCancel: function(e)
+        {
+            this.$('.actions').hide();
+            this.$('.editLapName').html(this.previousLapName).removeClass('editing');
         },
 
         _onInputChange: function(e)
