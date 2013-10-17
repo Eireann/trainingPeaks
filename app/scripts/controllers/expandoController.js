@@ -167,7 +167,7 @@ function(
             {
                 self.onViewResize();
             });
- 
+
         },
 
         resetDetailDataEdits: function()

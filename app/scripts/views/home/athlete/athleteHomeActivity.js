@@ -104,6 +104,8 @@ function(
 
         _loadDataAfterScroll: function()
         {
+            var self = this;
+
             var allVisibleModels = this.scrollableCollectionView.getVisibleModels();
 
             var firstDay = null;
@@ -157,7 +159,7 @@ function(
         _requestActivities: function(startDate, endDate)
         {
             var activityCollection = new ActivityCollection(null, { startDate: startDate, endDate: endDate });
-            var fetchPromise = activityCollection.fetch({ reset: true });
+            var fetchPromise = activityCollection.fetch();
             this.collection.createDayModels(startDate, endDate);
 
             var self = this;

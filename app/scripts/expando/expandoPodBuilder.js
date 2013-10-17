@@ -10,7 +10,7 @@ define(
     "views/charts/speedPeaksChart",
     "views/expando/graphView",
     "views/expando/mapView",
-    "views/workout/lapsSplitsView"
+    "views/expando/lapsSplitsView"
 ],
 function(
     TP,
@@ -88,7 +88,6 @@ function(
 
             var workoutModel = options.data.workout;
             var workoutDetailModel = workoutModel.get("details");
-
             var workoutTypeId = workoutModel.get("workoutTypeValueId");
             var zoneType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
 
@@ -126,7 +125,6 @@ function(
 
             var workoutModel = options.data.workout;
             var workoutDetailModel = workoutModel.get("details");
-
             var workoutTypeId = workoutModel.get("workoutTypeValueId");
             var peaksType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
 

@@ -27,7 +27,7 @@ function(
         {
             this.stateModel = options.stateModel;
 
-            this.listenTo(this.model.get("detailData"), "change", _.bind(this.reset, this));
+            this.listenTo(this.model.get("detailData"), "change", _.bind(this.render, this));
             this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onStatsRangeChanged, this));
         },
 
@@ -53,6 +53,16 @@ function(
 
         serializeData: function()
         {
+            var workoutStatsForRange = this.stateModel.get("primaryRange");
+            if(workoutStatsForRange)
+            {
+                this.selectedRangeData = workoutStatsForRange.toJSON();
+            }
+            else
+            {
+                this.selectedRangeData = null;
+            }
+
             var lapData = this.getLapData();
             lapData = this.mapToMasterFieldSet(lapData);
             formatLapData.calculateTotalAndMovingTime(lapData);
@@ -71,7 +81,6 @@ function(
             {
                 var detailData = this.model.get("detailData").toJSON();
                 var lapData = detailData.totalStats ? detailData.totalStats : {};
-                lapData = _.clone(lapData);
                 lapData.name = "Entire Workout";
                 return lapData;
             }
@@ -106,7 +115,7 @@ function(
                 allStats.push(this.model.get("detailData").get("totalStats"));
                 _.each(this.model.get("detailData").get("lapsStats"), function(lapStats)
                 {
-                    allStats.push(lapStats); 
+                    allStats.push(lapStats);
                 });
 
                 // if the stats for any lap has a value for any field, put that field into the master set
@@ -119,15 +128,15 @@ function(
                         }
                     }, this);
                 }, this);
-             
-                // add minMaxAvg fields 
+
+                // add minMaxAvg fields
                 this.findAvailableMinMaxAvgFieldsInAnyLap(allPossibleFields);
 
                 this.allPossibleFields = allPossibleFields;
             }
             return this.allPossibleFields;
         },
-        
+
         _onStatsRangeChanged: function(stateModel, range)
         {
             if(!range)

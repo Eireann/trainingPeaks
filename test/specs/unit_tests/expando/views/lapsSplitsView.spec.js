@@ -4,7 +4,7 @@ requirejs(
     "underscore",
     "app",
     "TP",
-    "views/workout/lapsSplitsView",
+    "views/expando/lapsSplitsView",
     "models/workoutModel",
     "testUtils/AppTestData/detailDataLapsStats"
 ],
@@ -16,18 +16,21 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 
 		var buildWorkoutModel = function(availableDataChannels)
 		{
+			var detailData = new TP.Model({lapsStats: detailDataLapsStats });
+			detailData.set("availableDataChannels", availableDataChannels);
+			detailData.rangeCollections = {laps: new TP.Collection(detailDataLapsStats)};
 			return new TP.Model({
 				id: 1234,
 				details: new TP.Model(),
 				workoutTypeValueId: 3,
-				detailData: new TP.Model({lapsStats: detailDataLapsStats, availableDataChannels: availableDataChannels })
+				detailData: detailData
 			});
 		},
 		setTSSsource = function(model, tssSource)
 		{
 			_.each(model.get('detailData').get('lapsStats'), function(lapStat, i)
 			{
-				lapStat.trainingStressScoreActualSource = tssSource;			
+				lapStat.trainingStressScoreActualSource = tssSource;
 			});
 		};
 
@@ -219,7 +222,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			serializedData = view.serializeData();
 			checkOrder("rTSS", 6, "RunningTss", serializedData);
 			checkOrder("IF", 7, "RunningTss", serializedData);
-			checkOrder("NGP", 8, "RunningTss", serializedData);	
+			checkOrder("NGP", 8, "RunningTss", serializedData);
 			checkOrder("Avg Pace", 9, "RunningTss", serializedData);
 			checkOrder("Max Pace", 10, "RunningTss", serializedData);
 			checkOrder("Avg Heart Rate", 11, "RunningTss", serializedData);
@@ -231,7 +234,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			checkOrder("Elev Gain", 16, "RunningTss", serializedData);
 			checkOrder("Elev Loss", 17, "RunningTss", serializedData);
 			checkOrder("Work", 18, "RunningTss", serializedData);
-			// min/avg/max torque would go here, but it's (intentionally) not present 
+			// min/avg/max torque would go here, but it's (intentionally) not present
 			// in the data set so it won't be rendered
 			checkOrder("Calories", 19, "RunningTss", serializedData);
 

@@ -1,1 +1,10 @@
-<input type="checkbox"> <span>{{ name }}{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
+<input type="checkbox">
+<div class="editLapName">
+  <span>{{ name }}{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
+</div>
+{{#if isLap}}
+  <div class="actions" style="display:none;">
+    <button class="edit">Edit</button>
+    <button class="cancel">Cancel</button>
+  </div>
+{{/if}}

@@ -12,7 +12,7 @@ define(
 ],
 function(
     _,
-    TP, SaveWorkoutDetailDataCommand, LapSplitView, lapsStatsMixin,
+    TP, SaveWorkoutDetailDataCommand, LapSplitView, LapsStats,
     lapsSplitsTemplate
     )
 {
@@ -27,6 +27,8 @@ function(
 
         itemView: LapSplitView,
 
+        itemViewContainer: '.lapSplitsTableBody',
+
         template:
         {
             type: "handlebars",
@@ -40,27 +42,12 @@ function(
                 throw "Model is required for LapsSplitsView";
             }
             this.detailDataPromise = options.detailDataPromise;
+            this.stateModel = options.stateModel;
 
-
-            this.collection = new TP.Collection(this._buildTableData());
+            this.collection = this.model.get('detailData').rangeCollections.laps;
             this.listenTo(this.collection, 'expando:lapEdit', _.bind(this.showApplyButton, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this)); // rebuild table, but preserve edits in progress
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
-        },
-
-        // override the default behavior so we can append to the right DOM element
-        appendHtml: function(collectionView, itemView, index)
-        {
-            var $tableData = (index === 0) ? this.$('.lapSplitsTableHeader') : this.$('.lapSplitsTableBody');
-            $tableData.append(itemView.el);
-        },
-
-        // override the default behavior, set an attribute for the template
-        renderItemView: function(view, index)
-        {
-            view.customTagName = (index === 0) ? 'th' : 'td';
-            view.render();
-            this.appendHtml(this, view, index);
         },
 
         onShow: function()
@@ -74,6 +61,14 @@ function(
                     self.close();
                 }
             });
+        },
+
+        renderItemView: function(view, index)
+        {
+            view.keyNames = this.keyNames;
+            view.workoutDefaults = this.workoutDefaults;
+            view.render();
+            this.appendHtml(this, view, index);
         },
 
         // TODO: figure out where this should really live.
@@ -96,11 +91,13 @@ function(
 
                     return (($lapInput).length > 0) ? $lapInput.val() : $lap.text();
                 });
-            _.each(this.model.get('detailData').get('lapsStats'), function(lapStats, index)
+
+            var lapsStatsArray = _.clone(this.model.get('detailData').get('lapsStats'));
+            _.each(lapsStatsArray, function(lapStats, index)
                 {
                     lapStats.name = domLapNames[index];
                 });
-            return this.model.get('detailData').get('lapsStats');
+            return lapsStatsArray;
         },
 
         handleApply: function(e)
@@ -119,11 +116,10 @@ function(
         _handleApplyDone: function()
         {
             this.hideApplyButton();
-            _.each(this.$('td.lap input'), function(lapInput)
+            var lapsArray = this.model.get('detailData').get('lapsStats');
+            this.model.get('detailData').rangeCollections.laps.each(function (lap, index)
                 {
-                    var $lapInput = $(lapInput);
-                    var value = $lapInput.val();
-                    $lapInput.closest('td.lap').text(value).addClass('edit');
+                    lap.set({name: lapsArray[index].name});
                 });
         },
 
@@ -133,24 +129,27 @@ function(
 
         serializeData: function()
         {
-            var workoutDefaults = this._getDefaults(),
-                buildResults = this._buildLapObjects(workoutDefaults),
+            var workoutDefaults = LapsStats.getDefaults(this.model),
+                buildResults = LapsStats.buildLapObjects(workoutDefaults),
                 lapObjects = buildResults[0],
                 emptyKeyCounts = buildResults[1],
-                compactedLapObjects = this._compactLapObjects(lapObjects, emptyKeyCounts),
+                compactedLapObjects = LapsStats.compactLapObjects(lapObjects, emptyKeyCounts),
                 rowData = [],
                 headerNames;
 
-            headerNames = _.map(_.keys(compactedLapObjects[0], function(header_name)
-                {
-                    return TP.utilities.translate(header_name);
-                })
-            );
+            headerNames = LapsStats.buildHeaderNames(compactedLapObjects[0]);
 
             rowData = _.map(compactedLapObjects, function(row)
             {
                 return _.values(row);
             });
+
+            this.workoutDefaults = workoutDefaults;
+            this.keyNames =
+                _.map(headerNames, function(headerName) {
+                    var headerNameArray = headerName.split(' ');
+                    return [headerNameArray[0].toLowerCase(), headerNameArray.slice(1).join('')].join('');
+                });
 
             return {
                 headerNames: headerNames,
@@ -166,6 +165,5 @@ function(
         
     });
 
-    _.extend(LapsSplitsView.prototype, lapsStatsMixin);
     return LapsSplitsView;
 });
