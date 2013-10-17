@@ -44,19 +44,19 @@ function(
             };
         },
 
-        buildLapObjects: function(workoutDefaults)
+        buildLapObjects: function(workoutDefaults, availableChannels)
         {
             var rowData = [],
                 empties = {};
 
             _.each(workoutDefaults.lapsData, function(lap)
             {
-                this.formatLapObject(lap, workoutDefaults, rowData, empties);
+                this.formatLapObject(lap, workoutDefaults, rowData, empties, availableChannels);
             }, this);
             return [rowData, empties];
         },
 
-        formatLapObject: function(rawLapData, workoutDefaults, formattedLapData, empties)
+        formatLapObject: function(rawLapData, workoutDefaults, formattedLapData, empties, availableChannels)
         {
             var formatOptions = { defaultValue: null, allowZero: true, workoutTypeId: workoutDefaults.sportTypeID};
 
@@ -135,7 +135,7 @@ function(
             lapObject["Calories"] = TP.utils.conversion.formatUnitsValue("calories", lap.calories, formatOptions);
 
             // remove channels that have been cut
-            this._removeUnavailableChannels(lapObject);
+            this._removeUnavailableChannels(lapObject, availableChannels);
 
             // filter out null values that are null across all rows, and display any remaining null values as "--"
             var defaultDisplayValue = "--";
@@ -195,9 +195,8 @@ function(
             );
         },
 
-        _removeUnavailableChannels: function(lapObject)
-        {
-            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+        _removeUnavailableChannels: function(lapObject, availableChannels)
+        { 
             _.each(channelToStatsMap, function(lapFieldNames, channelName)
             {
                 if(!_.contains(availableChannels, channelName))

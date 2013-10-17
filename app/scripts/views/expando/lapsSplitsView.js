@@ -130,7 +130,7 @@ function(
         serializeData: function()
         {
             var workoutDefaults = LapsStats.getDefaults(this.model),
-                buildResults = LapsStats.buildLapObjects(workoutDefaults),
+                buildResults = LapsStats.buildLapObjects(workoutDefaults, this.model.get("detailData").get("availableDataChannels")),
                 lapObjects = buildResults[0],
                 emptyKeyCounts = buildResults[1],
                 compactedLapObjects = LapsStats.compactLapObjects(lapObjects, emptyKeyCounts),
