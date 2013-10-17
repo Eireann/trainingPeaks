@@ -2,8 +2,6 @@ define(
 [
     "TP",
     "expando/views/expandoPodView",
-    "utilities/data/timeInZonesGenerator",
-    "utilities/data/peaksGenerator",
     "views/charts/heartRateTimeInZonesChart",
     "views/charts/powerTimeInZonesChart",
     "views/charts/speedTimeInZonesChart",
@@ -17,8 +15,6 @@ define(
 function(
     TP,
     ExpandoPodView,
-    timeInZonesGenerator,
-    ThePeaksGenerator,
     HRTimeInZonesChartView,
     PowerTimeInZonesChartView,
     SpeedTimeInZonesChartView,
@@ -93,18 +89,10 @@ function(
             var workoutModel = options.data.workout;
             var workoutDetailModel = workoutModel.get("details");
 
-            var timeInZones = timeInZonesGenerator(
-                variantName,
-                zonesName, 
-                workoutDetailModel,
-                workoutModel
-            );
-
             var workoutTypeId = workoutModel.get("workoutTypeValueId");
             var zoneType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
 
             return new ViewClass({
-                timeInZones: timeInZones,
                 workoutType: workoutTypeId,
                 zoneType: zoneType,
                 model: options.data.workout,
@@ -139,21 +127,10 @@ function(
             var workoutModel = options.data.workout;
             var workoutDetailModel = workoutModel.get("details");
 
-            var peaks = ThePeaksGenerator.generate(variantName, workoutDetailModel);
-
-            var timeInZones = timeInZonesGenerator(
-                variantName,
-                zonesName, 
-                workoutDetailModel,
-                workoutModel
-            );
-
             var workoutTypeId = workoutModel.get("workoutTypeValueId");
             var peaksType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
 
             return new ViewClass({
-                peaks: peaks,
-                timeInZones: timeInZones,
                 workoutType: workoutTypeId,
                 peaksType: peaksType,
                 model: options.data.workout,

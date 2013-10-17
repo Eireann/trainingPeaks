@@ -128,6 +128,7 @@ function (_, TP, ExpandoController)
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "collapseClicked", "eventLabel": "" });
 
             this.expanded = false;
+            this.resetTabRenderedState();
             this.animateOneStepCollapse();
         },
 

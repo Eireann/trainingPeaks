@@ -18,8 +18,6 @@ function(_, TP, PeaksChartView, chartColors)
             this.workoutType = options.workoutType;
             this.constructor.__super__.initialize.call(this,
             _.defaults({
-                peaks: options.peaks,
-                timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
                 toolTipBuilder: this.toolTipBuilder
             }, options));

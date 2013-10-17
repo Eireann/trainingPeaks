@@ -30,11 +30,13 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
 
         reset: function()
         {
+            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
+            this._dataParser.resetExcludedChannels();
+            this._dataParser.loadData(this.get("flatSamples"));
+            
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
             this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
-            this._dataParser.resetExcludedChannels();
-            this._dataParser.loadData(this.get("flatSamples"));
             this.trigger("reset");
         },
 
@@ -156,10 +158,21 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
             channelCuts.push(channelCutDetails);
 
-            this.set("channelCuts", channelCuts);
-            this._removeAvailableChannel(series);
-            this.disableChannel(series);
+            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
             this._dataParser.excludeChannel(series);
+            this.set("channelCuts", channelCuts);
+            this.disableChannel(series);
+            this._removeAvailableChannel(series);
+        },
+
+        channelWasCut: function(series)
+        {
+            var matchingChannelCut = _.find(this.get("channelCuts"), function(channelCut)
+            {
+                return channelCut.channelEdit === series;
+            });
+
+            return matchingChannelCut ? true : false;
         },
 
         _getRangeDataFor: function(rangeType, onChange)

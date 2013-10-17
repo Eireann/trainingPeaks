@@ -3,6 +3,8 @@
     "underscore",
     "setImmediate",
     "TP",
+    "utilities/data/peaksGenerator",
+    "utilities/data/timeInZonesGenerator",
     "utilities/charting/flotOptions",
     "utilities/charting/jquery.flot.tooltip",
     "utilities/charting/flotToolTipPositioner",
@@ -10,208 +12,199 @@
     "hbs!templates/views/charts/chartTooltip"
 ],
 function (
-        _,
-        setImmediate,
-        TP,
-        defaultFlotOptions,
-        flotToolTip,
-        toolTipPositioner,
-        peaksChartTemplate,
-        tooltipTemplate)
+    _,
+    setImmediate,
+    TP,
+    peaksGenerator,
+    timeInZonesGenerator,
+    defaultFlotOptions,
+    flotToolTip,
+    toolTipPositioner,
+    peaksChartTemplate,
+    tooltipTemplate
+    )
 {
-        return TP.ItemView.extend(
+    return TP.ItemView.extend(
+    {
+        tagName: "div",
+        className: "peaksChart",
+
+        template:
         {
-            tagName: "div",
-            className: "peaksChart",
+            type: "handlebars",
+            template: peaksChartTemplate
+        },
 
-            template:
+        modelEvents: {},
+
+        initialize: function(options)
+        {
+            if(!this.model)
+                throw new Error("PeaksChartView requires a model");
+
+            if (!options.chartColor)
+                throw new Error("PeaksChartView requires a chartColor object at construction time");
+
+            if (!options.toolTipBuilder)
+                throw new Error("PeaksChartView requires a toolTipBuilder callback at construction time");
+
+            this.chartColor = options.chartColor;
+
+            _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
+
+            this.once("render", function()
             {
-                type: "handlebars",
-                template: peaksChartTemplate
-            },
+                this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.renderIfVisible, this));
+                this.listenTo(this.model.get("details"), "change:meanMax" + this.dataChannel + "s", _.bind(this.renderIfVisible, this));
+                this.listenTo(this.model.get("details"), "change:meanMax" + this.dataChannel + "s.meanMaxes.*", _.bind(this.renderIfVisible, this));
+            }, this);
+        },
 
-            modelEvents: {},
+        serializeData: function()
+        {
+            return this.chartModel.toJSON();
+        },
 
-            initialize: function(options)
+        onRender: function()
+        {
+            if(this.model.get("detailData").channelWasCut(this.dataChannel))
             {
-                if (!options.peaks)
-                    throw "PeaksChartView requires a peaks object at construction time";
+                this.$el.addClass("nodata");
+                return;
+            }
 
-                if (!options.timeInZones)
-                    throw "PeaksChartView requires a timeInZones object at construction time";
+            this.peaks = peaksGenerator.generate(this.dataChannel, this.model.get("details"));
 
-                if (!options.chartColor)
-                    throw "PeaksChartView requires a chartColor object at construction time";
+            if(!this.peaks)
+            {
+                this.$el.addClass("nodata");
+                return;
+            }
 
-                if (!options.toolTipBuilder)
-                    throw "PeaksChartView requires a toolTipBuilder callback at construction time";
+            this.$el.removeClass("nodata");
+            this.timeInZones = timeInZonesGenerator(this.dataChannel, this._getZoneSettingName(), this.model.get("details"), this.model);
+            var chartPoints = this.buildPeaksFlotPoints(this.peaks);
+            var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
+            var flotOptions = this.buildFlotChartOptions();
 
-                this.peaks = options.peaks;
-                this.timeInZones = options.timeInZones;
-                this.chartColor = options.chartColor;
+            var self = this;
 
-                _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
+            // let the html draw first so our container has a height and width
+            setImmediate(function()
+            {
+                self.renderPeaksFlotChart(dataSeries, flotOptions);
+            });
+        },
 
-                if(options.model)
+        buildPeaksFlotPoints: function(peaks)
+        {
+            var chartPoints = [];
+
+            _.each(peaks, function(peak, index)
+            {
+                var value = peak.value ? peak.value : null;
+                var point = [index, value];
+                chartPoints.push(point);
+            });
+
+            return chartPoints;
+        },
+
+        buildPeaksFlotDataSeries: function (chartPoints, chartColor)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: "#FFFFFF",
+                lines:
                 {
-                    this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.render, this));
+                    lineWidth: 2,
+                    fillColor: { colors: [chartColor.dark, chartColor.light] }
                 }
-            },
+            };
 
-            serializeData: function()
+            return [dataSeries];
+        },
+
+        buildFlotChartOptions: function()
+        {
+            var flotOptions = defaultFlotOptions.getSplineOptions(this.onHover);
+
+            flotOptions.yaxis = {
+                min: this.calculateYAxisMinimum(),
+                tickFormatter: this.formatYAxisTick
+            };
+
+            flotOptions.xaxis = {
+                tickSize: 3,
+                tickDecimals: 0,
+                tickFormatter: this.formatXAxisTick,
+                tickLength: 0
+            };
+
+            return flotOptions;
+        },
+
+        renderPeaksFlotChart: function(dataSeries, flotOptions)
+        {
+            this.$chartEl = this.$(".chartContainer");
+
+            if(!this.$chartEl.height())
             {
-                return this.chartModel.toJSON();
-            },
+                this.$chartEl.css({ "min-height": 1, "min-width": 1 });
+            }
+            
+            if($.plot)
+            { 
+                this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
+            }
+        },
 
-            onRender: function()
+        onHover: function(flotItem, $tooltipEl)
+        {
+            var peaksItem = this.peaks[flotItem.dataIndex];
+
+            var tooltipData = this.toolTipBuilder(peaksItem, this.timeInZones);
+            var tooltipHTML = tooltipTemplate(tooltipData);
+            $tooltipEl.html(tooltipHTML);
+            toolTipPositioner.updatePosition($tooltipEl, this.plot);
+        },
+
+        formatXAxisTick: function(value, series)
+        {
+            if (this.peaks[value])
             {
-                if (!this.peaks)
-                    return;
+                var label = this.peaks[value].label;
+                return label.replace(/ /g, "").replace(/Minutes/, "m").replace(/Seconds/, "s").replace(/Hour/, "h");
+            } else
+            {
+                return null;
+            }
+        },
 
-                if(this._hasAvailableDataChannel())
+        formatYAxisTick: function(value, series)
+        {
+            return value.toFixed(0);
+        },
+
+        calculateYAxisMinimum: function()
+        {
+            for(var i = this.peaks.length - 1;i >= 0;i--)
+            {
+                if (this.peaks[i].value)
                 {
-                    this.$el.removeClass("nodata");
-                    var chartPoints = this.buildPeaksFlotPoints(this.peaks);
-                    var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
-                    var flotOptions = this.buildFlotChartOptions();
-
-                    var self = this;
-
-                    // let the html draw first so our container has a height and width
-                    setImmediate(function()
-                    {
-                        self.renderPeaksFlotChart(dataSeries, flotOptions);
-                    });
-                }
-                else
-                {
-                    this.$el.addClass("nodata");
-                }
-
-            },
-
-            buildPeaksFlotPoints: function(peaks)
-            {
-                var chartPoints = [];
-
-                _.each(peaks, function(peak, index)
-                {
-                    var value = peak.value ? peak.value : null;
-                    var point = [index, value];
-                    chartPoints.push(point);
-                });
-
-                return chartPoints;
-            },
-
-            buildPeaksFlotDataSeries: function (chartPoints, chartColor)
-            {
-                var dataSeries =
-                {
-                    data: chartPoints,
-                    color: "#FFFFFF",
-                    lines:
-                    {
-                        lineWidth: 2,
-                        fillColor: { colors: [chartColor.dark, chartColor.light] }
-                    }
-                };
-
-                return [dataSeries];
-            },
-
-            buildFlotChartOptions: function()
-            {
-                var flotOptions = defaultFlotOptions.getSplineOptions(this.onHover);
-
-                flotOptions.yaxis = {
-                    min: this.calculateYAxisMinimum(),
-                    tickFormatter: this.formatYAxisTick
-                };
-
-                flotOptions.xaxis = {
-                    tickSize: 3,
-                    tickDecimals: 0,
-                    tickFormatter: this.formatXAxisTick,
-                    tickLength: 0
-                };
-
-                return flotOptions;
-            },
-
-            renderPeaksFlotChart: function(dataSeries, flotOptions)
-            {
-                this.$chartEl = this.$(".chartContainer");
-
-                if(!this.$chartEl.height())
-                {
-                    this.$chartEl.css({ "min-height": 1, "min-width": 1 });
-                }
-                
-                if($.plot)
-                { 
-                    this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
-                }
-            },
-
-            onHover: function(flotItem, $tooltipEl)
-            {
-                var peaksItem = this.peaks[flotItem.dataIndex];
-
-                var tooltipData = this.toolTipBuilder(peaksItem, this.timeInZones);
-                var tooltipHTML = tooltipTemplate(tooltipData);
-                $tooltipEl.html(tooltipHTML);
-                toolTipPositioner.updatePosition($tooltipEl, this.plot);
-            },
-
-            formatXAxisTick: function(value, series)
-            {
-                if (this.peaks[value])
-                {
-                    var label = this.peaks[value].label;
-                    return label.replace(/ /g, "").replace(/Minutes/, "m").replace(/Seconds/, "s").replace(/Hour/, "h");
-                } else
-                {
-                    return null;
-                }
-            },
-
-            formatYAxisTick: function(value, series)
-            {
-                return value.toFixed(0);
-            },
-
-            calculateYAxisMinimum: function()
-            {
-                    for(var i = this.peaks.length - 1;i >= 0;i--)
-                    {
-                        if (this.peaks[i].value)
-                        {
-                            return this.peaks[i].value * 0.75;
-                        }
-                    }
-
-                    return 0;
-            },
-
-            _hasAvailableDataChannel: function()
-            {
-
-                if(!this.model || !this.model.has("detailData") || !this.dataChannel)
-                {
-                    return true;
-                }
-
-                if(!_.contains(this.model.get("detailData").get("availableDataChannels"), this.dataChannel))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
+                    return this.peaks[i].value * 0.75;
                 }
             }
 
-        });
+            return 0;
+        },
+
+        _getZoneSettingName: function()
+        {
+            return this.dataChannel.substring(0,1).toLowerCase() + this.dataChannel.substring(1) + "Zones";
+        }
+
+    });
 
 });

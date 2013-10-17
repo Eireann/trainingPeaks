@@ -17,7 +17,6 @@ function(_, TP, TimeInZonesChartView, chartColors)
         {
             this.constructor.__super__.initialize.call(this,
             _.defaults({
-                timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
                 toolTipBuilder: this.toolTipBuilder
             }, options));

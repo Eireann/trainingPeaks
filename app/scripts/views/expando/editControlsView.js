@@ -50,6 +50,7 @@ function(
 
         _cancelEdits: function()
         {
+            this.model.get("detailData").reset();
             this._resetModels();
         },
 
@@ -86,7 +87,11 @@ function(
         {
             this.model.fetch();
             this.model.get("details").fetch();
-            this.model.get("detailData").fetch();
+            var detailData = this.model.get("detailData");
+            detailData.fetch().done(function()
+            {
+                detailData.reset();
+            });
         }
 
     });
