@@ -138,12 +138,18 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
 
         cutChannel: function(series, dataParser)
         {
-            var channelCutDetails = dataParser.cutChannel(series);
+            var channelCutDetails = {
+                channelEdit: series,
+                startTimeInMilliseconds: _.first(this.flatSamples.msOffsetsOfSamples),
+                endTimeInMilliseconds: _.last(this.flatSamples.msOffsetsOfSamples)
+            };
             var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
             channelCuts.push(channelCutDetails);
+
             this.set("channelCuts", channelCuts);
             this._removeAvailableChannel(series);
             this.disableChannel(series);
+            dataParser.cutChannel(series);
         },
 
         _getRangeDataFor: function(rangeType, onChange)

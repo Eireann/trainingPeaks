@@ -436,8 +436,11 @@ function(chartColors, findIndexByMsOffset, conversion)
             {
                 this.cutSeries.push(channel);
             }
+        },
 
-            return {};
+        resetCutChannels: function()
+        {
+            this.cutSeries = [];
         },
 
         getAvailableChannels: function()

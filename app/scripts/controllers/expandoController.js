@@ -73,7 +73,7 @@ function(
 
             this.stateModel = new ExpandoStateModel();
 
-            this.views.editControlsView = new EditControlsView({ model: this.model, stateModel: this.stateModel });
+            this.views.editControlsView = new EditControlsView({ model: this.model, stateModel: this.stateModel, dataParser: this.dataParser });
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 

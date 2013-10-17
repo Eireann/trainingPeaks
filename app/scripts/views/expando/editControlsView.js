@@ -23,6 +23,7 @@ function(
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
+            this.dataParser = options.dataParser;
             this.listenTo(this.model.get("detailData"), "change", _.bind(this.render, this));
         },
 
@@ -36,6 +37,39 @@ function(
             {
                 this.$el.addClass("disabled");
             }
+        },
+
+        _applyEdits: function()
+        {
+            var params =
+            {
+                channelCuts: this.model.get("detailData").get("channelCuts")
+            }; 
+            var command = new SaveWorkoutDetailDataCommand(params);
+            command.workoutId = this.model.get('workoutId');
+            command.execute()
+                .done(_.bind(this._handleApplyDone, this))
+                .fail(_.bind(this._handleApplyFail, this));
+        },
+
+        _handleApplyDone: function()
+        {
+            var self = this;
+            $.when(
+                this.model.fetch(),
+                this.model.get("details").fetch(),
+                this.model.get("detailData").fetch()
+            ).done(function()
+            {
+                alert('reset');
+                self.trigger("reset");
+            });
+        },
+
+        _handleApplyFail: function()
+        {
+            alert('failed');
+            this.trigger("reset");
         }
 
     });
