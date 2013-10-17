@@ -54,7 +54,7 @@ function(
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
-            // this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'change:name', this._onNameChange);
         },
 
         onRender: function()
@@ -71,6 +71,13 @@ function(
                 data.name += " (" + data.formattedValue + ")";
             }
             return data;
+        },
+
+        _onNameChange: function()
+        {
+            this.render();
+            this.stateModel.trigger('change:primaryRange');
+            this.previousLapName = this.$('.editLapName').html();
         },
 
         _onFocusedChange: function()

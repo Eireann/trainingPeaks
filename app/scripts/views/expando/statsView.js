@@ -29,11 +29,7 @@ function(
 
             this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onStatsRangeChanged, this));
 
-            this.model.get("detailData").on("change", this.reset, this);
-
-            this.on("close", function(){
-                this.model.get("detailData").off("change", this.reset, this);
-            });
+            this.listenTo(this.model.get("detailData"), "change", this.render, this);
         },
 
         reset: function()
@@ -49,6 +45,16 @@ function(
 
         serializeData: function()
         {
+            var workoutStatsForRange = this.stateModel.get("primaryRange");
+            if(workoutStatsForRange)
+            {
+                this.selectedRangeData = workoutStatsForRange.toJSON();
+            }
+            else
+            {
+                this.selectedRangeData = null;
+            }
+
             var lapData = this.getLapData();
             lapData = this.mapToMasterFieldSet(lapData);
             formatLapData.calculateTotalAndMovingTime(lapData);

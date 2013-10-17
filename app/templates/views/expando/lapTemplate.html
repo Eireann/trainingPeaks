@@ -2,7 +2,7 @@
 <div class="editLapName">
   <span>{{ name }}{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
 </div>
-{{#if hasLoaded}}
+{{#if isLap}}
   <div class="actions" style="display:none;">
     <button class="edit">Edit</button>
     <button class="cancel">Cancel</button>

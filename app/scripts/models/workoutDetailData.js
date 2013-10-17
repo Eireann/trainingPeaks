@@ -136,7 +136,8 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             var defaults =
             {
                 workoutId: this.get("workoutId"),
-                hasLoaded: rangeType === "laps"
+                hasLoaded: rangeType === "laps",
+                isLap: rangeType === "laps"
             };
             return _.map(ranges, function(range)
             {
