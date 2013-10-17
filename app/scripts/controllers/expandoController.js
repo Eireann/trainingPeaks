@@ -3,7 +3,6 @@
     "setImmediate",
     "TP",
     "views/packeryCollectionView",
-    "utilities/charting/dataParser",
     "layouts/expandoLayout",
     "views/expando/graphView",
     "views/expando/mapView",
@@ -19,7 +18,6 @@ function(
     setImmediate,
     TP,
     PackeryCollectionView,
-    DataParser,
     ExpandoLayout,
     GraphView,
     MapView,
@@ -51,7 +49,6 @@ function(
             this.layout.on("close", this.onLayoutClose, this);
             this.views = {};
 
-            this.dataParser = new DataParser();
             _.bindAll(this, "onModelFetched");
         },
 
@@ -73,7 +70,7 @@ function(
 
             this.stateModel = new ExpandoStateModel();
 
-            this.views.editControlsView = new EditControlsView({ model: this.model, stateModel: this.stateModel, dataParser: this.dataParser });
+            this.views.editControlsView = new EditControlsView({ model: this.model, stateModel: this.stateModel });
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 
@@ -114,7 +111,6 @@ function(
             {
                 workout: this.model,
                 detailDataPromise: this.prefetchConfig.detailDataPromise,
-                dataParser: this.dataParser,
                 stateModel: this.stateModel
             };
 
@@ -158,7 +154,6 @@ function(
             this.layout.$el.removeClass("waiting");
 
             var self = this;
-            this._updateDataParser();
 
             // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
@@ -174,7 +169,6 @@ function(
 
         onSensorDataChange: function()
         {
-            this._updateDataParser();
 
             var self = this;
             setImmediate(function()
@@ -277,16 +271,6 @@ function(
             }, this);
 
             this.views.packeryView.layout();
-        },
-
-        _updateDataParser: function()
-        {
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-
-            if(flatSamples)
-            {
-                this.dataParser.loadData(flatSamples);
-            }
         }
 
     });

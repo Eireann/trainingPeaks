@@ -14,7 +14,6 @@ function($, TP, moment, theMarsApp, GraphToolbarView)
 
         beforeEach(function()
         {
-            var dataParser = jasmine.createSpy("Data Parser");
             var stateModel = new TP.Model();
 
             var workoutModel = new TP.Model({
@@ -26,7 +25,6 @@ function($, TP, moment, theMarsApp, GraphToolbarView)
             });
 
             view = new GraphToolbarView({ 
-                dataParser: dataParser,
                 stateModel: stateModel, 
                 model: workoutModel
             });

@@ -3,11 +3,12 @@
     "underscore",
     "moment",
     "TP",
+    "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
 ],
-function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistance)
+function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, formatPeakDistance)
 {
     var WorkoutDetailData = TP.APIBaseModel.extend(
     {
@@ -21,9 +22,10 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
 
         initialize: function()
         {
+            this._dataParser = new DataParser();
             this.rangeCollections = {};
             this.reset();
-            this.on("change:flatSamples", this._onFlatSamplesChange, this);
+            this.on("change:flatSamples", this.reset, this);
         },
 
         reset: function()
@@ -31,6 +33,9 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
             this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
+            this._dataParser.resetExcludedChannels();
+            this._dataParser.loadData(this.get("flatSamples"));
+            this.trigger("reset");
         },
 
         url: function()
@@ -58,6 +63,11 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             "availableDataChannels": null,
             "disabledDataChannels": null,
             "channelCuts": null
+        },
+
+        getDataParser: function()
+        {
+            return this._dataParser;
         },
 
         hasSensorData: function()
@@ -136,7 +146,7 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             this.set("availableDataChannels", _.without(this.get("availableDataChannels"), series));
         },
 
-        cutChannel: function(series, dataParser)
+        cutChannel: function(series)
         {
             var channelCutDetails = {
                 channelEdit: series,
@@ -149,7 +159,7 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             this.set("channelCuts", channelCuts);
             this._removeAvailableChannel(series);
             this.disableChannel(series);
-            dataParser.cutChannel(series);
+            this._dataParser.excludeChannel(series);
         },
 
         _getRangeDataFor: function(rangeType, onChange)
@@ -218,15 +228,7 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             });
 
             return ranges;
-        },
-
-        _onFlatSamplesChange: function()
-        {
-            var sampleChannels = this.has("flatSamples") ? this.get("flatSamples").channelMask : [];
-            var disabledChannels = this.has("disabledDataChannels") ? this.get("disabledDataChannels") : [];
-            this.set("availableDataChannels", _.difference(sampleChannels, disabledChannels));
         }
-
     });
 
     return WorkoutDetailData;

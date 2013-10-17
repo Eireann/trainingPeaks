@@ -29,18 +29,19 @@ function(chartColors, findIndexByMsOffset, conversion)
 
     var parseDataByAxisAndChannel = function(flatSamples)
     {
+
         var dataByAxisAndChannel =
         {
             time: {},
             distance: {}
         };
 
+        if (!flatSamples || !flatSamples.samples)
+            return dataByAxisAndChannel;
+  
         var previousElevation = null;
         var distanceChannelIdx = _.indexOf(flatSamples.channelMask, "Distance");
         var xAxisZeroAlreadySet = false;
-
-        if (!flatSamples || !flatSamples.samples)
-            return null;
 
         for (var sampleIdx = 0; sampleIdx < flatSamples.samples.length; sampleIdx++)
         {
@@ -105,7 +106,7 @@ function(chartColors, findIndexByMsOffset, conversion)
             if (_.contains(self.disabledSeries, channel))
                 return;
 
-            if(_.contains(self.cutSeries, channel))
+            if(_.contains(self.excludedSeries, channel))
                 return;
             
             if (channel === "Distance")
@@ -280,7 +281,7 @@ function(chartColors, findIndexByMsOffset, conversion)
     {
         this.xaxis = "time";
         this.disabledSeries = [];
-        this.cutSeries = [];
+        this.excludedSeries = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
@@ -430,22 +431,22 @@ function(chartColors, findIndexByMsOffset, conversion)
             return null;
         },
 
-        cutChannel: function(channel)
+        excludeChannel: function(channel)
         {
-            if(!_.contains(this.cutSeries, channel))
+            if(!_.contains(this.excludedSeries, channel))
             {
-                this.cutSeries.push(channel);
+                this.excludedSeries.push(channel);
             }
         },
 
-        resetCutChannels: function()
+        resetExcludedChannels: function()
         {
-            this.cutSeries = [];
+            this.excludedSeries = [];
         },
 
         getAvailableChannels: function()
         {
-            return _.difference(this.flatSamples.channelMask, this.cutSeries);
+            return _.difference(this.flatSamples.channelMask, this.excludedSeries);
         }
 
     });

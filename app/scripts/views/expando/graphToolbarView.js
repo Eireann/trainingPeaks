@@ -22,13 +22,9 @@ function(
         initialize: function(options)
         {
 
-            if (!options.dataParser)
-                throw new Error("dataParser is required for expando graph toolbar view");
-
             if (!options.stateModel)
                 throw new Error("stateModel is required for expando graph toolbar view");
 
-            this.dataParser = options.dataParser;
             this.stateModel = options.stateModel;
 
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
@@ -71,7 +67,7 @@ function(
             var seriesButton = $(event.target);
 
             var seriesName = seriesButton.data("series");
-            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView({ model: this.model, parentEl: this.$el, series: seriesName, stateModel: this.stateModel, dataParser: this.dataParser });
+            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView({ model: this.model, parentEl: this.$el, series: seriesName, stateModel: this.stateModel });
             var offset = seriesButton.offset();
             this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
         },

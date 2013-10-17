@@ -69,14 +69,15 @@
                 {
                     var originalElevation = [100, 102, 110];
                     var correctedElevation = [103, 105, 114];
-                    var dataParser = new DataParser();
 
+                    var dataParser = new DataParser();
                     spyOn(dataParser, "createCorrectedElevationChannel").andReturn(correctedElevation);
 
                     var viewContext = {
+                        model: buildWorkoutModel(),
                         originalElevation: originalElevation,
                         elevationCorrectionModel: new TP.Model({elevations: correctedElevation}),
-                        dataParser: dataParser
+                        _getDataParser: function(){return dataParser}
                     };
 
                     var series = ElevationCorrectionView.prototype.buildPlotSeries.apply(viewContext);

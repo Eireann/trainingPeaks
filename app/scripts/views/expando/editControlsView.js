@@ -29,7 +29,6 @@ function(
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
-            this.dataParser = options.dataParser;
             this.listenTo(this.model.get("detailData"), "change", _.bind(this.render, this));
         },
 
@@ -65,22 +64,20 @@ function(
 
         _handleApplyDone: function()
         {
-            var self = this;
-            $.when(
-                this.model.fetch(),
-                this.model.get("details").fetch(),
-                this.model.get("detailData").fetch()
-            ).done(function()
-            {
-                alert('reset');
-                self.trigger("reset");
-            });
+            this._resetModels();
         },
 
         _handleApplyFail: function()
         {
             alert('failed');
             this.trigger("reset");
+        },
+
+        _resetModels: function()
+        {
+            this.model.fetch();
+            this.model.get("details").fetch();
+            this.model.get("detailData").fetch();
         }
 
     });

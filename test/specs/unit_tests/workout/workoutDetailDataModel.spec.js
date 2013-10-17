@@ -94,11 +94,14 @@ function(WorkoutDetailDataModel)
 
 				beforeEach(function()
 				{
-					var dataParser = jasmine.createSpyObj("Data Parser", ["cutChannel"]);
-					dataParser.cutChannel.andReturn({});
 					model = new WorkoutDetailDataModel();
-					model.set("availableDataChannels", ["Speed", "Cadence", "Power"]);
-					model.cutChannel("Speed", dataParser);
+					//model.set("availableDataChannels", ["Speed", "Cadence", "Power"]);
+					model.set("flatSamples", {
+						samples: [],
+						msOffsetsOfSamples: [0],
+						channelMask: ["Speed", "Cadence", "Power"]
+					})
+					model.cutChannel("Speed");
 				});
 
 				it("Should remove the channel from the availableDataChannels list", function()

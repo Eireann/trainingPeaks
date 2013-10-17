@@ -39,7 +39,6 @@ function(
             {
                 model: options.data.workout,
                 detailDataPromise: options.data.detailDataPromise,
-                dataParser: options.data.dataParser,
                 stateModel: options.data.stateModel
             });
 
@@ -51,7 +50,6 @@ function(
             {
                 model: options.data.workout,
                 detailDataPromise: options.data.detailDataPromise,
-                dataParser: options.data.dataParser,
                 stateModel: options.data.stateModel
             });
 

@@ -53,13 +53,9 @@ function(
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for graph view";
 
-            if (!options.dataParser)
-                throw "dataParser is required for graph view";
-
             this.stateModel = options.stateModel;
 
             this.detailDataPromise = options.detailDataPromise;
-            this.dataParser = options.dataParser;
             this.lastFilterPeriod = this.getInitialFilterPeriod();
             this.currentAxis = "time";
             this.selections = [];
@@ -123,14 +119,14 @@ function(
 
             if (!this.allSeries)
             {
-                this.allSeries = this.dataParser.getSeries();
+                this.allSeries = this._getDataParser().getSeries();
             }
 
-            this.dataParser.workoutTypeValueId = this.model.get("workoutTypeValueId");
-            this.dataParser.setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
+            this._getDataParser().workoutTypeValueId = this.model.get("workoutTypeValueId");
+            this._getDataParser().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
-            var enabledSeries = this.dataParser.getSeries();
-            var yaxes = this.dataParser.getYAxes(enabledSeries);
+            var enabledSeries = this._getDataParser().getSeries();
+            var yaxes = this._getDataParser().getYAxes(enabledSeries);
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
@@ -144,7 +140,7 @@ function(
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
-            this.flotOptions.zoom.dataParser = this.dataParser;
+            this.flotOptions.zoom.dataParser = this._getDataParser();
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             this.flotOptions.grid.borderColor = "#9a9999";
@@ -182,7 +178,7 @@ function(
 
         overlayGraphToolbar: function()
         {
-            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser, model: this.model, stateModel: this.stateModel });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this._getDataParser(), model: this.model, stateModel: this.stateModel });
 
             this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
 
@@ -261,8 +257,8 @@ function(
                 }
                 else if (this.currentAxis === "distance")
                 {
-                    from = this.dataParser.getDistanceFromMsOffset(range.get("begin"));
-                    to = this.dataParser.getDistanceFromMsOffset(range.get("end"));
+                    from = this._getDataParser().getDistanceFromMsOffset(range.get("begin"));
+                    to = this._getDataParser().getDistanceFromMsOffset(range.get("end"));
                 }
                 else
                 {
@@ -345,8 +341,8 @@ function(
             }
             else
             {
-                startOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionFrom);
-                endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
+                startOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionFrom);
+                endOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionTo);
             }
 
             var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
@@ -385,7 +381,7 @@ function(
 //             this.resetZoom();
 //             this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
-            this.dataParser.setXAxis("time");
+            this._getDataParser().setXAxis("time");
             this.drawPlot();
         },
         
@@ -399,7 +395,7 @@ function(
             // this.resetZoom();
             // this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
-            this.dataParser.setXAxis("distance");
+            this._getDataParser().setXAxis("distance");
             this.drawPlot();
         },
 
@@ -479,8 +475,8 @@ function(
             
             if (this.currentAxis === "distance")
             {
-                from = this.dataParser.getDistanceFromMsOffset(from);
-                to = this.dataParser.getDistanceFromMsOffset(to);
+                from = this._getDataParser().getDistanceFromMsOffset(from);
+                to = this._getDataParser().getDistanceFromMsOffset(to);
             }
 
             selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } });
@@ -504,6 +500,11 @@ function(
         stashHeight: function(offsetRatio)
         {
             this.offsetRatio = offsetRatio;
+        },
+
+        _getDataParser: function()
+        {
+            return this.model.get("detailData").getDataParser();
         }
 
     });

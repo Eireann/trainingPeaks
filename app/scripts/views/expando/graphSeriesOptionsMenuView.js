@@ -22,7 +22,6 @@ function(
         initialize: function(options)
         {
             this.detailDataModel = this.model.get("detailData");
-            this.dataParser = options.dataParser;
             this.series = options.series;
         },
 
@@ -79,7 +78,7 @@ function(
             var self = this;
             this.confirmationView.on("userConfirmed", function()
             {
-                self.detailDataModel.cutChannel(self.series, self.dataParser);
+                self.detailDataModel.cutChannel(self.series);
             });
 
         }

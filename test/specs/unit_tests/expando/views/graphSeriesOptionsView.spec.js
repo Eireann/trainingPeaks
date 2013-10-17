@@ -12,7 +12,6 @@ function($, TP, moment, theMarsApp, GraphSeriesOptionsMenuView)
     {
         function buildView(series)
         {
-            var dataParser = jasmine.createSpy("Data Parser");
             var stateModel = new TP.Model();
     
             var detailDataSpy = jasmine.createSpyObj("Workout Detail Data", ["disableChannel", "enableChannel", "cutChannel", "get"]);
@@ -24,7 +23,6 @@ function($, TP, moment, theMarsApp, GraphSeriesOptionsMenuView)
 
 
             return new GraphSeriesOptionsMenuView({ 
-                dataParser: dataParser,
                 stateModel: stateModel, 
                 model: workoutModel,
                 series: series
@@ -110,7 +108,7 @@ function($, TP, moment, theMarsApp, GraphSeriesOptionsMenuView)
             {
                 view.$(".deleteSeries").trigger("click");
                 view.confirmationView.trigger("userConfirmed");
-                expect(view.model.get("detailData").cutChannel).toHaveBeenCalledWith("Cadence", view.options.dataParser );
+                expect(view.model.get("detailData").cutChannel).toHaveBeenCalledWith("Cadence" );
             });
         });
 
