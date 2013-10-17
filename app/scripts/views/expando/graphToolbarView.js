@@ -27,8 +27,9 @@ function(
 
             this.stateModel = options.stateModel;
 
-            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._updateButtonStates, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
         
         events:
@@ -71,26 +72,6 @@ function(
             var offset = seriesButton.offset();
             this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
         },
-
-        _onSeriesChanged: function()
-        {
-            this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
-            _.each(this.model.get("detailData").get("disabledDataChannels"), function(channel)
-            {
-                this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
-            }, this);
-
-            var availableChannels = this.model.get("detailData").get("availableDataChannels");
-            this.$(".graphSeriesButton").each(function()
-            {
-                var $self = $(this);
-                var seriesName = $self.data("series");
-                if(!_.contains(availableChannels, seriesName))
-                {
-                    $self.remove();
-                }
-            });
-        },
         
         onZoomClicked: function()
         {
@@ -129,28 +110,28 @@ function(
 
         onRender: function()
         {
-            var self = this;
-            var shownButtons = [];
+            this._updateButtonStates();
+        },
+
+        _updateButtonStates: function()
+        {
 
             var availableChannels = this.model.get("detailData").get("availableDataChannels");
-            var disabledChannels = this.model.get("detailData").get("disabledDataChannels");
-
-            _.each(availableChannels, function(channel)
+            this.$(".graphSeriesButton").each(function()
             {
-                if (channel === "Distance" || channel === "Latitude" || channel === "Longitude")
-                    return;
-
-                var button = self.$(".graph" + channel + "Button");
-                button.show();
-                shownButtons.push(button[0]);
-
-                if(_.contains(disabledChannels, channel))
+                var $self = $(this);
+                var seriesName = $self.data("series");
+                if(!_.contains(availableChannels, seriesName))
                 {
-                    button.addClass("graphSeriesDisabled");
+                    $self.remove();
                 }
             });
-            
-            this.$(".graphSeriesButton").not(shownButtons).remove();
+
+            this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
+            _.each(this.model.get("detailData").get("disabledDataChannels"), function(channel)
+            {
+                this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
+            }, this);
 
             if(!_.contains(availableChannels, "Distance"))
             {

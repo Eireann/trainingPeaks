@@ -44,7 +44,8 @@ function(
 
             this.collection = new TP.Collection(this._buildTableData());
             this.listenTo(this.collection, 'expando:lapEdit', _.bind(this.showApplyButton, this));
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this)); // rebuild table, but preserve edits in progress
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
 
         // override the default behavior so we can append to the right DOM element

@@ -100,7 +100,7 @@ function(WorkoutDetailDataModel)
 						samples: [],
 						msOffsetsOfSamples: [0],
 						channelMask: ["Speed", "Cadence", "Power"]
-					})
+					});
 					model.cutChannel("Speed");
 				});
 

@@ -151,7 +151,7 @@ function(
             });
 
             this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this.render, this));
-
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
 
         serializeData: function()

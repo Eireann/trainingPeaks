@@ -2,11 +2,15 @@
 [
     "TP",
     "models/commands/saveWorkoutDetailData",
+    "views/userConfirmationView",
+    "hbs!templates/views/expando/unableToSaveEditsTemplate",
     "hbs!templates/views/expando/editControlsTemplate"
 ],
 function(
     TP,
     SaveWorkoutDetailDataCommand,
+    UserConfirmationView,
+    unableToSaveEditsTemplate,
     editControlsTemplate
     )
 {
@@ -46,7 +50,7 @@ function(
 
         _cancelEdits: function()
         {
-            alert("Not Implemented");
+            this._resetModels();
         },
 
         _applyEdits: function()
@@ -69,8 +73,13 @@ function(
 
         _handleApplyFail: function()
         {
-            alert('failed');
-            this.trigger("reset");
+            this._resetModels();
+            var confirmationView = new UserConfirmationView(
+            {
+                template: unableToSaveEditsTemplate
+            });               
+
+            confirmationView.render();
         },
 
         _resetModels: function()

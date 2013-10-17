@@ -77,7 +77,7 @@
                         model: buildWorkoutModel(),
                         originalElevation: originalElevation,
                         elevationCorrectionModel: new TP.Model({elevations: correctedElevation}),
-                        _getDataParser: function(){return dataParser}
+                        _getDataParser: function(){return dataParser;}
                     };
 
                     var series = ElevationCorrectionView.prototype.buildPlotSeries.apply(viewContext);
