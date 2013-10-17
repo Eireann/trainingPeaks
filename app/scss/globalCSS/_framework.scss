@@ -239,6 +239,7 @@ html, body
                     background-position: -36px -40px;
                 }
                 &:active {
+                    @extend %spriteHeaderIconsBG;
                     background-position: -72px -40px;
                 }
             }
@@ -249,8 +250,8 @@ html, body
                 &:hover {
                     background-position: -36px -80px;
                 }
-
                 &:active {
+                     @extend %spriteHeaderIconsBG;
                     background-position: -72px -80px;
                 }
             }
@@ -263,6 +264,7 @@ html, body
                     background-position: -36px -60px;
                 }
                 &:active {
+                    @extend %spriteHeaderIconsBG; 
                     background-position: -72px -60px;
                 }
             }
