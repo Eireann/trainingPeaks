@@ -59,7 +59,7 @@ function(
             var $currentTarget = $(e.currentTarget);
             if($currentTarget.hasClass('editing')) return false;
             e.preventDefault();
-            $currentTarget.html('<input type=text/>').addClass('editing').find('input').focus();;
+            $currentTarget.html('<input type=text/>').addClass('editing').find('input').focus();
             this.model.trigger('expando:lapEdit');
         }
     });
