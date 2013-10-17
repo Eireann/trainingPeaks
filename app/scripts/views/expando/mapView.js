@@ -2,11 +2,13 @@
 [
     "TP",
     "utilities/mapping/mapUtils",
+    "utilities/charting/chartColors",
     "hbs!templates/views/expando/mapTemplate"
 ],
 function (
     TP,
     MapUtils,
+    chartColors,
     mapTemplate
     )
 {
@@ -119,6 +121,7 @@ function (
             this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
             this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
             this.listenTo(this.stateModel, "change:hover", _.bind(this._onHoverChange, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onPrimaryRangeChange, this));
         },
 
         _onRangeAdded: function(range, ranges, options)
@@ -157,6 +160,21 @@ function (
             });
         },
 
+        _onPrimaryRangeChange: function(stateModel, range, options)
+        {
+            if(this.primarySelection)
+            {
+                if(range === this.primarySelection.range) return;
+                this.removeSelectionFromMap(this.primarySelection);
+            }
+
+            if(range)
+            {
+                this.primarySelection = this.createMapSelection(range, { color: chartColors.mapPrimarySelection });
+                this.addSelectionToMap(this.primarySelection);
+            }
+        },
+
         findMapSelection: function (begin, end)
         {
             return _.find(this.selections, function (selection)
@@ -165,14 +183,15 @@ function (
             });
         },
 
-        createMapSelection: function (workoutStatsForRange)
+        createMapSelection: function (workoutStatsForRange, options)
         {
             var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(latLngs);
+            var mapLayer = MapUtils.createHighlight(latLngs, options);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end"),
+                range: workoutStatsForRange,
                 mapLayer: mapLayer
             };
             
@@ -192,9 +211,13 @@ function (
 
         _onHoverChange: function (state, offset, options)
         {
+            if (!this.dataParser.hasLatLongData)
+            {
+                return;
+            }
             if (!_.isNumber(offset))
             {
-                if (this.dataParser.hasLatLongData) this.hideHoverMarker();
+                this.hideHoverMarker();
             }
             else
             {

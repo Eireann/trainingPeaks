@@ -83,7 +83,7 @@ function(
 
         _onClick: function(e)
         {
-            this.stateModel.set("statsRange", this.model);
+            this.stateModel.set("primaryRange", this.model);
         },
 
         _onInputChange: function(e)

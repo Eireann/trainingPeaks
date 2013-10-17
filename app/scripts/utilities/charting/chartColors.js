@@ -80,9 +80,11 @@ function()
         },
 
         chartSelection: "#e61101",
+        chartPrimarySelection: "#33a9ff",
 
         mapRoute: "#005695",
-        mapSelection: "#e61101"
+        mapSelection: "#e61101",
+        mapPrimarySelection: "#95d2ff"
     };
 
 });

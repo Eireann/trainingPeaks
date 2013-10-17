@@ -340,6 +340,8 @@ function(chartColors, findIndexByMsOffset, conversion)
 
         getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
         {
+            if(!this.hasLatLongData) return [];
+
             var sampleStartIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, startMsOffset);
             var sampleEndIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, endMsOffset);
 
