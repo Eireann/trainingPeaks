@@ -140,8 +140,8 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
         {
             var channelCutDetails = {
                 channelEdit: series,
-                startTimeInMilliseconds: _.first(this.flatSamples.msOffsetsOfSamples),
-                endTimeInMilliseconds: _.last(this.flatSamples.msOffsetsOfSamples)
+                startTimeInMilliseconds: _.first(this.get("flatSamples").msOffsetsOfSamples),
+                endTimeInMilliseconds: _.last(this.get("flatSamples").msOffsetsOfSamples)
             };
             var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
             channelCuts.push(channelCutDetails);

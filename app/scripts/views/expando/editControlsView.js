@@ -1,18 +1,24 @@
 ﻿define(
 [
     "TP",
-    "utilities/workout/formatLapData",
+    "models/commands/saveWorkoutDetailData",
     "hbs!templates/views/expando/editControlsTemplate"
 ],
 function(
     TP,
-    formatLapData,
+    SaveWorkoutDetailDataCommand,
     editControlsTemplate
     )
 {
     return TP.ItemView.extend({
 
         className: "expandoEditControls",
+
+        events:
+        {
+            "click .apply": "_applyEdits",
+            "click .cancel": "_cancelEdits"
+        },
 
         template:
         {
@@ -37,6 +43,11 @@ function(
             {
                 this.$el.addClass("disabled");
             }
+        },
+
+        _cancelEdits: function()
+        {
+            alert("Not Implemented");
         },
 
         _applyEdits: function()
