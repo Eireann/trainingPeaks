@@ -8,6 +8,7 @@
     "views/calendar/moveItems/shiftWizzardView",
     "views/calendar/container/calendarContainerViewScrolling",
     "views/scrollableCollectionView",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
 function(
@@ -19,6 +20,7 @@ function(
     ShiftWizzardView,
     CalendarContainerViewScrolling,
     ScrollableCollectionView,
+    CalendarUtility,
     calendarContainerView)
 {
     var CalendarContainerView =
@@ -67,7 +69,7 @@ function(
             this.initializeScrollOnDrag();
 
             this.weeksCollectionView = new ScrollableCollectionView({
-                firstModel: this.collection.getWeekModelForDay((options.firstDate ? moment(options.firstDate) : moment()), options.startOfWeekDayIndex),
+                firstModel: this.collection.get(CalendarUtility.weekForDate(options.firstDate ? moment(options.firstDate) : moment())),
                 itemView: CalendarWeekView,
                 collection: this.collection,
                 id: "weeksContainer",
@@ -93,16 +95,13 @@ function(
                 this.calendarHeaderModel.set('currentDay', currentModel.get('id'));
             }
 
-            _.each(this.weeksCollectionView.getVisibleModels(), function(model)
-            {
-                model.view.$el.addClass('inView');
-                if(!model.get("isFetched"))
-                {
-                    var weekStart = moment(model.id);
-                    var weekEnd = moment(model.id).add("days", 6);
-                    self.collection.requestWorkouts(weekStart, weekEnd);
-                }
-            });
+            var visibleWeeks = this.weeksCollectionView.getVisibleModels();
+
+            var weeks = _.map(visibleWeeks, function(week) { return moment(week.id); });
+            var start = _.min(weeks);
+            var end = _.max(weeks);
+
+            theMarsApp.calendarManager.loadActivities(start, end);
         },
 
         onRender: function()
@@ -179,12 +178,10 @@ function(
         {
             if(callback) console.warn("Callback not supported on scrollToDate", callback);
 
-            var dateAsMoment = moment(targetDate);
-
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            var model = this.collection.getWeekModelForDay(dateAsMoment, this.startOfWeekDayIndex);
+            var model = this.collection.get(CalendarUtility.weekForDate(targetDate));
 
             this.weeksCollectionView.scrollToModel(model, effectDuration);
         },

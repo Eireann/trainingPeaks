@@ -202,8 +202,8 @@ function(
             {
                 self.aroundChanges(function()
                 {
-                    workouts.each(self._addItem, self);
-                    metrics.each(self._addItem, self);
+                    workouts.each(self.addItem, self);
+                    metrics.each(self.addItem, self);
                     week.set({ isWaiting: false, isFetched: true });
                 });
             },
@@ -216,7 +216,7 @@ function(
 
         },
 
-        _addItem: function(item)
+        addItem: function(item)
         {
             item = ActivityModel.wrap(item);
             this.activities.add(item);

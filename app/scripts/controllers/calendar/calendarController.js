@@ -50,6 +50,8 @@ function(
             }
 
             this._dataManager = options.dataManager;
+            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
+
 
             // TODO: split this into a couple different functions 
             this.models = {};
@@ -59,15 +61,9 @@ function(
 
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
-
             this.layout.on("close", this.onLayoutClose, this);
 
-            this.startDate = this.createStartDay().subtract("weeks", 4);
-            this.endDate = this.createEndDay().add("weeks", 6);
-
             this.on("refresh", this.onRequestRefresh, this);
-
-            this.weeksCollectionInitialize();
 
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
@@ -103,8 +99,6 @@ function(
             // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
 
-            this.watchClipboard();
-
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
 
@@ -118,7 +112,7 @@ function(
         loadDataAfterUserLoads: function()
         {
             var self = this;
-            var calendarPromises = this.loadCalendarData();
+            var calendarPromises = [this.loadCalendarData()];
             var libraryPromises = this.loadLibraryData();
             return [].concat(calendarPromises, libraryPromises);
         },
@@ -130,24 +124,10 @@ function(
             this.layout.libraryRegion.show(this.views.library);
         },
 
-        loadCalendarData: function(callback)
+        loadCalendarData: function()
         {
-            // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
-            var diff = this.endDate.diff(this.startDate, "weeks");
-            var deferreds = [];
-            
-            for (var i = 0; i < diff; i++)
-            {
-                var startDate = moment(this.startDate).add("weeks", i);
-                var endDate = moment(startDate).add("days", 6);
-                var deferred = this.weeksCollection.requestWorkouts(startDate, endDate);
-                deferreds.push(deferred);
-            }
-
-            if (callback)
-                callback(deferreds);
-
-            return deferreds;
+            var promise = this.calendarManager.loadActivities(moment().subtract(4, "weeks"), moment().add(3, "weeks"));
+            return promise;
         },
 
         loadLibraryData: function()
@@ -170,41 +150,11 @@ function(
             theMarsApp.getBodyElement().removeClass('pasteEnabled').addClass('pasteDisabled');
         },
 
-        createStartDay: function(startDate)
-        {
-            var startMoment = startDate ? moment(startDate) : moment();
-            return startMoment.day(this.startOfWeekDayIndex);
-        },
-
-        createEndDay: function(endDate)
-        {
-            var endMoment = endDate ? moment(endDate) : moment();
-            return endMoment.day(6 + this.startOfWeekDayIndex);
-        },
-
-        resetCollections: function(startDate, endDate)
-        {
-            this.startDate = moment(startDate);
-            this.endDate = moment(endDate);
-            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
-        },
-
-        reset: function(startDate, endDate, scrollToDate)
+        reset: function(startDate, endDate)
         {
 
-            this.resetCollections(startDate, endDate);
-
-            if (scrollToDate)
-            {
-                var self = this;
-                var onLoad = function(deferreds)
-                {
-                    return self.scrollToDateAfterLoad(deferreds, scrollToDate);
-                };
-                this.loadCalendarData(onLoad);
-            }
-            else
-                this.loadCalendarData();
+            this.calendarManager.reset();
+            this.loadCalendarData();
 
         },
 
@@ -221,12 +171,7 @@ function(
 
             this._dataManager.forceReset();
 
-            this.startDate = this.createStartDay(targetDate).subtract("weeks", 4);
-            this.endDate = this.createEndDay(targetDate).add("weeks", 6);
-
-            // QL: Should be handled by reset, not "resetToDates"
-            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), targetDate);
-
+            this.showDate(targetDate);
             this.loadCalendarData();
         },
 
@@ -248,7 +193,7 @@ function(
                 this.views.calendar.close();
 
             this.views.calendar = new CalendarContainerView({
-                model: weekDaysModel, collection: this.weeksCollection,
+                model: weekDaysModel, collection: this.calendarManager.weeks,
                 calendarHeaderModel: this.models.calendarHeaderModel,
                 startOfWeekDayIndex: this.startOfWeekDayIndex,
                 firstDate: this.models.calendarHeaderModel.get('currentDay')

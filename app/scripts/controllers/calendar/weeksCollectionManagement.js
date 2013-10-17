@@ -16,23 +16,6 @@ function(CalendarCollection)
                 startOfWeekDayIndex: this.startOfWeekDayIndex,
                 dataManager: this._dataManager
             });
-        },
-
-        watchClipboard: function ()
-        {
-            this.weeksCollection.on("paste:enable", this.onPasteEnabled, this);
-            this.weeksCollection.on("paste:disable", this.onPasteDisabled, this);
-            this.onPasteDisabled();
-        },
-
-        getWorkout: function(workoutId)
-        {
-            return this.weeksCollection.getWorkout(workoutId);
-        },
-
-        addWorkout: function(workout)
-        {
-            this.weeksCollection.addWorkout(workout);
         }
     };
 
