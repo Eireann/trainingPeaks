@@ -4,12 +4,16 @@
     "setImmediate",
     "jqueryui/widget",
     "jquerySelectBox",
+
     "TP",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
+    "views/userConfirmationView",
+
     "hbs!templates/views/expando/lapTemplate",
-    "hbs!templates/views/expando/lapsTemplate"
+    "hbs!templates/views/expando/lapsTemplate",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
     _,
@@ -20,8 +24,10 @@ function(
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
+    UserConfirmationView,
     lapTemplate,
-    lapsTemplate
+    lapsTemplate,
+    deleteConfirmationTemplate
 )
 {
 
@@ -48,7 +54,8 @@ function(
             "click span": "_onClick",
             "change input": "_onInputChange",
             "click .edit": "_onClickEdit",
-            "click .cancel": "_onClickCancel"
+            "click .cancel": "_onClickCancel",
+            "click .delete": "_onClickDelete"
         },
 
         initialize: function(options)
@@ -109,6 +116,17 @@ function(
                 this.previousLapName = $editInput.html();
                 $editInput.html('<input type=text>').addClass('editing').find('input').focus();
             }
+        },
+
+        _onClickDelete: function(e)
+        {
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+            deleteConfirmationView.render();
+            deleteConfirmationView.on("userConfirmed", this._deleteLap, this);
+        },
+
+        _deleteLap: function()
+        {
         },
 
         _onClickCancel: function(e)
