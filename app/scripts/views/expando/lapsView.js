@@ -107,7 +107,7 @@ function(
             else
             {
                 this.previousLapName = $editInput.html();
-                $editInput.html('<input type=text>').addClass('editing');
+                $editInput.html('<input type=text>').addClass('editing').find('input').focus();
             }
         },
 

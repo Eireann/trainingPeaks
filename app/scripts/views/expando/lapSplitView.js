@@ -56,9 +56,10 @@ function(
 
         handleLapClickEditable: function(e)
         {
-            if($(e.currentTarget).hasClass('editing')) return false;
+            var $currentTarget = $(e.currentTarget);
+            if($currentTarget.hasClass('editing')) return false;
             e.preventDefault();
-            $(e.target).html('<input type=text/>').addClass('editing');
+            $currentTarget.html('<input type=text/>').addClass('editing').find('input').focus();;
             this.model.trigger('expando:lapEdit');
         }
     });
