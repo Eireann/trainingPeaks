@@ -61,9 +61,10 @@ function(
             e.preventDefault();
             var $input = $('<input type=text/>');
             $input.val($currentTarget.text());
-            $currentTarget.html($input).addClass('editing').find('input').focus();
+            $currentTarget.empty().append($input).addClass('editing');
             $input.on("change", _.bind(this._onInputChange, this));
-            $input.on("blur", _.bind(this._onInputBlur, this))
+            $input.on("blur", _.bind(this._onInputBlur, this));
+            $input.focus();
         },
 
         _onInputChange: function(e)
