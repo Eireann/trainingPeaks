@@ -695,9 +695,13 @@
             li {
                 color:$TPGrey10;
                 font-family: $fontFamilyRegular;
+                margin: .25em 0;
+                text-align: left;
 
                 input[type="checkbox"] {
-                    margin:0;
+                    margin: 0 5px 0 0;
+                    position: relative;
+                    top: -1px;
                 }
 
                 span {
@@ -709,10 +713,30 @@
                     }
                 }
 
+                .actions {
+                    margin:0 0 10px 0;
+                    @include buttons(0, 65px, $fontSizeSmall);
+                    padding-left:20px;
+                    padding-top:5px;
+                }
+
                 &.highlight {
                     span {
                         color:$TPGrey4;
                         font-family:$fontFamilyHeavy;
+                    }
+                }
+
+                .editLapName {
+                    display:inline-block;
+                    
+                    @include inputs(auto, 22px, $fontSizeSmall, $fontFamilyRegular);
+                    input {
+                        text-align: left !important;
+                        margin: 0 5px 0 0;
+                        padding:0 5px;
+                        position:relative;
+                        z-index: 2;
                     }
                 }
             }
