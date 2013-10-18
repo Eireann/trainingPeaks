@@ -40,21 +40,19 @@ function(
         modelEvents:
         {
             "change:isFocused": "_onFocusedChange",
-            "change:isSelected": "_onSelectedChange"
+            "change:isSelected": "_onSelectedChange",
+            "change:name": "_onNameChange"
         },
 
         events:
         {
             "click .editLapName": "_onClick",
-            "change input[type=checkbox]": "_onCheckboxChange",
-            "click .edit": "_onClickEdit",
-            "click .cancel": "_onClickCancel"
+            "change input[type=checkbox]": "_onCheckboxChange"
         },
 
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
-            this.listenTo(this.model, 'change:name', this._onNameChange);
         },
 
         onRender: function()
@@ -75,18 +73,19 @@ function(
 
         _onNameChange: function()
         {
-            this.render();
+            if(!this._isEditing()) {
+                this.render();
+            }
+
             if(this.model.get("isFocused"))
             {
                 this.stateModel.trigger('change:primaryRange', this.stateModel, this.model);
             }
-            this.previousLapName = this.$('.editLapName').html();
         },
 
         _onFocusedChange: function()
         {
             this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
-            if(!this.$('.editLapName').hasClass('editing')) this.$('.actions').hide();
         },
 
         _onSelectedChange: function()
@@ -94,49 +93,56 @@ function(
             this.$("input").attr("checked", !!this.model.get("isSelected"));
         },
 
-        _onClick: function(e)
+        _isEditing: function()
         {
-            this.stateModel.set("primaryRange", this.model);
-            this.$('.actions').show();
+            return this.$el.is(".editing");
         },
 
-        _onClickEdit: function(e)
+        _onClick: function(e)
         {
-            $editInput = this.$('.editLapName');
-            if($editInput.hasClass('editing'))
+            if(this.model.get("isLap") && this.model.get("isFocused"))
             {
-                return false;
+                this._startEditing();
             }
+            this.stateModel.set("primaryRange", this.model);
+        },
 
-            this.previousLapName = $editInput.html();
-            var $input = $('<input type=text/>');
-            $input.val($editInput.text());
-            $editInput.empty().append($input).addClass('editing');
-            $input.on("change", _.bind(this._onInputChange, this));
-            $input.on("blur", _.bind(this._onInputBlur, this));
-            $input.focus();
+        _startEditing: function()
+        {
+            if(this.model.get("isLap") && !this._isEditing())
+            {
+                var $container = this.$(".editLapName");
+                var $input = $('<input type="text"/>');
+                $input.val(this.model.get("name"));
+                $container.empty().append($input);
+                this.$el.addClass('editing');
+                $input.on("change", _.bind(this._onInputChange, this));
+                $input.on("blur", _.bind(this._onInputBlur, this));
+                $input.focus();
+            }
         },
 
         _onInputChange: function(e)
         {
-            var $input = $(e.currentTarget);
-            this.model.set("name", $input.val());
+            this.model.set("name", this.$("input[type=text]").val());
         },
 
-        _onInputBlur: function(e)
+        _onInputBlur: function()
         {
-            var $input = $(e.currentTarget);
-            this.model.set("name", $input.val());
-            $input.closest(".editLapName").html(this.model.get("name")).removeClass("editing");
-            $input.off("change");
-            $input.off("blur");
-            this.$('.actions').hide();
+            if(this._isEditing())
+            {
+                this._stopEditing();
+            }
         },
 
-        _onClickCancel: function(e)
+        _stopEditing: function()
         {
-            this.$('.actions').hide();
-            this.$('.editLapName').html(this.previousLapName).removeClass('editing');
+            if(this.model.get("isLap") && this._isEditing())
+            {
+                this.$("input[type=text]").off("change").off("blur");
+                this.$(".editLapName").empty().text(this.model.get("name"));
+                this.$el.removeClass("editing");
+            }
         },
 
         _onCheckboxChange: function(e)
