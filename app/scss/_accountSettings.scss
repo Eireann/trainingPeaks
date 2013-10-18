@@ -856,6 +856,8 @@
 }
 
 .zonesCalculator {
+    // Only used to prevent chrome button outline glow from being chopped off, remove if it causes any problems.
+    overflow: visible !important;
 
     .zoneCalculatorLayoutBody {
         float:left;
