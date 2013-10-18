@@ -863,6 +863,19 @@
         div {
             @include clearfix;
         }
+
+        .zones {
+            float: none;
+            margin: 0 auto;
+            width: 400px;
+
+            .zoneCalculatorResult{
+                &.threshold {
+                    margin-top: 20px;
+                    padding-bottom: 5px;
+                }
+            }
+        }
     }
     .zoneCalculatorLayoutFooter {
         float:left;
