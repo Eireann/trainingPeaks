@@ -189,6 +189,7 @@
                 input[type="text"] {
                     height:22px;
                     width:100px;
+                    font-size: 12px;
                 }
                 
                 .zoneCalculatorLayoutBody {
@@ -214,6 +215,63 @@
                             float:left;
                             margin-right:25px;
                             width:auto;
+                        }
+                    }
+
+                    .speed {
+                        float:left;
+                        width:230px;
+                        margin-right: 13px;
+
+                        form {                            
+                            label {
+                                margin:0;
+                            }
+                        }
+                        .testDistance {
+                            margin-top: 0;
+                            .testDistanceSelect {
+                                float: left;
+                                
+
+                                .selectBox {
+                                    width: 125px;
+                                }
+                                .selectboxit-container .selectboxit {
+                                    width: 125px !important;
+                                    
+                                    .selectboxit-text,
+                                    .selectboxit-options {
+                                        font-size: 12px;
+                                    }
+                                }
+                                .selectboxit-container {
+                                   .selectboxit-options {
+                                        font-size: 12px;
+                                    } 
+                                }
+                            }
+                            .zoneSetTitle {
+                                float: left;
+                                width: 90px;
+                                margin-top: 5px;
+                                padding-right: 5px;
+                            }
+                        }
+                        .speed,
+                        .duration {
+                            margin-top: 5px;
+                            float: left;
+                            .zoneSetTitle {
+                                float: left;
+                                width: 90px;
+                                margin-top: 5px;
+                                padding-right: 5px;
+                            }
+                            input[type="text"] {
+                                float: left;
+                                width: 125px;
+                            }
                         }
                     }
 
@@ -278,6 +336,9 @@
                     .zoneSetFieldset {
                         .selectBox {
                             float:left;
+                        }
+                        .clickable {
+                            margin-top:4px;
                         }
                     }
                 }
