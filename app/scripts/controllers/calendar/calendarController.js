@@ -63,8 +63,6 @@ function(
             this.layout.on("show", this.show, this);
             this.layout.on("close", this.onLayoutClose, this);
 
-            this.on("refresh", this.onRequestRefresh, this);
-
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
         },
@@ -158,23 +156,6 @@ function(
 
         },
 
-        clearCacheAndRefresh: function(targetDate)
-        {
-
-            if(!targetDate)
-            {
-                targetDate = this.views.calendar.getCurrentWeek();
-            }
-
-            if (theMarsApp.ajaxCachingEnabled)
-                theMarsApp.ajaxCaching.clearCache();
-
-            this._dataManager.forceReset();
-
-            this.showDate(targetDate);
-            this.loadCalendarData();
-        },
-
         showDate: function(dateAsMoment, duration)
         {
             if (!dateAsMoment)
@@ -208,11 +189,6 @@ function(
         onRequestToday: function()
         {
             this.showDate(moment());
-        },
-
-        onRequestRefresh: function(date, callback)
-        {
-            this.clearCacheAndRefresh(date);
         },
 
         bindToCalendarViewEvents: function(calendarView)

@@ -276,7 +276,7 @@ function(
 
                 self.weeks.each(function(week)
                 {
-                    week.set({ isFetched: false });
+                    week.set({ isFetched: false, isWaiting: true });
                 });
 
                 self.trigger("refresh");
