@@ -45,7 +45,7 @@ function(SaveWorkoutDetailDataCommand)
                     {
                         startTimeInMilliseconds: 0,
                         endTimeInMilliseconds: 1000,
-                        channelEdit: null
+                        channel: null
                     }
                 ]);
                 expect(execCommand).toThrow();
@@ -54,7 +54,7 @@ function(SaveWorkoutDetailDataCommand)
                     {
                         startTimeInMilliseconds: 0,
                         endTimeInMilliseconds: 1000,
-                        channelEdit: "WrongChannelName"
+                        channel: "WrongChannelName"
                     }
                 ]);
                 expect(execCommand).toThrow();
@@ -63,7 +63,7 @@ function(SaveWorkoutDetailDataCommand)
                     {
                         startTimeInMilliseconds: 0,
                         endTimeInMilliseconds: 1000,
-                        channelEdit: "Power"
+                        channel: "Power"
                     }
                 ]);
                 expect(execCommand).not.toThrow();
@@ -76,25 +76,25 @@ function(SaveWorkoutDetailDataCommand)
                     {
                         startTimeInMilliseconds: 0,
                         endTimeInMilliseconds: 1000,
-                        channelEdit: "Power"
+                        channel: "Power"
                     },
                     {
                         startTimeInMilliseconds: 0,
                         endTimeInMilliseconds: 1000,
-                        channelEdit: "Cadence"
+                        channel: "Cadence"
                     },
                     {
                         startTimeInMilliseconds: 0,
                         endTimeInMilliseconds: 1000,
-                        channelEdit: "Torque"
+                        channel: "Torque"
                     }
                 ]);
 
                 command.execute();
 
-                expect(command.get("channelCuts")[0].channelEdit).toBe(128);
-                expect(command.get("channelCuts")[1].channelEdit).toBe(2);
-                expect(command.get("channelCuts")[2].channelEdit).toBe(1024);
+                expect(command.get("channelCuts")[0].channel).toBe(128);
+                expect(command.get("channelCuts")[1].channel).toBe(2);
+                expect(command.get("channelCuts")[2].channel).toBe(1024);
 
             });
         });

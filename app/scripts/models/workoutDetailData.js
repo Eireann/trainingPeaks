@@ -170,7 +170,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         cutChannel: function(series)
         {
             var channelCutDetails = {
-                channelEdit: series,
+                channel: series,
                 startTimeInMilliseconds: _.first(this.get("flatSamples").msOffsetsOfSamples),
                 endTimeInMilliseconds: _.last(this.get("flatSamples").msOffsetsOfSamples)
             };
@@ -188,7 +188,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         {
             var matchingChannelCut = _.find(this.get("channelCuts"), function(channelCut)
             {
-                return channelCut.channelEdit === series;
+                return channelCut.channel === series;
             });
 
             return matchingChannelCut ? true : false;
