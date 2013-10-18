@@ -388,7 +388,6 @@
             color:$TPGrey8;
             line-height:normal;
             margin:0;
-            margin-bottom:12px;
         }
 
         .heartRateZones, 
@@ -444,7 +443,7 @@
 
         .userSettingsPayments {
             p {
-                margin:1em 0 1em 5px;
+                margin:0 0 1em 5px;
                 font-family:$fontFamilyRegular;
                 color:$TPGrey3;
                 font-size:$fontSizeSmall;
@@ -749,20 +748,28 @@
         .recurringPaymentItem, 
         .paymentHistoryItem
         {
+            @include clearfix;
             margin: 0;
-            padding:10px 0;
-            font-family:$fontFamilyRegular;
-            color:$TPGrey3;
+            padding: 10px 0;
+            font-family: $fontFamilyRegular;
+            color: $TPGrey3;
 
-            border:1px solid $TPGrey1;
-            padding:10px;
-            margin-bottom:10px;
-            margin-top:12px;
+            border-bottom: 1px solid $TPGrey1;
+            padding: 0 10px 10px 5px;
+            margin-bottom: 10px;
+           
+            &:last-of-type {
+                border-bottom: none;
+            }
 
             .row
             {
                 overflow-y: visible;
                 margin-bottom: 5px;
+
+                &:last-of-type {
+                    margin-bottom:0;
+                }
 
                 div
                 {
