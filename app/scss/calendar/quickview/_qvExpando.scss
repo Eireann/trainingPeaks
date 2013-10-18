@@ -709,27 +709,6 @@
                     }
                 }
 
-                .actions {
-                    // margin:5px 0 10px 0;
-                    @include buttons(0, 96px, $fontSizeSmall);
-                }
-
-                &.editing
-                {
-                    .edit
-                    {
-                        display: none;
-                    }
-                }
-
-                &:not(.editing)
-                {
-                    .cancel
-                    {
-                        display: none;
-                    }
-                }
-                
                 &.highlight {
                     span {
                         color:$TPGrey4;
