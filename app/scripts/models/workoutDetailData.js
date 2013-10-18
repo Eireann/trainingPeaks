@@ -37,14 +37,15 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             // reset laps?
             if(this.get("lapsStatsEdited"))
             {
-                var augmentedLaps = this._augmentRanges(this.get("lapsStats"), "laps");
-                this.getRangeCollectionFor("laps").reset(augmentedLaps);
                 this.set("lapsStatsEdited", false);
+                this.set("lapsStats", this.get("originalLapsStats"));
+                this.getRangeCollectionFor("laps").reset(this._augmentRanges(this.get("lapsStats"), "laps"));
             }
             
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
             this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
+            this.set("originalLapsStats", this.has("lapsStats") ? _.clone(this.get("lapsStats")) : null);
             this.trigger("reset");
         },
 
@@ -73,7 +74,8 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             "availableDataChannels": null,
             "disabledDataChannels": null,
             "channelCuts": null,
-            "lapsStatsEdited": false
+            "lapsStatsEdited": false,
+            "originalLapsStats": null
         },
 
         getDataParser: function()

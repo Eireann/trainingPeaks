@@ -19,6 +19,11 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			var detailData = new TP.Model({lapsStats: detailDataLapsStats });
 			detailData.set("availableDataChannels", availableDataChannels);
 			detailData.rangeCollections = {laps: new TP.Collection(detailDataLapsStats)};
+			detailData.getRangeCollectionFor = function(key)
+			{
+				return this.rangeCollections[key];
+			};
+			
 			return new TP.Model({
 				id: 1234,
 				details: new TP.Model(),

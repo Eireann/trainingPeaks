@@ -51,7 +51,6 @@ function(
         _cancelEdits: function()
         {
             this.model.get("detailData").reset();
-            this._resetModels();
         },
 
         _applyEdits: function()
@@ -71,30 +70,21 @@ function(
 
         _handleApplyDone: function()
         {
-            this._resetModels();
+             this.model.get("detailData").reset();
+            this.model.fetch();
+            this.model.get("details").fetch();
+            this.model.get("detailData").fetch();
         },
 
         _handleApplyFail: function()
         {
-            this._resetModels();
             var confirmationView = new UserConfirmationView(
             {
                 template: unableToSaveEditsTemplate
             });               
 
             confirmationView.render();
-        },
-
-        _resetModels: function()
-        {
-            this.model.fetch();
-            this.model.get("details").fetch();
-            var detailData = this.model.get("detailData");
-            detailData.fetch().done(function()
-            {
-                detailData.reset();
-            });
+            this.model.get("detailData").reset();
         }
-
     });
 });

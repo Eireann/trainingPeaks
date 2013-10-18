@@ -204,8 +204,8 @@ function(
                 }
             });
 
-            this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this.render, this));
-            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
+            this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this._enableOrDisable, this));
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this._onDetailDataReset, this));
         },
 
         serializeData: function()
@@ -237,6 +237,17 @@ function(
                 this.$("select").selectBoxIt();
             });
 
+            this._enableOrDisable();
+        },
+
+        _onDetailDataReset: function()
+        {
+            this.stateModel.reset();
+            this._enableOrDisable();
+        },
+
+        _enableOrDisable: function()
+        {
             if(this.model.get("detailData").has("channelCuts"))
             {
                 this.$el.addClass("disabled");
@@ -270,7 +281,7 @@ function(
             var peakType = this.$("select.peakType").val();
             ranges = ranges.concat(this._getPeaksData(peakType));
 
-            this.collection.set(ranges);
+            this.collection.reset(ranges);
         },
 
         _asRangeModel: function(attrs, extra)
