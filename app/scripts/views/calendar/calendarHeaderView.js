@@ -180,31 +180,33 @@ function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizati
 
         onDateSelect: function()
         {
-            this.trigger("request:date", this.$('.datepicker').val());
+            this.model.setDate(this.$('.datepicker').val());
+            this.$('.datepicker').blur(); // So we can open the datepicker again
         },
 
         onGoToTodayButtonClicked: function ()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
-            this.trigger("request:today");
+            this.model.setDate(moment());
         },
         
         onGoToNextWeekButtonClicked: function()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "nextWeekClicked", "eventLabel": "" });
-            this.trigger("request:nextweek", this.model);
+            this.model.setDate(moment(this.model.get("date")).add(1, "week"));
         },
         
         onGoToLastWeekButtonClicked: function()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "lastWeekClicked", "eventLabel": "" });
-            this.trigger("request:lastweek", this.model);
+            this.model.setDate(moment(this.model.get("date")).subtract(1, "week"));
         },
         
         onRefreshButtonClicked: function()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
             theMarsApp.calendarManager.reset();
+            // TODO: Reset libraries too?
         }
     };
 

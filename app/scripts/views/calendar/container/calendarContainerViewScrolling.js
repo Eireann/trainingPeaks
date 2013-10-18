@@ -41,7 +41,7 @@ function(_, TP, infiniteScroll)
 
         getHeaderDate: function()
         {
-            return this.calendarHeaderModel.get("date");
+            return this.stateModel.get("date");
         },
 
         setCurrentDate: function(currentDate)
@@ -52,7 +52,7 @@ function(_, TP, infiniteScroll)
                 dateAsMoment.day(this.startOfWeekDayIndex + 6);
 
             if (currentDate)
-                this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
+                this.stateModel.setDate(dateAsMoment, { source: "scroll" });
         }
 
     };

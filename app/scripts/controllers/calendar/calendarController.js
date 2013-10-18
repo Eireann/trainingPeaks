@@ -14,8 +14,14 @@ define(
     "views/calendar/calendarHeaderView",
     "views/calendar/container/calendarContainerView",
     "controllers/calendar/dragMoveShift",
-    "controllers/calendar/calendarControlsHeader",
-    "controllers/calendar/calendarLibrary"
+    "calendar/models/calendarStateModel",
+
+    // **** Library ****
+    "models/library/exerciseLibrariesCollection",
+    "models/library/trainingPlanCollection",
+    "models/workoutModel",
+    "models/commands/addWorkoutFromExerciseLibrary",
+    "views/calendar/library/libraryView"
 ],
 function(
     _,
@@ -29,16 +35,20 @@ function(
     calendarHeaderView,
     CalendarContainerView,
     calendarControllerDragMoveShift,
-    calendarControlsHeader,
-    calendarLibrary
-    )
+    CalendarStateModel,
+
+    // **** Library ****
+    ExerciseLibrariesCollection,
+    TrainingPlanCollection,
+    WorkoutModel,
+    AddWorkoutFromExerciseLibrary,
+    LibraryView
+)
 {
 
     // base controller functionality
     var calendarControllerBase =
     {
-        summaryViewEnabled: true,
-
         initialize: function(options)
         {
 
@@ -50,14 +60,12 @@ function(
             this._dataManager = options.dataManager;
             this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
 
-            this.calendarManager.copyPaste.initializeCopyPaste(this);
+            this.stateModel = new CalendarStateModel();
 
+            this.listenTo(this.stateModel, "change:date", _.bind(this._onChangeDate, this));
 
             // TODO: split this into a couple different functions 
-            this.models = {};
             this.views = {};
-
-            this.startOfWeekDayIndex = 1;
 
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
@@ -67,6 +75,15 @@ function(
             this.constructor.__super__.initialize.call(this);
         },
 
+        _onChangeDate: function(stateModel, date, options)
+        {
+            if(options.source != "scroll")
+            {
+                this.showDate(date);
+            }
+        },
+
+        // TODO: Use Backbone.Babysitter
         onLayoutClose: function()
         {
             _.each(this.views, function(view)
@@ -124,8 +141,7 @@ function(
 
         loadCalendarData: function()
         {
-            var promise = this.calendarManager.loadActivities(moment().subtract(4, "weeks"), moment().add(3, "weeks"));
-            return promise;
+            return this.calendarManager.loadActivities(moment().subtract(4, "weeks"), moment().add(3, "weeks"));
         },
 
         loadLibraryData: function()
@@ -136,24 +152,6 @@ function(
                 deferreds.push(this._dataManager.fetchModel(this.libraryCollections[libraryName], { reset: true }));
             }
             return deferreds;
-        },
-
-        onPasteEnabled: function()
-        {
-            theMarsApp.getBodyElement().removeClass('pasteDisabled').addClass('pasteEnabled');
-        },
-
-        onPasteDisabled: function()
-        {
-            theMarsApp.getBodyElement().removeClass('pasteEnabled').addClass('pasteDisabled');
-        },
-
-        reset: function(startDate, endDate)
-        {
-
-            this.calendarManager.reset();
-            this.loadCalendarData();
-
         },
 
         showDate: function(dateAsMoment, duration)
@@ -167,55 +165,85 @@ function(
 
         initializeCalendar: function()
         {
-            // QL: Does this need to be a model? Could it be passed into CalendarContainerView as an attribute on that view?
-            var weekDaysModel = new TP.Model({ startOfWeekDayIndex: this.startOfWeekDayIndex });
-            
             if (this.views.calendar)
                 this.views.calendar.close();
 
             this.views.calendar = new CalendarContainerView({
-                model: weekDaysModel, collection: this.calendarManager.weeks,
-                calendarHeaderModel: this.models.calendarHeaderModel,
-                startOfWeekDayIndex: this.startOfWeekDayIndex,
-                firstDate: this.models.calendarHeaderModel.get('currentDay')
+                stateModel: this.stateModel,
+                collection: this.calendarManager.weeks,
+                calendarHeaderModel: this.stateModel,
+                firstDate: this.stateModel.get('date')
+            });
+        },
+
+        // **** LIBRARY ****
+
+        createNewWorkoutFromExerciseLibraryItem: function (exerciseLibraryId, exerciseLibraryItemId, workoutDate)
+        {
+            var exerciseLibraryItem = this.libraryCollections.exerciseLibraries.get(exerciseLibraryId).exercises.get(exerciseLibraryItemId);
+            var workout = new WorkoutModel(
+            {
+                athleteId: theMarsApp.user.get("userId"),
+                workoutDay: workoutDate,
+                title: exerciseLibraryItem.get("itemName"),
+                workoutTypeValueId: exerciseLibraryItem.get("workoutTypeId")
             });
 
-            // QL: Should happen in the CalendarContainerView
-            this.bindToCalendarViewEvents(this.views.calendar);
-            // QL: this can be part of the function in the previous line
-            this.views.calendar.on("calendar:select", this.onCalendarSelect, this);
+            var attributesToCopy = ["caloriesPlanned", "description", "distancePlanned", "elevationGainPlanned", "energyPlanned", "ifPlanned", "totalTimePlanned", "tssPlanned", "velocityPlanned"];
+            workout.set(_.pick(exerciseLibraryItem, attributesToCopy));
+
+            // then update it with the full workout attributes from library
+            var addFromLibraryCommand = new AddWorkoutFromExerciseLibrary({}, { workout: workout, exerciseLibraryItem: exerciseLibraryItem });
+            addFromLibraryCommand.execute();
+
+            return workout;
         },
 
-        onRequestToday: function()
+        setupLibrary: function()
         {
-            this.showDate(moment());
+            if(this.libraryCollections) return;
+
+            this.libraryCollections =
+            {
+                exerciseLibraries: new ExerciseLibrariesCollection(),
+                trainingPlans: new TrainingPlanCollection()
+            };
         },
 
-        bindToCalendarViewEvents: function(calendarView)
+        initializeLibrary: function ()
         {
-            // none of this is being used anymore
+            this.setupLibrary();
 
-            calendarView.on("scroll:top", this.prependWeekToCalendar, this);
-            calendarView.on("scroll:bottom", this.appendWeekToCalendar, this);
+            if (this.views.library)
+                this.views.library.close();
 
-            calendarView.on("autoScrollUp", this.autoScrollUp, this);
-            calendarView.on("autoScrollDown", this.autoScrollDown, this);
-            calendarView.on("cancelAutoScroll", this.cancelAutoScroll, this);
-
-            this.bindToDragMoveAndShiftEvents(calendarView);
+            this.views.library = new LibraryView({ collections: this.libraryCollections });
         },
 
-        onCalendarSelect: function()
+        getExerciseLibraries: function()
         {
-            this.views.library.clearSelection();
+            return this.libraryCollections.exerciseLibraries;
+        },
+
+        // ***** HEADER CONTROLS
+
+        showHeader: function ()
+        {
+            this.layout.headerRegion.show(this.views.header);
+        },
+
+        initializeHeader: function ()
+        {
+            if (this.views.header)
+                this.views.header.close();
+            
+            this.views.header = new calendarHeaderView({ model: this.stateModel });
         }
 
     };
 
     // mixins
     _.extend(calendarControllerBase, calendarControllerDragMoveShift);
-    _.extend(calendarControllerBase, calendarControlsHeader);
-    _.extend(calendarControllerBase, calendarLibrary);
 
     // make it a TP.Controller
     return PageContainerController.extend(calendarControllerBase);

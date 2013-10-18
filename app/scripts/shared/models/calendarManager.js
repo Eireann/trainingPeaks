@@ -34,13 +34,11 @@ function(
             this.datelike = options.datelike;
         },
 
-        /* Since I wasn't in the mood for infinite loops, I commented this out.
         get: function(id)
         {
             this.manager.ensure(id);
             return this.constructor.__super__.get.apply(this, arguments);
         },
-        */
 
         prepareNext: function(count)
         {
@@ -107,14 +105,23 @@ function(
             start = moment(start);
             end = moment(end);
 
-            first = _.min([start, end, this.begin]);
-            last = _.max([start, end, moment(this.end).subtract(1, "week")]);
+            var beforeFirst = _.min([start, end, this.begin]);
+            var beforeLast = this.begin;
+            var afterFirst = this.end;
+            var afterLast = _.max([start, end, moment(this.end).subtract(1, "week")]);
 
-            this._createWeeks(first, this.begin);
-            this.begin = CalendarUtility.weekMomentForDate(first);
+            this.begin = CalendarUtility.weekMomentForDate(beforeFirst);
+            this.end = CalendarUtility.weekMomentForDate(afterLast).add(1, "week");
 
-            this._createWeeks(this.end, last);
-            this.end = CalendarUtility.weekMomentForDate(last).add(1, "week");
+            if(beforeFirst < beforeLast)
+            {
+                this._createWeeks(beforeFirst, beforeLast);
+            }
+
+            if(afterFirst < afterLast)
+            {
+                this._createWeeks(afterFirst, afterLast);
+            }
 
         },
 
@@ -271,7 +278,7 @@ function(
             var self = this;
             this.aroundChanges(function()
             {
-                self.dataManager.forceReset();
+                self.dataManager.forceReset(); // TODO: Limit Reset?
                 self.activities.set([]);
 
                 self.weeks.each(function(week)

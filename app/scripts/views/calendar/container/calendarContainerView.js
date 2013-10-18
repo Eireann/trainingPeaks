@@ -62,8 +62,7 @@ function(
 
             this.on("close", this.closeChildren, this);
 
-            this.calendarHeaderModel = options.calendarHeaderModel;
-            this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
+            this.stateModel = options.stateModel;
 
             this.initializeScrollOnDrag();
 
@@ -88,13 +87,6 @@ function(
             }
             $('.week').removeClass('inView');
 
-            var currentModel = this.weeksCollectionView.getCurrentModel();
-
-            if(currentModel)
-            {
-                this.calendarHeaderModel.set('currentDay', currentModel.get('id'));
-            }
-
             var visibleWeeks = this.weeksCollectionView.getVisibleModels();
 
             var weeks = _.map(visibleWeeks, function(week) { return moment(week.id); });
@@ -117,11 +109,6 @@ function(
             this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
         },
 
-        modelEvents:
-        {
-            "change": "render"
-        },
-
         collectionEvents:
         {
             //"add": "onAddWeek",
@@ -134,7 +121,7 @@ function(
 
         _updateCurrentDate: function()
         {
-            this.setCurrentDate(moment(this.getCurrentWeek()));
+            this.stateModel.setDate(this.getCurrentWeek(), { source: "scroll" });
         },
 
         setWorkoutColorization: function()
