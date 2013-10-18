@@ -24,10 +24,7 @@ function (
             template: mapTemplate
         },
 
-        initialEvents: function()
-        {
-            this.model.off("change", this.render);
-        },
+        modelEvents: {}, 
 
         initialize: function(options)
         {
@@ -42,10 +39,6 @@ function (
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for map view";
 
-            if (!options.dataParser)
-                throw "dataParser is required for map view";
-
-            this.dataParser = options.dataParser;
             this.detailDataPromise = options.detailDataPromise;
         },
 
@@ -86,12 +79,12 @@ function (
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
 
-            var latLongArray = this.dataParser.getLatLonArray();
+            var latLongArray = this._getDataParser().getLatLonArray();
             if (latLongArray)
             {
                 //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
-                MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 10);
+                MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10);
                 MapUtils.addStartMarker(this.map, latLongArray[0]);
                 MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
             }
@@ -185,7 +178,7 @@ function (
 
         createMapSelection: function (workoutStatsForRange, options)
         {
-            var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var latLngs = this._getDataParser().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
             var mapLayer = MapUtils.createHighlight(latLngs, options);
 
             var selection = {
@@ -211,7 +204,7 @@ function (
 
         _onHoverChange: function (state, offset, options)
         {
-            if (!this.dataParser.hasLatLongData)
+            if (!this._getDataParser().hasLatLongData)
             {
                 return;
             }
@@ -221,7 +214,7 @@ function (
             }
             else
             {
-                var latLong = this.dataParser.getLatLongFromOffset(offset);
+                var latLong = this._getDataParser().getLatLongFromOffset(offset);
                 
                 if (latLong !== null)
                 {
@@ -293,6 +286,11 @@ function (
             {
                 this.map.invalidateSize();
             }
+        },
+
+        _getDataParser: function()
+        {
+            return this.model.get("detailData").getDataParser();
         }
     });
 });

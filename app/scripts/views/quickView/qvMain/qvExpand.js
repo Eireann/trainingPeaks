@@ -128,6 +128,7 @@ function (_, TP, ExpandoController)
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "collapseClicked", "eventLabel": "" });
 
             this.expanded = false;
+            this.resetTabRenderedState();
             this.animateOneStepCollapse();
         },
 
@@ -193,7 +194,7 @@ function (_, TP, ExpandoController)
             if (this.expanded)
             {
                 var headerHeight = this.$(".QVHeader").outerHeight();
-                this.$("#quickViewExpandedContent, #expandoLeftColumn, #expandoRightColumn").css("height", qvHeight - headerHeight + "px");
+                this.$("#quickViewExpandedContent, .expandoLeftColumn, .expandoRightColumn").css("height", qvHeight - headerHeight + "px");
             } else
             {
 

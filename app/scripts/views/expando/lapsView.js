@@ -51,8 +51,8 @@ function(
 
         events:
         {
-            "click span": "_onClick",
-            "change input": "_onInputChange",
+            "click .editLapName": "_onClick",
+            "change input[type=checkbox]": "_onCheckboxChange",
             "click .edit": "_onClickEdit",
             "click .cancel": "_onClickCancel",
             "click .delete": "_onClickDelete"
@@ -83,7 +83,10 @@ function(
         _onNameChange: function()
         {
             this.render();
-            this.stateModel.trigger('change:primaryRange');
+            if(this.model.get("isFocused"))
+            {
+                this.stateModel.trigger('change:primaryRange', this.stateModel, this.model);
+            }
             this.previousLapName = this.$('.editLapName').html();
         },
 
@@ -111,11 +114,30 @@ function(
             {
                 return false;
             }
-            else
-            {
-                this.previousLapName = $editInput.html();
-                $editInput.html('<input type=text>').addClass('editing').find('input').focus();
-            }
+
+            this.previousLapName = $editInput.html();
+            var $input = $('<input type=text/>');
+            $input.val($editInput.text());
+            $editInput.empty().append($input).addClass('editing');
+            $input.on("change", _.bind(this._onInputChange, this));
+            $input.on("blur", _.bind(this._onInputBlur, this));
+            $input.focus();
+        },
+
+        _onInputChange: function(e)
+        {
+            var $input = $(e.currentTarget);
+            this.model.set("name", $input.val());
+        },
+
+        _onInputBlur: function(e)
+        {
+            var $input = $(e.currentTarget);
+            this.model.set("name", $input.val());
+            $input.closest(".editLapName").html(this.model.get("name")).removeClass("editing");
+            $input.off("change");
+            $input.off("blur");
+            this.$('.actions').hide();
         },
 
         _onClickDelete: function(e)
@@ -135,7 +157,7 @@ function(
             this.$('.editLapName').html(this.previousLapName).removeClass('editing');
         },
 
-        _onInputChange: function(e)
+        _onCheckboxChange: function(e)
         {
             if(this.$("input").is(":checked"))
             {
@@ -152,6 +174,8 @@ function(
     var LapsView = TP.CompositeView.extend(
     {
 
+        className: "expandoLaps",
+        
         itemView: LapView,
         itemViewContainer: ".rangesList ul",
 
@@ -198,6 +222,8 @@ function(
                 }
             });
 
+            this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this._enableOrDisable, this));
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this._onDetailDataReset, this));
         },
 
         serializeData: function()
@@ -228,6 +254,26 @@ function(
             {
                 this.$("select").selectBoxIt();
             });
+
+            this._enableOrDisable();
+        },
+
+        _onDetailDataReset: function()
+        {
+            this.stateModel.reset();
+            this._enableOrDisable();
+        },
+
+        _enableOrDisable: function()
+        {
+            if(this.model.get("detailData").has("channelCuts"))
+            {
+                this.$el.addClass("disabled");
+            }
+            else
+            {
+                this.$el.removeClass("disabled");
+            }
         },
 
         onShow: function()
@@ -238,7 +284,10 @@ function(
         _updateCollection: function()
         {
             var detailData = this.model.get("detailData");
-            var lapRanges = detailData.getRangeCollectionFor("laps").models;
+            var lapsCollection = detailData.getRangeCollectionFor("laps");
+            var lapRanges = lapsCollection.models;
+
+            this.listenTo(lapsCollection, "reset", _.bind(this._updateCollection, this));
 
             var ranges = lapRanges.slice();
 
@@ -250,7 +299,7 @@ function(
             var peakType = this.$("select.peakType").val();
             ranges = ranges.concat(this._getPeaksData(peakType));
 
-            this.collection.set(ranges);
+            this.collection.reset(ranges);
         },
 
         _asRangeModel: function(attrs, extra)

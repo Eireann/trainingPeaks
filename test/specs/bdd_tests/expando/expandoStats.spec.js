@@ -118,14 +118,14 @@ function(
                 // wait for laps
                 waitsFor(function()
                 {
-                    return $body.find(".workoutQuickView #expandoLapsRegion").length === 1;
+                    return $body.find(".workoutQuickView .expandoLapsRegion").length === 1;
                 }, "Laps region was never rendered", 5000);
 
                 runs(function()
                 {
-                    expect($body.find(".workoutQuickView #expandoLapsRegion").length).toBe(1);
-                    expect($body.find(".workoutQuickView #expandoLapsRegion").text()).toContain("Entire Workout");
-                    expect($body.find(".workoutQuickView #expandoLapsRegion").text()).toContain("Lap #1");
+                    expect($body.find(".workoutQuickView .expandoLapsRegion").length).toBe(1);
+                    expect($body.find(".workoutQuickView .expandoLapsRegion").text()).toContain("Entire Workout");
+                    expect($body.find(".workoutQuickView .expandoLapsRegion").text()).toContain("Lap #1");
                 });
 
             });
@@ -163,13 +163,13 @@ function(
                 // wait for Stats
                 waitsFor(function()
                 {
-                    return $body.find(".workoutQuickView #expandoStatsRegion").length === 1;
+                    return $body.find(".workoutQuickView .expandoStatsRegion").length === 1;
                 }, "Stats region was never rendered", 5000);
 
                 runs(function()
                 {
-                    var expandoStatsText = $body.find(".workoutQuickView #expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
-                    expect($body.find(".workoutQuickView #expandoStatsRegion").length).toBe(1);
+                    var expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
+                    expect($body.find(".workoutQuickView .expandoStatsRegion").length).toBe(1);
                     expect(expandoStatsText).toContain("Entire Workout");
                     expect(expandoStatsText).toContain("TSS 473");
                     expect(expandoStatsText).not.toContain("Work --");
@@ -177,8 +177,8 @@ function(
                     expect(expandoStatsText).not.toContain("Lap #1");
                     expect(expandoStatsText).not.toContain("TSS --");
 
-                    $body.find(".workoutQuickView #expandoLapsRegion .lap span:first").trigger("click");
-                    expandoStatsText = $body.find(".workoutQuickView #expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
+                    $body.find(".workoutQuickView .expandoLapsRegion .lap span:first").trigger("click");
+                    expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
 
                     expect(expandoStatsText).not.toContain("Entire Workout");
                     expect(expandoStatsText).not.toContain("TSS 473");

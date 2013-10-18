@@ -29,18 +29,19 @@ function(chartColors, findIndexByMsOffset, conversion)
 
     var parseDataByAxisAndChannel = function(flatSamples)
     {
+
         var dataByAxisAndChannel =
         {
             time: {},
             distance: {}
         };
 
+        if (!flatSamples || !flatSamples.samples)
+            return dataByAxisAndChannel;
+  
         var previousElevation = null;
         var distanceChannelIdx = _.indexOf(flatSamples.channelMask, "Distance");
         var xAxisZeroAlreadySet = false;
-
-        if (!flatSamples || !flatSamples.samples)
-            return null;
 
         for (var sampleIdx = 0; sampleIdx < flatSamples.samples.length; sampleIdx++)
         {
@@ -103,6 +104,9 @@ function(chartColors, findIndexByMsOffset, conversion)
         _.each(channelMask, function(channel)
         {
             if (_.contains(self.disabledSeries, channel))
+                return;
+
+            if(_.contains(self.excludedSeries, channel))
                 return;
             
             if (channel === "Distance")
@@ -277,6 +281,7 @@ function(chartColors, findIndexByMsOffset, conversion)
     {
         this.xaxis = "time";
         this.disabledSeries = [];
+        this.excludedSeries = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
@@ -424,7 +429,26 @@ function(chartColors, findIndexByMsOffset, conversion)
             if (index !== null && index < this.getDataByChannel("Distance").length)
                 return this.getDataByChannel("Distance")[index][1];
             return null;
+        },
+
+        excludeChannel: function(channel)
+        {
+            if(!_.contains(this.excludedSeries, channel))
+            {
+                this.excludedSeries.push(channel);
+            }
+        },
+
+        resetExcludedChannels: function()
+        {
+            this.excludedSeries = [];
+        },
+
+        getAvailableChannels: function()
+        {
+            return _.difference(this.flatSamples.channelMask, this.excludedSeries);
         }
+
     });
     
     return DataParser;

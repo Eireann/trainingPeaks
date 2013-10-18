@@ -440,8 +440,16 @@
     "Calculate": "Calculate",
     "EnterOptions": "Enter Calculator Options",
     "UnableToCalculateZones": "We could not calculate zones based on the information you provided.  Please try again with different values, or select a different calculation method",
+    "UnableToSaveEdits": "We were unable to save your changes. Please try again.",
 
     "Not Yet Implemented": "Not Yet Implemented",
 
-    "Failed To Save Metric": "Failed To Save Metric"
+    "Failed To Save Metric": "Failed To Save Metric",
+
+    "Show": "Show",
+    "Hide": "Hide",
+    "ConfirmDeleteSeries1": "Are you sure you want to delete all data for",
+    "ConfirmDeleteSeries2": "All associated data values will be removed.",
+    "ClickToEdit": "Click to edit"
+
 }

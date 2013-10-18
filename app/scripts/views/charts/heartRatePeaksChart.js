@@ -1,27 +1,28 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "./peaksChart",
     "utilities/charting/chartColors"
 ],
-function(TP, PeaksChartView, chartColors)
+function(_, TP, PeaksChartView, chartColors)
 {
     return PeaksChartView.extend(
     {
         chartColor: chartColors.gradients.heartRate,
 
+        dataChannel: "HeartRate", 
+
         initialize: function(options)
         {
             this.workoutType = options.workoutType;
             this.constructor.__super__.initialize.call(this,
-            {
-                peaks: options.peaks,
-                timeInZones: options.timeInZones,
+            _.defaults({
                 chartColor: this.chartColor,
                 toolTipBuilder: this.toolTipBuilder
-            });
+            }, options));
 
-            this.model = new TP.Model({
+            this.chartModel = new TP.Model({
                 peakType: "Heart Rate",
                 yAxisLabel: "BPM"
             });

@@ -27,9 +27,8 @@ function(
         {
             this.stateModel = options.stateModel;
 
+            this.listenTo(this.model.get("detailData"), "change", _.bind(this.render, this));
             this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onStatsRangeChanged, this));
-
-            this.listenTo(this.model.get("detailData"), "change", this.render, this);
         },
 
         reset: function()
@@ -41,6 +40,15 @@ function(
         onRender: function()
         {
             this.trigger("resize");
+
+            if(this.model.get("detailData").has("channelCuts"))
+            {
+                this.$el.addClass("disabled");
+            }
+            else
+            {
+                this.$el.removeClass("disabled");
+            }
         },
 
         serializeData: function()
