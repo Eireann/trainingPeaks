@@ -57,7 +57,6 @@ function(
             }
 
             this.closeViews();
-            this.resetDetailDataEdits();
             this.preFetchDetailData();
 
             this.stateModel = new ExpandoStateModel();
@@ -168,11 +167,6 @@ function(
                 self.onViewResize();
             });
 
-        },
-
-        resetDetailDataEdits: function()
-        {
-            this.model.get("detailData").reset();
         },
 
         preFetchDetailData: function()

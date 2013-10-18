@@ -1,14 +1,12 @@
 ﻿define(
 [
     "TP",
-    "models/commands/saveWorkoutDetailData",
     "views/userConfirmationView",
     "hbs!templates/views/expando/unableToSaveEditsTemplate",
     "hbs!templates/views/expando/editControlsTemplate"
 ],
 function(
     TP,
-    SaveWorkoutDetailDataCommand,
     UserConfirmationView,
     unableToSaveEditsTemplate,
     editControlsTemplate
@@ -50,30 +48,13 @@ function(
 
         _cancelEdits: function()
         {
-            this.model.get("detailData").reset();
+            this.model.get("detailData").undoEdits();
         },
 
         _applyEdits: function()
         {
-            var params =
-            {
-                channelCuts: this.model.get("detailData").getChannelCuts(),
-                lapsStats: this.model.get("detailData").getEditedLapsStats()
-            }; 
-
-            var command = new SaveWorkoutDetailDataCommand(params);
-            command.workoutId = this.model.get('workoutId');
-            command.execute()
-                .done(_.bind(this._handleApplyDone, this))
+            this.model.get("detailData").saveEdits()
                 .fail(_.bind(this._handleApplyFail, this));
-        },
-
-        _handleApplyDone: function()
-        {
-             this.model.get("detailData").reset();
-            this.model.fetch();
-            this.model.get("details").fetch();
-            this.model.get("detailData").fetch();
         },
 
         _handleApplyFail: function()
@@ -84,7 +65,7 @@ function(
             });               
 
             confirmationView.render();
-            this.model.get("detailData").reset();
+            this.model.get("detailData").undoEdits();
         }
     });
 });

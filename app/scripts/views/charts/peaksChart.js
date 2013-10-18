@@ -75,7 +75,7 @@ function (
 
             this.peaks = peaksGenerator.generate(this.dataChannel, this.model.get("details"));
 
-            if(!this.peaks)
+            if(!this._hasDataForAnyPeak())
             {
                 this.$el.addClass("nodata");
                 return;
@@ -203,6 +203,21 @@ function (
         _getZoneSettingName: function()
         {
             return this.dataChannel.substring(0,1).toLowerCase() + this.dataChannel.substring(1) + "Zones";
+        },
+
+        _hasDataForAnyPeak: function()
+        {
+            if(!this.peaks)
+            {
+                return false;
+            }
+
+            var foundPeak  = _.find(this.peaks, function(peak)
+            {
+                return peak.value > 0;
+            });
+
+            return foundPeak ? true : false;
         }
 
     });

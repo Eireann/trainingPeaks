@@ -138,11 +138,9 @@
 {
     float: left;
     position:relative;
-    @include
-    calc(width, "100% - 335px");
+    @include calc(width, "100% - 335px");
     overflow-y: scroll;
-    @include
-    nice-scrollbar;
+    @include nice-scrollbar;
 
     .expandoMapPod
     {
@@ -487,9 +485,21 @@
 
         .expandoStats
         {
+
+            &:not(.disabled)
+            {
+                .placeholder
+                {
+                    display:none;
+                }
+            }
+
             &.disabled
             {
-                display:none;
+                .statsContainer
+                {
+                    display:none;
+                }
             }
         }
 
@@ -845,6 +855,8 @@
         {
             visibility:hidden;
         }
+
+        @include noDataMessage;
 
     }
 
