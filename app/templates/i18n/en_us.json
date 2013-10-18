@@ -88,8 +88,8 @@
     "DateFormat": "Date Format",
     "TimeZone": "Time Zone",
 
-    "EmailOptions": "E-mail Options",
-    "emailPMNotificationSetting": "Send me an e-mail when I receive a private message",
+    "EmailOptions": "Email Options",
+    "emailPMNotificationSetting": "Send me an email when I receive a private message",
     "postActivityNotificationSetting": "Receive post-activity comment notification",
     "newsletterNotificationSetting": "Receive occasional informational newsletter",
     "plannedWorkoutsNotificationSetting": "Enable daily emails of planned workouts",
