@@ -665,14 +665,24 @@
 
             li {
                 color:$TPGrey10;
-                
+                font-family: $fontFamilyRegular;
+
+                input[type="checkbox"] {
+                    margin:0;
+                }
+
                 span {
                     cursor: pointer;  
-                    display: inline-block;
+                    // display: inline-block;
                     @include calc(width, "100% - 20px");
                     &:hover {
                         color:$TPGrey4; 
                     }
+                }
+
+                .actions {
+                    // margin:5px 0 10px 0;
+                    @include buttons(0, 96px, $fontSizeSmall);
                 }
 
                 &.highlight {
