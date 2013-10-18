@@ -6,11 +6,21 @@ function(
     ActivityModel
 )
 {
-    var calendarCollectionMoveShift = {
+    function CalendarMoveShiftManager(activities, days, weeks)
+    {
+        this.activitiesCollection = activities;
+        this.daysCollection = days;
+        this.weeksCollection = weeks;
+
+        this.initializeMoveAndShift();
+    }
+    
+    _.extend(CalendarMoveShiftManager.prototype, {
 
         initializeMoveAndShift: function()
         {
             this.daysCollection.on("workout:added", this.addItem, this);
+            this.weeksCollection.on("add", this.subscribeToWeekMoveAndShift, this);
         },
 
         subscribeToWeekMoveAndShift: function(weekCollection)
@@ -43,7 +53,7 @@ function(
             }
 
             // get the item
-            var sourceDayModel = this.getDayModel(options.ItemId);
+            var sourceDayModel = this.daysCollection.get(options.ItemId);
             var item = null;
 
             while (sourceDayModel.itemsCollection.length > 0)
@@ -70,7 +80,7 @@ function(
             );
             
         }
-    };
+    });
 
-    return calendarCollectionMoveShift;
+    return CalendarMoveShiftManager;
 });

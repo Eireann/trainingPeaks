@@ -14,7 +14,6 @@ define(
     "views/calendar/calendarHeaderView",
     "views/calendar/container/calendarContainerView",
     "controllers/calendar/dragMoveShift",
-    "controllers/calendar/weeksCollectionManagement",
     "controllers/calendar/calendarControlsHeader",
     "controllers/calendar/calendarLibrary"
 ],
@@ -30,7 +29,6 @@ function(
     calendarHeaderView,
     CalendarContainerView,
     calendarControllerDragMoveShift,
-    calendarControllerWeeksCollectionManagement,
     calendarControlsHeader,
     calendarLibrary
     )
@@ -51,6 +49,8 @@ function(
 
             this._dataManager = options.dataManager;
             this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
+
+            this.calendarManager.copyPaste.initializeCopyPaste(this);
 
 
             // TODO: split this into a couple different functions 
@@ -238,7 +238,6 @@ function(
 
     // mixins
     _.extend(calendarControllerBase, calendarControllerDragMoveShift);
-    _.extend(calendarControllerBase, calendarControllerWeeksCollectionManagement);
     _.extend(calendarControllerBase, calendarControlsHeader);
     _.extend(calendarControllerBase, calendarLibrary);
 

@@ -16,11 +16,11 @@ function (ApplyTrainingPlanToCalendarConfirmationView)
 
             if (options.DropEvent === "itemMoved")
             {
-                this.weeksCollection.onItemMoved(options);        
+                this.calendarManager.moveShift.onItemMoved(options);        
             }
             else if (options.DropEvent === "dayMoved")
             {
-                this.weeksCollection.onDayMoved(options);
+                this.calendarManager.moveShift.onDayMoved(options);
             }
             else if (options.DropEvent === "addExerciseFromLibrary")
             {
@@ -30,7 +30,7 @@ function (ApplyTrainingPlanToCalendarConfirmationView)
                 var workout = this.createNewWorkoutFromExerciseLibraryItem(options.LibraryId, options.ItemId, destinationDate);
 
                 // add it to the calendar
-                this.weeksCollection.addWorkout(workout);
+                this.calendarManager.addItem(workout);
                 this.views.calendar.scrollToDateIfNotFullyVisible(destinationDate);
                 workout.trigger("select", workout);
             }

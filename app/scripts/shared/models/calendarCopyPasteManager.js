@@ -16,10 +16,20 @@ function(
     ActivityModel
 )
 {
-    var calendarCollectionCopyPaste = {
+    function CalendarCopyPasteManager(activities, days, weeks)
+    {
+        this.activitiesCollection = activities;
+        this.daysCollection = days;
+        this.weeksCollection = weeks;
+    }
 
-        initializeCopyPaste: function()
+    _.extend(CalendarCopyPasteManager.prototype, {
+
+        initializeCopyPaste: function(controller)
         {
+            this.on = _.bind(controller.on, controller);
+            this.trigger = _.bind(controller.trigger, controller);
+
             this.clipboard = new Clipboard();
             this.subscribeToCopyPasteEvents();
             this.subscribeToSelectEvents();
@@ -37,6 +47,8 @@ function(
             this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
             this.daysCollection.on("day:selectAddItem", this.onSelectAddItem, this);
             this.daysCollection.on("day:unselectall", this.triggerUnSelectAll, this);
+
+            this.weeksCollection.on("add", this.subscribeToWeekCopyPaste, this);
         },
 
         subscribeToWeekCopyPaste: function(weekCollection)
@@ -52,7 +64,7 @@ function(
         subscribeToSelectEvents: function()
         {
             this.daysCollection.on("day:click", this.onDayClicked, this);
-            this.on("calendar:unselect", this.onUnSelectCalendar, this);
+            // this.on("calendar:unselect", this.onUnSelectCalendar, this);
         },
         
         onItemsCopy: function(model)
@@ -449,7 +461,7 @@ function(
             this.onUnSelectCalendar();
             this.trigger("select");
         }
-    };
+    });
 
-    return calendarCollectionCopyPaste;
+    return CalendarCopyPasteManager;
 });

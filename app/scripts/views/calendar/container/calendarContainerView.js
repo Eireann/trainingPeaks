@@ -367,15 +367,15 @@ function(
             {
             case "C":
                 this.keyDownWasProcessed = true;
-                this.collection.onKeypressCopy(e);
+                theMarsApp.calendarManager.copyPaste.onKeypressCopy(e);
                 break;
             case "X":
                 this.keyDownWasProcessed = true;
-                this.collection.onKeypressCut(e);
+                theMarsApp.calendarManager.copyPaste.onKeypressCut(e);
                 break;
             case "V":
                 this.keyDownWasProcessed = true;
-                this.collection.onKeypressPaste(e);
+                theMarsApp.calendarManager.copyPaste.onKeypressPaste(e);
                 break;
             }
 
