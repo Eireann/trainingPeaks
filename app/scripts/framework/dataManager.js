@@ -37,6 +37,7 @@
         {
             this._resolvedRequests = {};
             this._pendingRequests = {};
+            this.identityMap.reset();
             this.trigger("reset");
         },
 
@@ -46,10 +47,13 @@
             var temporaryCollection = new klass([], options);
             var collection = new klass([], options);
 
-            var promise = this.fetchModel(temporaryCollection, options).then(function() {
+            var deferred = $.Deferred();
+            var promise = deferred.promise();
+            this.fetchModel(temporaryCollection, options).then(function() {
                 var models = temporaryCollection.map(_.bind(self.identityMap.updateSharedInstance, self.identityMap));
                 collection.set(models);
-            });
+                deferred.resolve.apply(deferred, arguments);
+            }, _.bind(deferred.reject, deferred));
 
             promise.collection = collection;
 
@@ -152,7 +156,7 @@
 
         _resolveRequestOnModelWithExistingData: function(requestSignature, modelOrCollection, deferred)
         {
-            modelOrCollection.set(this._resolvedRequests[requestSignature]);
+            modelOrCollection.set(_.clone(this._resolvedRequests[requestSignature]));
             deferred.resolve();
             return deferred;
         },
@@ -177,7 +181,7 @@
                 options.success = function(modelOrCollection, response, options)
                 {
                     var parsedData = modelOrCollection.parse(response);
-                    self._resolvedRequests[requestSignature] = parsedData;
+                    self._resolvedRequests[requestSignature] = _.clone(parsedData);
 
                     if(originalSuccess)
                     {

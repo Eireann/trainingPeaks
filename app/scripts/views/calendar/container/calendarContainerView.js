@@ -58,7 +58,6 @@ function(
             this.constructor.__super__.initialize.call(this);
 
             this.on("render", this.setupKeyBindingsOnRender, this);
-            //this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
 
             this.on("close", this.closeChildren, this);
@@ -78,6 +77,7 @@ function(
                 minSize: 12
             });
             this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
+            this.listenTo(this.collection, "refresh", _.bind(this._loadDataAfterScroll, this));
         },
 
         _loadDataAfterScroll: function()

@@ -204,7 +204,7 @@ function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizati
         onRefreshButtonClicked: function()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
-            this.trigger("request:refresh", this.model.get("date"));
+            theMarsApp.calendarManager.reset();
         }
     };
 

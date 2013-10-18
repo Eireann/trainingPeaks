@@ -186,6 +186,11 @@ function(
 
             var week = this.weeks.get(id);
 
+            if(week.get("isFetched"))
+            {
+                return; // We've already loaded this week
+            }
+
             week.set({ isWaiting: true });
 
             var startDate = CalendarUtility.startMomentOfWeek(id);
@@ -257,6 +262,7 @@ function(
             if(activity.dayCollection)
             {
                 activity.dayCollection.remove(activity);
+                activity.dayCollection = null;
             }
         },
 
@@ -265,11 +271,18 @@ function(
             var self = this;
             this.aroundChanges(function()
             {
+                self.dataManager.forceReset();
                 self.activities.set([]);
+
                 self.weeks.each(function(week)
                 {
                     week.set({ isFetched: false });
                 });
+
+                self.trigger("refresh");
+                self.activities.trigger("refresh");
+                self.weeks.trigger("refresh");
+                self.days.trigger("refresh");
             });
         }
 
