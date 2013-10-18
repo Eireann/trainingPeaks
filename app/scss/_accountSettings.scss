@@ -276,7 +276,7 @@
                     }
 
                     .buttons {
-                        float:left;
+                        // float:left;
                         margin:0;
                     }
                 }
@@ -432,6 +432,10 @@
                 label:nth-of-type(3){
                     margin-left:15px;
                 }
+            }
+
+            .zoneCalculatorView {
+                border:1px solid red;
             }
         }
 
@@ -864,7 +868,7 @@
             @include clearfix;
         }
 
-        .zones {
+        .zoneCalculatorView {
             float: none;
             margin: 0 auto;
             width: 400px;
