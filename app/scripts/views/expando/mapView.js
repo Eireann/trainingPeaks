@@ -72,16 +72,24 @@ function (
 
         createAndDisplayMap: function ()
         {
+            this.$el.addClass("nodata");
+
             if (!this.model.get("detailData").get("flatSamples"))
+            {
                 return;
-
-            if (!this.map)
-                this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
-
+            }
 
             var latLongArray = this._getDataParser().getLatLonArray();
             if (latLongArray)
             {
+
+                this.$el.removeClass("nodata");
+
+                if (!this.map)
+                {
+                    this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
+                }
+
                 //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
                 MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10);

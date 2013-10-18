@@ -151,6 +151,14 @@
             width: 100%;
         }
 
+        &.nodata
+        {
+            #expandoMap
+            {
+                display: none;
+            }
+        }
+
     }
 
     .expandoGraphPod
@@ -169,6 +177,14 @@
             height: calc(100% - 50px);
         }
 
+        &.nodata
+        {
+            #plot
+            {
+                display: none;
+            }
+        }
+        
         .graphToolbar
         {
             float: left;

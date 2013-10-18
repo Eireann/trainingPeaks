@@ -106,8 +106,13 @@ function(
 
         createFlotGraph: function()
         {
+            this.$el.removeClass("nodata");
+
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
+            {
+                this.$el.addClass("nodata");
                 return;
+            }
             
             this.$plot = this.$("#plot");
             this.drawPlot();
@@ -126,6 +131,13 @@ function(
             this._getDataParser().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
             var enabledSeries = this._getDataParser().getSeries();
+
+            if(!enabledSeries.length)
+            {
+                this.$el.addClass("nodata");
+                return;
+            }
+
             var yaxes = this._getDataParser().getYAxes(enabledSeries);
 
             var onHoverHandler = function(flotItem, $tooltipEl)

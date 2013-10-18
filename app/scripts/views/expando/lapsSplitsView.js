@@ -49,17 +49,16 @@ function(
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
 
-        onShow: function()
+        onRender: function()
         {
-            // if model has no laps/splits, tell controller to close this view
-            var self = this;
-            this.detailDataPromise.done(function()
+            if(!this.collection.length)
             {
-                if (!self.model.get('detailData').get('lapsStats'))
-                {
-                    self.close();
-                }
-            });
+                this.$el.addClass("nodata");
+            }
+            else
+            {
+                this.$el.removeClass("nodata");
+            }
         },
 
         renderItemView: function(view, index)
