@@ -53,6 +53,9 @@ function(
 
         _applyEdits: function()
         {
+            this.waitingOn();
+            this.model.get("detailData").once("sync", _.bind(this.waitingOff, this));
+
             this.model.get("detailData").saveEdits()
                 .fail(_.bind(this._handleApplyFail, this));
         },
@@ -66,6 +69,7 @@ function(
 
             confirmationView.render();
             this.model.get("detailData").undoEdits();
+            this.waitingOff();
         }
     });
 });

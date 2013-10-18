@@ -105,7 +105,14 @@ function(
         },
 
         createFlotGraph: function()
+        {            
+            this.$plot = this.$("#plot");
+            this.drawPlot();
+        },
+
+        drawPlot: function()
         {
+
             this.$el.removeClass("nodata");
 
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
@@ -114,12 +121,6 @@ function(
                 return;
             }
             
-            this.$plot = this.$("#plot");
-            this.drawPlot();
-        },
-
-        drawPlot: function()
-        {
             var self = this;
 
             if (!this.allSeries)

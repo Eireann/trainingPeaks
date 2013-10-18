@@ -184,8 +184,7 @@ function (
         disableChannel: function(series)
         {
             var disabledSeries = this.get("disabledDataChannels");
-            disabledSeries.push(series);
-            this.set("disabledDataChannels", _.uniq(disabledSeries));
+            this.set("disabledDataChannels", _.union(disabledSeries, [series]));
         },
 
         enableChannel: function(series)
@@ -253,6 +252,7 @@ function (
 
         _afterSaveEdits: function()
         {
+            this.set("flatSamples", null, {silent: true});
             this.fetch();
             this.trigger("after:saveEdits");
         },

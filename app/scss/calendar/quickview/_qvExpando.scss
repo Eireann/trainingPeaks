@@ -487,8 +487,11 @@
 
     .expandoEditControlsRegion
     {
+        // so .waiting indicator has a home
+        position: relative; 
         .expandoEditControls
         {
+            min-height: 200px;
             &.disabled
             {
                 display:none;
