@@ -418,6 +418,11 @@
         }
 
         .speedPaceZones {
+
+            .speed.calculator {
+                display: block;
+            }
+
             form {
                 width:100%;                
     
@@ -430,6 +435,29 @@
                 label:nth-of-type(3){
                     margin-left:15px;
                 }
+            }
+
+            .zonesCalculator {
+
+                label {
+                    white-space: nowrap;
+                }
+
+                div.speed {
+                    float: left;
+                    margin-left: 15px;
+                    margin-top: 10px;
+                }
+
+                div.duration {
+                    float: left;
+                    margin-left: 15px;
+                    margin-top: 10px;
+                }
+            }
+
+            .disabled {
+                display: none;
             }
 
         }

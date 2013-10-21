@@ -1,4 +1,4 @@
-<div class="userSettingsPersonalSection cf">
+<div class="userSettingsPersonalSection cf scrollTarget" data-target="profile">
     <h2 class="accountSettingsSectionTitle">Profile</h2>
     <h3>{{$ "PersonalInfo" }}</h3>
     
@@ -150,7 +150,7 @@
 </div>
 
 
-<div class="userSettingsPersonalSection">
+<div class="userSettingsPersonalSection scrollTarget" data-target="account">
     <h2 class="accountSettingsSectionTitle">{{$ "AccountSettings" }}</h2>
     
     <div class="fieldContain">
@@ -180,7 +180,7 @@
 </div>
 
 
-<div class="userSettingsPersonalSection calendarSync">
+<div class="userSettingsPersonalSection calendarSync scrollTarget" data-target="calendar">
     <h2 class="accountSettingsSectionTitle">Calendar</h2>
 
     {{#with iCalendarKeys }}
@@ -205,7 +205,7 @@
     {{/with}}
 </div>
 
-<div class="userSettingsPersonalSection email">
+<div class="userSettingsPersonalSection email scrollTarget" data-target="email">
     <h2 class="accountSettingsSectionTitle">{{$ "EmailOptions" }}</h2>
 
     <div class="fieldContain">
