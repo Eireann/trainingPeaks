@@ -5,6 +5,7 @@
     "jqueryui/widget",
     "jquerySelectBox",
     "TP",
+    "framework/tooltips",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
@@ -17,6 +18,7 @@ function(
     jqueryUiWidget,
     jquerySelectBox,
     TP,
+    ToolTips,
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
@@ -120,6 +122,9 @@ function(
                 var $container = this.$(".editLapName");
                 var $input = $('<input type="text"/>');
                 $input.val(this.model.get("name"));
+
+                ToolTips.disableTooltips();
+
                 $container.empty().append($input);
                 this.$el.addClass('editing');
                 $input.on("change", _.bind(this._onInputChange, this));
@@ -148,6 +153,7 @@ function(
                 this.$("input[type=text]").off("change").off("blur");
                 this.$(".editLapName").empty().text(this.model.get("name"));
                 this.$el.removeClass("editing");
+                ToolTips.enableTooltips();
             }
         },
 
