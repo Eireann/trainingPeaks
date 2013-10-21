@@ -134,7 +134,15 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
-            if(!collection)
+            if(collection)
+            {
+                var data = collection.select(function(lapStat) { return lapStat.get('deleted') || false; });
+                _.each(data, function(model)
+                {
+                    collection.remove(model, {silent: true});
+                });
+            }
+            else
             {
                 var data = this._getRangeDataFor(rangeType);
                 collection = new TP.Collection(data, { model: WorkoutStatsForRange });
@@ -209,7 +217,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
 
         getEditedLapsStats: function()
         {
-            if(this.get("lapsStatsEdited"))
+            if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {
                 return this.getRangeCollectionFor("laps").toJSON();
             }
