@@ -77,7 +77,7 @@ function(
 
         _onChangeDate: function(stateModel, date, options)
         {
-            if(options.source != "scroll")
+            if(options.source !== "scroll")
             {
                 this.showDate(date);
             }

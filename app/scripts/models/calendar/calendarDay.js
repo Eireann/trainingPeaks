@@ -117,7 +117,7 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
 
         items: function()
         {
-            return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item) });
+            return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
         },
 
         getItems: function()
