@@ -1,51 +1,15 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "shared/misc/selection"
 ],
 function(
     _,
-    TP
+    TP,
+    Selection
 )
 {
-    var SelectionCollection = TP.Collection.extend(
-    {
-
-        initialize: function()
-        {
-            this.on("add", this._onAdd, this);
-            this.on("remove", this._onRemove, this);
-        },
-
-        activate: function()
-        {
-            this.active = true;
-            this.each(function(item) { item.getState().set("isSelected", true); });
-        },
-
-        deactivate: function()
-        {
-            this.active = false;
-            this.each(function(item) { item.getState().set("isSelected", false); });
-        },
-
-        _onAdd: function(collection, model, options)
-        {
-            if(this.active)
-            {
-                model.getState().set("isSelected", true);
-            }
-        },
-
-        _onRemove: function(collection, model, options)
-        {
-            if(collection.active)
-            {
-                model.getState().set("isSelected", false);
-            }
-        }
-
-    });
 
     function SelectionManager()
     {
@@ -75,6 +39,17 @@ function(
                 this.selection = new klass([model]);
                 this.selection.activate();
             }
+
+        },
+
+        setMultiSelection: function(models, event, klass)
+        {
+
+            klass = klass || SelectionCollection;
+
+            this.clearSelection();
+            this.selection = new klass(models);
+            this.selection.activate();
 
         },
 

@@ -11,6 +11,7 @@ define(
     "views/calendar/workout/calendarWorkoutView",
     "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
+    "shared/misc/calendarDaySelection",
     "views/calendar/newItemView",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
@@ -26,6 +27,7 @@ function(
     CalendarWorkoutView,
     MetricTileView,
     CalendarDaySettingsView,
+    CalendarDaySelection,
     NewItemView,
     CalendarDayTemplate
 )
@@ -219,7 +221,7 @@ function(
         onDayHeaderClicked: function(e)
         {
             e.preventDefault();
-            theMarsApp.selectionManager.setSelection(this.model, e);
+            theMarsApp.selectionManager.setSelection(this.model, e, CalendarDaySelection);
         },
 
         onAddWorkoutClicked: function(e)

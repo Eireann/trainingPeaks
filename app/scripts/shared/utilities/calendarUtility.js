@@ -45,7 +45,7 @@ function(
         {
             start = CalendarUtils.weekMomentForDate(start);
             end = CalendarUtils.weekMomentForDate(end);
-            date = moment(start);
+            var date = moment(start);
 
             var weeks = [];
             while(date <= end)
@@ -65,6 +65,32 @@ function(
         endMomentOfWeek: function(week)
         {
             return moment(week).add(6, "days");
+        },
+        
+        dayMomentForDate: function(date)
+        {
+            return moment(date).startOf("day");
+        },
+
+        daysForRange: function(a, b)
+        {
+
+            a = CalendarUtils.dayMomentForDate(a);
+            b = CalendarUtils.dayMomentForDate(b);
+
+            var first = _.min([a, b]);
+            var last = _.max([a, b]);
+            var date = moment(first);
+
+            var days = [];
+            while(date <= last)
+            {
+                days.push(date.format(CalendarUtils.idFormat));
+                date.add(1, "days");
+            }
+
+            return days;
+
         }
 
     });

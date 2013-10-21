@@ -5,6 +5,7 @@ define(
     "views/weekSummary/weekSummarySettings",
     "views/weekSummary/weekSummaryBarChartHover",
     "shared/models/activityModel",
+    "shared/misc/calendarDaySelection",
     "hbs!templates/views/weekSummary/weekSummary"
 ],
 function(
@@ -13,6 +14,7 @@ function(
     WeekSummarySettings,
     barChartHover,
     ActivityModel,
+    CalendarDaySelection,
     weekSummaryTemplate)
 {
     return TP.ItemView.extend(
@@ -238,17 +240,13 @@ function(
                 this.summarySettings.off("close", this.onSettingsClosed, this);
             }, this);
 
-            //this.$el.closest(".week").find(".weekSelected").css("display", "block");
-
-            //this.model.trigger("weeksummary:settings:open", this.model.collection);
+            theMarsApp.selectionManager.setMultiSelection(this.model.collection.models, e, CalendarDaySelection);
         },
 
         onSettingsClosed: function(e)
         {
             this.allowSettingsButtonToHide(e);
-            this.model.collection.trigger("week:unselect", this.model.collection, e);
-            //this.$el.closest(".week").find(".weekSelected").css("display", "none");
-            //this.model.trigger("weeksummary:settings:close", this.model.collection);
+            theMarsApp.selectionManager.clearSelection();
         },
 
         weekSummaryBarGraphHover: function (e)
