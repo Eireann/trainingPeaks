@@ -528,7 +528,7 @@
 
             &:not(.disabled)
             {
-                .placeholder
+                .recalcStatsMessage
                 {
                     display:none;
                 }
@@ -539,6 +539,18 @@
                 .statsContainer
                 {
                     display:none;
+                }
+            }
+
+            .recalcStatsMessage {
+                padding: 0 10px 10px 10px;
+                
+                p {
+                    font-size: $fontSizeSmall;
+                    color: $TPGrey3;
+                    line-height: 1.3;
+                    padding: 0 45px;
+                    text-align: center;
                 }
             }
         }
