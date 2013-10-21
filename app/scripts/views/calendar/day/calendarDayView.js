@@ -60,10 +60,8 @@ function(
             this.collection = this.model.itemsCollection;
 
             this.on("after:item:added", this.makeItemsDraggable, this);
-            this.listenTo(this.model, "day:select", _.bind(this.select, this));
-            this.listenTo(this.model, "day:unselect", _.bind(this.unselect, this));
+            this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelect, this));
 
-            this.listenTo(this.collection, "select", _.bind(this.onItemSelect, this));
             this.listenTo(this.collection, "sort", _.bind(this.onItemSort, this));
 
             this._refreshOnUserDateFormatChangeIfNecessary();
@@ -159,37 +157,21 @@ function(
 
         setUpDroppable: function()
         {
-            _.bindAll(this, "onDropItem");
-            this.$el.droppable({ drop: this.onDropItem, tolerance: 'pointer' });
+            this.$el.droppable({ drop: _.bind(this._onDropItem, this), tolerance: 'pointer' });
         },
 
-        onDropItem: function(event, ui)
+        _onDropItem: function(event, ui)
         {
-            var options = _.clone(ui.draggable.data());
-            if (!options.hasOwnProperty("DropEvent") || !options.hasOwnProperty("ItemId") || !options.hasOwnProperty("ItemType"))
+            var handler = ui.draggable.data("handler");
+
+            if(handler && _.isFunction(handler.dropped))
             {
-                throw "CalendarDayView.onDropItem: ui.draggable should have DropEvent, ItemId, ItemType data attributes: " + options.toString();
+                handler.dropped({ dropType: "day", date: this.model.id });
             }
-
-            // can't drop on self
-            if (options.ItemType === "CalendarDay" && options.ItemId === this.model.get("date"))
+            else
             {
-                return;
+                console.warn("No handler available on draggable");
             }
-
-            options.destinationCalendarDayModel = this.model;
-
-            var self = this;
-            var callback = function()
-            {
-                self.trigger("itemDropped", options);
-            };
-
-            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                callback, 
-                {targetDate: this.model.get("date")}
-            );
         },
 
         keepSettingsButtonVisible: function()
@@ -237,8 +219,7 @@ function(
         onDayHeaderClicked: function(e)
         {
             e.preventDefault();
-            this.model.trigger("day:click", this.model, e);
-            this.select();
+            theMarsApp.selectionManager.setSelection(this.model, e);
         },
 
         onAddWorkoutClicked: function(e)
@@ -264,8 +245,6 @@ function(
             {
                 return;
             }
-
-            this.clearSelection(e);
         },
 
         openNewItemViewIfAuthorized: function()
@@ -298,24 +277,14 @@ function(
             quickView.on("close", this.unSelectAddWorkoutIcon, this);
         },
 
-        select: function(e)
+        _updateSelect: function()
         {
-            this.selected = true;
-            this.$el.addClass("selected");
-        },
-
-        unselect: function()
-        {
-            this.selected = false;
-            this.$el.removeClass("selected");
+            this.$el.toggleClass("selected", this.model.getState().get("isSelected") || false);
         },
 
         makeDayDraggable: function()
         {
             _.bindAll(this, "onDragStart", "onDragStop");
-            this.$el.data("ItemId", this.model.id);
-            this.$el.data("ItemType", "CalendarDay");
-            this.$el.data("DropEvent", "dayMoved");
             this.draggableOptions = 
             this.$el.draggable(
             {
@@ -325,7 +294,7 @@ function(
                 handle: ".dayHeader, .daySelected",
                 start: this.onDragStart,
                 stop: this.onDragStop
-            });
+            }).data({ handler: this.model });
         },
 
         _makeHelper: function()
@@ -387,28 +356,6 @@ function(
             {
                 this.openNewItemViewIfAuthorized(e);
             }
-        },
-
-        onItemSelect: function()
-        {
-            this.unSelectAddWorkoutIcon();
-        },
-
-        unSelectAddWorkoutIcon: function()
-        {
-            this.$(".addWorkout").removeClass("active");
-        },
-
-        selectAddWorkoutIcon: function()
-        {
-            this.$(".addWorkout").addClass("active");
-        },
-
-        clearSelection: function(e)
-        {
-            if (e.isDefaultPrevented())
-                return;
-            this.model.trigger("day:unselectall");
         },
 
         _refreshOnUserDateFormatChangeIfNecessary: function()

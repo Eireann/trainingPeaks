@@ -9,6 +9,7 @@ define(
     "framework/identityMap",
     "framework/dataManager",
     "shared/models/calendarManager",
+    "shared/models/selectionManager",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -36,6 +37,7 @@ function(
     IdentityMap,
     DataManager,
     CalendarManager,
+    SelectionManager,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -229,6 +231,7 @@ function(
 
             this.dataManager = new DataManager(dataManagerOptions);
             this.calendarManager = new CalendarManager({ dataManager: this.dataManager });
+            this.selectionManager = new SelectionManager();
 
             // reset reporting manager when we save or delete workouts
             this.on("save:model destroy:model", function(model)

@@ -91,48 +91,13 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
         getWorkoutItems: function()
         {
             var workoutsList = [];
-            this.eachItem(function (item)
+            this.each(function (item)
             {
                 item = ActivityModel.unwrap(item);
                 if (item instanceof WorkoutModel)
                     workoutsList.push(item);
             });
             return workoutsList;
-        },
-
-        copyToClipboard: function()
-        {
-            var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.eachItem(function(item)
-            {
-                if (typeof item.copyToClipboard === "function")
-                    calendarDay.add(item.copyToClipboard());
-            });
-            return calendarDay;
-        },
-
-        cutToClipboard: function()
-        {
-            var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.eachItem(function(item)
-            {
-                if (typeof item.cutToClipboard === "function")
-                    calendarDay.add(item.cutToClipboard());
-            });
-            return calendarDay;
-        },
-
-        onPaste: function(dateToPasteTo)
-        {
-            var pastedItems = [];
-            this.eachItem(function(item)
-            {
-                if (typeof item.onPaste === "function")
-                {
-                    pastedItems.push(item.onPaste(dateToPasteTo));
-                }
-            });
-            return pastedItems;
         },
 
         length: function()
@@ -145,12 +110,14 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
             this.trigger("workout:added", newWorkout);
         },
 
-        eachItem: function(callback)
+        each: function(callback)
         {
-            this.itemsCollection.each(function(item)
-            {
-                callback(ActivityModel.unwrap(item));
-            });
+            _.each(this.items(), callback);
+        },
+
+        items: function()
+        {
+            return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item) });
         },
 
         getItems: function()
@@ -158,6 +125,43 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
             return this.itemsCollection.filter(function(model){
                 return !model.isDateLabel;
             });
+        },
+
+        moveItemsToDay: function(date)
+        {
+            this.each(function(activity)
+            {
+                if(_.isFunction(activity.moveToDay))
+                {
+                    activity.moveToDay(date);
+                }
+            });
+        },
+
+        dropped: function(options)
+        {
+            if(options.date)
+            {
+                if(options.date === this.id)
+                {
+                    return;
+                }
+
+                this.moveItemsToDay(options.date);
+            }
+        },
+
+        pasted: function(options)
+        {
+            if(options.date)
+            {
+                if(options.date === this.id)
+                {
+                    return;
+                }
+
+                this.moveItemsToDay(options.date);
+            }
         }
 
     }, { hasLabel: false });

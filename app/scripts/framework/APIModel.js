@@ -50,6 +50,29 @@ function(_, Backbone, DeepModel, moment)
                 }
             }
             return this.promise;
+        },
+
+        getState: function()
+        {
+            if(this._$state)
+            {
+                return this._$state;
+            }
+
+            this._$state = new Backbone.Model();
+
+            // Proxy events from state model to parent with "state:" prefix
+            var self = this;
+            this.listenTo(this._$state, "all", function()
+            {
+                var args = [].slice.call(arguments);
+
+                args[0] = "state:" + args[0];
+
+                self.trigger.apply(self, args);
+            });
+            
+            return this._$state;
         }
 
     };
@@ -183,6 +206,11 @@ function(_, Backbone, DeepModel, moment)
             if (!this.defaults)
             {
                 throw new Error(this.webAPIModelName + ": TP Web API Models must have default values (this.defaults) defined");
+            }
+
+            if(key.indexOf("state$") === 0)
+            {
+                return;
             }
 
             var defaults = _.result(this, 'defaults');

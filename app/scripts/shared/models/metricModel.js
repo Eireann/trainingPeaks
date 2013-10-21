@@ -102,6 +102,14 @@ function(
                 this.moveToDay(date);
                 return this;
             }
+        },
+
+        dropped: function(options)
+        {
+            if(options && options.date)
+            {
+                this.moveToDay(options.date);
+            }
         }
 
     });

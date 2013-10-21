@@ -170,6 +170,14 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             };
             return this.save(attrs, { wait: true });
         },
+
+        dropped: function(options)
+        {
+            if(options && options.date)
+            {
+                this.moveToDay(options.date);
+            }
+        },
         
         copyToClipboard: function()
         {
