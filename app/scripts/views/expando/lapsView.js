@@ -54,7 +54,6 @@ function(
             "click .editLapName": "_onClick",
             "change input[type=checkbox]": "_onCheckboxChange",
             "click .edit": "_onClickEdit",
-            "click .cancel": "_onClickCancel",
             "click .delete": "_onClickDelete"
         },
 
@@ -127,13 +126,13 @@ function(
         _onInputChange: function(e)
         {
             var $input = $(e.currentTarget);
-            this.model.set("name", $input.val());
+            this.model.set("name", $.trim($input.val()));
         },
 
         _onInputBlur: function(e)
         {
             var $input = $(e.currentTarget);
-            this.model.set("name", $input.val());
+            this.model.set("name", $.trim($input.val()));
             $input.closest(".editLapName").html(this.model.get("name")).removeClass("editing");
             $input.off("change");
             $input.off("blur");
@@ -149,12 +148,13 @@ function(
 
         _deleteLap: function()
         {
-        },
-
-        _onClickCancel: function(e)
-        {
             this.$('.actions').hide();
-            this.$('.editLapName').html(this.previousLapName).removeClass('editing');
+            this.$el.addClass('deleted').removeClass('highlight');
+            this.model.set('deleted', true);
+            this.model.trigger('lap:markedAsDeleted', this.model);
+            this.undelegateEvents();
+            this.$('input').removeAttr('checked').attr('disabled', true);
+            this.stateModel.get("ranges").remove(this.model);
         },
 
         _onCheckboxChange: function(e)
@@ -175,7 +175,7 @@ function(
     {
 
         className: "expandoLaps",
-        
+
         itemView: LapView,
         itemViewContainer: ".rangesList ul",
 
@@ -201,7 +201,9 @@ function(
                 throw new Error("Laps view requires an expando state model");
             }
 
+
             this.collection = new TP.Collection([], { model: WorkoutStatsForRange });
+
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             this.stateModel = options.stateModel;
 

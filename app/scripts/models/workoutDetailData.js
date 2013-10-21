@@ -30,18 +30,19 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
 
         reset: function()
         {
-            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
+            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
             this._dataParser.resetExcludedChannels();
             this._dataParser.loadData(this.get("flatSamples"));
 
             // reset laps?
-            if(this.get("lapsStatsEdited"))
+            if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {
                 this.set("lapsStatsEdited", false);
+                this.set("lapDeleted", false);
                 this.set("lapsStats", this.get("originalLapsStats"));
                 this.getRangeCollectionFor("laps").reset(this._augmentRanges(this.get("lapsStats"), "laps"));
             }
-            
+
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
             this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
@@ -75,6 +76,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             "disabledDataChannels": null,
             "channelCuts": null,
             "lapsStatsEdited": false,
+            "lapDeleted": false,
             "originalLapsStats": null
         },
 
@@ -124,7 +126,8 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         _rangeEvents:
         {
             laps: {
-                "change:name": "_flagLapsAsEdited"
+                "change:name": "_flagLapsAsEdited",
+                "lap:markedAsDeleted": "_flagLapAsDeleted"
             }
         },
 
@@ -174,10 +177,10 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
                 startTimeInMilliseconds: _.first(this.get("flatSamples").msOffsetsOfSamples),
                 endTimeInMilliseconds: _.last(this.get("flatSamples").msOffsetsOfSamples)
             };
-            var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
+            var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];
             channelCuts.push(channelCutDetails);
 
-            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
+            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
             this._dataParser.excludeChannel(series);
             this.set("channelCuts", channelCuts);
             this.disableChannel(series);
@@ -196,7 +199,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
 
         hasEdits: function()
         {
-            return this.has("channelCuts") || this.get("lapsStatsEdited");
+            return this.has("channelCuts") || this.get("lapsStatsEdited") || this.get("lapDeleted");
         },
 
         getChannelCuts: function()
@@ -303,6 +306,11 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         _flagLapsAsEdited: function()
         {
             this.set("lapsStatsEdited", true);
+        },
+
+        _flagLapAsDeleted: function()
+        {
+            this.set("lapDeleted", true);
         }
     });
 
