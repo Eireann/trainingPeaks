@@ -16,12 +16,13 @@ function(
     lapsSplitsTemplate
     )
 {
+
     var LapsSplitsView = TP.CompositeView.extend(
     {
         className: "expandoLapsSplitsPod",
         events:
         {
-            "click .btnApply": "handleApply"
+            "change input": "handleChange"
         },
 
         itemView: LapSplitView,
@@ -42,23 +43,22 @@ function(
             }
             this.detailDataPromise = options.detailDataPromise;
             this.stateModel = options.stateModel;
-
-            this.collection = this.model.get('detailData').rangeCollections.laps;
-            this.listenTo(this.collection, 'expando:lapEdit', _.bind(this.showApplyButton, this));
-
+            this.collection = this.model.get('detailData').getRangeCollectionFor("laps");
+            this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this)); // rebuild table, but preserve edits in progress
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
 
-        onShow: function()
+        onRender: function()
         {
-            // if model has no laps/splits, tell controller to close this view
-            var self = this;
-            this.detailDataPromise.done(function()
+            if(!this.collection.length)
             {
-                if (!self.model.get('detailData').get('lapsStats'))
-                {
-                    self.close();
-                }
-            });
+                this.$el.addClass("noData");
+            }
+            else
+            {
+                this.$el.removeClass("noData");
+            }
         },
 
         renderItemView: function(view, index)
@@ -69,78 +69,17 @@ function(
             this.appendHtml(this, view, index);
         },
 
-        // TODO: figure out where this should really live.
-        hideApplyButton: function()
-        {
-            this.$('.btnApply').hide();
-        },
-
-        showApplyButton: function()
-        {
-            this.$('.btnApply').show();
-        },
-
-        serializeLapsStats: function()
-        {
-            var domLapNames = _.map(this.$('td.lap'), function(lap)
-                {
-                    var $lap = $(lap);
-                    var $lapInput = $lap.find('input');
-
-                    return (($lapInput).length > 0) ? $lapInput.val() : $lap.text();
-                });
-
-            var lapsStatsArray = _.clone(this.model.get('detailData').get('lapsStats'));
-            _.each(lapsStatsArray, function(lapStats, index)
-                {
-                    lapStats.name = domLapNames[index];
-                });
-            return lapsStatsArray;
-        },
-
-        handleApply: function(e)
-        {
-            var params =
-            {
-                lapsStats: this.serializeLapsStats()
-            }; // serialize the lap data into lapsStats[]
-            var command = new SaveWorkoutDetailDataCommand(params);
-            command.workoutId = this.model.get('workoutId');
-            command.execute()
-                .done(_.bind(this._handleApplyDone, this))
-                .fail(_.bind(this._handleApplyFail, this));
-        },
-
-        _handleApplyDone: function()
-        {
-            this.hideApplyButton();
-            var lapsArray = this.model.get('detailData').get('lapsStats');
-            this.model.get('detailData').rangeCollections.laps.each(function (lap, index)
-                {
-                    lap.set({name: lapsArray[index].name});
-                });
-        },
-
-        _handleApplyFail: function()
-        {
-        },
-
         serializeData: function()
         {
             var workoutDefaults = LapsStats.getDefaults(this.model),
-                buildResults = LapsStats.buildLapObjects(workoutDefaults),
+                buildResults = LapsStats.buildLapObjects(workoutDefaults, this.model.get("detailData").get("availableDataChannels")),
                 lapObjects = buildResults[0],
                 emptyKeyCounts = buildResults[1],
                 compactedLapObjects = LapsStats.compactLapObjects(lapObjects, emptyKeyCounts),
-                rowData = [],
                 headerNames;
 
             headerNames = LapsStats.buildHeaderNames(compactedLapObjects[0]);
 
-            rowData = _.map(compactedLapObjects, function(row)
-            {
-                return _.values(row);
-            });
 
             this.workoutDefaults = workoutDefaults;
             this.keyNames =
@@ -150,11 +89,16 @@ function(
                 });
 
             return {
-                headerNames: headerNames,
-                rowData: rowData
+                headerNames: headerNames
             };
-        }
+        },
 
+        _rebuildTable: function()
+        {
+            this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            this.render();
+        }
+        
     });
 
     return LapsSplitsView;

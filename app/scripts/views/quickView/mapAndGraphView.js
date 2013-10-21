@@ -41,7 +41,6 @@ function(
         {
             _.bindAll(this, "onModelFetched");
 
-            this.dataParser = new DataParser();
             this.map = null;
             this.graph = null;
 
@@ -118,7 +117,7 @@ function(
         createAndShowMap: function()
         {
 
-            if (!this.dataParser.hasLatLongData)
+            if (!this._getDataParser().hasLatLongData)
             {
                 this.$("#quickViewMap").addClass("hidden");
                 return;
@@ -130,9 +129,9 @@ function(
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
 
-            var latLngArray = this.dataParser.getLatLonArray();
+            var latLngArray = this._getDataParser().getLatLonArray();
             MapUtils.setMapData(this.map, latLngArray);
-            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 6);
+            MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 6);
             MapUtils.addStartMarker(this.map, latLngArray[0]);
             MapUtils.addFinishMarker(this.map, latLngArray[latLngArray.length - 1]);
         },
@@ -140,13 +139,13 @@ function(
         parseData: function()
         {
             var flatSamples = this.model.get("detailData").attributes.flatSamples;
-            this.dataParser.loadData(flatSamples);
+            this._getDataParser().loadData(flatSamples);
         },
 
         createAndShowGraph: function()
         {
             var self = this;
-            if (!this.dataParser.hasLatLongData)
+            if (!this._getDataParser().hasLatLongData)
             {
                 self.$("#quickViewGraph").css("height", "350px");
             }
@@ -165,8 +164,8 @@ function(
             var numSeries = 0;
 
             // Get all series & axes in the data set
-            var series = this.dataParser.getSeries();
-            var yaxes = this.dataParser.getYAxes(series);
+            var series = this._getDataParser().getSeries();
+            var yaxes = this._getDataParser().getYAxes(series);
 
             // Hide all axes by default in the data set
             _.each(yaxes, function(axis)
@@ -196,6 +195,11 @@ function(
                     this.plot.setFilter(10);
                 
             }
+        },
+
+        _getDataParser: function()
+        {
+            return this.model.get("detailData").getDataParser();
         }
 
     };

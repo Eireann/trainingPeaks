@@ -2,9 +2,11 @@
 [
     "underscore",
     "TP",
-    "controllers/expandoController"
+    "controllers/expandoController",
+    "views/userConfirmationView",
+    "hbs!templates/views/expando/closeExpandoWithoutSavingTemplate",
 ],
-function (_, TP, ExpandoController)
+function (_, TP, ExpandoController, UserConfirmationView, closeExpandoWithoutSavingTemplate)
 {
     var workoutQVExpand =
     {
@@ -123,11 +125,62 @@ function (_, TP, ExpandoController)
             animateExpansion();
         },
 
+        confirmApplyEdits: function(callback)
+        {
+            if(this.model.get("detailData").hasEdits())
+            {
+                this.confirmationView = new UserConfirmationView(
+                {
+                    template: closeExpandoWithoutSavingTemplate
+                });
+
+                this.confirmationView.render();
+
+                var self = this;
+                this.confirmationView.on("undo", function()
+                {
+                    self.model.get("detailData").undoEdits();
+                    callback();
+                });
+
+                this.confirmationView.on("save", function()
+                {
+                    self.model.get("detailData").saveEdits().done(callback);
+                });
+            }
+            else
+            {
+                callback();
+            }
+        },
+
+        onBeforeClose: function()
+        {
+            if(this.model.get("detailData").hasEdits() && !this.forceClose)
+            {
+                this.confirmApplyEdits(_.bind(function() {
+                    this.forceClose = true;
+                    this.close();
+                }, this));
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        },
+
         collapseClicked: function ()
+        {
+            this.confirmApplyEdits(_.bind(this.doCollapse, this));
+        },
+
+        doCollapse: function()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "collapseClicked", "eventLabel": "" });
 
             this.expanded = false;
+            this.resetTabRenderedState();
             this.animateOneStepCollapse();
         },
 
@@ -193,7 +246,7 @@ function (_, TP, ExpandoController)
             if (this.expanded)
             {
                 var headerHeight = this.$(".QVHeader").outerHeight();
-                this.$("#quickViewExpandedContent, #expandoLeftColumn, #expandoRightColumn").css("height", qvHeight - headerHeight + "px");
+                this.$("#quickViewExpandedContent, .expandoLeftColumn, .expandoRightColumn").css("height", qvHeight - headerHeight + "px");
             } else
             {
 

@@ -134,15 +134,13 @@
 }
 
 
-#expandoLeftColumn
+.expandoLeftColumn
 {
     float: left;
     position:relative;
-    @include
-    calc(width, "100% - 335px");
+    @include calc(width, "100% - 335px");
     overflow-y: scroll;
-    @include
-    nice-scrollbar;
+    @include nice-scrollbar;
 
     .expandoMapPod
     {
@@ -151,6 +149,14 @@
         {
             height: 100%;
             width: 100%;
+        }
+
+        &.noData
+        {
+            #expandoMap
+            {
+                display: none;
+            }
         }
 
     }
@@ -171,6 +177,19 @@
             height: calc(100% - 50px);
         }
 
+        &.noData
+        {
+            #plot
+            {
+                display: none;
+            }
+
+            #graphToolbar
+            {
+                display: none;
+            }
+        }
+        
         .graphToolbar
         {
             float: left;
@@ -413,7 +432,7 @@
             font-size: $fontSizeSmall;
             color: $TPGrey4;
             text-align: center;
-            margin-bottom: 20px;
+            margin: 22px 0;
         }
     }
     
@@ -464,15 +483,66 @@
     }
 }
 
-#expandoRightColumn
+.expandoRightColumn
 {
     float: right;
     width: 335px;
     overflow-y: scroll;
     @include nice-scrollbar;
 
-    #expandoStatsRegion
+    .expandoEditControlsRegion
     {
+        // so .waiting indicator has a home
+        position: relative; 
+        .expandoEditControls
+        {
+            // min-height: 200px;
+            text-align: center;
+            padding:10px 10px 15px 10px;
+            margin:10px;
+            border:1px solid $thisWeekBlue;
+            background-color: rgba(142,178,216,0.25);
+
+            p {
+                margin-bottom: $fontSizeSmaller;
+            }
+
+            &.disabled
+            {
+                display:none;
+            }
+
+            @include buttons(0, 96px, $fontSizeSmall);
+            button {
+                // height: 20px;
+                
+            }
+        }
+    }
+
+    .expandoStatsRegion
+    {
+
+        .expandoStats
+        {
+
+            &:not(.disabled)
+            {
+                .placeholder
+                {
+                    display:none;
+                }
+            }
+
+            &.disabled
+            {
+                .statsContainer
+                {
+                    display:none;
+                }
+            }
+        }
+
         overflow-x: auto;
         overflow-y: visible;
         font-size: $fontSizeMedium;
@@ -581,8 +651,17 @@
         }
     }
 
-    #expandoLapsRegion
+    .expandoLapsRegion
     {
+
+        .expandoLaps
+        {
+            &.disabled
+            {
+                display: none;
+            }
+        }
+
         .controls
         {
             margin-left: 20px;
@@ -635,21 +714,49 @@
             }
 
             li {
-                color:$TPGrey10;
-                
+                color:$TPGrey3;
+                font-family: $fontFamilyRegular;
+                margin: .25em 0;
+                text-align: left;
+                cursor: pointer;
+
+                input[type="checkbox"] {
+                    margin: 0 5px 0 0;
+                    position: relative;
+                    top: -1px;
+                }
+
                 span {
                     cursor: pointer;  
-                    display: inline-block;
+                    // display: inline-block;
                     @include calc(width, "100% - 20px");
                     &:hover {
                         color:$TPGrey4; 
                     }
                 }
 
+                .actions {
+                    margin:0 0 10px 0;
+                    @include buttons(0, 65px, $fontSizeSmall);
+                    padding-left:20px;
+                    padding-top:5px;
+                }
+
                 &.highlight {
-                    span {
-                        color:$TPGrey4;
-                        font-family:$fontFamilyHeavy;
+                    color:$TPGrey4;
+                    font-family:$fontFamilyHeavy;
+                }
+
+                .editLapName {
+                    display:inline-block;
+                    
+                    @include inputs(auto, 22px, $fontSizeSmall, $fontFamilyRegular);
+                    input {
+                        text-align: left !important;
+                        margin: 0 5px 0 0;
+                        padding:0 5px;
+                        position:relative;
+                        z-index: 2;
                     }
                 }
             }
@@ -730,6 +837,11 @@
 
     border: 1px solid transparent;
     cursor: pointer;
+
+    &.noData
+    {
+        border: 1px solid white;  
+    }
 
     &.fullScreen
     {
@@ -816,6 +928,8 @@
         {
             visibility:hidden;
         }
+
+        @include noDataMessage;
 
     }
 

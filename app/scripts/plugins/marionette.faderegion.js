@@ -82,7 +82,7 @@ function(TP)
 
         if (!view.fadeIn)
         {
-            this.$el.html(view.$el.show());
+            this.$el.html(view.$el);
             postOpenView.call(this);
             return;
         }

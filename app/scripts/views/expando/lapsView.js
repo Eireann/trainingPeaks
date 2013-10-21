@@ -5,6 +5,7 @@
     "jqueryui/widget",
     "jquerySelectBox",
     "TP",
+    "framework/tooltips",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
@@ -17,6 +18,7 @@ function(
     jqueryUiWidget,
     jquerySelectBox,
     TP,
+    ToolTips,
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
@@ -29,7 +31,7 @@ function(
     {
 
         tagName: "li",
-        className: "lap",
+        className: "lap clickable",
 
         template:
         {
@@ -40,21 +42,20 @@ function(
         modelEvents:
         {
             "change:isFocused": "_onFocusedChange",
-            "change:isSelected": "_onSelectedChange"
+            "change:isSelected": "_onSelectedChange",
+            "change:name": "_onNameChange"
         },
 
         events:
         {
-            "click span": "_onClick",
-            "change input": "_onInputChange",
-            "click .edit": "_onClickEdit",
-            "click .cancel": "_onClickCancel"
+            "click": "_onClick",
+            "click .editLapName": "_onClickToEdit",
+            "change input[type=checkbox]": "_onCheckboxChange"
         },
 
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
-            this.listenTo(this.model, 'change:name', this._onNameChange);
         },
 
         onRender: function()
@@ -75,15 +76,19 @@ function(
 
         _onNameChange: function()
         {
-            this.render();
-            this.stateModel.trigger('change:primaryRange');
-            this.previousLapName = this.$('.editLapName').html();
+            if(!this._isEditing()) {
+                this.render();
+            }
+
+            if(this.model.get("isFocused"))
+            {
+                this.stateModel.trigger('change:primaryRange', this.stateModel, this.model);
+            }
         },
 
         _onFocusedChange: function()
         {
             this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
-            if(!this.$('.editLapName').hasClass('editing')) this.$('.actions').hide();
         },
 
         _onSelectedChange: function()
@@ -91,33 +96,68 @@ function(
             this.$("input").attr("checked", !!this.model.get("isSelected"));
         },
 
-        _onClick: function(e)
+        _isEditing: function()
+        {
+            return this.$el.is(".editing");
+        },
+
+        _onClickToEdit: function(e)
+        {
+            if(this.model.get("isLap") && this.model.get("isFocused"))
+            {
+                this._startEditing();
+                e.preventDefault();
+            }
+        },
+
+        _onClick: function(e) 
         {
             this.stateModel.set("primaryRange", this.model);
-            this.$('.actions').show();
         },
 
-        _onClickEdit: function(e)
+        _startEditing: function()
         {
-            $editInput = this.$('.editLapName');
-            if($editInput.hasClass('editing'))
+            if(this.model.get("isLap") && !this._isEditing())
             {
-                return false;
-            }
-            else
-            {
-                this.previousLapName = $editInput.html();
-                $editInput.html('<input type=text>').addClass('editing').find('input').focus();
-            }
-        },
+                var $container = this.$(".editLapName");
+                var $input = $('<input type="text"/>');
+                $input.val(this.model.get("name"));
 
-        _onClickCancel: function(e)
-        {
-            this.$('.actions').hide();
-            this.$('.editLapName').html(this.previousLapName).removeClass('editing');
+                ToolTips.disableTooltips();
+
+                $container.empty().append($input);
+                this.$el.addClass('editing');
+                $input.on("change", _.bind(this._onInputChange, this));
+                $input.on("blur", _.bind(this._onInputBlur, this));
+                $input.focus();
+            }
         },
 
         _onInputChange: function(e)
+        {
+            this.model.set("name", this.$("input[type=text]").val());
+        },
+
+        _onInputBlur: function()
+        {
+            if(this._isEditing())
+            {
+                this._stopEditing();
+            }
+        },
+
+        _stopEditing: function()
+        {
+            if(this.model.get("isLap") && this._isEditing())
+            {
+                this.$("input[type=text]").off("change").off("blur");
+                this.$(".editLapName").empty().text(this.model.get("name"));
+                this.$el.removeClass("editing");
+                ToolTips.enableTooltips();
+            }
+        },
+
+        _onCheckboxChange: function(e)
         {
             if(this.$("input").is(":checked"))
             {
@@ -134,6 +174,8 @@ function(
     var LapsView = TP.CompositeView.extend(
     {
 
+        className: "expandoLaps",
+        
         itemView: LapView,
         itemViewContainer: ".rangesList ul",
 
@@ -180,6 +222,8 @@ function(
                 }
             });
 
+            this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this._enableOrDisable, this));
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this._onDetailDataReset, this));
         },
 
         serializeData: function()
@@ -210,6 +254,26 @@ function(
             {
                 this.$("select").selectBoxIt();
             });
+
+            this._enableOrDisable();
+        },
+
+        _onDetailDataReset: function()
+        {
+            this.stateModel.reset();
+            this.render();
+        },
+
+        _enableOrDisable: function()
+        {
+            if(this.model.get("detailData").has("channelCuts"))
+            {
+                this.$el.addClass("disabled");
+            }
+            else
+            {
+                this.$el.removeClass("disabled");
+            }
         },
 
         onShow: function()
@@ -220,7 +284,10 @@ function(
         _updateCollection: function()
         {
             var detailData = this.model.get("detailData");
-            var lapRanges = detailData.getRangeCollectionFor("laps").models;
+            var lapsCollection = detailData.getRangeCollectionFor("laps");
+            var lapRanges = lapsCollection.models;
+
+            this.listenTo(lapsCollection, "reset", _.bind(this._updateCollection, this));
 
             var ranges = lapRanges.slice();
 
@@ -232,7 +299,7 @@ function(
             var peakType = this.$("select.peakType").val();
             ranges = ranges.concat(this._getPeaksData(peakType));
 
-            this.collection.set(ranges);
+            this.collection.reset(ranges);
         },
 
         _asRangeModel: function(attrs, extra)
@@ -266,6 +333,16 @@ function(
             speed: "peakSpeeds",
             pace: "peakSpeeds",
             cadence: "peakCadences"
+        },
+
+        dataChannelKeys: 
+        {
+            distance: "Speed",
+            power: "Power",
+            heartrate: "HeartRate",
+            speed: "Speed",
+            pace: "Speed",
+            cadence: "Cadence"
         },
 
         _getSelectOptions: function()
@@ -364,7 +441,19 @@ function(
                 delete peakTypes.speed;
             }
 
+            this._filterPeaksByAvailableChannels(peakTypes);
             return peakTypes;
+        },
+
+        _filterPeaksByAvailableChannels: function(peakTypes)
+        {
+            var availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            _.each(peakTypes, function(data, key) {
+                if(!_.contains(availableDataChannels, this.dataChannelKeys[key]))
+                {
+                    delete peakTypes[key];
+                }
+            }, this);
         },
 
         _shouldDisplayDistance: function()

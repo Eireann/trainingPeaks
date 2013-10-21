@@ -3,15 +3,10 @@
     "setImmediate",
     "TP",
     "views/packeryCollectionView",
-    "utilities/charting/dataParser",
     "layouts/expandoLayout",
-    "views/expando/graphView",
-    "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
-    "views/expando/chartsView",
-    "views/expando/mapAndGraphResizerView",
-    "views/expando/lapsSplitsView",
+    "views/expando/editControlsView",
     "expando/expandoPodBuilder",
     "expando/models/expandoStateModel"
 ],
@@ -19,15 +14,10 @@ function(
     setImmediate,
     TP,
     PackeryCollectionView,
-    DataParser,
     ExpandoLayout,
-    GraphView,
-    MapView,
     StatsView,
     LapsView,
-    ChartsView,
-    MapAndGraphResizerView,
-    LapsSplitsView,
+    EditControlsView,
     expandoPodBuilder,
     ExpandoStateModel
 )
@@ -42,8 +32,8 @@ function(
         initialize: function(options)
         {
             this.model = options.model;
-            this.workoutModel = options.workoutModel;
-            this.workoutDetailsModel = options.workoutDetailsModel;
+            //this.workoutModel = options.workoutModel;
+            //this.workoutDetailsModel = options.workoutDetailsModel;
             this.prefetchConfig = options.prefetchConfig;
 
             this.layout = new ExpandoLayout();
@@ -51,7 +41,6 @@ function(
             this.layout.on("close", this.onLayoutClose, this);
             this.views = {};
 
-            this.dataParser = new DataParser();
             _.bindAll(this, "onModelFetched");
         },
 
@@ -70,10 +59,11 @@ function(
             this.closeViews();
             this.preFetchDetailData();
 
-            var stateModel = new ExpandoStateModel();
+            this.stateModel = new ExpandoStateModel();
 
-            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
-            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
+            this.views.editControlsView = new EditControlsView({ model: this.model, stateModel: this.stateModel });
+            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
+            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 
             var podsCollection = new TP.Collection(
             [{
@@ -112,8 +102,7 @@ function(
             {
                 workout: this.model,
                 detailDataPromise: this.prefetchConfig.detailDataPromise,
-                dataParser: this.dataParser,
-                stateModel: stateModel
+                stateModel: this.stateModel
             };
 
             var $sizer = $("<div class='sizer'></div>");
@@ -157,12 +146,10 @@ function(
 
             var self = this;
 
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser.loadData(flatSamples);
-
             // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
+            this.layout.editControlsRegion.show(this.views.editControlsView);
 
             setImmediate(function()
             {
@@ -173,8 +160,6 @@ function(
 
         onSensorDataChange: function()
         {
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser.loadData(flatSamples);
 
             var self = this;
             setImmediate(function()
@@ -273,5 +258,6 @@ function(
 
             this.views.packeryView.layout();
         }
+
     });
 });
