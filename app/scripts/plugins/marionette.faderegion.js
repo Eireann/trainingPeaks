@@ -21,9 +21,9 @@ function(Marionette, TP)
 
             this.open(view, function()
             {
-                Marionette.triggerMethod.call(view, "show");
-                Marionette.triggerMethod.call(this, "show", view);
-                Marionette.triggerMethod.call(this, "view:show", view);
+                Backbone.Marionette.triggerMethod.call(view, "show");
+                Backbone.Marionette.triggerMethod.call(this, "show", view);
+                Backbone.Marionette.triggerMethod.call(this, "view:show", view);
             });
         });
 
