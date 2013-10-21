@@ -70,9 +70,7 @@ function(
 
         collectionEvents:
         {
-            "destroy": "onWaitStop",
-            "select": "onSelectItem",
-            "unselect": "unSelect"
+            "destroy": "onWaitStop"
         },
 
         itemViewContainer: "div.exercisesContainer",
@@ -107,26 +105,6 @@ function(
                 self.$el.removeClass("waiting");
                 self._onLibrariesChanged();
             });
-            this.selectedItem = null;
-        },
-
-        onSelectItem: function(model)
-        {
-            if (this.selectedItem && this.selectedItem !== model)
-                this.unSelect();
-
-            this.selectedItem = model;
-            this.trigger("select");
-        },
-
-        unSelect: function()
-        {
-            if (this.selectedItem)
-            {
-                var previouslySelectedItem = this.selectedItem;
-                this.selectedItem = null;
-                previouslySelectedItem.trigger("unselect", previouslySelectedItem);
-            }
         },
 
         onRender: function()

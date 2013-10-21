@@ -15,22 +15,22 @@ function(
     {
     }
 
-    _.extend(SelectionManager.prototype,
+    _.extend(SelectionManager.prototype, Backbone.Events,
     {
 
         /* 
          * model: the model to be selected
          * event: the event triggering the selection, used to select ranges (optional)
          */
-        setSelection: function(model, event, klass)
+        setSelection: function(model, event)
         {
 
-            klass = klass || SelectionCollection;
+            var klass = this._selectionClassForModel(model);
 
             var success = false;
             if(event && event.shiftKey)
             {
-                success = this.tryExtendSelection(model, event, klass);
+                success = this.tryExtendSelection(model, event);
             }
 
             if(!success)
@@ -42,23 +42,24 @@ function(
 
         },
 
-        setMultiSelection: function(models, event, klass)
+        setMultiSelection: function(models, event)
         {
-
-            klass = klass || SelectionCollection;
-
             this.clearSelection();
-            this.selection = new klass(models);
-            this.selection.activate();
 
+            if(models)
+            {
+                var klass = this._selectionClassForModel(models[0]);
+                this.selection = new klass(models);
+                this.selection.activate();
+            }
         },
 
-        tryExtendSelection: function(model, event, klass)
+        tryExtendSelection: function(model, event)
         {
             var success = false;
-            if(this.selection instanceof klass && _.isFunction(this.selection.extendTo))
+            if(this.selection instanceof this._selectionClassForModel(model) && _.isFunction(this.selection.extendTo))
             {
-                success = this.selection.extendTo(model);
+                success = this.selection.extendTo(model, event);
             }
             return success;
         },
@@ -70,6 +71,11 @@ function(
                 this.selection.deactivate();
                 this.selection = null;
             }
+        },
+
+        _selectionClassForModel: function(model)
+        {
+            return model.selectionClass || Selection;
         }
 
     });

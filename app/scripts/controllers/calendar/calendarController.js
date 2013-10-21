@@ -19,8 +19,6 @@ define(
     // **** Library ****
     "models/library/exerciseLibrariesCollection",
     "models/library/trainingPlanCollection",
-    "models/workoutModel",
-    "models/commands/addWorkoutFromExerciseLibrary",
     "views/calendar/library/libraryView"
 ],
 function(
@@ -40,8 +38,6 @@ function(
     // **** Library ****
     ExerciseLibrariesCollection,
     TrainingPlanCollection,
-    WorkoutModel,
-    AddWorkoutFromExerciseLibrary,
     LibraryView
 )
 {

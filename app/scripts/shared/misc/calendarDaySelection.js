@@ -16,7 +16,7 @@ function(
     var CalendarDaySelection = Selection.extend(
     {
 
-        extendTo: function(model)
+        extendTo: function(model, event)
         {
             var first = this.at(0).id;
             var last = model.id;

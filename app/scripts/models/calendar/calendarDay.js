@@ -6,17 +6,23 @@
     "shared/models/activityModel",
     "shared/models/metricModel",
     "shared/models/selectedActivitiesCollection",
+    "shared/misc/calendarDaySelection",
     "models/workoutModel"
 ],
-function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection, WorkoutModel)
+function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection, CalendarDaySelection, WorkoutModel)
 {
 
     var CalendarDay = TP.Model.extend(
     {
         idAttribute: 'date',
 
-        initialize: function()
+        selectionClass: CalendarDaySelection,
+
+        initialize: function(attrs, options)
         {
+            options = options || {};
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+
             this.configureDate();
             this.configureCollection();
         },
@@ -148,6 +154,11 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
                 }
 
                 this.moveItemsToDay(options.date);
+            }
+
+            if(options.target instanceof CalendarDay)
+            {
+                this.selectionManager.setSelection(options.target);
             }
         },
 

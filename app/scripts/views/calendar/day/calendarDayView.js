@@ -11,7 +11,6 @@ define(
     "views/calendar/workout/calendarWorkoutView",
     "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
-    "shared/misc/calendarDaySelection",
     "views/calendar/newItemView",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
@@ -27,7 +26,6 @@ function(
     CalendarWorkoutView,
     MetricTileView,
     CalendarDaySettingsView,
-    CalendarDaySelection,
     NewItemView,
     CalendarDayTemplate
 )
@@ -168,7 +166,7 @@ function(
 
             if(handler && _.isFunction(handler.dropped))
             {
-                handler.dropped({ dropType: "day", date: this.model.id });
+                handler.dropped({ dropTarget: "day", date: this.model.id, target: this.model });
             }
             else
             {
@@ -221,7 +219,7 @@ function(
         onDayHeaderClicked: function(e)
         {
             e.preventDefault();
-            theMarsApp.selectionManager.setSelection(this.model, e, CalendarDaySelection);
+            theMarsApp.selectionManager.setSelection(this.model, e);
         },
 
         onAddWorkoutClicked: function(e)
