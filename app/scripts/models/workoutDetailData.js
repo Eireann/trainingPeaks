@@ -42,6 +42,7 @@ function (
         {
             this._resetDataParser();
             this._setOriginalLapsStats();
+            this._resetRangesForLaps();
 
             // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct state
             this._resetChannels();
@@ -52,6 +53,7 @@ function (
         {
             this._resetDataParser();
             this._resetLapEdits();
+            this._resetRangesForLaps();
 
             // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct stat
             this._resetChannels();
@@ -76,6 +78,13 @@ function (
             {
                 this.set("lapsStatsEdited", false);
                 this.set("lapsStats", this.get("originalLapsStats"));
+            }
+        },
+
+        _resetRangesForLaps: function()
+        {
+            if(this.rangeCollections.hasOwnProperty("laps"))
+            {
                 this.getRangeCollectionFor("laps").reset(this._augmentRanges(this.get("lapsStats"), "laps"));
             }
         },

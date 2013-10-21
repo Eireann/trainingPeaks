@@ -261,7 +261,7 @@ function(
         _onDetailDataReset: function()
         {
             this.stateModel.reset();
-            this._enableOrDisable();
+            this.render();
         },
 
         _enableOrDisable: function()
@@ -333,6 +333,16 @@ function(
             speed: "peakSpeeds",
             pace: "peakSpeeds",
             cadence: "peakCadences"
+        },
+
+        dataChannelKeys: 
+        {
+            distance: "Speed",
+            power: "Power",
+            heartrate: "HeartRate",
+            speed: "Speed",
+            pace: "Speed",
+            cadence: "Cadence"
         },
 
         _getSelectOptions: function()
@@ -431,7 +441,19 @@ function(
                 delete peakTypes.speed;
             }
 
+            this._filterPeaksByAvailableChannels(peakTypes);
             return peakTypes;
+        },
+
+        _filterPeaksByAvailableChannels: function(peakTypes)
+        {
+            var availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            _.each(peakTypes, function(data, key) {
+                if(!_.contains(availableDataChannels, this.dataChannelKeys[key]))
+                {
+                    delete peakTypes[key];
+                }
+            }, this);
         },
 
         _shouldDisplayDistance: function()
