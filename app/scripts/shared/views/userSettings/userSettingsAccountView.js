@@ -62,6 +62,30 @@ function(
             this.on("render", this._addChildViews, this);
         },
 
+        subNavigation:
+        [
+            {
+                title: "Profile",
+                target: "profile"
+            },
+            {
+                title: "Settings",
+                target: "account"
+            },
+            {
+                title: "Calendar",
+                target: "calendar"
+            },
+            {
+                title: "Email Options",
+                target: "email"
+            },
+            {
+                title: "Payments",
+                target: "payments"
+            }
+        ],
+        
         applyFormValuesToModels: function()
         {
             this.children.call("applyFormValuesToModels");

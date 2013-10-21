@@ -134,7 +134,7 @@ function(
 
         _listenToScroll: function()
         {
-            this.$(".tabbedLayoutBody").on("scroll.tabbedLayout", this.onScroll);
+            this.$(".tabbedLayoutBody").on("scroll.tabbedLayout", _.bind(_.debounce(this.onScroll, 200), this));
         },
 
         _stopListeningToScroll: function()
@@ -150,7 +150,7 @@ function(
             }
 
             var bodyPosition = this.$(".tabbedLayoutBody").offset();
-            var margin = 15;
+            var margin = 100;
             var topElement = document.elementFromPoint(bodyPosition.left + margin, bodyPosition.top + margin);
             var scrollTarget = topElement ? $(topElement).closest(".scrollTarget") : null;
             if(scrollTarget)

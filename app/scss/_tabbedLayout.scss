@@ -58,6 +58,16 @@
     overflow-y: scroll;
     overflow-x: auto;
     @include nice-scrollbar;
+
+    // sometimes :last is not working correctly here ...
+    .scrollTarget {
+        &:last {
+            min-height: 2000px;
+        }
+        &.last {
+            min-height: 2000px;
+        }
+    }
 }
 
 .tabbedLayoutNav .active {
