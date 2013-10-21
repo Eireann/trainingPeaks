@@ -29,7 +29,7 @@ function(
     {
 
         tagName: "li",
-        className: "lap",
+        className: "lap clickable",
 
         template:
         {
@@ -46,7 +46,8 @@ function(
 
         events:
         {
-            "click .editLapName": "_onClick",
+            "click": "_onClick",
+            "click .editLapName": "_onClickToEdit",
             "change input[type=checkbox]": "_onCheckboxChange"
         },
 
@@ -98,12 +99,17 @@ function(
             return this.$el.is(".editing");
         },
 
-        _onClick: function(e)
+        _onClickToEdit: function(e)
         {
             if(this.model.get("isLap") && this.model.get("isFocused"))
             {
                 this._startEditing();
+                e.preventDefault();
             }
+        },
+
+        _onClick: function(e) 
+        {
             this.stateModel.set("primaryRange", this.model);
         },
 

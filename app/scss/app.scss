@@ -109,3 +109,8 @@ input[type="text"]
         @include box-shadow(none);
     }
 }
+
+.clickable
+{
+    cursor: pointer;
+}
