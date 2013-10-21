@@ -170,7 +170,6 @@
                 color:$TPGrey3;
                 display: inline-block;
                 margin:0;
-                // border:1px solid red;
             }
 
             .zoneName, 
@@ -189,6 +188,7 @@
                 input[type="text"] {
                     height:22px;
                     width:100px;
+                    font-size: 12px;
                 }
                 
                 .zoneCalculatorLayoutBody {
@@ -217,8 +217,65 @@
                         }
                     }
 
-                    .buttons {
+                    .speed {
                         float:left;
+                        width:230px;
+                        margin-right: 13px;
+
+                        form {                            
+                            label {
+                                margin:0;
+                            }
+                        }
+                        .testDistance {
+                            margin-top: 0;
+                            .testDistanceSelect {
+                                float: left;
+                                
+
+                                .selectBox {
+                                    width: 125px;
+                                }
+                                .selectboxit-container .selectboxit {
+                                    width: 125px !important;
+                                    
+                                    .selectboxit-text,
+                                    .selectboxit-options {
+                                        font-size: 12px;
+                                    }
+                                }
+                                .selectboxit-container {
+                                   .selectboxit-options {
+                                        font-size: 12px;
+                                    } 
+                                }
+                            }
+                            .zoneSetTitle {
+                                float: left;
+                                width: 90px;
+                                margin-top: 5px;
+                                padding-right: 5px;
+                            }
+                        }
+                        .speed,
+                        .duration {
+                            margin-top: 5px;
+                            float: left;
+                            .zoneSetTitle {
+                                float: left;
+                                width: 90px;
+                                margin-top: 5px;
+                                padding-right: 5px;
+                            }
+                            input[type="text"] {
+                                float: left;
+                                width: 125px;
+                            }
+                        }
+                    }
+
+                    .buttons {
+                        // float:left;
                         margin:0;
                     }
                 }
@@ -279,6 +336,9 @@
                         .selectBox {
                             float:left;
                         }
+                        .clickable {
+                            margin-top:4px;
+                        }
                     }
                 }
 
@@ -328,7 +388,6 @@
             color:$TPGrey8;
             line-height:normal;
             margin:0;
-            margin-bottom:12px;
         }
 
         .heartRateZones, 
@@ -359,6 +418,11 @@
         }
 
         .speedPaceZones {
+
+            .speed.calculator {
+                display: block;
+            }
+
             form {
                 width:100%;                
     
@@ -372,6 +436,30 @@
                     margin-left:15px;
                 }
             }
+
+            .zonesCalculator {
+
+                label {
+                    white-space: nowrap;
+                }
+
+                div.speed {
+                    float: left;
+                    margin-left: 15px;
+                    margin-top: 10px;
+                }
+
+                div.duration {
+                    float: left;
+                    margin-left: 15px;
+                    margin-top: 10px;
+                }
+            }
+
+            .disabled {
+                display: none;
+            }
+
         }
 
         .userSettingsButtons {
@@ -383,7 +471,7 @@
 
         .userSettingsPayments {
             p {
-                margin:1em 0 1em 5px;
+                margin:0 0 1em 5px;
                 font-family:$fontFamilyRegular;
                 color:$TPGrey3;
                 font-size:$fontSizeSmall;
@@ -688,20 +776,28 @@
         .recurringPaymentItem, 
         .paymentHistoryItem
         {
+            @include clearfix;
             margin: 0;
-            padding:10px 0;
-            font-family:$fontFamilyRegular;
-            color:$TPGrey3;
+            padding: 10px 0;
+            font-family: $fontFamilyRegular;
+            color: $TPGrey3;
 
-            border:1px solid $TPGrey1;
-            padding:10px;
-            margin-bottom:10px;
-            margin-top:12px;
+            border-bottom: 1px solid $TPGrey1;
+            padding: 0 10px 10px 5px;
+            margin-bottom: 10px;
+           
+            &:last-of-type {
+                border-bottom: none;
+            }
 
             .row
             {
                 overflow-y: visible;
                 margin-bottom: 5px;
+
+                &:last-of-type {
+                    margin-bottom:0;
+                }
 
                 div
                 {
@@ -795,12 +891,27 @@
 }
 
 .zonesCalculator {
+    // Only used to prevent chrome button outline glow from being chopped off, remove if it causes any problems.
+    overflow: visible !important;
 
     .zoneCalculatorLayoutBody {
         float:left;
         width:100%;
         div {
             @include clearfix;
+        }
+
+        .zoneCalculatorView {
+            float: none;
+            margin: 0 auto;
+            width: 400px;
+
+            .zoneCalculatorResult{
+                &.threshold {
+                    margin-top: 20px;
+                    padding-bottom: 5px;
+                }
+            }
         }
     }
     .zoneCalculatorLayoutFooter {
