@@ -491,10 +491,26 @@
         position: relative; 
         .expandoEditControls
         {
-            min-height: 200px;
+            // min-height: 200px;
+            text-align: center;
+            padding:10px 10px 15px 10px;
+            margin:10px;
+            border:1px solid $thisWeekBlue;
+            background-color: rgba(142,178,216,0.25);
+
+            p {
+                margin-bottom: $fontSizeSmaller;
+            }
+
             &.disabled
             {
                 display:none;
+            }
+
+            @include buttons(0, 96px, $fontSizeSmall);
+            button {
+                // height: 20px;
+                
             }
         }
     }
