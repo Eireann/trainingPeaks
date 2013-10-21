@@ -8,6 +8,7 @@
     "jqueryui/droppable",
     "TP",
     "framework/notYetImplemented",
+    "models/workoutModel",
     "models/library/libraryExercise",
     "models/library/libraryExercisesCollection",
     "views/calendar/library/exerciseLibraryItemView",
@@ -24,6 +25,7 @@ function(
     droppable,
     TP,
     notYetImplemented,
+    WorkoutModel,
     LibraryExerciseModel,
     LibraryExercisesCollection,
     ExerciseLibraryItemView,
@@ -131,15 +133,13 @@ function(
         },
         onWorkoutDropped: function(event, ui)
         {
-            if (!ui.draggable.data('workoutid'))
-            {
-                return;
-            }
-            var workoutid = ui.draggable.data('workoutid');
-            var workoutModel = theMarsApp.controllers.calendarController.getWorkout(workoutid);
-            this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workoutModel, libraries: this.libraries, selectedLibraryId: this.model.get('selected'), shouldShowConfirmation: false });
-            this.saveToLibraryConfirmationView.render();
+            var workout = ui.draggable.data("handler");
 
+            if(workout instanceof WorkoutModel)
+            {
+                this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workout, libraries: this.libraries, selectedLibraryId: this.model.get('selected'), shouldShowConfirmation: false });
+                this.saveToLibraryConfirmationView.render();
+            }
         },
         _onLibrariesChanged: function(options)
         {
