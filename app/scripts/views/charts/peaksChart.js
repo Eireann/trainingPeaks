@@ -69,7 +69,7 @@ function (
         {
             if(this.model.get("detailData").channelWasCut(this.dataChannel))
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
@@ -77,11 +77,11 @@ function (
 
             if(!this._hasDataForAnyPeak())
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
-            this.$el.removeClass("nodata");
+            this.$el.removeClass("noData");
             this.timeInZones = timeInZonesGenerator(this.dataChannel, this._getZoneSettingName(), this.model.get("details"), this.model);
             var chartPoints = this.buildPeaksFlotPoints(this.peaks);
             var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);

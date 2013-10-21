@@ -53,11 +53,11 @@ function(
         {
             if(!this.collection.length)
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
             }
             else
             {
-                this.$el.removeClass("nodata");
+                this.$el.removeClass("noData");
             }
         },
 

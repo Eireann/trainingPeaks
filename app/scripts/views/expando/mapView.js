@@ -72,7 +72,7 @@ function (
 
         createAndDisplayMap: function ()
         {
-            this.$el.addClass("nodata");
+            this.$el.addClass("noData");
 
             if (!this.model.get("detailData").get("flatSamples"))
             {
@@ -83,7 +83,7 @@ function (
             if (latLongArray)
             {
 
-                this.$el.removeClass("nodata");
+                this.$el.removeClass("noData");
 
                 if (!this.map)
                 {
@@ -97,7 +97,7 @@ function (
                 MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
             }
 
-            if(this.$el.hasClass("nodata"))
+            if(this.$el.hasClass("noData"))
             {
                 this.trigger("noData");
             }

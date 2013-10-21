@@ -113,12 +113,12 @@ function(
         drawPlot: function()
         {
 
-            this.$el.removeClass("nodata");
+            this.$el.removeClass("noData");
 
 
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 this.trigger("noData");
                 return;
             }
@@ -137,7 +137,7 @@ function(
 
             if(!enabledSeries.length)
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 this.trigger("noData");
                 return;
             }

@@ -62,7 +62,7 @@ function(
 
         _onChildRender: function()
         {
-            if(this.childView.$el.hasClass("nodata"))
+            if(this.childView.$el.hasClass("noData"))
             {
                 this._onChildHasNoData(); 
             }
@@ -74,12 +74,12 @@ function(
 
         _onChildHasData: function()
         {
-            this.$el.removeClass("nodata");
+            this.$el.removeClass("noData");
         },
 
         _onChildHasNoData: function()
         {
-            this.$el.addClass("nodata");
+            this.$el.addClass("noData");
         }
 
 

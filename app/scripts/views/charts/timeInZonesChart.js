@@ -68,7 +68,7 @@ function (
         {
             if(this.model.get("detailData").channelWasCut(this.dataChannel))
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
@@ -76,11 +76,11 @@ function (
         
             if(!this._hasTimeInAnyZone())
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
-            this.$el.removeClass("nodata");
+            this.$el.removeClass("noData");
             var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
             var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints, this.chartColor);
             var flotOptions = this.buildTimeInZonesFlotChartOptions();
