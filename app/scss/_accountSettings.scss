@@ -193,18 +193,18 @@
                 
                 .zoneCalculatorLayoutBody {
                     .selectBox {
-                        width:205px;
+                        width:195px;
                         // margin-left:7px;
                     }
 
                     .selectboxit-container .selectboxit {
-                        width: 205px !important;
+                        width: 195px !important;
                     }
 
                     .calculatorType,
                     .calculatorDefinition {
                         float:left;
-                        margin-right:25px;
+                        margin-right:43px;
                     }
 
                     .heartrate,
@@ -269,7 +269,7 @@
                             }
                             input[type="text"] {
                                 float: left;
-                                width: 125px;
+                                width: 119px;
                             }
                         }
                     }
@@ -295,7 +295,7 @@
                     font-size:$fontSizeSmall;
                     display:inline-block;
                     text-align:center;
-                    width:28px;
+                    width:30px;
                 }
             }
 
@@ -403,15 +403,15 @@
             .zones {
                 .zoneEntry {
                     .zoneName {
-                        width:400px;
+                        width:433px;
                     }
                     .min,
                     .max {
-                        width:80px;
+                        width:77px;
                     }
 
                     .min {
-                        margin-left:38px;
+                        margin-left:39px;
                     }
                 }
             }
