@@ -76,7 +76,6 @@ function(
             "click .addWorkout": "onAddWorkoutClicked",
             "mouseup": "onDayClicked",
             "mousedown .daySettings": "daySettingsClicked",
-            "click .daySelected": "onDayUnClicked",
             "click": "onDayTouched"
         },
 
@@ -182,7 +181,7 @@ function(
         onDaySettingsClose: function(e)
         {
             this.allowSettingsButtonToHide(e);
-            this.onDayUnClicked(e);
+            theMarsApp.selectionManager.clearSelection();
         },
 
         allowSettingsButtonToHide: function(e)
@@ -258,14 +257,12 @@ function(
 
         openNewItemView: function()
         {
-            this.model.trigger("day:selectAddItem");
-
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();
 
-            this.selectAddWorkoutIcon();
+            this._selectAddWorkoutIcon();
 
-            newItemView.on("close", this.unSelectAddWorkoutIcon, this);
+            this.listenTo(newItemView, "close", _.bind(this._unselectAddWorkoutIcon, this));
             newItemView.on("openQuickView", this.onOpenQuickViewFromNewItem, this);
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "newWorkout", "eventLabel": "" });
@@ -273,8 +270,8 @@ function(
 
         onOpenQuickViewFromNewItem: function(quickView)
         {
-            this.selectAddWorkoutIcon();
-            quickView.on("close", this.unSelectAddWorkoutIcon, this);
+            this._selectAddWorkoutIcon();
+            this.listenTo(quickView, "close", _.bind(this._unselectAddWorkoutIcon, this));
         },
 
         _updateSelect: function()
@@ -325,21 +322,6 @@ function(
             this.$el.removeClass("hoveringOverDayHeader");
         },
 
-        onDayUnClicked: function(e)
-        {
-            //this.unselect();
-            //this.model.trigger("day:click", this.model, e);
-            if (e && e.isDefaultPrevented())
-            {
-                return;
-            }
-            if (e)
-            {
-                e.preventDefault();
-            }
-            this.model.trigger("day:unselect", this.model, e);
-        },
-
         onDayTouched: function(e)
         {
             if(e.isDefaultPrevented())
@@ -364,6 +346,16 @@ function(
             {
                 this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
             }
+        },
+
+        _selectAddWorkoutIcon: function()
+        {
+            this.$(".addWorkout").addClass("active");
+        },
+
+        _unselectAddWorkoutIcon: function()
+        {
+            this.$(".addWorkout").removeClass("active");
         }
 
     });

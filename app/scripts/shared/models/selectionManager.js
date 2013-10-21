@@ -13,6 +13,14 @@ function(
 
     function SelectionManager()
     {
+        var self = this;
+        $("body").click(function(event)
+        {
+            if(!event.isDefaultPrevented())
+            {
+                self.clearSelection();
+            }
+        });
     }
 
     _.extend(SelectionManager.prototype, Backbone.Events,

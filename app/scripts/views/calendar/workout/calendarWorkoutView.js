@@ -171,15 +171,7 @@ function(
 
         workoutTouched: function(e)
         {
-            if(e.isDefaultPrevented())
-            {
-                return;
-            }
-
-            if(theMarsApp.isTouchEnabled())
-            {
-                e.preventDefault();
-            }
+            e.preventDefault();
         },
 
         _updateSelected: function()
