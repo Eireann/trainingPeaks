@@ -79,8 +79,8 @@ function()
             IF: { light: "#5aadff", dark: "#3399ff" }
         },
 
-        chartSelection: "#8eb2d8",
-        chartPrimarySelection: "#33a9ff",
+        chartSelection: "#e61101",
+        chartPrimarySelection: "#4580bf",
 
         mapRoute: "#005695",
         mapSelection: "#e61101",
