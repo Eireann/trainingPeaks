@@ -57,12 +57,7 @@ function(
         // must have an events, even if empty, or else all of our extending won't work right ...
         events:
         {
-            "click .tabNavigation > .summaryTab": "onTabNavigationClicked",
-            "click .tabNavigation > .heartrateTab": "onTabNavigationClicked",
-            "click .tabNavigation > .powerTab": "onTabNavigationClicked",
-            "click .tabNavigation > .paceTab": "onTabNavigationClicked",
-            "click .tabNavigation > .mapGraphTab": "onTabNavigationClicked",
-            "click .tabNavigation > .speedTab": "onTabNavigationClicked"
+            "click .tabNavigation > [data-tabindex]": "onTabNavigationClicked"
         },
 
         ui:
@@ -134,14 +129,7 @@ function(
 
             this.tabs = [];
 
-            this.tabRendered =
-            [
-                false,
-                false,
-                false,
-                false,
-                false
-            ];
+            this.resetTabRenderedState();
             
             this.initializeHeaderActions();
             this.initializeFileUploads();
@@ -160,7 +148,19 @@ function(
 
             this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
         },
-        
+       
+        resetTabRenderedState: function()
+        {
+            this.tabRendered =
+            [
+                false,
+                false,
+                false,
+                false,
+                false
+            ];
+        },
+
         stopWorkoutDetailsFetch: function ()
         {
             this.off("close", this.stopWorkoutDetailsFetch);
@@ -301,7 +301,10 @@ function(
                 speed: new WorkoutQuickViewSpeed({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[5]) })
             };
 
-            tabViews.hr.on("change:model", this.onDetailsChange, this);
+            _.each([tabViews.hr, tabViews.power, tabViews.pace, tabViews.speed], function(tabView)
+            {
+                this.listenTo(tabView, "change:model", _.bind(this.onDetailsChange, this));
+            }, this);
 
             this.tabs =
             [

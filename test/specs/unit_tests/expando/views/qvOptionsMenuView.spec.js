@@ -2,11 +2,13 @@
 [
     "jquery",
     "TP",
+    "app",
     "views/quickView/qvMain/qvOptionsMenuView"
 ],
 function(
     $,
     TP,
+    app,
     QVOptionsMenuView
     )
 {
@@ -62,6 +64,7 @@ function(
                 workoutModel.get("detailData").set("flatSamples", {
                     hasLatLngData: true
                 });
+                workoutModel.get("detailData").set("availableDataChannels", ["Elevation"]);
 
                 var view = new QVOptionsMenuView({ model: workoutModel });
                 view.render();
@@ -72,13 +75,15 @@ function(
             {
                 var workoutModel = buildWorkoutModel();
                 var view = new QVOptionsMenuView({ model: workoutModel });
-                view.render();
 
+                view.render();
                 expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeTruthy();
 
                 workoutModel.get("detailData").set("flatSamples", {
                     hasLatLngData: true
                 });
+                workoutModel.get("detailData").set("availableDataChannels", ["Elevation"]);
+
                 expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeFalsy();
             });
 

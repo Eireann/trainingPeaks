@@ -1,17 +1,24 @@
 define(
 [
     "underscore",
-
     "TP",
     "utilities/workout/formatLapData",
 ],
 function(
     _,
-
     TP,
     formatLapData
 )
 {
+    var channelToStatsMap = {
+        Power: ["Avg Power", "Max Power", "NP"],
+        Elevation: ["Elev Gain", "Elev Loss"],
+        Speed: ["Avg Speed", "Avg Pace", "Max Speed", "Max Pace", "NGP"],
+        HeartRate: ["Avg Heart Rate", "Max Heart Rate", "Min Heart Rate"],
+        Torque: ["Min Torque", "Max Torque", "Avg Torque"],
+        Cadence: ["Cad"]
+    };
+
     var LapsStats = {
 
         getDefaults: function(model)
@@ -37,19 +44,19 @@ function(
             };
         },
 
-        buildLapObjects: function(workoutDefaults)
+        buildLapObjects: function(workoutDefaults, availableChannels)
         {
             var rowData = [],
                 empties = {};
 
             _.each(workoutDefaults.lapsData, function(lap)
             {
-                this.formatLapObject(lap, workoutDefaults, rowData, empties);
+                this.formatLapObject(lap, workoutDefaults, rowData, empties, availableChannels);
             }, this);
             return [rowData, empties];
         },
 
-        formatLapObject: function(rawLapData, workoutDefaults, formattedLapData, empties)
+        formatLapObject: function(rawLapData, workoutDefaults, formattedLapData, empties, availableChannels)
         {
             var formatOptions = { defaultValue: null, allowZero: true, workoutTypeId: workoutDefaults.sportTypeID};
 
@@ -127,11 +134,14 @@ function(
             lapObject["Work"] = TP.utils.conversion.formatUnitsValue("energy", lap.energy, formatOptions);
             lapObject["Calories"] = TP.utils.conversion.formatUnitsValue("calories", lap.calories, formatOptions);
 
+            // remove channels that have been cut
+            this._removeUnavailableChannels(lapObject, availableChannels);
+
             // filter out null values that are null across all rows, and display any remaining null values as "--"
             var defaultDisplayValue = "--";
             for (var key in lapObject)
             {
-                if (!lapObject[key])
+                if(!lapObject[key])
                 {
                     if (lapObject[key] === 0) // zeros are meaningful
                     {
@@ -140,11 +150,12 @@ function(
                         lapObject[key] = defaultDisplayValue;
                         empties[key] = (empties[key] ? empties[key] + 1 : 1);
                     }
-
                 }
             }
+
             formattedLapData.push(lapObject);
         },
+
         compactLapObjects: function(lapObjects, empties)
         {
             _.each(lapObjects, function(row)
@@ -182,8 +193,25 @@ function(
                     return TP.utilities.translate(header_name);
                 })
             );
+        },
+
+        _removeUnavailableChannels: function(lapObject, availableChannels)
+        { 
+            _.each(channelToStatsMap, function(lapFieldNames, channelName)
+            {
+                if(!_.contains(availableChannels, channelName))
+                {
+                    _.each(lapFieldNames, function(fieldName){
+                        if(lapObject.hasOwnProperty(fieldName))
+                        {
+                            lapObject[fieldName] = null;
+                        }
+                    });
+                }
+            });
         }
 
     };
+
     return LapsStats;
 });

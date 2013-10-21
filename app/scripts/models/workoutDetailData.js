@@ -3,11 +3,22 @@
     "underscore",
     "moment",
     "TP",
+    "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
+    "models/commands/saveWorkoutDetailData"
 ],
-function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistance)
+function (
+    _,
+    moment,
+    TP,
+    DataParser,
+    WorkoutStatsForRange,
+    formatPeakTime,
+    formatPeakDistance,
+    SaveWorkoutDetailDataCommand
+    )
 {
     var WorkoutDetailData = TP.APIBaseModel.extend(
     {
@@ -21,7 +32,68 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
 
         initialize: function()
         {
+            this._dataParser = new DataParser();
             this.rangeCollections = {};
+            this.reset();
+            this.on("sync", this.reset, this);
+        },
+
+        reset: function()
+        {
+            this._resetDataParser();
+            this._setOriginalLapsStats();
+            this._resetRangesForLaps();
+
+            // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct state
+            this._resetChannels();
+            this.trigger("reset");
+        },
+
+        undoEdits: function()
+        {
+            this._resetDataParser();
+            this._resetLapEdits();
+            this._resetRangesForLaps();
+
+            // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct stat
+            this._resetChannels();
+            this.trigger("reset");
+        },
+
+        _resetDataParser: function()
+        {
+            this._dataParser.resetExcludedChannels();
+            this._dataParser.loadData(this.get("flatSamples"));
+        },
+
+        _setOriginalLapsStats: function()
+        {
+            this.set("lapsStatsEdited", false);
+            this.set("originalLapsStats", this.has("lapsStats") ? _.clone(this.get("lapsStats")) : null);
+        },
+
+        _resetLapEdits: function()
+        {   // reset laps?
+            if(this.get("lapsStatsEdited"))
+            {
+                this.set("lapsStatsEdited", false);
+                this.set("lapsStats", this.get("originalLapsStats"));
+            }
+        },
+
+        _resetRangesForLaps: function()
+        {
+            if(this.rangeCollections.hasOwnProperty("laps"))
+            {
+                this.getRangeCollectionFor("laps").reset(this._augmentRanges(this.get("lapsStats"), "laps"));
+            }
+        },
+
+        _resetChannels: function()
+        {
+            this.set("channelCuts", null);
+            this.set("disabledDataChannels", []);
+            this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
         },
 
         url: function()
@@ -32,7 +104,7 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
 
         defaults:
         {
-            "workoutId": null, //x, duh
+            "workoutId": null,
             "flatSamples": null,
             "rangesStats": null,
             "peakCadences": null,
@@ -45,7 +117,17 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             "lapsStats": null,
             "meanMaxHeartRates": null,
             "meanMaxPowers": null,
-            "meanMaxSpeeds": null
+            "meanMaxSpeeds": null,
+            "availableDataChannels": null,
+            "disabledDataChannels": null,
+            "channelCuts": null,
+            "lapsStatsEdited": false,
+            "originalLapsStats": null
+        },
+
+        getDataParser: function()
+        {
+            return this._dataParser;
         },
 
         hasSensorData: function()
@@ -86,6 +168,13 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             cadence: "peakCadences"
         },
 
+        _rangeEvents:
+        {
+            laps: {
+                "change:name": "_flagLapsAsEdited"
+            }
+        },
+
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
@@ -95,9 +184,103 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
                 collection = new TP.Collection(data, { model: WorkoutStatsForRange });
                 this.rangeCollections[rangeType] = collection;
                 this._watchRangeDataFor(rangeType, _.bind(collection.set, collection));
+                this._watchRangeCollectionEvents(collection, rangeType);
             }
             return collection;
 
+        },
+
+        disableChannel: function(series)
+        {
+            var disabledSeries = this.get("disabledDataChannels");
+            this.set("disabledDataChannels", _.union(disabledSeries, [series]));
+        },
+
+        enableChannel: function(series)
+        {
+            this.set("disabledDataChannels", _.without(this.get("disabledDataChannels"), series));
+        },
+
+        _addAvailableChannel: function(series)
+        {
+            var availableSeries = this.get("availableDataChannels");
+            availableSeries.push(series);
+            this.set("availableDataChannels", _.uniq(availableSeries));
+        },
+
+        _removeAvailableChannel: function(series)
+        {
+            this.set("availableDataChannels", _.without(this.get("availableDataChannels"), series));
+        },
+
+        cutChannel: function(series)
+        {
+            var channelCutDetails = {
+                channel: series,
+                startTimeInMilliseconds: _.first(this.get("flatSamples").msOffsetsOfSamples),
+                endTimeInMilliseconds: _.last(this.get("flatSamples").msOffsetsOfSamples)
+            };
+            var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
+            channelCuts.push(channelCutDetails);
+
+            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
+            this._dataParser.excludeChannel(series);
+            this.set("channelCuts", channelCuts);
+            this.disableChannel(series);
+            this._removeAvailableChannel(series);
+        },
+
+        channelWasCut: function(series)
+        {
+            var matchingChannelCut = _.find(this.get("channelCuts"), function(channelCut)
+            {
+                return channelCut.channel === series;
+            });
+
+            return matchingChannelCut ? true : false;
+        },
+
+        hasEdits: function()
+        {
+            return this.has("channelCuts") || this.get("lapsStatsEdited");
+        },
+
+        saveEdits: function()
+        {
+            var params =
+            {
+                channelCuts: this._getChannelCuts(),
+                lapsStats: this._getEditedLapsStats()
+            }; 
+
+            var command = new SaveWorkoutDetailDataCommand(params);
+            command.workoutId = this.get('workoutId');
+            return command.execute()
+                .done(_.bind(this._afterSaveEdits, this));
+        },
+
+        _afterSaveEdits: function()
+        {
+            this.set("flatSamples", null, {silent: true});
+            this.fetch();
+            this.trigger("after:saveEdits");
+        },
+
+        _getChannelCuts: function()
+        {
+            return this.get("channelCuts");
+        },
+
+        _getEditedLapsStats: function()
+        {
+            if(this.get("lapsStatsEdited"))
+            {
+                return this.getRangeCollectionFor("laps").toJSON();
+            }
+            else
+            {
+                return null;
+            }
         },
 
         _getRangeDataFor: function(rangeType, onChange)
@@ -129,6 +312,21 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
                 callback(value);
             });
 
+        },
+
+        _watchRangeCollectionEvents: function(collection, rangeType)
+        {
+            if(!this._rangeEvents.hasOwnProperty(rangeType))
+            {
+                return;
+            }
+
+            var events = this._rangeEvents[rangeType];
+
+            _.each(events, function(methodName, eventName)
+            {
+                this.listenTo(collection, eventName, _.bind(this[methodName], this));
+            }, this);
         },
 
         _augmentRanges: function(ranges, rangeType)
@@ -167,8 +365,12 @@ function (_, moment, TP, WorkoutStatsForRange, formatPeakTime, formatPeakDistanc
             });
 
             return ranges;
-        }
+        },
 
+        _flagLapsAsEdited: function()
+        {
+            this.set("lapsStatsEdited", true);
+        }
     });
 
     return WorkoutDetailData;

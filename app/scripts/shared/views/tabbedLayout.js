@@ -1,11 +1,13 @@
 define(
 [
+    "setImmediate",
     "underscore",
     "TP",
     "shared/views/selectableLayout",
     "hbs!shared/templates/tabbedLayout"
 ],
 function(
+    setImmediate,
     _,
     TP,
     SelectableLayout,
@@ -38,6 +40,10 @@ function(
             SelectableLayout.apply(this, arguments);
             this.on("after:switchView", this._updateNavigation, this);
             this.onScroll = _.bind(_.debounce(this._onScroll, 100), this);
+
+            this.bodyRegion.on("show", this._updateScrollTargetSize, this);
+            $(window).on("resize.tabbedLayout", this._updateScrollTargetSize);
+            this.on("close", function(){$(window).off("resize.tabbedLayout");});
         },
 
         _getNavigationElements: function()
@@ -164,6 +170,15 @@ function(
                     }).addClass("active");
                 }
             }
+        },
+
+        _updateScrollTargetSize: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$(".tabbedLayoutBody .scrollTarget:last").css("min-height", self.$(".tabbedLayoutBody").height());
+            });
         }
     });
 

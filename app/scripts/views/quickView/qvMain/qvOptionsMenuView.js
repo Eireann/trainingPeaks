@@ -54,9 +54,10 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
        
         hasLatLngData: function()
         {
-            return this.model && this.model.get("detailData") &&
-                this.model.get("detailData").get("flatSamples") &&
-                this.model.get("detailData").get("flatSamples").hasLatLngData;
+            var detailData = this.model.get("detailData");
+            var channels = detailData.get("availableDataChannels");
+            var flatSamples = detailData.get("flatSamples");
+            return flatSamples && flatSamples.hasLatLngData && _.contains(channels, "Elevation");
         },
 
         onElevationCorrectionClicked: function()
@@ -81,11 +82,7 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         watchForLatLngChanges: function()
         {
             var detailData = this.model.get("detailData");
-            detailData.on("change:flatSamples", this.enableOrDisableElevationCorrection, this);
-            this.on("close", function()
-            {
-                detailData.off("change:flatSamples", this.enableOrDisableElevationCorrection, this);
-            }, this);
+            this.listenTo(detailData, "change:availableDataChannels", _.bind(this.enableOrDisableElevationCorrection, this));
         }
     });
 });
