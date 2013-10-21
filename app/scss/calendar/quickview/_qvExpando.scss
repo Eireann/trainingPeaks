@@ -709,10 +709,11 @@
             }
 
             li {
-                color:$TPGrey10;
+                color:$TPGrey3;
                 font-family: $fontFamilyRegular;
                 margin: .25em 0;
                 text-align: left;
+                cursor: pointer;
 
                 input[type="checkbox"] {
                     margin: 0 5px 0 0;
