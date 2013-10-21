@@ -82,8 +82,7 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         watchForLatLngChanges: function()
         {
             var detailData = this.model.get("detailData");
-            _.bind(this.enableOrDisableElevationCorrection, this);
-            this.listenTo(detailData, "change:availableDataChannels");
+            this.listenTo(detailData, "change:availableDataChannels", _.bind(this.enableOrDisableElevationCorrection, this));
         }
     });
 });
