@@ -96,6 +96,15 @@ function (
                 MapUtils.addStartMarker(this.map, latLongArray[0]);
                 MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
             }
+
+            if(this.$el.hasClass("nodata"))
+            {
+                this.trigger("noData");
+            }
+            else
+            {
+                this.trigger("hasData");
+            }
         },
 
         addMouseHoverBuffer: function (latLongArray)

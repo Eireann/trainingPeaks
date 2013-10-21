@@ -838,6 +838,11 @@
     border: 1px solid transparent;
     cursor: pointer;
 
+    &.nodata
+    {
+        border: 1px solid white;  
+    }
+
     &.fullScreen
     {
         position: absolute;

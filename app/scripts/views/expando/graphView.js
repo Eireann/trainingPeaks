@@ -115,9 +115,11 @@ function(
 
             this.$el.removeClass("nodata");
 
+
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
             {
                 this.$el.addClass("nodata");
+                this.trigger("noData");
                 return;
             }
             
@@ -136,6 +138,7 @@ function(
             if(!enabledSeries.length)
             {
                 this.$el.addClass("nodata");
+                this.trigger("noData");
                 return;
             }
 
@@ -172,6 +175,7 @@ function(
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
 
+            this.trigger("hasData");
         },
 
         getInitialFilterPeriod: function()
