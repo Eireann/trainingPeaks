@@ -31,6 +31,7 @@ function(DataParser, testData)
                     expectedLength--;
             });
 
+            var minTemperature = -20;
             var minElevation = 1617.39;
             var minElevationOnRange = 1675.39;
 
@@ -121,6 +122,8 @@ function(DataParser, testData)
                     
                     if (yaxis.label === "Elevation")
                         expect(yaxis.min).toBe(minElevation);
+                    else if(yaxis.label === "Temperature")
+                        expect(yaxis.min).toBe(minTemperature);
                     else
                         expect(yaxis.min).toBe(0);
 
@@ -144,6 +147,8 @@ function(DataParser, testData)
 
                     if (yaxis.label === "Elevation")
                         expect(yaxis.min).toBe(minElevation);
+                    else if(yaxis.label === "Temperature")
+                        expect(yaxis.min).toBe(minTemperature);
                     else
                         expect(yaxis.min).toBe(0);
 
