@@ -94,12 +94,12 @@ function(
                     metric.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
                     metric.save();
                     theMarsApp.calendarManager.addItem(metric);
-                    return;
+                    return metric;
                 }
                 else
                 {
                     this.moveToDay(date);
-                    return;
+                    return this;
                 }
             }
             else

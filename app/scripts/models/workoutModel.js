@@ -216,10 +216,12 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                     var workout = this.clone();
                     workout.set("workoutDay", date).save();
                     theMarsApp.calendarManager.addItem(workout);
+                    return workout;
                 }
                 else
                 {
                     this.moveToDay(date);
+                    return this;
                 }
 
             }

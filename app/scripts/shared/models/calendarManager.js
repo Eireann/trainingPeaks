@@ -23,7 +23,6 @@ function(
 
     var DatelikeCollection = TP.Collection.extend(
     {
-        
         initialize: function(models, options)
         {
             this.manager = options.manager;
@@ -101,19 +100,19 @@ function(
             end = moment(end);
 
             var beforeFirst = _.min([start, end, this.begin]);
-            var beforeLast = this.begin;
+            var beforeLast = moment(this.begin).subtract(1, "week");
             var afterFirst = this.end;
             var afterLast = _.max([start, end, moment(this.end).subtract(1, "week")]);
 
             this.begin = CalendarUtility.weekMomentForDate(beforeFirst);
             this.end = CalendarUtility.weekMomentForDate(afterLast).add(1, "week");
 
-            if(beforeFirst < beforeLast)
+            if(beforeFirst <= beforeLast)
             {
                 this._createWeeks(beforeFirst, beforeLast);
             }
 
-            if(afterFirst < afterLast)
+            if(afterFirst <= afterLast)
             {
                 this._createWeeks(afterFirst, afterLast);
             }

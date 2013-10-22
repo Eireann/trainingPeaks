@@ -56,6 +56,7 @@ function(
             this.on("close", this.closeChildren, this);
 
             this.stateModel = options.stateModel;
+            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
 
             this.initializeScrollOnDrag();
 
@@ -85,7 +86,7 @@ function(
             var start = _.min(weeks);
             var end = _.max(weeks);
 
-            theMarsApp.calendarManager.loadActivities(start, end);
+            this.calendarManager.loadActivities(start, end);
         },
 
         onRender: function()

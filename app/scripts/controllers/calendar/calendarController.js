@@ -9,11 +9,9 @@ define(
     "TP",
     "controllers/pageContainerController",
     "layouts/calendarLayout",
-    "models/calendar/calendarWeekCollection",
     "models/calendar/calendarDay",
     "views/calendar/calendarHeaderView",
     "views/calendar/container/calendarContainerView",
-    "controllers/calendar/dragMoveShift",
     "calendar/models/calendarStateModel",
 
     // **** Library ****
@@ -28,11 +26,9 @@ function(
     TP,
     PageContainerController,
     CalendarLayout,
-    CalendarWeekCollection,
     CalendarDayModel,
     calendarHeaderView,
     CalendarContainerView,
-    calendarControllerDragMoveShift,
     CalendarStateModel,
 
     // **** Library ****
@@ -42,8 +38,7 @@ function(
 )
 {
 
-    // base controller functionality
-    var calendarControllerBase =
+    var CalendarController = PageContainerController.extend(
     {
         initialize: function(options)
         {
@@ -166,6 +161,7 @@ function(
 
             this.views.calendar = new CalendarContainerView({
                 stateModel: this.stateModel,
+                calendarManager: this.calendarManager,
                 collection: this.calendarManager.weeks,
                 calendarHeaderModel: this.stateModel,
                 firstDate: this.stateModel.get('date')
@@ -236,11 +232,8 @@ function(
             this.views.header = new calendarHeaderView({ model: this.stateModel });
         }
 
-    };
-
-    // mixins
-    _.extend(calendarControllerBase, calendarControllerDragMoveShift);
+    });
 
     // make it a TP.Controller
-    return PageContainerController.extend(calendarControllerBase);
+    return CalendarController;
 });
