@@ -519,20 +519,32 @@
 
         parseTextField: function(value, options)
         {
-            return value === "" ? null : conversion.fixNewlines(value);
+            return value === "" ? null : conversion.fixNewlinesForParse(value);
         },
 
         formatTextField: function(value, options)
         {
-            return value === null ? "" : conversion.fixNewlines(value);
+            return value === null ? "" : conversion.fixNewlinesForFormat(value);
         },
 
-        fixNewlines: function(value)
+        // converts CRLF \r\n or LF \n to CR \r 
+        // FLEX WANTS \r, not \n, don't ask me why ...
+        fixNewlinesForParse: function(value)
         {
             if (value === null)
                 return "";
 
-            var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
+            var newValue = value.replace(/\r\n/g, "\r").replace(/\n/g, "\r");
+            return newValue;
+        },
+
+        // converts LF \n or CR \r to CRLF \r\n
+        fixNewlinesForFormat: function(value)
+        {
+            if (value === null)
+                return "";
+
+            var newValue = value.replace(/\r\n/g, "\n").replace(/\r/g,"\n").replace(/\n/g, "\r\n");
             return newValue;
         },
 

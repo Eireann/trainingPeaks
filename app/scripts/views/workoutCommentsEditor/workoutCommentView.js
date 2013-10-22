@@ -38,11 +38,6 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
             };
         },
 
-        onRender: function()
-        {
-            //?
-        },
-
         onMouseOver: function ()
         {
             this.$el.addClass("hover");
