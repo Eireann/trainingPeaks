@@ -4,6 +4,7 @@ define(
     "TP",
     "shared/misc/selection",
     "shared/utilities/calendarUtility",
+    "shared/models/selectedActivitiesCollection",
     "views/calendar/moveItems/shiftWizzardView"
 ],
 function(
@@ -11,6 +12,7 @@ function(
     TP,
     Selection,
     CalendarUtility,
+    SelectedActivitiesCollection,
     ShiftWizzardView
 )
 {
@@ -44,6 +46,62 @@ function(
                 selectionEndDate: last
             });
             shiftWizzardView.render(); 
+        },
+
+        deleteAction: function()
+        {
+            this._getActivitesCollection().deleteSelectedItems();
+        },
+
+        cutAction: function()
+        {
+            var clipboard = this.clone();
+            clipboard.isCut = true;
+            return clipboard;
+        },
+
+        copyAction: function()
+        {
+            var activites = this.map(function(day) { return day.cloneForCopy(); });
+            var clipboard = new CalendarDaySelection(activites);
+            return clipboard;
+        },
+
+        pasteAction: function(options)
+        {
+            var target = options && options.target;
+
+
+            if(target instanceof CalendarDaySelection)
+            {
+                var sourceMoment = moment(this.first().id);
+                var targetMoment = moment(target.first().id);
+                var delta = targetMoment.diff(sourceMoment, "days");
+
+                this.each(function(day)
+                {
+                    var date = moment(day.id).add(delta, "days").format(CalendarUtility.idFormat);
+                    day.pasted({ date: date });
+                });
+
+                if(this.isCut)
+                {
+                    theMarsApp.selectionManager.clearClipboard();
+                }
+            }
+            else
+            {
+                console.warn("Days can only be pasted to other days");
+                return false;
+            }
+        },
+
+        _getActivitesCollection: function()
+        {
+            var activites = this.map(function(day) { return day.itemsCollection.models; });
+            activites = _.flatten(activites, true);
+
+            return new SelectedActivitiesCollection(activites);
         }
 
     });

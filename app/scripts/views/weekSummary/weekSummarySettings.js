@@ -34,7 +34,6 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
         {
             this.parentEl = options.parentEl;
             this.inheritedClassNames = options.className;
-            this.on("clickoutside", this.unselect, this);
         },
 
         attributes: function()
@@ -57,9 +56,6 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
             {
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
-
-            this.model.collection.trigger("week:select", this.model.collection);
-            this.updatePasteAvailability();
         },
 
         onDeleteClicked: function(e)
@@ -73,46 +69,31 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
         
         onDeleteDayConfirmed: function()
         {
-            this.model.collection.deleteWeekItems();
+            theMarsApp.selectionManager.execute("delete");
         },
 
         onCopyClicked: function(e)
         {
-            this.model.collection.trigger("week:copy", this.model.collection);
-            this.updatePasteAvailability();
-            //theMarsApp.logger.debug("Copy from week");
+            theMarsApp.selectionManager.copySelectionToClipboard();
             this.hideSettings(e);
         },
 
         onCutClicked: function(e)
         {
-            this.model.trigger("week:cut", this.model.collection);
-            this.updatePasteAvailability();
-            //theMarsApp.logger.debug("Cut from week");
+            theMarsApp.selectionManager.cutSelectionToClipboard();
             this.hideSettings(e);
         },
 
         onPasteClicked: function(e)
         {
-            this.model.trigger("week:paste", this.model.get("date"));
-            //theMarsApp.logger.debug("Paste from week");
+            theMarsApp.selectionManager.pasteClipboardToSelection();
             this.hideSettings(e);
-        },
-
-        updatePasteAvailability: function()
-        {
-            this.model.trigger("week:pasteMenu", this.model.get("date"));
         },
 
         onShiftClicked: function (e)
         {
             this.hideSettings(e);
             theMarsApp.selectionManager.execute("shift");
-        },
-
-        unselect: function(e)
-        {
-            this.model.collection.trigger("week:unselect", this.model.collection);
         }
 
     });

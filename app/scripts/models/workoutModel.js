@@ -180,8 +180,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 this.moveToDay(options.date);
             }
         },
-        
-        copyToClipboard: function()
+
+        cloneForCopy: function()
         {
             var attributesToCopy = [
                 "athleteId",
@@ -200,46 +200,34 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 "elevationGainPlanned"
             ];
 
-            var copiedModelAttributes = {};
-            var self = this;
-            _.each(attributesToCopy, function(attributeName)
-            {
-                copiedModelAttributes[attributeName] = self.get(attributeName);
-            });
-
-            return new WorkoutModel(copiedModelAttributes);
-        },
-        
-        cutToClipboard: function ()
-        {
-            return this;
+            return new WorkoutModel(this.pick(attributesToCopy));
         },
 
-        onPaste: function(dateToPasteTo)
+        pasted: function(options)
         {
-            if (this.id)
+
+            if(options.date)
             {
-                if (moment(dateToPasteTo).format(TP.utils.datetime.shortDateFormat) !== this.getCalendarDay())
+                var date = options.date;
+
+                if(this.isNew())
                 {
-                    this.moveToDay(dateToPasteTo);
-                    return this;
-                } else
-                {
-                    return null;
+                    var workout = this.clone();
+                    workout.set("workoutDay", date).save();
+                    theMarsApp.calendarManager.addItem(workout);
                 }
+                else
+                {
+                    this.moveToDay(date);
+                }
+
             }
             else
             {
-                var clonedAttributes = _.clone(this.attributes);
-                delete clonedAttributes.details;
-                delete clonedAttributes.detailData;
-                var newWorkout = new WorkoutModel(clonedAttributes);
-                var workoutDateMoment = moment(dateToPasteTo);
-                var formattedWorkoutDate = workoutDateMoment.format(TP.utils.datetime.longDateFormat);
-                newWorkout.set("workoutDay", formattedWorkoutDate);
-                newWorkout.save();
-                return newWorkout;
+                console.warn("Don't know how to paste to target");
+                return false;
             }
+
         },
 
         getPostActivityComments: function()

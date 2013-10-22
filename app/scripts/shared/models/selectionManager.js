@@ -13,6 +13,8 @@ function(
 
     function SelectionManager()
     {
+        this.selection = null;
+        this.clipboard = null;
         this.stack = [];
 
         var self = this;
@@ -95,17 +97,39 @@ function(
             this.selection = this.stack.pop();
         },
 
-        execute: function(action)
+        execute: function(action, options, selection)
         {
-            var action = this.selection && this.selection[action + "Action"];
+            selection = selection || this.selection;
+
+            var action = selection && selection[action + "Action"];
             if(_.isFunction(action))
             {
-                action.apply(this.selection, [].slice.call(arguments, 1));
+                return action.call(selection, options);
             }
             else
             {
                 return false;
             }
+        },
+
+        copySelectionToClipboard: function()
+        {
+            this.clipboard = this.execute("copy");
+        },
+
+        cutSelectionToClipboard: function()
+        {
+            this.clipboard = this.execute("cut");
+        },
+
+        pasteClipboardToSelection: function()
+        {
+            this.execute("paste", { target: this.selection }, this.clipboard);
+        },
+
+        clearClipboard: function()
+        {
+            this.clipboard = null;
         },
 
         _selectionClassForModel: function(model)

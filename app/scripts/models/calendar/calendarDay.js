@@ -85,6 +85,7 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
 
         reset: function(models, options)
         {
+            models = _.map(models, _.bind(ActivityModel.wrap, ActivityModel));
             this.itemsCollection.reset(models, options);
         },
         
@@ -164,15 +165,24 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
 
         pasted: function(options)
         {
-            if(options.date)
+            this.each(function(activity)
             {
-                if(options.date === this.id)
+                if(_.isFunction(activity.pasted))
                 {
-                    return;
+                    activity.pasted(options);
                 }
+            });
+        },
 
-                this.moveItemsToDay(options.date);
-            }
+        cloneForCopy: function()
+        {
+            var day = this.clone();
+            this.each(function(activity)
+            {
+                day.add(activity.cloneForCopy());
+            });
+
+            return day;
         }
 
     }, { hasLabel: false });
