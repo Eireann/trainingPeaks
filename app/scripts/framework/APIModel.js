@@ -3,9 +3,10 @@ define(
     "underscore",
     "backbone",
     "backbone.deepmodel",
-    "moment"
+    "moment",
+    "framework/utilities"
 ],
-function(_, Backbone, DeepModel, moment)
+function(_, Backbone, DeepModel, moment, utils)
 {
     var BaseModel = {
 
@@ -83,7 +84,7 @@ function(_, Backbone, DeepModel, moment)
 
         checkpoint: function()
         {
-            this.checkpointAttributes = _.clone(this.attributes);
+            this.checkpointAttributes = utils.deepClone(this.attributes);
         },
         
         revert: function()

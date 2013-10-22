@@ -549,7 +549,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatTorque", [
                 {
                     output: "9999",
-                    input: 9999 
+                    input: 9999
                 },
                 {
                     input: "9999.1",
@@ -565,7 +565,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: "" 
+                    output: ""
                 },
                 {
                     input: "-1",
@@ -594,7 +594,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatTemperature", [
                 {
                     output: "999",
-                    input: 999 
+                    input: 999
                 },
                 {
                     output: "999",
@@ -658,7 +658,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "0.00",
                     input: 0 / 60,
-                    options: { workoutTypeId: 3 } 
+                    options: { workoutTypeId: 3 }
                 },
                 {
                     output: "3.20",
@@ -691,12 +691,33 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "0.00",
                     input: 0,
-                    options: { workoutTypeId: 1 } 
+                    options: { workoutTypeId: 1 }
                 },
                 {
                     output: "3.20",
                     input: 3.2,
                     options: { workoutTypeId: 1 }
+                }
+            ]);
+        });
+
+        describe("Weight", function()
+        {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            describeFormat("formatWeight", [
+                {
+                    input: 120.34,
+                    output: "120.3"
+                },
+                {
+                    input: 33,
+                    output: "33.0"
                 }
             ]);
         });

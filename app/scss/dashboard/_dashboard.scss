@@ -297,7 +297,7 @@
             z-index:2;
         }
          &:hover, &.hover {
-            background-color: $TPGrey1;
+            // background-color: $TPGrey1;
             border: 1px solid transparent;
          }
 
@@ -331,13 +331,11 @@
 
 
 
-    &:hover, &.hover
-    {
-        background-color: #e4e2e3;
+    &:hover, &.hover {
+        // background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
         z-index: 2;
-        .chartButtons
-        {
+        .chartButtons {
             display: block;
             z-index:2;
         }

@@ -97,9 +97,10 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
             
             if (this.editable)
             {
-                if (this.ui.editedComment.val() !== this.model.get("comment"))
+                var comment = TP.utils.conversion.parseTextField(this.ui.editedComment.val());
+                if (comment !== this.model.get("comment"))
                 {
-                    this.model.set("comment", this.ui.editedComment.val());
+                    this.model.set("comment", comment);
                     this.trigger("commentedited");
                 }
                 
@@ -119,9 +120,10 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
             this.saveTimeout = setTimeout(function()
             {
                 //console.debug("check for save");
-                if (self.ui.editedComment.val() !== self.model.get("comment"))
+                var comment = TP.utils.conversion.parseTextField(self.ui.editedComment.val());
+                if (comment !== self.model.get("comment"))
                 {
-                    self.model.set("comment", self.ui.editedComment.val());
+                    self.model.set("comment", comment);
                     self.trigger("commentedited");
                 }
             }, 2000);

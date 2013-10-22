@@ -115,7 +115,6 @@ function(
             TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileSelected", "eventLabel": "" });
 
             this.$el.addClass("waiting");
-            this.$("#uploadingNotification").css("display", "block");
         },
 
         onUploadDone: function (workoutModelJson)

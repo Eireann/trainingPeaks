@@ -293,7 +293,7 @@ function(chartColors, findIndexByMsOffset, conversion)
                     {
                         return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: self.workoutTypeValueId } );
                     }
-                    return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: self.workoutTypeValueId}), 10);
+                    return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: self.workoutTypeValueId}), 10);
                 },
                 labelWidth: showSpeedAsPace ? 27 : 15
             };
