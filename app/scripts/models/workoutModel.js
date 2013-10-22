@@ -110,8 +110,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
         {
             this.checkpointAttributes = _.clone(this.attributes);
 
-            // details checkpoint
-            this.get("details").checkpoint();
+            // handle details checkpoint separately
+            //this.get("details").checkpoint();
             delete this.checkpointAttributes.details;
 
             // probably no need for checkpoint/revert here?
@@ -127,7 +127,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 this.set(this.checkpointAttributes);
                 this.save();
 
-                this.get("details").revert();
+                // handle details revert separately
+                //this.get("details").revert();
 
                 // not needed until we can edit detailData
                 //this.get("detailData").revert();

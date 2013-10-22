@@ -53,6 +53,10 @@ function(
             if(!this.saveDeleteDiscardInitialized)
             {
                 this.model.checkpoint();
+                var details = this.model.get("details");
+                details.createPromise().done(function() {
+                    details.checkpoint();
+                });
                 this.model.on("change", this.saveOnModelChange, this);
                 this.model.on("change", this.enableDiscardButtonOnModelChange, this);
                 this.on("change:details", this.enableDiscardButtonOnModelChange, this);
@@ -115,9 +119,14 @@ function(
         onDiscardChangesConfirmed: function()
         {
             if (this.isNewWorkout)
+            {
                 this.model.destroy();
+            }
             else if (this.model.id)
+            {
                 this.model.revert();
+                this.model.get("details").revert();
+            }
 
             this.close();
         },
