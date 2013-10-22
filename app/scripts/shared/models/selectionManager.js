@@ -13,6 +13,8 @@ function(
 
     function SelectionManager()
     {
+        this.stack = [];
+
         var self = this;
         $("body").click(function(event)
         {
@@ -79,6 +81,18 @@ function(
                 this.selection.deactivate();
                 this.selection = null;
             }
+        },
+
+        pushSelection: function()
+        {
+            this.stack.push(this.selection);
+            this.selection = null;
+        },
+
+        popSelection: function()
+        {
+            this.clearSelection();
+            this.selection = this.stack.pop();
         },
 
         _selectionClassForModel: function(model)
