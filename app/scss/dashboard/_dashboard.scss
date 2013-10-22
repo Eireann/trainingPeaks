@@ -211,6 +211,8 @@
     border: 1px solid transparent;
     cursor: pointer;
 
+    @include noDataMessage;
+
     .chartTitle, 
     .customDateRange {
         display: block; /* Fallback for non-webkit */
@@ -491,21 +493,7 @@
         {
             display: none;
         }
-        
-        .noDataMessage
-        {
-            display: block;
-            position: absolute;
-            top:0;  
-            bottom:0; 
-            left:0;
-            right:0;
-            margin:auto;
-            height: 1.5em;
-            font-size:$fontSizeSmall;
-            text-align: center;
-        } 
-
+       
         &:hover {
             border: 1px solid $TPGrey11;
         }

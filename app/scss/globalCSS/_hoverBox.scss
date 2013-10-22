@@ -37,9 +37,11 @@
 
         label
         {
-            color: $TPGrey3;
+            color:$TPGrey10;
+            
             cursor: pointer;
 			font-size:$fontSizeSmall;
+            font-family: $fontFamilyRegular;
 			font-weight:normal;
 			// line-height:$fontSizeXXLarge;
             padding: 4px 0;
@@ -47,7 +49,11 @@
 
             a, 
             a:visited {
-                color: $TPGrey3;
+                // color: $TPGrey3;
+            }
+
+            &:hover {
+                color:$TPGrey4;
             }
         }
 

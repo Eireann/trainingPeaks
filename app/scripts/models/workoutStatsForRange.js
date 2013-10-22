@@ -35,7 +35,7 @@ function(TP)
             this.on("change", this._augmentData, this);
 
         },
-        
+
         parse: function(response)
         {
             if (this.has("name"))

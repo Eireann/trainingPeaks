@@ -92,7 +92,15 @@ function(
     TP.Region = Backbone.Marionette.Region;
 
     // Common functionality for all TP View types
-    var commonViewFunctions = {};
+    var commonViewFunctions = {
+        renderIfVisible: function()
+        {
+            if(this.$el.is(":visible"))
+            {
+                this.render();
+            }
+        },
+    };
 
     // add throbbers
     _.extend(commonViewFunctions, {

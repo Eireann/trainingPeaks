@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "utilities/data/timeInZonesGenerator",
     "utilities/data/peaksGenerator",
     "views/charts/heartRatePeaksChart",
     "views/charts/powerPeaksChart",
@@ -12,8 +11,7 @@
 function(
     _,
     TP,
-    timeInZonesGenerator,
-    ThePeaksGenerator,
+    peaksGenerator,
     HRPeaksChartView,
     PowerPeaksChartView,
     SpeedPeaksChartView,
@@ -28,49 +26,33 @@ function(
             if (!this.metric)
                 throw "peaks mixin requires a metric name (this.metric)";
 
-            this.on("render", this.onRenderPeaks, this);
-        },
+            this.on("render", this.renderPeaks, this);
 
-        onRenderPeaks: function()
-        {
-            this.renderPeaks();
-            this.watchForPeaksChanges();
-        },
+            this.once("render", function()
+            {
+                // big change - i.e. initial load from server - rerender whole tab
+                this.listenTo(this.model, "change:meanMax" + this.metric + "s", _.bind(this.reRenderOnChange, this));
 
-        watchForPeaksChanges: function()
-        {
-            // big change - i.e. initial load from server - rerender whole tab
-            this.model.on("change:meanMax" + this.metric + "s", this.reRenderOnChange, this);
+                // small change - i.e. stickit edit, just update the graph
+                this.listenTo(this.model, "change:meanMax" + this.metric + "s.meanMaxes.*", _.bind(this.onPeaksChange, this));
+            }, this);
 
-            // small change - i.e. stickit edit, just update the graph
-            this.model.on("change:meanMax" + this.metric + "s.meanMaxes.*", this.onPeaksChange, this);
-            this.on("close", this.stopWatchingPeaksChanges, this);
-        },
-
-        stopWatchingPeaksChanges: function()
-        {
-            this.model.off("change:meanMax" + this.metric + "s", this.reRenderOnChange, this);
-            this.model.off("change:meanMax" + this.metric + "s.meanMaxes.*", this.onPeaksChange, this);
         },
 
         renderPeaks: function()
         {
-            var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
-            var peaks = ThePeaksGenerator.generate(this.metric, this.model);
-            this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks, timeInZones);
+            this.renderPeaksTable();
+            this.renderPeaksChart();
         },
 
         onPeaksChange: function()
         {
-            var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
-            var peaks = ThePeaksGenerator.generate(this.metric, this.model);
-            this.renderPeaksChart(peaks, timeInZones);
             this.trigger("change:model", this.model);
         },
 
-        renderPeaksTable: function(peaks)
+        renderPeaksTable: function()
         {
+            var peaks = peaksGenerator.generate(this.metric, this.model);
             if (peaks)
             {
                 var peaksHtml = peakRowTemplate({ peaks: peaks });
@@ -82,23 +64,22 @@ function(
             }
         },
 
-        renderPeaksChart: function(peaks, timeInZones)
+        renderPeaksChart: function()
         {
             var view;
             if (this.metric === "HeartRate")
             {
-                view = new HRPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones });
+                view = new HRPeaksChartView({ model: this.workoutModel, el: this.$(".peaksChart") });
                 view.render();
             }
             else if (this.metric === "Power")
             {
-                view = new PowerPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones });
+                view = new PowerPeaksChartView({ model: this.workoutModel, el: this.$(".peaksChart") });
                 view.render();
             }
             else if (this.metric === "Speed")
             {
-                view = new SpeedPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones, workoutType: this.workoutModel.get("workoutTypeValueId"),
-                                               peakType: this.graphTitle });
+                view = new SpeedPeaksChartView({ model: this.workoutModel, el: this.$(".peaksChart"), workoutType: this.workoutModel.get("workoutTypeValueId"), peakType: this.graphTitle });
                 view.render();
             }
         }

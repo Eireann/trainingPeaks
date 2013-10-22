@@ -54,6 +54,9 @@
         .xaxisLabel {
             @include calc("top","100% - 19px");
         }
+
+        @include noDataMessage;
+
     }
 
     .peaksChart {
@@ -61,6 +64,9 @@
         left: 328px;
         width: 298px;
         height: 220px;
+
+        @include noDataMessage;
+
     }
 
     .zonesTable {

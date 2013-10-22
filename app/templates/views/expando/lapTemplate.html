@@ -1,1 +1,2 @@
-<input type="checkbox"> <span>{{ name }}{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
+<input type="checkbox">
+<div class="editLapName" {{#if isLap}}title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</div><span class="">{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>

@@ -80,7 +80,7 @@ function()
         },
 
         chartSelection: "#e61101",
-        chartPrimarySelection: "#33a9ff",
+        chartPrimarySelection: "#4580bf",
 
         mapRoute: "#005695",
         mapSelection: "#e61101",

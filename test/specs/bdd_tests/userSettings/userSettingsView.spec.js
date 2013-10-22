@@ -56,10 +56,10 @@ function(
             view.$("input[name=address]").val("New Address").trigger("change");
             expect(view.$("input[name=address]").val()).toBe("New Address");
 
-            view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
+            view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             expect(view.$("input[name=address]").length).toBe(0);
 
-            view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
+            view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             expect(view.$("input[name=address]").length).toBe(1);
             expect(view.$("input[name=address]").val()).toBe("New Address");
             view.close();
@@ -99,8 +99,8 @@ function(
             view.render();
 
             view.$("input[name=address]").val("New Address").trigger("change");
-            view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
-            view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
+            view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
+            view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             expect(theMarsApp.user.get("address")).toBe("Original Address");
         });
 

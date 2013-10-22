@@ -17,12 +17,17 @@ function(
         initialize: function()
         {
             var ranges = new TP.Collection([], { model: WorkoutStatsForRange });
-
             this.set("ranges", ranges);
             this.on("change:primaryRange", this._onStatsRangeChange, this);
 
             this.listenTo(ranges, "add", _.bind(this._onRangeAdded, this));
             this.listenTo(ranges, "remove", _.bind(this._onRangeRemoved, this));
+        },
+
+        reset: function()
+        {
+            this.get("ranges").reset();
+            this.set("primaryRange", null);
         },
 
         _onStatsRangeChange: function(self, range)

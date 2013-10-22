@@ -10,7 +10,12 @@ function (_, TP, RollbarManager)
     {
         return function()
         {
-            theMarsApp.session.authenticationComplete(callback);
+            var args = Array.prototype.slice.call(arguments);
+            var callbackWithArgs = function()
+            {
+                return callback.apply(this, args);
+            };
+            theMarsApp.session.authenticationComplete(callbackWithArgs);
         };
     };
 
@@ -42,6 +47,7 @@ function (_, TP, RollbarManager)
 
         calendar: ensureUser(function (athleteId)
         {
+            
             if (athleteId)
                 theMarsApp.user.setCurrentAthleteId(athleteId);
 

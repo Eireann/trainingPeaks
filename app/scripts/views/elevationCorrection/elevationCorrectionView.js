@@ -1,7 +1,7 @@
 ﻿define(
 [
+    "underscore",
     "TP",
-    "utilities/charting/dataParser",
     "models/elevationCorrection",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",    
@@ -9,7 +9,7 @@
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartColors, conversion, flotElevationTooltip, elevationCorrectionTemplate)
+function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conversion, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -48,8 +48,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
             this.buildModels(options);
             this.listenToModelEvents();
 
-            this.dataParser = new DataParser();
-            this.dataParser.setXAxis("distance");
+            this._getDataParser().setXAxis("distance");
             this.setOriginalElevation();
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "opened", "eventLabel": "" });
@@ -64,7 +63,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
         buildModels: function(options)
         {
             this.workoutModel = options.workoutModel;
-            var uploadedFileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
+            var uploadedFileId = this._getFileId();
             this.elevationCorrectionModel = new ElevationCorrectionModel({ uploadedFileId: uploadedFileId });
             this.elevationCorrectionModel.fetch();
         },
@@ -72,13 +71,12 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
         validateWorkoutModel: function(options)
         {
             if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
-                throw "ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel";
+                throw new Error("ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel");
         },
 
         setOriginalElevation: function() 
         { 
-            this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples")); 
-            this.originalElevation = this.dataParser.getDataByChannel("Elevation"); 
+            this.originalElevation = this._getDataParser().getDataByChannel("Elevation"); 
             var elevationMinimum = this.findMinimumElevation(this.originalElevation); 
             this.addMinimumElevation(this.originalElevation, elevationMinimum); 
         }, 
@@ -174,7 +172,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
                 series.push(
                 {
                     color: "#e61101",
-                    data: this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations")),
+                    data: this._getDataParser().createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations")),
                     label: TP.utils.translate("Corrected"),
                     shadowSize: 0
                 });
@@ -215,7 +213,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
 
         onSubmitClicked: function()
         {
-            var fileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
+            var fileId = this._getFileId();
 
             this.ui.chart.addClass("waiting");
 
@@ -241,6 +239,17 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
         onResetClicked: function()
         {
             this.close();
+        },
+
+        _getFileId: function()
+        {
+            return _.last(this.workoutModel.get("details").get("workoutDeviceFileInfos")).fileId;
+        },
+
+        _getDataParser: function()
+        {
+            return this.workoutModel.get("detailData").getDataParser();
         }
+
     });
 });
