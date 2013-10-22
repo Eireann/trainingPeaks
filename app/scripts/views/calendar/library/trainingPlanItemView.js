@@ -37,13 +37,17 @@ function(TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
             if (!this.model)
                 throw "Cannot have a TrainingPlanItemView without a model";
 
-            this.model.on("select", this.onItemSelect, this);
-            this.model.on("unselect", this.onItemUnSelect, this);
+            options = options || {};
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+
+            this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
         },
+
         onRender: function()
         {
             this.makeDraggable();
         },
+
         makeDraggable: function()
         {
             this.$el.draggable({
@@ -64,19 +68,14 @@ function(TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
             return data;
         },
 
-        onMouseDown: function()
+        onMouseDown: function(e)
         {
-            this.model.trigger("select", this.model);
+            this.selectionManager.setSelection(this.model, e);
         },
 
-        onItemSelect: function()
+        _updateSelected: function()
         {
-            this.$el.addClass("selected");
-        },
-
-        onItemUnSelect: function(e)
-        {
-            this.$el.removeClass("selected");
+            this.$el.toggleClass("selected", this.model.getState().get("isSelected") || false);
         },
 
         openPlanDetailsOnClick: function()

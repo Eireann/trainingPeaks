@@ -47,6 +47,9 @@ function(
             if (!this.model)
                 throw "Cannot have a LibraryExerciseItemView without a model";
 
+            options = options || {};
+
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
             this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
             this.model.on("select", this.onItemSelect, this);
@@ -111,9 +114,9 @@ function(
             return TP.utils.workout.types.getNameById(this.model.get("workoutTypeId")).replace(/ /g, "");
         },
 
-        showDetails: function()
+        showDetails: function(e)
         {
-            this.model.trigger("select", this.model);
+            this.selectionManager.setSelection(this.model, e);
             if(this.detailsView)
             {
                 return;
@@ -121,6 +124,7 @@ function(
             this.detailsView = new ExerciseDetailsView({ model: this.model });
             this.listenTo(this.detailsView, "close", this.onDetailsClose);
             this.detailsView.render().alignArrowTo(this.$el);
+            e.preventDefault();
         },
 
         onDetailsClose: function()
