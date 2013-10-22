@@ -4,7 +4,6 @@ define(
 
     "TP",
 
-    "models/commands/saveWorkoutDetailData",
     "views/expando/lapSplitView",
     "utilities/lapsStats",
 
@@ -12,7 +11,7 @@ define(
 ],
 function(
     _,
-    TP, SaveWorkoutDetailDataCommand, LapSplitView, LapsStats,
+    TP, LapSplitView, LapsStats,
     lapsSplitsTemplate
     )
 {
@@ -98,7 +97,7 @@ function(
             this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
             this.render();
         }
-        
+
     });
 
     return LapsSplitsView;
