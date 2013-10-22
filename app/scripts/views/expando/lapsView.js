@@ -4,13 +4,17 @@
     "setImmediate",
     "jqueryui/widget",
     "jquerySelectBox",
+
     "TP",
     "framework/tooltips",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
+    "views/userConfirmationView",
+
     "hbs!templates/views/expando/lapTemplate",
-    "hbs!templates/views/expando/lapsTemplate"
+    "hbs!templates/views/expando/lapsTemplate",
+    "hbs!templates/views/confirmationViews/deleteLapTemplate"
 ],
 function(
     _,
@@ -22,8 +26,10 @@ function(
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
+    UserConfirmationView,
     lapTemplate,
-    lapsTemplate
+    lapsTemplate,
+    deleteLapTemplate
 )
 {
 
@@ -50,6 +56,7 @@ function(
         {
             "click": "_onClick",
             "click .editLapName": "_onClickToEdit",
+            "click .delete": "_onClickDelete",
             "change input[type=checkbox]": "_onCheckboxChange"
         },
 
@@ -88,7 +95,10 @@ function(
 
         _onFocusedChange: function()
         {
-            this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
+            var focused = !!this.model.get("isFocused");
+            var $actions = this.$('.actions');
+            this.$el.toggleClass("highlight", focused);
+            $actions.toggle(focused);
         },
 
         _onSelectedChange: function()
@@ -110,7 +120,7 @@ function(
             }
         },
 
-        _onClick: function(e) 
+        _onClick: function(e)
         {
             this.stateModel.set("primaryRange", this.model);
         },
@@ -146,6 +156,24 @@ function(
             }
         },
 
+        _onClickDelete: function(e)
+        {
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteLapTemplate });
+            deleteConfirmationView.render();
+            this.listenTo(deleteConfirmationView, "userConfirmed", _.bind(this._deleteLap, this));
+        },
+
+        _deleteLap: function()
+        {
+            this.model.set({'deleted': true,'isFocused': false, 'isSelected': false});
+            this.$el.addClass('deleted');
+            this.$('.actions').hide();
+            this.model.trigger('lap:markedAsDeleted', this.model);
+            this.undelegateEvents();
+            this.$('input').attr('disabled', true);
+            this.stateModel.get("ranges").remove(this.model);
+        },
+
         _stopEditing: function()
         {
             if(this.model.get("isLap") && this._isEditing())
@@ -175,7 +203,7 @@ function(
     {
 
         className: "expandoLaps",
-        
+
         itemView: LapView,
         itemViewContainer: ".rangesList ul",
 
@@ -201,7 +229,9 @@ function(
                 throw new Error("Laps view requires an expando state model");
             }
 
+
             this.collection = new TP.Collection([], { model: WorkoutStatsForRange });
+
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             this.stateModel = options.stateModel;
 
@@ -335,7 +365,7 @@ function(
             cadence: "peakCadences"
         },
 
-        dataChannelKeys: 
+        dataChannelKeys:
         {
             distance: "Speed",
             power: "Power",
