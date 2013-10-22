@@ -68,19 +68,19 @@ function (
         {
             if(this.model.get("detailData").channelWasCut(this.dataChannel))
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
             this.timeInZones = timeInZonesGenerator(this.dataChannel, this._getZoneSettingName(), this.model.get("details"), this.model);
         
-            if(!this.timeInZones)
+            if(!this._hasTimeInAnyZone())
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
-            this.$el.removeClass("nodata");
+            this.$el.removeClass("noData");
             var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
             var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints, this.chartColor);
             var flotOptions = this.buildTimeInZonesFlotChartOptions();
@@ -177,6 +177,21 @@ function (
         _getZoneSettingName: function()
         {
             return this.dataChannel.substring(0,1).toLowerCase() + this.dataChannel.substring(1) + "Zones";
+        },
+
+        _hasTimeInAnyZone: function()
+        {
+            if(!this.timeInZones || !this.timeInZones.timeInZones)
+            {
+                return false;
+            }
+
+            var foundZoneWithTime = _.find(this.timeInZones.timeInZones, function(tiz)
+            {
+                return tiz.seconds > 0;
+            });
+
+            return foundZoneWithTime ? true : false;
         }
         
     });

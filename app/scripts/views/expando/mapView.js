@@ -72,21 +72,38 @@ function (
 
         createAndDisplayMap: function ()
         {
+            this.$el.addClass("noData");
+
             if (!this.model.get("detailData").get("flatSamples"))
+            {
                 return;
-
-            if (!this.map)
-                this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
-
+            }
 
             var latLongArray = this._getDataParser().getLatLonArray();
             if (latLongArray)
             {
+
+                this.$el.removeClass("noData");
+
+                if (!this.map)
+                {
+                    this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
+                }
+
                 //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
                 MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10);
                 MapUtils.addStartMarker(this.map, latLongArray[0]);
                 MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
+            }
+
+            if(this.$el.hasClass("noData"))
+            {
+                this.trigger("noData");
+            }
+            else
+            {
+                this.trigger("hasData");
             }
         },
 

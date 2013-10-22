@@ -11,42 +11,41 @@
     </select>
 </div>
 
-<div class="speed">
-
+<div class="speed calculator">
     <form class="cf">
-
-
         <label class="secondsPer100m input disabled">
             <span class="zoneSetTitle">Seconds / 100m</span>
             <input name="secondsPer100m" class="numberInput hundredMeterTab" data-format="number" placeholder="Enter Seconds/100m" type="text" />
         </label>
+        
         <label class="testDistance input disabled">
             <span class="zoneSetTitle">Test Distance</span>
-            <div class="testDistance"><select name="testDistance" data-format="number" class="distanceTab"></select></div>
+            <div class="testDistanceSelect"><select name="testDistance" data-format="number" class="distanceTab"></select></div>
         </label>
-        <label class="speed input disabled clickable">
+        
+        <div class="speed input disabled">
             <div class="zoneSetTitle">
-                <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="speed" placeholder="Enter speed or pace" type="text"/>
-                Speed / Pace
+                <label class="clickable"><input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="speed" placeholder="Enter speed or pace" type="text"/>
+                Speed / Pace</label>
             </div>
             <input name="speed" class="numberInput distanceTab" data-format="paceOrSpeed" type="text">
-        </label>
-        <label class="duration input disabled clickable">
+        </div>
+        
+        <div class="duration input disabled">
             <div class="zoneSetTitle">
-                <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="duration"/>
-                Duration
+                <label class="clickable"><input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="duration"/>
+                Duration</label>
             </div>
             <input name="duration" class="numberInput distanceTab" data-format="duration" value="Enter Duration" type="text" />
-        </label>
+        </div>
 
     </form>
 
-    <div class="buttons">
-        <button class="calculate">{{$ "Calculate" }}</button>
-    </div>
-
 </div>
 
+<div class="buttons">
+    <button class="calculate">{{$ "Calculate" }}</button>
+</div>
 
 
 

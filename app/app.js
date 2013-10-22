@@ -31,7 +31,7 @@ function(
     ajaxCaching,
     initializeAjaxTimezone,
     initializeAjax402,
-    enableTooltips,
+    ToolTips,
     IdentityMap,
     DataManager,
     Session,
@@ -357,7 +357,7 @@ function(
         // Set up jQuery UI Tooltips
         this.addInitializer(function()
         {
-            enableTooltips();
+            ToolTips.initTooltips();
         });
 
         // Set up touch events

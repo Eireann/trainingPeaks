@@ -181,7 +181,7 @@ function(
             {
                 this.athleteDetailsModel = new TP.Model(_.find(this.get("athletes"), function(athlete)
                 {
-                    return athlete.athleteId === athleteId;
+                    return Number(athlete.athleteId) === Number(athleteId);
                 }));
             }
             return this.athleteDetailsModel;

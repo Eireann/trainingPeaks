@@ -1,15 +1,16 @@
 define(
 [
     "underscore",
-
     "TP",
     "utilities/lapsStats",
-
+    "framework/tooltips",
     "hbs!templates/views/expando/lapSplitTemplate"
 ],
 function(
     _,
-    TP, LapsStats,
+    TP, 
+    LapsStats,
+    ToolTips,
     lapSplitTemplate
     )
 {
@@ -60,6 +61,8 @@ function(
             var $currentTarget = $(e.currentTarget);
             if($currentTarget.hasClass('editing')) return false;
             e.preventDefault();
+
+            ToolTips.disableTooltips();
             var $input = $('<input type=text/>');
             $input.val($currentTarget.text());
             $currentTarget.empty().append($input).addClass('editing');
@@ -96,6 +99,7 @@ function(
             $input.closest("td").html(this.model.get("name")).removeClass("editing");
             $input.off("change");
             $input.off("blur");
+            ToolTips.enableTooltips();
         }
 
     });

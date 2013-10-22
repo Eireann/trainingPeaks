@@ -7,8 +7,18 @@
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
+    "models/commands/saveWorkoutDetailData"
 ],
-function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, formatPeakDistance)
+function (
+    _,
+    moment,
+    TP,
+    DataParser,
+    WorkoutStatsForRange,
+    formatPeakTime,
+    formatPeakDistance,
+    SaveWorkoutDetailDataCommand
+    )
 {
     var WorkoutDetailData = TP.APIBaseModel.extend(
     {
@@ -25,29 +35,67 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             this._dataParser = new DataParser();
             this.rangeCollections = {};
             this.reset();
-            this.on("change:flatSamples", this.reset, this);
+            this.on("sync", this.reset, this);
         },
 
         reset: function()
         {
-            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
+            this._resetDataParser();
+            this._setOriginalLapsStats();
+            this._resetRangesForLaps();
+
+            // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct state
+            this._resetChannels();
+            this.trigger("reset");
+        },
+
+        undoEdits: function()
+        {
+            this._resetDataParser();
+            this._resetLapEdits();
+            this._resetRangesForLaps();
+
+            // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct stat
+            this._resetChannels();
+            this.trigger("reset");
+        },
+
+        _resetDataParser: function()
+        {
             this._dataParser.resetExcludedChannels();
             this._dataParser.loadData(this.get("flatSamples"));
+        },
 
-            // reset laps?
+        _setOriginalLapsStats: function()
+        {
+            this.set("lapsStatsEdited", false);
+            this.set("lapDeleted", false);
+            this.set("originalLapsStats", this.has("lapsStats") ? _.clone(this.get("lapsStats")) : null);
+        },
+
+        _resetLapEdits: function()
+        {   // reset laps?
             if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {
                 this.set("lapsStatsEdited", false);
                 this.set("lapDeleted", false);
                 this.set("lapsStats", this.get("originalLapsStats"));
+            }
+        },
+
+        _resetRangesForLaps: function()
+        {
+            if(this.rangeCollections.hasOwnProperty("laps"))
+            {
                 this.getRangeCollectionFor("laps").reset(this._augmentRanges(this.get("lapsStats"), "laps"));
             }
+        },
 
+        _resetChannels: function()
+        {
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
             this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
-            this.set("originalLapsStats", this.has("lapsStats") ? _.clone(this.get("lapsStats")) : null);
-            this.trigger("reset");
         },
 
         url: function()
@@ -58,7 +106,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
 
         defaults:
         {
-            "workoutId": null, //x, duh
+            "workoutId": null,
             "flatSamples": null,
             "rangesStats": null,
             "peakCadences": null,
@@ -157,8 +205,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         disableChannel: function(series)
         {
             var disabledSeries = this.get("disabledDataChannels");
-            disabledSeries.push(series);
-            this.set("disabledDataChannels", _.uniq(disabledSeries));
+            this.set("disabledDataChannels", _.union(disabledSeries, [series]));
         },
 
         enableChannel: function(series)
@@ -181,7 +228,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         cutChannel: function(series)
         {
             var channelCutDetails = {
-                channelEdit: series,
+                channel: series,
                 startTimeInMilliseconds: _.first(this.get("flatSamples").msOffsetsOfSamples),
                 endTimeInMilliseconds: _.last(this.get("flatSamples").msOffsetsOfSamples)
             };
@@ -199,7 +246,7 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
         {
             var matchingChannelCut = _.find(this.get("channelCuts"), function(channelCut)
             {
-                return channelCut.channelEdit === series;
+                return channelCut.channel === series;
             });
 
             return matchingChannelCut ? true : false;
@@ -210,12 +257,33 @@ function (_, moment, TP, DataParser, WorkoutStatsForRange, formatPeakTime, forma
             return this.has("channelCuts") || this.get("lapsStatsEdited") || this.get("lapDeleted");
         },
 
-        getChannelCuts: function()
+        saveEdits: function()
+        {
+            var params =
+            {
+                channelCuts: this._getChannelCuts(),
+                lapsStats: this._getEditedLapsStats()
+            };
+
+            var command = new SaveWorkoutDetailDataCommand(params);
+            command.workoutId = this.get('workoutId');
+            return command.execute()
+                .done(_.bind(this._afterSaveEdits, this));
+        },
+
+        _afterSaveEdits: function()
+        {
+            this.set("flatSamples", null, {silent: true});
+            this.fetch();
+            this.trigger("after:saveEdits");
+        },
+
+        _getChannelCuts: function()
         {
             return this.get("channelCuts");
         },
 
-        getEditedLapsStats: function()
+        _getEditedLapsStats: function()
         {
             if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {

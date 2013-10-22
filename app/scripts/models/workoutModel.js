@@ -8,7 +8,7 @@
 ],
 function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
-    var WorkoutModel = TP.APIDeepModel.extend(
+    var WorkoutModel = TP.APIBaseModel.extend(
     {
         cacheable: true,
 
@@ -95,6 +95,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }, options));
             this.set("detailData", new WorkoutDetailDataModel({ workoutId: this.get("workoutId") }, options));
+
+            this.listenTo(this.get("detailData"), "after:saveEdits", _.bind(this.onSaveDetailDataEdits, this));
 
             // for newly added workouts, or else opening the qv again passes null to endpoint url
             this.on("change:workoutId", function()
@@ -271,6 +273,12 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             attributes.workoutComments = new TP.Collection(this.attributes.workoutComments).toJSON();
 
             return attributes;
+        },
+
+        onSaveDetailDataEdits: function()
+        {
+            this.fetch();
+            this.get("details").fetch();
         }
 
     });

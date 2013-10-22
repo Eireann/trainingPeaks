@@ -105,16 +105,24 @@ function(
         },
 
         createFlotGraph: function()
-        {
-            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
-                return;
-            
+        {            
             this.$plot = this.$("#plot");
             this.drawPlot();
         },
 
         drawPlot: function()
         {
+
+            this.$el.removeClass("noData");
+
+
+            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
+            {
+                this.$el.addClass("noData");
+                this.trigger("noData");
+                return;
+            }
+            
             var self = this;
 
             if (!this.allSeries)
@@ -126,6 +134,14 @@ function(
             this._getDataParser().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
             var enabledSeries = this._getDataParser().getSeries();
+
+            if(!enabledSeries.length)
+            {
+                this.$el.addClass("noData");
+                this.trigger("noData");
+                return;
+            }
+
             var yaxes = this._getDataParser().getYAxes(enabledSeries);
 
             var onHoverHandler = function(flotItem, $tooltipEl)
@@ -159,6 +175,7 @@ function(
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
 
+            this.trigger("hasData");
         },
 
         getInitialFilterPeriod: function()

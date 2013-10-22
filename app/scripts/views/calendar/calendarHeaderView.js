@@ -140,6 +140,10 @@ function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizati
                 var currentUserId = theMarsApp.user.getCurrentAthleteId();
                 this.$("#athleteCalendarSelect").val(currentUserId);
             }
+            else
+            {
+                this.$("#athleteCalendarSelect").remove();
+            }
         },
 
         isCoachWithAthletes: function()

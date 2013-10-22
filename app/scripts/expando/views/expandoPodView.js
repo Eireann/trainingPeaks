@@ -35,6 +35,9 @@ function(
             this.childView = options.childView;
             this.on("controller:resize", _.bind(this.childView.trigger, this.childView, "controller:resize"));
             this.listenTo(this.childView, "close", _.bind(this.close, this));
+            this.listenTo(this.childView, "item:rendered", _.bind(this._onChildRender, this));
+            this.listenTo(this.childView, "noData", _.bind(this._onChildHasNoData, this));
+            this.listenTo(this.childView, "hasData", _.bind(this._onChildHasData, this));
         },
 
         onRender: function()
@@ -55,7 +58,30 @@ function(
         onClose: function()
         {
             this.childView.close();
+        },
+
+        _onChildRender: function()
+        {
+            if(this.childView.$el.hasClass("noData"))
+            {
+                this._onChildHasNoData(); 
+            }
+            else
+            {
+                this._onChildHasData();
+            }
+        },
+
+        _onChildHasData: function()
+        {
+            this.$el.removeClass("noData");
+        },
+
+        _onChildHasNoData: function()
+        {
+            this.$el.addClass("noData");
         }
+
 
     });
 

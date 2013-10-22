@@ -1,8 +1,9 @@
 ﻿define(
 [
+    "backbone.marionette",
     "TP"
 ],
-function(TP)
+function(Marionette, TP)
 {
     TP.Region.prototype.show = function(view)
     {
@@ -20,15 +21,9 @@ function(TP)
 
             this.open(view, function()
             {
-                if (view.onShow)
-                    view.onShow();
-                
-                view.trigger("show");
-
-                if (this.onShow)
-                    this.onShow(view);
-
-                this.trigger("view:show", view);
+                Backbone.Marionette.triggerMethod.call(view, "show");
+                Backbone.Marionette.triggerMethod.call(this, "show", view);
+                Backbone.Marionette.triggerMethod.call(this, "view:show", view);
             });
         });
 

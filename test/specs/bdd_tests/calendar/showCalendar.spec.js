@@ -29,9 +29,9 @@ function(
             testHelpers.stopTheApp();
         });
 
-        it("Should display the calendar", function()
+        it("Should not display a list of athletes in the calendar", function()
         {
-            expect($mainRegion.find("#calendarContainer").length).toBe(1);
+            expect($mainRegion.find("#athleteCalendarSelect").length).toBe(0);
         });
 
         xit("Should display today in the calendar", function()

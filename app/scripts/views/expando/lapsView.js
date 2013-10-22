@@ -6,6 +6,7 @@
     "jquerySelectBox",
 
     "TP",
+    "framework/tooltips",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
@@ -13,7 +14,7 @@
 
     "hbs!templates/views/expando/lapTemplate",
     "hbs!templates/views/expando/lapsTemplate",
-    "hbs!templates/views/confirmationViews/deleteConfirmationView"
+    "hbs!templates/views/confirmationViews/deleteLapTemplate"
 ],
 function(
     _,
@@ -21,13 +22,14 @@ function(
     jqueryUiWidget,
     jquerySelectBox,
     TP,
+    ToolTips,
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
     UserConfirmationView,
     lapTemplate,
     lapsTemplate,
-    deleteConfirmationTemplate
+    deleteLapTemplate
 )
 {
 
@@ -35,7 +37,7 @@ function(
     {
 
         tagName: "li",
-        className: "lap",
+        className: "lap clickable",
 
         template:
         {
@@ -46,21 +48,21 @@ function(
         modelEvents:
         {
             "change:isFocused": "_onFocusedChange",
-            "change:isSelected": "_onSelectedChange"
+            "change:isSelected": "_onSelectedChange",
+            "change:name": "_onNameChange"
         },
 
         events:
         {
-            "click .editLapName": "_onClick",
-            "change input[type=checkbox]": "_onCheckboxChange",
-            "click .edit": "_onClickEdit",
-            "click .delete": "_onClickDelete"
+            "click": "_onClick",
+            "click .editLapName": "_onClickToEdit",
+            "click .delete": "_onClickDelete",
+            "change input[type=checkbox]": "_onCheckboxChange"
         },
 
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
-            this.listenTo(this.model, 'change:name', this._onNameChange);
         },
 
         onRender: function()
@@ -81,18 +83,22 @@ function(
 
         _onNameChange: function()
         {
-            this.render();
+            if(!this._isEditing()) {
+                this.render();
+            }
+
             if(this.model.get("isFocused"))
             {
                 this.stateModel.trigger('change:primaryRange', this.stateModel, this.model);
             }
-            this.previousLapName = this.$('.editLapName').html();
         },
 
         _onFocusedChange: function()
         {
-            this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
-            if(!this.$('.editLapName').hasClass('editing')) this.$('.actions').hide();
+            var focused = !!this.model.get("isFocused");
+            var $actions = this.$('.actions');
+            this.$el.toggleClass("highlight", focused);
+            focused ? $actions.show() : $actions.hide();
         },
 
         _onSelectedChange: function()
@@ -100,61 +106,83 @@ function(
             this.$("input").attr("checked", !!this.model.get("isSelected"));
         },
 
+        _isEditing: function()
+        {
+            return this.$el.is(".editing");
+        },
+
+        _onClickToEdit: function(e)
+        {
+            if(this.model.get("isLap") && this.model.get("isFocused"))
+            {
+                this._startEditing();
+                e.preventDefault();
+            }
+        },
+
         _onClick: function(e)
         {
             this.stateModel.set("primaryRange", this.model);
-            this.$('.actions').show();
         },
 
-        _onClickEdit: function(e)
+        _startEditing: function()
         {
-            $editInput = this.$('.editLapName');
-            if($editInput.hasClass('editing'))
+            if(this.model.get("isLap") && !this._isEditing())
             {
-                return false;
-            }
+                var $container = this.$(".editLapName");
+                var $input = $('<input type="text"/>');
+                $input.val(this.model.get("name"));
 
-            this.previousLapName = $editInput.html();
-            var $input = $('<input type=text/>');
-            $input.val($editInput.text());
-            $editInput.empty().append($input).addClass('editing');
-            $input.on("change", _.bind(this._onInputChange, this));
-            $input.on("blur", _.bind(this._onInputBlur, this));
-            $input.focus();
+                ToolTips.disableTooltips();
+
+                $container.empty().append($input);
+                this.$el.addClass('editing');
+                $input.on("change", _.bind(this._onInputChange, this));
+                $input.on("blur", _.bind(this._onInputBlur, this));
+                $input.focus();
+            }
         },
 
         _onInputChange: function(e)
         {
-            var $input = $(e.currentTarget);
-            this.model.set("name", $.trim($input.val()));
+            this.model.set("name", this.$("input[type=text]").val());
         },
 
-        _onInputBlur: function(e)
+        _onInputBlur: function()
         {
-            var $input = $(e.currentTarget);
-            this.model.set("name", $.trim($input.val()));
-            $input.closest(".editLapName").html(this.model.get("name")).removeClass("editing");
-            $input.off("change");
-            $input.off("blur");
-            this.$('.actions').hide();
+            if(this._isEditing())
+            {
+                this._stopEditing();
+            }
         },
 
         _onClickDelete: function(e)
         {
-            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteLapTemplate });
             deleteConfirmationView.render();
-            deleteConfirmationView.on("userConfirmed", this._deleteLap, this);
+            this.listenTo(deleteConfirmationView, "userConfirmed", _.bind(this._deleteLap, this));
         },
 
         _deleteLap: function()
         {
+            this.model.set({'deleted': true,'isFocused': false, 'isSelected': false});
+            this.$el.addClass('deleted');
             this.$('.actions').hide();
-            this.$el.addClass('deleted').removeClass('highlight');
-            this.model.set('deleted', true);
             this.model.trigger('lap:markedAsDeleted', this.model);
             this.undelegateEvents();
-            this.$('input').removeAttr('checked').attr('disabled', true);
+            this.$('input').attr('disabled', true);
             this.stateModel.get("ranges").remove(this.model);
+        },
+
+        _stopEditing: function()
+        {
+            if(this.model.get("isLap") && this._isEditing())
+            {
+                this.$("input[type=text]").off("change").off("blur");
+                this.$(".editLapName").empty().text(this.model.get("name"));
+                this.$el.removeClass("editing");
+                ToolTips.enableTooltips();
+            }
         },
 
         _onCheckboxChange: function(e)
@@ -263,7 +291,7 @@ function(
         _onDetailDataReset: function()
         {
             this.stateModel.reset();
-            this._enableOrDisable();
+            this.render();
         },
 
         _enableOrDisable: function()
@@ -335,6 +363,16 @@ function(
             speed: "peakSpeeds",
             pace: "peakSpeeds",
             cadence: "peakCadences"
+        },
+
+        dataChannelKeys:
+        {
+            distance: "Speed",
+            power: "Power",
+            heartrate: "HeartRate",
+            speed: "Speed",
+            pace: "Speed",
+            cadence: "Cadence"
         },
 
         _getSelectOptions: function()
@@ -433,7 +471,19 @@ function(
                 delete peakTypes.speed;
             }
 
+            this._filterPeaksByAvailableChannels(peakTypes);
             return peakTypes;
+        },
+
+        _filterPeaksByAvailableChannels: function(peakTypes)
+        {
+            var availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            _.each(peakTypes, function(data, key) {
+                if(!_.contains(availableDataChannels, this.dataChannelKeys[key]))
+                {
+                    delete peakTypes[key];
+                }
+            }, this);
         },
 
         _shouldDisplayDistance: function()

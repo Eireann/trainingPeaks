@@ -32,11 +32,11 @@ function(WorkoutDetailDataModel)
 
 			it("Should read available channels from flatSamples.channelMask", function()
 			{
-				var model = new WorkoutDetailDataModel();
-				model.set("flatSamples", {
+				var model = new WorkoutDetailDataModel({"flatSamples": {
 					channelMask: ["Elevation", "Temperature", "HeartRate"],
 					samples: []
-				});
+				}});
+				
 
 				expect(model.has("availableDataChannels")).toBeTruthy();
 				expect(model.get("availableDataChannels").length).toBe(3);

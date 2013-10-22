@@ -11,7 +11,7 @@ function()
             {data: "AL", label: "Alabama"},
             {data: "AK", label: "Alaska"},
             {data: "AZ", label: "Arizona"},
-            {data: "AR", label: "Arkansaas"},
+            {data: "AR", label: "Arkansas"},
             {data: "CA", label: "California"},
             {data: "CO", label: "Colorado"},
             {data: "CT", label: "Connecticut"},

@@ -4,7 +4,7 @@ define(
 ],
 function(TP)
 {
-    var channelEditIds = {
+    var channelIds = {
         Nothing: 0,
         MillisecondsOffset: 1,
         Cadence: 2,
@@ -31,7 +31,7 @@ function(TP)
         defaults:
         {
             lapsStats: null, // complete array of lapsStats with edits
-            channelCuts: null, // [{ channelEdit: enum, startTimeInMilliseconds: int, endTimeInMilliseconds: int }] 
+            channelCuts: null, // [{ channel: enum, startTimeInMilliseconds: int, endTimeInMilliseconds: int }] 
             sampleEdits: null,
             applyElevationCorrection: false
         },
@@ -58,18 +58,18 @@ function(TP)
 
             _.each(channelCuts, function(channelCut)
             {
-                channelCut.channelEdit = this._lookupChannelEditId(channelCut.channelEdit);
+                channelCut.channel = this._lookupchannelId(channelCut.channel);
             }, this);
         },
 
-        _lookupChannelEditId: function(channelName)
+        _lookupchannelId: function(channelName)
         {
-            if(!channelName || !channelEditIds.hasOwnProperty(channelName))
+            if(!channelName || !channelIds.hasOwnProperty(channelName))
             {
                 throw new Error("Unknown channel for channel cut: " + channelName);
             }
 
-            return channelEditIds[channelName];
+            return channelIds[channelName];
         }
     });
 

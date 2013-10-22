@@ -69,19 +69,19 @@ function (
         {
             if(this.model.get("detailData").channelWasCut(this.dataChannel))
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
             this.peaks = peaksGenerator.generate(this.dataChannel, this.model.get("details"));
 
-            if(!this.peaks)
+            if(!this._hasDataForAnyPeak())
             {
-                this.$el.addClass("nodata");
+                this.$el.addClass("noData");
                 return;
             }
 
-            this.$el.removeClass("nodata");
+            this.$el.removeClass("noData");
             this.timeInZones = timeInZonesGenerator(this.dataChannel, this._getZoneSettingName(), this.model.get("details"), this.model);
             var chartPoints = this.buildPeaksFlotPoints(this.peaks);
             var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
@@ -203,6 +203,21 @@ function (
         _getZoneSettingName: function()
         {
             return this.dataChannel.substring(0,1).toLowerCase() + this.dataChannel.substring(1) + "Zones";
+        },
+
+        _hasDataForAnyPeak: function()
+        {
+            if(!this.peaks)
+            {
+                return false;
+            }
+
+            var foundPeak  = _.find(this.peaks, function(peak)
+            {
+                return peak.value > 0;
+            });
+
+            return foundPeak ? true : false;
         }
 
     });

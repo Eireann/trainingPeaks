@@ -62,6 +62,7 @@
 	"Sat": "SAT",
 	"Sun": "SUN",
 
+    "Choose": "Choose",
     "PersonalInfo": "Personal Information",
     "FirstName": "First Name",
     "LastName": "Last Name",
@@ -88,8 +89,8 @@
     "DateFormat": "Date Format",
     "TimeZone": "Time Zone",
 
-    "EmailOptions": "E-mail Options",
-    "emailPMNotificationSetting": "Send me an e-mail when I receive a private message",
+    "EmailOptions": "Email Options",
+    "emailPMNotificationSetting": "Send me an email when I receive a private message",
     "postActivityNotificationSetting": "Receive post-activity comment notification",
     "newsletterNotificationSetting": "Receive occasional informational newsletter",
     "plannedWorkoutsNotificationSetting": "Enable daily emails of planned workouts",
@@ -392,6 +393,7 @@
     "SelectReportType": "Select Report Type",
 
     "NoWorkoutsToReport": "No workouts are available to report on",
+    "NoDataToReport": "No data is available",
 
     "Moving Time": "Moving Time",
     "Average Power": "Average Power",
@@ -450,6 +452,10 @@
     "Hide": "Hide",
     "ConfirmDeleteSeries1": "Are you sure you want to delete all data for",
     "ConfirmDeleteSeries2": "All associated data values will be removed.",
-    "ClickToEdit": "Click to edit"
+    "ClickToEdit": "Click to edit",
+    "CloseExpandoWithoutSaving": "You have unsaved changes on your workout.  Would you like to save these before closing?",
+    "ApplyExpandoEdits": "Click apply to save edits and update stats.",
+    "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
+    "ConfirmDeleteLap": "Are you sure you want to delete lap?"
 
 }
