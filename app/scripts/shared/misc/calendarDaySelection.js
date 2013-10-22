@@ -5,7 +5,8 @@ define(
     "shared/misc/selection",
     "shared/utilities/calendarUtility",
     "shared/models/selectedActivitiesCollection",
-    "views/calendar/moveItems/shiftWizzardView"
+    "views/calendar/moveItems/shiftWizzardView",
+    "models/calendar/calendarDay"
 ],
 function(
     _,
@@ -13,7 +14,8 @@ function(
     Selection,
     CalendarUtility,
     SelectedActivitiesCollection,
-    ShiftWizzardView
+    ShiftWizzardView,
+    CalendarDayModel
 )
 {
 
@@ -55,15 +57,16 @@ function(
 
         cutAction: function()
         {
-            var clipboard = this.clone();
+            var days = this.map(function(day) { return day.cloneForCut(); });
+            var clipboard = new CalendarDaySelection(days);
             clipboard.isCut = true;
             return clipboard;
         },
 
         copyAction: function()
         {
-            var activites = this.map(function(day) { return day.cloneForCopy(); });
-            var clipboard = new CalendarDaySelection(activites);
+            var days = this.map(function(day) { return day.cloneForCopy(); });
+            var clipboard = new CalendarDaySelection(days);
             return clipboard;
         },
 
@@ -74,8 +77,8 @@ function(
 
             if(target instanceof CalendarDaySelection)
             {
-                var sourceMoment = moment(this.first().id);
-                var targetMoment = moment(target.first().id);
+                var sourceMoment = this._firstMoment();
+                var targetMoment =target._firstMoment();
                 var delta = targetMoment.diff(sourceMoment, "days");
 
                 this.each(function(day)
@@ -102,9 +105,17 @@ function(
             activites = _.flatten(activites, true);
 
             return new SelectedActivitiesCollection(activites);
+        },
+
+        _firstMoment: function()
+        {
+            var moments = this.map(function(day) { return moment(day.id); });
+            return _.min(moments);
         }
 
     });
+
+    CalendarDayModel.prototype.selectionClass = CalendarDaySelection;
 
     return CalendarDaySelection;
 

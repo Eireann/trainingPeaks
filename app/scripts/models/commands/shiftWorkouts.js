@@ -28,6 +28,7 @@ function(moment, TP)
             .then(function()
             {
                 theMarsApp.calendarManager.reset();
+                theMarsApp.selectionManager.clearSelection();
             });
 
         },

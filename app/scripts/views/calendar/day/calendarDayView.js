@@ -12,6 +12,7 @@ define(
     "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
+    "views/calendar/moveItems/selectedRangeSettings",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
 function(
@@ -27,6 +28,7 @@ function(
     MetricTileView,
     CalendarDaySettingsView,
     NewItemView,
+    SelectedRangeSettingsView,
     CalendarDayTemplate
 )
 {
@@ -221,6 +223,12 @@ function(
         {
             e.preventDefault();
             theMarsApp.selectionManager.setSelection(this.model, e);
+
+            if(theMarsApp.selectionManager.selection.length > 1)
+            {
+                var rangeSettingsView = new SelectedRangeSettingsView();
+                rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
+            }
         },
 
         onDaySelectedClicked: function(e)

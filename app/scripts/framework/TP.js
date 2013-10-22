@@ -227,7 +227,6 @@ function(
             this.$overlay = $("<div></div>");
             this.$overlay.addClass("modalOverlay");
             this.$overlay.addClass(this.className.split(" ").shift() + "ModalOverlay");
-            theMarsApp.selectionManager.pushSelection();
 
             if (modalSettings.mask)
                 this.$overlay.addClass("modalOverlayMask");
@@ -358,9 +357,6 @@ function(
             this.stopWatchingWindowResize();
             if (this.$overlay)
             {
-                // Wait until the event that caused the close propagates so clicks don't clear the selection.
-                setImmediate(_.bind(theMarsApp.selectionManager.popSelection, theMarsApp.selectionManager));
-
                 this.$overlay.hide().remove();
                 this.$overlay = null;
             }

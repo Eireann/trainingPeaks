@@ -2,12 +2,17 @@ define(
 [
     "underscore",
     "TP",
-    "shared/misc/selection"
+    "shared/misc/selection",
+    "shared/misc/activitySelection",
+    "shared/misc/calendarDaySelection"
 ],
 function(
     _,
     TP,
-    Selection
+    Selection,
+    // Ensure Selection Classes get loaded
+    ActivitySelection,
+    CalendarDaySelection
 )
 {
 
@@ -18,12 +23,46 @@ function(
         this.stack = [];
 
         var self = this;
-        $("body").click(function(event)
+
+        $("body").mousedown(function(event)
         {
-            if(!event.isDefaultPrevented())
+            var isPrevented = event.isDefaultPrevented();
+            var isInModal = $(event.target).closest(".modal, .hoverBox, .modalOverlay").length > 0;
+            if(!isPrevented && !isInModal)
             {
                 self.clearSelection();
             }
+        });
+
+        $("body").keydown(function(event)
+        {
+
+            if(event.isDefaultPrevented())
+            {
+                return;
+            }
+
+            if(event.ctrlKey || event.metaKey)
+            {
+                switch(event.which)
+                {
+                    case "C".charCodeAt():
+                        self.copySelectionToClipboard();
+                        break;
+                    case "X".charCodeAt():
+                        self.cutSelectionToClipboard();
+                        break;
+                    case "V".charCodeAt():
+                        self.pasteClipboardToSelection();
+                        break;
+                }
+
+            }
+            else if(event.which === 46) // Delete
+            {
+                self.execute("delete");
+            }
+
         });
     }
 

@@ -5,18 +5,14 @@
     "TP",
     "shared/models/activityModel",
     "shared/models/metricModel",
-    "shared/models/selectedActivitiesCollection",
-    "shared/misc/calendarDaySelection",
     "models/workoutModel"
 ],
-function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection, CalendarDaySelection, WorkoutModel)
+function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 {
 
     var CalendarDay = TP.Model.extend(
     {
         idAttribute: 'date',
-
-        selectionClass: CalendarDaySelection,
 
         initialize: function(attrs, options)
         {
@@ -88,13 +84,7 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
             models = _.map(models, _.bind(ActivityModel.wrap, ActivityModel));
             this.itemsCollection.reset(models, options);
         },
-        
-        deleteDayItems: function()
-        {
-            var selectedActivitiesCollection = new SelectedActivitiesCollection(this.getItems());
-            selectedActivitiesCollection.deleteSelectedItems();
-        },
-        
+
         getWorkoutItems: function()
         {
             var workoutsList = [];
@@ -172,6 +162,13 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
                     activity.pasted(options);
                 }
             });
+        },
+
+        cloneForCut: function()
+        {
+            var clone = this.clone();
+            clone.itemsCollection.set(this.itemsCollection.models);
+            return clone;
         },
 
         cloneForCopy: function()
