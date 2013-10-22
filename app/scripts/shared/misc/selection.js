@@ -14,6 +14,7 @@ function(
 
         initialize: function()
         {
+            this.active = 0;
             this.on("add", this._onAdd, this);
             this.on("remove", this._onRemove, this);
         },
@@ -37,12 +38,19 @@ function(
 
         _activateItem: function(item)
         {
-            item.getState().set("isSelected", (item.getState().get("isSelected") || 0) + this.active);
+            this._changeIsSelectedDepth(item, this.active);
         },
 
         _deactivateItem: function(item)
         {
-            item.getState().set("isSelected", (item.getState().get("isSelected") || 0) - this.active);
+            this._changeIsSelectedDepth(item, -this.active);
+        },
+
+        _changeIsSelectedDepth: function(item, delta)
+        {
+            var state = item.getState();
+            var depth = (state.get("isSelectedDepth") || 0) + delta;
+            state.set({ isSelectedDepth: depth, isSelected: !!depth });
         },
 
         _onAdd: function(model, collection, options)

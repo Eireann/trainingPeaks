@@ -60,7 +60,7 @@ function(
             this.collection = this.model.itemsCollection;
 
             this.on("after:item:added", this.makeItemsDraggable, this);
-            this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelect, this));
+            this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
             this.listenTo(this.collection, "sort", _.bind(this.onItemSort, this));
 
@@ -72,6 +72,8 @@ function(
             "mousedown .dayHeader": "onDayHeaderClicked",
             "mouseenter .dayHeader": "onDayHeaderMouseEnter",
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
+
+            "click .daySelected": "onDaySelectedClicked",
 
             "click .addWorkout": "onAddWorkoutClicked",
             "mouseup": "onDayClicked",
@@ -221,6 +223,12 @@ function(
             theMarsApp.selectionManager.setSelection(this.model, e);
         },
 
+        onDaySelectedClicked: function(e)
+        {
+            e.preventDefault();
+            theMarsApp.selectionManager.setSelection(this.model, e);
+        },
+
         onAddWorkoutClicked: function(e)
         {
             this.allowSettingsButtonToHide();
@@ -274,7 +282,7 @@ function(
             this.listenTo(quickView, "close", _.bind(this._unselectAddWorkoutIcon, this));
         },
 
-        _updateSelect: function()
+        _updateSelected: function()
         {
             this.$el.toggleClass("selected", this.model.getState().get("isSelected") || false);
         },

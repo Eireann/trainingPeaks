@@ -106,9 +106,8 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
 
         onShiftClicked: function (e)
         {
-            this.trigger("beforeShift");
             this.hideSettings(e);
-            this.model.trigger("week:shiftwizard");
+            theMarsApp.selectionManager.execute("shift");
         },
 
         unselect: function(e)

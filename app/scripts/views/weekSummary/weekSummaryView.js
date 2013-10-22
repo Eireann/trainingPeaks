@@ -246,7 +246,6 @@ function(
         onSettingsClosed: function(e)
         {
             this.allowSettingsButtonToHide(e);
-            theMarsApp.selectionManager.clearSelection();
         },
 
         weekSummaryBarGraphHover: function (e)

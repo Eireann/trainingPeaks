@@ -95,6 +95,19 @@ function(
             this.selection = this.stack.pop();
         },
 
+        execute: function(action)
+        {
+            var action = this.selection && this.selection[action + "Action"];
+            if(_.isFunction(action))
+            {
+                action.apply(this.selection, [].slice.call(arguments, 1));
+            }
+            else
+            {
+                return false;
+            }
+        },
+
         _selectionClassForModel: function(model)
         {
             return model.selectionClass || Selection;

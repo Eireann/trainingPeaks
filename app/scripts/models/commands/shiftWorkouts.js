@@ -24,7 +24,12 @@ function(moment, TP)
 
         execute: function()
         {
-            return this.save();
+            return this.save()
+            .then(function()
+            {
+                theMarsApp.calendarManager.reset();
+            });
+
         },
 
         parse: function(response)

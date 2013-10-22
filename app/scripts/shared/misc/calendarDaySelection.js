@@ -3,13 +3,15 @@ define(
     "underscore",
     "TP",
     "shared/misc/selection",
-    "shared/utilities/calendarUtility"
+    "shared/utilities/calendarUtility",
+    "views/calendar/moveItems/shiftWizzardView"
 ],
 function(
     _,
     TP,
     Selection,
-    CalendarUtility
+    CalendarUtility,
+    ShiftWizzardView
 )
 {
 
@@ -29,6 +31,19 @@ function(
             this.set(models);
 
             return true;
+        },
+
+        shiftAction: function()
+        {
+            var first = this.first().id;
+            var last = this.last().id;
+
+            var shiftWizzardView = new ShiftWizzardView(
+            {
+                selectionStartDate: first,
+                selectionEndDate: last
+            });
+            shiftWizzardView.render(); 
         }
 
     });
