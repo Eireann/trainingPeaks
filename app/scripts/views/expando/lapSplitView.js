@@ -77,6 +77,7 @@ function(
             {
                 this._markAsDeleted();
             }
+            ToolTips.enableTooltips();
         },
 
         _markAsDeleted: function()
