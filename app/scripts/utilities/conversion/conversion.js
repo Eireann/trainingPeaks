@@ -7,8 +7,9 @@
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange",
-    "utilities/threeSigFig"
-], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig)
+    "utilities/threeSigFig",
+    "utilities/units/labels"
+], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
 {
     var conversion = {
 
@@ -57,9 +58,9 @@
 
         formatDuration: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
@@ -68,9 +69,9 @@
 
         formatMinutes: function(minutes, options)
         {
-            if(this.valueIsEmpty(minutes))
+            if(conversion.valueIsEmpty(minutes))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
@@ -173,9 +174,9 @@
 
         formatElevation: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
 
             var numValue = Number(value);
@@ -261,9 +262,9 @@
 
         formatTemperature: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
@@ -297,9 +298,9 @@
 
         formatTSS: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
 
             var numValue = Number(value);
@@ -364,13 +365,13 @@
         formatDateToDayName: function (value, options)
         {
             options.dateFormat = "dddd";
-            return this.formatDate(value, options);
+            return conversion.formatDate(value, options);
         },
         
         formatDateToCalendarDate: function (value, options)
         {
             options.dateFormat = "MMM D, YYYY";
-            return this.formatDate(value, options);
+            return conversion.formatDate(value, options);
         },
 
         toPercent: function(numerator, denominator)
@@ -415,9 +416,9 @@
 
         formatCalories: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "calories");
@@ -461,19 +462,19 @@
         formatEmptyNumber: function(value, options, defaultValue)
         {
 
-            defaultValue = this.getDefaultValue(options, defaultValue);
+            defaultValue = conversion.getDefaultValue(options, defaultValue);
 
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
                 return defaultValue;
             }
 
-            if(this.valueIsNotANumber(value))
+            if(conversion.valueIsNotANumber(value))
             {
                 return defaultValue;
             }
 
-            if (this.valueIsZero(value) && (!options || !options.allowZero))
+            if (conversion.valueIsZero(value) && (!options || !options.allowZero))
             {
                 return defaultValue;
             }
@@ -498,7 +499,7 @@
 
         valueIsEmpty: function(value)
         {
-            return _.isUndefined(value) || _.isNull(value) || ("" + value).trim() === "" || (Number(value) === 0 && !this.valueIsZero(value));
+            return _.isUndefined(value) || _.isNull(value) || ("" + value).trim() === "" || (Number(value) === 0 && !conversion.valueIsZero(value));
         },
 
         valueIsNotANumber: function(value)
@@ -609,13 +610,27 @@
             options:
                 defaultValue
                 workoutTypeId
+                withLabel
         */
         formatUnitsValue: function(units, value, options)
         {
+            var string = conversion._formatUnitsValue(units, value, options);
 
-            if(this.valueIsEmpty(value))
+            if(options && options.withLabel)
             {
-                return this.getDefaultValue(options);
+                string += " " + getUnitsLabel(units, conversion.getMySportType(options));
+            }
+
+            return string;
+
+        },
+
+        _formatUnitsValue: function(units, value, options)
+        {
+
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValue(options);
             }
 
             switch(units)

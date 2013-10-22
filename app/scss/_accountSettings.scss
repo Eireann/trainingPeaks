@@ -1,11 +1,94 @@
-﻿.userSettings
-{
-    background: white;
+﻿.userSettings {
     width: calc(800px + 200px + 52px);
+    overflow: hidden; //to hide overlapping portions of titleBar
 
-    .closeIcon
+    .selectBoxWrapper
     {
-        margin: 5px 0 0 0 !important;
+        position:relative;
+    }
+
+    .tabbedLayoutNav {
+        width: 142px; 
+        margin:0;
+        padding:0;
+        height:100%;
+        background-color:$TPGrey2;
+
+            li {
+                padding:5px 10px 5px 25px;
+                
+                &:first-of-type {
+                    padding-top:25px;
+                }    
+
+                .tabbedLayoutSubNav {
+                    li {
+                        padding:0;
+                    }
+                    .active {
+                        font-family: $fontFamilyRegular;
+                        color:#3c7fc4;
+                    }
+                }
+            }
+   
+
+        .active {
+            background-color:#e0dede;
+        }
+
+    }
+
+    .tabbedLayoutBody {
+        width: calc(100% - 142px);
+        padding:0 30px 12px 30px;
+    }
+
+    label
+    {
+        cursor: auto;
+        
+        &.clickable
+        {
+            cursor: pointer;
+            &.radio {
+                float:left;
+                min-width: 50px;
+                margin:3px 10px 0px 5px;
+            }
+        }
+    }
+
+    .overlayBoxHeader {
+        background-color:$TPGrey1;
+        // overflow-x: hidden;
+
+        .titleBar {
+            text-align: left;
+            min-height: 30px;
+            // padding: 10px 0px 0px 16px;
+            background-color: $TPGrey1;
+            @include box-shadow(2px 0px 7px 0px $TPGrey4);
+            position: relative; 
+            z-index: 1;
+            color: $TPGrey3;
+            width:101%;
+            
+            h2 {
+                font-size: $fontSizeSmall; 
+                font-family: $fontFamilyRegular;
+                font-weight:normal;
+                color: $TPGrey3;
+                float:left;
+                line-height:1;
+                margin: 9px 0 0 15px;
+            }
+        } 
+
+    }
+
+    .closeIcon {
+        margin: 9px 10px 0 0 !important;
     }
 
     @include buttons(0, "auto", $fontSizeSmall);
@@ -17,29 +100,42 @@
     }
 
     .userSettingsContent {
+        fieldset {
+            border: 1px solid $TPGrey2;
+            padding: 10px 15px 15px 15px;
+            margin: 0;
+
+            legend {
+                background-color: transparent;
+                font-weight: normal;
+                font-size: $fontSizeSmall; 
+                font-family: $fontFamilyRegularItalic;
+                padding-left: 5px;
+                padding-right:5px;
+                margin-left: -5px;
+                color: $TPGrey4;               
+            }
+        }
+
+        .scrollTarget {
+            padding-top:30px;
+        }
+
         .addWorkoutType, 
         .removeZone,
         .removeWorkoutType {
             font-size:$fontSizeSmall;
         }
 
-        .addZone {
-            margin-top:10px;
-        }
-
         .removeZone {
-            margin-left:4px;
-        }
-
-        .removeWorkoutType {
-            display:inline-block;
             margin-left:4px;
         }
 
         .addZoneContain {
             margin-bottom:10px;
+            margin-left:15px;
 
-            .selectboxit-container {
+            div {
                 float:left;
             }
 
@@ -53,31 +149,165 @@
         .zonesConfigGroup {
             margin-top:25px;
 
+            .zoneGroupNameContain {
+                @include clearfix;
+                width:100%;
+                h3 {
+                    display: inline-block;
+                }
+                .removeWorkoutType {
+                    display: inline-block;
+                    margin-left:5px;
+                }
+            }
+
+            .zoneName, 
+            .minimum,
+            .maximum,
+            .numberInput {
+                height:22px;
+                padding:0 5px;
+                color:$TPGrey3;
+                display: inline-block;
+                margin:0;
+            }
+
+            .zoneName, 
+            .minimum,
+            .maximum {
+                // font-size:$fontSizeSmall;
+            }
+
+            .zoneSetFieldset {
+                padding:20px 15px 23px 15px;
+
+                &.autoCalc {
+                    margin-top:3px;
+                }
+                
+                input[type="text"] {
+                    height:22px;
+                    width:100px;
+                    font-size: 12px;
+                }
+                
+                .zoneCalculatorLayoutBody {
+                    .selectBox {
+                        width:205px;
+                        // margin-left:7px;
+                    }
+
+                    .selectboxit-container .selectboxit {
+                        width: 205px !important;
+                    }
+
+                    .calculatorType,
+                    .calculatorDefinition {
+                        float:left;
+                        margin-right:25px;
+                    }
+
+                    .heartrate,
+                    .power,
+                    .speed {
+                        form {
+                            float:left;
+                            margin-right:25px;
+                            width:auto;
+                        }
+                    }
+
+                    .speed {
+                        float:left;
+                        width:230px;
+                        margin-right: 13px;
+
+                        form {                            
+                            label {
+                                margin:0;
+                            }
+                        }
+                        .testDistance {
+                            margin-top: 0;
+                            .testDistanceSelect {
+                                float: left;
+                                
+
+                                .selectBox {
+                                    width: 125px;
+                                }
+                                .selectboxit-container .selectboxit {
+                                    width: 125px !important;
+                                    
+                                    .selectboxit-text,
+                                    .selectboxit-options {
+                                        font-size: 12px;
+                                    }
+                                }
+                                .selectboxit-container {
+                                   .selectboxit-options {
+                                        font-size: 12px;
+                                    } 
+                                }
+                            }
+                            .zoneSetTitle {
+                                float: left;
+                                width: 90px;
+                                margin-top: 5px;
+                                padding-right: 5px;
+                            }
+                        }
+                        .speed,
+                        .duration {
+                            margin-top: 5px;
+                            float: left;
+                            .zoneSetTitle {
+                                float: left;
+                                width: 90px;
+                                margin-top: 5px;
+                                padding-right: 5px;
+                            }
+                            input[type="text"] {
+                                float: left;
+                                width: 125px;
+                            }
+                        }
+                    }
+
+                    .buttons {
+                        // float:left;
+                        margin:0;
+                    }
+                }
+            }
+
             .zoneEntry {
-                padding:3px 0 3px 25px;
+                padding:4px 0 4px 16px;
+                margin-bottom: -1px;
 
                 &:hover {
-                    background-color:$TPGrey1;
                     cursor: all-scroll;
+                    background:4px center no-repeat $white;
+                    @extend %dragIndicatorBG;
                 }
 
                 .zoneEntryTo {
                     font-size:$fontSizeSmall;
                     display:inline-block;
                     text-align:center;
-                    width:15px;
+                    width:28px;
                 }
             }
 
             .zoneSetContain {
-                border:1px solid $TPGrey1;
-                padding:10px;
+                // border:1px solid $TPGrey1;
+                // padding:10px;
                 margin-bottom:10px;
                 margin-top:12px;
+                @include clearfix;
+                // @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 
                 label {
-                    cursor:auto;
-
                     input[type="radio"] {
                         margin:0;
                     }
@@ -89,8 +319,9 @@
 
                 .zoneSetTitle {
                     display:inline-block;
-                    width:136px;
-                    font-family:$fontFamilyHeavy;
+                    font-family:$fontFamilyRegular;
+                    // font-size: $fontSizeSmall;
+                    margin-right:5px;
                 }
 
                 &.power, 
@@ -99,17 +330,44 @@
                         width:71px;
                     }
                 }
+
+                &.speed {
+                    .zoneSetFieldset {
+                        .selectBox {
+                            float:left;
+                        }
+                        .clickable {
+                            margin-top:4px;
+                        }
+                    }
+                }
+
+                .zoneValueContain {
+                    float:left;
+                    margin-right:25px;
+
+                    .numberInput {
+                        width:100px;
+                    }
+                }
+            }
+
+            .addZone {
+                margin-top:4px;
+                margin-left:16px;
             }
         }
 
-        h2 {
-            font-family:$fontFamilyRegular;
+        h2.accountSettingsSectionTitle {
+            font-family:$fontFamilyLight;
             font-weight:normal;
             font-size:$fontSizeXXLarge;
             color:$TPBlue;
             margin-top:0;
-            margin-bottom:11px;
+            margin-bottom:12px;
+            padding-bottom:7px;
             line-height:normal;
+            border-bottom:1px solid $TPGrey12;
         }
 
         h3 {
@@ -130,16 +388,13 @@
             color:$TPGrey8;
             line-height:normal;
             margin:0;
-            margin-bottom:12px;
         }
 
         .heartRateZones, 
         .powerZones, 
         .speedPaceZones,
         .userSettingsPayments {
-            border-bottom: 1px solid $TPGrey2;
             margin-bottom:20px;
-            padding-bottom:20px;
         }
 
         .heartRateZones,
@@ -152,17 +407,22 @@
                     }
                     .min,
                     .max {
-                        width:50px;
+                        width:80px;
                     }
 
                     .min {
-                        margin-left:25px;
+                        margin-left:38px;
                     }
                 }
             }
         }
 
         .speedPaceZones {
+
+            .speed.calculator {
+                display: block;
+            }
+
             form {
                 width:100%;                
     
@@ -176,6 +436,30 @@
                     margin-left:15px;
                 }
             }
+
+            .zonesCalculator {
+
+                label {
+                    white-space: nowrap;
+                }
+
+                div.speed {
+                    float: left;
+                    // margin-left: 15px;
+                    // margin-top: 10px;
+                }
+
+                div.duration {
+                    float: left;
+                    // margin-left: 15px;
+                    margin-top: 10px;
+                }
+            }
+
+            .disabled {
+                display: none;
+            }
+
         }
 
         .userSettingsButtons {
@@ -187,7 +471,7 @@
 
         .userSettingsPayments {
             p {
-                margin:1em 0 1em 5px;
+                margin:0 0 1em 5px;
                 font-family:$fontFamilyRegular;
                 color:$TPGrey3;
                 font-size:$fontSizeSmall;
@@ -195,100 +479,263 @@
         }
     }
 
-
-    .overlayBoxBody
-    {
+    .overlayBoxBody {
         height: calc(100% - 75px);
+        @include radialGradient(#e6e4e4, #dedcdc);
     }
 }
 
-.userSettingsAccountContent
-{
+.userSettingsAccountContent {
     width: 816px;
-    padding-right:12px;
+    padding-top:30px;
+
+    .userSettingsHelpText {
+        float:left;
+        margin:0 15px 10px 125px;
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeSmaller;
+        color:$TPGrey3;
+    }
+
+    label {
+        input[type="radio"] {
+            margin:0;
+        }
+    }
 
     .userSettingsPersonalSection {
-        margin-bottom:20px;
-        padding-bottom:20px;
-        border-bottom:1px solid $TPGrey2;
+        margin-bottom:49px;
+        @include clearfix;
 
-        input {
-            width:295px;
+        .labelbold {
+            margin-left:5px;
+            font-family:$fontFamilyHeavy;
+            padding:4px 5px 0 0;
+            display: inline-block;
+        }
+
+        .fieldContain {
+            width:100%;
+            height:29px;
+            @include clearfix;
+            float:left;
+
+            .fieldTitle {
+                float: left;   
+                padding: 4px 5px 0 0; 
+                width: 125px;
+                max-width: 125px;
+                text-align: right;
+            }
+
+            &.deliveryTime1 {
+                .selectBox {
+                    width:197px;
+                }
+                .selectboxit-container .selectboxit {
+                    width: 197px !important;
+                }
+            }
+            &.units,
+            &.dateFormat {
+                .selectBox {
+                    width:197px;
+                }
+                .selectboxit-container .selectboxit {
+                    width: 197px !important;
+                }
+            } 
         }
 
         .personalLeftCol {
             float:left;
+            width:475px;
 
-            input {
-                width:285px;
-            }
-            .selectboxit-container .selectboxit {
-                width: 285px !important;
-            }
-
-            .selectBox {
-                position: relative;
+            input[type="text"], 
+            input[type="email"], 
+            input[type="password"],
+            input[type="tel"] {
+                width:340px;
+                height:22px;
                 float: left;
             }
 
-            label.username {
-                text-align:left;
-                margin-left:5px;
-                font-family:$fontFamilyHeavy;
+            .fieldContain {
+                &.address, 
+                &.birthday {
+                    margin-top:30px;
+                }
+
+                &.citystate {
+                    input[type="text"] {
+                        width:197px;
+                    }
+
+                    .selectBox {
+                        width:135px;
+                        margin-left:7px;
+                    }
+
+                    .selectboxit-container .selectboxit {
+                        width: 135px !important;
+                    }
+                }
+
+                &.athleteTypeGender {
+                    .selectBox {
+                        &.athleteType {
+                            width:197px;
+
+                            .selectboxit-container .selectboxit {
+                                width: 197px !important;
+                            }
+                        }
+                        &.gender {
+                            width:135px;
+                            margin-left:7px;
+
+                            .selectboxit-container .selectboxit {
+                                 width: 135px !important;
+                            }
+                        }
+                    }
+                }
+
+                &.birthday {
+                    .selectBox {
+                        &.birthdayMonth {
+                            width:197px;
+                            .selectboxit-container .selectboxit {
+                                width: 197px !important;
+                            }
+                        }
+                        &.birthdayYear {
+                            width:135px;
+                            margin-left:7px;
+                            .selectboxit-container .selectboxit {
+                                width: 135px !important;
+                            }
+                        }
+                    }
+                }
+
+        
+
+                &.athleteType {
+                    input[type="text"] {
+                        width:197px;
+                    }
+
+                    .selectBox {
+                        width:135px;
+                        margin-left:7px;
+                    }
+
+                    .selectboxit-container .selectboxit {
+                        width: 135px !important;
+                    }
+                }
             }
         }
 
-        .personalRightCol{
-            float:right;
+        &.email {
+            .row {
+                &:first-of-type {
+                    margin-top:5px;
+                }
+            }          
+        }
 
-            label {
-                width:104px;
+        .profilePicture {
+            float:left;
+            margin-left: 50px;
+            margin-top: -6px;
+            width: 230px;
+
+            fieldset {
+                width:225px;
             }
 
-            selectboxit-container .selectboxit {
-                width: 285px !important;
+            .photoContainer {
+                .placeholder {
+                    float: left;
+                    display: none;
+                    width:150px;
+                    height:150px;
+                }
+
+                img {
+                    max-height: 200px;
+                    max-width: 200px;
+                }
             }
 
-            .selectBox {
-                position: relative;
+            @include buttons (0, 107px, $fontSizeSmall);
+            .buttons {
                 float: left;
-                width:295px;
+                margin-top: 12px;
+                
+                button {
+                    &:last-of-type {
+                        margin:0;
+                    }
+                }
+            }
+
+            &.nophoto {
+                .photoContainer {
+                    .placeholder {
+                        display: block;
+                        height: 200px;
+                        width: 200px;
+                        padding: 90px 0 0 0;
+                        border: 1px solid $TPGrey11;
+                        background-color: $TPGrey1;
+                        text-align:center;
+                        font-family:$fontFamilyRegular;
+                        font-size:$fontSizeSmall;
+                        cursor:pointer;
+
+                        &:hover {
+                            
+                        }
+                    }
+
+                    img {
+                        display: none;
+                    }
+                }
+
+                .removePhoto {
+                    display: none;
+                }
             }
         }
 
         &.calendarSync {
-            input {
-                width:694px;
+            input[type="text"] {
+                width:691px;
+                height:20px;
+                float: left;
             }
-
         }
     }
 
     @include clearfix;
 
-    label
-    {
-        float: left;   
-        padding: 4px 5px 0 0; 
-        width: 110px;
-        max-width: 110px;
-        text-align: right;
-    }
-
     input
     {
-        width: 200px;
-        float: left;
-        // margin: 0 15px 0 0;
-        margin:0;
-        height: 20px;
+       //  width: 200px;
+       // float: left;
+       //  margin:0;
+       // height: 20px;
         color: $TPGrey3;
     }
 
     input[type="radio"]
     {
-        width: 20px;
-        margin: -4px 0 0 0;
+        // width: auto;
+       //  margin: -4px 0 0 0;
     }
 
     input[type="checkbox"]
@@ -299,7 +746,7 @@
 
     p
     {
-        margin: 0 15px 0 110px;
+        margin: 0 15px 0 125px;
     }
 
     select
@@ -329,20 +776,28 @@
         .recurringPaymentItem, 
         .paymentHistoryItem
         {
+            @include clearfix;
             margin: 0;
-            padding:10px 0;
-            font-family:$fontFamilyRegular;
-            color:$TPGrey3;
+            padding: 10px 0;
+            font-family: $fontFamilyRegular;
+            color: $TPGrey3;
 
-            border:1px solid $TPGrey1;
-            padding:10px;
-            margin-bottom:10px;
-            margin-top:12px;
+            border-bottom: 1px solid $TPGrey1;
+            padding: 0 10px 10px 5px;
+            margin-bottom: 10px;
+           
+            &:last-of-type {
+                border-bottom: none;
+            }
 
             .row
             {
                 overflow-y: visible;
                 margin-bottom: 5px;
+
+                &:last-of-type {
+                    margin-bottom:0;
+                }
 
                 div
                 {
@@ -351,7 +806,8 @@
                     font-size:$fontSizeSmall;
                 }
 
-                .date,.description {
+                .date,
+                .description {
                     font-family:$fontFamilyHeavy;
                 }
             }
@@ -372,84 +828,13 @@
     .row
     {
         margin-bottom: 10px;
+        float:left;
     }
 
     .radioButtonRow
     {
         text-align: left;
         padding-left: 5px;
-    }
-
-    .genderRadioButtonRow
-    {
-        width: 75px;
-        margin-bottom:10px;
-    }
-
-    .profilePicture
-    {
-
-        &.row
-        {
-            height: auto;
-        }
-
-        .photoContainer
-        {
-
-            float: left;
-
-            .placeholder
-            {
-                display: none;
-            }
-
-            img
-            {
-                display: block;
-                clear: both;
-                max-height: 200px;
-                max-width: 200px;
-            }
-
-        }
-
-        .buttons
-        {
-            clear: both;
-            margin-left: 110px;
-            padding-top: 10px;
-        }
-
-        &.nophoto
-        {
-            .photoContainer
-            {
-                .placeholder
-                {
-                    display: block;
-                    height: 200px;
-                    width: 200px;
-                    padding: 90px 0 0 0;
-                    border: 1px solid $TPGrey11;
-                    background-color: $TPGrey1;
-                    text-align:center;
-                    font-family:$fontFamilyRegular;
-                    font-size:$fontSizeSmall;
-                }
-
-                img
-                {
-                    display: none;
-                }
-            }
-
-            .removePhoto
-            {
-                display: none;
-            }
-        }
-
     }
 
     .accountSettings
@@ -467,12 +852,7 @@
         max-width: 350px;
         width: 350px;
         text-align: left;
-        margin-left: 108px;
-    }
-
-    .deliveryTimeHelpText
-    {
-        margin-bottom: 10px;
+        margin-left: 122px;
     }
 
     .nopaymentText
@@ -480,43 +860,28 @@
         margin-left: 5px;
     }
 
-    .ical
-    {
-        width: 270px;
+
+    .selectboxit-container .selectboxit {
+        width: 340px !important;
     }
 
-    .selectboxit-container .selectboxit 
-    {
-        width: 295px !important;
-    }
-
-    .selectBox
-    {
+    .selectBox {
         position: relative;
         float: left;
         width: 200px;
     }
 
-    .country, .timeZone, .state
-    {
-        .selectboxit-container .selectboxit 
-        {
-            width: 295px !important;
-        }
-    }
-
-    .selectboxit-list
-    {
+    .selectboxit-list {
         max-height: 350px;
         @include nice-scrollbar;
     }
 
 }
 
-.tabbedLayoutFooter
-{
+.tabbedLayoutFooter {
     height: 50px;
     background-color: $TPGrey1;
+    border-top:1px solid $TPGrey2;
 
     .userSettingsButtons
     {
@@ -525,10 +890,39 @@
     }
 }
 
-.zonesCalculator
-{
-    min-height: 500px;
-    min-width: 600px;
+.zonesCalculator {
+    // Only used to prevent chrome button outline glow from being chopped off, remove if it causes any problems.
+    overflow: visible !important;
+
+    .zoneCalculatorLayoutBody {
+        float:left;
+        width:100%;
+        div {
+            @include clearfix;
+        }
+
+        .zoneCalculatorView {
+            float: none;
+            margin: 0 auto;
+            width: 400px;
+
+            .zoneCalculatorResult{
+                &.threshold {
+                    margin-top: 20px;
+                    padding-bottom: 5px;
+                }
+            }
+        }
+    }
+    .zoneCalculatorLayoutFooter {
+        float:left;
+        width:100%;
+        
+        button {
+            margin-top:20px;
+            margin-bottom:2px;
+        }
+    }
  
     @include buttons(0, "auto", $fontSizeSmall);
     button
@@ -580,15 +974,9 @@
         margin-top:12px;
 
         label {
-            cursor:auto;
             margin-bottom: 10px;
             clear: left;
-
-            &.clickable
-            {
-                cursor: pointer;
-            }
-            
+          
             input[type="radio"] {
                 margin: 0px;
                 margin-right: 5px;
@@ -619,11 +1007,49 @@
         }
     }
 
-    .zones
+    .zones {
+        float:none;
+        margin:0 auto;
+        width:400px;
+
+        .zoneCalculatorResult {
+            padding:5px;
+            color: $TPGrey3;
+            font-size: $fontSizeSmall;
+            font-family: $fontFamilyRegular;
+            @include clearfix; 
+            
+            @include labels($fontFamilyRegular, 12px, $TPGrey3, normal);
+
+            label {
+                display: inline-block;
+                padding-right: 10px;
+                margin:0;
+            }
+
+            &.threshold {
+                margin-top: 20px;
+                padding-bottom: 5px;
+            }
+
+            &.zone {
+                &:nth-of-type(even) {
+                    background-color:$TPGrey2;
+                }
+            }
+
+            .calculatedZoneItem {
+                float:right;
+                text-align:right;            
+            }
+        }
+    }
+
+    .userSettingsButtons
     {
-        div
+        button[disabled]
         {
-            margin-bottom: 10px;
+            display: none;
         }
     }
 }

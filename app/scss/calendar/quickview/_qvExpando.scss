@@ -134,77 +134,38 @@
 }
 
 
-#expandoLeftColumn
+.expandoLeftColumn
 {
     float: left;
     position:relative;
-    @include
-    calc(width, "100% - 335px");
+    @include calc(width, "100% - 335px");
     overflow-y: scroll;
-    @include
-    nice-scrollbar;
+    @include nice-scrollbar;
 
-    &.graphHidden
+    .expandoMapPod
     {
-        #expandoGraphRegion
-        {
-            display: none;
-        }
-    }
-
-    &.mapHidden
-    {
-        #expandoMapRegion
-        {
-            display: none;
-        }
-
-        #expandoGraphRegion
-        {
-            height: 600px;
-
-            #plot
-            {
-                height: 565px;
-            }
-        }
-    }
-
-    #expandoMapRegion
-    {
-        height: 320px;
-        width: 100%;
 
         #expandoMap
         {
-            height: 320px;
+            height: 100%;
             width: 100%;
+        }
+
+        &.noData
+        {
+            #expandoMap
+            {
+                display: none;
+            }
         }
 
     }
 
-    #expandoMapAndGraphResizerRegion
-    {
-        height:11px;
-        width:100%;
-        left:0;
-        
-        background: center center no-repeat $TPGrey1;
-        @extend %resizeIndicatorBG;
-        
-        cursor:row-resize;
-        position:absolute;
-        border-top:1px solid #c2c3c4;
-        border-bottom:1px solid #c2c3c4;
-    }
-
-    #expandoGraphRegion
+    .expandoGraphPod
     {
         padding-top: 15px;
         padding-left: 10px;
         padding-right: 10px;
-        height: 400px;
-        width: 100%;
         overflow:hidden;
         #graphToolbar
         {
@@ -213,9 +174,22 @@
 
         #plot
         {
-            height: 365px;
+            height: calc(100% - 50px);
         }
 
+        &.noData
+        {
+            #plot
+            {
+                display: none;
+            }
+
+            #graphToolbar
+            {
+                display: none;
+            }
+        }
+        
         .graphToolbar
         {
             float: left;
@@ -443,10 +417,10 @@
         }
     }
     
-    #expandoLapsSplitsRegion {
-        float:left;
-        padding:55px 10px;
-        width:100%;
+    .expandoLapsSplitsPod {
+        float: left;
+        padding: 0 10px;
+        width: 100%;
         
         table {
             border-left:none;
@@ -458,11 +432,11 @@
             font-size: $fontSizeSmall;
             color: $TPGrey4;
             text-align: center;
-            margin-bottom: 20px;
+            margin: 22px 0;
         }
     }
     
-    #expandoChartsRegion {
+    .expandoPackeryRegion {
         width: 100%;
         padding: 0 12px;
         float: left;
@@ -509,15 +483,78 @@
     }
 }
 
-#expandoRightColumn
+.expandoRightColumn
 {
     float: right;
     width: 335px;
     overflow-y: scroll;
     @include nice-scrollbar;
 
-    #expandoStatsRegion
+    .expandoEditControlsRegion
     {
+        // so .waiting indicator has a home
+        position: relative; 
+        .expandoEditControls
+        {
+            // min-height: 200px;
+            text-align: center;
+            padding:10px 10px 15px 10px;
+            margin:10px;
+            border:1px solid $thisWeekBlue;
+            background-color: rgba(142,178,216,0.25);
+
+            p {
+                margin-bottom: $fontSizeSmaller;
+            }
+
+            &.disabled
+            {
+                display:none;
+            }
+
+            @include buttons(0, 96px, $fontSizeSmall);
+            button {
+                // height: 20px;
+                
+            }
+        }
+    }
+
+    .expandoStatsRegion
+    {
+
+        .expandoStats
+        {
+
+            &:not(.disabled)
+            {
+                .recalcStatsMessage
+                {
+                    display:none;
+                }
+            }
+
+            &.disabled
+            {
+                .statsContainer
+                {
+                    display:none;
+                }
+            }
+
+            .recalcStatsMessage {
+                padding: 0 10px 10px 10px;
+                
+                p {
+                    font-size: $fontSizeSmall;
+                    color: $TPGrey3;
+                    line-height: 1.3;
+                    padding: 0 45px;
+                    text-align: center;
+                }
+            }
+        }
+
         overflow-x: auto;
         overflow-y: visible;
         font-size: $fontSizeMedium;
@@ -626,10 +663,16 @@
         }
     }
 
-    #expandoLapsRegion
+    .expandoLapsRegion
     {
-        overflow-y: visible;
-        //@include nice-scrollbar;
+
+        .expandoLaps
+        {
+            &.disabled
+            {
+                display: none;
+            }
+        }
 
         .controls
         {
@@ -683,21 +726,49 @@
             }
 
             li {
-                color:$TPGrey10;
-                
+                color:$TPGrey3;
+                font-family: $fontFamilyRegular;
+                margin: .25em 0;
+                text-align: left;
+                cursor: pointer;
+
+                input[type="checkbox"] {
+                    margin: 0 5px 0 0;
+                    position: relative;
+                    top: -1px;
+                }
+
                 span {
                     cursor: pointer;  
-                    display: inline-block;
+                    // display: inline-block;
                     @include calc(width, "100% - 20px");
                     &:hover {
                         color:$TPGrey4; 
                     }
                 }
 
+                .actions {
+                    margin:0 0 10px 0;
+                    @include buttons(0, 65px, $fontSizeSmall);
+                    padding-left:20px;
+                    padding-top:5px;
+                }
+
                 &.highlight {
-                    span {
-                        color:$TPGrey4;
-                        font-family:$fontFamilyHeavy;
+                    color:$TPGrey4;
+                    font-family:$fontFamilyHeavy;
+                }
+
+                .editLapName {
+                    display:inline-block;
+                    
+                    @include inputs(auto, 22px, $fontSizeSmall, $fontFamilyRegular);
+                    input {
+                        text-align: left !important;
+                        margin: 0 5px 0 0;
+                        padding:0 5px;
+                        position:relative;
+                        z-index: 2;
                     }
                 }
             }
@@ -736,5 +807,266 @@
         {
             font-size: $fontSizeMedLarge;
         }
+    }
+}
+
+.expandoPackeryRegion
+{
+    &, .packeryCollection
+    {
+        padding-top: 10px;
+
+        height: 100%;
+        max-height: 100%;
+    }
+}
+
+@for $i from 1 through 6
+{
+    .expandoPod[data-rows="#{$i}"]
+    {
+        height: calc(#{percentage($i / 6)} - 10px);
+    }
+
+    .expandoPod[data-cols="#{$i}"]
+    {
+        width: calc(#{percentage($i / 6)} - 10px);
+    }
+
+}
+
+.sizer
+{
+    @extend .expandoPod[data-rows="1"];
+    @extend .expandoPod[data-cols="1"];
+}
+
+
+.expandoPod {
+
+    position: absolute; 
+    padding: 0;
+
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &.noData
+    {
+        border: 1px solid white;  
+    }
+
+    &.fullScreen
+    {
+        position: absolute;
+        height: auto;
+        width: auto;
+        background-color: $TPGrey1;
+        z-index: 200 !important;
+        opacity: 1;
+        cursor: default;
+
+        .expandoPodButtons
+        {
+            display: block;
+            z-index:2;
+        }
+
+        &:hover, &.hover {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+        }
+    }
+
+
+
+    &:hover, &.hover
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
+        z-index: 2;
+        .expandoPodButtons
+        {
+            display: block;
+            z-index:2;
+        }
+    }
+
+    &.menuOpen
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
+
+        .expandoPodButtons
+        {
+            display: block;
+        }
+
+        &.fullScreen {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+        }
+    }
+
+    &.ui-draggable-dragging
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
+    }
+
+    .epxandoPodHeader
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        display: none;
+
+        &:hover, .hover
+        {
+            display: block;
+            background: white;
+        }
+
+    }
+
+    .expandoPodContent
+    {
+        width: 100%;
+        height: 100%;
+
+        overflow: auto;
+
+        &.invisible
+        {
+            visibility:hidden;
+        }
+
+        @include noDataMessage;
+
+    }
+
+
+
+    .expandoPodButtons
+    {
+        display:none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 100px;
+
+        .settings, .expand, .close, .collapse
+        {
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            top: 0px;
+        }
+
+        .settings
+        {
+            width: 11px;
+            right: 43px;
+            background: transparent no-repeat 0 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: 0 -17px;
+            }
+
+            &:active {
+                background-position: 0 -17px;
+            }
+        }
+
+        .expand
+        {
+            right: 21px;
+            background: transparent no-repeat -17px 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -17px -17px;
+            }
+
+            &:active {
+                background-position: -17px -17px;
+            }
+        }
+
+        .collapse 
+        {
+            display: none;
+            right: 0px;
+            cursor: pointer;
+            background: transparent no-repeat -34px 0;
+            @extend %chartIconsSpriteBG;
+
+            &:hover {
+                background-position: -34px -17px;
+            }
+
+            &:active {
+                background-position: -34px 0px;
+            }
+
+        }
+
+        .close
+        {
+            right: 0px;
+            background: transparent no-repeat -51px 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -51px -17px;
+            }
+
+            &:active {
+                background-position: -51px 0;
+            }
+        }
+    }
+
+    &.expanded
+    {
+        .expandoPodButtons
+        {
+            .collapse
+            {
+                display: block;
+            }
+
+            .expand
+            {
+                display: none;
+            }
+
+            .close
+            {
+                display: none;
+            }
+
+            .settings
+            {
+                right: 21px;
+            }
+        }
+    }
+
+    // jquery ui adds some opacity to disabled drag state
+    &.ui-state-disabled
+    {
+        opacity: 1;
+    }
+}
+
+
+.expandoGraphSeriesOptionsMenu {
+    .hoverBox.uparrow {
+        width: 75px;
     }
 }

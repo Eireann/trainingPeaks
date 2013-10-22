@@ -69,10 +69,7 @@ function(
         setupUserFetchPromise: function()
         {
             var self = this;
-            theMarsApp.userFetchPromise.done(function()
-            {
-                self.showCoachHomeOrAthleteHome();
-            });
+            self.showCoachHomeOrAthleteHome();
         },
 
         showCoachHomeOrAthleteHome: function()

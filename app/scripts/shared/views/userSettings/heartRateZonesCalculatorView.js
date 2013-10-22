@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "shared/views/overlayBoxView",
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/zoneCalculatorViews",
@@ -12,7 +11,6 @@
 function(
     _,
     TP,
-    OverlayBoxView,
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     ZoneCalculatorViews,
@@ -30,13 +28,17 @@ function(
 
     var HeartRateCalculatorTabView = ZoneCalculatorViews.TabContentView.extend({
 
+        fieldsToCopyFromThresholdSourceModel: ["threshold", "minimumHeartRate", "maximumHeartRate"],
+
         zoneTypesById: ZoneCalculatorDefinitions.heartRatesById,
 
         zoneCalculator: ZoneCalculator.HeartRate,
 
         units: "heartrate",
 
-        itemView: TP.ItemView.extend({
+        zoneItemView: TP.ItemView.extend({
+            className: "zoneCalculatorResult zone", 
+
             template: {
                 type: "handlebars",
                 template: heartRateZoneTemplate
@@ -48,6 +50,11 @@ function(
             template: heartRateZonesCalculatorTemplate
         }
 
+    });
+
+    var EmptyTabView = HeartRateCalculatorTabView.extend({
+        calculators: [],
+        inputs: []
     });
 
     var LactateThresholdTabView = HeartRateCalculatorTabView.extend({
@@ -81,36 +88,50 @@ function(
 
     var HeartRateZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
 
+        className: "tabbedLayout zonesCalculator heartRateZonesCalculator",
+
         _initializeNavigation: function()
         {
             this.navigation =
             [
                 {
+                    title: "Choose Type",
+                    view: EmptyTabView,
+                    options: {
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
+                    }
+                },
+                {
                     title: "Lactate Threshold",
                     view: LactateThresholdTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 },
                 {
                     title: "Maximum Heart Rate",
                     view: MaximumHeartRateTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 },
                 {
                     title: "Max and Resting Heart Rate",
                     view: MaximumAndRestingHeartRateTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 },
                 {
                     title: "LT and Maximum Heart Rate",
                     view: LactateThresholdAndMaximumHeartRateTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 }
             ];
@@ -119,11 +140,5 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
-
-        className: "heartRateZonesCalculator zonesCalculator",
-
-        itemView: HeartRateZonesCalculatorTabbedLayout
-    });
-
+    return HeartRateZonesCalculatorTabbedLayout;
 });

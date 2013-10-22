@@ -133,14 +133,11 @@
 } // end .workout
 
 #workoutSettingsDiv {
-    
     padding-left: 10px;
     padding-bottom: 20px;
 
-    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-
     .hoverBoxContents {
-    min-width: 75px;
+        min-width: 75px;
     }
 
 }

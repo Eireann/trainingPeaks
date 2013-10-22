@@ -1,25 +1,27 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "./timeInZonesChart",
     "utilities/charting/chartColors"
 ],
-function(TP, TimeInZonesChartView, chartColors)
+function(_, TP, TimeInZonesChartView, chartColors)
 {
     return TimeInZonesChartView.extend(
     {
+        dataChannel: "HeartRate",
+
         chartColor: chartColors.gradients.heartRate,
 
         initialize: function(options)
         {
             this.constructor.__super__.initialize.call(this,
-            {
-                timeInZones: options.timeInZones,
+            _.defaults({
                 chartColor: this.chartColor,
                 toolTipBuilder: this.toolTipBuilder
-            });
+            }, options));
 
-            this.model = new TP.Model({
+            this.chartModel = new TP.Model({
                 zoneType: "Heart Rate"
             });
         },

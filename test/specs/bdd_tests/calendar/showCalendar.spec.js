@@ -29,17 +29,17 @@ function(
             testHelpers.stopTheApp();
         });
 
-        it("Should display the calendar", function()
+        it("Should not display a list of athletes in the calendar", function()
         {
-            expect($mainRegion.find("#calendarContainer").length).toBe(1);
+            expect($mainRegion.find("#athleteCalendarSelect").length).toBe(0);
         });
 
-        it("Should display today in the calendar", function()
+        xit("Should display today in the calendar", function()
         {
             expect($mainRegion.find("#calendarContainer .day.today").length).toBe(1);
         });
 
-        it("Should be able to navigate away and back to the calendar", function()
+        xit("Should be able to navigate away and back to the calendar", function()
         {
             expect($mainRegion.find("#calendarContainer").length).toBe(1);
             theApp.router.navigate("dashboard", { trigger: true });
@@ -48,7 +48,7 @@ function(
             expect($mainRegion.find("#calendarContainer").length).toBe(1);
         });
 
-        describe("Should remember what date I was viewing when navigating in and out of the calendar", function()
+        xdescribe("Should remember what date I was viewing when navigating in and out of the calendar", function()
         {
             var controller, calendarContainerView;
             beforeEach(function()

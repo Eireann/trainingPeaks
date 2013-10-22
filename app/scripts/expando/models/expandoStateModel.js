@@ -1,0 +1,66 @@
+define(
+[
+    "underscore",
+    "TP",
+    "models/workoutStatsForRange",
+],
+function(
+    _,
+    TP,
+    WorkoutStatsForRange
+)
+{
+
+    var ExpandoStateModel = TP.Model.extend(
+    {
+
+        initialize: function()
+        {
+            var ranges = new TP.Collection([], { model: WorkoutStatsForRange });
+            this.set("ranges", ranges);
+            this.on("change:primaryRange", this._onStatsRangeChange, this);
+
+            this.listenTo(ranges, "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(ranges, "remove", _.bind(this._onRangeRemoved, this));
+        },
+
+        reset: function()
+        {
+            this.get("ranges").reset();
+            this.set("primaryRange", null);
+        },
+
+        _onStatsRangeChange: function(self, range)
+        {
+            if(this.primaryRange)
+            {
+                this.primaryRange.set("isFocused", false);
+            }
+            this.primaryRange = range;
+
+            if(range)
+            {
+                range.set("isFocused", true);
+
+                if(!range.hasLoaded)
+                {
+                    range.fetch();
+                }
+            }
+        },
+
+        _onRangeAdded: function(range)
+        {
+            range.set("isSelected", true);
+        },
+
+        _onRangeRemoved: function(range)
+        {
+            range.set("isSelected", false);
+        }
+
+    });
+
+    return ExpandoStateModel;
+
+});

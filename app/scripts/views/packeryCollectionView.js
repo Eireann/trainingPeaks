@@ -2,12 +2,14 @@ define(
 [
     "underscore",
     "jqueryui/draggable",
+    "jqueryui/resizable",
     "packery",
     "TP"
 ],
 function(
     _,
     jqueryDraggable,
+    jqueryResizable,
     packery,
     TP
     )
@@ -17,6 +19,7 @@ function(
     if(!$.fn.packery)
     {
         return TP.CollectionView.extend({
+            layout: function() { return; },
             enablePackeryResize: function() { return; },
             disablePackeryResize: function() { return; }
         });
@@ -37,11 +40,15 @@ function(
                 }
             });
 
+            this.resizable = options.resizable;
+            this.packeryOptions = options.packery;
+
             PackeryCollectionView.__super__.initialize.apply(this, arguments);
 
             this.tmp = {}; // Placeholder for view being dragged
 
             this.on("show", _.bind(this._setupPackery, this, options));
+            this.on("collection:before:close", this._beforeClose, this);
             this._setupDroppable(options);
 
             _.bindAll(this, "_moveDraggableForPackery");
@@ -49,8 +56,11 @@ function(
 
         layout: function()
         {
-            this.$el.packery("layout");
-            this._updatePackerySort();
+            if(this.packery && !this.isClosing)
+            {
+                this.$el.packery("layout");
+                this._updatePackerySort();
+            }
         },
 
         enablePackeryResize: function()
@@ -66,10 +76,21 @@ function(
         _setupPackery: function(options)
         {
             this.packery = this.$el.packery(options.packery).data("packery");
+
+            if(options.packery.rowHeight instanceof Element)
+            {
+                this.$el.after(options.packery.rowHeight);
+            }
+
+            if(options.packery.columnWidth instanceof Element)
+            {
+                this.$el.after(options.packery.columnWidth);
+            }
+
             this.packery.on("dragItemPositioned", _.bind(this._updatePackerySort, this));
             this.children.each(function(itemView)
             {
-                this._setupPackeryDraggable(itemView, this);
+                this._setupPackeryItem(itemView, this);
             }, this);
         },
 
@@ -88,7 +109,10 @@ function(
             {
                 var $item = $(itemEl);
                 var view = $item.data("view"); // Can we get this without working the view on the el
-                view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
+                if(view && view.model)
+                {
+                    view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
+                }
             });
             this.trigger("reorder");
         },
@@ -104,7 +128,7 @@ function(
             if (index >= 0)
             {
                 this.packery.appended(itemView.$el);
-                this._setupPackeryDraggable(itemView, collectionView);
+                this._setupPackeryItem(itemView, collectionView);
             }
             else
             {
@@ -122,18 +146,93 @@ function(
         },
 
         // Overrides CollectionView
+        closeChildren: function()
+        {
+            this.packery = null;
+            PackeryCollectionView.__super__.closeChildren.apply(this, arguments);
+        },
+
+        // Overrides CollectionView
         removeChildView: function(view)
         {
-            this.packery.remove(view.el);
+            if(this.packery)
+            {
+                this.packery.remove(view.el);
+            }
             PackeryCollectionView.__super__.removeChildView.apply(this, arguments);
-            this.layout();
+            if(this.packery)
+            {
+                this.layout();
+            }
             return this;
         },
 
-        _setupPackeryDraggable: function(itemView, collectionView)
+        _setupResizable: function(view)
         {
-            itemView.$el.draggable();
+            var self = this;
+            view.$el.resizable({
+                start: function(event, ui)
+                {
+                    var x = self.packeryOptions.columnWidth;
+                    var y = self.packeryOptions.rowHeight;
+
+                    var width = _.isNumber(x) ? x : $(x).width();
+                    var height = _.isNumber(y) ? y : $(y).height();
+
+                    view.$el.resizable("option", {
+                        grid: [ width + self.packeryOptions.gutter, height + self.packeryOptions.gutter ],
+                        minWidth: width,
+                        minHeight: height * 2,
+                        maxWidth: self.$el.width(),
+                        maxHeight: self.$el.height()
+                    });
+                },
+
+                resize: function(event, ui)
+                {
+                    self.$el.packery('fit', ui.element[0]);
+                    ui.element.data("view").trigger("controller:resize");
+                },
+
+                stop: function(event, ui)
+                {
+                    var x = self.packeryOptions.columnWidth;
+                    var y = self.packeryOptions.rowHeight;
+
+                    var width = _.isNumber(x) ? x : $(x).width();
+                    var height = _.isNumber(y) ? y : $(y).height();
+
+                    var cols = Math.round((ui.element.width() + self.packeryOptions.gutter) / (width + self.packeryOptions.gutter));
+                    var rows = Math.round((ui.element.height() + self.packeryOptions.gutter) / (height + self.packeryOptions.gutter));
+
+                    ui.element.css({
+                        width: "",
+                        height: ""
+                    });
+
+                    ui.element.attr(
+                    {
+                        "data-rows": rows,
+                        "data-cols": cols
+                    });
+
+                    self.$el.packery('fit', ui.element[0]);
+                    ui.element.data("view").trigger("controller:resize");
+                }
+            });
+        },
+
+        _setupPackeryItem: function(itemView, collectionView)
+        {
+            var self = this;
+
+            itemView.$el.draggable({ scope: "packery" });
             collectionView.packery.bindUIDraggableEvents(itemView.$el);
+
+            if(this.resizable)
+            {
+                collectionView._setupResizable(itemView);
+            }
         },
 
         _moveDraggableForPackery: function(event, ui)
@@ -191,8 +290,13 @@ function(
             this._updatePackerySort();
 
             this.tmp.view.$el.removeClass("hover"); // TODO: Is this OK or too coupled?
-            this._setupPackeryDraggable(this.tmp.view, this);
+            this._setupPackeryItem(this.tmp.view, this);
             this.tmp = {};
+        },
+
+        _beforeClose: function()
+        {
+            this.isClosing = true;
         }
     });
 

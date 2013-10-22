@@ -33,8 +33,7 @@ function(
 
         events:
         {
-            mousedown: "onMouseDown",
-            mouseup: "showDetails"
+            click: "showDetails"
         },
 
         template:
@@ -109,11 +108,6 @@ function(
             return TP.utils.workout.types.getNameById(this.model.get("workoutTypeId")).replace(/ /g, "");
         },
 
-        onMouseDown: function()
-        {
-            this.model.trigger("select", this.model);
-        },
-
         onItemUnSelect: function()
         {
             this.$el.removeClass("selected");
@@ -126,19 +120,19 @@ function(
 
         showDetails: function()
         {
+            this.model.trigger("select", this.model);
             if(this.detailsView)
             {
                 return;
             }
             this.detailsView = new ExerciseDetailsView({ model: this.model });
-            this.detailsView.on("close", this.onDetailsClose, this);
+            this.listenTo(this.detailsView, "close", this.onDetailsClose);
             this.detailsView.render().alignArrowTo(this.$el);
         },
 
         onDetailsClose: function()
         {
-            this.detailsView.off("close", this.onDetailsClose, this);
-            this.onItemUnSelect();
+            this.stopListening(this.detailsView);
             this.detailsView = null;
         }
 

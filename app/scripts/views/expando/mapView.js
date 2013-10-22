@@ -2,29 +2,31 @@
 [
     "TP",
     "utilities/mapping/mapUtils",
+    "utilities/charting/chartColors",
     "hbs!templates/views/expando/mapTemplate"
 ],
 function (
     TP,
     MapUtils,
+    chartColors,
     mapTemplate
     )
 {
 
     return TP.ItemView.extend(
     {
+
+        className: "expandoMapPod",
+
         template:
         {
             type: "handlebars",
             template: mapTemplate
         },
 
-        initialEvents: function ()
-        {
-            this.model.off("change", this.render);
-        },
+        modelEvents: {}, 
 
-        initialize: function (options)
+        initialize: function(options)
         {
             _.bindAll(this, "onModelFetched");
 
@@ -32,13 +34,11 @@ function (
             this.graph = null;
             this.selections = [];
 
+            this.stateModel = options.stateModel;
+
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for map view";
 
-            if (!options.dataParser)
-                throw "dataParser is required for map view";
-
-            this.dataParser = options.dataParser;
             this.detailDataPromise = options.detailDataPromise;
         },
 
@@ -72,21 +72,38 @@ function (
 
         createAndDisplayMap: function ()
         {
+            this.$el.addClass("noData");
+
             if (!this.model.get("detailData").get("flatSamples"))
+            {
                 return;
+            }
 
-            if (!this.map)
-                this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
-
-
-            var latLongArray = this.dataParser.getLatLonArray();
+            var latLongArray = this._getDataParser().getLatLonArray();
             if (latLongArray)
             {
+
+                this.$el.removeClass("noData");
+
+                if (!this.map)
+                {
+                    this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
+                }
+
                 //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
-                MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 10);
+                MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10);
                 MapUtils.addStartMarker(this.map, latLongArray[0]);
                 MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
+            }
+
+            if(this.$el.hasClass("noData"))
+            {
+                this.trigger("noData");
+            }
+            else
+            {
+                this.trigger("hasData");
             }
         },
 
@@ -110,44 +127,61 @@ function (
 
         watchForControllerEvents: function ()
         {
-            this.on("controller:rangeselected", this.onRangeSelected, this);
-            this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.on("close", this.stopWatchingControllerEvents, this);
-            this.on("controller:graphhover", this.onGraphHover, this);
-            this.on("controller:graphleave", this.onGraphLeave, this);
+            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
+            this.listenTo(this.stateModel, "change:hover", _.bind(this._onHoverChange, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onPrimaryRangeChange, this));
         },
 
-        stopWatchingControllerEvents: function ()
+        _onRangeAdded: function(range, ranges, options)
         {
-            this.off("controller:rangeselected", this.onRangeSelected, this);
-            this.off("controller:graphhover", this.onGraphHover, this);
-            this.off("controller:graphleave", this.onGraphLeave, this);
+
+            var selection = this.findMapSelection(range.get("begin"), range.get("end"));
+            if (!selection)
+            {
+                selection = this.createMapSelection(range, options);
+                this.addSelectionToMap(selection);
+            }
+
         },
 
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+        _onRangeRemoved: function(range, ranges, options)
         {
-            if (!options)
-                return;
-            
-            var selection;
-            if (options.removeFromSelection)
+            var selection = this.findMapSelection(range.get("begin"), range.get("end"));
+            if (selection)
             {
-                // remove it, if it was selected
-                selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-                if (selection)
-                {
-                    this.removeSelectionFromMap(selection);
-                    this.selections = _.without(this.selections, selection);
-                }
-            } else if (options.addToSelection)
+                this.removeSelectionFromMap(selection);
+                this.selections = _.without(this.selections, selection);
+            }
+
+        },
+
+        _onRangesReset: function(ranges, options)
+        {
+            var self = this;
+
+            _.each(this.selections, this.removeSelectionFromMap, this);
+            this.selections = [];
+
+            ranges.each(function(range)
             {
-                // add it, if it wasn't already selected
-                selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-                if (!selection)
-                {
-                    selection = this.createMapSelection(workoutStatsForRange, options);
-                    this.addSelectionToMap(selection);
-                }
+                self._onRangeAdded(range, ranges, options);
+            });
+        },
+
+        _onPrimaryRangeChange: function(stateModel, range, options)
+        {
+            if(this.primarySelection)
+            {
+                if(range === this.primarySelection.range) return;
+                this.removeSelectionFromMap(this.primarySelection);
+            }
+
+            if(range)
+            {
+                this.primarySelection = this.createMapSelection(range, { color: chartColors.mapPrimarySelection });
+                this.addSelectionToMap(this.primarySelection);
             }
         },
 
@@ -161,15 +195,16 @@ function (
 
         createMapSelection: function (workoutStatsForRange, options)
         {
-            var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(latLngs, options.dataType);
+            var latLngs = this._getDataParser().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var mapLayer = MapUtils.createHighlight(latLngs, options);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end"),
+                range: workoutStatsForRange,
                 mapLayer: mapLayer
             };
-
+            
             return selection;
         },
 
@@ -184,31 +219,31 @@ function (
             this.map.removeLayer(selection.mapLayer);
         },
 
-        onUnSelectAll: function ()
+        _onHoverChange: function (state, offset, options)
         {
-            _.each(this.selections, function (selection)
+            if (!this._getDataParser().hasLatLongData)
             {
-                this.removeSelectionFromMap(selection);
-            }, this);
-            this.selections = [];
-        },
-
-        onGraphHover: function (options)
-        {
-            var xAxisOffset = options.msOffset;
-            var latLong = this.dataParser.getLatLongFromOffset(xAxisOffset);
-            
-            if (latLong !== null)
-                this.showHoverMarker(latLong.lat, latLong.lng);
-            else
-                this.hideHoverMarkerWithDelay();
-        },
-
-        onGraphLeave: function ()
-        {
-            if (this.dataParser.hasLatLongData)
+                return;
+            }
+            if (!_.isNumber(offset))
+            {
                 this.hideHoverMarker();
+            }
+            else
+            {
+                var latLong = this._getDataParser().getLatLongFromOffset(offset);
+                
+                if (latLong !== null)
+                {
+                    this.showHoverMarker(latLong.lat, latLong.lng);
+                }
+                else
+                {
+                    this.hideHoverMarkerWithDelay();
+                }
+            }
         },
+
 
         hideHoverMarker: function ()
         {
@@ -262,22 +297,17 @@ function (
             }, this);
         },
 
-        setViewSize: function (containerHeight, containerWidth, overrideMinHeight)
+        setViewSize: function()
         {
-            var bottomMargin = 0;
-            var mapHeight = Math.floor((containerHeight * (this.offsetRatio || 0.5)) - bottomMargin);
-
-            this.$el.closest("#expandoMapRegion").height(mapHeight);
-            this.$el.height(mapHeight);
-            this.$("#expandoMap").height(mapHeight);
             if (this.map)
             {
                 this.map.invalidateSize();
             }
         },
-        stashHeight: function(offsetRatio)
+
+        _getDataParser: function()
         {
-            this.offsetRatio = offsetRatio;
+            return this.model.get("detailData").getDataParser();
         }
     });
 });

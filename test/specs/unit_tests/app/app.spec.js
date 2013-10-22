@@ -6,10 +6,8 @@ requirejs(
 ],
 function( _, theApp)
 {
-    
     describe("The Mars App", function()
     {
-
         it("Should exist globally", function()
         {
             var globalNamespace = typeof window !== 'undefined' ? window : jasmine.getGlobal();
@@ -18,7 +16,6 @@ function( _, theApp)
 
         describe("App Initializers", function()
         {
-
             theApp.start();
 
             it("Should have a session", function()
@@ -29,11 +26,6 @@ function( _, theApp)
             it("Should have a logger", function()
             {
                 expect(theApp.hasOwnProperty('logger')).toBeTruthy();
-            });
-
-            it("Should have a login controller", function()
-            {
-                expect(theApp.controllers.loginController).toBeDefined();
             });
 
             it("Should have a navigation controller", function()

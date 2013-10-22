@@ -2,124 +2,124 @@ define(
 [
     "underscore",
     "TP",
-    "shared/models/userModel"
+    "shared/models/userModel",
+    "shared/models/userAccessRightsModel"
 ],
-function (_, TP, UserModel)
+function (_, TP, UserModel, UserAccessRightsModel)
 {
+    // 4 hour interval in milliseconds
+    var REFRESH_INTERVAL = 1000 * 60 * 60 * 4;
+    var REDIRECT_URL = "";
+
     return TP.Model.extend(
     {
-        url: function()
-        {
-            return theMarsApp.oAuthRoot + "/OAuth/Token";
-        },
-
         storageLocation: localStorage,
+
+        defaults:
+        {
+            isAuthenticated: true
+        },
 
         initialize: function()
         {
-            this.authPromise = new $.Deferred();
+            var self = this;
 
-            var accessToken = this.getFromLocalStorage("access_token");
-
-            if (accessToken)
+            $.ajaxSetup(
             {
-                var expiresOn = this.getFromLocalStorage("expires_on");
-                var now = parseInt(+new Date(), 10) / 1000;
-                if (now < expiresOn)
+                xhrFields:
                 {
-                    this.set("access_token", accessToken);
-                    this.authPromise.resolve();
+                    withCredentials: true
                 }
-            }
-        },
+            });
 
-        isAuthenticated: function()
-        {
-            var token = this.get("access_token");
-            return !!token && (token.length > 0);
-        },
-
-        authenticate: function (options)
-        {
-            var data =
+            $(document).ajaxSend(function(event, xhr, settings)
             {
-                grant_type: "password",
-                client_id: "tpMars",
-                client_secret: "44Wz6Em3lcpDSzbZ5WCl2ijZqtAfDUfPU5RMawx6W00=",
-                username: options.username,
-                password: options.password,
-                response_type: "token",
-                scope: "fitness clientevents users athletes exerciselibrary images groundcontrol baseactivity plans sysinfo metrics zonescalculator"
-            };
+                if (typeof theMarsApp !== "undefined" && theMarsApp && !theMarsApp.isLive())
+                    window.lastAjaxRequest = { settings: settings, xhr: xhr };
+            });
 
-            this.username = options.username;
-
-            _.bindAll(this, "onAuthenticationSuccess", "onAuthenticationFailure");
-
-            this.fetch(
+            $(document).ajaxError(function(event, xhr)
             {
-                data: data,
-                type: "POST",
-                contentType: "application/x-www-form-urlencoded",
-                rollbarIgnore: true
-            }).done(this.onAuthenticationSuccess).error(this.onAuthenticationFailure);
+                if (xhr.status === 401)
+                    self._redirectToLogin();
+            });
+
+            this.userPromise = $.Deferred();
+            this.user = new UserModel();
+            this.userAccessRights =  new UserAccessRightsModel();
 
         },
-        
-        onAuthenticationSuccess: function()
-        {
-            var expiresOn = parseInt(this.get("expires_in"), 10) + parseInt((+new Date()) / 1000, 10);
 
-            this.setToLocalStorage("access_token", this.get("access_token"));
-            this.setToLocalStorage("expires_on", expiresOn);
-
-            this.authPromise.resolve();
-            this.trigger("api:authorization:success");
-        },
-        
-        onAuthenticationFailure: function()
+        initRefreshToken: function()
         {
-            var originalPromise = this.authPromise;
-            this.authPromise = new $.Deferred();
-            originalPromise.reject();
-            this.trigger("api:authorization:failure");
-        },
-        
-        logout: function(message)
-        {
-            this.removeFromLocalStorage("access_token");
-            this.removeFromLocalStorage("app_user");
-            this.trigger("logout", message);
-        },
-
-        setToLocalStorage: function(key, value)
-        {
-            this.storageLocation.setItem(key, value);
-        },
-
-        getFromLocalStorage: function(key)
-        {
-            return this.storageLocation.getItem(key);
-        },
-
-        removeFromLocalStorage: function(key)
-        {
-            this.storageLocation.removeItem(key);
-        },
-
-        saveUserToLocalStorage: function(user)
-        {
-            this.setToLocalStorage("app_user", JSON.stringify(user.attributes));
-        },
-
-        getUserFromLocalStorage: function()
-        {
-            var storedUser = this.getFromLocalStorage("app_user");
-            if(!storedUser)
+            var self = this;
+            
+            this._refreshToken().done(function()
             {
-                return null;
-            }
-            return new UserModel(JSON.parse(storedUser));
+                self._fetchUser();
+            });
+        },
+
+        _fetchUser: function()
+        {
+            var self = this;
+            this.userAccessPromise = this.userAccessRights.fetch();
+            this.user.fetch().done(function()
+            {
+                self.userPromise.resolve();
+            });
+        },
+
+        _refreshToken: function()
+        {
+            if(!(window.apiConfig && window.apiConfig.cmsRoot))
+                throw "No CMSRoot URL found!";
+
+            var self = this;
+            var promise = $.ajax(
+            {
+                url: window.apiConfig.cmsRoot + "/refresh",
+                type: "GET",
+                contentType: "application/json",
+                crossDomain: true,
+                dataType: "json"
+            });
+
+            promise.done(function(data, textStatus, jqXHR)
+            {
+                if(data.success)
+                {
+                    if(data.redirect && data.redirect !== "")
+                        REDIRECT_URL = data.redirect;
+                    
+                    setTimeout(self._refreshToken, REFRESH_INTERVAL);
+                }
+                else
+                {
+                    if(data.redirect && data.redirect !== "")
+                       REDIRECT_URL = data.redirect;
+
+                    self._redirectToLogin();
+                }
+            });
+
+            return promise;
+        },
+
+        _redirectToLogin: function()
+        {
+            if(REDIRECT_URL)
+                window.location = REDIRECT_URL + "?ReturnUrl=" + escape(window.location);
+        },
+
+        authenticationComplete: function(callback)
+        {
+            this.userPromise.done(callback);
+        },
+
+        logout: function()
+        {
+            document.location = window.apiConfig.cmsRoot + "/logout";
         }
     });
 });

@@ -25,18 +25,13 @@ function (
             {
                 view = new HeartRateZonesCalculatorView({ model: new TP.Model({ threshold: 150 }) });
                 view.render();
+                view.$("select[name=calculatorType]").val("Lactate Threshold").trigger("change");
+                view.$("select[name=calculatorDefinitionId]").val("1").trigger("change");
             });
 
             it("Should list some of the available calculator methods", function()
             {
                 expect(view.$el.text()).toContain("Joe Friel for Cycling");
-            });
-
-            it("Should have an input box for threshold", function()
-            {
-                $threshold = view.$("input[name=threshold]");
-                expect($threshold.length).toBe(1);
-                expect($threshold.val()).toBe("150");
             });
 
             it("Should have a calculate button", function()

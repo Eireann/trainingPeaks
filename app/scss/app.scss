@@ -36,7 +36,6 @@
 
 @import "workoutCommentsEditor/workoutCommentsEditor";
 
-@import "login";
 @import "dashboard/dashboard";
 @import "dashboard/pmcChartSettings";
 @import "home/home";
@@ -109,4 +108,9 @@ input[type="text"]
     {
         @include box-shadow(none);
     }
+}
+
+.clickable
+{
+    cursor: pointer;
 }

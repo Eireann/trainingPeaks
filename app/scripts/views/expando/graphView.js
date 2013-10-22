@@ -10,6 +10,7 @@
     "utilities/charting/flotToolTipPositioner",
     "utilities/charting/jquery.flot.zoom",
     "utilities/charting/jquery.flot.multiselection",
+    "utilities/charting/chartColors",
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
@@ -24,13 +25,14 @@ function(
     toolTipPositioner,
     flotZoom,
     flotMultiSelection,
+    chartColors,
     GraphToolbarView,
     graphTemplate
     )
 {
     return TP.ItemView.extend(
     {
-        className: "graphContainer",
+        className: "graphContainer expandoGraphPod",
 
         template:
         {
@@ -42,6 +44,8 @@ function(
             "mouseleave #plot": "onMouseLeave"
         },
 
+        modelEvents: {},
+
         initialize: function(options)
         {
             _.bindAll(this, "createFlotGraph", "onFirstRender");
@@ -49,11 +53,9 @@ function(
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for graph view";
 
-            if (!options.dataParser)
-                throw "dataParser is required for graph view";
+            this.stateModel = options.stateModel;
 
             this.detailDataPromise = options.detailDataPromise;
-            this.dataParser = options.dataParser;
             this.lastFilterPeriod = this.getInitialFilterPeriod();
             this.currentAxis = "time";
             this.selections = [];
@@ -61,12 +63,9 @@ function(
             this.firstRender = true;
 
             this.repaintHeight = _.debounce(this.repaintHeight, 200);
-        },
 
-        initialEvents: function()
-        {
-            this.disabledSeries = [];
-            this.model.off("change", this.render);
+            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
         },
 
         onRender: function()
@@ -79,7 +78,6 @@ function(
 
                 this.watchForModelChanges();
                 this.watchForControllerEvents();
-                this.watchForControllerResize();
 
                 setImmediate(function()
                 {
@@ -87,18 +85,14 @@ function(
                 });
             }
             else
+            {
                 this.createFlotGraph();
+            }
         },
         
         watchForModelChanges: function()
         {
-            this.model.get("detailData").on("change:flatSamples", this.createFlotGraph, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function()
-        {
-            this.model.get("detailData").off("change:flatSamples", this.createFlotGraph, this);
+            this.listenTo(this.model.get("detailData"), "change:flatSamples", _.bind(this.createFlotGraph, this));
         },
 
         onFirstRender: function()
@@ -111,29 +105,44 @@ function(
         },
 
         createFlotGraph: function()
-        {
-            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
-                return;
-            
+        {            
             this.$plot = this.$("#plot");
-            this.$plot.height(this.getDesiredPlotHeight());
             this.drawPlot();
         },
 
         drawPlot: function()
         {
+
+            this.$el.removeClass("noData");
+
+
+            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
+            {
+                this.$el.addClass("noData");
+                this.trigger("noData");
+                return;
+            }
+            
             var self = this;
 
             if (!this.allSeries)
             {
-                this.allSeries = this.dataParser.getSeries();
+                this.allSeries = this._getDataParser().getSeries();
             }
 
-            this.dataParser.workoutTypeValueId = this.model.get("workoutTypeValueId");
-            this.dataParser.setDisabledSeries(this.disabledSeries);
+            this._getDataParser().workoutTypeValueId = this.model.get("workoutTypeValueId");
+            this._getDataParser().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
-            var enabledSeries = this.dataParser.getSeries();
-            var yaxes = this.dataParser.getYAxes(enabledSeries);
+            var enabledSeries = this._getDataParser().getSeries();
+
+            if(!enabledSeries.length)
+            {
+                this.$el.addClass("noData");
+                this.trigger("noData");
+                return;
+            }
+
+            var yaxes = this._getDataParser().getYAxes(enabledSeries);
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
@@ -144,9 +153,10 @@ function(
             this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
+            this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
-            this.flotOptions.zoom.dataParser = this.dataParser;
+            this.flotOptions.zoom.dataParser = this._getDataParser();
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             this.flotOptions.grid.borderColor = "#9a9999";
@@ -154,16 +164,18 @@ function(
             if (this.plot)
                 this.unbindPlotEvents();
 
+            this.$plot.css({ "min-height": 1, "min-width": 1 });
+
             if($.plot)
             {
                 this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
                 this.bindToPlotEvents();
-                this.highlightOrZoomToPreviousSelection();
+                this._restoreSelection();
             }
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
 
-            
+            this.trigger("hasData");
         },
 
         getInitialFilterPeriod: function()
@@ -183,11 +195,10 @@ function(
 
         overlayGraphToolbar: function()
         {
-            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser, model: this.model });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this._getDataParser(), model: this.model, stateModel: this.stateModel });
 
             this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
-            this.graphToolbar.on("enableSeries", this.enableSeries, this);
-            this.graphToolbar.on("disableSeries", this.disableSeries, this);
+
             this.graphToolbar.on("zoom", this.onToolbarZoom, this);
             this.graphToolbar.on("reset", this.resetZoom, this);
             this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
@@ -211,36 +222,8 @@ function(
             
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
 
-            if (!this.plot.getSelection() && this.plot.hasMultiSelection())
-            {
-                var lastSelection = this.plot.getLastMultiSelection();
-                this.plot.hideActiveSelections();
-                this.plot.setSelection(lastSelection.ranges, true);
-                if (this.plot.zoomToSelection(true)) 
-                { 
-                    this.plot.clearSelection(true);
-                    this.zoomed = true;
-                    this.graphToolbar.onGraphZoomed();
-                }
-                else
-                    this.plot.unhideActiveSelections();
-            }
-            else if (this.plot.getSelection())
-            {
-                this.zoomed = true;
-                if(this.plot.zoomToSelection())
-                {
-                    this.graphToolbar.onGraphZoomed();
-                }
-                else
-                {
-                    this.zoomed = false;
-                }
-            }
-            else
-            {
-                this.zoomed = false;
-            }
+            this.zoomRange = this.stateModel.get("primaryRange");
+            this._applyZoom();
         },
         
         resetZoom: function()
@@ -251,59 +234,71 @@ function(
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomReset", "eventLabel": "" });
 
             this.plot.resetZoom();
-
-            this.highlightPreviousSelection();
-
-            this.zoomed = false;
+            this.zoomRange = null;
+            this._restoreSelection();
         },
 
-        highlightPreviousSelection: function()
+        _applyZoom: function()
         {
-            if (this.selectedWorkoutStatsForRange)
+            if(!this.zoomRange)
             {
-                var from;
-                var to;
+                return;
+            }
 
-                if (this.currentAxis === "time")
-                {
-                    from = this.selectedWorkoutStatsForRange.get("begin");
-                    to = this.selectedWorkoutStatsForRange.get("end");
-                }
-                else if (this.currentAxis === "distance")
-                {
-                    from = this.selectedWorkoutStatsForRange.get("plotSelectionFrom");
-                    to = this.selectedWorkoutStatsForRange.get("plotSelectionTo");
-                }
-                else
-                    throw "GraphView: invalid X Axis type: " + this.currentAxis;
-
-                var ranges =
-                {
-                    xaxis:
-                    {
-                        from: from,
-                        to: to 
-                    }
-                };
-                this.plot.setSelection(ranges, true);
+            this._setSelectionToRange(this.zoomRange, true, { force: true });
+            if (this.plot.zoomToSelection())
+            {
+                this.graphToolbar.onGraphZoomed();
             }
             else
             {
-                this.plot.hideActiveSelections();
-                this.plot.unhideActiveSelections();
+                this.zoomRange = null;
+            }
+            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
+        },
+
+        _setSelectionToRange: function(range, preventEvent, options)
+        {
+            var from;
+            var to;
+
+            if(!this.plot) return;
+
+            if((range && range !== this.zoomRange) || (options && options.force))
+            {
+
+                if (this.currentAxis === "time")
+                {
+                    from = range.get("begin");
+                    to = range.get("end");
+                }
+                else if (this.currentAxis === "distance")
+                {
+                    from = this._getDataParser().getDistanceFromMsOffset(range.get("begin"));
+                    to = this._getDataParser().getDistanceFromMsOffset(range.get("end"));
+                }
+                else
+                {
+                    throw new Error("GraphView: invalid X Axis type: " + this.currentAxis);
+                }
+
+                this.plot.setSelection({ xaxis: { from: from, to: to } }, preventEvent);
+            
+            }
+            else
+            {
+                this.plot.clearSelection(preventEvent);
             }
         },
 
-        highlightOrZoomToPreviousSelection: function()
+        _restoreSelection: function()
         {
-            if(this.selectedWorkoutStatsForRange)
+            this._applyZoom();
+            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
+            this._applyRanges();
+            if (this.plot)
             {
-                this.highlightPreviousSelection();
-
-                if (this.zoomed)
-                {
-                    this.zoomGraph();
-                }
+                this.plot.triggerRedrawOverlay();
             }
         },
         
@@ -322,6 +317,7 @@ function(
         {
             _.bindAll(this, "onPlotSelected", "onPlotUnSelected", "onPlotHover");
             var plotPlaceHolder = this.plot.getPlaceholder();
+
             plotPlaceHolder.bind("plotselected", this.onPlotSelected);
             plotPlaceHolder.bind("plotunselected", this.onPlotUnSelected);
             plotPlaceHolder.bind("plothover", this.onPlotHover);
@@ -333,6 +329,7 @@ function(
         {
             var plotPlaceHolder = this.plot.getPlaceholder();
             plotPlaceHolder.unbind("plotselected", this.onPlotSelected);
+            plotPlaceHolder.unbind("plotunselected", this.onPlotUnSelected);
             plotPlaceHolder.unbind("plothover", this.onPlotHover);
         },
 
@@ -361,69 +358,34 @@ function(
             }
             else
             {
-                startOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionFrom);
-                endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
+                startOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionFrom);
+                endOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection" });
-
-            var options =
-            {
-                addToSelection: true,
-                displayStats: true
-            };
-
-            this.trigger("unselectall");
-            this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
+            this.stateModel.set("primaryRange", range);
         },
 
         onPlotUnSelected: function()
         {
-            if (!this.zoomed)
-                this.trigger("unselectall");
+            this.stateModel.set("primaryRange", this.zoomRange || null);
         },
 
         onPlotHover: function(event, pos, item)
         {
-            var options = {
-                msOffset: pos.x,
-                selected: false
-            };
-
-            this.trigger("graphhover", options);
+            this.stateModel.set("hover", pos.x);
         },
        
         onMouseLeave: function(event)
         {
-            this.trigger("graphleave");
+            this.stateModel.set("hover", null);
         },
 
-        enableSeries: function(series)
+        _onSeriesChanged: function()
         {
             if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": series });
-            
-            if(_.contains(this.disabledSeries, series))
-            {
-                this.disabledSeries = _.without(this.disabledSeries, series);
-                this.drawPlot();
-            }
-        },
-        
-        disableSeries: function(series)
-        {
-            if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesDisabled", "eventLabel": series });
-
-            if (!_.contains(this.disabledSeries, series))
-            {
-                this.disabledSeries.push(series);
-                this.drawPlot();
-            }
+                return;           
+            this.drawPlot(); 
         },
 
         enableTimeAxis: function ()
@@ -431,13 +393,12 @@ function(
             if (this.currentAxis === "time")
                 return;
 
-            this.selectedWorkoutStatsForRange = null;
-            this.onUnSelectAll();
-            this.trigger("unselectall");
-            this.resetZoom();
-            this.graphToolbar.hideZoomButton();
+//             this.onUnSelectAll();
+//             this.stateModel.get("ranges").set([]);
+//             this.resetZoom();
+//             this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
-            this.dataParser.setXAxis("time");
+            this._getDataParser().setXAxis("time");
             this.drawPlot();
         },
         
@@ -446,68 +407,70 @@ function(
             if (this.currentAxis === "distance")
                 return;
 
-            this.selectedWorkoutStatsForRange = null;
-            this.onUnSelectAll();
-            this.trigger("unselectall");
-            this.resetZoom();
-            this.graphToolbar.hideZoomButton();
+            // this.onUnSelectAll();
+            // this.stateModel.get("ranges").set([]);
+            // this.resetZoom();
+            // this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
-            this.dataParser.setXAxis("distance");
+            this._getDataParser().setXAxis("distance");
             this.drawPlot();
         },
 
         watchForControllerEvents: function()
         {
-            this.on("controller:rangeselected", this.onRangeSelected, this);
-            this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.on("close", this.stopWatchingControllerEvents, this);
+            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onPrimaryRangeChange, this));
         },
 
-        stopWatchingControllerEvents: function()
+        _onRangeAdded: function(range, ranges, options)
         {
-            this.off("controller:rangeselected", this.onRangeSelected, this);
+            this._addRange(range);
         },
 
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+        _onRangeRemoved: function(range, ranges, options)
         {
-            if (triggeringView === this || !options)
-                return;
-
-            var selection;
-            if (options.removeFromSelection)
+            var selection = this.findGraphSelection(range.get("begin"), range.get("end"));
+            if(selection)
             {
-                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
-                if(selection)
-                {
-                    this.removeSelectionFromGraph(selection);
-                    this.selections = _.without(this.selections, selection);
-                }
-            }
-            else if (options.addToSelection)
-            {
-                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
-                if (!selection)
-                {
-                    this.plot.clearSelection();
-                    selection = this.createGraphSelection(workoutStatsForRange, options);
-                    this.addSelectionToGraph(selection);
-
-                    if (this.selectedWorkoutStatsForRange)
-                    {
-                        var triggerOptions = {};
-                        triggerOptions.removeFromSelection = true;
-                        this.trigger("rangeselected", this.selectedWorkoutStatsForRange, triggerOptions, this);
-                        this.selectedWorkoutStatsForRange = null;
-                    }
-                }
+                this.removeSelectionFromGraph(selection);
+                this.selections = _.without(this.selections, selection);
             }
         },
 
-        findGraphSelection: function(begin, end, dataType)
+        _onRangesReset: function(ranges, options)
+        {
+            this._applyRanges();
+        },
+
+        _onPrimaryRangeChange: function(stateModel, range, options)
+        {
+            this._setSelectionToRange(range, true);
+        },
+
+        _applyRanges: function()
+        {
+            _.each(this.selections, this.removeSelectionFromGraph, this);
+            this.selections = [];
+            this.stateModel.get("ranges").each(this._addRange, this);
+        },
+
+        _addRange: function(range)
+        {
+            var selection = this.findGraphSelection(range.get("begin"), range.get("end"));
+            if (!selection)
+            {
+                selection = this.createGraphSelection(range);
+                this.addSelectionToGraph(selection);
+            }
+        },
+
+        findGraphSelection: function(begin, end)
         {
             return _.find(this.selections, function(selection)
             {
-                return selection.begin === begin && selection.end === end && selection.dataType === dataType;
+                return selection.begin === begin && selection.end === end;
             });
         },
 
@@ -516,8 +479,7 @@ function(
             var selection =
             {
                 begin: workoutStatsForRange.get("begin"),
-                end: workoutStatsForRange.get("end"),
-                dataType: options.dataType
+                end: workoutStatsForRange.get("end")
             };
 
             return selection;
@@ -530,11 +492,11 @@ function(
             
             if (this.currentAxis === "distance")
             {
-                from = this.dataParser.getDistanceFromMsOffset(from);
-                to = this.dataParser.getDistanceFromMsOffset(to);
+                from = this._getDataParser().getDistanceFromMsOffset(from);
+                to = this._getDataParser().getDistanceFromMsOffset(to);
             }
 
-            selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } }, { dataType: selection.dataType });
+            selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } });
             this.selections.push(selection);
         },
 
@@ -552,49 +514,14 @@ function(
             this.selections = [];
         },
 
-        getDesiredPlotHeight: function()
-        {
-            if (this.graphHeight)
-                return this.graphHeight - 50;
-            else
-                return this.dataParser.hasLatLongData ? 365 : 565;
-        },
-
-        watchForControllerResize: function ()
-        {
-            this.on("controller:resize", this.setViewSize, this);
-            this.on("close", function ()
-            {
-                this.off("controller:resize", this.setViewSize, this);
-            }, this);
-        },
-
-        setViewSize: function (containerHeight, containerWidth)
-        {
-            var bottomMargin = 10;
-            var heightPercent = this.offsetRatio ? 1-this.offsetRatio : 0.5;
-            var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
-            
-            this.graphHeight = graphHeight;
-            this.$el.closest("#expandoGraphRegion").height(graphHeight);
-
-            var topPadding = 15;
-            var toolbarHeight = 35;
-
-            this.$el.height(graphHeight - topPadding);
-            this.plotHeight = graphHeight - topPadding - toolbarHeight;
-            this.repaintHeight();
-        },
-        repaintHeight: function()
-        {
-            if (this.$plot)
-            {
-                this.$plot.height(this.plotHeight);
-            }
-        },
         stashHeight: function(offsetRatio)
         {
             this.offsetRatio = offsetRatio;
+        },
+
+        _getDataParser: function()
+        {
+            return this.model.get("detailData").getDataParser();
         }
 
     });

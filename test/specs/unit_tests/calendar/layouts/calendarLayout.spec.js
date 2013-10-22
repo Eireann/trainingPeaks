@@ -4,18 +4,8 @@ requirejs(
 "layouts/calendarLayout"],
 function(CalendarLayout)
 {
-
     describe("Calendar Layout", function()
     {
-        /*
-                regions:
-        {
-            headerRegion: "#calendarHeader",
-            libraryRegion: "#libraryContainer",
-            calendarRegion: "#calendarContainer",
-            footerRegion: "#calendarFooter"
-        }
-        */
         it("Should have a footer region", function()
         {
             expect(CalendarLayout.prototype.regions.footerRegion).toBeDefined();

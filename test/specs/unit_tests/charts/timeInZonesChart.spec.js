@@ -39,10 +39,9 @@ function(
 
         it("Should check for valid initialization parameters", function ()
         {
-            expect(function () { new TimeInZonesChartView({}); }).toThrow("TimeInZonesChartView requires a timeInZones object at construction time");
-            expect(function () { new TimeInZonesChartView({ timeInZones: new TP.Model() }); }).toThrow("TimeInZonesChartView requires a chartColor object at construction time");
-            expect(function() { new TimeInZonesChartView({ timeInZones: new TP.Model(), chartColor: {} }); }).toThrow("TimeInZonesChartView requires a toolTipBuilder callback at construction time");
-            expect(function() { new TimeInZonesChartView({ timeInZones: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).not.toThrow();
+            expect(function () { new TimeInZonesChartView({ model: new TP.Model() }); }).toThrow("TimeInZonesChartView requires a chartColor object at construction time");
+            expect(function() { new TimeInZonesChartView({ model: new TP.Model(), chartColor: {} }); }).toThrow("TimeInZonesChartView requires a toolTipBuilder callback at construction time");
+            expect(function() { new TimeInZonesChartView({ model: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).not.toThrow();
         });
 
         describe("Build Chart Points", function()

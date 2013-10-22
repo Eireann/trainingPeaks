@@ -15,34 +15,10 @@ function(TP, expandoLayoutTemplate)
 
         regions:
         {
-            graphRegion: "#expandoGraphRegion",
-            mapRegion: "#expandoMapRegion",
-            statsRegion: "#expandoStatsRegion",
-            lapsRegion: "#expandoLapsRegion",
-            chartsRegion: "#expandoChartsRegion",
-            mapAndGraphResizerRegion: "#mapAndGraphResizerRegion",
-            lapsSplitsRegion: "#expandoLapsSplitsRegion"
-        },
-
-        showMap: function()
-        {
-            $("#expandoLeftColumn").removeClass("mapHidden");
-        },
-
-        hideMap: function()
-        {
-            $("#expandoLeftColumn").addClass("mapHidden");
-        },
-
-        showGraph: function()
-        {
-            $("#expandoLeftColumn").removeClass("graphHidden");
-        },
-
-        hideGraph: function()
-        {
-            $("#expandoLeftColumn").addClass("graphHidden");
+            packeryRegion: ".expandoPackeryRegion",
+            statsRegion: ".expandoStatsRegion",
+            lapsRegion: ".expandoLapsRegion",
+            editControlsRegion: ".expandoEditControlsRegion"
         }
-
     });
 });

@@ -57,13 +57,22 @@ function(
 
         getZonesCalculatorView: function()
         {
-            return new this.ZonesCalculatorView({ model: this.model, units: this.units });
+            var unitsModel = new TP.Model({ units: this.units });
+            var calcView = new this.ZonesCalculatorView({ model: this.model, unitsModel: unitsModel });
+
+            this.on("change:units", function()
+            {
+                unitsModel.set("units", this.units);
+            }, this);
+
+            return calcView;
         },
 
         _changeUnits: function()
         {
             this.units = this.$("[name=units]:checked").val();
             this.applyModelValuesToForm();
+            this.trigger("change:units");
         }
 
     });

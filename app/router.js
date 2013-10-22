@@ -6,18 +6,16 @@ define(
 ],
 function (_, TP, RollbarManager)
 {
-
     var ensureUser = function(callback) 
     {
         return function()
         {
-            var self = this;
-            var args = arguments;
-            this.checkAuth();
-            theMarsApp.userFetchPromise.done(function()
+            var args = Array.prototype.slice.call(arguments);
+            var callbackWithArgs = function()
             {
-                callback.apply(self, args);
-            });
+                return callback.apply(this, args);
+            };
+            theMarsApp.session.authenticationComplete(callbackWithArgs);
         };
     };
 
@@ -25,18 +23,6 @@ function (_, TP, RollbarManager)
     {
         initialize: function ()
         {
-            var self = this;
-
-            theMarsApp.on("api:unauthorized", function()
-            {
-                self.navigate("login", { trigger: true });
-            });
-
-            theMarsApp.controllers.loginController.on("login:success", function()
-            {
-                self.navigate("calendar", { trigger: true });
-            });
-
             this.on("route", function(routeName)
             {
                 var routeParts = routeName.split("/");
@@ -52,22 +38,16 @@ function (_, TP, RollbarManager)
 
         routes:
         {
-            "login": "login",
+            "home": "home",
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
             "": "calendar"
         },
 
-        login: function ()
-        {
-            theMarsApp.showController(theMarsApp.controllers.loginController);
-
-            TP.analytics("send", "pageview", { page: "login" });
-        },
-
         calendar: ensureUser(function (athleteId)
         {
+            
             if (athleteId)
                 theMarsApp.user.setCurrentAthleteId(athleteId);
 
@@ -81,20 +61,16 @@ function (_, TP, RollbarManager)
 
         dashboard: ensureUser(function()
         {
-            this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
             TP.analytics("send", "pageview", { page: "dashboard" });
         }),
 
-        
-        checkAuth: function()
+        home: ensureUser(function()
         {
-            if (!theMarsApp.session.isAuthenticated())
-            {
-                theMarsApp.session.logout();
-                return;
-            }
-        }        
+            theMarsApp.showController(theMarsApp.controllers.homeController);
+
+            TP.analytics("send", "pageview", { page: "home" });
+        })
     });
 });

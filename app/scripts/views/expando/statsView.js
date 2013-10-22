@@ -1,10 +1,12 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "utilities/workout/formatLapData",
     "hbs!templates/views/expando/statsTemplate"
 ],
 function(
+    _,
     TP,
     formatLapData,
     statsTemplate
@@ -21,15 +23,12 @@ function(
             template: statsTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
-            this.on("controller:rangeselected", this.onRangeSelected, this);
-            this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.model.get("detailData").on("change", this.reset, this);
+            this.stateModel = options.stateModel;
 
-            this.on("close", function(){
-                this.model.get("detailData").off("change", this.reset, this);
-            });
+            this.listenTo(this.model.get("detailData"), "change", _.bind(this.render, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onStatsRangeChanged, this));
         },
 
         reset: function()
@@ -41,10 +40,29 @@ function(
         onRender: function()
         {
             this.trigger("resize");
+
+            if(this.model.get("detailData").has("channelCuts"))
+            {
+                this.$el.addClass("disabled");
+            }
+            else
+            {
+                this.$el.removeClass("disabled");
+            }
         },
 
         serializeData: function()
         {
+            var workoutStatsForRange = this.stateModel.get("primaryRange");
+            if(workoutStatsForRange)
+            {
+                this.selectedRangeData = workoutStatsForRange.toJSON();
+            }
+            else
+            {
+                this.selectedRangeData = null;
+            }
+
             var lapData = this.getLapData();
             lapData = this.mapToMasterFieldSet(lapData);
             formatLapData.calculateTotalAndMovingTime(lapData);
@@ -97,7 +115,7 @@ function(
                 allStats.push(this.model.get("detailData").get("totalStats"));
                 _.each(this.model.get("detailData").get("lapsStats"), function(lapStats)
                 {
-                    allStats.push(lapStats); 
+                    allStats.push(lapStats);
                 });
 
                 // if the stats for any lap has a value for any field, put that field into the master set
@@ -110,33 +128,33 @@ function(
                         }
                     }, this);
                 }, this);
-             
-                // add minMaxAvg fields 
+
+                // add minMaxAvg fields
                 this.findAvailableMinMaxAvgFieldsInAnyLap(allPossibleFields);
 
                 this.allPossibleFields = allPossibleFields;
             }
             return this.allPossibleFields;
         },
-        
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+
+        _onStatsRangeChanged: function(stateModel, range)
         {
-            if (!options)
-                return;
-            
-            // we're trying to add or remove it from multi selection - don't show it in stats
-            if ((options.addToSelection || options.removeFromSelection) && !options.displayStats)
+            if(!range)
             {
-                return;
+                this.selectedRangeData = null;
+                this.stopWaitingForStats();
+                this.render();
             }
-
-            this.renderWorkoutStats(workoutStatsForRange);
-
-            // if it hasn't loaded, watch for changes
-            this.stopWaitingForStats();
-            if (!workoutStatsForRange.hasLoaded)
+            else
             {
-                this.waitForStats(workoutStatsForRange);
+                this.renderWorkoutStats(range);
+
+                // if it hasn't loaded, watch for changes
+                this.stopWaitingForStats();
+                if (!range.hasLoaded)
+                {
+                    this.waitForStats(range);
+                }
             }
         },
 
@@ -278,13 +296,6 @@ function(
                 this.$throbber.remove();
                 this.$throbber = null;
             }
-        },
-
-        onUnSelectAll: function()
-        {
-            this.selectedRangeData = null;
-            this.stopWaitingForStats();
-            this.render();
         },
 
         addCommonWorkoutFields: function(lapData)

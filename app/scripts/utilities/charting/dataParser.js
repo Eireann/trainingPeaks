@@ -29,18 +29,19 @@ function(chartColors, findIndexByMsOffset, conversion)
 
     var parseDataByAxisAndChannel = function(flatSamples)
     {
+
         var dataByAxisAndChannel =
         {
             time: {},
             distance: {}
         };
 
+        if (!flatSamples || !flatSamples.samples)
+            return dataByAxisAndChannel;
+  
         var previousElevation = null;
         var distanceChannelIdx = _.indexOf(flatSamples.channelMask, "Distance");
         var xAxisZeroAlreadySet = false;
-
-        if (!flatSamples || !flatSamples.samples)
-            return null;
 
         for (var sampleIdx = 0; sampleIdx < flatSamples.samples.length; sampleIdx++)
         {
@@ -103,6 +104,9 @@ function(chartColors, findIndexByMsOffset, conversion)
         _.each(channelMask, function(channel)
         {
             if (_.contains(self.disabledSeries, channel))
+                return;
+
+            if(_.contains(self.excludedSeries, channel))
                 return;
             
             if (channel === "Distance")
@@ -199,6 +203,32 @@ function(chartColors, findIndexByMsOffset, conversion)
         };
     };
 
+    var getTemperatureMinimumOnRange = function(dataByChannel, x1, x2)
+    {
+        var minTemperature = 0;
+        
+        if (_.has(dataByChannel, "Temperature"))
+        {
+            var startIdx = 0;
+            var endIdx = dataByChannel["Temperature"].length - 1; //this.flatSamples.msOffsetsOfSamples.length - 1;
+
+            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+            {
+                startIdx = findIndexByXAxisOffset.call(this, x1);
+                endIdx = findIndexByXAxisOffset.call(this, x2);
+            }
+
+            for(startIdx; startIdx <= endIdx; startIdx++)
+            {
+                var value = dataByChannel["Temperature"][startIdx][1];
+                if (value !== null && value < minTemperature)
+                    minTemperature = value;
+            }
+        }
+
+        return minTemperature;
+    };
+
     var generateLatLonFromData = function(dataByChannel)
     {
         var startIndex = 0;
@@ -244,7 +274,7 @@ function(chartColors, findIndexByMsOffset, conversion)
             {
                 show: true,
                 label: s.label,
-                min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
+                min: self.getMinimumForYAxis(s.label),
                 position: countdown-- > 0 ? "right" : "left",
                 color: "transparent",
                 tickColor: "transparent",
@@ -263,7 +293,7 @@ function(chartColors, findIndexByMsOffset, conversion)
                     {
                         return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: self.workoutTypeValueId } );
                     }
-                    return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: self.workoutTypeValueId}), 10);
+                    return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: self.workoutTypeValueId}), 10);
                 },
                 labelWidth: showSpeedAsPace ? 27 : 15
             };
@@ -277,10 +307,12 @@ function(chartColors, findIndexByMsOffset, conversion)
     {
         this.xaxis = "time";
         this.disabledSeries = [];
+        this.excludedSeries = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
         this.minElevation = null;
+        this.minTemperature = null;
         this.elevationIsAllNegative = null;
         this.latLonArray = null;
         this._channelMask = [];
@@ -300,6 +332,8 @@ function(chartColors, findIndexByMsOffset, conversion)
             var elevationInfo = getElevationInfoOnRange.call(this, this.dataByAxisAndChannel[this.xaxis]);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
+
+            this.minTemperature = getTemperatureMinimumOnRange.call(this, this.dataByAxisAndChannel[this.xaxis]);
 
             if (this.dataByAxisAndChannel && this.dataByAxisAndChannel[this.xaxis] && this.dataByAxisAndChannel[this.xaxis].Latitude && this.dataByAxisAndChannel[this.xaxis].Longitude)
                 this.hasLatLongData = true;
@@ -330,6 +364,30 @@ function(chartColors, findIndexByMsOffset, conversion)
             };
         },
 
+        getTemperatureMinimum: function(x1, x2)
+        {
+            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+                return getTemperatureMinimumOnRange.call(this, this.dataByAxisAndChannel[this.xaxis], x1, x2);
+
+            return this.minTemperature;
+        },
+
+        getMinimumForYAxis: function(series)
+        {
+            switch(series) 
+            {
+
+                case "Elevation":
+                    return this.getElevationInfo().min;
+
+                case "Temperature":
+                    return this.getTemperatureMinimum();
+
+                default:
+                    return 0; 
+            }
+        },
+
         getLatLonArray: function()
         {
             if (this.dataByAxisAndChannel[this.xaxis].Latitude && this.dataByAxisAndChannel[this.xaxis].Longitude && !this.latLonArray)
@@ -340,6 +398,8 @@ function(chartColors, findIndexByMsOffset, conversion)
 
         getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
         {
+            if(!this.hasLatLongData) return [];
+
             var sampleStartIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, startMsOffset);
             var sampleEndIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, endMsOffset);
 
@@ -422,7 +482,26 @@ function(chartColors, findIndexByMsOffset, conversion)
             if (index !== null && index < this.getDataByChannel("Distance").length)
                 return this.getDataByChannel("Distance")[index][1];
             return null;
+        },
+
+        excludeChannel: function(channel)
+        {
+            if(!_.contains(this.excludedSeries, channel))
+            {
+                this.excludedSeries.push(channel);
+            }
+        },
+
+        resetExcludedChannels: function()
+        {
+            this.excludedSeries = [];
+        },
+
+        getAvailableChannels: function()
+        {
+            return _.difference(this.flatSamples.channelMask, this.excludedSeries);
         }
+
     });
     
     return DataParser;
