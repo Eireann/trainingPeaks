@@ -140,10 +140,10 @@ function(
         {
             selection = selection || this.selection;
 
-            var action = selection && selection[action + "Action"];
-            if(_.isFunction(action))
+            actionFunction = selection && selection[action + "Action"];
+            if(_.isFunction(actionFunction))
             {
-                return action.call(selection, options);
+                return actionFunction.call(selection, options);
             }
             else
             {

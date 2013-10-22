@@ -75,7 +75,7 @@ function(
             "mouseenter .dayHeader": "onDayHeaderMouseEnter",
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
-            "click .daySelected": "onDaySelectedClicked",
+            "mousedown .daySelected": "onDaySelectedClicked",
 
             "click .addWorkout": "onAddWorkoutClicked",
             "mouseup": "onDayClicked",
@@ -185,7 +185,6 @@ function(
         onDaySettingsClose: function(e)
         {
             this.allowSettingsButtonToHide(e);
-            theMarsApp.selectionManager.clearSelection();
         },
 
         allowSettingsButtonToHide: function(e)

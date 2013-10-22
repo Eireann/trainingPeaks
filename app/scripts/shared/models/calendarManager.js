@@ -80,6 +80,8 @@ function(
         this.listenTo(this.activities, "request sync error add change:workoutDay change:timeStamp", _.bind(this._indexActivityByDay, this));
         this.listenTo(this.activities, "remove", _.bind(this._unindexActivityByDay, this));
 
+        this.listenTo(theMarsApp.user, "athlete:change", _.bind(this.reset, this));
+
     }
 
     _.extend(CalendarManager.prototype, Backbone.Events);
