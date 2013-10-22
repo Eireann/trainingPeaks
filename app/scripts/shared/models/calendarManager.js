@@ -7,8 +7,6 @@ define(
     "models/workoutsCollection",
     "shared/models/metricsCollection",
     "shared/models/activityModel",
-    "shared/models/calendarCopyPasteManager",
-    "shared/models/calendarMoveShiftManager",
     "models/calendar/calendarDay",
 ],
 function(
@@ -19,8 +17,6 @@ function(
     WorkoutsCollection,
     MetricsCollection,
     ActivityModel,
-    CalendarCopyPasteManager,
-    CalendarMoveShiftManager,
     CalendarDayModel
 )
 {
@@ -77,9 +73,6 @@ function(
         this.activities = new TP.Collection([], { manager: this });
         this.days = new DatelikeCollection([], { manager: this, datelike: "day", model: CalendarDayModel, comparator: "date" });
         this.weeks = new DatelikeCollection([], { manager: this, datelike: "week", comparator: "id" });
-
-        this.copyPaste = new CalendarCopyPasteManager(this.activities, this.days, this.weeks);
-        this.moveShift = new CalendarMoveShiftManager(this.activities, this.days, this.weeks);
 
         this.begin = CalendarUtility.weekMomentForDate(moment());
         this.end = CalendarUtility.weekMomentForDate(moment());
