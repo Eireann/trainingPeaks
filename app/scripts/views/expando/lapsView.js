@@ -98,7 +98,7 @@ function(
             var focused = !!this.model.get("isFocused");
             var $actions = this.$('.actions');
             this.$el.toggleClass("highlight", focused);
-            focused ? $actions.show() : $actions.hide();
+            $actions.toggle(focused);
         },
 
         _onSelectedChange: function()

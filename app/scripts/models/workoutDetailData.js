@@ -182,9 +182,10 @@ function (
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
+            var data;
             if(collection)
             {
-                var data = collection.select(function(lapStat) { return lapStat.get('deleted') || false; });
+                data = collection.select(function(lapStat) { return lapStat.get('deleted') || false; });
                 _.each(data, function(model)
                 {
                     collection.remove(model, {silent: true});
@@ -192,7 +193,7 @@ function (
             }
             else
             {
-                var data = this._getRangeDataFor(rangeType);
+                data = this._getRangeDataFor(rangeType);
                 collection = new TP.Collection(data, { model: WorkoutStatsForRange });
                 this.rangeCollections[rangeType] = collection;
                 this._watchRangeDataFor(rangeType, _.bind(collection.set, collection));
