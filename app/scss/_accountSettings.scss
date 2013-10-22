@@ -1,5 +1,5 @@
 ﻿.userSettings {
-    width: calc(800px + 200px + 52px);
+    width: calc(719px + 200px + 52px);
     overflow: hidden; //to hide overlapping portions of titleBar
 
     .selectBoxWrapper
@@ -118,7 +118,7 @@
         }
 
         .scrollTarget {
-            padding-top:30px;
+            padding-top:28px;
         }
 
         .addWorkoutType, 
@@ -347,7 +347,7 @@
                     margin-right:25px;
 
                     .numberInput {
-                        width:100px;
+                        width:74px;
                     }
                 }
             }
@@ -392,8 +392,7 @@
 
         .heartRateZones, 
         .powerZones, 
-        .speedPaceZones,
-        .userSettingsPayments {
+        .speedPaceZones {
             margin-bottom:20px;
         }
 
@@ -470,6 +469,8 @@
         }
 
         .userSettingsPayments {
+
+            padding-top:40px;
             p {
                 margin:0 0 1em 5px;
                 font-family:$fontFamilyRegular;
@@ -486,8 +487,8 @@
 }
 
 .userSettingsAccountContent {
-    width: 816px;
-    padding-top:30px;
+    width: 757px;
+    // padding-top:30px;
 
     .userSettingsHelpText {
         float:left;
@@ -507,6 +508,10 @@
         margin-bottom:49px;
         @include clearfix;
 
+        &.email {
+            margin-bottom: 28px;
+        }
+
         .labelbold {
             margin-left:5px;
             font-family:$fontFamilyHeavy;
@@ -522,7 +527,7 @@
 
             .fieldTitle {
                 float: left;   
-                padding: 4px 5px 0 0; 
+                padding: 5px 5px 0 0; 
                 width: 125px;
                 max-width: 125px;
                 text-align: right;
@@ -714,7 +719,7 @@
 
         &.calendarSync {
             input[type="text"] {
-                width:691px;
+                width:632px;
                 height:20px;
                 float: left;
             }
