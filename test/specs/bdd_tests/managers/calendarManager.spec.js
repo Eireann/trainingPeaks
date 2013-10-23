@@ -73,6 +73,25 @@ function(
 
             });
 
+            it("should not refetch weeks", function()
+            {
+
+                testHelpers.resolveRequest("GET", "/workouts/2013-09-30", []);
+                testHelpers.resolveRequest("GET", "/timedmetrics/2013-09-30", []);
+
+                testHelpers.resolveRequest("GET", "/workouts/2013-10-07", []);
+                testHelpers.resolveRequest("GET", "/timedmetrics/2013-10-07", []);
+
+                testHelpers.clearRequests();
+                calendarManager.loadActivities("2013-09-30", "2013-10-07");
+
+                expect(testHelpers.hasRequest("GET", "/workouts/2013-09-30")).toBe(false);
+                expect(testHelpers.hasRequest("GET", "/timedmetrics/2013-09-30")).toBe(false);
+                expect(testHelpers.hasRequest("GET", "/workouts/2013-10-07")).toBe(false);
+                expect(testHelpers.hasRequest("GET", "/timedmetrics/2013-10-07")).toBe(false);
+
+            });
+
             // Need to fix data manager to pass through failures
             xit("should update flags (by week), with failure", function()
             {

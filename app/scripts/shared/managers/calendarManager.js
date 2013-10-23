@@ -217,7 +217,6 @@ function(
 
             promise.then(function()
             {
-                console.log("success", week.id);
                 self.aroundChanges(function()
                 {
                     workouts.each(self.addItem, self);
@@ -227,7 +226,6 @@ function(
             },
             function() // on error
             {
-                console.log("failed", week.id);
                 week.getState().set({ isWaiting: false, isFailed: true });
             });
 
