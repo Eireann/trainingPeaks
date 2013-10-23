@@ -10,7 +10,12 @@ function (_, TP, RollbarManager)
     {
         return function()
         {
-            theMarsApp.session.authenticationComplete(callback);
+            var args = Array.prototype.slice.call(arguments);
+            var callbackWithArgs = function()
+            {
+                return callback.apply(this, args);
+            };
+            theMarsApp.session.authenticationComplete(callbackWithArgs);
         };
     };
 
@@ -33,7 +38,6 @@ function (_, TP, RollbarManager)
 
         routes:
         {
-            "home": "home",
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
@@ -42,6 +46,7 @@ function (_, TP, RollbarManager)
 
         calendar: ensureUser(function (athleteId)
         {
+            
             if (athleteId)
                 theMarsApp.user.setCurrentAthleteId(athleteId);
 
@@ -58,13 +63,6 @@ function (_, TP, RollbarManager)
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
             TP.analytics("send", "pageview", { page: "dashboard" });
-        }),
-
-        home: ensureUser(function()
-        {
-            theMarsApp.showController(theMarsApp.controllers.homeController);
-
-            TP.analytics("send", "pageview", { page: "home" });
         })
     });
 });

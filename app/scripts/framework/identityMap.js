@@ -19,18 +19,19 @@ function(
     _.extend(IdentityMap.prototype,
     {
 
+        reset: function()
+        {
+            this.modelsByUrl = {};
+        },
+
         getSharedInstance: function(model)
         {
             var url = _.result(model, "url");
-            if(this.modelsByUrl.hasOwnProperty(url))
-            {
-                return this.modelsByUrl[url];
-            }
-            else
+            if(!this.modelsByUrl.hasOwnProperty(url))
             {
                 this.modelsByUrl[url] = model;
-                return this.modelsByUrl[url];
             }
+            return this.modelsByUrl[url];
         },
 
         updateSharedInstance: function(model)

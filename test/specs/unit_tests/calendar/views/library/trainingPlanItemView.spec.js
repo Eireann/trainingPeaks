@@ -15,16 +15,12 @@ function(TP, theMarsApp, TrainingPlanItemView)
             itemView.model.webAPIModelName = "TrainingPlan";
 
             spyOn(itemView, "makeDraggable").andCallThrough();
-            spyOn(itemView.$el, "draggable");
+            spyOn(itemView.$el, "draggable").andCallThrough();
 
             itemView.render();
 
             expect(itemView.makeDraggable).toHaveBeenCalled();
             expect(itemView.$el.draggable).toHaveBeenCalled();
-
-            expect(itemView.$el.data('ItemId')).toBeDefined();
-            expect(itemView.$el.data('ItemType')).toBeDefined();   
-            expect(itemView.$el.data('DropEvent')).toBeDefined();
         });
     });
 

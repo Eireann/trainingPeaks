@@ -29,7 +29,7 @@ function(
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
             theMarsApp.router.navigate("calendar", true);
-            theMarsApp.controllers.calendarController.weeksCollection.activitiesCollection.add(ActivityModel.wrap(workout));
+            theMarsApp.calendarManager.activities.add(ActivityModel.wrap(workout));
         });
 
         afterEach(function()
@@ -41,6 +41,7 @@ function(
         {
             expect(ExerciseLibraryView.prototype.onWorkoutDropped).toBeDefined();
         });
+
         describe("Should open and populate the save-workout-to-library confirmation view from a dropped workout", function()
         {   
             var exerciseLibraryView;
@@ -53,7 +54,7 @@ function(
                     draggable: {
                         data: function()
                         {
-                            return workout.get('workoutId');
+                            return workout;
                         }
                     }
                 });
@@ -64,10 +65,12 @@ function(
             {
                 expect(exerciseLibraryView.saveToLibraryConfirmationView).toBeDefined();
             });
+
             it("Should send the correct model", function()
             {
                 expect(exerciseLibraryView.saveToLibraryConfirmationView.model).toBe(workout);
             });
+
         });
     });
 });

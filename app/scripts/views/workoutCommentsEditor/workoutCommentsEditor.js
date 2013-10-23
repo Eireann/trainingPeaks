@@ -81,7 +81,7 @@ function(_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdit
             this.model.on("change:description", function ()
             {
                 this.model.set("description",
-                    this.fixNewlines(this.model.get("description")),
+                    this.fixNewlinesForParse(this.model.get("description")),
                     { silent: true });
             }, this);
 
