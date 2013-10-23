@@ -828,16 +828,16 @@
     }
 }
 
-@for $i from 1 through 6
+@for $i from 1 through 2
 {
     .expandoPod[data-rows="#{$i}"]
     {
-        height: calc(#{percentage($i / 6)} - 10px);
+        height: calc(#{percentage($i / 2)} - 10px);
     }
 
     .expandoPod[data-cols="#{$i}"]
     {
-        width: calc(#{percentage($i / 6)} - 10px);
+        width: calc(#{percentage($i / 2)} - 10px);
     }
 
 }
