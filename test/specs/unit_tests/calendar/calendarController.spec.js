@@ -8,7 +8,7 @@ requirejs(
     "underscore",
     "backbone",
     "framework/dataManager",
-    "shared/models/calendarManager",
+    "shared/managers/calendarManager",
     "controllers/calendar/calendarController",
     "models/workoutModel",
     "models/workoutsCollection",
