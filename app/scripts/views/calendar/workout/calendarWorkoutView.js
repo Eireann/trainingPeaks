@@ -93,8 +93,7 @@ function(
             this.initializeUserCustomization();
             this.initializeDragAndDrop();
 
-            this.model.on("select", this.setSelected, this);
-            this.model.on("unselect", this.setUnSelected, this);
+            this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
             this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
         },
@@ -172,25 +171,12 @@ function(
 
         workoutTouched: function(e)
         {
-            if(e.isDefaultPrevented())
-            {
-                return;
-            }
-
-            if(theMarsApp.isTouchEnabled())
-            {
-                e.preventDefault();
-            }
+            e.preventDefault();
         },
 
-        setSelected: function()
+        _updateSelected: function()
         {
-            this.$el.addClass("selected");
-        },
-
-        setUnSelected: function()
-        {
-            this.$el.removeClass("selected");
+            this.$el.toggleClass("selected", this.model.getState().get("isSelected") || false);
         },
 
         checkForWorkoutId: function()
@@ -207,15 +193,12 @@ function(
         {
             // setup dynamic class names - in case they changed since initial render
             this.$el.attr("class", this.className());
-            if (this.model.selected)
-            {
-                this.setSelected();
-            }
+            this._updateSelected();
         },
 
-        workoutMousedown: function()
+        workoutMousedown: function(event)
         {
-            this.model.trigger("select", this.model);
+            theMarsApp.selectionManager.setSelection(this.model, event);
         },
 
         waitingOn: function()

@@ -118,115 +118,54 @@ function(
                 workout = new WorkoutModel(workoutAttributes);
             });
 
-            describe("copyToClipboard", function()
+            describe("pasted", function()
             {
-                it("Should implement a copyToClipboard method", function()
+                it("Should implement an pasted method", function()
                 {
-                    expect(WorkoutModel.prototype.copyToClipboard).toBeDefined();
-                    expect(typeof WorkoutModel.prototype.copyToClipboard).toBe("function");
-
-                });
-
-                it("Should return a WorkoutModel", function()
-                {
-                    var result = workout.copyToClipboard();
-                    expect(workout instanceof WorkoutModel).toBe(true);
-                });
-
-                it("Should have all of the required 'planned' attributes", function()
-                {
-                    var copiedWorkout = workout.copyToClipboard();
-                    _.each(attributesToCopy, function(attributeName)
-                    {
-                        expect(copiedWorkout.get(attributeName)).toBe(workout.get(attributeName));
-                    });
-                });
-
-                it("Shouldn't have any 'completed' attributes", function()
-                {
-                    var copiedWorkout = workout.copyToClipboard();
-                    _.each(_.keys(workoutAttributes), function(attributeName)
-                    {
-                        if (!_.contains(attributesToCopy, attributeName))
-                        {
-                            expect(copiedWorkout.get(attributeName)).toBe(WorkoutModel.prototype.defaults[attributeName]);
-                            expect(copiedWorkout.get(attributeName)).not.toBe(workout.get(attributeName));
-                        }
-                    });
-                });
-            });
-
-            describe("cutToClipboard", function()
-            {
-                it("Should implement a cutToClipboard method", function()
-                {
-                    expect(WorkoutModel.prototype.cutToClipboard).toBeDefined();
-                    expect(typeof WorkoutModel.prototype.cutToClipboard).toBe("function");
-                });
-
-                it("Should return a reference to itself", function()
-                {
-                    expect(workout.cutToClipboard()).toBe(workout);
-                });
-            });
-
-            describe("onPaste", function()
-            {
-                it("Should implement an onPaste method", function()
-                {
-                    expect(WorkoutModel.prototype.onPaste).toBeDefined();
-                    expect(typeof WorkoutModel.prototype.onPaste).toBe("function");
+                    expect(WorkoutModel.prototype.pasted).toBeDefined();
+                    expect(typeof WorkoutModel.prototype.pasted).toBe("function");
                 });
 
                 it("Should call moveToDay when pasting an existing workout from cut", function()
                 {
-                    var cutWorkout = workout.cutToClipboard();
+                    var cutWorkout = workout;
                     spyOn(cutWorkout, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
-                    cutWorkout.onPaste(dateToPasteTo);
+                    cutWorkout.pasted({ date: dateToPasteTo });
                     expect(cutWorkout.moveToDay).toHaveBeenCalledWith(dateToPasteTo);
                 });
 
                 it("Should not call moveToDay when pasting a workout from copy", function()
                 {
-                    var copiedWorkout = workout.copyToClipboard();
+                    var copiedWorkout = workout.cloneForCopy();
                     spyOn(copiedWorkout, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.onPaste(dateToPasteTo);
+                    copiedWorkout.pasted({ date: dateToPasteTo });
                     expect(copiedWorkout.moveToDay).not.toHaveBeenCalled();
-                });
-
-                it("Should return a new workout when pasting a workout from copy", function()
-                {
-                    var copiedWorkout = workout.copyToClipboard();
-                    var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
-                    expect(pastedWorkout instanceof WorkoutModel).toBe(true);
-                    expect(pastedWorkout).not.toBe(copiedWorkout);
                 });
 
                 it("Should set the correct date on pasted workout", function()
                 {
-                    var copiedWorkout = workout.copyToClipboard();
+                    var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
+                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
                     expect(pastedWorkout.getCalendarDay()).toBe(dateToPasteTo);
                 });
 
                 it("Should not change the date of the copied workout", function()
                 {
-                    var copiedWorkout = workout.copyToClipboard();
+                    var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
+                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
                     expect(copiedWorkout.getCalendarDay()).not.toBe(dateToPasteTo);
                     expect(copiedWorkout.getCalendarDay()).toBe(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
                 });
 
                 it("Should return a workout with all of the copied attributes", function()
                 {
-                    var copiedWorkout = workout.copyToClipboard();
+                    var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
+                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
 
                     _.each(attributesToCopy, function(attributeName)
                     {

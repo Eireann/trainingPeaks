@@ -29,8 +29,8 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
 
         initialize: function(options)
         {
-            this.selectedRangeCollection = options.collection;
-            this.on("clickoutside", this.unselect, this);
+            options = options || {};
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
         },
 
         attributes:
@@ -44,11 +44,6 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
             template: selectedRangeSettingsTemplate
         },
 
-        onRender: function()
-        {
-            this.updatePasteAvailability();
-        },
-
         onDeleteClicked: function()
         {
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
@@ -58,39 +53,26 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
         
         onDeleteRangeConfirmed: function()
         {
-            this.selectedRangeCollection.deleteWeekItems();
+            this.selectionManager.execute("delete");
             this.close();
         },
  
         onCopyClicked: function()
         {
-            this.selectedRangeCollection.trigger("week:copy", this.selectedRangeCollection);
-            this.updatePasteAvailability();
+            this.selectionManager.copySelectionToClipboard();
             this.close();
         },
 
         onCutClicked: function()
         {
-            this.selectedRangeCollection.trigger("week:cut", this.selectedRangeCollection);
-            this.updatePasteAvailability();
+            this.selectionManager.cutSelectionToClipboard();
             this.close();
         },
 
         onShiftClicked: function(e)
         {
-            this.selectedRangeCollection.trigger("range:shiftwizard");
-            this.trigger("beforeShift");
+            this.selectionManager.execute("shift");
             this.close();
-        },
-
-        updatePasteAvailability: function()
-        {
-            this.selectedRangeCollection.trigger("week:pasteMenu", this.selectedRangeCollection.models[0].id);
-        },
-
-        unselect: function(e)
-        {
-            this.selectedRangeCollection.trigger("range:unselect", this.selectedRangeCollection);
         }
     });
 });

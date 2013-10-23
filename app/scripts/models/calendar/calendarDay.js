@@ -5,18 +5,20 @@
     "TP",
     "shared/models/activityModel",
     "shared/models/metricModel",
-    "shared/models/selectedActivitiesCollection",
     "models/workoutModel"
 ],
-function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection, WorkoutModel)
+function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 {
 
     var CalendarDay = TP.Model.extend(
     {
         idAttribute: 'date',
 
-        initialize: function()
+        initialize: function(attrs, options)
         {
+            options = options || {};
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+
             this.configureDate();
             this.configureCollection();
         },
@@ -79,60 +81,20 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
 
         reset: function(models, options)
         {
+            models = _.map(models, _.bind(ActivityModel.wrap, ActivityModel));
             this.itemsCollection.reset(models, options);
         },
-        
-        deleteDayItems: function()
-        {
-            var selectedActivitiesCollection = new SelectedActivitiesCollection(this.getItems());
-            selectedActivitiesCollection.deleteSelectedItems();
-        },
-        
+
         getWorkoutItems: function()
         {
             var workoutsList = [];
-            this.eachItem(function (item)
+            this.each(function (item)
             {
                 item = ActivityModel.unwrap(item);
                 if (item instanceof WorkoutModel)
                     workoutsList.push(item);
             });
             return workoutsList;
-        },
-
-        copyToClipboard: function()
-        {
-            var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.eachItem(function(item)
-            {
-                if (typeof item.copyToClipboard === "function")
-                    calendarDay.add(item.copyToClipboard());
-            });
-            return calendarDay;
-        },
-
-        cutToClipboard: function()
-        {
-            var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.eachItem(function(item)
-            {
-                if (typeof item.cutToClipboard === "function")
-                    calendarDay.add(item.cutToClipboard());
-            });
-            return calendarDay;
-        },
-
-        onPaste: function(dateToPasteTo)
-        {
-            var pastedItems = [];
-            this.eachItem(function(item)
-            {
-                if (typeof item.onPaste === "function")
-                {
-                    pastedItems.push(item.onPaste(dateToPasteTo));
-                }
-            });
-            return pastedItems;
         },
 
         length: function()
@@ -145,12 +107,14 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
             this.trigger("workout:added", newWorkout);
         },
 
-        eachItem: function(callback)
+        each: function(callback)
         {
-            this.itemsCollection.each(function(item)
-            {
-                callback(ActivityModel.unwrap(item));
-            });
+            _.each(this.items(), callback);
+        },
+
+        items: function()
+        {
+            return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
         },
 
         getItems: function()
@@ -158,6 +122,64 @@ function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection
             return this.itemsCollection.filter(function(model){
                 return !model.isDateLabel;
             });
+        },
+
+        moveItemsToDay: function(date)
+        {
+            this.each(function(activity)
+            {
+                if(_.isFunction(activity.moveToDay))
+                {
+                    activity.moveToDay(date);
+                }
+            });
+        },
+
+        dropped: function(options)
+        {
+            if(options.date)
+            {
+                if(options.date === this.id)
+                {
+                    return;
+                }
+
+                this.moveItemsToDay(options.date);
+            }
+
+            if(options.target instanceof CalendarDay)
+            {
+                this.selectionManager.setSelection(options.target);
+            }
+        },
+
+        pasted: function(options)
+        {
+            this.each(function(activity)
+            {
+                if(_.isFunction(activity.pasted))
+                {
+                    activity.pasted(options);
+                }
+            });
+        },
+
+        cloneForCut: function()
+        {
+            var clone = this.clone();
+            clone.itemsCollection.set(this.itemsCollection.models);
+            return clone;
+        },
+
+        cloneForCopy: function()
+        {
+            var day = this.clone();
+            this.each(function(activity)
+            {
+                day.add(activity.cloneForCopy());
+            });
+
+            return day;
         }
 
     }, { hasLabel: false });

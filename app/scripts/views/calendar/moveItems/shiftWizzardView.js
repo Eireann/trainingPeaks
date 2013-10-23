@@ -243,9 +243,6 @@ function(
                 // close this view when remote command finishes
                 var self = this;
                 deferred.always(function() { self.onClose(); });
-
-                // pass the deferred on through an event so CalendarContainerView can act on it
-                this.trigger("shifted", deferred);
             }
             else
                 this.onClose();
