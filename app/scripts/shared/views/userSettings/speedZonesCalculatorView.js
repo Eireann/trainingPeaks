@@ -331,20 +331,6 @@ function(
             this._calculateSpeedOrDuration();
         },
 
-        _calculateIfAllInputsAreValid: function()
-        {
-            // because the original model could be changed outside the calculator view
-            this._applySourceValuesToModel();
-
-            if(this._validateInputs(false))
-            {
-                // calculate speed / duration and update the view before running calculator
-                this._applyFormValuesToModel();
-                this._applyModelValuesToForm();
-                this.calculateZones();
-            }
-        },
-
         _calculateSpeedOrDuration: function()
         {
 

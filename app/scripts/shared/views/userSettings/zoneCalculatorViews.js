@@ -294,7 +294,7 @@ function(
 
         setZonesOnCollection: function()
         {
-            var zones = _.clone(this.model.get("zones"));
+            var zones = TP.utils.deepClone(this.model.get("zones"));
             var threshold = new TP.Model({ threshold: this.model.get("threshold"), units: this.units, workoutTypeId: this.model.get("workoutTypeId") });
             zones.unshift(threshold);
             this.collection.reset(zones);
