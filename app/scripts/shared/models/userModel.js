@@ -141,14 +141,10 @@ function(
                 this.set(this.checkpointAttributes);
         },
 
-        setCurrentAthleteId: function(athleteId, silent)
+        setCurrentAthleteId: function(athleteId)
         {
             this.currentAthleteId = athleteId;
-
-            if (!silent)
-            {
-                this.trigger("athlete:change");
-            }
+            this.trigger("athlete:change");
         },
 
         getCurrentAthleteId: function()

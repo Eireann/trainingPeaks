@@ -68,13 +68,12 @@ function(
                     var workout = new WorkoutModel({ workoutDay: "2011-03-02T00:00:00", workoutId: "12345" + Number(i).toString() });
                     workouts.push(workout);
                     calendarDay.add(workout);
-                    spyOn(workout, "copyToClipboard").andCallThrough();
-                    spyOn(workout, "cutToClipboard").andCallThrough();
-                    spyOn(workout, "onPaste").andCallThrough();
+                    spyOn(workout, "cloneForCopy").andCallThrough();
+                    spyOn(workout, "pasted").andCallThrough();
                 }
             });
 
-            describe("copyToClipboard", function()
+            describe("cloneForCopy", function()
             {
                 // user needs an athlete id for some of these tests to run
                 beforeEach(function()
@@ -89,66 +88,34 @@ function(
 
                 it("Should return a new CalendarDay model", function()
                 {
-                    var copiedDay = calendarDay.copyToClipboard();
+                    var copiedDay = calendarDay.cloneForCopy();
                     expect(copiedDay instanceof CalendarDay).toBe(true);
                 });
 
                 it("Should not return itself", function()
                 {
-                    var copiedDay = calendarDay.copyToClipboard();
+                    var copiedDay = calendarDay.cloneForCopy();
                     expect(copiedDay).not.toBe(calendarDay);
                 });
 
                 it("Should have the correct number of items", function()
                 {
-                    var copiedDay = calendarDay.copyToClipboard();
+                    var copiedDay = calendarDay.cloneForCopy();
                     expect(copiedDay.length()).toEqual(workouts.length);
                 });
 
                 it("Should call copy on each of the workouts", function()
                 {
-                    var copiedDay = calendarDay.copyToClipboard();
+                    var copiedDay = calendarDay.cloneForCopy();
                     _.each(workouts, function(workout)
                     {
-                        expect(workout.copyToClipboard).toHaveBeenCalled();
+                        expect(workout.cloneForCopy).toHaveBeenCalled();
                     });
                 });
 
             });
 
-            describe("cutToClipboard", function()
-            {
-
-                it("Should return a new CalendarDay model", function()
-                {
-                    var cutDay = calendarDay.cutToClipboard();
-                    expect(cutDay instanceof CalendarDay).toBe(true);
-                });
-
-                it("Should not return itself", function()
-                {
-                    var cutDay = calendarDay.cutToClipboard();
-                    expect(cutDay).not.toBe(calendarDay);
-                });
-
-                it("Should have the correct number of items", function()
-                {
-                    var cutDay = calendarDay.cutToClipboard();
-                    expect(cutDay.length()).toEqual(workouts.length);
-                });
-
-                it("Should call cut on each of the workouts", function()
-                {
-                    var cutDay = calendarDay.cutToClipboard();
-                    _.each(workouts, function(workout)
-                    {
-                        expect(workout.cutToClipboard).toHaveBeenCalled();
-                    });
-                });
-
-            });
-
-            describe("onPaste", function()
+            describe("pasted", function()
             {
 
                 // user needs an athlete id for some of these tests to run
@@ -162,24 +129,18 @@ function(
                     app.user.setCurrentAthleteId(null, true);
                 });
 
-                it("Should have the correct number of items", function()
-                {
-                    var pastedItems = calendarDay.copyToClipboard().onPaste("2020-01-01");
-                    expect(pastedItems.length).toEqual(workouts.length);
-                });
-
-                it("Should call onPaste on each of the copied workouts", function()
+                it("Should call pasted on each of the copied workouts", function()
                 {
                     var dateToPasteTo = "2030-12-25";
-                    var copiedItems = calendarDay.copyToClipboard();
-                    copiedItems.eachItem(function(item)
+                    var copiedItems = calendarDay.cloneForCopy();
+                    copiedItems.each(function(item)
                     {
-                        spyOn(item, "onPaste").andCallThrough();
+                        spyOn(item, "pasted").andCallThrough();
                     });
-                    var pastedItems = copiedItems.onPaste(dateToPasteTo);
-                    copiedItems.eachItem(function(item)
+                    var pastedItems = copiedItems.pasted({ date: dateToPasteTo });
+                    copiedItems.each(function(item)
                     {
-                        expect(item.onPaste).toHaveBeenCalledWith(dateToPasteTo);
+                        expect(item.pasted).toHaveBeenCalledWith({ date: dateToPasteTo });
                     });
                 });
 

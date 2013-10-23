@@ -8,6 +8,7 @@
     "jqueryui/droppable",
     "TP",
     "framework/notYetImplemented",
+    "models/workoutModel",
     "models/library/libraryExercise",
     "models/library/libraryExercisesCollection",
     "views/calendar/library/exerciseLibraryItemView",
@@ -24,6 +25,7 @@ function(
     droppable,
     TP,
     notYetImplemented,
+    WorkoutModel,
     LibraryExerciseModel,
     LibraryExercisesCollection,
     ExerciseLibraryItemView,
@@ -70,9 +72,7 @@ function(
 
         collectionEvents:
         {
-            "destroy": "onWaitStop",
-            "select": "onSelectItem",
-            "unselect": "unSelect"
+            "destroy": "onWaitStop"
         },
 
         itemViewContainer: "div.exercisesContainer",
@@ -107,26 +107,6 @@ function(
                 self.$el.removeClass("waiting");
                 self._onLibrariesChanged();
             });
-            this.selectedItem = null;
-        },
-
-        onSelectItem: function(model)
-        {
-            if (this.selectedItem && this.selectedItem !== model)
-                this.unSelect();
-
-            this.selectedItem = model;
-            this.trigger("select");
-        },
-
-        unSelect: function()
-        {
-            if (this.selectedItem)
-            {
-                var previouslySelectedItem = this.selectedItem;
-                this.selectedItem = null;
-                previouslySelectedItem.trigger("unselect", previouslySelectedItem);
-            }
         },
 
         onRender: function()
@@ -153,15 +133,13 @@ function(
         },
         onWorkoutDropped: function(event, ui)
         {
-            if (!ui.draggable.data('workoutid'))
-            {
-                return;
-            }
-            var workoutid = ui.draggable.data('workoutid');
-            var workoutModel = theMarsApp.controllers.calendarController.getWorkout(workoutid);
-            this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workoutModel, libraries: this.libraries, selectedLibraryId: this.model.get('selected'), shouldShowConfirmation: false });
-            this.saveToLibraryConfirmationView.render();
+            var workout = ui.draggable.data("handler");
 
+            if(workout instanceof WorkoutModel)
+            {
+                this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workout, libraries: this.libraries, selectedLibraryId: this.model.get('selected'), shouldShowConfirmation: false });
+                this.saveToLibraryConfirmationView.render();
+            }
         },
         _onLibrariesChanged: function(options)
         {

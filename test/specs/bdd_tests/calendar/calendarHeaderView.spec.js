@@ -41,7 +41,7 @@ function($, TP, moment, theMarsApp, DataManager, CalendarController, CalendarHea
             spyOn(controller, "showDate");
             controller.views.header.$el.find('input.datepicker').val("8/28/2013");
             controller.views.header.$el.find('input.datepicker').trigger("change");
-            expect(controller.showDate).toHaveBeenCalledWith(moment("8/28/2013"), 200);
+            expect(controller.showDate).toHaveBeenCalledWith("2013-08-28");
         });
     });
 });

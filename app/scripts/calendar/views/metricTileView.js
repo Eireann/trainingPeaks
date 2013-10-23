@@ -36,23 +36,23 @@ function(
         modelEvents:
         {
             "change": "render",
-            "select": "_onSelected",
-            "unselect": "_onUnselected"
+            "state:change:isSelected": "_updateSelected"
         },
 
         initialize: function()
         {
             this.on("render", this._setupDraggable, this);
-            this.on("render", this._presetSelected, this);
+            this.on("render", this._updateSelected, this);
             this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
+        },
+
+        _updateSelected: function()
+        {
+            this.$el.toggleClass("selected", this.model.getState().get("isSelected") || false);
         },
 
         _setupDraggable: function()
         {
-            this.$el.data("ItemId", this.model.id);
-            this.$el.data("ItemType", this.model.webAPIModelName);
-            this.$el.data("DropEvent", "itemMoved");
-
             var draggableOptions =
             {
                 refreshPositions: true,
@@ -62,7 +62,7 @@ function(
                 stop: _.bind(this._onDragStop, this),
                 addClasses: false
             };
-            this.$el.draggable(draggableOptions);
+            this.$el.draggable(draggableOptions).data({ handler: this.model });
         },
 
         _makeHelper: function()
@@ -72,17 +72,9 @@ function(
             return $helper;
         },
 
-        _presetSelected: function()
+        _select: function(e)
         {
-            if (this.model.selected)
-            {
-                this._onSelected();
-            }
-        },
-
-        _select: function()
-        {
-            this.model.trigger("select", this.model);
+            theMarsApp.selectionManager.setSelection(this.model, e);
         },
 
         _onDragStart: function(e, ui)
@@ -143,15 +135,15 @@ function(
 
             this._allowSettingsButtonToHide();
 
-            this._select();
+            this._select(e);
 
             var view = new MetricQuickView({ model: this.model });
             view.render();
         },
 
-        _onMousedown: function()
+        _onMousedown: function(e)
         {
-            this._select();
+            this._select(e);
         },
 
         _onSelected: function()

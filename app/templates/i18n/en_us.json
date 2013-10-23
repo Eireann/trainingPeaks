@@ -417,6 +417,7 @@
     "Exp. Date": "Exp. Date",
     "Type": "Type",
 
+    "Summary": "Summary",
     "Payment History": "Payment History",
     "Active Recurring Payments": "Active Recurring Payments",
     "CalendarSync": "Calendar Sync (.ics)",
@@ -447,6 +448,7 @@
     "Not Yet Implemented": "Not Yet Implemented",
 
     "Failed To Save Metric": "Failed To Save Metric",
+    "Failed To Save": "Failed To Save",
 
     "Show": "Show",
     "Hide": "Hide",
@@ -455,6 +457,7 @@
     "ClickToEdit": "Click to edit",
     "CloseExpandoWithoutSaving": "You have unsaved changes on your workout.  Would you like to save these before closing?",
     "ApplyExpandoEdits": "Click apply to save edits and update stats.",
+
     "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
     "ConfirmDeleteLap": "Are you sure you want to delete the lap?"
 
