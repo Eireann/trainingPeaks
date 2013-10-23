@@ -4,10 +4,12 @@ define(
     "TP",
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
+    "framework/ajax402",
     "framework/tooltips",
     "framework/identityMap",
     "framework/dataManager",
-    "dashboard/reportingDataManager",
+    "shared/managers/calendarManager",
+    "shared/managers/selectionManager",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -29,10 +31,12 @@ function(
     TP,
     ajaxCaching,
     initializeAjaxTimezone,
-    enableTooltips,
+    initializeAjax402,
+    ToolTips,
     IdentityMap,
     DataManager,
-    ReportingDataManager,
+    CalendarManager,
+    SelectionManager,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -173,6 +177,12 @@ function(
             });
         });
 
+        // add ajax 402 handler
+        this.addInitializer(function()
+        {
+            initializeAjax402(this);
+        });
+
         // setup token
         this.addInitializer(function()
         {
@@ -217,20 +227,15 @@ function(
                 resetPatterns: [/athletes\/[0-9]+\/workouts/]
             };
 
-            this.dataManagers = {
-                reporting: new ReportingDataManager(dataManagerOptions),
-                calendar: new DataManager(dataManagerOptions)
-            };
+            this.dataManager = new DataManager(dataManagerOptions);
+            this.calendarManager = new CalendarManager({ dataManager: this.dataManager });
+            this.selectionManager = new SelectionManager();
 
             // reset reporting manager when we save or delete workouts
             this.on("save:model destroy:model", function(model)
             {
                 var modelUrl = _.result(model, "url");
-                _.each(this.dataManagers, function(dataManager)
-                {
-                    dataManager.reset(modelUrl);
-                });
-
+                this.dataManager.reset(modelUrl);
             }, this);
         });
 
@@ -311,8 +316,8 @@ function(
             this.controllers = {};
 
             this.controllers.navigationController = new NavigationController();
-            this.controllers.calendarController = new CalendarController({ dataManager: this.dataManagers.calendar });
-            this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManagers.reporting });
+            this.controllers.calendarController = new CalendarController({ dataManager: this.dataManager });
+            this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManager });
         });
 
         this.addInitializer(function()
@@ -355,7 +360,7 @@ function(
         // Set up jQuery UI Tooltips
         this.addInitializer(function()
         {
-            enableTooltips();
+            ToolTips.initTooltips();
         });
 
         // Set up touch events
@@ -467,6 +472,12 @@ function(
             return false;
 
         return true;
+    };
+
+    theApp.isLocal = function()
+    {
+        var href = document.location.href;
+        return href && href.indexOf("localhost") >= 0 || href.indexOf("app.local.trainingpeaks.com") >= 0;
     };
 
     theApp.getBodyElement = function()

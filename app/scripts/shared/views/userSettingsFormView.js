@@ -58,6 +58,86 @@ function(
         { data: 23, label: "11:00 PM - 11:59 PM"}
     ];
 
+    var UserBirthdayModel = TP.Model.extend({
+
+        initialize: function(options)
+        {
+            if(!options.userModel)
+            {
+                throw new Error("UserBirthdayModel requires a user model");
+            }
+
+            this.userModel = options.userModel;
+            this._updateSelf();
+            this.on("change", this._updateUserModel, this);
+            this.listenTo(this.userModel, "change:birthday", _.bind(this._updateSelf, this));
+        },
+
+        _updateUserModel: function()
+        {
+            if(!this.get("birthdayMonth") || !this.get("birthdayYear"))
+            {
+                return;
+            }
+            var birthday = moment().date(1).month(this.get("birthdayMonth") - 1).year(this.get("birthdayYear"));
+            this.userModel.set("birthday", birthday.format("YYYY-MM-DD"));
+        },
+
+        _updateSelf: function()
+        {
+            if(this.userModel.get("birthday"))
+            {
+                var birthday = moment(this.userModel.get("birthday"));
+                this.set("birthdayMonth", birthday.month() + 1, { silent: true });
+                this.set("birthdayYear", birthday.year(), { silent: true });
+            }
+        }
+    });
+
+    var UserNameModel = TP.Model.extend({
+
+        initialize: function(options)
+        {
+            if(!options.userModel)
+            {
+                throw new Error("UserNameModel requires a user model");
+            }
+
+            this.userModel = options.userModel;
+            this._updateSelf();
+            this.on("change", this._updateUserModel, this);
+            this.listenTo(this.userModel, "change:firstName", _.bind(this._updateSelf, this));
+            this.listenTo(this.userModel, "change:lastName", _.bind(this._updateSelf, this));
+        },
+
+        _updateUserModel: function()
+        {
+            if(!this.get("firstAndLastName"))
+            {
+                return;
+            }
+
+            var nameParts = this.get("firstAndLastName").split(" ");
+            this.userModel.set("lastName", nameParts.pop());
+            this.userModel.set("firstName", nameParts.join(" "));
+        },
+
+        _updateSelf: function()
+        {
+            var nameParts = [];
+            if(this.userModel.has("firstName"))
+            {
+                nameParts.push(this.userModel.get("firstName"));
+            }
+            if(this.userModel.has("lastName"))
+            {
+                nameParts.push(this.userModel.get("lastName"));
+            }
+            this.set("firstAndLastName", nameParts.join(" "), { silent: true });
+        }
+
+    });
+
     var UserSettingsFormView = TP.ItemView.extend(
     {
        
@@ -106,6 +186,7 @@ function(
             this.athleteSettingsModel = options.athleteSettingsModel;
             this.passwordSettingsModel = options.passwordSettingsModel;
 
+            this._createUserAdapterModels();
             this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._updateDatePickerFormat, this));
         },
 
@@ -134,9 +215,35 @@ function(
         applyFormValuesToModels: function()
         {
             FormUtility.applyValuesToModel(this.$el, this.userModel, { filterSelector: "[data-modelname=user]"});
+            FormUtility.applyValuesToModel(this.$el, this.userBirthdayModel, { filterSelector: "[data-modelname=userBirthday]"});
+            FormUtility.applyValuesToModel(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]"});
             FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
             FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
+        },
+
+        _createUserAdapterModels: function()
+        {
+
+            if(this.userModel.userBirthdayModel)
+            {
+                this.userBirthdayModel = this.userModel.userBirthdayModel;
+            }
+            else
+            {
+                this.userBirthdayModel = new UserBirthdayModel({ userModel: this.userModel });
+                this.userModel.userBirthdayModel = this.userBirthdayModel;
+            }
+
+            if(this.userModel.userNameModel)
+            {
+                this.userNameModel = this.userModel.userNameModel;
+            }
+            else
+            {
+                this.userNameModel = new UserNameModel({ userModel: this.userModel });
+                this.userModel.userNameModel = this.userNameModel;
+            }
         },
 
         _addConstantsToSerializedData: function(data)
@@ -159,6 +266,8 @@ function(
         _applyModelValuesToForm: function()
         {
             FormUtility.applyValuesToForm(this.$el, this.userModel, { filterSelector: "[data-modelname=user]" });
+            FormUtility.applyValuesToForm(this.$el, this.userBirthdayModel, { filterSelector: "[data-modelname=userBirthday]" });
+            FormUtility.applyValuesToForm(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]" });
             FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
         },
@@ -175,7 +284,13 @@ function(
 
         _setupSelectBox: function()
         {
-            this.$("select").selectBoxIt();
+            this.$("select").each(function(i, el)
+            {
+                var $el = $(el);
+                $el.selectBoxIt({
+                    viewport: function(){return $el.closest(".scrollable");}
+                });
+            });
         },
 
         _onICalFocus: function(e)

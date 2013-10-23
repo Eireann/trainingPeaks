@@ -10,12 +10,12 @@ requirejs(
     "testUtils/xhrDataStubs",
     "models/workoutModel",
     "shared/models/activityModel",
-    "models/workoutsCollection",
-    "models/calendar/calendarCollection"
+    "models/workoutsCollection"//,
+    // "models/calendar/calendarCollection"
 ],
-function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutModel, ActivityModel, WorkoutsCollection, CalendarCollection)
+function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutModel, ActivityModel, WorkoutsCollection/*, CalendarCollection*/)
 {
-    describe("CalendarCollection ", function()
+    xdescribe("CalendarCollection ", function()
     {
         it("should load as a module", function()
         {

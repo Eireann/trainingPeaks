@@ -35,7 +35,7 @@
         text-align: left;
         min-height: 30px;
         // padding: 10px 0px 0px 16px;
-        background-color: #eaebec;
+        background-color: $TPGrey1;
         @include box-shadow(2px 0px 7px 0px $TPGrey4);
         position: relative; 
         z-index: 99;

@@ -211,6 +211,8 @@
     border: 1px solid transparent;
     cursor: pointer;
 
+    @include noDataMessage;
+
     .chartTitle, 
     .customDateRange {
         display: block; /* Fallback for non-webkit */
@@ -295,7 +297,7 @@
             z-index:2;
         }
          &:hover, &.hover {
-            background-color: $TPGrey1;
+            // background-color: $TPGrey1;
             border: 1px solid transparent;
          }
 
@@ -329,13 +331,11 @@
 
 
 
-    &:hover, &.hover
-    {
-        background-color: #e4e2e3;
+    &:hover, &.hover {
+        // background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
         z-index: 2;
-        .chartButtons
-        {
+        .chartButtons {
             display: block;
             z-index:2;
         }
@@ -491,21 +491,7 @@
         {
             display: none;
         }
-        
-        .noDataMessage
-        {
-            display: block;
-            position: absolute;
-            top:0;  
-            bottom:0; 
-            left:0;
-            right:0;
-            margin:auto;
-            height: 1.5em;
-            font-size:$fontSizeSmall;
-            text-align: center;
-        } 
-
+       
         &:hover {
             border: 1px solid $TPGrey11;
         }

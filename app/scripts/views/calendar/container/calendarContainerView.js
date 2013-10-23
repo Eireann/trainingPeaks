@@ -4,10 +4,8 @@
     "TP",
     "views/pageContainer/primaryContainerView",
     "views/calendar/calendarWeekView",
-    "views/calendar/moveItems/selectedRangeSettings",
-    "views/calendar/moveItems/shiftWizzardView",
-    "views/calendar/container/calendarContainerViewScrolling",
     "views/scrollableCollectionView",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
 function(
@@ -15,13 +13,11 @@ function(
     TP,
     PrimaryContainerView,
     CalendarWeekView,
-    SelectedRangeSettingsView,
-    ShiftWizzardView,
-    CalendarContainerViewScrolling,
     ScrollableCollectionView,
+    CalendarUtility,
     calendarContainerView)
 {
-    var CalendarContainerView =
+    var CalendarContainerView = PrimaryContainerView.extend(
     {
         colorizationClassNames:
         [
@@ -55,19 +51,17 @@ function(
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
 
-            this.on("render", this.setupKeyBindingsOnRender, this);
-            //this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
 
             this.on("close", this.closeChildren, this);
 
-            this.calendarHeaderModel = options.calendarHeaderModel;
-            this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
+            this.stateModel = options.stateModel;
+            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
 
             this.initializeScrollOnDrag();
 
             this.weeksCollectionView = new ScrollableCollectionView({
-                firstModel: this.collection.getWeekModelForDay((options.firstDate ? moment(options.firstDate) : moment()), options.startOfWeekDayIndex),
+                firstModel: this.collection.get(CalendarUtility.weekForDate(options.firstDate ? moment(options.firstDate) : moment())),
                 itemView: CalendarWeekView,
                 collection: this.collection,
                 id: "weeksContainer",
@@ -75,7 +69,7 @@ function(
                 onScrollEnd: _.bind(this._loadDataAfterScroll, this),
                 minSize: 12
             });
-            this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
+            this.listenTo(this.collection, "refresh", _.bind(this._loadDataAfterScroll, this));
         },
 
         _loadDataAfterScroll: function()
@@ -86,23 +80,13 @@ function(
             }
             $('.week').removeClass('inView');
 
-            var currentModel = this.weeksCollectionView.getCurrentModel();
+            var visibleWeeks = this.weeksCollectionView.getVisibleModels();
 
-            if(currentModel)
-            {
-                this.calendarHeaderModel.set('currentDay', currentModel.get('id'));
-            }
+            var weeks = _.map(visibleWeeks, function(week) { return moment(week.id); });
+            var start = _.min(weeks);
+            var end = _.max(weeks);
 
-            _.each(this.weeksCollectionView.getVisibleModels(), function(model)
-            {
-                model.view.$el.addClass('inView');
-                if(!model.get("isFetched"))
-                {
-                    var weekStart = moment(model.id);
-                    var weekEnd = moment(model.id).add("days", 6);
-                    self.collection.requestWorkouts(weekStart, weekEnd);
-                }
-            });
+            this.calendarManager.loadActivities(start, end);
         },
 
         onRender: function()
@@ -118,24 +102,11 @@ function(
             this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
         },
 
-        modelEvents:
-        {
-            "change": "render"
-        },
-
-        collectionEvents:
-        {
-            //"add": "onAddWeek",
-            // "reset": "render",
-            "item:move": "onItemMoved",
-            "shiftwizard:open": "onShiftWizardOpen",
-            "rangeselect": "onRangeSelect",
-            "select": "onCalendarSelect"
-        },
+        collectionEvents: {},
 
         _updateCurrentDate: function()
         {
-            this.setCurrentDate(moment(this.getCurrentWeek()));
+            this.stateModel.setDate(this.getCurrentWeek(), { source: "scroll" });
         },
 
         setWorkoutColorization: function()
@@ -158,18 +129,6 @@ function(
             }
         },
 
-        setupKeyBindingsOnRender: function()
-        {
-
-            // keydown, because keypress doesn't seem to register with ctrl key, and keyup doesn't register command key in chrome on mac
-            _.bindAll(this, "onKeyDown");
-            $(document).on('keydown', this.onKeyDown);
-
-            // prevent autorepeat keydown
-            _.bindAll(this, "onKeyUp");
-            $(document).on('keyup', this.onKeyUp);
-        },
-
         getCurrentWeek: function()
         {
             return this.weeksCollectionView.getCurrentModel().id;
@@ -179,40 +138,12 @@ function(
         {
             if(callback) console.warn("Callback not supported on scrollToDate", callback);
 
-            var dateAsMoment = moment(targetDate);
-
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            var model = this.collection.getWeekModelForDay(dateAsMoment, this.startOfWeekDayIndex);
+            var model = this.collection.get(CalendarUtility.weekForDate(targetDate));
 
             this.weeksCollectionView.scrollToModel(model, effectDuration);
-        },
-
-        onItemDropped: function(weekView, dayView, options)
-        {
-            this.trigger("itemDropped", options);
-        },
-
-        onItemMoved: function(item, movedToDate, deferredResult)
-        {
-            this.trigger("itemMoved", item, movedToDate, deferredResult);
-        },
-
-        onRangeSelect: function(rangeSelection, e)
-        {
-            var rangeSettingsView = new SelectedRangeSettingsView({ collection: rangeSelection });
-            rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
-            var onRangeSettingsClose = function()
-            {
-                rangeSelection.trigger("range:unselect", rangeSelection);
-            };
-            rangeSettingsView.once("close", onRangeSettingsClose);
-            rangeSettingsView.once("beforeShift", function()
-            {
-                rangeSettingsView.off("close", onRangeSettingsClose);
-            }, this);
-
         },
 
         onLibraryAnimateSetup: function()
@@ -222,21 +153,12 @@ function(
 
         onLibraryAnimateComplete: function()
         {
-            this.updateWeekHeights();
             this.weeksCollectionView.unlockScrollPosition();
         },
 
         onLibraryAnimateProgress: function()
         {
             this.weeksCollectionView.resetScrollPosition();
-        },
-
-        updateWeekHeights: function()
-        {
-            this.collection.each(function(model)
-            {
-                model.trigger("library:resize");
-            });
         },
 
         initializeScrollOnDrag: function()
@@ -340,86 +262,36 @@ function(
             this.autoScrollDirection = null;
         },
 
-        onKeyDown: function(e)
+        startScrollingState: function()
         {
-
-            // no keyboard copy/paste on calendar when quickview is open
-            if ($(".workoutQuickView").length)
+            if (!this.scrolling)
             {
-                return;
+                this.$el.find(".daysOfWeek").addClass("scrollInProgress");
+                this.scrolling = true;
+            }
+        },
+
+        stopScrollingState: function()
+        {
+            this.scrolling = false;
+            this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
+        },
+
+        scrollToDateIfNotFullyVisible: function(targetDate, effectDuration)
+        {
+            var dateAsString = moment(targetDate).format(TP.utils.datetime.shortDateFormat);
+            var selector = '.day[data-date="' + dateAsString + '"]';
+
+            var $week = $(selector).closest(".week");
+
+            var weekPosition = $week.position();
+            if (weekPosition && weekPosition.hasOwnProperty("top") && weekPosition.top < 30 || (weekPosition.top + $week.height() > this.ui.weeksContainer.height()))
+            {
+                this.scrollToDate(targetDate, effectDuration);
             }
 
-            // prevent autorepeat
-            if (this.keyDownWasProcessed)
-                return;
-
-            if (e.isDefaultPrevented())
-                return;
-
-            if (!e.ctrlKey && !e.metaKey)
-                return;
-
-            // if we're in input or textarea, ignore keypress
-            var $target = $(e.target);
-            if ($target.is("input") || $target.is("textarea"))
-                return;
-
-            var whichKey = String.fromCharCode(e.keyCode);
-
-            switch (whichKey)
-            {
-            case "C":
-                this.keyDownWasProcessed = true;
-                this.collection.onKeypressCopy(e);
-                break;
-            case "X":
-                this.keyDownWasProcessed = true;
-                this.collection.onKeypressCut(e);
-                break;
-            case "V":
-                this.keyDownWasProcessed = true;
-                this.collection.onKeypressPaste(e);
-                break;
-            }
-
-        },
-
-        onKeyUp: function()
-        {
-            this.keyDownWasProcessed = false;
-        },
-
-        onShiftWizardOpen: function()
-        {
-            this.shiftWizzardView = new ShiftWizzardView({ selectionStartDate: this.collection.getSelectionStartDate(), selectionEndDate: this.collection.getSelectionEndDate() });
-            this.shiftWizzardView.on("shifted", this.onShiftWizardShifted, this);
-            this.shiftWizzardView.on("close", this.onCalendarUnSelect, this);
-            this.shiftWizzardView.render();
-        },
-
-        onShiftWizardShifted: function(shiftCommandResult)
-        {
-            _.bindAll(this, "afterWorkoutsShifted");
-            shiftCommandResult.done(this.afterWorkoutsShifted);
-        },
-
-        afterWorkoutsShifted: function(shiftCommand)
-        {
-            this.trigger("workoutsShifted", shiftCommand);
-        },
-
-        onCalendarSelect: function()
-        {
-            this.trigger("calendar:select");
-        },
-
-        onCalendarUnSelect: function()
-        {
-            this.collection.trigger("calendar:unselect");
         }
-    };
+    });
 
-    _.extend(CalendarContainerView, CalendarContainerViewScrolling);
-
-    return PrimaryContainerView.extend(CalendarContainerView);
+    return CalendarContainerView;
 });

@@ -58,9 +58,9 @@
 
         formatDuration: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
@@ -69,9 +69,9 @@
 
         formatMinutes: function(minutes, options)
         {
-            if(this.valueIsEmpty(minutes))
+            if(conversion.valueIsEmpty(minutes))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
@@ -174,9 +174,9 @@
 
         formatElevation: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
 
             var numValue = Number(value);
@@ -236,6 +236,11 @@
             return ((value === null || value === 0) ? "" : Number(value).toFixed(2));
         },
 
+        formatWeight: function(value, options)
+        {
+            return conversion.formatEmptyNumber(Number(value).toFixed(1), options, 0);
+        },
+
         formatNumber: function(value, options)
         {
             var formattedValue = threeSigFig(value);
@@ -262,9 +267,9 @@
 
         formatTemperature: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
@@ -278,7 +283,7 @@
             var limitedTemperature = adjustFieldRange(parseInt(value, 10), "temp");
             return convertToModelUnits(limitedTemperature, "temperature");
         },
-        
+
         formatWorkoutType: function(value, options)
         {
             return workoutTypes.getNameById(value);
@@ -298,9 +303,9 @@
 
         formatTSS: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
 
             var numValue = Number(value);
@@ -361,17 +366,17 @@
             }
             return "";
         },
-        
+
         formatDateToDayName: function (value, options)
         {
             options.dateFormat = "dddd";
-            return this.formatDate(value, options);
+            return conversion.formatDate(value, options);
         },
-        
+
         formatDateToCalendarDate: function (value, options)
         {
             options.dateFormat = "MMM D, YYYY";
-            return this.formatDate(value, options);
+            return conversion.formatDate(value, options);
         },
 
         toPercent: function(numerator, denominator)
@@ -383,10 +388,10 @@
         {
             if (options && typeof options === "string" && value !== null)
                 options = { defaultValue: options };
-            
+
             if (_.isUndefined(value) || _.isNaN(value) || value === null || value === 0)
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
-            
+
             var parsedValue = Number(value);
 
             if (_.isNaN(parsedValue))
@@ -416,9 +421,9 @@
 
         formatCalories: function(value, options)
         {
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "calories");
@@ -430,7 +435,7 @@
         {
             var intValue = conversion.parseInteger(value, options);
             intValue = adjustFieldRange(intValue, "calories");
-            return intValue;               
+            return intValue;
         },
 
         parseHeartRate: function(value, options)
@@ -462,19 +467,19 @@
         formatEmptyNumber: function(value, options, defaultValue)
         {
 
-            defaultValue = this.getDefaultValue(options, defaultValue);
+            defaultValue = conversion.getDefaultValue(options, defaultValue);
 
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
                 return defaultValue;
             }
 
-            if(this.valueIsNotANumber(value))
+            if(conversion.valueIsNotANumber(value))
             {
                 return defaultValue;
             }
 
-            if (this.valueIsZero(value) && (!options || !options.allowZero))
+            if (conversion.valueIsZero(value) && (!options || !options.allowZero))
             {
                 return defaultValue;
             }
@@ -488,7 +493,7 @@
             {
                 defaultValue = options.defaultValue;
             }
-           
+
             if(_.isUndefined(defaultValue))
             {
                 defaultValue = "";
@@ -499,7 +504,7 @@
 
         valueIsEmpty: function(value)
         {
-            return _.isUndefined(value) || _.isNull(value) || ("" + value).trim() === "" || (Number(value) === 0 && !this.valueIsZero(value));
+            return _.isUndefined(value) || _.isNull(value) || ("" + value).trim() === "" || (Number(value) === 0 && !conversion.valueIsZero(value));
         },
 
         valueIsNotANumber: function(value)
@@ -514,20 +519,32 @@
 
         parseTextField: function(value, options)
         {
-            return value === "" ? null : conversion.fixNewlines(value);
+            return value === "" ? null : conversion.fixNewlinesForParse(value);
         },
 
         formatTextField: function(value, options)
         {
-            return value === null ? "" : conversion.fixNewlines(value);
+            return value === null ? "" : conversion.fixNewlinesForFormat(value);
         },
 
-        fixNewlines: function(value)
+        // converts CRLF \r\n or LF \n to CR \r 
+        // FLEX WANTS \r, not \n, don't ask me why ...
+        fixNewlinesForParse: function(value)
         {
             if (value === null)
                 return "";
 
-            var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
+            var newValue = value.replace(/\r\n/g, "\r").replace(/\n/g, "\r");
+            return newValue;
+        },
+
+        // converts LF \n or CR \r to CRLF \r\n
+        fixNewlinesForFormat: function(value)
+        {
+            if (value === null)
+                return "";
+
+            var newValue = value.replace(/\r\n/g, "\n").replace(/\r/g,"\n").replace(/\n/g, "\r\n");
             return newValue;
         },
 
@@ -554,7 +571,7 @@
         {
             var convertedValue = convertToViewUnits(Number(value), "kg");
             var adjustedValue = adjustFieldRange(convertedValue, "kg");
-            return conversion.formatNumber(adjustedValue, options);
+            return conversion.formatWeight(adjustedValue, options);
         },
 
         parseKg: function(value, options)
@@ -562,7 +579,7 @@
             var limitedValue = adjustFieldRange(value, "kg");
             return convertToModelUnits(limitedValue, "kg");
         },
-        
+
         formatMl: function(value, options)
         {
             var convertedValue = convertToViewUnits(Number(value), "ml");
@@ -628,9 +645,9 @@
         _formatUnitsValue: function(units, value, options)
         {
 
-            if(this.valueIsEmpty(value))
+            if(conversion.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options);
+                return conversion.getDefaultValue(options);
             }
 
             switch(units)
@@ -662,7 +679,7 @@
 
                 case "energy":
                     return conversion.formatEnergy(value, options);
-                    
+
                 case "heartrate":
                     return conversion.formatHeartRate(value, options);
 
@@ -746,7 +763,7 @@
 
                 case "date":
                     return conversion.formatDate(value, options);
-                    
+
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
             }
@@ -810,7 +827,7 @@
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
             }
         }
-         
+
     };
 
     return conversion;

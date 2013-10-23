@@ -17,21 +17,26 @@ function(
         initialize: function()
         {
             var ranges = new TP.Collection([], { model: WorkoutStatsForRange });
-
             this.set("ranges", ranges);
-            this.on("change:statsRange", this._onStatsRangeChange, this);
+            this.on("change:primaryRange", this._onStatsRangeChange, this);
 
             this.listenTo(ranges, "add", _.bind(this._onRangeAdded, this));
             this.listenTo(ranges, "remove", _.bind(this._onRangeRemoved, this));
         },
 
+        reset: function()
+        {
+            this.get("ranges").reset();
+            this.set("primaryRange", null);
+        },
+
         _onStatsRangeChange: function(self, range)
         {
-            if(this.statsRange)
+            if(this.primaryRange)
             {
-                this.statsRange.set("isFocused", false);
+                this.primaryRange.set("isFocused", false);
             }
-            this.statsRange = range;
+            this.primaryRange = range;
 
             if(range)
             {
@@ -39,10 +44,7 @@ function(
 
                 if(!range.hasLoaded)
                 {
-                    range.fetch().done(function()
-                    {
-                        range.hasLoaded = true;
-                    });
+                    range.fetch();
                 }
             }
         },
@@ -55,11 +57,6 @@ function(
         _onRangeRemoved: function(range)
         {
             range.set("isSelected", false);
-            if(range.get("temporary") && this.get("statsRange") === range)
-            {
-                this.set("statsRange", null);
-            }
-
         }
 
     });

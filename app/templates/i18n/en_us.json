@@ -21,6 +21,7 @@
 	"Upgrade": "UPGRADE",
 	"Tools": "Tools",
 	"Today": "Today",
+    "Year": "Year",
 	"Month": "Month",
 	"Week": "Week",
 	"Day": "Day",
@@ -61,13 +62,15 @@
 	"Sat": "SAT",
 	"Sun": "SUN",
 
-    "PersonalInfo": "Personal Info",
+    "Choose": "Choose",
+    "PersonalInfo": "Personal Information",
     "FirstName": "First Name",
     "LastName": "Last Name",
+    "FirstAndLastName": "First and Last Name",
     "AthleteType": "Athlete Type",
-    "Birthday": "Birthday",
+    "Birthday": "Date of Birth",
     "Gender": "Gender",
-    "Email": "E-Mail",
+    "Email": "Email Address",
     "Address": "Address",
     "City": "City",
     "State": "State",
@@ -76,17 +79,18 @@
     "Phone": "Phone",
     "CellPhone": "Cell Phone",
     "ProfilePicture": "Profile Picture",
+    "Weight": "Weight",
 
-    "AccountSettings": "Account Settings",
+    "AccountSettings": "Settings",
     "AccountType": "Account Type",
-    "Units": "Units",
+    "Units": "Unit Preference",
     "EnglishUnits": "English",
     "MetricUnits": "Metric",
     "DateFormat": "Date Format",
     "TimeZone": "Time Zone",
 
-    "EmailOptions": "E-mail Options",
-    "emailPMNotificationSetting": "Send me an e-mail when I receive a private message",
+    "EmailOptions": "Email Options",
+    "emailPMNotificationSetting": "Send me an email when I receive a private message",
     "postActivityNotificationSetting": "Receive post-activity comment notification",
     "newsletterNotificationSetting": "Receive occasional informational newsletter",
     "plannedWorkoutsNotificationSetting": "Enable daily emails of planned workouts",
@@ -260,7 +264,6 @@
     "ShortMinute": "min",
     "Minutes": "Minutes",
     "Zone": "Zone",
-    "Weight": "Weight",
     "Range": "Range",
     "Time": "Time",
     "Percent": "Percent",
@@ -390,6 +393,7 @@
     "SelectReportType": "Select Report Type",
 
     "NoWorkoutsToReport": "No workouts are available to report on",
+    "NoDataToReport": "No data is available",
 
     "Moving Time": "Moving Time",
     "Average Power": "Average Power",
@@ -438,8 +442,22 @@
     "Calculate": "Calculate",
     "EnterOptions": "Enter Calculator Options",
     "UnableToCalculateZones": "We could not calculate zones based on the information you provided.  Please try again with different values, or select a different calculation method",
+    "UnableToSaveEdits": "We were unable to save your changes. Please try again.",
 
     "Not Yet Implemented": "Not Yet Implemented",
 
-    "Failed To Save Metric": "Failed To Save Metric"
+    "Failed To Save Metric": "Failed To Save Metric",
+    "Failed To Save": "Failed To Save",
+
+    "Show": "Show",
+    "Hide": "Hide",
+    "ConfirmDeleteSeries1": "Are you sure you want to delete all data for",
+    "ConfirmDeleteSeries2": "All associated data values will be removed.",
+    "ClickToEdit": "Click to edit",
+    "CloseExpandoWithoutSaving": "You have unsaved changes on your workout.  Would you like to save these before closing?",
+    "ApplyExpandoEdits": "Click apply to save edits and update stats.",
+
+    "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
+    "ConfirmDeleteLap": "Are you sure you want to delete the lap?"
+
 }

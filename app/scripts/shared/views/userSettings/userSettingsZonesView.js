@@ -83,19 +83,19 @@ function(
         [
             {
                 title: "Heart Rate",
-                target: "[data-subnav='heartrate']"
+                target: "heartrate"
             },
             {
                 title: "Power",
-                target: "[data-subnav='power']"
+                target: "power"
             },
             {
                 title: "Speed/Pace",
-                target: "[data-subnav='speedPace']"
+                target: "speedPace"
             },
             {
                 title: "Notifications",
-                target: "[data-subnav='notifications']"
+                target: "notifications"
             }
         ],
 
@@ -174,7 +174,9 @@ function(
                 if(visible)
                 {
                     $el.show();
-                    $el.selectBoxIt();
+                    $el.selectBoxIt({
+                        viewport: function(){return $el.closest(".scrollable");}
+                    });
                 }
             });
         },

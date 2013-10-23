@@ -58,7 +58,6 @@
     overflow-y: scroll;
     overflow-x: auto;
     @include nice-scrollbar;
-    background-color: $white;
 }
 
 .tabbedLayoutNav .active {

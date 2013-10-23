@@ -21,7 +21,8 @@ function (TP)
         events:
         {
             "click #userConfirm": "onConfirmed",
-            "click #userCancel" : "onCancelled"
+            "click #userCancel" : "onCancelled",
+            "click button[data-action]": "onButtonAction"
         },
 
         initialize: function(options)
@@ -44,6 +45,13 @@ function (TP)
         onCancelled: function()
         {
             this.trigger("userCancelled", this.options);
+            this.close();
+        },
+
+        onButtonAction: function(e)
+        {
+            var action = $(e.currentTarget).data("action");
+            this.trigger(action, this.options);
             this.close();
         }
     });

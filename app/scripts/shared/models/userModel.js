@@ -141,14 +141,10 @@ function(
                 this.set(this.checkpointAttributes);
         },
 
-        setCurrentAthleteId: function(athleteId, silent)
+        setCurrentAthleteId: function(athleteId)
         {
             this.currentAthleteId = athleteId;
-
-            if (!silent)
-            {
-                this.trigger("athlete:change");
-            }
+            this.trigger("athlete:change");
         },
 
         getCurrentAthleteId: function()
@@ -181,7 +177,7 @@ function(
             {
                 this.athleteDetailsModel = new TP.Model(_.find(this.get("athletes"), function(athlete)
                 {
-                    return athlete.athleteId === athleteId;
+                    return Number(athlete.athleteId) === Number(athleteId);
                 }));
             }
             return this.athleteDetailsModel;

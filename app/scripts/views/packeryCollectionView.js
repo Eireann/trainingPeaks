@@ -48,6 +48,7 @@ function(
             this.tmp = {}; // Placeholder for view being dragged
 
             this.on("show", _.bind(this._setupPackery, this, options));
+            this.on("collection:before:close", this._beforeClose, this);
             this._setupDroppable(options);
 
             _.bindAll(this, "_moveDraggableForPackery");
@@ -55,7 +56,7 @@ function(
 
         layout: function()
         {
-            if(this.packery)
+            if(this.packery && !this.isClosing)
             {
                 this.$el.packery("layout");
                 this._updatePackerySort();
@@ -108,7 +109,10 @@ function(
             {
                 var $item = $(itemEl);
                 var view = $item.data("view"); // Can we get this without working the view on the el
-                view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
+                if(view && view.model)
+                {
+                    view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
+                }
             });
             this.trigger("reorder");
         },
@@ -142,11 +146,24 @@ function(
         },
 
         // Overrides CollectionView
+        closeChildren: function()
+        {
+            this.packery = null;
+            PackeryCollectionView.__super__.closeChildren.apply(this, arguments);
+        },
+
+        // Overrides CollectionView
         removeChildView: function(view)
         {
-            this.packery.remove(view.el);
+            if(this.packery)
+            {
+                this.packery.remove(view.el);
+            }
             PackeryCollectionView.__super__.removeChildView.apply(this, arguments);
-            this.layout();
+            if(this.packery)
+            {
+                this.layout();
+            }
             return this;
         },
 
@@ -275,6 +292,11 @@ function(
             this.tmp.view.$el.removeClass("hover"); // TODO: Is this OK or too coupled?
             this._setupPackeryItem(this.tmp.view, this);
             this.tmp = {};
+        },
+
+        _beforeClose: function()
+        {
+            this.isClosing = true;
         }
     });
 

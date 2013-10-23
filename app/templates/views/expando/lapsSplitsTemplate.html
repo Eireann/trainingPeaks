@@ -1,3 +1,13 @@
 <div class="lapsSplitsTitle">Laps and Splits</div>
-
-{{{frameworkTable headerNames rowData}}}
+<table class="frameworkTable">
+    <thead class="lapSplitsTableHeader">
+        <tr>
+        {{#each headerNames}}
+            <th>{{this}}</th>
+        {{/each}}
+        </tr>
+    </thead>
+    <tbody class="lapSplitsTableBody">
+    </tbody>
+</table>
+<div class="noDataMessage">{{$ "NoDataToReport" }}</div>

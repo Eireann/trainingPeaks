@@ -1,27 +1,35 @@
 ﻿define(
 [
+    "underscore",
     "setImmediate",
     "jqueryui/widget",
     "jquerySelectBox",
+
     "TP",
-    "utilities/workout/formatLapData",
+    "framework/tooltips",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
     "models/workoutStatsForRange",
+    "views/userConfirmationView",
+
     "hbs!templates/views/expando/lapTemplate",
-    "hbs!templates/views/expando/lapsTemplate"
+    "hbs!templates/views/expando/lapsTemplate",
+    "hbs!templates/views/confirmationViews/deleteLapTemplate"
 ],
 function(
+    _,
     setImmediate,
     jqueryUiWidget,
     jquerySelectBox,
     TP,
-    formatLapData,
+    ToolTips,
     formatPeakTime,
     formatPeakDistance,
     WorkoutStatsForRange,
+    UserConfirmationView,
     lapTemplate,
-    lapsTemplate
+    lapsTemplate,
+    deleteLapTemplate
 )
 {
 
@@ -29,7 +37,7 @@ function(
     {
 
         tagName: "li",
-        className: "lap",
+        className: "lap clickable",
 
         template:
         {
@@ -40,13 +48,16 @@ function(
         modelEvents:
         {
             "change:isFocused": "_onFocusedChange",
-            "change:isSelected": "_onSelectedChange"
+            "change:isSelected": "_onSelectedChange",
+            "change:name": "_onNameChange"
         },
 
         events:
         {
-            "click span": "_onClick",
-            "change input": "_onInputChange"
+            "click": "_onClick",
+            "click .editLapName": "_onClickToEdit",
+            "click .delete": "_onClickDelete",
+            "change input[type=checkbox]": "_onCheckboxChange"
         },
 
         initialize: function(options)
@@ -60,9 +71,34 @@ function(
             this._onSelectedChange();
         },
 
+        serializeData: function()
+        {
+            var data = LapView.__super__.serializeData.apply(this, arguments);
+            if(data.formattedValue)
+            {
+                data.name += " (" + data.formattedValue + ")";
+            }
+            return data;
+        },
+
+        _onNameChange: function()
+        {
+            if(!this._isEditing()) {
+                this.render();
+            }
+
+            if(this.model.get("isFocused"))
+            {
+                this.stateModel.trigger('change:primaryRange', this.stateModel, this.model);
+            }
+        },
+
         _onFocusedChange: function()
         {
-            this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
+            var focused = !!this.model.get("isFocused");
+            var $actions = this.$('.actions');
+            this.$el.toggleClass("highlight", focused);
+            $actions.toggle(focused);
         },
 
         _onSelectedChange: function()
@@ -70,12 +106,86 @@ function(
             this.$("input").attr("checked", !!this.model.get("isSelected"));
         },
 
+        _isEditing: function()
+        {
+            return this.$el.is(".editing");
+        },
+
+        _onClickToEdit: function(e)
+        {
+            if(this.model.get("isLap") && this.model.get("isFocused"))
+            {
+                this._startEditing();
+                e.preventDefault();
+            }
+        },
+
         _onClick: function(e)
         {
-            this.stateModel.set("statsRange", this.model);
+            this.stateModel.set("primaryRange", this.model);
+        },
+
+        _startEditing: function()
+        {
+            if(this.model.get("isLap") && !this._isEditing())
+            {
+                var $container = this.$(".editLapName");
+                var $input = $('<input type="text"/>');
+                $input.val(this.model.get("name"));
+
+                ToolTips.disableTooltips();
+
+                $container.empty().append($input);
+                this.$el.addClass('editing');
+                $input.on("change", _.bind(this._onInputChange, this));
+                $input.on("blur", _.bind(this._onInputBlur, this));
+                $input.focus();
+            }
         },
 
         _onInputChange: function(e)
+        {
+            this.model.set("name", this.$("input[type=text]").val());
+        },
+
+        _onInputBlur: function()
+        {
+            if(this._isEditing())
+            {
+                this._stopEditing();
+            }
+        },
+
+        _onClickDelete: function(e)
+        {
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteLapTemplate });
+            deleteConfirmationView.render();
+            this.listenTo(deleteConfirmationView, "userConfirmed", _.bind(this._deleteLap, this));
+        },
+
+        _deleteLap: function()
+        {
+            this.model.set({'deleted': true,'isFocused': false, 'isSelected': false});
+            this.$el.addClass('deleted');
+            this.$('.actions').hide();
+            this.model.trigger('lap:markedAsDeleted', this.model);
+            this.undelegateEvents();
+            this.$('input').attr('disabled', true);
+            this.stateModel.get("ranges").remove(this.model);
+        },
+
+        _stopEditing: function()
+        {
+            if(this.model.get("isLap") && this._isEditing())
+            {
+                this.$("input[type=text]").off("change").off("blur");
+                this.$(".editLapName").empty().text(this.model.get("name"));
+                this.$el.removeClass("editing");
+                ToolTips.enableTooltips();
+            }
+        },
+
+        _onCheckboxChange: function(e)
         {
             if(this.$("input").is(":checked"))
             {
@@ -91,6 +201,8 @@ function(
 
     var LapsView = TP.CompositeView.extend(
     {
+
+        className: "expandoLaps",
 
         itemView: LapView,
         itemViewContainer: ".rangesList ul",
@@ -117,7 +229,9 @@ function(
                 throw new Error("Laps view requires an expando state model");
             }
 
-            this.collection = new TP.Collection({ model: WorkoutStatsForRange });
+
+            this.collection = new TP.Collection([], { model: WorkoutStatsForRange });
+
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             this.stateModel = options.stateModel;
 
@@ -138,6 +252,8 @@ function(
                 }
             });
 
+            this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this._enableOrDisable, this));
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this._onDetailDataReset, this));
         },
 
         serializeData: function()
@@ -168,6 +284,26 @@ function(
             {
                 this.$("select").selectBoxIt();
             });
+
+            this._enableOrDisable();
+        },
+
+        _onDetailDataReset: function()
+        {
+            this.stateModel.reset();
+            this.render();
+        },
+
+        _enableOrDisable: function()
+        {
+            if(this.model.get("detailData").has("channelCuts"))
+            {
+                this.$el.addClass("disabled");
+            }
+            else
+            {
+                this.$el.removeClass("disabled");
+            }
         },
 
         onShow: function()
@@ -177,28 +313,30 @@ function(
 
         _updateCollection: function()
         {
-            var detailData = this.model.get("detailData").toJSON();
-            var lapRanges = detailData.lapsStats ? detailData.lapsStats : [];
-            _.each(lapRanges, formatLapData.calculateTotalAndMovingTime);
+            var detailData = this.model.get("detailData");
+            var lapsCollection = detailData.getRangeCollectionFor("laps");
+            var lapRanges = lapsCollection.models;
 
-            var totalRange = detailData.totalStats ? detailData.totalStats : null;
-            formatLapData.calculateTotalAndMovingTime(totalRange);
-            
-            var ranges = _.map(_.compact([].concat(lapRanges, [totalRange])), _.bind(this._asRangeModel, this, true));
+            this.listenTo(lapsCollection, "reset", _.bind(this._updateCollection, this));
+
+            var ranges = lapRanges.slice();
+
+            if(detailData.get("totalStats"))
+            {
+                ranges.push(this._asRangeModel(detailData.get("totalStats"), { hasLoaded: true, name: "Entire Workout" }));
+            }
 
             var peakType = this.$("select.peakType").val();
-            var peakRanges = peakType ? this._getPeaksData(peakType) : [];
+            ranges = ranges.concat(this._getPeaksData(peakType));
 
-            ranges = ranges.concat(_.map(peakRanges, _.bind(this._asRangeModel, this, false)));
-
-            this.collection.set(ranges);
+            this.collection.reset(ranges);
         },
 
-        _asRangeModel: function(hasLoaded, attrs)
+        _asRangeModel: function(attrs, extra)
         {
+            attrs = _.extend({}, attrs, extra);
             attrs.workoutId = this.model.id;
             var range = new WorkoutStatsForRange(attrs);
-            range.hasLoaded = hasLoaded;
             return range;
         },
 
@@ -225,6 +363,16 @@ function(
             speed: "peakSpeeds",
             pace: "peakSpeeds",
             cadence: "peakCadences"
+        },
+
+        dataChannelKeys:
+        {
+            distance: "Speed",
+            power: "Power",
+            heartrate: "HeartRate",
+            speed: "Speed",
+            pace: "Speed",
+            cadence: "Cadence"
         },
 
         _getSelectOptions: function()
@@ -268,57 +416,28 @@ function(
                 return [];
             }
 
-            var detailData = this.model.get("detailData").toJSON();
-
-            var metric = this.modelPeakKeys[peakType];
-            var peaksData = detailData[metric] ? detailData[metric] : [];
-
-            // sort
-            peaksData = _.sortBy(peaksData, "interval");
-
-            // remove duplicates
-            peaksData = _.uniq(peaksData, true, function(peakItem)
-            {
-                return peakItem.interval;
-            });
+            var ranges = this.model.get("detailData").getRangeCollectionFor(peakType).models;
 
             // filter by enabled intervals
             var enabledPeakIntervals = this._getEnabledPeaks(peakType);
-            peaksData = _.filter(peaksData, function(peakItem)
+            ranges = _.filter(ranges, function(range)
             {
-                return _.contains(enabledPeakIntervals, peakItem.interval);
+                return _.contains(enabledPeakIntervals, range.get("interval"));
             });
 
-            // configure for view
-            return _.map(peaksData, function(peakItem)
+            _.each(ranges, function(range)
             {
-
-                var range = _.clone(peakItem);
-                range.name = "Peak " + this._formatPeakName(peakType, peakItem.interval);
-                range.name += " (" + this._formatPeakValue(peakType, peakItem.value, this.model.get("workoutTypeValueId")) + ")";
-
-                return range;
-
+                var formattedValue = this._formatPeakValue(peakType, range.get("value"), this.model.get("workoutTypeValueId"));
+                range.set("formattedValue", formattedValue);
             }, this);
 
+            return ranges;
         },
 
         _formatPeakValue: function(peakType, peakValue, workoutTypeId)
         {
             var formatType = peakType === "distance" ? "pace" : peakType;
             return TP.utils.conversion.formatUnitsValue(formatType, peakValue, { workoutTypeId: workoutTypeId, withLabel: true });
-        },
-
-        _formatPeakName: function(peakType, interval)
-        {
-            if(peakType === "distance")
-            {
-                return formatPeakDistance(interval);
-            }
-            else
-            {
-                return formatPeakTime(interval);
-            }
         },
 
         _getEnabledPeaks: function(selectedPeakType)
@@ -352,7 +471,19 @@ function(
                 delete peakTypes.speed;
             }
 
+            this._filterPeaksByAvailableChannels(peakTypes);
             return peakTypes;
+        },
+
+        _filterPeaksByAvailableChannels: function(peakTypes)
+        {
+            var availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            _.each(peakTypes, function(data, key) {
+                if(!_.contains(availableDataChannels, this.dataChannelKeys[key]))
+                {
+                    delete peakTypes[key];
+                }
+            }, this);
         },
 
         _shouldDisplayDistance: function()

@@ -6,7 +6,7 @@ requirejs(
     "TP",
     "app",
     "utilities/charting/chartColors",
-    "dashboard/reportingDataManager",
+    "framework/dataManager",
     "dashboard/charts/pmcChart",
     "models/workoutsCollection"
 ],
@@ -16,7 +16,7 @@ function(
     TP,
     theMarsApp,
     chartColors,
-    ReportingDataManager,
+    DataManager,
     PmcChart,
     WorkoutsCollection
     )
@@ -50,7 +50,7 @@ function(
         return new PmcChart({
             dateOptions: { quickDateSelectOption: null, startDate: null, endDate: null}
         }, {
-            dataManager: new ReportingDataManager()
+            dataManager: new DataManager()
         });
     };
 

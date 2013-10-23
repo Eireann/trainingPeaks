@@ -37,6 +37,7 @@
         {
             this._resolvedRequests = {};
             this._pendingRequests = {};
+            this.identityMap.reset();
             this.trigger("reset");
         },
 
@@ -46,10 +47,13 @@
             var temporaryCollection = new klass([], options);
             var collection = new klass([], options);
 
-            var promise = this.fetchModel(temporaryCollection, options).then(function() {
+            var deferred = $.Deferred();
+            var promise = deferred.promise();
+            this.fetchModel(temporaryCollection, options).then(function() {
                 var models = temporaryCollection.map(_.bind(self.identityMap.updateSharedInstance, self.identityMap));
                 collection.set(models);
-            });
+                deferred.resolve.apply(deferred, arguments);
+            }, _.bind(deferred.reject, deferred));
 
             promise.collection = collection;
 
@@ -152,7 +156,7 @@
 
         _resolveRequestOnModelWithExistingData: function(requestSignature, modelOrCollection, deferred)
         {
-            modelOrCollection.set(this._resolvedRequests[requestSignature]);
+            modelOrCollection.set(_.clone(this._resolvedRequests[requestSignature]));
             deferred.resolve();
             return deferred;
         },
@@ -177,7 +181,7 @@
                 options.success = function(modelOrCollection, response, options)
                 {
                     var parsedData = modelOrCollection.parse(response);
-                    self._resolvedRequests[requestSignature] = parsedData;
+                    self._resolvedRequests[requestSignature] = _.clone(parsedData);
 
                     if(originalSuccess)
                     {
@@ -226,6 +230,62 @@
             }
 
             return deferred;
+        },
+
+        // Reporting Methods
+
+        fetchReport: function(reportName, startDate, endDate, postData)
+        {
+
+            if (!startDate || !endDate)
+            {
+                throw new Error("startDate & endDate needed for ReportFetcher");
+            }
+
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
+            var url = theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/reporting/" + reportName;
+            url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
+            url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
+
+            if(postData)
+            {
+                return this.fetchAjax(this._buildUrlSignature(url, postData), {
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(postData)
+                });
+            }
+            else
+            {
+                return this.fetchAjax(url, { url: url, type: "GET" });
+            }
+        },
+
+        fetchMetrics: function(startDate, endDate)
+        {
+            if (!startDate || !endDate)
+            {
+                throw new Error("startDate & endDate needed for ReportFetcher");
+            }
+
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
+            var url = theMarsApp.apiRoot + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
+            url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
+            url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
+
+            return this.fetchAjax(url, { url: url, type: "GET" });
+        },
+
+        _buildUrlSignature: function(url, postData)
+        {
+            var parts = [];
+            _.each(postData, function(value, key)
+            {
+                parts.push(key + "=" + value);
+            });
+            parts.sort();
+            return url + "/" + parts.join("/");
         }
 
     });

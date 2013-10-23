@@ -8,7 +8,7 @@
 ],
 function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
-    var WorkoutModel = TP.APIDeepModel.extend(
+    var WorkoutModel = TP.APIBaseModel.extend(
     {
         cacheable: true,
 
@@ -96,6 +96,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }, options));
             this.set("detailData", new WorkoutDetailDataModel({ workoutId: this.get("workoutId") }, options));
 
+            this.listenTo(this.get("detailData"), "after:saveEdits", _.bind(this.onSaveDetailDataEdits, this));
+
             // for newly added workouts, or else opening the qv again passes null to endpoint url
             this.on("change:workoutId", function()
             {
@@ -108,8 +110,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
         {
             this.checkpointAttributes = _.clone(this.attributes);
 
-            // details checkpoint
-            this.get("details").checkpoint();
+            // handle details checkpoint separately
+            //this.get("details").checkpoint();
             delete this.checkpointAttributes.details;
 
             // probably no need for checkpoint/revert here?
@@ -125,7 +127,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 this.set(this.checkpointAttributes);
                 this.save();
 
-                this.get("details").revert();
+                // handle details revert separately
+                //this.get("details").revert();
 
                 // not needed until we can edit detailData
                 //this.get("detailData").revert();
@@ -170,8 +173,16 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             };
             return this.save(attrs, { wait: true });
         },
-        
-        copyToClipboard: function()
+
+        dropped: function(options)
+        {
+            if(options && options.date)
+            {
+                this.moveToDay(options.date);
+            }
+        },
+
+        cloneForCopy: function()
         {
             var attributesToCopy = [
                 "athleteId",
@@ -190,43 +201,36 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 "elevationGainPlanned"
             ];
 
-            var copiedModelAttributes = {};
-            var self = this;
-            _.each(attributesToCopy, function(attributeName)
-            {
-                copiedModelAttributes[attributeName] = self.get(attributeName);
-            });
-
-            return new WorkoutModel(copiedModelAttributes);
-        },
-        
-        cutToClipboard: function ()
-        {
-            return this;
+            return new WorkoutModel(this.pick(attributesToCopy));
         },
 
-        onPaste: function(dateToPasteTo)
+        pasted: function(options)
         {
-            if (this.id)
+
+            if(options.date)
             {
-                if (moment(dateToPasteTo).format(TP.utils.datetime.shortDateFormat) !== this.getCalendarDay())
+                var date = options.date;
+
+                if(this.isNew())
                 {
-                    this.moveToDay(dateToPasteTo);
-                    return this;
-                } else
-                {
-                    return null;
+                    var workout = this.clone();
+                    workout.set("workoutDay", date).save();
+                    theMarsApp.calendarManager.addItem(workout);
+                    return workout;
                 }
+                else
+                {
+                    this.moveToDay(date);
+                    return this;
+                }
+
             }
             else
             {
-                var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
-                var workoutDateMoment = moment(dateToPasteTo);
-                var formattedWorkoutDate = workoutDateMoment.format(TP.utils.datetime.longDateFormat);
-                newWorkout.set("workoutDay", formattedWorkoutDate);
-                newWorkout.save();
-                return newWorkout;
+                console.warn("Don't know how to paste to target");
+                return false;
             }
+
         },
 
         getPostActivityComments: function()
@@ -268,6 +272,12 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             attributes.workoutComments = new TP.Collection(this.attributes.workoutComments).toJSON();
 
             return attributes;
+        },
+
+        onSaveDetailDataEdits: function()
+        {
+            this.fetch();
+            this.get("details").fetch();
         }
 
     });

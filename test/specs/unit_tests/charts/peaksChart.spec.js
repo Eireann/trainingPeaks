@@ -46,11 +46,9 @@ function(
 
         it("Should check for valid initialization parameters", function ()
         {
-            expect(function() { new PeaksChartView({}); }).toThrow("PeaksChartView requires a peaks object at construction time");
-            expect(function() { new PeaksChartView({ peaks: new TP.Model() }); }).toThrow("PeaksChartView requires a timeInZones object at construction time");
-            expect(function() { new PeaksChartView({ peaks: new TP.Model(), timeInZones: {} }); }).toThrow("PeaksChartView requires a chartColor object at construction time");
-            expect(function() { new PeaksChartView({ peaks: new TP.Model(), timeInZones: {}, chartColor: {} }); }).toThrow("PeaksChartView requires a toolTipBuilder callback at construction time");
-            expect(function() { new PeaksChartView({ peaks: new TP.Model(), timeInZones: {}, chartColor: {}, toolTipBuilder: function() { } }); }).not.toThrow();
+            expect(function() { new PeaksChartView({ model: new TP.Model()  }); }).toThrow("PeaksChartView requires a chartColor object at construction time");
+            expect(function() { new PeaksChartView({ model: new TP.Model(), chartColor: {} }); }).toThrow("PeaksChartView requires a toolTipBuilder callback at construction time");
+            expect(function() { new PeaksChartView({ model: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).not.toThrow();
         });
 
         describe("Build Chart Points", function()
