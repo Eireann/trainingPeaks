@@ -1,5 +1,5 @@
 ﻿.userSettings {
-    width: calc(800px + 200px + 52px);
+    width: calc(719px + 200px + 52px);
     overflow: hidden; //to hide overlapping portions of titleBar
 
     .selectBoxWrapper
@@ -41,7 +41,7 @@
 
     .tabbedLayoutBody {
         width: calc(100% - 142px);
-        padding:0 30px 12px 30px;
+        // padding:0 30px 12px 30px;
     }
 
     label
@@ -100,6 +100,9 @@
     }
 
     .userSettingsContent {
+        width: 817px;
+        padding: 0 30px;
+
         fieldset {
             border: 1px solid $TPGrey2;
             padding: 10px 15px 15px 15px;
@@ -118,7 +121,7 @@
         }
 
         .scrollTarget {
-            padding-top:30px;
+            padding-top:28px;
         }
 
         .addWorkoutType, 
@@ -147,7 +150,7 @@
         }
 
         .zonesConfigGroup {
-            margin-top:25px;
+            margin-top:11px;
 
             .zoneGroupNameContain {
                 @include clearfix;
@@ -187,23 +190,24 @@
                 
                 input[type="text"] {
                     height:22px;
-                    width:100px;
+                    width:72px;
                     font-size: 12px;
                 }
                 
                 .zoneCalculatorLayoutBody {
                     .selectBox {
-                        width:205px;
+                        // width:195px;
                         // margin-left:7px;
                     }
 
                     .selectboxit-container .selectboxit {
-                        width: 205px !important;
+                        // width: 195px !important;
                     }
 
                     .calculatorType,
                     .calculatorDefinition {
                         float:left;
+                        margin-right:43px;
                         margin-right:25px;
                     }
 
@@ -234,10 +238,10 @@
                                 
 
                                 .selectBox {
-                                    width: 125px;
+                                    width: 119px;
                                 }
                                 .selectboxit-container .selectboxit {
-                                    width: 125px !important;
+                                    width: 119px !important;
                                     
                                     .selectboxit-text,
                                     .selectboxit-options {
@@ -269,7 +273,7 @@
                             }
                             input[type="text"] {
                                 float: left;
-                                width: 125px;
+                                width: 119px;
                             }
                         }
                     }
@@ -295,7 +299,7 @@
                     font-size:$fontSizeSmall;
                     display:inline-block;
                     text-align:center;
-                    width:28px;
+                    width:30px;
                 }
             }
 
@@ -344,10 +348,10 @@
 
                 .zoneValueContain {
                     float:left;
-                    margin-right:25px;
+                    margin-right:41px;
 
                     .numberInput {
-                        width:100px;
+                        width:91px;
                     }
                 }
             }
@@ -392,8 +396,7 @@
 
         .heartRateZones, 
         .powerZones, 
-        .speedPaceZones,
-        .userSettingsPayments {
+        .speedPaceZones {
             margin-bottom:20px;
         }
 
@@ -403,15 +406,15 @@
             .zones {
                 .zoneEntry {
                     .zoneName {
-                        width:400px;
+                        width:433px;
                     }
                     .min,
                     .max {
-                        width:80px;
+                        width:77px;
                     }
 
                     .min {
-                        margin-left:38px;
+                        margin-left:39px;
                     }
                 }
             }
@@ -486,8 +489,8 @@
 }
 
 .userSettingsAccountContent {
-    width: 816px;
-    padding-top:30px;
+    // width: 817px;
+    // padding-top:30px;
 
     .userSettingsHelpText {
         float:left;
@@ -507,6 +510,10 @@
         margin-bottom:49px;
         @include clearfix;
 
+        &.email {
+            margin-bottom: 28px;
+        }
+
         .labelbold {
             margin-left:5px;
             font-family:$fontFamilyHeavy;
@@ -522,7 +529,7 @@
 
             .fieldTitle {
                 float: left;   
-                padding: 4px 5px 0 0; 
+                padding: 5px 5px 0 0; 
                 width: 125px;
                 max-width: 125px;
                 text-align: right;
@@ -714,7 +721,7 @@
 
         &.calendarSync {
             input[type="text"] {
-                width:691px;
+                width:632px;
                 height:20px;
                 float: left;
             }
@@ -1050,6 +1057,47 @@
         button[disabled]
         {
             display: none;
+        }
+    }
+}
+
+
+.heartRateZonesCalculator {
+    .calculatorType {
+        .selectBox {
+            width: 195px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 195px !important;
+        }
+    } 
+
+    .calculatorDefinition {
+        .selectBox {
+            width:210px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 210px !important;
+        }
+    }
+}
+
+.speedZonesCalculator {
+    .calculatorType {
+        .selectBox {
+            width:135px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 135px !important;
+        }
+    } 
+
+    .calculatorDefinition {
+        .selectBox {
+            width:185px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 185px !important;
         }
     }
 }
