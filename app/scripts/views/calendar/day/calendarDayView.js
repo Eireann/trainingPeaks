@@ -220,6 +220,16 @@ function(
 
         onDayHeaderClicked: function(e)
         {
+            this._doSelect(e);
+        },
+
+        onDaySelectedClicked: function(e)
+        {
+            this._doSelect(e);
+        },
+
+        _doSelect: function(e)
+        {
             e.preventDefault();
             theMarsApp.selectionManager.setSelection(this.model, e);
 
@@ -228,12 +238,6 @@ function(
                 var rangeSettingsView = new SelectedRangeSettingsView();
                 rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
             }
-        },
-
-        onDaySelectedClicked: function(e)
-        {
-            e.preventDefault();
-            theMarsApp.selectionManager.setSelection(this.model, e);
         },
 
         onAddWorkoutClicked: function(e)
