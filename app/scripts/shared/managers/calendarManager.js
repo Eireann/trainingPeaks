@@ -37,24 +37,16 @@ function(
 
         prepareNext: function(count)
         {
-            var length = this.length;
-
-            var last = moment(this.last().id).add(count, this.datelike);
-            this.manager.ensure(last);
-
-            return this.slice(length, length + count);
+            var last = this.length > 0 ? moment(this.last().id) : moment();
+            this.manager.ensureRange(last, moment(last).add(count, this.datelike));
+            return this.last(count);
         },
 
         preparePrevious: function(count)
         {
-            var length = this.length;
-
-            var first = moment(this.first().id).subtract(count, this.datelike);
-            this.manager.ensure(first);
-
-            var change = this.length - length;
-
-            return this.slice(change - count, change);
+            var first = this.length > 0 ? moment(this.first().id) : moment();
+            this.manager.ensureRange(first, moment(first).subtract(count, this.datelike));
+            return this.first(count);
         }
 
     });
@@ -73,8 +65,8 @@ function(
         this.days = new DatelikeCollection([], { manager: this, datelike: "day", model: CalendarDayModel, comparator: "date" });
         this.weeks = new DatelikeCollection([], { manager: this, datelike: "week", comparator: "id" });
 
-        this.begin = CalendarUtility.weekMomentForDate(moment());
-        this.end = CalendarUtility.weekMomentForDate(moment());
+        this.first = null;
+        this.last = null;
 
         this.listenTo(this.activities, "request sync error add change:workoutDay change:timeStamp", _.bind(this._indexActivityByDay, this));
         this.listenTo(this.activities, "remove", _.bind(this._unindexActivityByDay, this));
@@ -93,35 +85,47 @@ function(
             this.ensureRange(date, date);
         },
 
-        ensureRange: function(start, end)
+        ensureRange: function(a, b)
         {
 
-            start = moment(start);
-            end = moment(end);
+            a = CalendarUtility.weekMomentForDate(a);
+            b = CalendarUtility.weekMomentForDate(b);
 
-            var beforeFirst = _.min([start, end, this.begin]);
-            var beforeLast = moment(this.begin).subtract(1, "week");
-            var afterFirst = this.end;
-            var afterLast = _.max([start, end, moment(this.end).subtract(1, "week")]);
+            var first = _.min([a, b]);
+            var last = _.max([a, b]);
 
-            this.begin = CalendarUtility.weekMomentForDate(beforeFirst);
-            this.end = CalendarUtility.weekMomentForDate(afterLast).add(1, "week");
-
-            if(beforeFirst <= beforeLast)
+            if(this.first === null || this.last === null)
             {
-                this._createWeeks(beforeFirst, beforeLast);
+                this.first = first;
+                this.last = last;
+                this._createWeeks(this.first, this.last);
             }
-
-            if(afterFirst <= afterLast)
+            else
             {
-                this._createWeeks(afterFirst, afterLast);
+                var firstBefore = first;
+                var lastBefore = moment(this.first).subtract(1, "week");
+
+                if(firstBefore <= lastBefore)
+                {
+                    this.first = first;
+                    this._createWeeks(firstBefore, lastBefore);
+                }
+
+                var firstAfter = moment(this.last).add(1, "week");
+                var lastAfter = last;
+
+                if(firstAfter <= lastAfter)
+                {
+                    this.last = last;
+                    this._createWeeks(firstAfter, lastAfter);
+                }
             }
 
         },
 
-        get: function(id, model)
+        get: function(klass, id)
         {
-            var item = this.activities.get([model.webAPIModelName, id].join(":"));
+            var item = this.activities.get([klass.prototype.webAPIModelName, id].join(":"));
             return ActivityModel.unwrap(item);
         },
 
@@ -187,12 +191,12 @@ function(
 
             var week = this.weeks.get(id);
 
-            if(week.get("isFetched"))
+            if(week.getState().get("isFetched"))
             {
                 return; // We've already loaded this week
             }
 
-            week.set({ isWaiting: true });
+            week.getState().set({ isWaiting: true, isFetched: false, isFailed: false });
 
             var startDate = CalendarUtility.startMomentOfWeek(id);
             var endDate = CalendarUtility.endMomentOfWeek(id);
@@ -213,16 +217,18 @@ function(
 
             promise.then(function()
             {
+                console.log("success", week.id);
                 self.aroundChanges(function()
                 {
                     workouts.each(self.addItem, self);
                     metrics.each(self.addItem, self);
-                    week.set({ isWaiting: false, isFetched: true });
+                    week.getState().set({ isWaiting: false, isFetched: true });
                 });
             },
             function() // on error
             {
-                week.set({ isWaiting: false, isFailed: true });
+                console.log("failed", week.id);
+                week.getState().set({ isWaiting: false, isFailed: true });
             });
 
             return promise;
@@ -277,7 +283,7 @@ function(
 
                 self.weeks.each(function(week)
                 {
-                    week.set({ isFetched: false, isWaiting: true });
+                    week.getState().set({ isFetched: false });
                 });
 
                 self.trigger("refresh");

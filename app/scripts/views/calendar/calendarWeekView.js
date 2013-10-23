@@ -35,12 +35,13 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
                 throw new Error("CalendarWeekView requires a collection");
             this.waiting = $('<div class="calendarWeekView waiting"> </div>');
 
-            this.listenTo(this.model, 'change:isWaiting', _.bind(this._updateWaiting, this));
+            this.listenTo(this.model, 'state:change:isWaiting', _.bind(this._updateWaiting, this));
         },
 
         _updateWaiting: function()
         {
-            var isWaiting = this.model.get('isWaiting') || !this.model.get('isFetched');
+            var state = this.model.getState();
+            var isWaiting = state.get('isWaiting') || !state.get('isFetched');
             if(isWaiting)
             {
                 this.onWaitStart();
