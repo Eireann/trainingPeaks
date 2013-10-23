@@ -17,7 +17,6 @@ define(
     "controllers/navigationController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
-    "controllers/homeController",
     "views/buildInfoView",
     "router",
     "utilities/dragAndDropFileUploadWidget",
@@ -45,7 +44,6 @@ function(
     NavigationController,
     CalendarController,
     DashboardController,
-    HomeController,
     BuildInfoView,
     Router,
     DragAndDropFileUploadWidget,
@@ -320,7 +318,6 @@ function(
             this.controllers.navigationController = new NavigationController();
             this.controllers.calendarController = new CalendarController({ dataManager: this.dataManager });
             this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManager });
-            this.controllers.homeController = new HomeController({ dataManager: this.dataManager });
         });
 
         this.addInitializer(function()
