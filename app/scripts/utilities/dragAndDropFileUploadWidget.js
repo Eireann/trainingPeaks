@@ -156,7 +156,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                         _.each(workouts, function (workout)
                         {
                             if (theMarsApp)
-                                theMarsApp.controllers.calendarController.weeksCollection.addWorkout(new WorkoutModel(workout));
+                                theMarsApp.calendarManager.addItem(new WorkoutModel(workout));
                         });
 
                         $dropTarget.fadeOut(2000, function() { $dropTarget.find(".uploadingText").hide(); $dropTarget.find(".uploadSuccess").hide(); $dropTarget.remove(); $overlay.remove(); uploadInProgress = false; });

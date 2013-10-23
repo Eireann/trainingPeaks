@@ -76,31 +76,44 @@ function(
             });
         },
 
-        cutToClipboard: function()
-        {
-            return this;
-        },
-
-        copyToClipboard: function()
+        cloneForCopy: function()
         {
             var clone =  this.clone();
             clone.unset("id");
             return clone;
         },
 
-        onPaste: function(date)
+        pasted: function(options)
         {
-            if(this.isNew())
+            if(options.date)
             {
-                var target = this.clone();
-                target.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
-                target.save();
-                return target;
+                var date = options.date;
+                if(this.isNew())
+                {
+                    var metric = this.clone();
+                    metric.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
+                    metric.save();
+                    theMarsApp.calendarManager.addItem(metric);
+                    return metric;
+                }
+                else
+                {
+                    this.moveToDay(date);
+                    return this;
+                }
             }
             else
             {
-                this.moveToDay(date);
-                return this;
+                console.warn("Can't paste metric on anything but calendar");
+                return false;
+            }
+        },
+
+        dropped: function(options)
+        {
+            if(options && options.date)
+            {
+                this.moveToDay(options.date);
             }
         }
 

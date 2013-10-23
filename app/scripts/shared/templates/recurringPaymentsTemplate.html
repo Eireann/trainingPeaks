@@ -1,7 +1,8 @@
+<h3>{{$ "Summary" }}</h3>
 <p>{{$ "AccountExpires" }}: {{ formatDate expireDate }}</p>
 
 <p>{{$ "CurrentRatePlan" }}: $ {{ defaultValue amt "--" }} - {{ lookupSharedData "accounting.payPeriods" payPeriod "--" }}. {{$ "Paid Through" }}: {{ formatDate expireDate }}</p>
 
-<h4>{{$ "Active Recurring Payments" }}</h4>
+<h3>{{$ "Active Recurring Payments" }}</h3>
 <p>{{$ "None" }}</p>
 

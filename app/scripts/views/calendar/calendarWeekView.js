@@ -13,15 +13,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
     {
         tagName: "div",
         className: "week",
-        getItemView: function(item)
-        {
-            if (!item)
-                return TP.ItemView;
-            if (item.isSummary)
-                return WeekSummaryView;
-            else
-                return CalendarDayView;
-        },
+        itemView: CalendarDayView,
 
         // Prevent render on changes
         modelEvents: {},
@@ -78,9 +70,22 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
         onRender: function()
         {
+            this.renderWeekSummary();
+
             this.isWaiting = false;
             this._updateWaiting();
             this.setThisWeekCss();
+        },
+
+        renderWeekSummary: function()
+        {
+            var model = new TP.Model();
+            model.collection = this.collection;
+
+            var summary = new WeekSummaryView({ model: model });
+            this.children.add(summary);
+            this.$el.append(summary.el);
+            summary.render();
         },
 
         setThisWeekCss: function ()

@@ -7,14 +7,30 @@ function(conversion)
 
     describe("Line Return Parsing and Formatting", function()
     {
-        it("Should replace line feed (\\n) with carriage return and line feed (\\r\\n)", function()
+        describe("Format new lines", function()
         {
-            expect(conversion.fixNewlines("A\nstring\nwith\nnew\nlines")).toEqual("A\r\nstring\r\nwith\r\nnew\r\nlines");
+            it("Should replace line feed (\\n) or carriage return (\\r) with carriage return and line feed (\\r\\n)", function()
+            {
+                expect(conversion.fixNewlinesForFormat("A\nstring\rwith\rnew\nlines")).toEqual("A\r\nstring\r\nwith\r\nnew\r\nlines");
+            });
+
+            it("Should preserve multiple new lines", function()
+            {
+                expect(conversion.fixNewlinesForFormat("A\nstring\nwith\r\r\r\rnew\nlines")).toEqual("A\r\nstring\r\nwith\r\n\r\n\r\n\r\nnew\r\nlines");
+            });
         });
 
-        it("Should preserve multiple new lines", function()
+        describe("Parse new lines", function()
         {
-            expect(conversion.fixNewlines("A\nstring\nwith\n\n\n\nnew\nlines")).toEqual("A\r\nstring\r\nwith\r\n\r\n\r\n\r\nnew\r\nlines");
+            it("Should replace carriage return and line feed (\\r\\n) with carriage return (\\r)", function()
+            {
+                expect(conversion.fixNewlinesForParse("A\r\nstring\r\nwith\r\nnew\r\nlines")).toEqual("A\rstring\rwith\rnew\rlines");
+            });
+
+            it("Should preserve multiple new lines", function()
+            {
+                expect(conversion.fixNewlinesForParse("A\r\nstring\nwith\n\r\n\r\n\nnew\nlines")).toEqual("A\rstring\rwith\r\r\r\rnew\rlines");
+            });
         });
     });
 
