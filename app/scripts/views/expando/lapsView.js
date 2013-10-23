@@ -55,7 +55,7 @@ function(
 
         events:
         {
-            "click": "_onClick",
+            "click :not(input[type=checkbox])": "_onClick",
             "click .editLapName": "_onClickToEdit",
             "click .delete": "_onClickDelete",
             "click .add": "_onClickAdd",
