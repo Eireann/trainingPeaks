@@ -3,6 +3,13 @@
 #quickViewExpandedContent
 {
     min-width: 1150px;
+
+    .deleted
+    {
+        background-color: pink;
+        opacity: 0.5;
+        text-decoration: line-through;
+    }
 }
 
 .quickViewExpandedStats
@@ -51,18 +58,18 @@
         border-left: solid 1px $TPGrey2;
         padding: 7px 0 0 12px;
         float: left;
-        
+
         .view
         {
             float: left;
             width: 30px;
-            height: 21px; 
+            height: 21px;
         }
         .topViews
         {
             height: 30px;
             width: 115px;
-            
+
             padding-top: 5px;
 
             .oneUpView
@@ -189,7 +196,7 @@
                 display: none;
             }
         }
-        
+
         .graphToolbar
         {
             float: left;
@@ -230,10 +237,10 @@
                     margin: 0;
                     min-width: 44px;
                     float: left;
-                    
+
                     box-shadow: none;
                     @include linearGradient(top, #ffffff, #dfddde);
-                    
+
                     background: repeat-x 0 0; //fallback
                     @extend %backgroundGradientButtonBG;
                     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
@@ -242,7 +249,7 @@
                     background-color:#dfdfdf;
                     color: $TPGrey10;
                     border: 1px solid $TPGrey9;
-                    
+
                     // For shared button borders & rollover
                     position: relative;
                     margin-left: -1px;
@@ -303,7 +310,7 @@
 
                     &.graphHeartRateButton
                     {
-                        @include linearGradient(top, #f8b3b6, #e61101);   
+                        @include linearGradient(top, #f8b3b6, #e61101);
                     }
 
                     &.graphPowerButton
@@ -355,7 +362,7 @@
                         background-position: 0 -20px;
                         color: $white;
                     }
-                            
+
                     &:active
                     {
                         background-position: 0 -20px;
@@ -367,7 +374,7 @@
                 button::-moz-focus-inner {
                     padding: 0;
                     border: 0;
-                }   
+                }
             }
 
             .graphSliderContain {
@@ -404,7 +411,7 @@
                     {
                        border-color: $TPGrey11;
                     }
-                            
+
                     &:active
                     {
                         background-position: 0 -20px;
@@ -412,16 +419,16 @@
                 }
             }
 
-            
+
 
         }
     }
-    
+
     .expandoLapsSplitsPod {
         float: left;
         padding: 0 10px;
         width: 100%;
-        
+
         table {
             border-left:none;
             border-right:none;
@@ -435,7 +442,7 @@
             margin: 22px 0;
         }
     }
-    
+
     .expandoPackeryRegion {
         width: 100%;
         padding: 0 12px;
@@ -455,8 +462,8 @@
         }
 
         .chartContainer {
-            @include calc("width","100% - 58px");    
-            @include calc("height","100% - 85px");    
+            @include calc("width","100% - 58px");
+            @include calc("height","100% - 85px");
             position: absolute;
             top: 21px;
             margin: 0 auto;
@@ -493,7 +500,7 @@
     .expandoEditControlsRegion
     {
         // so .waiting indicator has a home
-        position: relative; 
+        position: relative;
         .expandoEditControls
         {
             // min-height: 200px;
@@ -515,7 +522,7 @@
             @include buttons(0, 96px, $fontSizeSmall);
             button {
                 // height: 20px;
-                
+
             }
         }
     }
@@ -544,7 +551,7 @@
 
             .recalcStatsMessage {
                 padding: 0 10px 10px 10px;
-                
+
                 p {
                     font-size: $fontSizeSmall;
                     color: $TPGrey3;
@@ -585,7 +592,7 @@
                 display: table;
                 margin-top: 20px;
 
-                .separator 
+                .separator
                 {
                     display: table-cell;
                     width: 2px;
@@ -636,7 +643,7 @@
 
                     }
 
-                    .separator 
+                    .separator
                     {
                         padding: 0px;
                     }
@@ -701,13 +708,13 @@
 
             }
 
-            .selectboxit-option-icon-container 
+            .selectboxit-option-icon-container
             {
                 margin-left: 0px;
             }
 
             .selectboxit-option
-            {   
+            {
                 text-indent: 3px;
             }
 
@@ -719,7 +726,7 @@
         }
 
         .rangesList {
-            margin-left: 35px; 
+            margin-left: 35px;
 
             ul {
                 list-style-type: none;
@@ -739,11 +746,11 @@
                 }
 
                 span {
-                    cursor: pointer;  
+                    cursor: pointer;
                     // display: inline-block;
                     @include calc(width, "100% - 20px");
                     &:hover {
-                        color:$TPGrey4; 
+                        color:$TPGrey4;
                     }
                 }
 
@@ -761,7 +768,7 @@
 
                 .editLapName {
                     display:inline-block;
-                    
+
                     @include inputs(auto, 22px, $fontSizeSmall, $fontFamilyRegular);
                     input {
                         text-align: left !important;
@@ -784,7 +791,7 @@
 
 .statisticsSummary
 {
-    @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);   
+    @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
     .statsRow
     {
 
@@ -792,7 +799,7 @@
         {
             display: inline-block;
             width: 127px;
-            //@include calc(width, "50% - 5px"); 
+            //@include calc(width, "50% - 5px");
             text-align: right;
             margin-right: 5px;
         }
@@ -800,7 +807,7 @@
         .value
         {
             line-height: 1.5;
-            font-size: $fontSizeXLarge; 
+            font-size: $fontSizeXLarge;
         }
 
         .units
@@ -844,7 +851,7 @@
 
 .expandoPod {
 
-    position: absolute; 
+    position: absolute;
     padding: 0;
 
     border: 1px solid transparent;
@@ -852,7 +859,7 @@
 
     &.noData
     {
-        border: 1px solid white;  
+        border: 1px solid white;
     }
 
     &.fullScreen
@@ -996,7 +1003,7 @@
             }
         }
 
-        .collapse 
+        .collapse
         {
             display: none;
             right: 0px;

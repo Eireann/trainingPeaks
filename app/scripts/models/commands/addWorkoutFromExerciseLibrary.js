@@ -1,8 +1,14 @@
 ﻿define(
 [
-    "TP"
+    "TP",
+    "views/userConfirmationView",
+    "hbs!shared/templates/failedToSaveTemplate"
 ],
-function(TP)
+function(
+    TP,
+    UserConfirmationView,
+    failedToSaveTemplate
+)
 {
 
     return TP.Model.extend(
@@ -44,7 +50,17 @@ function(TP)
 
         execute: function()
         {
-            return this.save();
+            var promise = this.save();
+
+            var self = this;
+            promise.fail(function() {
+                self.workout.destroy();
+
+                var dialog = new UserConfirmationView({ template: failedToSaveTemplate });
+                dialog.render();
+            });
+
+            return promise;
         },
 
         onSave: function()

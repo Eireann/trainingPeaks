@@ -22,6 +22,7 @@ function(
         },
 
         tagName: 'tr',
+
         template:
         {
             type: "handlebars",
@@ -70,16 +71,31 @@ function(
             $input.focus();
         },
 
+        onRender: function()
+        {
+            if(this.model.get('deleted'))
+            {
+                this._markAsDeleted();
+            }
+        },
+
+        _markAsDeleted: function()
+        {
+            this.$('td.lap').attr('disabled', true);
+            this.undelegateEvents();
+            this.$el.addClass('deleted');
+        },
+
         _onInputChange: function(e)
         {
             var $input = $(e.currentTarget);
-            this.model.set("name", $input.val());
+            this.model.set("name", $.trim($input.val()));
         },
 
         _onInputBlur: function(e)
         {
             var $input = $(e.currentTarget);
-            this.model.set("name", $input.val());
+            this.model.set("name", $.trim($input.val()));
             $input.closest("td").html(this.model.get("name")).removeClass("editing");
             $input.off("change");
             $input.off("blur");

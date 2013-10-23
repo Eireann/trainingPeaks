@@ -43,10 +43,9 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, ca
 
         initialize: function(options)
         {
+            options = options || {};
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
             _.bindAll(this, "hideSettings");
-
-            this.parentEl = options.parentEl;
-            this.inheritedClassNames = options.className;
         },
 
         attributes: function()
@@ -71,8 +70,6 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, ca
             {
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
-
-            this.updatePasteAvailability();
         },
 
         onDeleteClicked: function(e)
@@ -86,34 +83,31 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, ca
         
         onDeleteDayConfirmed: function()
         {
-            this.model.deleteDayItems();
+            this.selectionManager.execute("delete");
         },
 
         onCopyClicked: function(e)
         {
-            this.model.trigger("day:copy", this.model);
-            this.updatePasteAvailability();
+            this.selectionManager.copySelectionToClipboard();
             this.hideSettings(e);
         },
         
         onCutClicked: function(e)
         {
-            this.model.trigger("day:cut", this.model);
-            this.updatePasteAvailability();
+            this.selectionManager.cutSelectionToClipboard();
             this.hideSettings(e);
         },
 
         onPasteClicked: function(e)
         {
-            this.model.trigger("day:paste", this.model.id);
+            this.selectionManager.pasteClipboardToSelection();
             this.hideSettings(e);
         },
 
         onShiftClicked: function(e)
         {
-            this.trigger("beforeShift");
+            this.selectionManager.execute("shift");
             this.hideSettings(e);
-            this.model.trigger("day:shiftwizard");
         },
         
         onPrintClicked: function(e)
@@ -121,11 +115,6 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, ca
             var personId = theMarsApp.user.getCurrentAthleteId();
             var date = moment(this.model.get("date"));
             printUtility.printDay(personId, date);
-        },
-
-        updatePasteAvailability: function()
-        {
-            this.model.trigger("day:pasteMenu", this.model.id);
         }
 
     });

@@ -7,12 +7,12 @@
     "shared/models/activityModel" 
 ],
 function (
-          _,
-          TP,
-          WorkoutModel,
-          MetricModel,
-          ActivityModel
-        )
+    _,
+    TP,
+    WorkoutModel,
+    MetricModel,
+    ActivityModel
+)
 {
 
     function getIdsByActivityType(activities)

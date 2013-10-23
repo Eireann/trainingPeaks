@@ -107,90 +107,76 @@ function(
                 metric = new MetricModel(metricAttributes);
             });
 
-            describe("copyToClipboard", function()
+            describe("cloneForCopy", function()
             {
-                it("Should implement a copyToClipboard method", function()
+                it("Should implement a cloneForCopy method", function()
                 {
-                    expect(MetricModel.prototype.copyToClipboard).toBeDefined();
-                    expect(typeof MetricModel.prototype.copyToClipboard).toBe("function");
+                    expect(MetricModel.prototype.cloneForCopy).toBeDefined();
+                    expect(typeof MetricModel.prototype.cloneForCopy).toBe("function");
 
                 });
 
                 it("Should return a MetricModel", function()
                 {
-                    var result = metric.copyToClipboard();
+                    var result = metric.cloneForCopy();
                     expect(metric instanceof MetricModel).toBe(true);
                 });
 
                 it("Should have the same attributes (except id)", function()
                 {
-                    var copiedMetric = metric.copyToClipboard();
+                    var copiedMetric = metric.cloneForCopy();
                     expect(copiedMetric.attributes).toEqual(_.omit(metric.attributes, "id"));
                 });
             });
 
-            describe("cutToClipboard", function()
+            describe("pasted", function()
             {
-                it("Should implement a cutToClipboard method", function()
+                it("Should implement an pasted method", function()
                 {
-                    expect(MetricModel.prototype.cutToClipboard).toBeDefined();
-                    expect(typeof MetricModel.prototype.cutToClipboard).toBe("function");
-                });
-
-                it("Should return a reference to itself", function()
-                {
-                    expect(metric.cutToClipboard()).toBe(metric);
-                });
-            });
-
-            describe("onPaste", function()
-            {
-                it("Should implement an onPaste method", function()
-                {
-                    expect(MetricModel.prototype.onPaste).toBeDefined();
-                    expect(typeof MetricModel.prototype.onPaste).toBe("function");
+                    expect(MetricModel.prototype.pasted).toBeDefined();
+                    expect(typeof MetricModel.prototype.pasted).toBe("function");
                 });
 
                 it("Should call moveToDay when pasting an existing metric from cut", function()
                 {
-                    var cutMetric = metric.cutToClipboard();
+                    var cutMetric = metric;
                     spyOn(cutMetric, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
-                    cutMetric.onPaste(dateToPasteTo);
+                    cutMetric.pasted({ date: dateToPasteTo });
                     expect(cutMetric.moveToDay).toHaveBeenCalledWith(dateToPasteTo);
                 });
 
                 it("Should not call moveToDay when pasting a metric from copy", function()
                 {
-                    var copiedMetric = metric.copyToClipboard();
+                    var copiedMetric = metric.cloneForCopy();
                     spyOn(copiedMetric, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
-                    copiedMetric.onPaste(dateToPasteTo);
+                    copiedMetric.pasted({ date: dateToPasteTo });
                     expect(copiedMetric.moveToDay).not.toHaveBeenCalled();
                 });
 
                 it("Should return a new metric when pasting a metric from copy", function()
                 {
-                    var copiedMetric = metric.copyToClipboard();
+                    var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedMetric = copiedMetric.onPaste(dateToPasteTo);
+                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
                     expect(pastedMetric instanceof MetricModel).toBe(true);
                     expect(pastedMetric).not.toBe(copiedMetric);
                 });
 
                 it("Should set the correct date on pasted metric", function()
                 {
-                    var copiedMetric = metric.copyToClipboard();
+                    var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedMetric = copiedMetric.onPaste(dateToPasteTo);
+                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
                     expect(pastedMetric.getCalendarDay()).toBe(dateToPasteTo);
                 });
 
                 it("Should not change the date of the copied metric", function()
                 {
-                    var copiedMetric = metric.copyToClipboard();
+                    var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedMetric = copiedMetric.onPaste(dateToPasteTo);
+                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
                     expect(copiedMetric.getCalendarDay()).not.toBe(dateToPasteTo);
                     expect(copiedMetric.getCalendarDay()).toBe(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
                 });

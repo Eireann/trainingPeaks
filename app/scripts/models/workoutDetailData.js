@@ -69,14 +69,16 @@ function (
         _setOriginalLapsStats: function()
         {
             this.set("lapsStatsEdited", false);
+            this.set("lapDeleted", false);
             this.set("originalLapsStats", this.has("lapsStats") ? _.clone(this.get("lapsStats")) : null);
         },
 
         _resetLapEdits: function()
         {   // reset laps?
-            if(this.get("lapsStatsEdited"))
+            if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {
                 this.set("lapsStatsEdited", false);
+                this.set("lapDeleted", false);
                 this.set("lapsStats", this.get("originalLapsStats"));
             }
         },
@@ -122,6 +124,7 @@ function (
             "disabledDataChannels": null,
             "channelCuts": null,
             "lapsStatsEdited": false,
+            "lapDeleted": false,
             "originalLapsStats": null
         },
 
@@ -171,16 +174,26 @@ function (
         _rangeEvents:
         {
             laps: {
-                "change:name": "_flagLapsAsEdited"
+                "change:name": "_flagLapsAsEdited",
+                "lap:markedAsDeleted": "_flagLapAsDeleted"
             }
         },
 
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
-            if(!collection)
+            var data;
+            if(collection)
             {
-                var data = this._getRangeDataFor(rangeType);
+                data = collection.select(function(lapStat) { return lapStat.get('deleted') || false; });
+                _.each(data, function(model)
+                {
+                    collection.remove(model, {silent: true});
+                });
+            }
+            else
+            {
+                data = this._getRangeDataFor(rangeType);
                 collection = new TP.Collection(data, { model: WorkoutStatsForRange });
                 this.rangeCollections[rangeType] = collection;
                 this._watchRangeDataFor(rangeType, _.bind(collection.set, collection));
@@ -220,10 +233,10 @@ function (
                 startTimeInMilliseconds: _.first(this.get("flatSamples").msOffsetsOfSamples),
                 endTimeInMilliseconds: _.last(this.get("flatSamples").msOffsetsOfSamples)
             };
-            var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];            
+            var channelCuts = this.has("channelCuts") ? this.get("channelCuts") : [];
             channelCuts.push(channelCutDetails);
 
-            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state 
+            // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
             this._dataParser.excludeChannel(series);
             this.set("channelCuts", channelCuts);
             this.disableChannel(series);
@@ -242,7 +255,7 @@ function (
 
         hasEdits: function()
         {
-            return this.has("channelCuts") || this.get("lapsStatsEdited");
+            return this.has("channelCuts") || this.get("lapsStatsEdited") || this.get("lapDeleted");
         },
 
         saveEdits: function()
@@ -251,7 +264,7 @@ function (
             {
                 channelCuts: this._getChannelCuts(),
                 lapsStats: this._getEditedLapsStats()
-            }; 
+            };
 
             var command = new SaveWorkoutDetailDataCommand(params);
             command.workoutId = this.get('workoutId');
@@ -273,7 +286,7 @@ function (
 
         _getEditedLapsStats: function()
         {
-            if(this.get("lapsStatsEdited"))
+            if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {
                 return this.getRangeCollectionFor("laps").toJSON();
             }
@@ -370,6 +383,11 @@ function (
         _flagLapsAsEdited: function()
         {
             this.set("lapsStatsEdited", true);
+        },
+
+        _flagLapAsDeleted: function()
+        {
+            this.set("lapDeleted", true);
         }
     });
 

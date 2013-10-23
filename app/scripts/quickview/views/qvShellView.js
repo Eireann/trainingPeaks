@@ -97,7 +97,7 @@ function(
                 if(self.model.isNew())
                 {
                     // TODO: Remove coupling
-                    theMarsApp.controllers.calendarController.weeksCollection.addItem(self.originalModel);
+                    theMarsApp.calendarManager.addItem(self.originalModel);
                 }
 
                 self.closing = true;

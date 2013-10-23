@@ -2,9 +2,10 @@ requirejs(
 ["TP",
  "moment",
  "jquery",
- "views/scrollableCollectionView",
- "models/calendar/calendarCollection"],
- function(TP, moment, $, ScrollableCollectionView, CalendarCollection)
+ "views/scrollableCollectionView"//,
+ // "models/calendar/calendarCollection"
+],
+ function(TP, moment, $, ScrollableCollectionView/*, CalendarCollection*/)
  {
      describe("ScrollableCollectionView", function()
      {
@@ -24,7 +25,7 @@ requirejs(
         });
 
         // pending
-        it("Should scroll to the correct model with scrollToModel", null, function() {
+        xit("Should scroll to the correct model with scrollToModel", null, function() {
             var collection = new CalendarCollection([new TP.Model()], {
                     startDate: moment().day(0),
                     endDate: moment().day(7).add("weeks", 2)

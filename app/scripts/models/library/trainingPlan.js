@@ -2,9 +2,17 @@
 [
     "TP",
     "./trainingPlanDetails",
-    "models/commands/applyTrainingPlan"
+    "models/commands/applyTrainingPlan",
+    "models/calendar/calendarDay",
+    "views/calendar/library/applyTrainingPlanToCalendarConfirmationView"
 ],
-function (TP, TrainingPlanDetailsModel, ApplyTrainingPlanCommand)
+function (
+    TP,
+    TrainingPlanDetailsModel,
+    ApplyTrainingPlanCommand,
+    CalendarDay,
+    ApplyTrainingPlanToCalendarConfirmationView
+)
 {
     var TrainingPlanModel = TP.APIDeepModel.extend(
     {
@@ -33,7 +41,7 @@ function (TP, TrainingPlanDetailsModel, ApplyTrainingPlanCommand)
         refreshDependencies: function(date)
         {
             this.fetch();
-            this.trigger('requestRefresh', date);
+            theMarsApp.calendarManager.reset();
         },
         applyToDate: function(date, startType)
         {
@@ -50,6 +58,14 @@ function (TP, TrainingPlanDetailsModel, ApplyTrainingPlanCommand)
                 self.refreshDependencies(date);
             });
             return def;
+        },
+
+        dropped: function(options)
+        {
+            if(options.target instanceof CalendarDay)
+            {
+                new ApplyTrainingPlanToCalendarConfirmationView({model: this, targetDate: options.target.id}).render();
+            }
         }
 
     });

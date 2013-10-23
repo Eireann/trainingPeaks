@@ -20,9 +20,6 @@ function(TP, CalendarWorkoutTemplateDragState)
         makeDraggable: function()
         {
             _.bindAll(this, "onDragStart", "onDragStop");
-            this.$el.data("ItemId", this.model.id);
-            this.$el.data("ItemType", this.model.webAPIModelName);
-            this.$el.data("DropEvent", "itemMoved");
             this.draggableOptions =
             {
                 appendTo: theMarsApp.getBodyElement(),
@@ -31,7 +28,7 @@ function(TP, CalendarWorkoutTemplateDragState)
                 stop: this.onDragStop,
                 addClasses: false
             };
-            this.$el.draggable(this.draggableOptions);
+            this.$el.draggable(this.draggableOptions).data({ handler: this.model });
         },
 
         _makeHelper: function()
