@@ -19,8 +19,8 @@ function(
         attributes: function()
         {
             return {
-                "data-rows": this.model.get("rows") || 3,
-                "data-cols": this.model.get("cols") || 3
+                "data-rows": this.model.get("rows") || 1,
+                "data-cols": this.model.get("cols") || 1
             };
         },
 
