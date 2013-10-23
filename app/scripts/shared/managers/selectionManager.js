@@ -124,18 +124,6 @@ function(
             }
         },
 
-        pushSelection: function()
-        {
-            this.stack.push(this.selection);
-            this.selection = null;
-        },
-
-        popSelection: function()
-        {
-            this.clearSelection();
-            this.selection = this.stack.pop();
-        },
-
         execute: function(action, options, selection)
         {
             selection = selection || this.selection;
