@@ -160,14 +160,13 @@ function(
             var self = this;
             setImmediate(function()
             {
-                self.$("select").each(function(i, el)
-                {
-                    var $el = $(el);
-                    $el.selectBoxIt({
-                        viewport: function(){return $el.closest(".scrollable");}
-                    });
-                });
+                self._setupSelectBox();
             });
+        },
+
+        _setupSelectBox: function()
+        {
+            this.$("select").selectBoxIt({ viewport: $(".tabbedLayoutBody.scrollable") });
         },
 
         events: {
@@ -257,11 +256,12 @@ function(
         calculateZones: function()
         {
 
-            this._applyFormValuesToModel();
-
             // because the original model could be changed outside the calculator view
+            // do this before we apply form values as we may want to override some
             this._applySourceValuesToModel();
             
+            this._applyFormValuesToModel();
+
             if(!this._validateInputs(true))
             {
                 return;
@@ -294,7 +294,7 @@ function(
 
         setZonesOnCollection: function()
         {
-            var zones = _.clone(this.model.get("zones"));
+            var zones = TP.utils.deepClone(this.model.get("zones"));
             var threshold = new TP.Model({ threshold: this.model.get("threshold"), units: this.units, workoutTypeId: this.model.get("workoutTypeId") });
             zones.unshift(threshold);
             this.collection.reset(zones);
