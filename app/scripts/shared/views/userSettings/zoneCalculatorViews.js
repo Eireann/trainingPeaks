@@ -160,14 +160,13 @@ function(
             var self = this;
             setImmediate(function()
             {
-                self.$("select").each(function(i, el)
-                {
-                    var $el = $(el);
-                    $el.selectBoxIt({
-                        viewport: function(){return $el.closest(".scrollable");}
-                    });
-                });
+                self._setupSelectBox();
             });
+        },
+
+        _setupSelectBox: function()
+        {
+            this.$("select").selectBoxIt({ viewport: $(".tabbedLayoutBody.scrollable") });
         },
 
         events: {
