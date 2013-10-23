@@ -347,8 +347,10 @@ function(
 
         onEscapeKey: function(e)
         {
-            if (e.which === 27)
+            if (e.which === 27 && !e.isDefaultPrevented())
+            {
                 this.close();
+            }
         },
 
         closeModal: function()

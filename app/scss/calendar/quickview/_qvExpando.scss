@@ -441,6 +441,14 @@
             text-align: center;
             margin: 22px 0;
         }
+
+        input[type=text]
+        {
+            text-align: left !important;
+            font-size: 1em;
+            padding-left: 10px;
+            margin-left: -10px;
+        }
     }
 
     .expandoPackeryRegion {
@@ -679,6 +687,7 @@
             {
                 display: none;
             }
+
         }
 
         .controls
@@ -766,6 +775,13 @@
                     font-family:$fontFamilyHeavy;
                 }
 
+                &:not(.highlight) {
+                    .actions
+                    {
+                        display: none;
+                    }
+                }
+
                 .editLapName {
                     display:inline-block;
 
@@ -776,6 +792,7 @@
                         padding:0 5px;
                         position:relative;
                         z-index: 2;
+                        font-size: 1em;
                     }
                 }
             }

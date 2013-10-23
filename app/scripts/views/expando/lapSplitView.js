@@ -63,12 +63,13 @@ function(
             e.preventDefault();
 
             ToolTips.disableTooltips();
-            var $input = $('<input type=text/>');
+            var $input = $('<input type="text"/>');
             $input.val($currentTarget.text());
             $currentTarget.empty().append($input).addClass('editing');
             $input.on("change", _.bind(this._onInputChange, this));
-            $input.on("blur", _.bind(this._onInputBlur, this));
-            $input.focus();
+            $input.on("blur enter", _.bind(this._stopEditing, this));
+            $input.on("cancel", _.bind(this._cancelEditing, this));
+            $input.focus().select();
         },
 
         onRender: function()
@@ -93,13 +94,22 @@ function(
             this.model.set("name", $.trim($input.val()));
         },
 
-        _onInputBlur: function(e)
+        _cancelEditing: function(e)
         {
+            this._stopEditing(e, true);
+        },
+
+        _stopEditing: function(e, cancel)
+        {
+            e.preventDefault();
             var $input = $(e.currentTarget);
-            this.model.set("name", $.trim($input.val()));
+
+            if(!cancel)
+            {
+                this.model.set("name", $.trim($input.val()));
+            }
             $input.closest("td").html(this.model.get("name")).removeClass("editing");
-            $input.off("change");
-            $input.off("blur");
+            $input.off("change blur enter");
             ToolTips.enableTooltips();
         }
 
