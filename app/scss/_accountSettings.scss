@@ -41,7 +41,7 @@
 
     .tabbedLayoutBody {
         width: calc(100% - 142px);
-        padding:0 30px 12px 30px;
+        // padding:0 30px 12px 30px;
     }
 
     label
@@ -100,6 +100,9 @@
     }
 
     .userSettingsContent {
+        width: 817px;
+        padding: 0 30px;
+
         fieldset {
             border: 1px solid $TPGrey2;
             padding: 10px 15px 15px 15px;
@@ -147,7 +150,7 @@
         }
 
         .zonesConfigGroup {
-            margin-top:25px;
+            margin-top:11px;
 
             .zoneGroupNameContain {
                 @include clearfix;
@@ -193,18 +196,19 @@
                 
                 .zoneCalculatorLayoutBody {
                     .selectBox {
-                        width:195px;
+                        // width:195px;
                         // margin-left:7px;
                     }
 
                     .selectboxit-container .selectboxit {
-                        width: 195px !important;
+                        // width: 195px !important;
                     }
 
                     .calculatorType,
                     .calculatorDefinition {
                         float:left;
                         margin-right:43px;
+                        margin-right:25px;
                     }
 
                     .heartrate,
@@ -234,10 +238,10 @@
                                 
 
                                 .selectBox {
-                                    width: 125px;
+                                    width: 119px;
                                 }
                                 .selectboxit-container .selectboxit {
-                                    width: 125px !important;
+                                    width: 119px !important;
                                     
                                     .selectboxit-text,
                                     .selectboxit-options {
@@ -344,10 +348,10 @@
 
                 .zoneValueContain {
                     float:left;
-                    margin-right:25px;
+                    margin-right:41px;
 
                     .numberInput {
-                        width:74px;
+                        width:91px;
                     }
                 }
             }
@@ -469,8 +473,6 @@
         }
 
         .userSettingsPayments {
-
-            padding-top:40px;
             p {
                 margin:0 0 1em 5px;
                 font-family:$fontFamilyRegular;
@@ -487,7 +489,7 @@
 }
 
 .userSettingsAccountContent {
-    width: 757px;
+    // width: 817px;
     // padding-top:30px;
 
     .userSettingsHelpText {
@@ -1055,6 +1057,47 @@
         button[disabled]
         {
             display: none;
+        }
+    }
+}
+
+
+.heartRateZonesCalculator {
+    .calculatorType {
+        .selectBox {
+            width: 210px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 210px !important;
+        }
+    } 
+
+    .calculatorDefinition {
+        .selectBox {
+            width:210px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 210px !important;
+        }
+    }
+}
+
+.speedZonesCalculator {
+    .calculatorType {
+        .selectBox {
+            width:135px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 135px !important;
+        }
+    } 
+
+    .calculatorDefinition {
+        .selectBox {
+            width:185px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 185px !important;
         }
     }
 }
