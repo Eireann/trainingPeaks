@@ -47,6 +47,9 @@ function(
             }
             this.detailDataPromise = options.detailDataPromise;
             this.stateModel = options.stateModel;
+
+            this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
+            
             this.collection = this.model.get('detailData').getRangeCollectionFor("laps");
             this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this)); // rebuild table, but preserve edits in progress

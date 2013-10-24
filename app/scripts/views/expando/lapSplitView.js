@@ -16,9 +16,16 @@ function(
 {
     return TP.ItemView.extend(
     {
+
+        initialize: function(options)
+        {
+            this.stateModel = options.stateModel;
+        },
+
         events:
         {
-            "click td.lap": "handleLapClickEditable"
+            "click td.lap": "handleLapClickEditable",
+            "click :not(td.lap)": "_onClick"
         },
 
         tagName: 'tr',
@@ -62,10 +69,12 @@ function(
             if($currentTarget.hasClass('editing')) return false;
             e.preventDefault();
 
+            this.stateModel.set("primaryRange", this.model);
+            var $lapName = this.$("td.lap");
             ToolTips.disableTooltips();
             var $input = $('<input type="text"/>');
-            $input.val($currentTarget.text());
-            $currentTarget.empty().append($input).addClass('editing');
+            $input.val($lapName.text());
+            $lapName.empty().append($input).addClass('editing');
             $input.on("change", _.bind(this._onInputChange, this));
             $input.on("blur enter", _.bind(this._stopEditing, this));
             $input.on("cancel", _.bind(this._cancelEditing, this));
@@ -79,6 +88,11 @@ function(
                 this._markAsDeleted();
             }
             ToolTips.enableTooltips();
+        },
+
+        _onClick: function()
+        {
+            this.stateModel.set("primaryRange", this.model);
         },
 
         _markAsDeleted: function()
@@ -109,7 +123,7 @@ function(
                 this.model.set("name", $.trim($input.val()));
             }
             $input.closest("td").html(this.model.get("name")).removeClass("editing");
-            $input.off("change blur enter");
+            $input.off("change blur enter cancel");
             ToolTips.enableTooltips();
         }
 

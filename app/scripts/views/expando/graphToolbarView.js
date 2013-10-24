@@ -82,6 +82,11 @@ function(
             this._updateButtonStates();
         },
 
+        onGraphZoomed: function()
+        {
+            this.ui.zoomResetButton.removeClass("hidden");
+        },
+        
         _onFilterPeriodChanged: function(event)
         {
             if (!event.target)
@@ -115,12 +120,7 @@ function(
         _hideZoomButton: function ()
         {
             this.ui.zoomResetButton.addClass("hidden");
-        },
-
-        _onGraphZoomed: function()
-        {
-            this.ui.zoomResetButton.removeClass("hidden");
-        },
+        }, 
 
         _onGraphTimeButtonClicked: function ()
         {

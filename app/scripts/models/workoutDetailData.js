@@ -156,7 +156,7 @@ function (
                 // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
                 if(isFullChannel)
                 {
-                    this.dataParser.excludeChannel(series);
+                    this._dataParser.excludeChannel(series);
                 }
                 else
                 {
