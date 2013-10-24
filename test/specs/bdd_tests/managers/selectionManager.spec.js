@@ -88,7 +88,7 @@ function(
 
         });
 
-        xdescribe("Cut/Copy/Paste functionality", function()
+        describe("Cut/Copy/Paste functionality", function()
         {
 
             var workout, metric;
@@ -97,8 +97,8 @@ function(
                 calendarManager.loadActivities("2013-10-21", "2013-10-21");
                 testHelpers.resolveRequests("GET", "2013-10-21", []);
 
-                workout = new WorkoutModel({ workoutDay: "2013-10-22" });
-                metric = new MetricModel({ timeStamp: "2013-10-22T13:26:42" });
+                workout = new WorkoutModel({ workoutId: 1, workoutDay: "2013-10-22" });
+                metric = new MetricModel({ id: 1, timeStamp: "2013-10-22T13:26:42" });
 
                 calendarManager.addItem(workout);
                 calendarManager.addItem(metric);
@@ -114,8 +114,8 @@ function(
                 selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
                 selectionManager.pasteClipboardToSelection();
                 
-                console.log(testHelpers.resolveRequests("POST", "workouts", {}));
-                console.log(testHelpers.resolveRequests("POST", "timedmetrics", {}));
+                testHelpers.resolveRequests("PUT", "workouts/1", {});
+                testHelpers.resolveRequests("PUT", "timedmetrics/1", {});
 
                 expect(workout.getCalendarDay()).toEqual("2013-10-25");
                 expect(metric.getCalendarDay()).toEqual("2013-10-25");
