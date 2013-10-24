@@ -53,7 +53,7 @@ function(
                     subsetLapData.push( { key: keyName, value: allLapData[keyName] } );
                 }, this);
 
-            return { lapData: subsetLapData };
+            return { lapData: subsetLapData, isCut: this.model.get("isCut") };
         },
 
         handleLapClickEditable: function(e)

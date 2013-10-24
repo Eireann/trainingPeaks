@@ -50,13 +50,13 @@ function(
             "change:isFocused": "_onFocusedChange",
             "change:isSelected": "_onSelectedChange",
             "change:name": "_onNameChange",
-            "change:isLap change:totalTime": "render"
+            "change:isLap change:totalTime change:isCut": "render"
         },
 
         events:
         {
+            "click .editLapName": "_onClickToEdit", // this comes before onClick, so onClick hasn't already changed our state on the first click
             "click :not(input[type=checkbox])": "_onClick",
-            "click .editLapName": "_onClickToEdit",
             "click .delete": "_onClickDelete",
             "click .add": "_onClickAdd",
             "change input[type=checkbox]": "_onCheckboxChange"

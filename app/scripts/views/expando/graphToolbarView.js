@@ -2,11 +2,15 @@
 [
     "TP",
     "views/expando/graphSeriesOptionsMenuView",
+    "views/userConfirmationView",
+    "hbs!templates/views/expando/deleteRangeConfirmationTemplate",
     "hbs!templates/views/expando/graphToolbar"
 ],
 function(
          TP,
          GraphSeriesOptionsMenuView,
+         UserConfirmationView,
+         deleteConfirmationTemplate,
          graphToolbarTemplate)
 {
     return TP.ItemView.extend(
@@ -35,12 +39,13 @@ function(
         
         events:
         {
-            "change input[name=filterPeriod]": "onFilterPeriodChanged",
-            "click button.graphSeriesButton": "onGraphSeriesButtonClicked",
-            "click button.graphZoomButton": "onZoomClicked",
-            "click button.graphResetButton": "onResetClicked",
-            "click button.graphTimeButton": "onGraphTimeButtonClicked",
-            "click button.graphDistanceButton": "onGraphDistanceButtonClicked"
+            "change input[name=filterPeriod]": "_onFilterPeriodChanged",
+            "click button.graphSeriesButton": "_onGraphSeriesButtonClicked",
+            "click button.graphZoomButton": "_onZoomClicked",
+            "click button.graphResetButton": "_onResetClicked",
+            "click button.graphTimeButton": "_onGraphTimeButtonClicked",
+            "click button.graphDistanceButton": "_onGraphDistanceButtonClicked",
+            "click button.graphCutButton": "_onCutClicked"
         },
  
         modelEvents: {},
@@ -49,8 +54,35 @@ function(
         {
             "zoomResetButton": "button.graphResetButton"
         },
-        
-        onFilterPeriodChanged: function(event)
+       
+        serializeData: function()
+        {
+            // Grab speed label based _on model workout type
+            var speedLabel = this.model ? TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeValueId")) : "MPH";
+            var elevationlabel = this.model ? TP.utils.units.getUnitsLabel("elevation") : "FT";
+            
+            // Some workout type speeds need to be shown as "pace" units
+            if (this.model && _.contains([1,3,12,13], this.model.get("workoutTypeValueId")))
+            {
+                speedLabel = TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeValueId"));
+            }
+            return {
+                speedLabel: speedLabel,
+                elevationLabel: elevationlabel
+            };
+        },
+ 
+        setFilterPeriod: function(period)
+        {
+            this.$("input[name=filterPeriod]").val(period);
+        },
+
+        onRender: function()
+        {
+            this._updateButtonStates();
+        },
+
+        _onFilterPeriodChanged: function(event)
         {
             if (!event.target)
                 return;
@@ -59,12 +91,7 @@ function(
             this.trigger("filterPeriodChanged", period);
         },
 
-        setFilterPeriod: function(period)
-        {
-            this.$("input[name=filterPeriod]").val(period);
-        },
-
-        onGraphSeriesButtonClicked: function(event)
+        _onGraphSeriesButtonClicked: function(event)
         {
             var seriesButton = $(event.target);
 
@@ -74,44 +101,63 @@ function(
             this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
         },
         
-        onZoomClicked: function()
+        _onZoomClicked: function()
         {
             this.trigger("zoom");
         },
         
-        onResetClicked: function()
+        _onResetClicked: function()
         {
             this.trigger("reset");
-            this.hideZoomButton();
+            this._hideZoomButton();
         },
 
-        hideZoomButton: function ()
+        _hideZoomButton: function ()
         {
             this.ui.zoomResetButton.addClass("hidden");
         },
 
-        onGraphZoomed: function()
+        _onGraphZoomed: function()
         {
             this.ui.zoomResetButton.removeClass("hidden");
         },
 
-        onGraphTimeButtonClicked: function ()
+        _onGraphTimeButtonClicked: function ()
         {
             this.$el.find("button.graphTimeButton").addClass("bold");
             this.$el.find("button.graphDistanceButton").removeClass("bold");
             this.trigger("enableTimeAxis");
         },
         
-        onGraphDistanceButtonClicked: function ()
+        _onGraphDistanceButtonClicked: function ()
         {
             this.$el.find("button.graphTimeButton").removeClass("bold");
             this.$el.find("button.graphDistanceButton").addClass("bold");
             this.trigger("enableDistanceAxis");
         },
 
-        onRender: function()
+        _onCutClicked: function(e)
         {
-            this._updateButtonStates();
+            this.confirmationView = new UserConfirmationView(
+            {
+                template: deleteConfirmationTemplate,
+                model: new TP.Model({ series: this.series })
+            });
+
+            this.confirmationView.render();
+
+            this.listenTo(this.confirmationView, "userConfirmed", _.bind(this._onCutConfirmed, this));
+        },
+
+        _onCutConfirmed: function(e)
+        {
+            var selection = this.stateModel.get("primaryRange");
+            if(!selection)
+            {
+                return;
+            }
+            this.model.get("detailData").cutAllChannelsForRange(selection.get("begin"), selection.get("end"));
+            this.stateModel.set("primaryRange", null);
         },
 
         _updateButtonStates: function()
@@ -139,23 +185,6 @@ function(
                 this.$(".graphDistanceButton").remove();
                 this.$(".graphTimeButton").remove();
             }
-        },
-
-        serializeData: function()
-        {
-            // Grab speed label based on model workout type
-            var speedLabel = this.model ? TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeValueId")) : "MPH";
-            var elevationlabel = this.model ? TP.utils.units.getUnitsLabel("elevation") : "FT";
-            
-            // Some workout type speeds need to be shown as "pace" units
-            if (this.model && _.contains([1,3,12,13], this.model.get("workoutTypeValueId")))
-            {
-                speedLabel = TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeValueId"));
-            }
-            return {
-                speedLabel: speedLabel,
-                elevationLabel: elevationlabel
-            };
         },
 
         _onSelectionChange: function()
