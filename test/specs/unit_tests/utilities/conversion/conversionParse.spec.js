@@ -1,12 +1,12 @@
 requirejs(
 [
-    "app",
+    "testUtils/testHelpers",
     "TP",
     "utilities/conversion/conversion",
     "utilities/conversion/convertToModelUnits",
     "utilities/datetime/datetime"
 ],
-function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
+function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 {
 
     var describeParse = function(methodName, testValues)
@@ -29,7 +29,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("Should allow decimal seconds input", function()
@@ -77,7 +77,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeParse("parseDuration", [

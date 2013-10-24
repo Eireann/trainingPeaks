@@ -5,12 +5,10 @@ requirejs(
     "TP",
     "moment",
     "framework/dataManager",
-    "app",
-    // "models/calendar/calendarCollection",
     "views/calendar/container/calendarContainerView",
     "views/scrollableCollectionView"
 ],
-function($, TP, moment, DataManager, theMarsApp,/* CalendarCollection,*/ CalendarContainerView, ScrollableCollectionView)
+function($, TP, moment, DataManager, CalendarContainerView, ScrollableCollectionView)
 {
 
     xdescribe("CalendarContainerView Scrolling", function()

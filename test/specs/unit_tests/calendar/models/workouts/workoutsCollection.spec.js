@@ -2,12 +2,12 @@
 requirejs(
 [
     "moment",
-    "app",
+    "testUtils/testHelpers",
     "models/workoutsCollection"
 ],
 function(
     moment,
-    app,
+    testHelpers,
     WorkoutsCollection
     )
 {
@@ -16,12 +16,12 @@ function(
         // user needs an athlete id for some of these tests to run
         beforeEach(function()
         {
-            app.user.setCurrentAthleteId(1234, true);
+            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
         });
 
         afterEach(function()
         {
-            app.user.setCurrentAthleteId(null, true);
+            testHelpers.theApp.user.setCurrentAthleteId(null, true);
         });
 
         it("should load as a module", function()
@@ -42,7 +42,7 @@ function(
                     endDate.format(dateFormat);
                 var workouts = new WorkoutsCollection([], { startDate: startDate, endDate: endDate });
                 expect(workouts.url()).toContain(expectedUrl);
-                expect(workouts.url()).toContain(app.apiRoot);
+                expect(workouts.url()).toContain(testHelpers.theApp.apiRoot);
             });
         });
 

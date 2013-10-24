@@ -3,13 +3,11 @@ requirejs(
 [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "moment"
 ],
 function(
     testHelpers,
     xhrData,
-    theApp,
     moment)
 {
 
@@ -20,8 +18,8 @@ function(
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
-            $mainRegion = theApp.mainRegion.$el;
-            theApp.router.navigate("calendar", true);
+            $mainRegion = testHelpers.theApp.mainRegion.$el;
+            testHelpers.theApp.router.navigate("calendar", true);
         });
 
         afterEach(function()
@@ -40,7 +38,7 @@ function(
 
             it("Should have the first user set as the current athlete id", function()
             {
-                expect(theApp.user.getCurrentAthleteId()).toBe(12345);
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).toBe(12345);
             });
 
             it("Should request data for the current athlete id", function()
@@ -61,13 +59,13 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
-                $mainRegion = theApp.mainRegion.$el;
-                theApp.router.navigate("calendar/athletes/23456", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("calendar/athletes/23456", true);
             });
             
             it("Should have the requested user set as the current athlete id", function()
             {
-                expect(theApp.user.getCurrentAthleteId()).toBe(23456);
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).toBe(23456);
             });
 
             it("Should request data for the current athlete id", function()
@@ -86,7 +84,7 @@ function(
 
             it("Should have the first user set as the current athlete id", function()
             {
-                expect(theApp.user.getCurrentAthleteId()).toBe(12345);
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).toBe(12345);
             });
 
             it("Should request data for the current athlete id", function()
@@ -102,7 +100,7 @@ function(
             it("Should change the user id on selecting a new athlete", function()
             {
                 $mainRegion.find("#athleteCalendarSelect").val(23456).trigger("change");
-                expect(theApp.user.getCurrentAthleteId()).toBe(23456);
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).toBe(23456);
             });
         });
     });

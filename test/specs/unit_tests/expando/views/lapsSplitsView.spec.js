@@ -2,13 +2,12 @@ requirejs(
 [
     "moment",
     "underscore",
-    "app",
     "TP",
     "views/expando/lapsSplitsView",
     "models/workoutModel",
     "testUtils/AppTestData/detailDataLapsStats"
 ],
-function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLapsStats)
+function(moment, _, TP, LapsSplitsView, WorkoutModel, detailDataLapsStats)
 {
 	describe("Laps Splits View", function()
 	{

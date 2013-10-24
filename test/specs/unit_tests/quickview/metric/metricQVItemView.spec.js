@@ -3,14 +3,12 @@ requirejs(
 [
     "TP",
     "shared/data/metricTypes",
-    "quickview/metric/views/metricQVItemView",
-    "app"
+    "quickview/metric/views/metricQVItemView"
 ],
 function(
     TP,
     metricTypes,
-    MetricQVItemView,
-    theApp
+    MetricQVItemView
 )
 {
     describe("MetricQVItemView", function ()

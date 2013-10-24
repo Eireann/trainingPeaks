@@ -112,7 +112,8 @@ module.exports = function(grunt)
                         "../vendor/js/libs/flot/jquery.flot",
                         "../vendor/js/libs/flot/jquery.flot.crosshair",
                         "../vendor/js/libs/flot/jquery.flot.resize",
-                        "Backbone.Marionette.Handlebars"
+                        "Backbone.Marionette.Handlebars",
+                        "testUtils/testHelpers"
                     ],
                     excludeShallow: ["hbs", "Handlebars"],
                     wrap: false,

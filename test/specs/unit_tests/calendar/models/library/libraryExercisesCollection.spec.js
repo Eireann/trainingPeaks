@@ -1,9 +1,9 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-"app",
+"testUtils/testHelpers",
 "models/library/libraryExercisesCollection"],
-function(theMarsApp, LibraryExercisesCollection)
+function(testHelpers, LibraryExercisesCollection)
 {
     describe("Library Exercises Collection", function()
     {
@@ -16,7 +16,7 @@ function(theMarsApp, LibraryExercisesCollection)
         {
 
             var url = LibraryExercisesCollection.prototype.url();
-            expect(url).toContain(theMarsApp.apiRoot);
+            expect(url).toContain(testHelpers.theApp.apiRoot);
             expect(url).toContain("/exerciselibrary/v1/libraryitems");
 
         });

@@ -2,14 +2,12 @@ requirejs(
 [
     "jquery",
     "TP",
-    "app",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/heartRateZonesCalculatorView"
 ],
 function (
     $,
     TP,
-    theMarsApp,
     ZoneCalculator,
     HeartRateZonesCalculatorView
          )

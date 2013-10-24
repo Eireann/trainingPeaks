@@ -1,16 +1,17 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-    "app",
+    "testUtils/testHelpers",
     "models/workoutModel",
     "shared/models/activityModel",
     "models/calendar/calendarDay"
 ],
 function(
-    app,
+    testHelpers,
     WorkoutModel,
     ActivityModel,
-    CalendarDay)
+    CalendarDay
+)
 {
     describe("Calendar Day Model", function()
     {
@@ -18,12 +19,12 @@ function(
         // user needs an athlete id for some of these tests to run
         beforeEach(function()
         {
-            app.user.setCurrentAthleteId(1234, true);
+            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
         });
 
         afterEach(function()
         {
-            app.user.setCurrentAthleteId(null, true);
+            testHelpers.theApp.user.setCurrentAthleteId(null, true);
         });
 
         it("should load as a module", function()
@@ -78,12 +79,12 @@ function(
                 // user needs an athlete id for some of these tests to run
                 beforeEach(function()
                 {
-                    app.user.setCurrentAthleteId(1234, true);
+                    testHelpers.theApp.user.setCurrentAthleteId(1234, true);
                 });
 
                 afterEach(function()
                 {
-                    app.user.setCurrentAthleteId(null, true);
+                    testHelpers.theApp.user.setCurrentAthleteId(null, true);
                 });
 
                 it("Should return a new CalendarDay model", function()
@@ -121,12 +122,12 @@ function(
                 // user needs an athlete id for some of these tests to run
                 beforeEach(function()
                 {
-                    app.user.setCurrentAthleteId(1234, true);
+                    testHelpers.theApp.user.setCurrentAthleteId(1234, true);
                 });
 
                 afterEach(function()
                 {
-                    app.user.setCurrentAthleteId(null, true);
+                    testHelpers.theApp.user.setCurrentAthleteId(null, true);
                 });
 
                 it("Should call pasted on each of the copied workouts", function()

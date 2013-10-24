@@ -3,7 +3,6 @@ requirejs(
 [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "moment",
     "shared/managers/calendarManager",
     "framework/dataManager",
@@ -13,7 +12,6 @@ requirejs(
 function(
     testHelpers,
     xhrData,
-    theMarsApp,
     moment,
     CalendarManager,
     DataManager,
@@ -29,8 +27,8 @@ function(
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-            dataManager = theMarsApp.dataManager;
-            calendarManager = theMarsApp.calendarManager;
+            dataManager = testHelpers.theApp.dataManager;
+            calendarManager = testHelpers.theApp.calendarManager;
         });
 
         describe(".loadActivites", function()

@@ -1,16 +1,19 @@
 define(
 [
     "underscore",
-    "jquery",
     "backbone",
     "TP",
     "testUtils/xhrDataStubs",
     "testUtils/sinon",
     "app"
 ],
-function(_, $, Backbone, TP, xhrData, sinon_, app)
+function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 {
-    return {
+
+    var testHelpers = {
+
+        theApp: new MarsApp(),
+
         setupRegionElements: function()
         {
             this.$body = $("<body></body>");
@@ -32,20 +35,20 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
             this.stopTheApp();
 
+            this.theApp = new MarsApp();
+
             // capture ajax calls
             this.setupFakeAjax();
 
             // ajaxCaching doesn't play nicely with our fake xhr ...
-            app.ajaxCachingEnabled = false;
+            this.theApp.ajaxCachingEnabled = false;
 
             // backbone history doesn't work well with our tests for some reason
-            app.historyEnabled = false;
-
-            app.resetAppToInitialState();
+            this.theApp.historyEnabled = false;
 
             // disable window reload
             var helper = this;
-            app.reloadApp = function()
+            this.theApp.reloadApp = function()
             {
                 helper.startTheApp();
             };
@@ -55,17 +58,17 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             TP.Layout.prototype.fadeOut = false;
 
             // setup fake html regions
-            app.on("initialize:before", this.setupRegionElements, app);
+            this.theApp.on("initialize:before", this.setupRegionElements, this.theApp);
 
             // start the app
-            app.start();
+            this.theApp.start();
         },
 
         stopTheApp: function()
         {
-            if (app.started)
+            if (this.theApp)
             {
-                app.stop();
+                this.theApp.stop();
             }
 
             this.removeFakeAjax();
@@ -84,6 +87,18 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             {
                 throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
             }
+        },
+
+        resolveRequests: function(httpVerb, urlPattern, data)
+        {
+            var requests = this.findAllRequests(httpVerb, urlPattern);
+
+            _.each(requests, function(request)
+            {
+                request.respond(200, {}, _.isString(data) ? data : JSON.stringify(data));
+            });
+
+            return requests;
         },
 
         rejectRequest: function(httpVerb, urlPattern)
@@ -129,14 +144,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             var pattern = new RegExp(urlPattern);
             return _.filter(this.fakeAjaxRequests, function(req)
             {
-                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return pattern.test(req.url) && (!httpVerb || req.method === httpVerb);
             }, this);
         },
 
@@ -217,5 +225,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             return TP.utils.deepClone(obj);
         }
     };
+
+    return testHelpers;
 
 });

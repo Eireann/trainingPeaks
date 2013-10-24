@@ -1,7 +1,6 @@
 ﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
-    "app",
     "moment",
     "TP",
     "jquery",
@@ -10,7 +9,7 @@ requirejs(
     "models/workoutModel",
     "views/weekSummary/weekSummaryView"
 ],
-function (theMarsApp, moment, TP, $, CalendarDay, MetricModel, WorkoutModel, WeekSummaryView)
+function (moment, TP, $, CalendarDay, MetricModel, WorkoutModel, WeekSummaryView)
 {
     var count = 0;
     function DayModel() {

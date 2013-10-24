@@ -1,13 +1,12 @@
 requirejs(
 [
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "app"
+    "testUtils/xhrDataStubs"
 ],
 function(
     testHelpers,
-    xhrData,
-    theApp)
+    xhrData
+)
 {
 
     describe("Training Plan Library", function()
@@ -18,8 +17,8 @@ function(
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-            $mainRegion = theApp.mainRegion.$el;
-            theApp.router.navigate("calendar", true);
+            $mainRegion = testHelpers.theApp.mainRegion.$el;
+            testHelpers.theApp.router.navigate("calendar", true);
         });
 
         afterEach(function()
@@ -62,8 +61,8 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("calendar", true);
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
                 $library = $mainRegion.find(".trainingPlanLibrary");

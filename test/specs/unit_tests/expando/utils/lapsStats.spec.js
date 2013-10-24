@@ -1,14 +1,15 @@
 requirejs(
 [
     "underscore",
-    "app",
     "TP",
     "utilities/LapsStats",
     "models/workoutModel",
-    "testUtils/AppTestData/detailDataLapsStats"
+    "testUtils/AppTestData/detailDataLapsStats",
+    "testUtils/testHelpers"
 ],
-function(_, app, TP, LapsStats, WorkoutModel, detailDataLapsStats)
+function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 {
+
     describe("Laps Stats Utility", function()
     {
         var allDataChannels = ["Power", "Elevation", "Speed", "HeartRate", "Torque", "Cadence"];

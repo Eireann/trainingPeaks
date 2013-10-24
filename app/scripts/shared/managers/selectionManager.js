@@ -24,7 +24,7 @@ function(
 
         var self = this;
 
-        $("body").mousedown(function(event)
+        theMarsApp.getBodyElement().mousedown(function(event)
         {
             var isPrevented = event.isDefaultPrevented();
             var isInModal = $(event.target).closest(".modal, .hoverBox, .modalOverlay").length > 0;
@@ -34,7 +34,7 @@ function(
             }
         });
 
-        $("body").keydown(function(event)
+        theMarsApp.getBodyElement().keydown(function(event)
         {
 
             if(event.isDefaultPrevented())
