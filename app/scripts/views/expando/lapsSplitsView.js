@@ -24,6 +24,11 @@ function(
             "change input": "handleChange"
         },
 
+        collectionEvents: {
+            "refresh": "render",
+            "add": "render"
+        },
+
         itemView: LapSplitView,
 
         itemViewContainer: '.lapSplitsTableBody',

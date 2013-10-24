@@ -405,6 +405,7 @@ function(
             this.started = true;
         });
 
+        // filter non-numeric input
         this.addInitializer(function ()
         {
             
@@ -414,6 +415,44 @@ function(
                     if(!TextFieldNumberFilter.isNumberKey(charCode))
                     {
                         evt.preventDefault();
+                    }
+                }
+            );
+        });
+
+        // trigger an 'enter' event on enter key in text field
+        this.addInitializer(function ()
+        {
+            $(document).on("keypress.watchForEnter", "input[type=text]", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 13)
+                    {
+                        var enterEvent = new $.Event("enter");
+                        $(evt.currentTarget).trigger(enterEvent);
+                        if(enterEvent.isDefaultPrevented())
+                        {
+                            evt.preventDefault();
+                        }
+                    }
+                }
+            );
+        });
+
+        // trigger a 'cancel' event on escape key in text field
+        this.addInitializer(function ()
+        {
+            $(document).on("keyup.watchForEnter", "input[type=text]", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 27)
+                    {
+                        var cancelEvent = new $.Event("cancel");
+                        $(evt.currentTarget).trigger(cancelEvent);
+                        if(cancelEvent.isDefaultPrevented())
+                        {
+                            evt.preventDefault();
+                        }
                     }
                 }
             );
