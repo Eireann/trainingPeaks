@@ -10,7 +10,8 @@ define(
     "views/charts/speedPeaksChart",
     "views/expando/graphView",
     "views/expando/mapView",
-    "views/expando/lapsSplitsView"
+    "views/expando/lapsSplitsView",
+    "views/expando/scatterGraphView"
 ],
 function(
     TP,
@@ -23,7 +24,8 @@ function(
     SpeedPeaksChartView,
     GraphView,
     MapView,
-    LapsSplitsView
+    LapsSplitsView,
+    ScatterGraphView
 )
 {
 
@@ -134,8 +136,18 @@ function(
                 model: options.data.workout,
                 stateModel: options.data.stateModel
             });
-        }
+        },
 
+        6: function(options)
+        {
+            return new ScatterGraphView(
+            {
+                model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise,
+                stateModel: options.data.stateModel
+            });
+
+        }
     };
 
     function buildView(options)

@@ -174,12 +174,12 @@
         padding-left: 10px;
         padding-right: 10px;
         overflow:hidden;
-        #graphToolbar
+        #graphToolbar, #scatterGraphToolbar
         {
             height: 35px;
         }
 
-        #plot
+        #plot, #scatterPlot
         {
             height: calc(100% - 50px);
         }

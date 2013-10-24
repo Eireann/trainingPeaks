@@ -44,7 +44,7 @@ function (_, TP, flotFilter, chartColors)
                             {
                                 if (typeof xaxisType !== "undefined" && xaxisType === "distance")
                                     return TP.utils.conversion.formatUnitsValue("distance", value, { defaultValue: null, workoutTypeId: workoutTypeId }) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
-                                
+
                                 var decimalHours = (value / (3600 * 1000));
                                 return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
                             },
@@ -123,6 +123,37 @@ function (_, TP, flotFilter, chartColors)
                     }
                 }
             });
+        },
+
+        getPointOptions: function (onHoverHandler)
+        {
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
+                {
+                    crosshair:
+                    {
+                        mode: "x",
+                        color: "rgba(255, 255, 255, 0.80)",
+                        lineWidth: 1
+                    },
+                    selection:
+                    {
+                        mode: null,
+                        color: chartColors.chartSelection
+                    },
+                    series:
+                    {
+                        points:
+                        {
+                            show: true,
+                            fill: false
+                        }
+                    },
+                    bars:
+                    {
+                        align: "left",
+                        barWidth: 0.8
+                    }
+                });
         },
 
         getGlobalDefaultOptions: function (onHoverHandler)

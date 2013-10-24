@@ -1,0 +1,471 @@
+define(
+[
+    "underscore",
+    "TP",
+    "models/workoutStatsForRange",
+    "utilities/charting/flotOptions",
+    "utilities/charting/jquery.flot.tooltip",
+    "utilities/charting/jquery.flot.selection",
+    "utilities/charting/flotCustomTooltip",
+    "utilities/charting/flotToolTipPositioner",
+    "utilities/charting/jquery.flot.zoom",
+    "utilities/charting/jquery.flot.multiselection",
+    "utilities/charting/chartColors",
+    "views/expando/scatterGraphToolbarView",
+    "hbs!templates/views/expando/scatterGraphTemplate"
+],
+function(
+    _,
+    TP,
+    WorkoutStatsForRange,
+    defaultFlotOptions,
+    flotToolTip,
+    flotSelection,
+    flotCustomToolTip,
+    toolTipPositioner,
+    flotZoom,
+    flotMultiSelection,
+    chartColors,
+    GraphToolbarView,
+    graphTemplate
+    )
+{
+    return TP.ItemView.extend(
+    {
+        className: "graphContainer expandoGraphPod",
+
+        template:
+        {
+            type: "handlebars",
+            template: graphTemplate
+        },
+
+
+        modelEvents: {},
+
+        initialize: function(options)
+        {
+            _.bindAll(this, "createFlotGraph", "onFirstRender");
+
+            if (!options.detailDataPromise)
+                throw "detailDataPromise is required for graph view";
+
+            this.stateModel = options.stateModel;
+
+            this.detailDataPromise = options.detailDataPromise;
+            this.lastFilterPeriod = this.getInitialFilterPeriod();
+            this.currentAxis = "time";
+            this.selections = [];
+
+            this.firstRender = true;
+
+            this.repaintHeight = _.debounce(this.repaintHeight, 200);
+
+            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+        },
+
+        onRender: function()
+        {
+            var self = this;
+
+            if (this.firstRender)
+            {
+                this.firstRender = false;
+
+                this.watchForModelChanges();
+                this.watchForControllerEvents();
+
+                setImmediate(function()
+                {
+                    self.detailDataPromise.then(self.onFirstRender);
+                });
+            }
+            else
+            {
+                this.createFlotGraph();
+            }
+        },
+
+        watchForModelChanges: function()
+        {
+            this.listenTo(this.model.get("detailData"), "change:flatSamples", _.bind(this.createFlotGraph, this));
+        },
+
+        onFirstRender: function()
+        {
+            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
+                return;
+
+            this.overlayGraphToolbar();
+            this.createFlotGraph();
+        },
+
+        createFlotGraph: function()
+        {
+            this.$plot = this.$("#scatterPlot");
+            this.drawPlot();
+        },
+
+        drawPlot: function()
+        {
+
+            this.$el.removeClass("noData");
+
+
+            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
+            {
+                this.$el.addClass("noData");
+                this.trigger("noData");
+                return;
+            }
+
+            var self = this;
+
+            if (!this.allSeries)
+            {
+                this.allSeries = this._getDataParser().getSeries();
+            }
+
+            this._getDataParser().workoutTypeValueId = this.model.get("workoutTypeValueId");
+            this._getDataParser().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
+
+            var enabledSeries = this._getDataParser().getSeries();
+
+            if(!enabledSeries.length)
+            {
+                this.$el.addClass("noData");
+                this.trigger("noData");
+                return;
+            }
+
+            var yaxes = this._getDataParser().getYAxes(enabledSeries);
+
+            var onHoverHandler = function(flotItem, $tooltipEl)
+            {
+                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
+                toolTipPositioner.updatePosition($tooltipEl, self.plot);
+            };
+
+            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentAxis, this.model.get("workoutTypeValueId"));
+
+            this.flotOptions.selection.mode = "x";
+            this.flotOptions.selection.color = chartColors.chartPrimarySelection;
+            this.flotOptions.yaxes = yaxes;
+            this.flotOptions.zoom = { enabled: true };
+            this.flotOptions.zoom.dataParser = this._getDataParser();
+            this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
+            this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+            this.flotOptions.grid.borderColor = "#9a9999";
+
+            this.$plot.css({ "min-height": 1, "min-width": 1 });
+
+            if($.plot)
+            {
+                this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
+                this._restoreSelection();
+            }
+
+            this.setInitialToolbarSmoothing(this.lastFilterPeriod);
+
+            this.trigger("hasData");
+        },
+
+        getInitialFilterPeriod: function()
+        {
+            if (this.hasOwnProperty("lastFilterPeriod"))
+                return this.lastFilterPeriod;
+            else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
+                return 0;
+            else
+                return 5;
+        },
+
+        setInitialToolbarSmoothing: function(period)
+        {
+            this.graphToolbar.setFilterPeriod(period);
+        },
+
+        overlayGraphToolbar: function()
+        {
+            this.graphToolbar = new GraphToolbarView({ dataParser: this._getDataParser(), model: this.model, stateModel: this.stateModel });
+
+            // this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
+
+            // this.graphToolbar.on("zoom", this.onToolbarZoom, this);
+            // this.graphToolbar.on("reset", this.resetZoom, this);
+            // this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
+            // this.graphToolbar.on("enableDistanceAxis", this.enableDistanceAxis, this);
+
+            this.$("#scatterGraphToolbar").append(this.graphToolbar.render().$el);
+        },
+
+        onToolbarZoom: function()
+        {
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                _.bind(this.zoomGraph, this)
+            );
+        },
+
+        zoomGraph: function()
+        {
+            if (!this.plot)
+                return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
+
+            this.zoomRange = this.stateModel.get("primaryRange");
+            this._applyZoom();
+        },
+
+        resetZoom: function()
+        {
+            if (!this.plot)
+                return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomReset", "eventLabel": "" });
+
+            this.plot.resetZoom();
+            this.zoomRange = null;
+            this._restoreSelection();
+        },
+
+        _applyZoom: function()
+        {
+            if(!this.zoomRange)
+            {
+                return;
+            }
+
+            this._setSelectionToRange(this.zoomRange, true, { force: true });
+            if (this.plot.zoomToSelection())
+            {
+                this.graphToolbar.onGraphZoomed();
+            }
+            else
+            {
+                this.zoomRange = null;
+            }
+            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
+        },
+
+        _setSelectionToRange: function(range, preventEvent, options)
+        {
+            var from;
+            var to;
+
+            if(!this.plot) return;
+
+            if((range && range !== this.zoomRange) || (options && options.force))
+            {
+
+                if (this.currentAxis === "time")
+                {
+                    from = range.get("begin");
+                    to = range.get("end");
+                }
+                else if (this.currentAxis === "distance")
+                {
+                    from = this._getDataParser().getDistanceFromMsOffset(range.get("begin"));
+                    to = this._getDataParser().getDistanceFromMsOffset(range.get("end"));
+                }
+                else
+                {
+                    throw new Error("GraphView: invalid X Axis type: " + this.currentAxis);
+                }
+
+                this.plot.setSelection({ xaxis: { from: from, to: to } }, preventEvent);
+
+            }
+            else
+            {
+                this.plot.clearSelection(preventEvent);
+            }
+        },
+
+        _restoreSelection: function()
+        {
+            this._applyZoom();
+            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
+            this._applyRanges();
+            if (this.plot)
+            {
+                this.plot.triggerRedrawOverlay();
+            }
+        },
+
+        applyFilter: function(period)
+        {
+            if (!this.plot)
+                return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSmoothingApplied", "eventLabel": "" });
+
+            this.lastFilterPeriod = period;
+            this.plot.setFilter(period);
+        },
+
+        handlePlotSelected: function()
+        {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
+
+            var plotSelectionFrom = this.plot.getSelection().xaxis.from;
+            var plotSelectionTo = this.plot.getSelection().xaxis.to;
+
+            var startOffsetMs;
+            var endOffsetMs;
+
+            if (this.currentAxis === "time")
+            {
+                startOffsetMs = Math.round(plotSelectionFrom);
+                endOffsetMs = Math.round(plotSelectionTo);
+            }
+            else
+            {
+                startOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionFrom);
+                endOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionTo);
+            }
+
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
+            this.stateModel.set("primaryRange", range);
+        },
+
+        _onSeriesChanged: function()
+        {
+            if (!this.plot)
+                return;
+            this.drawPlot();
+        },
+
+        enableTimeAxis: function ()
+        {
+            if (this.currentAxis === "time")
+                return;
+
+            this.currentAxis = "time";
+            this._getDataParser().setXAxis("time");
+            this.drawPlot();
+        },
+
+        enableDistanceAxis: function ()
+        {
+            if (this.currentAxis === "distance")
+                return;
+
+            this.currentAxis = "distance";
+            this._getDataParser().setXAxis("distance");
+            this.drawPlot();
+        },
+
+        watchForControllerEvents: function()
+        {
+            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onPrimaryRangeChange, this));
+        },
+
+        _onRangeAdded: function(range, ranges, options)
+        {
+            this._addRange(range);
+        },
+
+        _onRangeRemoved: function(range, ranges, options)
+        {
+            var selection = this.findGraphSelection(range.get("begin"), range.get("end"));
+            if(selection)
+            {
+                this.removeSelectionFromGraph(selection);
+                this.selections = _.without(this.selections, selection);
+            }
+        },
+
+        _onRangesReset: function(ranges, options)
+        {
+            this._applyRanges();
+        },
+
+        _onPrimaryRangeChange: function(stateModel, range, options)
+        {
+            this._setSelectionToRange(range, true);
+        },
+
+        _applyRanges: function()
+        {
+            _.each(this.selections, this.removeSelectionFromGraph, this);
+            this.selections = [];
+            this.stateModel.get("ranges").each(this._addRange, this);
+        },
+
+        _addRange: function(range)
+        {
+            var selection = this.findGraphSelection(range.get("begin"), range.get("end"));
+            if (!selection)
+            {
+                selection = this.createGraphSelection(range);
+                this.addSelectionToGraph(selection);
+            }
+        },
+
+        findGraphSelection: function(begin, end)
+        {
+            return _.find(this.selections, function(selection)
+            {
+                return selection.begin === begin && selection.end === end;
+            });
+        },
+
+        createGraphSelection: function(workoutStatsForRange, options)
+        {
+            var selection =
+            {
+                begin: workoutStatsForRange.get("begin"),
+                end: workoutStatsForRange.get("end")
+            };
+
+            return selection;
+        },
+
+        addSelectionToGraph: function (selection)
+        {
+            var from = selection.begin;
+            var to = selection.end;
+
+            if (this.currentAxis === "distance")
+            {
+                from = this._getDataParser().getDistanceFromMsOffset(from);
+                to = this._getDataParser().getDistanceFromMsOffset(to);
+            }
+
+            selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } });
+            this.selections.push(selection);
+        },
+
+        removeSelectionFromGraph: function(selection)
+        {
+            this.plot.clearMultiSelection(selection.selection);
+        },
+
+        onUnSelectAll: function()
+        {
+            _.each(this.selections, function(selection)
+            {
+                this.removeSelectionFromGraph(selection);
+            }, this);
+            this.selections = [];
+        },
+
+        stashHeight: function(offsetRatio)
+        {
+            this.offsetRatio = offsetRatio;
+        },
+
+        _getDataParser: function()
+        {
+            return this.model.get("detailData").getDataParser();
+        }
+
+    });
+});
+
