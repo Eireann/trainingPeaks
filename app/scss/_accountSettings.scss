@@ -155,7 +155,7 @@
             margin-top:11px;
 
             &:not(:first-of-type) {
-                margin-top:60px;
+                margin-top:55px;
             }
 
             .zoneGroupNameContain {
@@ -163,10 +163,12 @@
                 width:100%;
                 h3 {
                     display: inline-block;
+                    margin-top:2px;
                 }
                 .removeWorkoutType {
                     display: inline-block;
-                    margin-left:5px;
+                    float: right;
+                    margin-left: 5px;
                 }
             }
 
@@ -196,7 +198,7 @@
                 
                 input[type="text"] {
                     height:22px;
-                    width:72px;
+                    width:80px;
                     font-size: 12px;
                 }
                 
@@ -1037,19 +1039,43 @@
                 display: inline-block;
                 padding-right: 10px;
                 margin:0;
-                padding:2px 0 2px 0;
-                float:left;
+                padding:3px 0 3px 0;
+                float: left;
                 width:453px;
             }
 
             &.threshold {
                 margin-top: 20px;
                 padding-bottom: 5px;
+                font-family: $fontFamilyHeavy;
+
+                .zoneTitle {
+                    float: none;
+                    width: auto;
+                    font-family: $fontFamilyHeavy;
+                    padding: 3px 0;
+                }
+
+                .thresholdValue {
+                    padding: 3px 0;
+                }
+
+                .units {
+                    padding: 3px 0 !important;
+                    float: none !important;
+                }
+
+                .calculatedZoneItem {
+                    float: none;
+                    display: inline-block;
+                    width: auto;
+                }
             }
 
             &.zone {
                 &:nth-of-type(even) {
-                    background-color:$TPGrey2;
+                    // background-color: $TPGrey2;
+                    background-color: rgba(204,204,204,.5);
                 }
             }
 
@@ -1064,7 +1090,7 @@
                     float: left;
                     width: 76px;
                     padding:2px 0 2px 6px;
-                    border: 1px solid #fff;
+                    border: 1px solid rgba(255,255,255,.75);
                 }         
                 .to {
                     float: left;
@@ -1076,12 +1102,14 @@
                     float: left;
                     width: 76px;
                     padding:2px 0 2px 6px;
-                    border: 1px solid #fff;
+                    border: 1px solid rgba(255,255,255,.75);
                 }
-
                 .units {
                     float: left;
-                    padding:2px 0 2px 6px;
+                    padding:3px 0 3px 7px;
+                }
+                .thresholdValue {
+                  
                 }
             }
         }
