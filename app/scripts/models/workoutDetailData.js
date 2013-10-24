@@ -174,6 +174,7 @@ function (
         _rangeEvents:
         {
             laps: {
+                "add": "_flagLapsAsEdited",
                 "change:name": "_flagLapsAsEdited",
                 "lap:markedAsDeleted": "_flagLapAsDeleted"
             }

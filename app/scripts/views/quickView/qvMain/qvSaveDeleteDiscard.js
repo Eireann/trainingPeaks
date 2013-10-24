@@ -39,12 +39,11 @@ function(
                 var onSyncNewWorkout = function()
                 {
                     self.initializeTimePicker();
-                    newWorkoutModel.off("sync", onSyncNewWorkout);
-                    dayToAddTo.trigger("workout:added", newWorkoutModel);
-                    newWorkoutModel.trigger("select", newWorkoutModel);
+                    theMarsApp.calendarManager.addItem(newWorkoutModel);
+                    theMarsApp.selectionManager.setSelection(newWorkoutModel);
                 };
 
-                this.model.on("sync", onSyncNewWorkout);
+                this.model.once("sync", onSyncNewWorkout);
             }
         },
 

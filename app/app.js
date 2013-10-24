@@ -8,6 +8,8 @@ define(
     "framework/tooltips",
     "framework/identityMap",
     "framework/dataManager",
+    "shared/managers/calendarManager",
+    "shared/managers/selectionManager",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -15,7 +17,6 @@ define(
     "controllers/navigationController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
-    "controllers/homeController",
     "views/buildInfoView",
     "router",
     "utilities/dragAndDropFileUploadWidget",
@@ -34,6 +35,8 @@ function(
     ToolTips,
     IdentityMap,
     DataManager,
+    CalendarManager,
+    SelectionManager,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -41,7 +44,6 @@ function(
     NavigationController,
     CalendarController,
     DashboardController,
-    HomeController,
     BuildInfoView,
     Router,
     DragAndDropFileUploadWidget,
@@ -226,6 +228,8 @@ function(
             };
 
             this.dataManager = new DataManager(dataManagerOptions);
+            this.calendarManager = new CalendarManager({ dataManager: this.dataManager });
+            this.selectionManager = new SelectionManager();
 
             // reset reporting manager when we save or delete workouts
             this.on("save:model destroy:model", function(model)
@@ -314,7 +318,6 @@ function(
             this.controllers.navigationController = new NavigationController();
             this.controllers.calendarController = new CalendarController({ dataManager: this.dataManager });
             this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManager });
-            this.controllers.homeController = new HomeController({ dataManager: this.dataManager });
         });
 
         this.addInitializer(function()
@@ -402,6 +405,7 @@ function(
             this.started = true;
         });
 
+        // filter non-numeric input
         this.addInitializer(function ()
         {
             
@@ -411,6 +415,44 @@ function(
                     if(!TextFieldNumberFilter.isNumberKey(charCode))
                     {
                         evt.preventDefault();
+                    }
+                }
+            );
+        });
+
+        // trigger an 'enter' event on enter key in text field
+        this.addInitializer(function ()
+        {
+            $(document).on("keypress.watchForEnter", "input[type=text]", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 13)
+                    {
+                        var enterEvent = new $.Event("enter");
+                        $(evt.currentTarget).trigger(enterEvent);
+                        if(enterEvent.isDefaultPrevented())
+                        {
+                            evt.preventDefault();
+                        }
+                    }
+                }
+            );
+        });
+
+        // trigger a 'cancel' event on escape key in text field
+        this.addInitializer(function ()
+        {
+            $(document).on("keyup.watchForEnter", "input[type=text]", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 27)
+                    {
+                        var cancelEvent = new $.Event("cancel");
+                        $(evt.currentTarget).trigger(cancelEvent);
+                        if(cancelEvent.isDefaultPrevented())
+                        {
+                            evt.preventDefault();
+                        }
                     }
                 }
             );

@@ -49,14 +49,16 @@ function(
         {
             "change:isFocused": "_onFocusedChange",
             "change:isSelected": "_onSelectedChange",
-            "change:name": "_onNameChange"
+            "change:name": "_onNameChange",
+            "change:isLap change:totalTime": "render"
         },
 
         events:
         {
-            "click": "_onClick",
+            "click :not(input[type=checkbox])": "_onClick",
             "click .editLapName": "_onClickToEdit",
             "click .delete": "_onClickDelete",
+            "click .add": "_onClickAdd",
             "change input[type=checkbox]": "_onCheckboxChange"
         },
 
@@ -69,6 +71,11 @@ function(
         {
             this._onFocusedChange();
             this._onSelectedChange();
+
+            if(this.model.get("isEditing"))
+            {
+                this._startEditing();
+            }
         },
 
         serializeData: function()
@@ -83,9 +90,7 @@ function(
 
         _onNameChange: function()
         {
-            if(!this._isEditing()) {
-                this.render();
-            }
+            this.render();
 
             if(this.model.get("isFocused"))
             {
@@ -96,9 +101,7 @@ function(
         _onFocusedChange: function()
         {
             var focused = !!this.model.get("isFocused");
-            var $actions = this.$('.actions');
             this.$el.toggleClass("highlight", focused);
-            $actions.toggle(focused);
         },
 
         _onSelectedChange: function()
@@ -106,17 +109,12 @@ function(
             this.$("input").attr("checked", !!this.model.get("isSelected"));
         },
 
-        _isEditing: function()
-        {
-            return this.$el.is(".editing");
-        },
-
         _onClickToEdit: function(e)
         {
-            if(this.model.get("isLap") && this.model.get("isFocused"))
+            if(this.model.get("isLap") && this.model.get("isFocused") && !this.model.get("isEditing"))
             {
-                this._startEditing();
                 e.preventDefault();
+                this._startEditing();
             }
         },
 
@@ -127,8 +125,10 @@ function(
 
         _startEditing: function()
         {
-            if(this.model.get("isLap") && !this._isEditing())
+            if(this.model.get("isLap"))
             {
+
+                this.model.set("isEditing", true);
                 var $container = this.$(".editLapName");
                 var $input = $('<input type="text"/>');
                 $input.val(this.model.get("name"));
@@ -137,22 +137,41 @@ function(
 
                 $container.empty().append($input);
                 this.$el.addClass('editing');
-                $input.on("change", _.bind(this._onInputChange, this));
-                $input.on("blur", _.bind(this._onInputBlur, this));
-                $input.focus();
+                $input.on("blur enter", _.bind(this._stopEditing, this));
+                $input.on("cancel", _.bind(this._cancelEditing, this));
+                $input.focus().select();
             }
         },
 
-        _onInputChange: function(e)
+        _cancelEditing: function(e)
         {
-            this.model.set("name", this.$("input[type=text]").val());
+            this._stopEditing(e, true);
         },
 
-        _onInputBlur: function()
+        _stopEditing: function(e, cancel)
         {
-            if(this._isEditing())
+            e.preventDefault();
+            if(this.model.get("isLap"))
             {
-                this._stopEditing();
+
+                this.model.set("isEditing", false);
+
+                var $input = this.$("input[type=text]");
+
+                if($input && $input.length)
+                {
+                    var name = $input.val();
+                    this.$("input[type=text]").off("blur enter");
+                    this.$(".editLapName").empty().text(this.model.get("name"));
+                    this.$el.removeClass("editing");
+                    ToolTips.enableTooltips();
+
+                    if(!cancel)
+                    {
+                        this.model.set("name", name);
+                    }
+                }
+
             }
         },
 
@@ -163,26 +182,19 @@ function(
             this.listenTo(deleteConfirmationView, "userConfirmed", _.bind(this._deleteLap, this));
         },
 
+        _onClickAdd: function(e)
+        {
+            this.model.set({temporary: false, isLap: true, isEditing: true});
+        },
+
         _deleteLap: function()
         {
             this.model.set({'deleted': true,'isFocused': false, 'isSelected': false});
             this.$el.addClass('deleted');
-            this.$('.actions').hide();
             this.model.trigger('lap:markedAsDeleted', this.model);
             this.undelegateEvents();
             this.$('input').attr('disabled', true);
             this.stateModel.get("ranges").remove(this.model);
-        },
-
-        _stopEditing: function()
-        {
-            if(this.model.get("isLap") && this._isEditing())
-            {
-                this.$("input[type=text]").off("change").off("blur");
-                this.$(".editLapName").empty().text(this.model.get("name"));
-                this.$el.removeClass("editing");
-                ToolTips.enableTooltips();
-            }
         },
 
         _onCheckboxChange: function(e)
@@ -235,21 +247,24 @@ function(
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             this.stateModel = options.stateModel;
 
-
-            this.listenTo(this.stateModel.get("ranges"), "add", function(range)
+            // when a new temporary primary range is added to the state model, add it to our collection as a temporary lap
+            this.listenTo(this.stateModel, "change:primaryRange", function(stateModel, range)
             {
-                if(range.get("temporary"))
+                self.collection.remove(
+                    self.collection.find(
+                        function(model){return model.get("temporary") ? true : false;}
+                    )
+                );
+
+                if(range && range.get("temporary"))
                 {
                     self.collection.unshift(range);
                 }
             });
 
-            this.listenTo(this.stateModel.get("ranges"), "remove", function(range)
-            {
-                if(range.get("temporary"))
-                {
-                    self.collection.remove(range);
-                }
+            // when a model that was temporary changes to become a permanent lap, add it to the detaildata laps collection
+            this.listenTo(this.collection, "change:isLap", function(model) {
+                self.model.get("detailData").getRangeCollectionFor("laps").unshift(model);
             });
 
             this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this._enableOrDisable, this));

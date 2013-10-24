@@ -1,5 +1,5 @@
 ﻿.userSettings {
-    width: calc(800px + 200px + 52px);
+    width: calc(719px + 200px + 52px);
     overflow: hidden; //to hide overlapping portions of titleBar
 
     .selectBoxWrapper
@@ -41,7 +41,7 @@
 
     .tabbedLayoutBody {
         width: calc(100% - 142px);
-        padding:0 30px 12px 30px;
+        // padding:0 30px 12px 30px;
     }
 
     label
@@ -100,6 +100,9 @@
     }
 
     .userSettingsContent {
+        width: 817px;
+        padding: 0 30px;
+
         fieldset {
             border: 1px solid $TPGrey2;
             padding: 10px 15px 15px 15px;
@@ -118,7 +121,8 @@
         }
 
         .scrollTarget {
-            padding-top:30px;
+            padding-top: 28px;
+            padding-bottom: 28px;
         }
 
         .addWorkoutType, 
@@ -129,6 +133,7 @@
 
         .removeZone {
             margin-left:4px;
+            margin-right:0;
         }
 
         .addZoneContain {
@@ -141,23 +146,29 @@
 
             .addWorkoutType {
                 float:left;
-                margin:5px 0 0 10px;
+                margin:0 0 0 10px;
             }
 
         }
 
         .zonesConfigGroup {
-            margin-top:25px;
+            margin-top:11px;
+
+            &:not(:first-of-type) {
+                margin-top:55px;
+            }
 
             .zoneGroupNameContain {
                 @include clearfix;
                 width:100%;
                 h3 {
                     display: inline-block;
+                    margin-top:2px;
                 }
                 .removeWorkoutType {
                     display: inline-block;
-                    margin-left:5px;
+                    float: right;
+                    margin-left: 5px;
                 }
             }
 
@@ -187,23 +198,24 @@
                 
                 input[type="text"] {
                     height:22px;
-                    width:100px;
+                    width:80px;
                     font-size: 12px;
                 }
                 
                 .zoneCalculatorLayoutBody {
                     .selectBox {
-                        width:205px;
+                        // width:195px;
                         // margin-left:7px;
                     }
 
                     .selectboxit-container .selectboxit {
-                        width: 205px !important;
+                        // width: 195px !important;
                     }
 
                     .calculatorType,
                     .calculatorDefinition {
                         float:left;
+                        margin-right:43px;
                         margin-right:25px;
                     }
 
@@ -234,10 +246,10 @@
                                 
 
                                 .selectBox {
-                                    width: 125px;
+                                    width: 119px;
                                 }
                                 .selectboxit-container .selectboxit {
-                                    width: 125px !important;
+                                    width: 119px !important;
                                     
                                     .selectboxit-text,
                                     .selectboxit-options {
@@ -269,7 +281,7 @@
                             }
                             input[type="text"] {
                                 float: left;
-                                width: 125px;
+                                width: 119px;
                             }
                         }
                     }
@@ -295,7 +307,7 @@
                     font-size:$fontSizeSmall;
                     display:inline-block;
                     text-align:center;
-                    width:28px;
+                    width:30px;
                 }
             }
 
@@ -344,10 +356,10 @@
 
                 .zoneValueContain {
                     float:left;
-                    margin-right:25px;
+                    margin-right:41px;
 
                     .numberInput {
-                        width:100px;
+                        width:91px;
                     }
                 }
             }
@@ -392,8 +404,7 @@
 
         .heartRateZones, 
         .powerZones, 
-        .speedPaceZones,
-        .userSettingsPayments {
+        .speedPaceZones {
             margin-bottom:20px;
         }
 
@@ -403,15 +414,15 @@
             .zones {
                 .zoneEntry {
                     .zoneName {
-                        width:400px;
+                        width:416px;
                     }
                     .min,
                     .max {
-                        width:80px;
+                        width:77px;
                     }
 
                     .min {
-                        margin-left:38px;
+                        margin-left:39px;
                     }
                 }
             }
@@ -486,8 +497,8 @@
 }
 
 .userSettingsAccountContent {
-    width: 816px;
-    padding-top:30px;
+    // width: 817px;
+    // padding-top:30px;
 
     .userSettingsHelpText {
         float:left;
@@ -504,8 +515,11 @@
     }
 
     .userSettingsPersonalSection {
-        margin-bottom:49px;
         @include clearfix;
+
+        &.email {
+            margin-bottom: 28px;
+        }
 
         .labelbold {
             margin-left:5px;
@@ -522,7 +536,7 @@
 
             .fieldTitle {
                 float: left;   
-                padding: 4px 5px 0 0; 
+                padding: 5px 5px 0 0; 
                 width: 125px;
                 max-width: 125px;
                 text-align: right;
@@ -714,7 +728,7 @@
 
         &.calendarSync {
             input[type="text"] {
-                width:691px;
+                width:632px;
                 height:20px;
                 float: left;
             }
@@ -904,7 +918,7 @@
         .zoneCalculatorView {
             float: none;
             margin: 0 auto;
-            width: 400px;
+            width: 100%;
 
             .zoneCalculatorResult{
                 &.threshold {
@@ -1013,7 +1027,7 @@
         width:400px;
 
         .zoneCalculatorResult {
-            padding:5px;
+            padding:5px 5px 5px 6px;
             color: $TPGrey3;
             font-size: $fontSizeSmall;
             font-family: $fontFamilyRegular;
@@ -1025,22 +1039,78 @@
                 display: inline-block;
                 padding-right: 10px;
                 margin:0;
+                padding:3px 0 3px 0;
+                float: left;
+                width:453px;
             }
 
             &.threshold {
                 margin-top: 20px;
                 padding-bottom: 5px;
+                font-family: $fontFamilyHeavy;
+
+                .zoneTitle {
+                    float: none;
+                    width: auto;
+                    font-family: $fontFamilyHeavy;
+                    padding: 3px 0;
+                }
+
+                .thresholdValue {
+                    padding: 3px 0;
+                }
+
+                .units {
+                    padding: 3px 0 !important;
+                    float: none !important;
+                }
+
+                .calculatedZoneItem {
+                    float: none;
+                    display: inline-block;
+                    width: auto;
+                }
             }
 
             &.zone {
                 &:nth-of-type(even) {
-                    background-color:$TPGrey2;
+                    // background-color: $TPGrey2;
+                    background-color: rgba(204,204,204,.5);
                 }
             }
 
             .calculatedZoneItem {
-                float:right;
-                text-align:right;            
+                @include clearfix;
+                float:left;
+                text-align:right;  
+                width:240px;
+                text-align:left; 
+
+                .min {
+                    float: left;
+                    width: 76px;
+                    padding:2px 0 2px 6px;
+                    border: 1px solid rgba(255,255,255,.75);
+                }         
+                .to {
+                    float: left;
+                    text-align: center;
+                    width: 40px;
+                    padding:2px 0 2px 0;
+                }
+                .max {
+                    float: left;
+                    width: 76px;
+                    padding:2px 0 2px 6px;
+                    border: 1px solid rgba(255,255,255,.75);
+                }
+                .units {
+                    float: left;
+                    padding:3px 0 3px 7px;
+                }
+                .thresholdValue {
+                  
+                }
             }
         }
     }
@@ -1050,6 +1120,47 @@
         button[disabled]
         {
             display: none;
+        }
+    }
+}
+
+
+.heartRateZonesCalculator {
+    .calculatorType {
+        .selectBox {
+            width: 195px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 195px !important;
+        }
+    } 
+
+    .calculatorDefinition {
+        .selectBox {
+            width:210px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 210px !important;
+        }
+    }
+}
+
+.speedZonesCalculator {
+    .calculatorType {
+        .selectBox {
+            width:135px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 135px !important;
+        }
+    } 
+
+    .calculatorDefinition {
+        .selectBox {
+            width:185px;
+        }
+        .selectboxit-container .selectboxit {
+            width: 185px !important;
         }
     }
 }

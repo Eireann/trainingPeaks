@@ -284,13 +284,7 @@ function(
 
         _setupSelectBox: function()
         {
-            this.$("select").each(function(i, el)
-            {
-                var $el = $(el);
-                $el.selectBoxIt({
-                    viewport: function(){return $el.closest(".scrollable");}
-                });
-            });
+            this.$("select").selectBoxIt({ viewport: $(".tabbedLayoutBody.scrollable") });
         },
 
         _onICalFocus: function(e)

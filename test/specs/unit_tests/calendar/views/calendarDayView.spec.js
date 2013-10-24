@@ -73,28 +73,7 @@ function(
                     var dayView = new CalendarDayView({ model: dayModel });
                     spyOn(dayView.$el, "droppable");
                     dayView.setUpDroppable();
-                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropItem, tolerance: 'pointer' });
-                });
-
-                it("Should trigger an itemDropped event", function()
-                {
-                    var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
-                    var dayView = new CalendarDayView({ model: dayModel });
-                    var uiMock = {
-                        draggable: {
-                            data: function() {
-                                return {
-                                    ItemId: "12345",
-                                    ItemType: "Workout",
-                                    DropEvent: "itemMoved"
-                                };
-                            }
-                        }
-                    };
-                    spyOn(dayView, "trigger");
-                    dayView.onDropItem({}, uiMock);
-                    eventOptions = { ItemId: "12345", DropEvent: "itemMoved", ItemType: "Workout", destinationCalendarDayModel: dayModel };
-                    expect(dayView.trigger).toHaveBeenCalledWith("itemDropped", eventOptions);
+                    expect(dayView.$el.droppable).toHaveBeenCalled();
                 });
 
             });

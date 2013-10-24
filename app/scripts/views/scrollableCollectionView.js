@@ -190,6 +190,9 @@ function(
             $wrap: ".js-wrap"
         },
 
+        // Gah! refresh is bound to render...
+        collectionEvents: {},
+
         constructor: function(options)
         {
             var self = this;

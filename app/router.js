@@ -38,7 +38,6 @@ function (_, TP, RollbarManager)
 
         routes:
         {
-            "home": "home",
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
@@ -64,13 +63,6 @@ function (_, TP, RollbarManager)
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
             TP.analytics("send", "pageview", { page: "dashboard" });
-        }),
-
-        home: ensureUser(function()
-        {
-            theMarsApp.showController(theMarsApp.controllers.homeController);
-
-            TP.analytics("send", "pageview", { page: "home" });
         })
     });
 });
