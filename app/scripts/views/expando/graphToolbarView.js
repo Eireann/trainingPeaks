@@ -185,6 +185,20 @@ function(
                 this.$(".graphDistanceButton").remove();
                 this.$(".graphTimeButton").remove();
             }
+            else
+            {
+                var currentXAxis = this.model.get("detailData").getDataParser().xaxis;
+                if(currentXAxis === "distance")
+                {
+                    this.$(".graphDistanceButton").addClass("bold");
+                    this.$(".graphTimeButton").removeClass("bold")
+                }
+                else
+                {
+                    this.$(".graphDistanceButton").removeClass("bold");
+                    this.$(".graphTimeButton").addClass("bold")
+                }
+            }
         },
 
         _onSelectionChange: function()
