@@ -916,7 +916,7 @@
         .zoneCalculatorView {
             float: none;
             margin: 0 auto;
-            width: 400px;
+            width: 100%;
 
             .zoneCalculatorResult{
                 &.threshold {
@@ -1025,7 +1025,7 @@
         width:400px;
 
         .zoneCalculatorResult {
-            padding:5px;
+            padding:5px 5px 5px 6px;
             color: $TPGrey3;
             font-size: $fontSizeSmall;
             font-family: $fontFamilyRegular;
@@ -1037,6 +1037,9 @@
                 display: inline-block;
                 padding-right: 10px;
                 margin:0;
+                padding:2px 0 2px 0;
+                float:left;
+                width:453px;
             }
 
             &.threshold {
@@ -1051,8 +1054,35 @@
             }
 
             .calculatedZoneItem {
-                float:right;
-                text-align:right;            
+                @include clearfix;
+                float:left;
+                text-align:right;  
+                width:240px;
+                text-align:left; 
+
+                .min {
+                    float: left;
+                    width: 76px;
+                    padding:2px 0 2px 6px;
+                    border: 1px solid #fff;
+                }         
+                .to {
+                    float: left;
+                    text-align: center;
+                    width: 40px;
+                    padding:2px 0 2px 0;
+                }
+                .max {
+                    float: left;
+                    width: 76px;
+                    padding:2px 0 2px 6px;
+                    border: 1px solid #fff;
+                }
+
+                .units {
+                    float: left;
+                    padding:2px 0 2px 6px;
+                }
             }
         }
     }
