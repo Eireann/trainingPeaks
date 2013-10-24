@@ -113,14 +113,88 @@ function(
 
                 selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
                 selectionManager.pasteClipboardToSelection();
-                
-                testHelpers.resolveRequests("PUT", "workouts/1", {});
-                testHelpers.resolveRequests("PUT", "timedmetrics/1", {});
+
+                testHelpers.resolveRequest("PUT", "workouts/1", {});
+                testHelpers.resolveRequest("PUT", "timedmetrics/1", {});
 
                 expect(workout.getCalendarDay()).toEqual("2013-10-25");
                 expect(metric.getCalendarDay()).toEqual("2013-10-25");
                 expect(metric.get("timeStamp")).toEqual("2013-10-25T13:26:42");
 
+            });
+
+            it("should copy, paste", function()
+            {
+                selectionManager.setSelection(calendarManager.days.get("2013-10-21"));
+                selectionManager.setSelection(calendarManager.days.get("2013-10-23"), { shiftKey: true });
+
+                selectionManager.copySelectionToClipboard();
+
+                selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
+                selectionManager.pasteClipboardToSelection();
+
+                testHelpers.resolveRequest("POST", "workouts", {});
+                testHelpers.resolveRequest("POST", "timedmetrics", {});
+
+                expect(workout.getCalendarDay()).toEqual("2013-10-22");
+                expect(metric.getCalendarDay()).toEqual("2013-10-22");
+                expect(metric.get("timeStamp")).toEqual("2013-10-22T13:26:42");
+
+                expect(calendarManager.days.get("2013-10-25").itemsCollection.length).toEqual(2);
+
+            });
+
+            it("should cut, paste workouts", function()
+            {
+                selectionManager.setSelection(workout);
+                selectionManager.cutSelectionToClipboard();
+
+                selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
+                selectionManager.pasteClipboardToSelection();
+
+                testHelpers.resolveRequest("PUT", "workouts/1", {});
+
+                expect(workout.getCalendarDay()).toEqual("2013-10-24");
+            });
+
+            it("should cut, paste metircs", function()
+            {
+                selectionManager.setSelection(metric);
+                selectionManager.cutSelectionToClipboard();
+
+                selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
+                selectionManager.pasteClipboardToSelection();
+
+                testHelpers.resolveRequest("PUT", "metrics/1", {});
+
+                expect(metric.getCalendarDay()).toEqual("2013-10-24");
+            });
+            it("should copy, paste workouts", function()
+            {
+                selectionManager.setSelection(workout);
+                selectionManager.copySelectionToClipboard();
+
+                selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
+                selectionManager.pasteClipboardToSelection();
+
+                testHelpers.resolveRequest("POST", "workouts", {});
+
+                expect(workout.getCalendarDay()).toEqual("2013-10-22");
+                expect(calendarManager.days.get("2013-10-24").itemsCollection.length).toEqual(1);
+            });
+
+            it("should cut, paste metircs", function()
+            {
+                selectionManager.setSelection(metric);
+                selectionManager.copySelectionToClipboard();
+
+                selectionManager.setSelection(calendarManager.days.get("2013-10-24"));
+                selectionManager.pasteClipboardToSelection();
+
+                testHelpers.resolveRequest("POST", "metrics", {});
+
+                expect(metric.getCalendarDay()).toEqual("2013-10-22");
+                expect(calendarManager.days.get("2013-10-24").itemsCollection.length).toEqual(1);
             });
 
 

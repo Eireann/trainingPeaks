@@ -12,6 +12,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
     var CalendarDay = TP.Model.extend(
     {
+
         idAttribute: 'date',
 
         initialize: function(attrs, options)
@@ -85,26 +86,9 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             this.itemsCollection.reset(models, options);
         },
 
-        getWorkoutItems: function()
-        {
-            var workoutsList = [];
-            this.each(function (item)
-            {
-                item = ActivityModel.unwrap(item);
-                if (item instanceof WorkoutModel)
-                    workoutsList.push(item);
-            });
-            return workoutsList;
-        },
-
         length: function()
         {
             return this.itemsCollection.length;
-        },
-
-        workoutAdded: function(newWorkout)
-        {
-            this.trigger("workout:added", newWorkout);
         },
 
         each: function(callback)
@@ -115,13 +99,6 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
         items: function()
         {
             return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
-        },
-
-        getItems: function()
-        {
-            return this.itemsCollection.filter(function(model){
-                return !model.isDateLabel;
-            });
         },
 
         moveItemsToDay: function(date)
@@ -182,7 +159,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             return day;
         }
 
-    }, { hasLabel: false });
+    });
 
     return CalendarDay;
 });
