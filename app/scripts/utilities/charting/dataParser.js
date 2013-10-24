@@ -1,10 +1,10 @@
 ﻿define(
 [
     "utilities/charting/chartColors",
-    "utilities/charting/findIndexByMsOffset",
+    "utilities/charting/findOrderedArrayIndexByValue",
     "utilities/conversion/conversion"
 ],
-function(chartColors, findIndexByMsOffset, conversion)
+function(chartColors, findOrderedArrayIndexByValue, conversion)
 {
     var defaultChannelOrder =
     [
@@ -22,9 +22,15 @@ function(chartColors, findIndexByMsOffset, conversion)
     var findIndexByXAxisOffset = function (xAxisOffset)
     {
         if (this.xaxis === "distance")
-            return findIndexByMsOffset(this.xAxisDistanceValues, xAxisOffset);
+            return findOrderedArrayIndexByValue(this.xAxisDistanceValues, xAxisOffset);
 
-        return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, xAxisOffset);
+        return findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, xAxisOffset);
+    };
+
+    var findDistanceByMsOffset = function(msOffset)
+    {
+        var sampleIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, msOffset);
+        return this.xAxisDistanceValues[sampleIndex];
     };
 
     var parseDataByAxisAndChannel = function(flatSamples)
@@ -96,10 +102,74 @@ function(chartColors, findIndexByMsOffset, conversion)
         return dataByAxisAndChannel;
     };
 
+    var removeExcludedRangesFromData = function(data, excludedRanges, channel, offsetType, offsetsOfSamples)
+    {
+        if(!excludedRanges || !excludedRanges.length)
+        {
+            return;
+        }     
+        _.each(excludedRanges, function(range)
+        {
+            if(range.channel === channel || range.channel === "AllChannels")
+            {
+
+                // offset by one on each end seems to be closer to the result that is returned after applying cuts
+                var rangeStartIndex = findOrderedArrayIndexByValue(offsetsOfSamples, range[offsetType].begin) + 1;
+                var rangeEndIndex = findOrderedArrayIndexByValue(offsetsOfSamples, range[offsetType].end) - 1;
+
+                if(rangeStartIndex >= 0 && rangeEndIndex >= 0)
+                {
+                    var getPointValue = function() {return null;};
+
+
+                    // extrapolate values for distance view
+                    if(offsetType === "distance")
+                    {
+                        var beginValue = data[rangeStartIndex][1];
+                        var endValue = data[rangeEndIndex][1];
+                        var increment = (endValue - beginValue) / (rangeEndIndex - rangeStartIndex);
+                        var currentValue = beginValue;
+                        getPointValue = function()
+                        {
+                            currentValue += increment;
+                            return currentValue;
+                        };
+                    } 
+                    else
+                    {
+                        // delete values for time view, except flatten elevation
+                        if(channel === "Elevation" && rangeStartIndex > 0)
+                        {
+                            var previousElevation = data[rangeStartIndex][1];
+                            getPointValue = function(){return previousElevation;};
+                        }
+                    }
+
+                    for(var i = rangeStartIndex;i<=rangeEndIndex && i < data.length;i++)
+                    {
+                        // if xaxis is distance, extrapolate, otherwise just cut
+
+                        // each data point is an array with index and value - remove the value but leave the index intact
+                        data[i][1] = getPointValue();
+                    }
+                }
+            }
+        });
+    };
+
     var generateSeriesFromData = function(channelMask, dataByChannel, minElevation, x1, x2)
     {
         var self = this;
         var seriesArray = [];
+
+        var offsetsOfSamples = this.xaxis === "distance" ? this.xAxisDistanceValues : this.flatSamples.msOffsetsOfSamples;
+        var startIdx, endIdx;
+        if(!_.isUndefined(x1) && !_.isUndefined(x2))
+        {
+            startIdx = findIndexByXAxisOffset.call(self, x1);
+            endIdx = findIndexByXAxisOffset.call(self, x2);
+            offsetsOfSamples = offsetsOfSamples.slice(startIdx, endIdx + 1);
+        }
 
         _.each(channelMask, function(channel)
         {
@@ -118,16 +188,17 @@ function(chartColors, findIndexByMsOffset, conversion)
             var fillOpacity = channel === "Elevation" ? 0.3 : null;
 
             var data = [];
-            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+            if(!_.isUndefined(x1) && !_.isUndefined(x2))
             {
-                var startIdx = findIndexByXAxisOffset.call(self, x1);
-                var endIdx = findIndexByXAxisOffset.call(self, x2);
-                
-                for (var idx = startIdx; idx <= endIdx; idx++)
-                    data.push(dataByChannel[channel][idx]);
+                data = dataByChannel[channel].slice(startIdx, endIdx + 1);
             }
             else
+            {
                 data = _.clone(dataByChannel[channel]);
+            }
+
+            // remove cut ranges
+            removeExcludedRangesFromData(data, self.excludedRanges, channel, self.xaxis, offsetsOfSamples);
 
             var seriesOptions =
             {
@@ -308,6 +379,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         this.xaxis = "time";
         this.disabledSeries = [];
         this.excludedSeries = [];
+        this.excludedRanges = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
@@ -400,8 +472,8 @@ function(chartColors, findIndexByMsOffset, conversion)
         {
             if(!this.hasLatLongData) return [];
 
-            var sampleStartIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, startMsOffset);
-            var sampleEndIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, endMsOffset);
+            var sampleStartIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, startMsOffset);
+            var sampleEndIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, endMsOffset);
 
             return generateLatLonFromDataBetweenIndexes.call(this, this.dataByAxisAndChannel[this.xaxis], sampleStartIndex, sampleEndIndex);
         },
@@ -478,10 +550,29 @@ function(chartColors, findIndexByMsOffset, conversion)
         
         getDistanceFromMsOffset: function (msOffset)
         {
-            var index = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
+            var index = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, msOffset);
             if (index !== null && index < this.getDataByChannel("Distance").length)
                 return this.getDataByChannel("Distance")[index][1];
             return null;
+        },
+
+        excludeRange: function(channel, beginMsOffset, endMsOffset)
+        {
+            var beginIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, beginMsOffset);
+            var endIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, endMsOffset);
+
+            this.excludedRanges.push({
+                channel: channel,
+                time: {
+                    begin: beginMsOffset,
+                    end: endMsOffset
+                },
+                distance: {
+                    begin: this.xAxisDistanceValues[beginIndex],
+                    end: this.xAxisDistanceValues[endIndex]
+                }
+
+            });
         },
 
         excludeChannel: function(channel)
@@ -492,9 +583,10 @@ function(chartColors, findIndexByMsOffset, conversion)
             }
         },
 
-        resetExcludedChannels: function()
+        resetExcludedRanges: function()
         {
             this.excludedSeries = [];
+            this.excludedRanges = [];
         },
 
         getAvailableChannels: function()

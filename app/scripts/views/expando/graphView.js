@@ -64,8 +64,7 @@ function(
 
             this.repaintHeight = _.debounce(this.repaintHeight, 200);
 
-            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change", _.bind(this._onSeriesChanged, this));
         },
 
         onRender: function()
@@ -381,11 +380,15 @@ function(
             this.stateModel.set("hover", null);
         },
 
-        _onSeriesChanged: function()
+        _onSeriesChanged: function(model)
         {
             if (!this.plot)
-                return;           
-            this.drawPlot(); 
+                return;          
+
+            if(_.intersection(["disabledDataChannels", "availableDataChannels", "channelCuts"], _.keys(model.changed)).length)
+            {
+                this.drawPlot(); 
+            }
         },
 
         enableTimeAxis: function ()

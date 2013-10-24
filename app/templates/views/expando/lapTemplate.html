@@ -1,13 +1,15 @@
-<input type="checkbox">
-<div class="editLapName" {{#if isLap}}title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</div>
-<span class="">{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
-{{#if isLap}}
-  <div class="actions">
-    <button class="delete">Delete</button>
-  </div>
-{{/if}}
-{{#if temporary}}
-  <div class="actions">
-    <button class="add">Add</button>
-  </div>
-{{/if}}
+{{#ifNot isCut}}
+    <input type="checkbox">
+    <div class="editLapName" {{#if isLap}}title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</div>
+    <span class="">{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
+    {{#if isLap}}
+      <div class="actions">
+        <button class="delete">Delete</button>
+      </div>
+    {{/if}}
+    {{#if temporary}}
+      <div class="actions">
+        <button class="add">Add</button>
+      </div>
+    {{/if}}
+{{/ifNot}}
