@@ -133,15 +133,15 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
                         {
                             currentValue += increment;
                             return currentValue;
-                        }
+                        };
                     } 
                     else
                     {
                         // delete values for time view, except flatten elevation
                         if(channel === "Elevation" && rangeStartIndex > 0)
                         {
-                            var beginValue = data[rangeStartIndex][1];
-                            getPointValue = function(){return beginValue};
+                            var previousElevation = data[rangeStartIndex][1];
+                            getPointValue = function(){return previousElevation;};
                         }
                     }
 
@@ -190,7 +190,7 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
             var data = [];
             if(!_.isUndefined(x1) && !_.isUndefined(x2))
             {
-                data = data[dataByChannel][channel].slice(startIdx, endIdx + 1);
+                data = dataByChannel[channel].slice(startIdx, endIdx + 1);
             }
             else
             {

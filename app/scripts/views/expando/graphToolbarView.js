@@ -191,12 +191,12 @@ function(
                 if(currentXAxis === "distance")
                 {
                     this.$(".graphDistanceButton").addClass("bold");
-                    this.$(".graphTimeButton").removeClass("bold")
+                    this.$(".graphTimeButton").removeClass("bold");
                 }
                 else
                 {
                     this.$(".graphDistanceButton").removeClass("bold");
-                    this.$(".graphTimeButton").addClass("bold")
+                    this.$(".graphTimeButton").addClass("bold");
                 }
             }
         },
