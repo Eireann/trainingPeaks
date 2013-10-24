@@ -132,7 +132,7 @@ function (
 
         cutChannel: function(series)
         {
-            this.cutRange(series, _.first(this.get("flatSamples").msOffsetsOfSamples), _.last(this.get("flatSamples").msOffsetsOfSamples));
+            this.cutRange(series, _.first(this.get("flatSamples").msOffsetsOfSamples), _.last(this.get("flatSamples").msOffsetsOfSamples), true);
         },
 
         cutAllChannelsForRange: function(begin, end)
@@ -141,7 +141,7 @@ function (
             this._markCutLaps(begin, end);
         },
 
-        cutRange: function(series, begin, end)
+        cutRange: function(series, begin, end, isFullChannel)
         {
             this._batchChanges(function()
             {
@@ -154,7 +154,14 @@ function (
                 channelCuts.push(channelCutDetails);
 
                 // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
-                this._dataParser.excludeChannel(series);
+                if(isFullChannel)
+                {
+                    this.dataParser.excludeChannel(series);
+                }
+                else
+                {
+                    this._dataParser.excludeRange(series, begin, end);
+                }
                 this.set("channelCuts", channelCuts);
                 this.disableChannel(series);
                 this._removeAvailableChannel(series);
@@ -384,7 +391,7 @@ function (
 
         _resetDataParser: function()
         {
-            this._dataParser.resetExcludedChannels();
+            this._dataParser.resetExcludedRanges();
             this._dataParser.loadData(this.get("flatSamples"));
         },
 

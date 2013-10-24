@@ -96,10 +96,51 @@ function(chartColors, findIndexByMsOffset, conversion)
         return dataByAxisAndChannel;
     };
 
+    var removeExcludedRangesFromData = function(data, excludedRanges, channel, msOffsetsOfSamples)
+    {
+        if(!excludedRanges || !excludedRanges.length)
+        {
+            return;
+        }     
+        _.each(excludedRanges, function(range)
+        {
+            if(range.channel === channel || range.channel === "AllChannels")
+            {
+                var rangeStartIndex = findIndexByMsOffset(msOffsetsOfSamples, range.begin);
+                var rangeEndIndex = findIndexByMsOffset(msOffsetsOfSamples, range.end);
+                if(rangeStartIndex >= 0 && rangeEndIndex >= 0)
+                {
+                    var emptyValue = null;
+
+                    // elevation data is not fully cut, just stays the same as previous point until the next point with data, so simulate that here
+                    if(channel === "Elevation" && rangeStartIndex > 0)
+                    {
+                        emptyValue = data[rangeStartIndex - 1][1];
+                    }
+
+                    for(var i = rangeStartIndex;i<=rangeEndIndex && i < data.length;i++)
+                    {
+                        // each data point is an array with index and value - remove the value but leave the index intact
+                        data[i][1] = emptyValue;
+                    }
+                }
+            }
+        });
+    };
+
     var generateSeriesFromData = function(channelMask, dataByChannel, minElevation, x1, x2)
     {
         var self = this;
         var seriesArray = [];
+
+        var startIdx, endIdx;
+        var msOffsetsOfSamples = this.xaxis === "distance" ? this.xAxisDistanceValues : this.flatSamples.msOffsetsOfSamples;
+        if (!_.isUndefined(x1) && !_.isUndefined(x2))
+        {
+            startIdx = findIndexByMsOffset(msOffsetsOfSamples, x1);
+            endIdx = findIndexByMsOffset(msOffsetsOfSamples, x2);
+            msOffsetsOfSamples = msOffsetsOfSamples.slice(startIdx, endIdx + 1);
+        }
 
         _.each(channelMask, function(channel)
         {
@@ -118,16 +159,17 @@ function(chartColors, findIndexByMsOffset, conversion)
             var fillOpacity = channel === "Elevation" ? 0.3 : null;
 
             var data = [];
-            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+            if(!_.isUndefined(x1) && !_.isUndefined(x2))
             {
-                var startIdx = findIndexByXAxisOffset.call(self, x1);
-                var endIdx = findIndexByXAxisOffset.call(self, x2);
-                
-                for (var idx = startIdx; idx <= endIdx; idx++)
-                    data.push(dataByChannel[channel][idx]);
+                data = data[dataByChannel][channel].slice(startIdx, endIdx + 1);
             }
             else
+            {
                 data = _.clone(dataByChannel[channel]);
+            }
+
+            // remove cut ranges
+            removeExcludedRangesFromData(data, self.excludedRanges, channel, msOffsetsOfSamples);
 
             var seriesOptions =
             {
@@ -308,6 +350,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         this.xaxis = "time";
         this.disabledSeries = [];
         this.excludedSeries = [];
+        this.excludedRanges = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
@@ -484,6 +527,15 @@ function(chartColors, findIndexByMsOffset, conversion)
             return null;
         },
 
+        excludeRange: function(channel, begin, end)
+        {
+            this.excludedRanges.push({
+                channel: channel,
+                begin: begin,
+                end: end
+            });
+        },
+
         excludeChannel: function(channel)
         {
             if(!_.contains(this.excludedSeries, channel))
@@ -492,9 +544,10 @@ function(chartColors, findIndexByMsOffset, conversion)
             }
         },
 
-        resetExcludedChannels: function()
+        resetExcludedRanges: function()
         {
             this.excludedSeries = [];
+            this.excludedRanges = [];
         },
 
         getAvailableChannels: function()

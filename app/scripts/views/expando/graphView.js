@@ -112,8 +112,6 @@ function(
         drawPlot: function()
         {
 
-            console.log("Drawing Graph");
-
             this.$el.removeClass("noData");
 
 
