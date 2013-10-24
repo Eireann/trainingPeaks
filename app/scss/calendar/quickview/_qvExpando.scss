@@ -212,7 +212,8 @@
 
 
                 .zoomButtons,
-                .timeDistButtons {
+                .timeDistButtons,
+                .cutButtons {
                     float:left;
                 }
 
@@ -229,6 +230,11 @@
 
                 button
                 {
+                    &.hidden
+                    {
+                        visibility: hidden;
+                    }
+                    
                     font-size: $fontSizeSmall;
                     font-weight: normal;
                     font-family: $fontFamilyRegular;
@@ -279,14 +285,6 @@
                     &.graphDistanceButton
                     {
                         // border-left: none;
-                    }
-
-                    &.graphResetButton
-                    {
-                        &.hidden
-                        {
-                            visibility: hidden;
-                        }
                     }
 
                     &.graphSeriesButton

@@ -27,6 +27,7 @@ function(
 
             this.stateModel = options.stateModel;
 
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onSelectionChange, this));
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
@@ -155,6 +156,18 @@ function(
                 speedLabel: speedLabel,
                 elevationLabel: elevationlabel
             };
+        },
+
+        _onSelectionChange: function()
+        {
+            if(this.stateModel.has("primaryRange"))
+            {
+                this.$(".graphCutButton").removeClass("hidden");
+            }
+            else
+            {
+                this.$(".graphCutButton").addClass("hidden");
+            }
         }
     });
 });
