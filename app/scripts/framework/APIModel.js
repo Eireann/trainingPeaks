@@ -65,9 +65,9 @@ function(_, Backbone, DeepModel, moment, utils)
             return deferred;
         },
 
-        createPromise: function()
+        getFetchPromise: function(refresh)
         {
-            if(!this.promise)
+            if(!this.promise || refresh)
             {
                 if(this.id)
                 {
@@ -102,9 +102,9 @@ function(_, Backbone, DeepModel, moment, utils)
             }
         },
 
-        createPromise: function()
+        getFetchPromise: function(refresh)
         {
-            if(!this.promise)
+            if(!this.promise || refresh)
             {
                 if (this.get(this.idAttribute))
                 {

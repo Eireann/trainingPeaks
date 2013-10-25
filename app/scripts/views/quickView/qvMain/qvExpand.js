@@ -199,6 +199,9 @@ function (_, TP, ExpandoController, UserConfirmationView, closeExpandoWithoutSav
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
                 self.$("#quickViewContent").css({ display: "block" });
                 self.centerViewInWindow();
+
+                // refresh current tab in case data was changed
+                self.tabs[self.currentTabIndex].render();
             };
 
             var collapseDuration = 300;
