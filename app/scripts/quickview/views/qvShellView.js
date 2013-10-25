@@ -5,6 +5,7 @@
     "moment",
     "TP",
     "views/userConfirmationView",
+    "shared/utilities/calendarUtility",
     "hbs!quickview/templates/qvShellTemplate",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/confirmationViews/discardConfirmationView",
@@ -17,6 +18,7 @@ function(
     TP,
     UserConfirmationView,
     qvShellTemplate,
+    CalendarUtility,
     deleteConfirmationTemplate,
     discardConfirmationTemplate,
     failedToSaveTemplate
@@ -180,7 +182,7 @@ function(
 
             var settings = {
                 dateFormat: "yy-mm-dd",
-                firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex
+                firstDay: CalendarUtility.startOfWeek
             };
 
             var widget = this.$(".date").datepicker(
