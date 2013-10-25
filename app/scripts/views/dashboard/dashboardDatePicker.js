@@ -5,6 +5,7 @@ define(
     "setImmediate",
     "underscore",
     "TP",
+    "shared/utilities/calendarUtility",
     "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/dashboardDatePicker"
 ],
@@ -14,6 +15,7 @@ function(
     setImmediate,
     _,
     TP,
+    CalendarUtility,
     chartUtils,
     datepickerTemplate
     )
@@ -69,7 +71,7 @@ function(
                     zIndex = self.$el.closest(".dashboardChartSettings").css("z-index");
                 }
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
-                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
                 self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
                 self.$("input.startDate").datepicker("option", "maxDate", self.$("input.endDate").val());
                 self.$("input.endDate").datepicker("option", "minDate", self.$("input.startDate").val());

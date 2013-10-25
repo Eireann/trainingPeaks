@@ -5,9 +5,10 @@ define(
     "moment",
     "jqueryui/datepicker",
     "views/applicationHeader/coachAndAffiliateCustomizations",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/calendarHeader"
 ],
-function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizations, calendarHeaderTemplate)
+function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizations, CalendarUtility, calendarHeaderTemplate)
 {
     var calendarHeaderViewBase = {
 
@@ -52,7 +53,7 @@ function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizati
             this.$(".datepicker").datepicker(
             {
                 dateFormat: "yy-mm-dd",
-                firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                firstDay: CalendarUtility.startOfWeek,
                 changeYear: true,
                 changeMonth: true
             });
