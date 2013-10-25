@@ -145,7 +145,15 @@ function (_, TP, flotFilter, chartColors)
                         points:
                         {
                             show: true,
-                            fill: false
+                            fill: false,
+                            radius: 1,
+                            symbol: function cross(ctx, x, y, radius, shadow) {
+                                var size = radius * Math.sqrt(Math.PI) / 2;
+                                ctx.moveTo(x - size, y - size);
+                                ctx.lineTo(x + size, y + size);
+                                ctx.moveTo(x - size, y + size);
+                                ctx.lineTo(x + size, y - size);
+                            }
                         }
                     },
                     bars:
