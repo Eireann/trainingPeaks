@@ -382,9 +382,6 @@ function(
 
         _onSeriesChanged: function(model)
         {
-            if (!this.plot)
-                return;          
-
             if(_.intersection(["disabledDataChannels", "availableDataChannels", "channelCuts"], _.keys(model.changed)).length)
             {
                 this.drawPlot(); 

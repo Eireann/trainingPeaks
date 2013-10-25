@@ -260,6 +260,7 @@ function (
 
         _afterSaveEdits: function()
         {
+            //TODO: checking whether flatsamples has changed after a fetch is very slow, so let's just null it out for a few seconds silently
             this.set("flatSamples", null, {silent: true});
             this.fetch();
             this.trigger("after:saveEdits");

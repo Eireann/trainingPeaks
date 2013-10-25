@@ -56,14 +56,14 @@ function(
 
             this.$el.addClass("waiting");
 
-            this.watchForModelChanges();
+            this.listenTo(this.model.get("detailData"), "change", _.bind(this._onSeriesChanged, this));
 
             if (!this.prefetchConfig.detailDataPromise)
             {
                 if (this.prefetchConfig.workoutDetailDataFetchTimeout)
                     clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
 
-                this.prefetchConfig.detailDataPromise = this.model.get("detailData").createPromise();
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").getFetchPromise();
 
                 if (!this.model.get("workoutId"))
                     this.prefetchConfig.detailDataPromise.resolve();
@@ -81,17 +81,6 @@ function(
 
         },
 
-        watchForModelChanges: function()
-        {
-            this.model.get("detailData").on("change:flatSamples", this.onModelFetched, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function()
-        {
-            this.model.get("detailData").off("change:flatSamples", this.onModelFetched, this);
-        },
-
         onModelFetched: function()
         {
             var self = this;
@@ -102,6 +91,15 @@ function(
                 return;
 
             setImmediate(function() { self.createAndDisplayMapAndGraph(); });
+        },
+
+        _onSeriesChanged: function(model)
+        {
+            if(_.intersection(["disabledDataChannels", "availableDataChannels", "channelCuts", "flatSamples"], _.keys(model.changed)).length)
+            {
+                var self = this;
+                setImmediate(function() { self.createAndDisplayMapAndGraph(); });
+            }
         },
 
         createAndDisplayMapAndGraph: function()

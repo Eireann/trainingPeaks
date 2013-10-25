@@ -53,7 +53,7 @@ function(
             {
                 this.model.checkpoint();
                 var details = this.model.get("details");
-                details.createPromise().done(function() {
+                details.getFetchPromise().done(function() {
                     details.checkpoint();
                 });
                 this.model.on("change", this.saveOnModelChange, this);
