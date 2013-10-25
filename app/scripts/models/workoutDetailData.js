@@ -3,7 +3,7 @@
     "underscore",
     "moment",
     "TP",
-    "utilities/charting/dataParser",
+    "utilities/charting/graphDataParser",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
@@ -148,7 +148,7 @@ function (
                 var channelCutDetails = {
                     channel: series,
                     startTimeInMilliseconds: begin,
-                    endTimeInMilliseconds: end 
+                    endTimeInMilliseconds: end
                 };
                 var channelCuts = this.has("channelCuts") ? _.clone(this.get("channelCuts")) : [];
                 channelCuts.push(channelCutDetails);
