@@ -260,8 +260,6 @@ function (
 
         _afterSaveEdits: function()
         {
-            //TODO: checking whether flatsamples has changed after a fetch is very slow, so let's just null it out for a few seconds silently
-            this.set("flatSamples", null, {silent: true});
             this.fetch();
             this.trigger("after:saveEdits");
         },
@@ -476,6 +474,24 @@ function (
             }
         },
 
+        _checkForExpensiveChanges: function(keyToSet)
+        {
+            var potentiallyExpensiveChanges = ["flatSamples", "lapsStats", "originalLapsStats"];
+
+            // whenever we set flatsamples on this model, if it already has a flatsamples, 
+            // the _.isEqual comparison in backbone can be extremely slow
+            // assume that if we are setting flat samples, we want the change event, 
+            // so just set it to null for fast easy comparison
+            _.each(potentiallyExpensiveChanges, function(expensiveChange)
+            {
+                if((keyToSet === expensiveChange || _.isObject(keyToSet) && keyToSet.hasOwnProperty(expensiveChange)) && this.attributes[expensiveChange] !== null)
+                {
+                    this.attributes[expensiveChange] = null;
+                }
+            }, this);
+
+        },
+
         set: function(key, value, options)
         {
             if(this._isInChangeBatch())
@@ -484,6 +500,7 @@ function (
             }
             else
             {
+                this._checkForExpensiveChanges(key);
                 return this.constructor.__super__.set.call(this, key, value, options);
             }
         },
