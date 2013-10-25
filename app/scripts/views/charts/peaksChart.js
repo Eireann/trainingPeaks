@@ -153,10 +153,6 @@ function (
             {
                 return;
             }
-            else if(!this.$chartEl.height())
-            {
-                this.$chartEl.css({ "min-height": 1, "min-width": 1 });
-            }
             
             if($.plot)
             { 
