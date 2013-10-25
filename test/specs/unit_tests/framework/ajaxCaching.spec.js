@@ -1,6 +1,6 @@
 ﻿requirejs(
-["jquery", "app", "framework/ajaxCaching"],
-function($, theMarsApp, ajaxCaching)
+["jquery", "framework/ajaxCaching"],
+function($, ajaxCaching)
 {
 
     // cache has been disabled in the app

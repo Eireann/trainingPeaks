@@ -27,8 +27,10 @@ else
         "TP",
         "app"
     ],
-    function(RollbarManager, rollbarPatches, TP, theApp)
+    function(RollbarManager, rollbarPatches, TP, MarsApp)
     {
+
+        var theApp = new MarsApp();
 
         if(window._rollbarEnvironment && window._rollbarEnvironment === 'dummy')
         {

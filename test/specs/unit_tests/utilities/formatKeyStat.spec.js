@@ -1,21 +1,21 @@
 ﻿require(
 [
     "TP",
-    "app"
+    "testUtils/testHelpers"
 ],
-function(TP, theApp)
+function(TP, testHelpers)
 {
     describe("Display key stat distance, time, or tss", function()
     {
 
         beforeEach(function()
         {
-            theApp.user.set("units", TP.utils.units.constants.English);
+            testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
         });
 
         afterEach(function()
         {
-            theApp.user.set("units", TP.utils.units.constants.Metric);
+            testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
         });
 
         it("Should display a completed workout of backbone model with the precendent of distance, duration, and tss", function()

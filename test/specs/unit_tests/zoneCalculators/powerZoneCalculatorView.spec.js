@@ -2,14 +2,12 @@ requirejs(
 [
     "jquery",
     "TP",
-    "app",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/powerZonesCalculatorView"
 ],
 function (
     $,
     TP,
-    theMarsApp,
     ZoneCalculator,
     PowerZonesCalculatorView
          )

@@ -5,7 +5,6 @@ requirejs(
     "TP",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "controllers/dashboardController"
 ],
 function(
@@ -13,7 +12,6 @@ function(
     TP,
     testHelpers,
     xhrData,
-    theMarsApp,
     DashboardController
     )
 {
@@ -63,12 +61,12 @@ function(
 
             beforeEach(function()
             {
-                theMarsApp.user.getDashboardSettings().set("pods", []);
+                testHelpers.theApp.user.getDashboardSettings().set("pods", []);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.getDashboardSettings().set("pods", null);
+                testHelpers.theApp.user.getDashboardSettings().set("pods", null);
             });
 
             it("Should have a dashboard view", function()

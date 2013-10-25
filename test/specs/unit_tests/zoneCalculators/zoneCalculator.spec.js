@@ -4,7 +4,6 @@ requirejs(
     "testUtils/xhrDataStubs",
     "testUtils/testHelpers",
     "TP",
-    "app",
     "shared/utilities/zoneCalculator"
 ],
 function (
@@ -12,7 +11,6 @@ function (
     xhrData,
     testHelpers,
     TP,
-    theMarsApp,
     ZoneCalculator
          )
 {

@@ -1,9 +1,8 @@
 ﻿requirejs(
 [
-    "app",
     "utilities/mapping/mapUtils"
 ],
-function(app, mapUtils)
+function(mapUtils)
 {
     describe("MapUtils", function()
     {

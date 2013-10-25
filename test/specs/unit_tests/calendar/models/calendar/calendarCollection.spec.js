@@ -4,7 +4,6 @@ requirejs(
     "jquery",
     "TP",
     "moment",
-    "app",
     "framework/dataManager",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
@@ -13,7 +12,7 @@ requirejs(
     "models/workoutsCollection"//,
     // "models/calendar/calendarCollection"
 ],
-function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutModel, ActivityModel, WorkoutsCollection/*, CalendarCollection*/)
+function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, ActivityModel, WorkoutsCollection/*, CalendarCollection*/)
 {
     xdescribe("CalendarCollection ", function()
     {

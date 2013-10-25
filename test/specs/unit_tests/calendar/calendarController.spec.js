@@ -2,7 +2,7 @@
 requirejs(
 [
     "TP",
-    "app",
+    "testUtils/testHelpers",
     "moment",
     "jquery",
     "underscore",
@@ -18,7 +18,7 @@ requirejs(
 ],
 function(
     TP,
-    theMarsApp,
+    testHelpers,
     moment,
     $,
     _,
@@ -51,12 +51,12 @@ function(
 
         beforeEach(function()
         {
-            theMarsApp.user.setCurrentAthleteId(1234, true);
+            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
         });
 
         afterEach(function()
         {
-            theMarsApp.user.setCurrentAthleteId(null, true);
+            testHelpers.theApp.user.setCurrentAthleteId(null, true);
         });
 
         it("Should load successfully as a module", function()

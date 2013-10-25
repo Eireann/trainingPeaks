@@ -2,14 +2,12 @@ requirejs(
 [
     "jquery",
     "TP",
-    "app",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/speedZonesCalculatorView"
 ],
 function (
     $,
     TP,
-    theMarsApp,
     ZoneCalculator,
     SpeedZonesCalculatorView
          )

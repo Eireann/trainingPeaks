@@ -3,10 +3,9 @@
     "jquery",
     "TP",
     "moment",
-    "app",
     "views/expando/graphSeriesOptionsMenuView"
 ],
-function($, TP, moment, theMarsApp, GraphSeriesOptionsMenuView)
+function($, TP, moment, GraphSeriesOptionsMenuView)
 {
     describe("GraphSeriesOptionsMenuView", function()
     {

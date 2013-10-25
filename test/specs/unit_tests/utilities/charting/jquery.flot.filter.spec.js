@@ -3,10 +3,9 @@
     "jquery",
     "TP",
     "moment",
-    "app",
     "utilities/charting/jquery.flot.filter"
 ],
-function($, TP, moment, theMarsApp, flotFilter)
+function($, TP, moment, flotFilter)
 {
     describe("Flot Smoothing Filter", function()
     {
