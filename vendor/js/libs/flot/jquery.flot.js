@@ -116,7 +116,10 @@ Licensed under the MIT license.
 	Canvas.prototype.resize = function(width, height) {
 
 		if (width <= 0 || height <= 0) {
-			throw new Error("Invalid dimensions for plot, width = " + width + ", height = " + height);
+                        // **TP CHANGES** Don't just die... the chart might resize later.
+                        console.log("Invalid dimensions for plot, width = " + width + ", height = " + height);
+                        width = 1;
+                        height = 1;
 		}
 
 		var element = this.element,
