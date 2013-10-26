@@ -3,69 +3,105 @@
         <h2>{{formatDate date "dddd, MMMM D, YYYY"}}</h2>
         <div id="closeIcon"></div>
     </div>
-    <div class="addItemButtonsContainer dialogContent">
-            <table>
-                <tr>
-                    <td class="dialogHeader">{{$ "AddAWorkout"}}</td>
-                </tr>
-                <tr>
-                    <td><button type="button" data-workoutid="3">{{$ "Run"}}</button></td>
-                    <td><button type="button" data-workoutid="2">{{$ "Bike"}}</button></td>
-                    <td><button type="button" data-workoutid="1">{{$ "Swim"}}</button></td>
-                    <td><button type="button" data-workoutid="4">{{$ "Brick"}}</button></td>
-                    <td><button type="button" data-workoutid="5">{{$ "Crosstrain"}}</button></td> 
-                </tr>
-                <tr>
-                    <td><button type="button" data-workoutid="6">{{$ "Race"}}</button></td>
-                    <td><button type="button" data-workoutid="7">{{$ "Dayoff"}}</button></td>   
-                    <td><button type="button" data-workoutid="8">{{$ "MtnBike"}}</button></td>
-                    <td><button type="button" data-workoutid="9">{{$ "Strength"}}</button></td>
-                    <td><button type="button" data-workoutid="10">{{$ "Custom"}}</button></td>
-                </tr>    
-                <tr>
-                    <td><button type="button" data-workoutid="11">{{$ "XCSki"}}</button></td>
-                    <td><button type="button" data-workoutid="12">{{$ "Rowing"}}</button></td>                
-                    <td><button type="button" data-workoutid="100">{{$ "Other"}}</button></td>
-                    <td><button type="button" data-workoutid="13">{{$ "Walk"}}</button></td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td colspan="5">
-                        <fieldset>
-                            <legend> or &nbsp;&nbsp;</legend>
-                            <button type="button" name="uploadDeviceFile" title="{{$ "FileUploadTooltip" }}" >{{$ "UploadFile"}}</button>
-                            <div class="textDiv">
-                                <a href="http://support.trainingpeaks.com/device-agent.aspx?utm_source=tpflex&utm_medium=wktdetails&utm_campaign=deviceagent" class="helpText" target="_blank">{{$ "FileUploadHelp" }} &rsaquo;</a>
-                            </div>
-                            <input style="display: none" type="file" id="fileUploadInput"/>
-                        </fieldset>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="dialogHeader">{{$ "AddAMeal"}}</td>
-                </tr>
-                <tr>
-                    <td><button type="button" data-meal>{{$ "Breakfast"}}</button></td>
-                    <td><button type="button" data-meal>{{$ "Brunch"}}</button></td>
-                    <td><button type="button" data-meal>{{$ "Lunch"}}</button></td>
-                    <td><button type="button" data-meal>{{$ "Dinner"}}</button></td>
-                    <td><button type="button" data-meal>{{$ "Snack"}}</button></td>
-                </tr>
-                <tr>
-                    <td><button type="button" data-meal>{{$ "Special"}}</button></td>
-                    <td><button type="button" data-meal>{{$ "Unknown"}}</button></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr><td>&nbsp;</td></tr>
-                <tr>
-                    <td class="dialogHeader">{{$ "AddOther"}}</td>
-                </tr>
-                <tr>
-                    <td><button type="button" data-metric>{{$ "ChooseMetric"}}</button></td>
-                    <td colspan="4"></td>
-                </tr>
-            </table>
+    
+    <div class="dialogContent">
+        <div class="addItemsButtonContainer">
+            <h3>{{$ "AddAWorkout"}}</h3>
+            
+            <div class="addWorkout Run future" data-workoutid="3">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Run"}}</div>
+            </div>
+
+            <div class="addWorkout Bike future" data-workoutid="2">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Bike"}}</div>
+            </div>
+
+            <div class="addWorkout Swim future" data-workoutid="1">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Swim"}}</div>
+            </div>
+
+            <div class="addWorkout Brick future" data-workoutid="4">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Brick"}}</div>
+            </div>
+            <div class="addWorkout Crosstrain future" data-workoutid="5">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Crosstrain"}}</div>
+            </div> 
+
+            <div class="addWorkout Race future" data-workoutid="6">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Race"}}</div>
+            </div>
+            
+            <div class="addWorkout DayOff future" data-workoutid="7">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Dayoff"}}</div>
+            </div>   
+            
+            <div class="addWorkout MtnBike future" data-workoutid="8">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "MtnBike"}}</div>
+            </div>
+
+            <div class="addWorkout Strength future" data-workoutid="9">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Strength"}}</div>
+            </div>
+            
+            <div class="addWorkout Custom future" data-workoutid="10">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Custom"}}</div>
+            </div>
+
+            <div class="addWorkout XC-Ski future" data-workoutid="11">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "XCSki"}}</div>
+            </div>
+
+            <div class="addWorkout Rowing future" data-workoutid="12">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Rowing"}}</div>
+            </div>                
+
+            <div class="addWorkout Other future" data-workoutid="100">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Other"}}</div>
+            </div>
+
+            <div class="addWorkout Walk future" data-workoutid="13">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "Walk"}}</div>
+            </div>
+        </div>
+
+         <div class="addItemsButtonContainer Meals future">
+            <h3>{{$ "AddAMeal"}}</h3>   
+             <div class="addWorkout Meal future">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">Meal</div>
+            </div>
+        </div>
+
+        <div class="addItemsButtonContainer Metrics future">
+            <h3>{{$ "AddOther"}}</h3>
+            <div class="addWorkout Metric future">
+                <div class="workoutIcon"></div>
+                <div class="workoutTitle">{{$ "ChooseMetric"}}</div>
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>or</legend>
+            <button name="uploadDeviceFile" title="{{$ "FileUploadTooltip" }}" >{{$ "UploadFile"}}</button>
+            <div class="textDiv">
+                <a href="http://support.trainingpeaks.com/device-agent.aspx?utm_source=tpflex&utm_medium=wktdetails&utm_campaign=deviceagent" class="helpText" target="_blank">{{$ "FileUploadHelp" }} &rsaquo;</a>
+            </div>
+            <input style="display: none" type="file" id="fileUploadInput"/>
+        </fieldset>
+ 
     </div>
 </div>
