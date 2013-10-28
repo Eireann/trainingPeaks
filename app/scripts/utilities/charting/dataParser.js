@@ -1,8 +1,9 @@
 ﻿define(
 [
+    "utilities/charting/dataParserUtils",
     "utilities/charting/findOrderedArrayIndexByValue"
 ],
-function(findOrderedArrayIndexByValue)
+function(DataParserUtils, findOrderedArrayIndexByValue)
 {
     var defaultChannelOrder =
     [
@@ -95,7 +96,7 @@ function(findOrderedArrayIndexByValue)
 
         getLatLongFromOffset: function (xAxisOffset)
         {
-            var index = findIndexByXAxisOffset.call(this, xAxisOffset);
+            var index = DataParserUtils.findIndexByChannelAndOffset(this.dataByAxisAndChannel[this.xaxis], this.xaxis, xAxisOffset, this.flatSamples.msOffsetsOfSamples);
 
             if (index === null)
                 return null;
