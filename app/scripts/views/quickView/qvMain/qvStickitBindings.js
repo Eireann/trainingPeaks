@@ -85,7 +85,18 @@ function (
                 observe: "tssPlanned",
                 onGet: "formatTSS",
                 defaultValue: "0"
+            },
+            "#qv-header-tssSource":
+            {
+                observe: "tssSource",
+                onGet: "formatTSSLabel",
+                defaultValue: "TSS"
             }
+        },
+
+        formatTSSLabel: function(value, options)
+        {
+            return TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model);
         },
 
         getStartTime: function(value, options)
