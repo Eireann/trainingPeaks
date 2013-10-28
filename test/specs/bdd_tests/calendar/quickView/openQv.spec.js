@@ -59,13 +59,13 @@ function(
             it("Should display a 'Run' button in the new item view", function()
             {
                 // no run button yet
-                expect($body.find(".newItemView button[data-workoutid=3]").length).toBe(0);
+                expect($body.find(".newItemView [data-workoutid=3]").length).toBe(0);
 
                 // click add workout
                 $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
 
                 // now button shows up in new item view
-                expect($body.find(".newItemView button[data-workoutid=3]").length).toBe(1);
+                expect($body.find(".newItemView [data-workoutid=3]").length).toBe(1);
             });
 
             it("Should display the quick view after clicking a workout type in the new item view", function()
@@ -77,7 +77,7 @@ function(
                 $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
 
                 // add run
-                $body.find("button[data-workoutid=3]").trigger("click"); // 3=run
+                $body.find("[data-workoutid=3]").trigger("click"); // 3=run
 
                 // should have a qv
                 expect($body.find(".workoutQuickView").length).toBe(1);

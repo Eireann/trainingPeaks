@@ -1,85 +1,99 @@
 ﻿@import "../globalCSS/tpstylesheet";
 
-#newItemViewContainer
-{
-    .titleBar
-    {
-        cursor: default;
+#newItemViewContainer {
+    width: 662px;
+    max-width: none;
 
+    .titleBar {
+        cursor: default;
     }
 
-    .addItemButtonsContainer
-    {
-        padding: 10px 20px 20px 30px;
+    .dialogContent {
+        padding: 40px;
         font-weight: normal;
+        text-align: left;
+        @include clearfix;
         
+        .addItemsButtonContainer {
+            @include clearfix;
+            width: 100%;
 
-        fieldset 
-        {
-            border: solid 1px $TPGrey2;
-            border-radius: 0px;
-            margin-top: 0px;
-            color: $TPGrey2;
-            padding-top: 10px;
+            &.Workouts {
+                margin-bottom: 20px;
+            }
 
-            legend
-            {
-                margin-left: 20px;
+            &.Meal,
+            &.Metric {
+                width: 110px;
+                float: left;
+                margin-right: 8px;
+                margin-bottom: 15px;
+            }
+
+            h3 {
+                margin-bottom: 10px;
             }
         }
 
-        legend
-        {
-            font-weight: normal;
-            background-color: transparent;
-            padding-left: 15px;
-            font-style: italic;
+        .addWorkout,
+        .addMeal,
+        .addMetric {
+            color: $TPGrey3;
+            width: 110px;
+            height: 33px;
+            padding: 5px 3px 5px 3px;
             text-align: left;
-        }
 
-        table
-        {
-            border: 0;
-            border-collapse: collapse;
-            background-color: transparent;
-            font-size: 12px;    
-            text-align: left;
+            // background: $TPGrey6;
+            // Going 1 shade darker to increase contrast.
+            background: #d4d2d2;
+            border: 1px solid transparent;
+            float: left;
+            margin-bottom: 8px;
+            margin-right: 8px;
+            @include clearfix;
             
-            tr
-            {
-            background-color: transparent;
-            font-size: 12px;
-            text-align: left;
-                
-                td
-                {
-                    margin: 0 0 0 0;
-                    padding: 5px 5px 5px 5px;
-                    border: 0px 0px 0px 0px;
-                    cell-spacing: 0px 0px 0px 0px;
-                    background-color: transparent;
-                    cursor:default;
-                    font-size: 12px;
-                    text-align: left;
-                }
-                .dialogHeader
-                {
-                    padding-bottom: 0px;
-                }
+            &:hover {
+                border-color:  $TPGrey11;
+                cursor: pointer;
+            }
+
+            .workoutIcon {
+                float: left;
+            }
+
+            .workoutTitle {
+                float: left;
+                font-family: $fontFamilyRegular;
+                font-size: $fontSizeSmall;
+                margin-left: 6px;
+                margin-top: 1px;
             }
         }
 
-       	@include headerButtons(0px, 50px, $fontSizeMedium);
+        .addWorkout {
+            &.Crosstrain,
+            &.Custom {
+                margin-right: 0;
+            }
+        }
+
+        fieldset {
+            float: left;
+            width: 100%;  
+            
+            legend {
+                // to line up with button.
+                margin-left:5px;
+            }   
+        }
 
         button
         {
             color: $TPGrey3;
-            width: 100%;
-            min-width: 110px;
 
-            &:active
-            {
-                color: #ffffff;
+            &:active {
+                color: $white;
             }
         }
 
@@ -93,22 +107,7 @@
         }
     }
 
-    .addItemSectionHeader
-    {
-        color: $TPBlue;
-        font-family: $fontFamilyHeavy;
-    }
-
-    .helpText
-    {
-        font-color: #3c7fc4;
-        font-size: 12px;
-        font-family: $fontFamilyRegularItalic;
-    }
-
-    .textDiv
-    {
-        padding-top: 5px;
+    .textDiv {
+        float: left;
     }
 }
-
