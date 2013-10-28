@@ -2,12 +2,13 @@ define(
 [
     "underscore",
     "TP",
-    "utilities/workout/formatLapData",
+    "utilities/workout/formatLapData"
 ],
 function(
     _,
     TP,
-    formatLapData
+    formatLapData,
+    testHelpers
 )
 {
     var channelToStatsMap = {

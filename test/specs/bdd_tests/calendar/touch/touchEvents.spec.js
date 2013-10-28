@@ -3,12 +3,11 @@ requirejs(
 [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app"
 ],
 function(
     testHelpers,
-    xhrData,
-    theMarsApp)
+    xhrData
+)
 {
 
     describe("Calendar Touch Events", function()
@@ -19,9 +18,9 @@ function(
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-            $mainRegion = theMarsApp.mainRegion.$el;
-            $body = theMarsApp.getBodyElement();
-            theMarsApp.router.navigate("calendar", true);
+            $mainRegion = testHelpers.theApp.mainRegion.$el;
+            $body = testHelpers.theApp.getBodyElement();
+            testHelpers.theApp.router.navigate("calendar", true);
         });
 
         afterEach(function()
@@ -44,21 +43,21 @@ function(
         it("Should enable touch on the first touch event", function()
         {
             // starts with touch disabled
-            expect(theMarsApp.isTouchEnabled()).toBe(false);
+            expect(testHelpers.theApp.isTouchEnabled()).toBe(false);
             expect($body.is(".touchEnabled")).toBe(false);
 
             // first touch start
             $body.trigger("touchstart");
 
             // touch is now enabled
-            expect(theMarsApp.isTouchEnabled()).toBe(true);
+            expect(testHelpers.theApp.isTouchEnabled()).toBe(true);
             expect($body.is(".touchEnabled")).toBe(true);
         });
 
         it("Should open the new item view for a click on the day if touch is enabled", function()
         {
             // enable touch
-            theMarsApp.enableTouch();
+            testHelpers.theApp.enableTouch();
 
             // not visible yet
             expect($body.find(".newItemView").length).toBe(0);
@@ -75,13 +74,13 @@ function(
         {
 
             // first touch start
-            spyOn(theMarsApp, "enableTouch");
+            spyOn(testHelpers.theApp, "enableTouch");
             $body.trigger("touchstart");
-            expect(theMarsApp.enableTouch).toHaveBeenCalled();
+            expect(testHelpers.theApp.enableTouch).toHaveBeenCalled();
 
             // touch again
             $body.trigger("touchstart");
-            expect(theMarsApp.enableTouch).not.toHaveBeenCalled();
+            expect(testHelpers.theApp.enableTouch).not.toHaveBeenCalled();
         });
     });
 

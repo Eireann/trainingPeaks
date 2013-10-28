@@ -1,12 +1,12 @@
 ﻿requirejs(
 [
     "moment",
-    "app",
+    "testUtils/testHelpers",
     "TP",
     "views/workout/workoutBarView",
     "models/workoutModel"
 ],
-function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
+function(moment, testHelpers, TP, WorkoutBarView, WorkoutModel)
 {
 
     function buildWorkoutModel()
@@ -29,7 +29,7 @@ function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
         var workoutModel, workoutBarView;
         beforeEach(function()
         {
-            theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             workoutModel = buildWorkoutModel();
             workoutBarView = new WorkoutBarView({ model: workoutModel });
             workoutBarView.render();
@@ -53,7 +53,7 @@ function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
             var workoutModel, workoutBarView;
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
                 workoutModel = buildWorkoutModel();
                 workoutBarView = new WorkoutBarView({ model: workoutModel });
                 workoutBarView.render();
@@ -91,7 +91,7 @@ function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
             var workoutModel, workoutBarView;
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
                 workoutModel = buildWorkoutModel();
                 workoutBarView = new WorkoutBarView({ model: workoutModel });
                 workoutBarView.render();

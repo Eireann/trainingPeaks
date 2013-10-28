@@ -1,7 +1,6 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-    "app",
     "moment",
     "jquery",
     "TP",
@@ -9,7 +8,6 @@ requirejs(
     "testUtils/testHelpers"
 ],
 function(
-    app,
     moment,
     $,
     TP,
@@ -22,12 +20,12 @@ function(
         // user needs an athlete id for some of these tests to run
         beforeEach(function()
         {
-            app.user.setCurrentAthleteId(1234, true);
+            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
         });
 
         afterEach(function()
         {
-            app.user.setCurrentAthleteId(null, true);
+            testHelpers.theApp.user.setCurrentAthleteId(null, true);
         });
 
         it("Should load as a module", function()

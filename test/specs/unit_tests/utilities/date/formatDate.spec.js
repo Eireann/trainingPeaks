@@ -1,10 +1,10 @@
 requirejs(
 [
     "moment",
-    "app",
+    "testUtils/testHelpers",
     "TP"
 ],
-function(moment, theMarsApp, TP)
+function(moment, testHelpers, TP)
 {
     describe("TP.utils.datetime.format", function()
     {
@@ -34,7 +34,7 @@ function(moment, theMarsApp, TP)
         {
             beforeEach(function()
             {
-                theMarsApp.user.set("dateFormat", "mdy");
+                testHelpers.theApp.user.set("dateFormat", "mdy");
             });
 
             it("Should format dates as M/D/YYYY by default", function()
@@ -126,7 +126,7 @@ function(moment, theMarsApp, TP)
         {
             beforeEach(function()
             {
-                theMarsApp.user.set("dateFormat", "dmy");
+                testHelpers.theApp.user.set("dateFormat", "dmy");
             });
 
             it("Should format dates as D/M/YYYY by default", function()

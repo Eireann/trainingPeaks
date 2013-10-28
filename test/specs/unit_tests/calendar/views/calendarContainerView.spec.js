@@ -5,11 +5,9 @@ requirejs(
     "TP",
     "moment",
     "framework/dataManager",
-    "app",
-    // "models/calendar/CalendarCollection",
     "views/calendar/container/calendarContainerView"
 ],
-function($, TP, moment, DataManager, theMarsApp, /*CalendarCollection,*/ CalendarView)
+function($, TP, moment, DataManager, CalendarView)
 {
 
     xdescribe("CalendarView ", function()

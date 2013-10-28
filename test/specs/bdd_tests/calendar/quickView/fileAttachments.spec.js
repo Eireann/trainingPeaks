@@ -3,14 +3,13 @@ requirejs(
 [
     "moment",
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "app"
+    "testUtils/xhrDataStubs"
 ],
 function(
     moment,
     testHelpers,
-    xhrData,
-    theApp)
+    xhrData
+)
 {
 
     describe("Quick View file attachments", function()
@@ -24,9 +23,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
             });
 
             afterEach(function()

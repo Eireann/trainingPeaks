@@ -225,7 +225,8 @@ function(
 
             this.on('render', function()
             {
-                this.wrapMargin = 0;
+                this.margin = { top: 0, bottom: 0 };
+                this.ui.$wrap.css({ "margin-bottom": this.margin.bottom });
                 this.$el.on('scroll', function(event)
                 {
 
@@ -233,17 +234,7 @@ function(
 
                     clearTimeout(self.scrollingTimeout);
 
-                    // QL: Throttle fetchPrevious/fetchNext
-                    var scrollTop = self.$el.scrollTop();
-                    var scrollBottom = scrollTop + self.$el.height();
-                    var scrollHeight = self.$el.prop('scrollHeight');
-
-                    if(scrollTop < self.scrollThreshold) {
-                        self._fetchMore('top');
-                    }
-                    else if(scrollHeight - scrollBottom < self.scrollThreshold) {
-                        self._fetchMore('bottom');
-                    }
+                    self.fillScrollBuffer(1);
 
                     self.snapToChild();
 
@@ -270,11 +261,34 @@ function(
                     setImmediate(function() {
                         self.firstModel = options.target;
                         self.lockAndFillBeforeFirstModel();
-                        //self.scrollToModel(options.target, 0);
                     }); 
                 }
             });
 
+        },
+
+        fillScrollBuffer: function(max)
+        {
+            var done = false;
+            for(var i = max || 1; i > 0 && !done; i--)
+            {
+                var scrollTop = this.$el.scrollTop();
+                var scrollBottom = scrollTop + this.$el.height();
+                var scrollHeight = this.$el.prop('scrollHeight') - this.margin.bottom;
+
+                if(scrollTop < this.scrollThreshold)
+                {
+                    this._fetchMore('top');
+                }
+                else if(scrollHeight - scrollBottom < this.scrollThreshold)
+                {
+                    this._fetchMore('bottom');
+                }
+                else
+                {
+                    done = true;
+                }
+            }
         },
 
         lockAndFillBeforeFirstModel: function()
@@ -301,14 +315,32 @@ function(
             }
 
             var scrollTop = view.$el.position().top + this.$el.scrollTop();
+            var neededMargin = Math.ceil(scrollTop + this.$el.height() - this.$el.prop("scrollHeight"));
+            if(neededMargin > this.margin.bottom)
+            {
+                this.margin.bottom = neededMargin;
+                this.ui.$wrap.css({ marginBottom: this.margin.bottom });
+            }
+
+            var self = this;
+            callback = function()
+            {
+                if(self.margin.bottom)
+                {
+                    self.fillScrollBuffer(100);
+                    self.margin.bottom = 0;
+                    self.ui.$wrap.css({ marginBottom: self.margin.bottom });
+                }
+            };
 
             if(duration > 0)
             {
-                this._animateScroll(scrollTop, duration);
+                this._animateScroll(scrollTop, duration, callback);
             }
             else
             {
                 this.$el.scrollTop(scrollTop);
+                callback();
             }
 
             this.scrollAnchor = {
@@ -343,7 +375,7 @@ function(
             return models;
         },
 
-        _animateScroll: function(scrollTop, duration) {
+        _animateScroll: function(scrollTop, duration, callback) {
             var self = this;
             var scrollDelta = Math.abs(scrollTop - this.$el.scrollTop());
             if(scrollDelta <= 1) return;
@@ -353,6 +385,7 @@ function(
             this.$el.animate({scrollTop: scrollTop}, duration || 0, function() {
                 self.scrollAnimationDeferred.resolve();
                 self.$el.trigger('scroll');
+                if(callback) callback();
             });
         },
 
@@ -406,15 +439,15 @@ function(
                 self.$el.scrollTop(newScrollTop);
             } else
             {
-                this.wrapMargin += resizeOffset;
-                this.ui.$wrap.css("margin-top", (-this.wrapMargin) + 'px');
+                this.margin.top += resizeOffset;
+                this.ui.$wrap.css("margin-top", (-this.margin.top) + 'px');
                 this.$el.promise().done(function()
                 {
                     if(self.wrapMaring === 0) return;
-                    var newScrollTop = self.$el.scrollTop() + self.wrapMargin;
+                    var newScrollTop = self.$el.scrollTop() + self.margin.top;
                     self.ui.$wrap.css("margin-top", '0px');
                     self.$el.scrollTop(newScrollTop);
-                    self.wrapMargin = 0;
+                    self.margin.top = 0;
                 });
             }
         },

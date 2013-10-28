@@ -4,15 +4,14 @@ requirejs(
     "moment",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "testUtils/AppTestData/GET_DetailData_134283074",
-    "app"
+    "testUtils/AppTestData/GET_DetailData_134283074"
 ],
 function(
     moment,
     testHelpers,
     xhrData,
-    detailData,
-    theApp)
+    detailData
+)
 {
 
     describe("Expando", function()
@@ -26,9 +25,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
 
                 var workout = {
                     workoutId: 1,
@@ -177,7 +176,7 @@ function(
                     expect(expandoStatsText).not.toContain("Lap #1");
                     expect(expandoStatsText).not.toContain("TSS --");
 
-                    $body.find(".workoutQuickView .expandoLapsRegion .lap:first").trigger("click");
+                    $body.find(".workoutQuickView .expandoLapsRegion .lap:first .editLapName").trigger("click");
                     expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
 
                     expect(expandoStatsText).not.toContain("Entire Workout");

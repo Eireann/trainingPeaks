@@ -1,11 +1,10 @@
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
-    "app",
     "TP",
     "views/dashboard/dashboardLibraryView"
 ],
-function(app, TP, DashboardLibraryView)
+function(TP, DashboardLibraryView)
 {
 
     describe("DashboardLibraryView ", function()

@@ -5,7 +5,6 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "TP",
-    "app",
     "views/dashboard/chartUtils",
     "testUtils/sharedSpecs/sharedChartSpecs"
 ],
@@ -14,7 +13,6 @@ function(
     testHelpers,
     xhrData,
     TP,
-    theMarsApp,
     chartUtils,
     SharedChartSpecs
     )
@@ -68,10 +66,10 @@ function(
                 {
                     var userData = xhrData.users.barbkprem;
                     testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                    theMarsApp.user.getDashboardSettings().set("pods", [podSettings]);
-                    $mainRegion = theMarsApp.mainRegion.$el;
-                    theMarsApp.router.navigate("dashboard", true);
-                    $body = theMarsApp.getBodyElement();
+                    testHelpers.theApp.user.getDashboardSettings().set("pods", [podSettings]);
+                    $mainRegion = testHelpers.theApp.mainRegion.$el;
+                    testHelpers.theApp.router.navigate("dashboard", true);
+                    $body = testHelpers.theApp.getBodyElement();
                 });
 
 
@@ -110,10 +108,10 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                theMarsApp.user.getDashboardSettings().set("pods", [workoutSummaryPodSettings]);
-                $mainRegion = theMarsApp.mainRegion.$el;
-                theMarsApp.router.navigate("dashboard", true);
-                $body = theMarsApp.getBodyElement();
+                testHelpers.theApp.user.getDashboardSettings().set("pods", [workoutSummaryPodSettings]);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("dashboard", true);
+                $body = testHelpers.theApp.getBodyElement();
             });
 
             afterEach(function()
@@ -136,7 +134,7 @@ function(
             {
                 it("Should open the settings tomahawk", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     expect($body.find(".dashboardChartSettings").length).toBe(0);
                     $mainRegion.find(".dashboardChart.workoutSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings").length).toBe(1);
@@ -144,14 +142,14 @@ function(
 
                 it("Should have a date picker in the settings tomahawk", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.workoutSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker").length).toBe(1);
                 });
 
                 it("Should close when clicking on the close icon", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     expect($body.find(".dashboardChartSettings").length).toBe(0);
                     $mainRegion.find(".dashboardChart.workoutSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings").length).toBe(1);
@@ -161,7 +159,7 @@ function(
 
                 it("Should save the user settings on settings close", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.workoutSummaryChart .settings").trigger("mousedown");
                     expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(false);
@@ -171,7 +169,7 @@ function(
 
                 it("Should not request new data on settings close if parameters haven't changed", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.workoutSummaryChart .settings").trigger("mousedown");
                     expect(testHelpers.hasRequest("POST", "/workoutsummary/")).toBe(false);
@@ -181,7 +179,7 @@ function(
 
                 it("Should use dates entered in settings tomahawk", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
 
                     // set dashboard dates
                     applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2013-01-01", "2013-04-15");
@@ -222,10 +220,10 @@ function(
                 {
                     var userData = xhrData.users.barbkprem;
                     testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                    theMarsApp.user.getDashboardSettings().set("pods", [workoutSummaryPodSettings]);
-                    $mainRegion = theMarsApp.mainRegion.$el;
-                    theMarsApp.router.navigate("dashboard", true);
-                    $body = theMarsApp.getBodyElement();
+                    testHelpers.theApp.user.getDashboardSettings().set("pods", [workoutSummaryPodSettings]);
+                    $mainRegion = testHelpers.theApp.mainRegion.$el;
+                    testHelpers.theApp.router.navigate("dashboard", true);
+                    $body = testHelpers.theApp.getBodyElement();
                 });
 
                 afterEach(function()
@@ -236,7 +234,7 @@ function(
                 it("Should update when dashboard dates are updated", function()
                 {
                     testHelpers.clearRequests();
-                    theMarsApp.dataManager.forceReset();
+                    testHelpers.theApp.dataManager.forceReset();
                     applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2012-01-01", "2016-04-15");
                     expect(testHelpers.hasRequest("POST", "/workoutsummary/")).toBe(true);   
                     expect(testHelpers.hasRequest("POST", "workoutsummary/2012-01-01/2016-04-15")).toBe(true);

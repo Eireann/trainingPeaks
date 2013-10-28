@@ -3,10 +3,9 @@
     "jquery",
     "TP",
     "moment",
-    "app",
     "views/expando/graphView"
 ],
-function($, TP, moment, theMarsApp, GraphView)
+function($, TP, moment, GraphView)
 {
     describe("GraphView", function()
     {

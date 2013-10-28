@@ -5,7 +5,6 @@ requirejs(
     "jquery",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "views/dashboard/chartUtils",
     "testUtils/sharedSpecs/sharedChartSpecs"
 ],
@@ -14,7 +13,6 @@ function(
     $,
     testHelpers,
     xhrData,
-    theMarsApp,
     chartUtils,
     SharedChartSpecs
     )
@@ -61,9 +59,9 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
-                $mainRegion = theMarsApp.mainRegion.$el;
-                theMarsApp.router.navigate("dashboard", true);
+                testHelpers.theApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("dashboard", true);
             });
 
             afterEach(function()
@@ -123,9 +121,9 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
-                $mainRegion = theMarsApp.mainRegion.$el;
-                theMarsApp.router.navigate("dashboard", true);
+                testHelpers.theApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("dashboard", true);
             });
 
             afterEach(function()

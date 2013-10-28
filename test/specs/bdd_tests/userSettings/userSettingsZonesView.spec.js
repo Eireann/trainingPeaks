@@ -5,7 +5,6 @@ requirejs(
     "TP",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "shared/views/userSettings/userSettingsZonesView"
 ],
 function(
@@ -13,7 +12,6 @@ function(
     TP,
     testHelpers,
     xhrData,
-    theMarsApp,
     UserSettingsZonesView
     )
 {
@@ -41,7 +39,7 @@ function(
 
         it("Should not throw durring lifecycle calls", function()
         {
-            var view = new UserSettingsZonesView({ model: theMarsApp.user.getAthleteSettings() });
+            var view = new UserSettingsZonesView({ model: testHelpers.theApp.user.getAthleteSettings() });
             view.render();
             view.close();
         });

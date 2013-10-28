@@ -181,8 +181,8 @@ function(
 
                     view.$el.resizable("option", {
                         grid: [ width + self.packeryOptions.gutter, height + self.packeryOptions.gutter ],
-                        minWidth: width,
-                        minHeight: height * 2,
+                        minWidth: width * 0.9,
+                        minHeight: height * 0.9,
                         maxWidth: self.$el.width(),
                         maxHeight: self.$el.height()
                     });

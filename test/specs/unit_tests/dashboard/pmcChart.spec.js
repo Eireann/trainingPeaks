@@ -4,7 +4,7 @@ requirejs(
     "jquery",
     "moment",
     "TP",
-    "app",
+    "testUtils/testHelpers",
     "utilities/charting/chartColors",
     "framework/dataManager",
     "dashboard/charts/pmcChart",
@@ -14,7 +14,7 @@ function(
     $,
     moment,
     TP,
-    theMarsApp,
+    testHelpers,
     chartColors,
     DataManager,
     PmcChart,
@@ -59,7 +59,7 @@ function(
 
         beforeEach(function()
         {
-            theMarsApp.user.setCurrentAthleteId(1);
+            testHelpers.theApp.user.setCurrentAthleteId(1);
         });
         
         it("Should load successfully as a module", function()

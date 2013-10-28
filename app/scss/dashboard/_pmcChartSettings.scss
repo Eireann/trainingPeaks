@@ -1,8 +1,7 @@
 ﻿@import "globalCSS/tpstylesheet";
 
 
-.pmcChartSettings
-{
+.pmcChartSettings {
     width:325px;
     top: 10px;
 
@@ -11,9 +10,7 @@
         font-family: $fontFamilyRegular;
     }
 
-    .LearnMore
-    {
-        text-align: center;
+    .LearnMore {
         p {
             margin-bottom:10px;
             padding-bottom:0;
@@ -37,6 +34,13 @@
 
     .workoutTypes {
         min-width:inherit;
+    }
+
+    .workoutTypesRegion,
+    .selectParameters {
+        border-top: 1px solid $TPGrey6;
+        padding-top: 10px;
+        margin-top: 10px;
     }
 
    .selectboxit-options {
@@ -82,19 +86,18 @@
         height: 23px;
         color: $TPGrey3;
         &.right {
-            text-align:right;
+            text-align:left;
+            padding-left:35px;
         }
     }
 
-    .missingData
-    {
+    .missingData {
         padding-top: 5px;
         font-size: $fontSizeSmall;
         color: $TPGrey3;
         text-align: center;
 
-        button
-        {
+        button {
             margin:0 0 10px 15px;
             width: 213px;
         }

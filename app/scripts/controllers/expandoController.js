@@ -40,8 +40,6 @@ function(
             this.layout.on("show", this.show, this);
             this.layout.on("close", this.onLayoutClose, this);
             this.views = {};
-
-            _.bindAll(this, "onModelFetched");
         },
 
         onLayoutClose: function()
@@ -68,16 +66,13 @@ function(
             var podsCollection = new TP.Collection(
             [{
                 podType: 1, // Map
-                rows: 3,
-                cols: 6
+                cols: 2
             }, {
                 podType: 2, // Graph
-                rows: 3,
-                cols: 6
+                cols: 2
             }, {
                 podType: 3, // Laps & Splits,
-                rows: 2,
-                cols: 6
+                cols: 2
             }, {
                 podType: 4, // Time In Zones
                 variant: 1, // Heart Rate
@@ -132,7 +127,7 @@ function(
         {
 
             var self = this;
-            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
+            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(_.bind(self.onModelFetched, self)); });
 
             // if we don't have a workout, just resolve the deferred to let everything render
             if(!this.model.get("workoutId"))
@@ -176,7 +171,7 @@ function(
                 if (this.prefetchConfig.workoutDetailDataFetchTimeout)
                     clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
 
-                this.prefetchConfig.detailDataPromise = this.model.get("detailData").createPromise();
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").getFetchPromise();
             }
         },
 
@@ -207,29 +202,23 @@ function(
             if(this.prefetchCongig && this.prefetchConfig.detailDataPromise)
                 this.prefetchConfig.detailDataPromise.reject();
 
-            this.stopWatchingModelChanges();
-
             this.layout.off("show", this.show, this);
 
         },
 
         watchForModelChanges: function()
         {
-            this.model.on("deviceFileUploaded", this.fetchDetailData, this);
-            this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
-            this.on("close", this.stopWatchingModelChanges, this);
+            this.listenTo(this.model, "deviceFileUploaded", _.bind(this.reloadDetailData, this));
+            this.listenTo(this.model.get("detailData"), "changeSensorData", _.bind(this.onSensorDataChange, this));
         },
 
-        fetchDetailData: function()
+        reloadDetailData: function()
         {
-            if (this.model.get("workoutId"))
-                this.model.get("detailData").fetch();
-        },
+            if (!this.model.get("workoutId"))
+                return;
 
-        stopWatchingModelChanges: function()
-        {
-            this.model.off("deviceFileUploaded", this.fetchDetailData, this);
-            this.model.get("detailData").off("changeSensorData", this.onSensorDataChange, this);
+            this.prefetchConfig.detailsPromise = this.model.get("details").getFetchPromise(true);
+            this.prefetchConfig.detailDataPromise = this.model.get("detailData").getFetchPromise(true);
         },
 
         watchForWindowResize: function()

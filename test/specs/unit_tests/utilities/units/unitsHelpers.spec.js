@@ -3,33 +3,33 @@ requirejs(
     "TP",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/convertToModelUnits",
-    "app"
+    "testUtils/testHelpers"
 ],
-function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
+function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
 {
     describe("units related utilities, english units", function()
     {
 
         beforeEach(function()
         {
-            theMarsApp.user.set("units", TP.utils.units.constants.English);
+            testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
         });
 
         afterEach(function()
         {
-            theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
         });
         
         describe("TP.utils.units.getUnitsLabel template helper", function()
         {
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should return the unit label for distance", function()
@@ -175,12 +175,12 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should throw an exception when trying to convert for an unknown value type", function()
@@ -249,12 +249,12 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should throw an exception when trying to convert for an unknown value type", function ()
@@ -309,12 +309,12 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should return the unit label for distance", function()
@@ -356,7 +356,7 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
            it("should return the unit label for distance", function()
@@ -397,12 +397,12 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should convert a distance in meters to yards", function()
@@ -436,7 +436,7 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should leave distance units as meters", function()
@@ -484,12 +484,12 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
  
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should convert a distance in yards to meters", function()
@@ -522,12 +522,12 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
  
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.English);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should keep distance in meters", function()
@@ -560,7 +560,7 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
 
             beforeEach(function()
             {
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should leave distance units as meters", function()

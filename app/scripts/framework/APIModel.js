@@ -8,6 +8,33 @@ define(
 ],
 function(_, Backbone, DeepModel, moment, utils)
 {
+
+    var SharedBase =
+    {
+        getState: function()
+        {
+            if(this._$state)
+            {
+                return this._$state;
+            }
+
+            this._$state = new Backbone.Model();
+
+            // Proxy events from state model to parent with "state:" prefix
+            var self = this;
+            this.listenTo(this._$state, "all", function()
+            {
+                var args = [].slice.call(arguments);
+
+                args[0] = "state:" + args[0];
+
+                self.trigger.apply(self, args);
+            });
+
+            return this._$state;
+        }
+    };
+
     var BaseModel = {
 
         myBackboneModelPrototype: Backbone.Model.prototype,
@@ -38,9 +65,9 @@ function(_, Backbone, DeepModel, moment, utils)
             return deferred;
         },
 
-        createPromise: function()
+        getFetchPromise: function(refresh)
         {
-            if(!this.promise)
+            if(!this.promise || refresh)
             {
                 if(this.id)
                 {
@@ -53,28 +80,7 @@ function(_, Backbone, DeepModel, moment, utils)
             return this.promise;
         },
 
-        getState: function()
-        {
-            if(this._$state)
-            {
-                return this._$state;
-            }
 
-            this._$state = new Backbone.Model();
-
-            // Proxy events from state model to parent with "state:" prefix
-            var self = this;
-            this.listenTo(this._$state, "all", function()
-            {
-                var args = [].slice.call(arguments);
-
-                args[0] = "state:" + args[0];
-
-                self.trigger.apply(self, args);
-            });
-            
-            return this._$state;
-        }
 
     };
 
@@ -96,9 +102,9 @@ function(_, Backbone, DeepModel, moment, utils)
             }
         },
 
-        createPromise: function()
+        getFetchPromise: function(refresh)
         {
-            if(!this.promise)
+            if(!this.promise || refresh)
             {
                 if (this.get(this.idAttribute))
                 {
@@ -249,9 +255,9 @@ function(_, Backbone, DeepModel, moment, utils)
     }
 
     return {
-        BaseModel: Backbone.Model.extend(BaseModel),
-        DeepModel: Backbone.DeepModel.extend(_.extend({}, BaseModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype })),
-        APIBaseModel: Backbone.Model.extend(APIModel),
-        APIDeepModel: Backbone.DeepModel.extend(_.extend({}, APIModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype }))
+        BaseModel: Backbone.Model.extend(_.extend({}, SharedBase, BaseModel)),
+        DeepModel: Backbone.DeepModel.extend(_.extend({}, SharedBase, BaseModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype })),
+        APIBaseModel: Backbone.Model.extend(_.extend({}, SharedBase, APIModel)),
+        APIDeepModel: Backbone.DeepModel.extend(_.extend({}, SharedBase, APIModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype }))
     };
 });

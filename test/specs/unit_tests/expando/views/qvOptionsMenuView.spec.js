@@ -2,13 +2,11 @@
 [
     "jquery",
     "TP",
-    "app",
     "views/quickView/qvMain/qvOptionsMenuView"
 ],
 function(
     $,
     TP,
-    app,
     QVOptionsMenuView
     )
 {

@@ -347,8 +347,10 @@ function(
 
         onEscapeKey: function(e)
         {
-            if (e.which === 27)
+            if (e.which === 27 && !e.isDefaultPrevented())
+            {
                 this.close();
+            }
         },
 
         closeModal: function()
@@ -460,13 +462,15 @@ function(
     TP.CompositeView = Backbone.Marionette.CompositeView.extend(commonViewFunctions);
 
     // Backbone stuff
-    TP.Collection = Backbone.Collection.extend({});
-
     TP.Model = APIModel.DeepModel;
     TP.DeepModel = APIModel.DeepModel;
     TP.BaseModel = APIModel.BaseModel;
+
     TP.APIBaseModel = APIModel.APIBaseModel;
     TP.APIDeepModel = APIModel.APIDeepModel;
+
+    TP.Collection = Backbone.Collection.extend({ model: TP.BaseModel });
+
     TP.Router = Backbone.Router.extend({});
 
     TP.Logger = Logger;

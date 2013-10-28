@@ -9,6 +9,10 @@
 		<button class="graphZoomButton">{{$ "Zoom"}}</button>
 		<button class="graphResetButton hidden">{{$ "Unzoom"}}</button>
 	</div>
+
+	<div class="cutButtons">
+		<button class="graphCutButton hidden">{{$ "Cut" }}</button>
+	</div>
 </div>
 
 <div class="graphSliderContain cf">
@@ -22,8 +26,8 @@
 		<button class="graphSeriesButton graphHeartRateButton" data-series="HeartRate">BPM</button>
 		<button class="graphSeriesButton graphPowerButton" data-series="Power">W</button>
 		<button class="graphSeriesButton graphRightPowerButton" data-series="RightPower">W</button>
-		<button class="graphSeriesButton graphTorqueButton" data-series="Torque">FT-LBS</button>
-		<button class="graphSeriesButton graphCadenceButton" data-series="Cadence">CAD</button>
-		<button class="graphSeriesButton graphTemperatureButton" data-series="Temperature">F</button>
+		<button class="graphSeriesButton graphTorqueButton" data-series="Torque">{{ torqueLabel }}</button>
+		<button class="graphSeriesButton graphCadenceButton" data-series="Cadence">{{ cadenceLabel }}</button>
+		<button class="graphSeriesButton graphTemperatureButton" data-series="Temperature">{{ tempLabel }}</button>
 	</div>
 </div>
