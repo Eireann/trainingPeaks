@@ -1,8 +1,10 @@
 define(
 [
-    "utilities/charting/dataParser"
+    "utilities/charting/chartColors",
+    "utilities/charting/dataParser",
+    "utilities/charting/flotUtils"
 ],
-function(DataParser)
+function(chartColors, DataParser, FlotUtils)
 {
     var GraphDataParser = DataParser;
 
@@ -17,11 +19,11 @@ function(DataParser)
             this.dataByAxisAndChannel = GraphDataParser.parseDataByAxisAndChannel(flatSamples, this._channelMask, this.xAxisDistanceValues);
 
             // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-            var elevationInfo = GraphDataParser.getElevationInfoOnRange(this.dataByAxisAndChannel[this.xaxis]);
+            var elevationInfo = FlotUtils.getElevationInfoOnRange(this.dataByAxisAndChannel[this.xaxis]);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
 
-            this.minTemperature = GraphDataParser.getTemperatureMinimumOnRange(this.dataByAxisAndChannel[this.xaxis]);
+            this.minTemperature = FlotUtils.getTemperatureMinimumOnRange(this.dataByAxisAndChannel[this.xaxis]);
 
             if (this.dataByAxisAndChannel && this.dataByAxisAndChannel[this.xaxis] && this.dataByAxisAndChannel[this.xaxis].Latitude && this.dataByAxisAndChannel[this.xaxis].Longitude)
                 this.hasLatLongData = true;
@@ -46,7 +48,7 @@ function(DataParser)
 
         getYAxes: function(series)
         {
-            return GraphDataParser.generateYAxes(series, this.workoutTypeValueId, this.dataByAxisAndChannel[this.xaxis]);
+            return FlotUtils.generateYAxes(series, this.workoutTypeValueId, this.dataByAxisAndChannel[this.xaxis]);
         },
 
         getMinimumForYAxis: function(series)

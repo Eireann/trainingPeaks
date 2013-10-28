@@ -4,9 +4,9 @@ define(
     "utilities/conversion/conversion",
     "utilities/charting/findOrderedArrayIndexByValue"
 ],
-function(conversion, chartColors, findOrderedArrayIndexByValue)
+function(chartColors, conversion, findOrderedArrayIndexByValue)
 {
-    return {
+    var FlotUtils = {
         generateYAxes: function(series, workoutTypeValueId, data)
         {
             var yaxes = [];
@@ -23,7 +23,7 @@ function(conversion, chartColors, findOrderedArrayIndexByValue)
                 {
                     show: true,
                     label: s.label,
-                    min: getMinimumForAxis(s.label, data),
+                    min: FlotUtils.getMinimumForAxis(s.label, data),
                     position: countdown-- > 0 ? "right" : "left",
                     color: "transparent",
                     tickColor: "transparent",
@@ -152,6 +152,9 @@ function(conversion, chartColors, findOrderedArrayIndexByValue)
 
             return findOrderedArrayIndexByValue(data, offset);
         }
+
     };
+
+    return FlotUtils;
 
 });

@@ -1,9 +1,8 @@
 ﻿define(
 [
-    "utilities/charting/chartColors",
     "utilities/charting/findOrderedArrayIndexByValue"
 ],
-function(chartColors, findOrderedArrayIndexByValue)
+function(findOrderedArrayIndexByValue)
 {
     var defaultChannelOrder =
     [
