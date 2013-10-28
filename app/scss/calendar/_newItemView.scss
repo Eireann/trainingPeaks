@@ -43,7 +43,10 @@
             height: 33px;
             padding: 5px 3px 5px 3px;
             text-align: left;
-            background: $TPGrey6;
+
+            // background: $TPGrey6;
+            // Going 1 shade darker to increase contrast.
+            background: #d4d2d2;
             border: 1px solid transparent;
             float: left;
             margin-bottom: 8px;
@@ -77,7 +80,12 @@
 
         fieldset {
             float: left;
-            width: 100%;     
+            width: 100%;  
+            
+            legend {
+                // to line up with button.
+                margin-left:5px;
+            }   
         }
 
         button
