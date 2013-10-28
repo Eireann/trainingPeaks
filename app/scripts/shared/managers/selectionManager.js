@@ -4,7 +4,9 @@ define(
     "TP",
     "shared/misc/selection",
     "shared/misc/activitySelection",
-    "shared/misc/calendarDaySelection"
+    "shared/misc/calendarDaySelection",
+    "views/userConfirmationView",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
     _,
@@ -12,7 +14,9 @@ function(
     Selection,
     // Ensure Selection Classes get loaded
     ActivitySelection,
-    CalendarDaySelection
+    CalendarDaySelection,
+    UserConfirmationView,
+    deleteConfirmationTemplate
 )
 {
 
@@ -60,7 +64,9 @@ function(
             }
             else if(event.which === 46) // Delete
             {
-                self.execute("delete");
+                var dialog = new UserConfirmationView({ template: deleteConfirmationTemplate });
+                dialog.render();
+                dialog.on("userConfirmed", _.bind(self.execute, self, "delete"));
             }
 
         });

@@ -65,6 +65,7 @@ function(
             this.repaintHeight = _.debounce(this.repaintHeight, 200);
 
             this.listenTo(this.model.get("detailData"), "change", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.resetZoom, this));
         },
 
         onRender: function()

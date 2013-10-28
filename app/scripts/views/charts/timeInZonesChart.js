@@ -55,6 +55,7 @@ function (
             {
                 this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.renderIfVisible, this));
                 this.listenTo(this.model.get("details"), "change:timeIn" + this.dataChannel + "Zones", _.bind(this.renderIfVisible, this));
+                this.listenTo(this.model.get("details"), "change:timeIn" + this.dataChannel + "Zones.*", _.bind(this.renderIfVisible, this));
                 this.listenTo(this.model.get("details"), "change:timeIn" + this.dataChannel + "Zones.timeInZones.*", _.bind(this.renderIfVisible, this));
             }, this);
         },
