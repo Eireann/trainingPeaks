@@ -9,6 +9,7 @@
     "quickview/metric/views/metricQuickView",
     "views/userConfirmationView",
     "views/workout/workoutFileUploadView",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/newItemView"
 ],
 function(
@@ -21,6 +22,7 @@ function(
     MetricQuickView,
     UserConfirmationView,
     WorkoutFileUploadView,
+    CalendarUtility,
     newItemViewTemplate)
 {
     return TP.ItemView.extend(
@@ -97,10 +99,20 @@ function(
 
         onNewMetricClicked: function(e)
         {
+            var now = moment(), timeStamp;
+            if(now.format(CalendarUtility.idFormat) === this.model.get("date"))
+            {
+                timeStamp = now;
+            }
+            else
+            {
+                timeStamp = moment(this.model.get("date"));
+            }
+
             var newMetric = new MetricModel(
             {
                 athleteId: theMarsApp.user.getCurrentAthleteId(),
-                timeStamp: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat)
+                timeStamp: timeStamp.format(TP.utils.datetime.longDateFormat)
             });
 
             var view = new MetricQuickView({ model: newMetric });
