@@ -8,9 +8,9 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
 {
     var defaultChannelOrder =
     [
+        "Elevation",
         "Cadence",
         "HeartRate",
-        "Elevation",
         "Power",
         "RightPower",
         "Speed",
@@ -237,6 +237,18 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
                 shadowSize: 0
             };
 
+            // right power should be dashed
+            if(channel === "RightPower")
+            {
+                seriesOptions.lines = {
+                    show: false
+                };
+                seriesOptions.dashes = {
+                    show: true,
+                    lineWidth: 1
+                };
+            }
+
             if (channel === "Elevation")
             {
                 seriesOptions.color = "#FFFFFF";
@@ -254,17 +266,20 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
 
         _.each(defaultChannelOrder, function(orderedChannel)
         {
-            var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
+            var series = findChannelInSeriesArray(seriesArray, orderedChannel);
+
             if (series)
             {
-                if (orderedChannel === "Elevation")
-                    orderedSeriesArray.unshift(series);
-                else
-                    orderedSeriesArray.push(series);
+                orderedSeriesArray.push(series);
             }
         });
 
         return orderedSeriesArray;
+    };
+
+    var findChannelInSeriesArray = function(seriesArray, channelName)
+    {
+        return _.find(seriesArray, function(s) { return s.label === channelName; });
     };
 
     var getElevationInfoOnRange = function(dataByChannel, x1, x2)
@@ -359,21 +374,27 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
     {
         var self = this;
         var yaxes = [];
-        var countdown = (series.length / 2).toFixed(0);
         var axisIndex = 1;
+
+        var hasRightPower = findChannelInSeriesArray(series, "RightPower") ? true : false;
+
         _.each(series, function(s)
         {
             var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,12,13], self.workoutTypeValueId);
             if (s.label === "Pace")
                 return;
             
-            s.yaxis = axisIndex++;
+            s.yaxis = axisIndex;
+            if(s.label !== "Power" || !hasRightPower) // if we have both power and right power, they should share the same y axis 
+            {
+                axisIndex++;
+            }
+
             var axisOptions =
             {
                 show: true,
                 label: s.label,
                 min: self.getMinimumForYAxis(s.label),
-                position: countdown-- > 0 ? "right" : "left",
                 color: "transparent",
                 tickColor: "transparent",
                 font:
@@ -398,6 +419,28 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
 
             yaxes.push(axisOptions);
         });
+
+        // right power should share index with power if present
+        var rightPowerAxis = findChannelInSeriesArray(yaxes, "RightPower");
+        var powerAxis = findChannelInSeriesArray(yaxes, "Power");
+        if(rightPowerAxis && powerAxis)
+        {
+            yaxes = _.without(yaxes, rightPowerAxis);
+        }
+
+        // distribute them on right first then left
+        _.each(yaxes, function(axis, index)
+        {
+            if(index < (yaxes.length / 2))
+            {
+                axis.position = "right";
+            }
+            else
+            {
+                axis.position = "left";
+            }
+        });
+
         return yaxes;
     };
     

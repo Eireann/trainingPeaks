@@ -78,6 +78,25 @@
             background-position: -51px -17px;
         }
     }
+
+    fieldset {
+        border: 1px solid $TPGrey2;
+        border-radius: 0 0 0 0;
+        margin: 0;
+        padding: 10px 10px 20px 10px;
+
+        legend {
+            background-color: transparent;
+            font-weight: normal;
+            padding-left: 5px;
+            padding-right: 5px;
+            text-align: left;
+            margin-left:20px;
+            color:$TPGrey4;
+            font-family:$fontFamilyRegularItalic;
+            font-size:$fontSizeSmall;
+        }
+    }
 }
 
 .modalOverlayMask
