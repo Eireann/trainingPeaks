@@ -94,7 +94,7 @@ function(
                 // made this faster so we can enable the expand button faster
                 this.prefetchConfig.workoutDetailsFetchTimeout = setTimeout(function()
                 {
-                    self.prefetchConfig.detailsPromise = self.model.get("details").createPromise();
+                    self.prefetchConfig.detailsPromise = self.model.get("details").getFetchPromise();
 
                     // if we don't have a workout, just resolve the deferred to let everything render
                     if (!self.model.get("workoutId"))
@@ -109,7 +109,7 @@ function(
 
                 this.prefetchConfig.workoutDetailDataFetchTimeout = setTimeout(function()
                 {
-                    self.prefetchConfig.detailDataPromise = self.model.get("detailData").createPromise();
+                    self.prefetchConfig.detailDataPromise = self.model.get("detailData").getFetchPromise();
 
                     // if we don't have a workout, just resolve the deferred to let everything render
                     if (!self.model.get("workoutId"))
@@ -151,14 +151,7 @@ function(
        
         resetTabRenderedState: function()
         {
-            this.tabRendered =
-            [
-                false,
-                false,
-                false,
-                false,
-                false
-            ];
+            this.tabRendered = [];
         },
 
         stopWorkoutDetailsFetch: function ()
@@ -393,23 +386,17 @@ function(
 
         watchForFileUploads: function()
         {
-            this.model.on("deviceFileUploaded", this.fetchDetailData, this);
-            this.on("close", this.stopWatchingFileUploads, this);
+            this.listenTo(this.model, "deviceFileUploaded", _.bind(this.reloadDetailData, this));
             this.setupFileUploadView();
         },
 
-        fetchDetailData: function()
+        reloadDetailData: function()
         {
             if (!this.model.get("workoutId"))
                 return;
 
-            this.model.get("details").fetch();
-            this.model.get("detailData").fetch();
-        },
-
-        stopWatchingFileUploads: function()
-        {
-            this.model.off("deviceFileUploaded", this.fetchDetailData, this);
+            this.prefetchConfig.detailsPromise = this.model.get("details").getFetchPromise(true);
+            this.prefetchConfig.detailDataPromise = this.model.get("detailData").getFetchPromise(true);
         },
 
         focusTitle: function()

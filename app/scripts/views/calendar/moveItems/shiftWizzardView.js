@@ -6,6 +6,7 @@
     "TP",
     "models/commands/ShiftWorkouts",
     "views/userConfirmationView",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/moveItems/intRangeValidationError",
     "hbs!templates/views/calendar/moveItems/dateValidationError",
     "hbs!templates/views/calendar/moveItems/shiftWizzard"
@@ -17,6 +18,7 @@ function(
     TP,
     ShiftWorkoutsCommand,
     UserConfirmationView,
+    CalendarUtility,
     intRangeErrorTemplate,
     dateErrorTemplate,
     shiftWizzardTemplate
@@ -158,7 +160,7 @@ function(
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
             // date picker
-            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
 
             // number picker, and make sure it fires a change event
             this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });

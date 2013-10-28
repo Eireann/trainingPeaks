@@ -54,7 +54,7 @@ function (
             this.once("render", function()
             {
                 this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this.renderIfVisible, this));
-                this.listenTo(this.model.get("details"), "change:timeIn" + this.dataChannel + "Zones.timeInZones", _.bind(this.renderIfVisible, this));
+                this.listenTo(this.model.get("details"), "change:timeIn" + this.dataChannel + "Zones", _.bind(this.renderIfVisible, this));
                 this.listenTo(this.model.get("details"), "change:timeIn" + this.dataChannel + "Zones.timeInZones.*", _.bind(this.renderIfVisible, this));
             }, this);
         },
@@ -152,11 +152,10 @@ function (
         {
             this.$chartEl = this.$(".chartContainer");
 
-            if(!this.$chartEl.height())
+            if(!this.$chartEl.is(":visible"))
             {
-                this.$chartEl.css({ "min-height": 1, "min-width": 1 });
+                return;
             }
-
             
             if($.plot)
             {

@@ -102,11 +102,11 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
         return dataByAxisAndChannel;
     };
 
-    var removeExcludedRangesFromData = function(data, excludedRanges, channel, offsetType, offsetsOfSamples)
+    var removeExcludedRangesFromGraphData = function(data, excludedRanges, channel, offsetType, offsetsOfSamples)
     {
         if(!excludedRanges || !excludedRanges.length)
         {
-            return;
+            return data;
         }     
         _.each(excludedRanges, function(range)
         {
@@ -155,6 +155,31 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
                 }
             }
         });
+
+        return data;
+    };
+
+    var removeExcludedRangesFromLatLonData = function(data, excludedRanges, msOffsetsOfSamples)
+    {
+        if(!excludedRanges || !excludedRanges.length || !data || !data.length)
+        {
+            return data;
+        }     
+        _.each(excludedRanges, function(range)
+        {
+            if(_.contains(["Latitude", "Longitude", "AllChannels"], range.channel))
+            {
+                var rangeStartIndex = findOrderedArrayIndexByValue(msOffsetsOfSamples, range.time.begin);
+                var rangeEndIndex = findOrderedArrayIndexByValue(msOffsetsOfSamples, range.time.end);
+
+                if(rangeStartIndex >= 0 && rangeEndIndex >= 0)
+                {
+                    data.splice(rangeStartIndex, (rangeEndIndex - rangeStartIndex));
+                }
+            }
+        });
+
+        return data;
     };
 
     var generateSeriesFromData = function(channelMask, dataByChannel, minElevation, x1, x2)
@@ -198,7 +223,7 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
             }
 
             // remove cut ranges
-            removeExcludedRangesFromData(data, self.excludedRanges, channel, self.xaxis, offsetsOfSamples);
+            data = removeExcludedRangesFromGraphData(data, self.excludedRanges, channel, self.xaxis, offsetsOfSamples);
 
             var seriesOptions =
             {
@@ -323,6 +348,8 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
 
                 latLon.push([lat, lon]);
             }
+
+            latLon = removeExcludedRangesFromLatLonData(latLon, this.excludedRanges, this.flatSamples.msOffsetsOfSamples.slice(startIndex, endIndex + 1));
         }
 
         return latLon;
@@ -458,6 +485,11 @@ function(chartColors, findOrderedArrayIndexByValue, conversion)
                 default:
                     return 0; 
             }
+        },
+
+        resetLatLonArray: function()
+        {
+            this.latLonArray = null;
         },
 
         getLatLonArray: function()

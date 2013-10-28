@@ -3,12 +3,14 @@ define(
     "jqueryui/datepicker",
     "TP",
     "utilities/trainingPlan/trainingPlan",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/library/trainingPlanDate"
 ],
 function(
     datepicker,
     TP,
     trainingPlanUtility,
+    CalendarUtility,
     trainingPlanDateTemplate
     )
 {
@@ -47,7 +49,7 @@ function(
             setImmediate(function()
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.parentModal.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek,
                     beforeShowDay: self.checkWhetherDayIsSelectable, defaultDate: self.defaultDate || +0 });
                 self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
             });

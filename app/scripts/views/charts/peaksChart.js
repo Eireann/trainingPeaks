@@ -149,9 +149,9 @@ function (
         {
             this.$chartEl = this.$(".chartContainer");
 
-            if(!this.$chartEl.height())
+            if(!this.$chartEl.is(":visible"))
             {
-                this.$chartEl.css({ "min-height": 1, "min-width": 1 });
+                return;
             }
             
             if($.plot)

@@ -431,6 +431,11 @@ function(
                 return [];
             }
 
+            if(!peakType)
+            {
+                return [];
+            }
+
             var ranges = this.model.get("detailData").getRangeCollectionFor(peakType).models;
 
             // filter by enabled intervals

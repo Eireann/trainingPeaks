@@ -125,6 +125,7 @@ function(
 
         addMarkers: function(map, latLonArray)
         {
+            var markers = [];
             if (latLonArray && latLonArray.length > 0)
             {
                 var leafletLatLongs = [];
@@ -135,11 +136,15 @@ function(
                     if (point[0] && point[1])
                     {
                         var latLng = [parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)];
-                        L.marker(latLng, markerOptions.options).addTo(map);
+                        var marker = L.marker(latLng, markerOptions.options);
+                        marker.addTo(map);
+                        markers.push(marker);
                     }
                 });
 
             }
+
+            return markers;
         },
 
         calculateAndAddMileMarkers: function(map, dataParser, maxMarkers)
@@ -150,7 +155,7 @@ function(
                 markerOptions.options.icon = new LeafletIcons.MileMarker(markerOptions);
             });
 
-            this.addMarkers(map, markers);
+            return this.addMarkers(map, markers);
         },
 
         addStartMarker: function(map, latLng)
@@ -162,7 +167,7 @@ function(
             };
 
             marker.options.icon = new LeafletIcons.StartMarker(marker);
-            this.addMarkers(map, [marker]);
+            return this.addMarkers(map, [marker]);
         },
 
         addFinishMarker: function(map, latLng)
@@ -174,7 +179,7 @@ function(
             };
 
             marker.options.icon = new LeafletIcons.FinishMarker(marker);
-            this.addMarkers(map, [marker]);
+            return this.addMarkers(map, [marker]);
         },
 
         calculateMileMarkers: function(dataParser, maxMarkers)
