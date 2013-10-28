@@ -36,7 +36,7 @@ function(
             it("Should not allow adding attachments for a new workout", function()
             {
                 $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
-                $body.find("button[data-workoutid=3]").trigger("click"); // 3=run
+                $body.find("[data-workoutid=3]").trigger("click"); // 3=run
 
                 // should have a qv
                 expect($body.find(".workoutQuickView").length).toBe(1);
