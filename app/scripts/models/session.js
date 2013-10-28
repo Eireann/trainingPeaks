@@ -54,17 +54,17 @@ function (_, TP, UserModel, UserAccessRightsModel)
         {
             var self = this;
             
-            this._refreshToken().done(function()
+            this._refreshToken().done(function(data)
             {
-                self._fetchUser();
+                self._fetchUser({ user: data.user });
             });
         },
 
-        _fetchUser: function()
+        _fetchUser: function(options)
         {
             var self = this;
             this.userAccessPromise = this.userAccessRights.fetch();
-            this.user.fetch().done(function()
+            this.user.fetch(options).done(function()
             {
                 self.userPromise.resolve();
             });
