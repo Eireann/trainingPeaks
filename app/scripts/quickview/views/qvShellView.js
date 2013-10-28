@@ -17,8 +17,8 @@ function(
     moment,
     TP,
     UserConfirmationView,
-    qvShellTemplate,
     CalendarUtility,
+    qvShellTemplate,
     deleteConfirmationTemplate,
     discardConfirmationTemplate,
     failedToSaveTemplate
