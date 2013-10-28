@@ -38,9 +38,9 @@ function(
         events:
         {
             "change input[type='file']": "onFileSelected",
-            "click button[data-workoutid]": "onNewWorkoutClicked",
-            "click button[data-meal]": notYetImplemented,
-            "click button[data-metric]": "onNewMetricClicked",
+            "click [data-workoutid]": "onNewWorkoutClicked",
+            "click [data-meal]": notYetImplemented,
+            "click [data-metric]": "onNewMetricClicked",
             "click button[name=uploadDeviceFile]": "onUploadFileClicked",
             "click #closeIcon": "onCloseClicked"
         },
