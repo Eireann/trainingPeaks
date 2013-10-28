@@ -285,21 +285,7 @@
        white-space: nowrap;
        display:inline-block;
     }
-    
-       .RightPower
-       {
-            .value
-            {
-                width: auto;
-                font-family: $fontFamilyRegular;
-            }
-
-            .units
-            {
-                display: none;
-            }
-       }
-
+   
     .units
     {
         font-family: $fontFamilyRegular;
@@ -334,6 +320,23 @@
             color: $clrPower;
         }
     }
+
+    .withPower
+    { 
+       .RightPower
+       {
+            .value
+            {
+                width: auto;
+                font-family: $fontFamilyRegular;
+            }
+
+            .units
+            {
+                display: none;
+            }
+       }
+   }
 
     .RightPower.current
     {

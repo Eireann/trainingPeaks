@@ -38,43 +38,15 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
         return true;
     };
 
-    var getSeriesWithAppropriatePowerOptions = function(allDataSeries, enabledDataSeries)
-    {
-        // make sure right power is available if power is available
-        enabledDataSeries = enabledDataSeries.slice();
-        var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
-        var rightPowerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "RightPower"; });
-
-        if(powerSeriesEnabled && !rightPowerSeriesEnabled)
-        {
-            var rightPowerSeries = _.find(allDataSeries, function(s) { return s.label === "RightPower"; });            
-            if(rightPowerSeries)
-            {
-                enabledDataSeries.push(rightPowerSeries);
-            }
-        }
-
-        if(rightPowerSeriesEnabled && !powerSeriesEnabled)
-        {
-            var powerSeries = _.find(allDataSeries, function(s) { return s.label === "Power"; });            
-            if(powerSeries)
-            {
-                enabledDataSeries.push(powerSeries);
-            }
-        }
-
-        return enabledDataSeries;
-    };
-
     return function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, axisType)
     {
 
-        enabledDataSeries = getSeriesWithAppropriatePowerOptions(allDataSeries, enabledDataSeries);
-
+        var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
         var toolTipData =
         {
             xAxisOffset: null,
-            series: []
+            series: [],
+            powerSeriesEnabled: powerSeriesEnabled
         };
 
         if (axisType === "distance")
@@ -91,7 +63,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
             if (!shouldDisplayTooltipValue(s.label, value))
                 return;
 
-            if (s.label === "RightPower")
+            if (s.label === "RightPower" && powerSeriesEnabled)
             {
                 var totalPower = _.find(allDataSeries, function (ps) { return ps.label === "Power"; });
 
@@ -119,12 +91,12 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
 
             //TODO Refactor: assuming the proper conversion field name is simply the lower-cased series name
             //TODO is wrong. Should probably add a field to the series object in the data parser.
-            var fieldName = s.label.toLowerCase();
+            var dataType = s.label === "RightPower" ? "power" : s.label.toLowerCase();
             var config =
             {
                 label: s.label,
-                value: conversion.formatUnitsValue(fieldName, value, { defaultValue: undefined, workoutTypeId: workoutType }),
-                units: unitLabels(fieldName, workoutType)
+                value: conversion.formatUnitsValue(dataType, value, { defaultValue: undefined, workoutTypeId: workoutType }),
+                units: unitLabels(dataType, workoutType)
             };
 
             if (s.label === hoveredSeriesName)
