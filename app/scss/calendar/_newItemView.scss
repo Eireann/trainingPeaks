@@ -1,29 +1,38 @@
 ﻿@import "../globalCSS/tpstylesheet";
 
-#newItemViewContainer
-{
-    .titleBar
-    {
-        cursor: default;
+#newItemViewContainer {
+    width: 662px;
+    max-width: none;
 
+    .titleBar {
+        cursor: default;
     }
 
-    .dialogContent
-    {
-        padding: 10px 20px 20px 30px;
+    .dialogContent {
+        padding: 40px;
         font-weight: normal;
         text-align: left;
         @include clearfix;
         
         .addItemsButtonContainer {
             @include clearfix;
-            width:100%;
+            width: 100%;
 
-            &.Meals,
-            &.Metrics {
+            &.Workouts {
+                margin-bottom: 20px;
+            }
+
+            &.Meal,
+            &.Metric {
                 width: 110px;
                 float: left;
                 margin-right: 8px;
+                margin-bottom: 15px;
+            }
+
+
+            h3 {
+                margin-bottom: 10px;
             }
         }
 
@@ -47,7 +56,8 @@
            // }
             
             &:hover {
-                  border-color:  $TPGrey11;
+                border-color:  $TPGrey11;
+                cursor: pointer;
             }
 
             .workoutIcon {
@@ -63,12 +73,20 @@
             }
         }
 
+        .addWorkout {
+            &.Crosstrain,
+            &.Custom {
+                margin-right: 0;
+            }
+        }
+
 
         fieldset 
         {
             border: solid 1px $TPGrey2;
             border-radius: 0px;
-            margin-top: 0px;
+            margin: 0;
+
             color: $TPGrey2;
             padding-top: 10px;
             float: left;
@@ -148,16 +166,14 @@
         font-family: $fontFamilyHeavy;
     }
 
-    .helpText
-    {
+    .helpText {
         font-color: #3c7fc4;
         font-size: 12px;
         font-family: $fontFamilyRegularItalic;
     }
 
-    .textDiv
-    {
-        padding-top: 5px;
+    .textDiv {
+        float: left;
     }
 }
 

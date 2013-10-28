@@ -86,3 +86,14 @@
     @include workoutIcons("walk", $clrWalk);
 }
 
+.Meal
+{
+    @include workoutIcons("meal", $clrMeal);
+}
+
+.Metric
+{
+    @include workoutIcons("metric", $clrMetric);
+}
+
+
