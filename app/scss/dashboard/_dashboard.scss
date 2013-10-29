@@ -205,13 +205,13 @@
     margin: 10px;
     */
 
+    @include noDataMessage;
+    
     position: absolute; 
     padding: 15px 0 0 0;
 
     border: 1px solid transparent;
     cursor: pointer;
-
-    @include noDataMessage;
 
     .chartTitle, 
     .customDateRange {

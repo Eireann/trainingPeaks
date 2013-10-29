@@ -13,7 +13,6 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
     return TP.Model.extend(
     {
-        storageLocation: localStorage,
 
         defaults:
         {

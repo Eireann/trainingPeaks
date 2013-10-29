@@ -72,6 +72,11 @@ function (
 
             // then all completed inputs
             this.$(".workoutStatsCompleted input").attr("tabindex", 3);
+        },
+
+        reRender: function()
+        {
+            this.updateUICustomization();
         }
     };
 
