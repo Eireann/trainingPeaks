@@ -30,10 +30,43 @@
 
         .metricQVItem {
             width: 50%;
-            // width: 360px;
             float: left;
-            // clear: left;
             min-height: 30px;
+
+            // Blood Pressure - 2 fields
+            &.metricType-1 {
+                input[type="text"] {
+                    width:79px;
+                }
+            }
+
+            // Insulin - 2 fields
+            &.metricType-45 {
+                input[type="text"] {
+                    width:70px;
+                }
+            }
+
+            &.metricType-12 {
+                clear: left;
+                width: 100%;
+                margin-top: 7px;
+
+                &:before {
+                    border-top: 1px solid $TPGrey12;
+                    width: 495px;
+                    margin-left: 115px;
+                    content:"";
+                    height:1px;
+                    display:block;
+                    margin-bottom:15px;
+                }
+
+                textarea {
+                    width: 497px;
+                    max-width: 497px;
+                }
+            }
 
             .metricLabel {
                 width: 110px;
@@ -65,27 +98,18 @@
 
             .metricValue {
                 display:inline-block;
-                // width:84px;
-                // height:22px;
-                // text-align: center;
                 font-family:$fontFamilyRegular;
                 font-size:$fontSizeSmall;
                 padding:4px 0;
                 color:$TPGrey3;
-                // border:1px solid $TPGrey2;
             }
 
             input[type="text"] {
-                // width:84px;
                 width: 170px;
                 height: 22px;
                 display: inline-block;
                 margin: 0;
-                text-align: left;
-
-                &:not(:first-of-type) {
-                    margin:7px 0 7px 114px;
-                }
+                text-align: left;            
             }
 
             select, 
