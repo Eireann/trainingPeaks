@@ -40,7 +40,6 @@ function(
                     var workoutDate = self.workoutModel.get("date") || self.workoutModel.get("workoutDay");
                     self.uploadedFileDataModel = new WorkoutFileData({ 
                         workoutDay: moment(workoutDate).format(TP.utils.datetime.longDateFormat), 
-                        startTime: moment(workoutDate).add("hours", 6).format(TP.utils.datetime.longDateFormat), 
                         data: dataAsString, 
                         fileName: fileName });
 

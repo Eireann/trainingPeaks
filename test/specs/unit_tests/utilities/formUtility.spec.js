@@ -236,6 +236,14 @@ function(
                 expect(model.get("key1")).toEqual("originalvalue");
                 expect(model.get("key2")).toEqual("key2value");
             });
+
+            it("should treat empty strings as null", function()
+            {
+                var $el = $("<div><input type='text' name='key' value=''></div>");
+                var model = new TP.Model({key: "something"});
+                FormUtility.applyValuesToModel($el, model);
+                expect(model.get("key")).toBe(null);
+            });
         });
     });
 

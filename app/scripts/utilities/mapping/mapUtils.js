@@ -222,6 +222,32 @@ function(
                 skip = 1;
 
             return { distanceBetweenMarkers: baseInterval * skip, countBy: skip };
+        },
+
+        removeItemsFromMap: function(map, items)
+        {
+            if(!map || !items)
+            {
+                return;
+            }
+            _.each(items, function(item)
+            {
+                if(_.isArray(item))
+                {
+                    this.removeItemsFromMap(map, item);
+                }
+                else
+                {
+                    if(_.isFunction(item.removeFrom))
+                    {
+                        item.removeFrom(map);
+                    }
+                    else
+                    {
+                        map.removeLayer(item);
+                    }
+                }
+            }, this);
         }
 
     };

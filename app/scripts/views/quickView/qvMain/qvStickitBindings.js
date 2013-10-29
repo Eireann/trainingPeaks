@@ -12,8 +12,11 @@ function (
     {
         initializeStickit: function()
         {
+            this.bindings = _.clone(this.bindings);
             this.addModelToBindings();
             this.on("render", this.stickitOnRender, this);
+            this.listenTo(this.model, "change:workoutDay", _.bind(this._stickitOnDateChanged, this));
+            this._stickitOnDateChanged();
         },
 
         stickitOnRender: function()
@@ -24,6 +27,28 @@ function (
                 this.stickit();
                 this.stickitInitialized = true;
             }
+        },
+
+        restickit: function()
+        {
+            if(this.stickitInitialized)
+            {
+                this.unstickit();
+                this.stickit();
+            }
+        },
+
+        _stickitOnDateChanged: function()
+        {
+            var today = moment().startOf("day");
+            var date = moment(this.model.get("workoutDay"));
+            var planned = date > today;
+
+            var timeAttribute = planned ? "startTimePlanned" : "startTime";
+
+            this.bindings["#startTimeInput"].observe = timeAttribute;
+
+            this.restickit();
         },
 
         bindings:
@@ -46,7 +71,6 @@ function (
             "#startTimeInput":
             {
                 observe: "startTime",
-                events: ["changeTime"],
                 onGet: "getStartTime",
                 onSet: "setStartTime"
             },
@@ -101,9 +125,11 @@ function (
 
         getStartTime: function(value, options)
         {
+            value = value || this.model.get("startTime") || this.model.get("startTimePlanned");
+
             try
             {
-                return moment(value).format("h:mm a");
+                return value ? moment(value).format("h:mm a") : "";
             }
             catch (e)
             {
@@ -115,11 +141,11 @@ function (
         {
             try
             {
-                return this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm");
+                return value ? this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm") : null;
             }
             catch (e)
             {
-                return value;
+                return null;
             }
         },
 

@@ -2,6 +2,7 @@
 [
     "backbone",
     "TP",
+    "utilities/localStorageUtils",
     "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel",
@@ -11,6 +12,7 @@
 function(
     Backbone,
     TP,
+    localStorageUtils,
     AccountSettingsModel,
     AthleteSettingsModel, 
     DashboardSettingsModel,
@@ -27,31 +29,31 @@ function(
 
         defaults:
         {
-            address: "",
-            address2: "",
+            address: null,
+            address2: null,
             age: 0,
-            birthday: "",
-            cellPhone: "",
-            city: "",
-            country: "",
+            birthday: null,
+            cellPhone: null,
+            city: null,
+            country: null,
             dateFormat: "mdy",
-            email: "",
-            expireDate: "",
-            firstName: "",
+            email: null,
+            expireDate: null,
+            firstName: null,
             gender: null,
-            language: "",
-            lastName: "",
+            language: null,
+            lastName: null,
             latitude: null,
             longitude: null,
-            phone: "",
-            profilePhotoUrl: "",
-            state: "",
-            story: "",
-            timeZone: "",
+            phone: null,
+            profilePhotoUrl: null,
+            state: null,
+            story: null,
+            timeZone: null,
             units: 2,
             userId: 0,
-            userName: "",
-            zipCode: "",
+            userName: null,
+            zipCode: null,
             zuoraAccountNumber: null,
 
             settings: {},
@@ -87,7 +89,7 @@ function(
                 var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
                 ajaxFetch.done(function()
                 {
-                    localStorage.setItem("app_user", JSON.stringify(self.attributes));
+                    localStorageUtils.setItem("app_user", self.attributes);
                 });
                 return ajaxFetch;
             };
@@ -95,16 +97,15 @@ function(
             // If the user is saved in localStorage, immediately set that data
             // to this model and return a resolved deferred.
             // Then do the actual AJAX fetch
-            var cachedUserData = localStorage.getItem('app_user');
+            var cachedUser = localStorageUtils.getItem('app_user');
 
             // Even if we have a cached user we want to update the data, we just may end up not waiting for it.
             var promise = superFetch();
 
-            if(cachedUserData)
+            if(cachedUser)
             {
                 try
                 {
-                    var cachedUser = JSON.parse(cachedUserData);
                     if(options && options.user && cachedUser.userName !== options.user)
                     {
                         // Our cache is for the wrong user, blow it away.

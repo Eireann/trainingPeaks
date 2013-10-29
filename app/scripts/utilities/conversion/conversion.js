@@ -112,7 +112,7 @@
         formatTimeOfDay: function(value, options)
         {
             var timeOfDay = moment(value);
-            return timeOfDay.format("hh:mm:ss A");
+            return timeOfDay.format("hh:mm A");
         },
 
         parsePower: function(value, options)

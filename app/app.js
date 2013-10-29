@@ -2,7 +2,6 @@ define(
 [
     "underscore",
     "TP",
-    "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/ajax402",
     "framework/tooltips",
@@ -29,7 +28,6 @@ define(
 function(
     _,
     TP,
-    ajaxCaching,
     initializeAjaxTimezone,
     initializeAjax402,
     ToolTips,
@@ -112,7 +110,6 @@ function(
             this.apiConfig = apiConfig;
         },
 
-        ajaxCachingEnabled: false,
         historyEnabled: true,
 
 
@@ -209,8 +206,6 @@ function(
             this.addInitializer(function()
             {
                 initializeAjaxTimezone();
-                if (this.ajaxCachingEnabled)
-                    this.ajaxCaching = ajaxCaching.initialize();
             });
 
             // display build info

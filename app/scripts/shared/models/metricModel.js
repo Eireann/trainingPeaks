@@ -60,9 +60,10 @@ function(
         moveToDay: function(date)
         {
             date = moment(date);
+            var timestamp = moment(this.get("timeStamp"));
             var attrs =
             {
-                timeStamp: moment(this.get("timeStamp")).year(date.year()).month(date.month()).date(date.date()).format(TP.utils.datetime.longDateFormat)
+                timeStamp: date.format("YYYY-MM-DD")  + timestamp.format("THH:mm:ss")
             };
 
             return this.save(attrs, { wait: true });
