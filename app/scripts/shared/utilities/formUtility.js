@@ -1,8 +1,10 @@
 define(
 [
+    "underscore",
     "TP"
 ],
 function(
+    _,
     TP
 )
 {
@@ -45,6 +47,11 @@ function(
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
                 value = options.parsers[format](value, options.parserOptions);
+            }
+            else if(_.isString(value) && value.trim() === "")
+            {
+                // empty strings should be nulls in most cases
+                value = null;
             }
 
             return value;
