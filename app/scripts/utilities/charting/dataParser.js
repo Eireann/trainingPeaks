@@ -96,7 +96,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
 
         getLatLongFromOffset: function (xAxisOffset)
         {
-            var index = DataParserUtils.findIndexByChannelAndOffset(this.dataByAxisAndChannel[this.xaxis], this.xaxis, xAxisOffset, this.flatSamples.msOffsetsOfSamples);
+            var index = DataParserUtils.findIndexByChannelAndOffset(this.xAxisDistanceValues, this.xaxis, xAxisOffset, this.flatSamples.msOffsetsOfSamples);
 
             if (index === null)
                 return null;
