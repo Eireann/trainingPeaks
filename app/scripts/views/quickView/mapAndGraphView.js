@@ -43,6 +43,7 @@ function(
 
             this.map = null;
             this.graph = null;
+            this.mapLayers = [];
 
             if (!options.prefetchConfig)
                 throw "Prefetch config is required for map and graph view";
@@ -70,7 +71,7 @@ function(
             }
 
             // if we already have it in memory, render it
-            if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
+            if ( this.model.get("detailData").hasSamples())
             {
                 this.onModelFetched();
             }
@@ -81,16 +82,19 @@ function(
 
         },
 
+        reRender: function()
+        {
+            var self = this;
+            setImmediate(function() {self.createAndShowMapAndGraph();});
+        },
+
         onModelFetched: function()
         {
             var self = this;
 
             this.$el.removeClass("waiting");
 
-            if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
-                return;
-
-            setImmediate(function() { self.createAndDisplayMapAndGraph(); });
+            setImmediate(function() { self.createAndShowMapAndGraph(); });
         },
 
         _onSeriesChanged: function(model)
@@ -98,55 +102,59 @@ function(
             if(_.intersection(["disabledDataChannels", "availableDataChannels", "channelCuts", "flatSamples"], _.keys(model.changed)).length)
             {
                 var self = this;
-                setImmediate(function() { self.createAndDisplayMapAndGraph(); });
+                setImmediate(function() { self.createAndShowMapAndGraph(); });
             }
         },
 
-        createAndDisplayMapAndGraph: function()
+        createAndShowMapAndGraph: function()
         {
-            if (!this.model.get("detailData") || !this.model.get("detailData").get("flatSamples"))
-                return;
 
-            this.parseData();
-            this.createAndShowMap();
-            this.createAndShowGraph();
+            if(!this.$el.is(":visible"))
+            {
+                return;
+            }
+            // no map or graph 
+            else if (!this.model.get("detailData").hasSamples())
+            {
+                this.$("#quickViewMap").addClass("noData");
+                this.$("#quickViewGraph").addClass("noMap").addClass("noData");
+            } 
+            // graph but no map
+            else if (!this._getDataParser().hasLatLongData)
+            {
+                this.$("#quickViewMap").addClass("noData");
+                this.$("#quickViewGraph").addClass("noMap").removeClass("noData");
+                this.createAndShowGraph();
+            }
+            // map and graph
+            else
+            {
+                this.$("#quickViewMap").removeClass("noData");
+                this.$("#quickViewGraph").removeClass("noMap").removeClass("noData");
+                this.createAndShowMap();
+                this.createAndShowGraph();
+            }
         },
 
         createAndShowMap: function()
         {
 
-            if (!this._getDataParser().hasLatLongData)
-            {
-                this.$("#quickViewMap").addClass("hidden");
-                return;
-            } else
-            {
-                this.$("#quickViewMap").removeClass("hidden");
-            }
-
             if (!this.map)
-                this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
+                this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap .map")[0]);
 
-            var latLngArray = this._getDataParser().getLatLonArray();
-            MapUtils.setMapData(this.map, latLngArray);
-            MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 6);
-            MapUtils.addStartMarker(this.map, latLngArray[0]);
-            MapUtils.addFinishMarker(this.map, latLngArray[latLngArray.length - 1]);
-        },
+            MapUtils.removeItemsFromMap(this.map, this.mapLayers);
+            this.mapLayers = [];
 
-        parseData: function()
-        {
-            var flatSamples = this.model.get("detailData").attributes.flatSamples;
-            this._getDataParser().loadData(flatSamples);
+            var latLongArray = this._getDataParser().getLatLonArray();
+            this.mapLayers.push(MapUtils.setMapData(this.map, latLongArray));
+            this.mapLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 6));
+            this.mapLayers.push(MapUtils.addStartMarker(this.map, latLongArray[0]));
+            this.mapLayers.push(MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]));
         },
 
         createAndShowGraph: function()
         {
             var self = this;
-            if (!this._getDataParser().hasLatLongData)
-            {
-                self.$("#quickViewGraph").css("height", "350px");
-            }
             
             var priority =
             [
@@ -158,8 +166,6 @@ function(
                 "Temperature",
                 "Torque"
             ];
-
-            var numSeries = 0;
 
             // Get all series & axes in the data set
             var series = this._getDataParser().getSeries();
@@ -186,7 +192,7 @@ function(
     
             if ($.plot)
             {
-                this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
+                this.plot = $.plot(this.$("#quickViewGraph .graph"), series, flotOptions);
                 if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
                     this.plot.setFilter(0);
                 else
