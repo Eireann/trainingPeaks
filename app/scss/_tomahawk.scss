@@ -3,7 +3,7 @@
 .tomahawk
 {
     position: absolute;
-    @include box-shadow(0 0 3px 1px #ADADAD);
+    @include box-shadow(0 1px 3px 0 #ADADAD);
     background: #fff;
     padding: 21px 12px 15px;
 
@@ -33,7 +33,7 @@
     width: 16px;
     height: 16px;
     @include transform(rotate(45deg));
-    @include box-shadow(0 0 3px 1px #ADADAD);
+    @include box-shadow(0 1px 3px 0 #ADADAD);
     background: inherit;
 }
 
