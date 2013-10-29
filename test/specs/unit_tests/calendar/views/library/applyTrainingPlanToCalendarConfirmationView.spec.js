@@ -3,12 +3,11 @@ requirejs(
 [
 	"views/calendar/library/applyTrainingPlanToCalendarConfirmationView",
 	"models/library/trainingPlan",
-	"app",
 	"TP",
 	"moment",
 	"jquery"
 ],
-function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, TP, moment, $)
+function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, $)
 {
 
 	describe("applyTrainingPlanToCalendarConfirmationView ", function()

@@ -9,6 +9,7 @@
     "quickview/metric/views/metricQuickView",
     "views/userConfirmationView",
     "views/workout/workoutFileUploadView",
+    "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/newItemView"
 ],
 function(
@@ -21,6 +22,7 @@ function(
     MetricQuickView,
     UserConfirmationView,
     WorkoutFileUploadView,
+    CalendarUtility,
     newItemViewTemplate)
 {
     return TP.ItemView.extend(
@@ -38,9 +40,9 @@ function(
         events:
         {
             "change input[type='file']": "onFileSelected",
-            "click button[data-workoutid]": "onNewWorkoutClicked",
-            "click button[data-meal]": notYetImplemented,
-            "click button[data-metric]": "onNewMetricClicked",
+            "click [data-workoutid]": "onNewWorkoutClicked",
+            "click [data-meal]": notYetImplemented,
+            "click [data-metric]": "onNewMetricClicked",
             "click button[name=uploadDeviceFile]": "onUploadFileClicked",
             "click #closeIcon": "onCloseClicked"
         },
@@ -97,10 +99,20 @@ function(
 
         onNewMetricClicked: function(e)
         {
+            var now = moment(), timeStamp;
+            if(now.format(CalendarUtility.idFormat) === this.model.get("date"))
+            {
+                timeStamp = now;
+            }
+            else
+            {
+                timeStamp = moment(this.model.get("date"));
+            }
+
             var newMetric = new MetricModel(
             {
                 athleteId: theMarsApp.user.getCurrentAthleteId(),
-                timeStamp: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat)
+                timeStamp: timeStamp.format(TP.utils.datetime.longDateFormat)
             });
 
             var view = new MetricQuickView({ model: newMetric });
@@ -125,7 +137,7 @@ function(
          
             var newModel = new WorkoutModel();
 
-            var existingModel = theMarsApp.controllers.calendarController.getWorkout(workoutModelJson.workoutId);
+            var existingModel = theMarsApp.calendarManager.get(WorkoutModel, workoutModelJson.workoutId);
             if (existingModel)
             {
                 newModel = existingModel;
@@ -136,10 +148,10 @@ function(
             {
                 newModel.set(workoutModelJson);
                 newModel.parse(workoutModelJson);
-                this.model.trigger("workout:added", newModel);
+                theMarsApp.calendarManager.addItem(newModel);
             }
 
-            newModel.trigger("select", newModel);
+            theMarsApp.selectionManager.setSelection(newModel);
 
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();

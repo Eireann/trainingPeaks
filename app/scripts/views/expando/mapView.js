@@ -28,11 +28,9 @@ function (
 
         initialize: function(options)
         {
-            _.bindAll(this, "onModelFetched");
-
             this.map = null;
-            this.graph = null;
             this.selections = [];
+            this.baseLayers = [];
 
             this.stateModel = options.stateModel;
 
@@ -45,29 +43,33 @@ function (
         onRender: function()
         {
             var self = this;
+
             this.watchForModelChanges();
             this.watchForControllerEvents();
             this.watchForControllerResize();
             this.$el.addClass("waiting");
             this.$el.removeClass("hidden");
-            setImmediate(function () { self.detailDataPromise.then(self.onModelFetched); });
+            setImmediate(function () { self.detailDataPromise.then(_.bind(self.onModelFetched, self)); });
         },
 
-        watchForModelChanges: function ()
+        watchForModelChanges: function()
         {
-            this.model.get("detailData").on("change:flatSamples", this.onModelFetched, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function ()
-        {
-            this.model.get("detailData").off("change:flatSamples", this.onModelFetched, this);
+            this.listenTo(this.model.get("detailData"), "change", _.bind(this.onModelChanged, this));
         },
 
         onModelFetched: function ()
         {
             this.$el.removeClass("waiting");
             this.createAndDisplayMap();
+        },
+
+        onModelChanged: function(model)
+        {
+            if(_.intersection(["flatSamples", "disabledDataChannels", "availableDataChannels", "channelCuts"], _.keys(model.changed)).length)
+            {
+                this._getDataParser().resetLatLonArray();
+                this.createAndDisplayMap();
+            }
         },
 
         createAndDisplayMap: function ()
@@ -90,11 +92,14 @@ function (
                     this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
                 }
 
-                //this.addMouseHoverBuffer(latLongArray);
-                MapUtils.setMapData(this.map, latLongArray);
-                MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10);
-                MapUtils.addStartMarker(this.map, latLongArray[0]);
-                MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
+                this.removeItemsFromMap(this.baseLayers);
+                this.baseLayers = [];
+
+                //this.baseLayers.push(this.addMouseHoverBuffer(latLongArray));
+                this.baseLayers.push(MapUtils.setMapData(this.map, latLongArray));
+                this.baseLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10));
+                this.baseLayers.push(MapUtils.addStartMarker(this.map, latLongArray[0]));
+                this.baseLayers.push(MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]));
             }
 
             if(this.$el.hasClass("noData"))
@@ -195,6 +200,10 @@ function (
 
         createMapSelection: function (workoutStatsForRange, options)
         {
+            if(!this.map)
+            {
+                return null;
+            }
             var latLngs = this._getDataParser().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
             var mapLayer = MapUtils.createHighlight(latLngs, options);
 
@@ -210,18 +219,51 @@ function (
 
         addSelectionToMap: function (selection)
         {
+            if(!this.map || !selection)
+            {
+                return;
+            }
             this.selections.push(selection);
             this.map.addLayer(selection.mapLayer);
         },
 
         removeSelectionFromMap: function (selection)
         {
-            this.map.removeLayer(selection.mapLayer);
+            if(this.map && selection)
+            {
+                this.map.removeLayer(selection.mapLayer);
+            }
+        },
+
+        removeItemsFromMap: function(items)
+        {
+            if(!this.map)
+            {
+                return;
+            }
+            _.each(items, function(item)
+            {
+                if(_.isArray(item))
+                {
+                    this.removeItemsFromMap(item);
+                }
+                else
+                {
+                    if(_.isFunction(item.removeFrom))
+                    {
+                        item.removeFrom(this.map);
+                    }
+                    else
+                    {
+                        this.map.removeLayer(item);
+                    }
+                }
+            }, this);
         },
 
         _onHoverChange: function (state, offset, options)
         {
-            if (!this._getDataParser().hasLatLongData)
+            if (!this.map || !this._getDataParser().hasLatLongData)
             {
                 return;
             }

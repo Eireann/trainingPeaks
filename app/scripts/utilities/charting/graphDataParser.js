@@ -2,9 +2,10 @@ define(
 [
     "utilities/charting/chartColors",
     "utilities/charting/dataParser",
+    "utilities/charting/dataParserUtils",
     "utilities/charting/flotUtils"
 ],
-function(chartColors, DataParser, FlotUtils)
+function(chartColors, DataParser, DataParserUtils, FlotUtils)
 {
     var GraphDataParser = DataParser;
 
@@ -262,6 +263,18 @@ function(chartColors, DataParser, FlotUtils)
                     shadowSize: 0
                 };
 
+                // right power should be dashed
+                if(channel === "RightPower")
+                {
+                    seriesOptions.lines = {
+                        show: false
+                    };
+                    seriesOptions.dashes = {
+                        show: true,
+                        lineWidth: 1
+                    };
+                }
+
                 if (channel === "Elevation")
                 {
                     seriesOptions.color = "#FFFFFF";
@@ -279,13 +292,11 @@ function(chartColors, DataParser, FlotUtils)
 
             _.each(GraphDataParser.defaultChannelOrder, function(orderedChannel)
             {
-                var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
+                var series = DataParserUtils.findChannelInSeriesArray(seriesArray, orderedChannel);
+
                 if (series)
                 {
-                    if (orderedChannel === "Elevation")
-                        orderedSeriesArray.unshift(series);
-                    else
-                        orderedSeriesArray.push(series);
+                    orderedSeriesArray.push(series);
                 }
             });
 

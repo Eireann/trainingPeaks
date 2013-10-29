@@ -4,7 +4,6 @@ requirejs(
     "testUtils/xhrDataStubs",
     "moment",
     "TP",
-    "app",
     "jquery",
     "models/workoutModel",
     "shared/models/activityModel",
@@ -14,7 +13,6 @@ function(
     xhrData,
     moment,
     TP,
-    theMarsApp,
     $,
     WorkoutModel,
     ActivityModel,
@@ -22,14 +20,15 @@ function(
 {
     describe("save dragged workout to library", function()
     {
+
         var today = moment().format("YYYY-MM-DDTHH:mm:ss");
         var workout = new WorkoutModel({ workoutDay: today, workoutId: '123'});
         
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-            theMarsApp.router.navigate("calendar", true);
-            theMarsApp.calendarManager.activities.add(ActivityModel.wrap(workout));
+            testHelpers.theApp.router.navigate("calendar", true);
+            testHelpers.theApp.calendarManager.activities.add(ActivityModel.wrap(workout));
         });
 
         afterEach(function()

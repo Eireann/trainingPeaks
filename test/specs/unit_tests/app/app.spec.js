@@ -2,12 +2,15 @@
 requirejs(
 [
     "underscore",
-    "app"
+    "testUtils/testHelpers"
 ],
-function( _, theApp)
+function( _, testHelpers )
 {
     describe("The Mars App", function()
     {
+
+        var theApp = testHelpers.theApp;
+
         it("Should exist globally", function()
         {
             var globalNamespace = typeof window !== 'undefined' ? window : jasmine.getGlobal();

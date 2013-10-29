@@ -3,14 +3,13 @@ requirejs(
 [
     "moment",
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "app"
+    "testUtils/xhrDataStubs"
 ],
 function(
     moment,
     testHelpers,
-    xhrData,
-    theApp)
+    xhrData
+)
 {
 
     describe("Quick View file attachments", function()
@@ -24,9 +23,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
             });
 
             afterEach(function()
@@ -37,7 +36,7 @@ function(
             it("Should not allow adding attachments for a new workout", function()
             {
                 $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
-                $body.find("button[data-workoutid=3]").trigger("click"); // 3=run
+                $body.find("[data-workoutid=3]").trigger("click"); // 3=run
 
                 // should have a qv
                 expect($body.find(".workoutQuickView").length).toBe(1);

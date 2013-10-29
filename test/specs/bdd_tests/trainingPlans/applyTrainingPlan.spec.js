@@ -2,14 +2,13 @@ requirejs(
 [
     "moment",
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "app"
+    "testUtils/xhrDataStubs"
 ],
 function(
     moment,
     testHelpers,
-    xhrData,
-    theApp)
+    xhrData
+)
 {
 
     describe("Apply Training Plan", function()
@@ -25,9 +24,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
             });
@@ -121,9 +120,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
@@ -221,9 +220,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
@@ -295,9 +294,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
@@ -370,9 +369,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");

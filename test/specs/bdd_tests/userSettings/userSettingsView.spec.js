@@ -5,7 +5,6 @@ requirejs(
     "TP",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "shared/views/userSettingsView"
 ],
 function(
@@ -13,9 +12,8 @@ function(
     TP,
     testHelpers,
     xhrData,
-    theMarsApp,
     UserSettingsView
-    )
+)
 {
     describe("User Settings View", function()
     {
@@ -40,15 +38,15 @@ function(
 
         it("Should not throw durring lifecycle calls", function()
         {
-            var view = new UserSettingsView({ model: theMarsApp.user });
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
             view.render();
             view.close();
         });
 
         it("Should preserve values when switching tabs", function()
         {
-            theMarsApp.user.set("address", "Original Address");
-            var view = new UserSettingsView({ model: theMarsApp.user });
+            testHelpers.theApp.user.set("address", "Original Address");
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
             view.render();
 
             expect(view.$("input[name=address]").length).toBe(1);
@@ -67,41 +65,41 @@ function(
 
         it("Should apply values to original models on save", function()
         {
-            theMarsApp.user.set("address", "Original Address");
-            var view = new UserSettingsView({ model: theMarsApp.user });
+            testHelpers.theApp.user.set("address", "Original Address");
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
             view.render();
 
             view.$("input[name=address]").val("New Address").trigger("change");
-            expect(theMarsApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
             view.$("button.save").trigger("click");
-            expect(theMarsApp.user.get("address")).toBe("New Address");
+            expect(testHelpers.theApp.user.get("address")).toBe("New Address");
 
             view.close();
         });
 
         it("Should not apply values to original models on cancel", function()
         {
-            theMarsApp.user.set("address", "Original Address");
-            var view = new UserSettingsView({ model: theMarsApp.user });
+            testHelpers.theApp.user.set("address", "Original Address");
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
             view.render();
 
             view.$("input[name=address]").val("New Address").trigger("change");
-            expect(theMarsApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
             view.$("button.cancel").trigger("click");
-            expect(theMarsApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
 
         });
 
         it("Should not apply values to original models on switching tabs", function()
         {
-            theMarsApp.user.set("address", "Original Address");
-            var view = new UserSettingsView({ model: theMarsApp.user });
+            testHelpers.theApp.user.set("address", "Original Address");
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
             view.render();
 
             view.$("input[name=address]").val("New Address").trigger("change");
             view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
-            expect(theMarsApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
         });
 
     });

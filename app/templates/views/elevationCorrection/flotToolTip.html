@@ -1,17 +1,13 @@
 ﻿{{#hoverBox this right}}
-<div class="details elevationcorrection">
+<div class="details elevationcorrection{{#if powerSeriesEnabled}} withPower{{/if}}">
     
     {{#each series}}
 
         <div class="{{label}}{{#if current}} current{{/if}}">
-        {{#if this.current}}
-        {{/if}}
         
         <label class="title">{{this.label}}:</label>
         <label class="value">{{this.value}}</label> <label class="units">{{getUnitsLabel "elevation"}}</label>
         
-        {{#if this.current}}
-        {{/if}}
         </div>
   
     {{/each}}

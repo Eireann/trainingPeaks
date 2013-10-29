@@ -5,7 +5,6 @@ requirejs(
     "jquery",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "app",
     "views/dashboard/chartUtils",
     "testUtils/sharedSpecs/sharedChartSpecs"
 ],
@@ -14,7 +13,6 @@ function(
     $,
     testHelpers,
     xhrData,
-    theMarsApp,
     chartUtils,
     SharedChartSpecs
     )
@@ -61,9 +59,9 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
-                $mainRegion = theMarsApp.mainRegion.$el;
-                theMarsApp.router.navigate("dashboard", true);
+                testHelpers.theApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("dashboard", true);
             });
 
             afterEach(function()
@@ -88,7 +86,7 @@ function(
 
                 it("Should open the settings tomahawk", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     expect($body.find(".dashboardChartSettings").length).toBe(0);
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     expect($body.find(".timeInZonesChartSettings").length).toBe(1);
@@ -96,7 +94,7 @@ function(
 
                 it("Should have workout type checkboxes in the settings tomahawk", function()
                 {
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox]").length).not.toBe(0);
                 });
@@ -105,7 +103,7 @@ function(
                 {
 
                     // open settings, uncheck 'all workout types', and check swim
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     if($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked"))
                     {
@@ -118,8 +116,8 @@ function(
 
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked")).toBe(false);
-                    expect(theMarsApp.user.getDashboardSettings().get("pods.0.workoutTypeIds").length).toBe(1);
-                    expect(theMarsApp.user.getDashboardSettings().get("pods.0.workoutTypeIds.0")).toEqual(1);
+                    expect(testHelpers.theApp.user.getDashboardSettings().get("pods.0.workoutTypeIds").length).toBe(1);
+                    expect(testHelpers.theApp.user.getDashboardSettings().get("pods.0.workoutTypeIds.0")).toEqual(1);
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(true);
 
                 });
@@ -128,7 +126,7 @@ function(
                 {
                     testHelpers.clearRequests();
                     // open settings, uncheck 'all workout types', and check swim
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     if($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked"))
                     {
@@ -145,7 +143,7 @@ function(
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("Swim");
 
                     // open settings, uncheck 'all workout types', and check swim
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     if($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked"))
                     {
@@ -162,7 +160,7 @@ function(
                 {
                     testHelpers.clearRequests();
                     // open settings, uncheck 'all workout types', and check swim
-                    var $body = theMarsApp.getBodyElement();
+                    var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     if($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked"))
                     {
@@ -217,9 +215,9 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
-                $mainRegion = theMarsApp.mainRegion.$el;
-                theMarsApp.router.navigate("dashboard", true);
+                testHelpers.theApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("dashboard", true);
             });
 
             afterEach(function()

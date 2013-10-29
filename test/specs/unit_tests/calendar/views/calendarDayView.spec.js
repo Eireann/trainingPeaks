@@ -3,6 +3,7 @@ requirejs(
 [
     "moment",
     "TP",
+    "testUtils/testHelpers",
     "models/calendar/calendarDay",
     "models/workoutModel",
     "views/calendar/workout/calendarWorkoutView",
@@ -11,6 +12,7 @@ requirejs(
 function(
     moment,
     TP,
+    testHelpers,
     CalendarDayModel,
     WorkoutModel,
     CalendarWorkoutView,

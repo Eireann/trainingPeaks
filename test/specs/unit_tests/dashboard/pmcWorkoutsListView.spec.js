@@ -4,7 +4,7 @@ requirejs(
     "jquery",
     "moment",
     "TP",
-    "app",
+    "testUtils/testHelpers",
     "dashboard/views/pmcWorkoutsListView",
     "models/workoutsCollection"
 ],
@@ -12,7 +12,7 @@ function(
     $,
     moment,
     TP,
-    theMarsApp,
+    testHelpers,
     PmcWorkoutsListView,
     WorkoutsCollection
     )

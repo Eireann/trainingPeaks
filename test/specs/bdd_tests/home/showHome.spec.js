@@ -2,13 +2,12 @@
 requirejs(
 [
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "app"
+    "testUtils/xhrDataStubs"
 ],
 function(
     testHelpers,
-    xhrData,
-    theApp)
+    xhrData
+)
 {
 
     xdescribe("Home", function()
@@ -19,7 +18,7 @@ function(
         beforeEach(function()
         {
             testHelpers.startTheApp();
-            $mainRegion = theApp.mainRegion.$el;
+            $mainRegion = testHelpers.theApp.mainRegion.$el;
         });
 
         afterEach(function()
@@ -30,8 +29,8 @@ function(
         it("Should display the home page after login", function()
         {
             testHelpers.submitLogin();
-            expect(theApp.router.getCurrentRoute()).toBe("home");
-            expect(theApp.getCurrentController().cid).toBe(theApp.controllers.homeController.cid);
+            expect(testHelpers.theApp.router.getCurrentRoute()).toBe("home");
+            expect(testHelpers.theApp.getCurrentController().cid).toBe(testHelpers.theApp.controllers.homeController.cid);
             expect($mainRegion.find("#homeContainer").length).toBe(1);
         });
 

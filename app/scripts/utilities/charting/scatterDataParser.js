@@ -1,11 +1,9 @@
 define(
 [
-    "utilities/charting/chartColors",
     "utilities/charting/dataParser",
-    "utilities/charting/findIndexByMsOffset",
-    "utilities/conversion/conversion"
+    "utilities/charting/dataParserUtils"
 ],
-function(chartColors, DataParser, findIndexByMsOffset, conversion)
+function(DataParser, DataParserUtils)
 {
 
     var ScatterDataParser = {};

@@ -7,9 +7,9 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
 {
     var defaultChannelOrder =
     [
+        "Elevation",
         "Cadence",
         "HeartRate",
-        "Elevation",
         "Power",
         "RightPower",
         "Speed",
@@ -17,7 +17,6 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
         "Torque",
         "Temperature"
     ];
-
 
     var DataParser = function ()
     {
@@ -56,6 +55,11 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
         },
 
 
+        resetLatLonArray: function()
+        {
+            this.latLonArray = null;
+        },
+
         getLatLonArray: function()
         {
             // TODO: probably delete completely from here, not necessarily needed in all children
@@ -69,11 +73,6 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
             var sampleEndIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, endMsOffset);
 
             return generateLatLonFromDataBetweenIndexes.call(this, this.dataByAxisAndChannel[this.xaxis], sampleStartIndex, sampleEndIndex);
-        },
-
-        getYAxes: function(series)
-        {
-            return generateYAxes.call(this, series);
         },
 
         getChannelMask: function()

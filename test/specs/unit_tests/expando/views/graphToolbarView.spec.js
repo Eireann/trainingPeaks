@@ -3,10 +3,9 @@
     "jquery",
     "TP",
     "moment",
-    "app",
     "views/expando/graphToolbarView"
 ],
-function($, TP, moment, theMarsApp, GraphToolbarView)
+function($, TP, moment, GraphToolbarView)
 {
     describe("GraphToolbarView", function()
     {

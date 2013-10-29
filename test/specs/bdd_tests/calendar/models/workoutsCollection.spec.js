@@ -4,14 +4,12 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "moment",
-    "app",
     "models/workoutsCollection"
 ],
 function(
     testHelpers,
     xhrData,
     moment,
-    theMarsApp,
     WorkoutsCollection
     )
 {
@@ -41,12 +39,12 @@ function(
                 var endDate = moment().add("days", 30);
                 var dateFormat = "YYYY-MM-DD";
                 var athleteId = 1234;
-                var expectedUrl = "/fitness/v1/athletes/" + theMarsApp.user.get("athletes.0.athleteId") + "/workouts/" +
+                var expectedUrl = "/fitness/v1/athletes/" + testHelpers.theApp.user.get("athletes.0.athleteId") + "/workouts/" +
                     startDate.format(dateFormat) + "/" +
                     endDate.format(dateFormat);
                 var workouts = new WorkoutsCollection([], { startDate: startDate, endDate: endDate });
                 expect(workouts.url()).toContain(expectedUrl);
-                expect(workouts.url()).toContain(theMarsApp.apiRoot);
+                expect(workouts.url()).toContain(testHelpers.theApp.apiRoot);
             });
         });
 

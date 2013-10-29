@@ -3,14 +3,12 @@ requirejs(
 [
     "moment",
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "app"
+    "testUtils/xhrDataStubs"
 ],
 function(
     moment,
     testHelpers,
-    xhrData,
-    theApp
+    xhrData
 )
 {
 
@@ -26,9 +24,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
             });
 
             afterEach(function()
@@ -38,14 +36,14 @@ function(
 
             it("Should display a 'Metrics' button in the new item view", function()
             {
-                // no run button yet
-                expect($body.find(".newItemView button[data]-metric").length).toBe(0);
+                // no metric button yet
+                expect($body.find(".newItemView [data-metric]").length).toBe(0);
 
                 // click add workout
                 $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
 
                 // now button shows up in new item view
-                expect($body.find(".newItemView button[data-metric]").length).toBe(1);
+                expect($body.find(".newItemView [data-metric]").length).toBe(1);
             });
 
             it("Should display the quick view after clicking the metrics button in new item view", function()
@@ -57,7 +55,7 @@ function(
                 $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
 
                 // add run
-                $body.find("button[data-metric]").trigger("click"); // 3=run
+                $body.find("[data-metric]").trigger("click"); // 3=run
 
                 // should have a qv
                 expect($body.find(".metricQuickView").length).toBe(1);
@@ -75,9 +73,9 @@ function(
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                $mainRegion = theApp.mainRegion.$el;
-                $body = theApp.getBodyElement();
-                theApp.router.navigate("calendar", true);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                $body = testHelpers.theApp.getBodyElement();
+                testHelpers.theApp.router.navigate("calendar", true);
 
                 metric = {
                     id: 1,

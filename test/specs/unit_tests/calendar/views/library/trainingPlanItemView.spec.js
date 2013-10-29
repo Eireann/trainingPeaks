@@ -2,10 +2,9 @@
 requirejs(
 [
     "TP",
-    "app",
     "views/calendar/library/trainingPlanItemView"
 ],
-function(TP, theMarsApp, TrainingPlanItemView)
+function(TP, TrainingPlanItemView)
 {
     describe("Training Plan Item View", function()
     {

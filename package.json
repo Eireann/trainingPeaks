@@ -39,7 +39,7 @@
     "tmp": "~0.0.21",
     "plato": "~0.6.2",
     "jsdom": "~0.8.6",
-    "requirejs": "~2.1.8",
+    "requirejs": "~2.1.9",
     "underscore": "~1.5.2",
     "findup-sync": "~0.1.2",
     "jasmine-node": "~1.11.0",

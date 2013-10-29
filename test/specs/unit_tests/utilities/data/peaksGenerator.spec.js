@@ -1,12 +1,11 @@
 ﻿requirejs(
 [
     "jquery",
-    "app",
     "TP",
     "underscore",
     "utilities/data/peaksGenerator"
 ],
-function($, theMarsApp, TP, _, ThePeaksGenerator)
+function($, TP, _, ThePeaksGenerator)
 {
     describe("peaksGenarator", function ()
     {

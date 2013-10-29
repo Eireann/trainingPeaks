@@ -1,22 +1,19 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
     "jquery",
     "TP",
     "moment",
-    "app",
     "framework/dataManager",
     "controllers/calendar/CalendarController",
     "views/calendar/calendarHeaderView",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs"
 ],
-function($, TP, moment, theMarsApp, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
+function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
 {
 
     describe("CalendarHeaderView ", function()
     {
-
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);

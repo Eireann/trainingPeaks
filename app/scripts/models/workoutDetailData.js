@@ -260,7 +260,6 @@ function (
 
         _afterSaveEdits: function()
         {
-            this.set("flatSamples", null, {silent: true});
             this.fetch();
             this.trigger("after:saveEdits");
         },
@@ -292,11 +291,6 @@ function (
             }
 
             var ranges = this.get(key);
-
-            if(rangeType !== "laps")
-            {
-                ranges = this._processPeaks(ranges, rangeType);
-            }
 
             return this._augmentRanges(ranges, rangeType);
 
@@ -336,6 +330,12 @@ function (
                 hasLoaded: rangeType === "laps",
                 isLap: rangeType === "laps"
             };
+
+            if(rangeType !== "laps")
+            {
+                ranges = this._processPeaks(ranges, rangeType);
+            }
+
             return _.map(ranges, function(range)
             {
                 return _.extend({}, defaults, range);
@@ -475,6 +475,24 @@ function (
             }
         },
 
+        _checkForExpensiveChanges: function(keyToSet)
+        {
+            var potentiallyExpensiveChanges = ["flatSamples", "lapsStats", "originalLapsStats"];
+
+            // whenever we set flatsamples on this model, if it already has a flatsamples, 
+            // the _.isEqual comparison in backbone can be extremely slow
+            // assume that if we are setting flat samples, we want the change event, 
+            // so just set it to null for fast easy comparison
+            _.each(potentiallyExpensiveChanges, function(expensiveChange)
+            {
+                if((keyToSet === expensiveChange || _.isObject(keyToSet) && keyToSet.hasOwnProperty(expensiveChange)) && this.attributes[expensiveChange] !== null)
+                {
+                    this.attributes[expensiveChange] = null;
+                }
+            }, this);
+
+        },
+
         set: function(key, value, options)
         {
             if(this._isInChangeBatch())
@@ -483,6 +501,7 @@ function (
             }
             else
             {
+                this._checkForExpensiveChanges(key);
                 return this.constructor.__super__.set.call(this, key, value, options);
             }
         },

@@ -71,18 +71,18 @@ function(
             });
         },
 
-        fetch: function()
+        fetch: function(options)
         {
             var self = this,
             superFetch = function()
             {
-                var options =
+                options = _.extend(options,
                 {
                     errorHandlers:
                     {
                         402: _.bind(self.onUserFetchFail, self)
                     }
-                };
+                });
 
                 var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
                 ajaxFetch.done(function()
@@ -95,33 +95,36 @@ function(
             // If the user is saved in localStorage, immediately set that data
             // to this model and return a resolved deferred.
             // Then do the actual AJAX fetch
-            var localStorageUser = localStorage.getItem('app_user'),
-                returnDeferred;
-            if (localStorageUser)
+            var cachedUserData = localStorage.getItem('app_user');
+
+            // Even if we have a cached user we want to update the data, we just may end up not waiting for it.
+            var promise = superFetch();
+
+            if(cachedUserData)
             {
-                returnDeferred = superFetch();
                 try
                 {
-                    var jsonLocalStorageUser = JSON.parse(localStorageUser);
-
-                    this.set(jsonLocalStorageUser);
-
-                    this.populateUserModels(jsonLocalStorageUser);
-
-                    returnDeferred = $.Deferred().resolve();
+                    var cachedUser = JSON.parse(cachedUserData);
+                    if(options && options.user && cachedUser.userName !== options.user)
+                    {
+                        // Our cache is for the wrong user, blow it away.
+                        localStorage.removeItem('app_user');
+                    }
+                    else
+                    {
+                        // Pre-populate the user, and don't wait for the current data before loading the app
+                        this.set(cachedUser);
+                        this.populateUserModels(cachedUser);
+                        promise = $.Deferred().resolve().promise();
+                    }
                 }
                 catch(e)
                 {
-                    // if the user refreshes the page while the user is being written to localStorage, it will break the next time you try to read that key.
-                    // Here, we return superFetch() deferred because parsing localStorage didn't work
+                    // We were unable to use the cached user, maybe the JSON was invalid, just wait <D-r>
                 }
-                
-                return returnDeferred;
             }
-            else
-            {
-                return superFetch();
-            }
+
+            return promise;
         },
 
         initialize: function(options)

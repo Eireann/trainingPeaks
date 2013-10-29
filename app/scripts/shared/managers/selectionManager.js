@@ -4,7 +4,9 @@ define(
     "TP",
     "shared/misc/selection",
     "shared/misc/activitySelection",
-    "shared/misc/calendarDaySelection"
+    "shared/misc/calendarDaySelection",
+    "views/userConfirmationView",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
     _,
@@ -12,7 +14,9 @@ function(
     Selection,
     // Ensure Selection Classes get loaded
     ActivitySelection,
-    CalendarDaySelection
+    CalendarDaySelection,
+    UserConfirmationView,
+    deleteConfirmationTemplate
 )
 {
 
@@ -24,7 +28,7 @@ function(
 
         var self = this;
 
-        $("body").mousedown(function(event)
+        theMarsApp.getBodyElement().mousedown(function(event)
         {
             var isPrevented = event.isDefaultPrevented();
             var isInModal = $(event.target).closest(".modal, .hoverBox, .modalOverlay").length > 0;
@@ -34,7 +38,7 @@ function(
             }
         });
 
-        $("body").keydown(function(event)
+        theMarsApp.getBodyElement().keydown(function(event)
         {
 
             if(event.isDefaultPrevented())
@@ -60,7 +64,9 @@ function(
             }
             else if(event.which === 46) // Delete
             {
-                self.execute("delete");
+                var dialog = new UserConfirmationView({ template: deleteConfirmationTemplate });
+                dialog.render();
+                dialog.on("userConfirmed", _.bind(self.execute, self, "delete"));
             }
 
         });
@@ -122,18 +128,6 @@ function(
                 this.selection.deactivate();
                 this.selection = null;
             }
-        },
-
-        pushSelection: function()
-        {
-            this.stack.push(this.selection);
-            this.selection = null;
-        },
-
-        popSelection: function()
-        {
-            this.clearSelection();
-            this.selection = this.stack.pop();
         },
 
         execute: function(action, options, selection)

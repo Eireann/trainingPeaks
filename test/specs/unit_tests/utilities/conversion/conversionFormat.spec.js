@@ -1,12 +1,12 @@
 requirejs(
 [
-    "app",
+    "testUtils/testHelpers",
     "TP",
     "utilities/conversion/conversion",
     "utilities/conversion/convertToModelUnits",
     "utilities/datetime/datetime"
 ],
-function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
+function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 {
 
     var describeFormat = function(methodName, testValues)
@@ -29,7 +29,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatDuration", [
@@ -67,7 +67,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatDistance", [
@@ -108,7 +108,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatSpeed", [
@@ -153,7 +153,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatPace", [
@@ -543,7 +543,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatTorque", [
@@ -588,7 +588,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatTemperature", [
@@ -641,7 +641,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatEfficiencyFactor", [
@@ -674,7 +674,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatEfficiencyFactor", [
@@ -707,7 +707,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             beforeEach(function()
             {
                 // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             describeFormat("formatWeight", [

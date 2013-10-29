@@ -1,17 +1,20 @@
 define(
 [
     "utilities/charting/chartColors",
+    "utilities/charting/dataParserUtils",
     "utilities/conversion/conversion",
     "utilities/charting/findOrderedArrayIndexByValue"
 ],
-function(chartColors, conversion, findOrderedArrayIndexByValue)
+function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
 {
     var FlotUtils = {
         generateYAxes: function(series, workoutTypeValueId, data)
         {
             var yaxes = [];
-            var countdown = (series.length / 2).toFixed(0);
             var axisIndex = 1;
+
+            var hasRightPower = DataParserUtils.findChannelInSeriesArray(series, "RightPower") ? true : false;
+
             _.each(series, function(s)
             {
                 var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,12,13], workoutTypeValueId);
@@ -19,12 +22,16 @@ function(chartColors, conversion, findOrderedArrayIndexByValue)
                     return;
 
                 s.yaxis = axisIndex++;
+                if(s.label !== "Power" || !hasRightPower) // if we have both power and right power, they should share the same y axis
+                {
+                    axisIndex++;
+                }
+
                 var axisOptions =
                 {
                     show: true,
                     label: s.label,
                     min: FlotUtils.getMinimumForAxis(s.label, data),
-                    position: countdown-- > 0 ? "right" : "left",
                     color: "transparent",
                     tickColor: "transparent",
                     font:
@@ -49,6 +56,28 @@ function(chartColors, conversion, findOrderedArrayIndexByValue)
 
                 yaxes.push(axisOptions);
             });
+
+            // right power should share index with power if present
+            var rightPowerAxis = DataParserUtils.findChannelInSeriesArray(yaxes, "RightPower");
+            var powerAxis = DataParserUtils.findChannelInSeriesArray(yaxes, "Power");
+            if(rightPowerAxis && powerAxis)
+            {
+                yaxes = _.without(yaxes, rightPowerAxis);
+            }
+
+            // distribute them on right first then left
+            _.each(yaxes, function(axis, index)
+            {
+                if(index < (yaxes.length / 2))
+                {
+                    axis.position = "right";
+                }
+                else
+                {
+                    axis.position = "left";
+                }
+            });
+
             return yaxes;
         },
 

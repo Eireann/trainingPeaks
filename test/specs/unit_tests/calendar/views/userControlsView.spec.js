@@ -3,11 +3,10 @@ requirejs(
 [ 
     "jquery",
     "backbone",
-    "app",
     "shared/models/userModel",
     "views/userControls/userControlsView"
 ],
-function ($, Backbone, theMarsApp, UserModel, UserControlsView)
+function ($, Backbone, UserModel, UserControlsView)
 {
     describe("UserControls View", function ()
     {

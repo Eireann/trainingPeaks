@@ -4,7 +4,7 @@ requirejs(
     "underscore",
     "jquery",
     "backbone",
-    "app",
+    "testUtils/testHelpers",
     "TP",
     "shared/models/metricModel",
     "models/workoutModel",
@@ -14,7 +14,7 @@ function (
           _,
           $,
           Backbone,
-          app,
+          testHelpers,
           TP,
           MetricModel,
           WorkoutModel,
@@ -93,7 +93,7 @@ function (
 
                 var expectedAjaxOptions = 
                 {
-                    url: app.apiRoot + "/baseactivity/v1/athletes/" + athleteId + "/commands/deleteactivities",
+                    url: testHelpers.theApp.apiRoot + "/baseactivity/v1/athletes/" + athleteId + "/commands/deleteactivities",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(postData)
