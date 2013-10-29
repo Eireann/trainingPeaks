@@ -25,21 +25,57 @@
     }
 
     .QVBody {
-        padding: 20px 30px;
+        padding: 20px 12px;
         position: relative;
 
         .metricQVItem {
-            width:50%;
-            float:left;
+            width: 50%;
+            float: left;
             min-height: 30px;
 
+            // Blood Pressure - 2 fields
+            &.metricType-1 {
+                input[type="text"] {
+                    width:79px;
+                }
+            }
+
+            // Insulin - 2 fields
+            &.metricType-45 {
+                input[type="text"] {
+                    width:70px;
+                }
+            }
+
+            &.metricType-12 {
+                clear: left;
+                width: 100%;
+                margin-top: 7px;
+
+                &:before {
+                    border-top: 1px solid $TPGrey12;
+                    width: 495px;
+                    margin-left: 115px;
+                    content:"";
+                    height:1px;
+                    display:block;
+                    margin-bottom:15px;
+                }
+
+                textarea {
+                    width: 497px;
+                    max-width: 497px;
+                    min-height: 57px;
+                }
+            }
+
             .metricLabel {
-                width:115px;
+                width: 110px;
                 display: inline-block;
                 text-align: right;
                 font-size: $fontSizeSmaller;
-                font-family:$fontFamilyRegular;
-                color:$TPGrey3;
+                font-family: $fontFamilyRegular;
+                color: $TPGrey3;
 
                 &.select {
                     line-height: 22px;
@@ -63,36 +99,33 @@
 
             .metricValue {
                 display:inline-block;
-                // width:84px;
-                // height:22px;
-                text-align: center;
                 font-family:$fontFamilyRegular;
                 font-size:$fontSizeSmall;
                 padding:4px 0;
                 color:$TPGrey3;
-                // border:1px solid $TPGrey2;
             }
 
-            input {
-                // width:84px;
-                width:60px;
-                height:22px;
+            input[type="text"] {
+                width: 170px;
+                height: 22px;
                 display: inline-block;
-                margin:0;
+                margin: 0;
+                text-align: left;            
             }
 
-            select, .selectBox {
-                width:175px;
-                margin:0;
+            select, 
+            .selectBox {
+                width: 175px;
+                margin: 0;
                 display: inline-block;
                 vertical-align: top;
             }
 
             textarea {
-                width:175px;
-                max-width:175px;
+                width: 170px;
+                max-width: 170px;
                 display: inline-block;
-                margin:0;
+                margin: 0;
                 vertical-align: top;
             }
 

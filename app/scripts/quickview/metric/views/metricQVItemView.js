@@ -15,7 +15,10 @@ function(
 
     var MetricQVItemView = TP.ItemView.extend({
 
-        className: "metricQVItem",
+        className: function()
+        {
+            return "metricQVItem metricType-" + this.model.get("type");
+        },
 
         template:
         {
