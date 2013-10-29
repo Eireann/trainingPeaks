@@ -8,7 +8,7 @@ define(
 function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
 {
     var FlotUtils = {
-        generateYAxes: function(series, workoutTypeValueId, data)
+        generateYAxes: function(series, workoutTypeValueId, data, elevationInfo)
         {
             var yaxes = [];
             var axisIndex = 1;
@@ -31,7 +31,7 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                 {
                     show: true,
                     label: s.label,
-                    min: FlotUtils.getMinimumForAxis(s.label, data),
+                    min: FlotUtils.getMinimumForAxis(s.label, data, elevationInfo),
                     color: "transparent",
                     tickColor: "transparent",
                     font:
@@ -81,13 +81,13 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             return yaxes;
         },
 
-        getMinimumForAxis: function(series, data)
+        getMinimumForAxis: function(series, data, elevationInfo)
         {
             switch(series)
             {
 
                 case "Elevation":
-                    return this.getElevationInfo(data).min;
+                    return this.getElevationInfo(data, elevationInfo).min;
 
                 case "Temperature":
                     return this.getTemperatureMinimum(data);
@@ -97,23 +97,23 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             }
         },
 
-        getElevationInfo: function(data, x1, x2)
+        getElevationInfo: function(data, elevationInfo, x1, x2)
         {
             if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
                 return getElevationInfoOnRange(data, x1, x2);
 
             return {
-                min: this.minElevation,
-                isAllNegative: this.elevationIsAllNegative
+                min: elevationInfo.min,
+                isAllNegative: elevationInfo.isAllNegative
             };
         },
 
-        getTemperatureMinimum: function(data, x1, x2)
+        getTemperatureMinimum: function(data, dataParser, x1, x2)
         {
             if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                return getTemperatureMinimumOnRange(data, x1, x2);
+                return getTemperatureMinimumOnRange(data, dataParser, x1, x2);
 
-            return this.minTemperature;
+            return dataParser.minTemperature;
         },
 
         getElevationInfoOnRange: function(dataByChannel, x1, x2)
