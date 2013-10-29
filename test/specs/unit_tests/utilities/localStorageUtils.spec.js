@@ -93,6 +93,27 @@ function(
                 expect(localStorage.removeItem).toHaveBeenCalledWith(prefix + "quota");
             });
 
+            it("Should fail silently on repeated QuotaExceededError, in case user's local storage is disabled", function()
+            {
+                
+                spyOn(localStorage, "setItem").andCallFake(function(key, value)
+                {
+                    var error = new Error("Error: An attempt was made to add something to storage that exceeded the quota");
+                    error.code = 22;
+                    error.name = "QuotaExceededError";
+                    doThrow = false;
+                    throw error;
+                });
+
+                function setItem() {
+                    localStorageUtils.setItem("quota", "will be exceeded");
+                }
+
+                expect(setItem).not.toThrow();
+                expect(localStorageUtils.getItem("quota")).toBeNull();
+                expect(localStorage.setItem.calls.length).toEqual(2);
+            });
+
             it("Should re-throw any other errors", function()
             {
                 spyOn(localStorage, "setItem").andCallFake(function()

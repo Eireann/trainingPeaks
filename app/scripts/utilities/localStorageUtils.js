@@ -26,7 +26,7 @@ function(_)
 
     return {
 
-        setItem: function(key, value)
+        setItem: function(key, value, isRetry)
         {
             key = prefixKey(key);
             if(!_.isString(value))
@@ -36,13 +36,16 @@ function(_)
 
             try
             {
-                return localStorage.setItem(key, value);
+                localStorage.setItem(key, value);
             } catch (err)
             {
                 if(err.code === 22 || err.name === "QuotaExceededError")
                 {
                     this.clearStorage();
-                    return localStorage.setItem(key, value);
+                    if(!isRetry)
+                    {
+                        this.setItem(key, value, true);
+                    }
                 }
                 else
                 {
