@@ -35,6 +35,7 @@ function(
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
+            this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this.render, this));
         },
         
         events:
