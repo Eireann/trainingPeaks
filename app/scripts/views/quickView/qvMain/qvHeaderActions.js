@@ -13,6 +13,7 @@
     "views/userMessageView",
     "shared/utilities/calendarUtility",
     "utilities/workout/workoutTypes",
+    "expando/views/addExpandoPodView",
     "hbs!templates/views/userMessage/saveWorkoutBeforeAttachment"
 ],
 function (
@@ -29,6 +30,7 @@ function (
     UserMessageView,
     CalendarUtility,
     workoutType,
+    AddExpandoPodView,
     saveWorkoutBeforeAttachmentTemplate
 )
 {
@@ -47,7 +49,8 @@ function (
             "click button#options": "onOptionsClicked",
             "click button#comment": "onCommentsClicked",
             "click .expandedViewsButtons .view": notYetImplemented,
-            "click .charts button": notYetImplemented
+            "click .charts .addChart": "_onAddChartClicked",
+            "click .charts .setLayout": notYetImplemented
         },
 
         headerUi:
@@ -271,6 +274,20 @@ function (
                 $self.text($self.val());
             });
             window.print();
+        },
+
+        _onAddChartClicked: function(event)
+        {
+
+            var view = new AddExpandoPodView();
+            view.render();
+            $("body").append(view.el);
+            view.$("hoverbox").addClass("leftarrow");
+
+            console.log(event.target, view.el);
+
+            view.position("right", $(event.target));
+
         }
 
     };
