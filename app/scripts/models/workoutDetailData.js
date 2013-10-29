@@ -292,11 +292,6 @@ function (
 
             var ranges = this.get(key);
 
-            if(rangeType !== "laps")
-            {
-                ranges = this._processPeaks(ranges, rangeType);
-            }
-
             return this._augmentRanges(ranges, rangeType);
 
         },
@@ -335,6 +330,12 @@ function (
                 hasLoaded: rangeType === "laps",
                 isLap: rangeType === "laps"
             };
+
+            if(rangeType !== "laps")
+            {
+                ranges = this._processPeaks(ranges, rangeType);
+            }
+
             return _.map(ranges, function(range)
             {
                 return _.extend({}, defaults, range);
