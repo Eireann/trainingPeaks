@@ -25,18 +25,18 @@
     }
 
     .QVBody {
-        padding: 20px 30px;
+        padding: 20px 12px;
         position: relative;
 
         .metricQVItem {
-            // width: 50%;
-            width: 360px;
+            width: 50%;
+            // width: 360px;
             float: left;
-            clear: left;
+            // clear: left;
             min-height: 30px;
 
             .metricLabel {
-                width: 115px;
+                width: 110px;
                 display: inline-block;
                 text-align: right;
                 font-size: $fontSizeSmaller;
@@ -84,7 +84,7 @@
                 text-align: left;
 
                 &:not(:first-of-type) {
-                    margin:7px 0 7px 119px;
+                    margin:7px 0 7px 114px;
                 }
             }
 
