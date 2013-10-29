@@ -87,92 +87,15 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             {
 
                 case "Elevation":
-                    return this.getElevationInfo(data, elevationInfo).min;
+                    return DataParserUtils.getElevationInfo(data, elevationInfo).min;
 
                 case "Temperature":
-                    return this.getTemperatureMinimum(data);
+                    return DataParserUtils.getTemperatureMinimum(data);
 
                 default:
                     return 0;
             }
-        },
-
-        getElevationInfo: function(data, elevationInfo, x1, x2)
-        {
-            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                return getElevationInfoOnRange(data, x1, x2);
-
-            return {
-                min: elevationInfo.min,
-                isAllNegative: elevationInfo.isAllNegative
-            };
-        },
-
-        getTemperatureMinimum: function(data, dataParser, x1, x2)
-        {
-            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                return getTemperatureMinimumOnRange(data, dataParser, x1, x2);
-
-            return dataParser.minTemperature;
-        },
-
-        getElevationInfoOnRange: function(dataByChannel, x1, x2)
-        {
-            var elevationIsAllNegative = true;
-            var minElevation = 10000;
-
-            if (_.has(dataByChannel, "Elevation"))
-            {
-                var startIdx = 0;
-                var endIdx = dataByChannel["Elevation"].length - 1; //this.flatSamples.msOffsetsOfSamples.length - 1;
-
-                if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                {
-                    startIdx = findIndexByXAxisOffset.call(this, x1);
-                    endIdx = findIndexByXAxisOffset.call(this, x2);
-                }
-
-                for(startIdx; startIdx <= endIdx; startIdx++)
-                {
-                    var value = dataByChannel["Elevation"][startIdx][1];
-                    elevationIsAllNegative = elevationIsAllNegative && (value === null ? true : value < 0);
-                    value = value === null ? 999999999999999 : value;
-                    if (value < minElevation)
-                        minElevation = value;
-                }
-            }
-
-            return {
-                min: minElevation,
-                isAllNegative: elevationIsAllNegative
-            };
-        },
-
-        getTemperatureMinimumOnRange: function(dataByChannel, x1, x2)
-        {
-            var minTemperature = 0;
-
-            if (_.has(dataByChannel, "Temperature"))
-            {
-                var startIdx = 0;
-                var endIdx = dataByChannel["Temperature"].length - 1; //this.flatSamples.msOffsetsOfSamples.length - 1;
-
-                if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                {
-                    startIdx = findIndexByXAxisOffset.call(this, x1);
-                    endIdx = findIndexByXAxisOffset.call(this, x2);
-                }
-
-                for(startIdx; startIdx <= endIdx; startIdx++)
-                {
-                    var value = dataByChannel["Temperature"][startIdx][1];
-                    if (value !== null && value < minTemperature)
-                        minTemperature = value;
-                }
-            }
-
-            return minTemperature;
-        },
+        }
 
     };
 

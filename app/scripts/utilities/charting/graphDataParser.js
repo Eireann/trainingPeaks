@@ -20,9 +20,9 @@ function(chartColors, DataParser, DataParserUtils, FlotUtils)
             this.dataByAxisAndChannel = GraphDataParser.parseDataByAxisAndChannel(flatSamples, this._channelMask, this.xAxisDistanceValues);
 
             // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-            this.elevationInfo = FlotUtils.getElevationInfoOnRange(this.dataByAxisAndChannel[this.xaxis]);
+            this.elevationInfo = DataParserUtils.getElevationInfoOnRange(this.dataByAxisAndChannel[this.xaxis]);
 
-            this.minTemperature = FlotUtils.getTemperatureMinimumOnRange(this.dataByAxisAndChannel[this.xaxis]);
+            this.minTemperature = DataParserUtils.getTemperatureMinimumOnRange(this.dataByAxisAndChannel[this.xaxis]);
 
             if (this.dataByAxisAndChannel && this.dataByAxisAndChannel[this.xaxis] && this.dataByAxisAndChannel[this.xaxis].Latitude && this.dataByAxisAndChannel[this.xaxis].Longitude)
                 this.hasLatLongData = true;
