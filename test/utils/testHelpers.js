@@ -226,6 +226,8 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
         }
     };
 
+    testHelpers.theApp.start();
+
     return testHelpers;
 
 });

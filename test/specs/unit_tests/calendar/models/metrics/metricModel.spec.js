@@ -68,6 +68,15 @@ function(
                 testHelpers.removeFakeAjax();
             });
 
+            it("should correctly handle moving from 31st to month with only 30 days", function()
+            {
+                metric.set("timeStamp", "2013-10-31T14:12:10");
+                metric.moveToDay("2013-11-01");
+                testHelpers.resolveRequest("PUT", "", {});
+                expect(metric.getCalendarDay()).toEqual("2013-11-01");
+                expect(metric.get("timeStamp")).toEqual("2013-11-01T14:12:10"); 
+            });
+
             it("Should update timeStamp on success", function()
             {
                 metric.moveToDay(modifiedDate);
