@@ -21,7 +21,7 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                 if (s.label === "Pace")
                     return;
 
-                s.yaxis = axisIndex++;
+                s.yaxis = axisIndex;
                 if(s.label !== "Power" || !hasRightPower) // if we have both power and right power, they should share the same y axis
                 {
                     axisIndex++;
