@@ -13,6 +13,9 @@ function(
     var TomahawkView = TP.ItemView.extend(
     {
 
+        className: "tomahawk",
+        modal: true,
+
         template:
         {
             type: "handlebars",
@@ -25,13 +28,20 @@ function(
             "content": ".tomahawkContent"
         },
 
-        className: "tomahawk",
-        modal: true,
+        events:
+        {
+            "click .closeIcon": "close"
+        },
 
         initialize: function(options)
         {
             this.offset = options.offset;
             this.target = options.target;
+        },
+
+        serializeData: function()
+        {
+            return { hasClose: true };
         },
 
         onRender: function()
