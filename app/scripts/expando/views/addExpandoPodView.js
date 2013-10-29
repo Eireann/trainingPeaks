@@ -12,10 +12,10 @@ function(
     addExpandoPodTemplate
 )
 {
-    var AddExpandoPodView = TomahawkView.extend(
+    var AddExpandoPodView = TP.CompositeView.extend(
     {
 
-        className: "addExpandoPod tomahawk",
+        className: "addExpandoPod",
         template:
         {
             type: "handlebars",
@@ -23,6 +23,8 @@ function(
         }
 
     });
+
+    TomahawkView.wrap(AddExpandoPodView);
 
     return AddExpandoPodView;
 

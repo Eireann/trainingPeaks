@@ -2,19 +2,58 @@ define(
 [
     "underscore",
     "TP",
+    "hbs!shared/templates/tomahawkTemplate"
 ],
 function(
     _,
-    TP
+    TP,
+    tomahawkTemplate
 )
 {
     var TomahawkView = TP.ItemView.extend(
     {
 
+        template:
+        {
+            type: "handlebars",
+            template: tomahawkTemplate
+        },
+
+        ui:
+        {
+            "arrow": ".tomahawkArrow",
+            "content": ".tomahawkContent"
+        },
+
         className: "tomahawk",
         modal: true,
 
-        position: function(offset, target)
+        initialize: function(options)
+        {
+            this.offset = options.offset;
+            this.target = options.target;
+        },
+
+        onRender: function()
+        {
+            this.view = new this.viewClass(_.extend({ el: this.ui.content }, this.options));
+            this.ui.content.addClass(_.result(this.view, "className"));
+
+            if(this.$el.parent().length === 0)
+            {
+                $("body").append(this.$el);
+            }
+
+            this.view.render();
+            this.position();
+        },
+
+        onClose: function()
+        {
+            this.view && this.view.close();
+        },
+
+        position: function()
         {
             var self = this;
             var table =
@@ -49,25 +88,16 @@ function(
                 }
             };
 
-            var options = _.clone(table[offset]);
-            options.of = target;
+            var options = _.clone(table[this.offset]);
+            options.of = this.target;
             options.using = function(style, feedback)
             {
                 self.$el.css(style);
-                console.log(feedback);
 
                 var direction = feedback[options.axis];
 
-                var $arrow = self.$el.find(".tomahawkArrow");
-                if($arrow.length === 0) $arrow = $("<div class='tomahawkArrow'/>");
-
-                $arrow.prependTo(self.$el);
-                $arrow.show();
-
-                $arrow.after("<div class='tomahawkCover'/>");
-
                 // Adjust for change in apparent width when rotated 45 degrees
-                var shift = 5 + (Math.sqrt(2) - 1) * $arrow.width() / 2;
+                var shift = 5 + (Math.sqrt(2) - 1) * self.ui.arrow.width() / 2;
 
                 var table =
                 {
@@ -94,14 +124,22 @@ function(
                 };
 
                 var arrowOptions = _.clone(table[direction]);
-                arrowOptions.of = target;
-                $arrow.position(arrowOptions);
+                arrowOptions.of = self.target;
+                self.ui.arrow.position(arrowOptions);
             }
 
             this.$el.position(options);
         }
 
     });
+
+    TomahawkView.wrap = function(viewClass)
+    {
+        viewClass.Tomahawk = TomahawkView.extend(
+        {
+            viewClass: viewClass
+        });
+    };
 
 
     return TomahawkView;

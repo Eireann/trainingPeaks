@@ -279,15 +279,10 @@ function (
         _onAddChartClicked: function(event)
         {
 
-            var view = new AddExpandoPodView();
-            view.render();
-            $("body").append(view.el);
-            view.$("hoverbox").addClass("leftarrow");
-
-            console.log(event.target, view.el);
-
-            view.position("right", $(event.target));
-
+            var view = new AddExpandoPodView.Tomahawk({
+                offset: "right",
+                target: $(event.target)
+            }).render();
         }
 
     };
