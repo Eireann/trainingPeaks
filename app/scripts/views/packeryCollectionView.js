@@ -256,7 +256,6 @@ function(
                 this.addChildView(this.tmp.model, this.collection, {temporary: true});
                 this.tmp.view = this.children.last();
                 this.tmp.view.$el.addClass("ui-draggable-dragging");
-                console.log(this.tmp.view.el);
 
                 this.tmp.view.$el.css("position", "absolute");
 
