@@ -60,7 +60,10 @@ function(
 
         onClose: function()
         {
-            this.view && this.view.close();
+            if(this.view)
+            {
+                this.view.close();
+            }
         },
 
         position: function()
@@ -136,7 +139,7 @@ function(
                 var arrowOptions = _.clone(table[direction]);
                 arrowOptions.of = self.target;
                 self.ui.arrow.position(arrowOptions);
-            }
+            };
 
             this.$el.position(options);
         }

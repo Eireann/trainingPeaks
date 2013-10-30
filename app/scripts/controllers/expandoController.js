@@ -112,7 +112,8 @@ function(
                     rowHeight: $sizer[0],
                     gutter: 10
                 },
-                resizable: true
+                resizable: { enabled: true },
+                droppable: { enabled: true }
             });
 
             this.layout.$el.addClass("waiting");

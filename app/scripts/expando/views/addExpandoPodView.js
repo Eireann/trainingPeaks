@@ -3,12 +3,16 @@ define(
     "underscore",
     "TP",
     "shared/views/tomahawkView",
+    "expando/views/expandoPodTileView",
+    "expando/models/availableExpandoPodsCollection",
     "hbs!expando/templates/addExpandoPodTemplate"
 ],
 function(
     _,
     TP,
     TomahawkView,
+    ExpandoPodTileView,
+    AvailableExpandoPodsCollection,
     addExpandoPodTemplate
 )
 {
@@ -20,7 +24,16 @@ function(
         {
             type: "handlebars",
             template: addExpandoPodTemplate
-        }
+        },
+
+        events:
+        {
+            "dragstart .podTile": "close"
+        },
+
+        itemView: ExpandoPodTileView,
+
+        collection: new AvailableExpandoPodsCollection()
 
     });
 

@@ -30,8 +30,7 @@ function(
 
         addAllAvailableCharts: function()
         {
-            this.reset([]);
-            this.add([
+            this.set([
             {
                 chartType: 32,
                 name: "Performance Manager"

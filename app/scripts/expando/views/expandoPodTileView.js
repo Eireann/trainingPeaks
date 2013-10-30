@@ -3,21 +3,22 @@ define(
     "TP",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
-    "hbs!templates/views/dashboard/library/chartTileView"
+    "hbs!expando/templates/expandoPodTileTemplate"
 ],
 function(
     TP,
     touchPunch,
     draggable,
-    ChartTileViewTemplate)
+    expandoPodTileTemplate
+)
 {
-    return TP.ItemView.extend(
+    var ExpandoPodTileView = TP.ItemView.extend(
     {
 
         tagName: "div",
         className: function()
         {
-            var className = "chartTile cf chartType-" + this.model.get("chartType");
+            var className = "podTile expandoPodTile cf";
             if(this.model.get("premium"))
             {
                 className += " premium";
@@ -33,16 +34,29 @@ function(
         template:
         {
             type: "handlebars",
-            template: ChartTileViewTemplate
+            template: expandoPodTileTemplate
         },
 
         initialize: function(options)
         {
             if (!this.model)
-                throw "Cannot have a ChartTileView without a model";
+                throw "Cannot have an ExpandoPodTileView without a model";
+        },
 
-            this.model.on("select", this.onItemSelect, this);
-            this.model.on("unselect", this.onItemUnSelect, this);
+        remove: function()
+        {
+            var helper = this.$el.data("ui-draggable").helper;
+            if(helper && helper.is(".ui-draggable-dragging"))
+            {
+                // We need to keep the element in the DOM until the drag finishes
+                var $el = this.$el;
+                $el.hide().appendTo("body");
+                $el.one("dragstop", function() { $el.remove(); });
+
+                // Don't allow the supper remove to remove the stashed element
+                this.$el = $();
+            }
+            ExpandoPodTileView.__super__.remove.call(this);
         },
 
         onRender: function()
@@ -55,17 +69,17 @@ function(
 
         _makeDraggable: function()
         {
+            var self = this;
             this.$el.data(
             {
                 model: this.model
             });
             this.$el.draggable(
             {
-                scope: "packery",
                 helper: "clone",
+                scope: "packery",
                 appendTo: theMarsApp.getBodyElement(),
-                zIndex: 100,
-                containment: "#dashboardWrapper"
+                zIndex: 999
             });
         },
 
@@ -77,18 +91,11 @@ function(
             {
                 theMarsApp.featureAuthorizer.showUpgradeMessage();
             }
-        },
-
-        onItemSelect: function()
-        {
-            this.$el.addClass("selected");
-        },
-
-        onItemUnSelect: function()
-        {
-            this.$el.removeClass("selected");
         }
 
     });
+
+    return ExpandoPodTileView;
+
 });
 
