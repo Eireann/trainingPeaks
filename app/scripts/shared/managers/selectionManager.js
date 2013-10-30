@@ -46,6 +46,19 @@ function(
                 return;
             }
 
+            // don't trigger when a masked modal window is present, but allow modal menus
+            if(theMarsApp.getBodyElement().find(".modalOverlayMask").length)
+            {
+                return;
+            }
+
+            // don't trigger if the keydown event happens in an input
+            var $target = $(event.target);
+            if($target.is("input") || $target.is("textarea"))
+            {
+                return;
+            }  
+
             if(event.ctrlKey || event.metaKey)
             {
                 switch(event.which)
