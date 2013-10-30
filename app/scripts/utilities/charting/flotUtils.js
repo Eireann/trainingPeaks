@@ -79,23 +79,8 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             });
 
             return yaxes;
-        },
-
-        getMinimumForAxis: function(series, data, elevationInfo)
-        {
-            switch(series)
-            {
-
-                case "Elevation":
-                    return DataParserUtils.getElevationInfo(data, elevationInfo).min;
-
-                case "Temperature":
-                    return DataParserUtils.getTemperatureMinimum(data);
-
-                default:
-                    return 0;
-            }
         }
+
 
     };
 

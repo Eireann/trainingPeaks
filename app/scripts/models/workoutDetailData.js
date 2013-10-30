@@ -3,7 +3,8 @@
     "underscore",
     "moment",
     "TP",
-    "utilities/charting/graphDataParser",
+    "utilities/charting/graphData",
+    "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
@@ -13,6 +14,7 @@ function (
     _,
     moment,
     TP,
+    GraphData,
     DataParser,
     WorkoutStatsForRange,
     formatPeakTime,
@@ -32,7 +34,8 @@ function (
 
         initialize: function()
         {
-            this._dataParser = new DataParser();
+            this.graphData = new GraphData();
+            this._dataParser = new DataParser({graphData: this.graphData});
             this.rangeCollections = {};
             this.reset();
             this.on("sync", this.reset, this);
@@ -479,9 +482,9 @@ function (
         {
             var potentiallyExpensiveChanges = ["flatSamples", "lapsStats", "originalLapsStats"];
 
-            // whenever we set flatsamples on this model, if it already has a flatsamples, 
+            // whenever we set flatsamples on this model, if it already has a flatsamples,
             // the _.isEqual comparison in backbone can be extremely slow
-            // assume that if we are setting flat samples, we want the change event, 
+            // assume that if we are setting flat samples, we want the change event,
             // so just set it to null for fast easy comparison
             _.each(potentiallyExpensiveChanges, function(expensiveChange)
             {

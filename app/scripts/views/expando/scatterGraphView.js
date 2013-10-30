@@ -295,66 +295,10 @@ function(
             }
         },
 
-        applyFilter: function(period)
-        {
-            if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSmoothingApplied", "eventLabel": "" });
-
-            this.lastFilterPeriod = period;
-            this.plot.setFilter(period);
-        },
-
-        handlePlotSelected: function()
-        {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
-
-            var plotSelectionFrom = this.plot.getSelection().xaxis.from;
-            var plotSelectionTo = this.plot.getSelection().xaxis.to;
-
-            var startOffsetMs;
-            var endOffsetMs;
-
-            if (this.currentAxis === "time")
-            {
-                startOffsetMs = Math.round(plotSelectionFrom);
-                endOffsetMs = Math.round(plotSelectionTo);
-            }
-            else
-            {
-                startOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionFrom);
-                endOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionTo);
-            }
-
-            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
-            this.stateModel.set("primaryRange", range);
-        },
-
         _onSeriesChanged: function()
         {
             if (!this.plot)
                 return;
-            this.drawPlot();
-        },
-
-        enableTimeAxis: function ()
-        {
-            if (this.currentAxis === "time")
-                return;
-
-            this.currentAxis = "time";
-            this._getDataParser().setXAxis("time");
-            this.drawPlot();
-        },
-
-        enableDistanceAxis: function ()
-        {
-            if (this.currentAxis === "distance")
-                return;
-
-            this.currentAxis = "distance";
-            this._getDataParser().setXAxis("distance");
             this.drawPlot();
         },
 
