@@ -8,7 +8,7 @@ function(SaveWorkoutDetailDataCommand)
     {
         it("Should start with default values", function()
         {
-            var command = new SaveWorkoutDetailDataCommand();
+            var command = new SaveWorkoutDetailDataCommand({},{workoutId: 1, uploadedFileId: 2});
             expect(command.get("lapsStats")).toBe(null);
             expect(command.get("channelCuts")).toBe(null);
             expect(command.get("sampleEdits")).toBe(null);
@@ -22,7 +22,7 @@ function(SaveWorkoutDetailDataCommand)
 
             beforeEach(function()
             {
-                command = new SaveWorkoutDetailDataCommand();
+                command = new SaveWorkoutDetailDataCommand({},{workoutId: 1, uploadedFileId: 2});
                 spyOn(command, "save");
             });
 
