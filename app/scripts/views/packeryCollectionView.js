@@ -255,7 +255,8 @@ function(
                 this.tmp.model = new this.collection.model(ui.draggable.data("model").attributes, this.collection.modelOptions);
                 this.addChildView(this.tmp.model, this.collection, {temporary: true});
                 this.tmp.view = this.children.last();
-                this.tmp.view.$el.addClass("hover");
+                this.tmp.view.$el.addClass("ui-draggable-dragging");
+                console.log(this.tmp.view.el);
 
                 this.tmp.view.$el.css("position", "absolute");
 
@@ -289,7 +290,7 @@ function(
             this.collection.add(this.tmp.view.model);
             this._updatePackerySort();
 
-            this.tmp.view.$el.removeClass("hover"); // TODO: Is this OK or too coupled?
+            this.tmp.view.$el.removeClass("ui-draggable-dragging"); // TODO: Is this OK or too coupled?
             this._setupPackeryItem(this.tmp.view, this);
             this.tmp = {};
         },
