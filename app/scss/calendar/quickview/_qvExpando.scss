@@ -228,11 +228,9 @@
                     padding-right:10px;
                 }
 
-                button
-                {
-                    &.hidden
-                    {
-                        visibility: hidden;
+                button {
+                    &.hidden {
+                        display: none;
                     }
                     
                     font-size: $fontSizeSmall;
@@ -275,6 +273,10 @@
                     &.graphDistanceButton
                     {
                         margin-right: 12px;
+                    }
+
+                    &.graphCutButton {
+                        margin-left: 12px;
                     }
 
                     &.graphDistanceButton,
