@@ -334,6 +334,9 @@
     height: 100%;
     position: absolute;
     z-index: 1;
+
+    // Allow event to fall through to elements bellow selection, works everywhere but IE10
+    pointer-events: none;
 }
 
 .day

@@ -38,6 +38,9 @@ function(
                 }
             });
 
+            // Move notes to end of details
+            details = _.sortBy(details, function(detail) { return detail.type === 12; });
+
             this.collection = new TP.Collection(details,
             {
                 model: TP.DeepModel

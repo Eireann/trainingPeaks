@@ -28,6 +28,22 @@ function(TP)
     
     return TP.Model.extend(
     {
+
+        initialize: function(attributes, options)
+        {
+            if(!options.workoutId)
+            {
+                throw new Error("SaveWorkoutDetailDataCommand requires a workout id");
+            }
+            if(!options.uploadedFileId)
+            {
+                throw new Error("SaveWorkoutDetailDataCommand requires an uploaded file id");
+            }
+
+            this.workoutId = options.workoutId;
+            this.uploadedFileId = options.uploadedFileId;
+        },
+
         defaults:
         {
             lapsStats: null, // complete array of lapsStats with edits
@@ -38,9 +54,16 @@ function(TP)
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-
-            return [theMarsApp.apiRoot, "fitness/v1/athletes", athleteId, "workouts", this.workoutId, "detaildata/edits"].join('/');
+            return [
+                theMarsApp.apiRoot,
+                "fitness/v1/athletes",
+                theMarsApp.user.getCurrentAthleteId(),
+                "workouts",
+                this.workoutId,
+                "detaildata",
+                this.uploadedFileId,
+                "edits"
+            ].join('/');
         },
 
         execute: function()

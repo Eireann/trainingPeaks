@@ -243,7 +243,7 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
 
         _getFileId: function()
         {
-            return _.last(this.workoutModel.get("details").get("workoutDeviceFileInfos")).fileId;
+            return this.workoutModel.get("detailData").get("uploadedFileId");
         },
 
         _getDataParser: function()

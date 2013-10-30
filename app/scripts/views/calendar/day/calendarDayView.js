@@ -54,12 +54,14 @@ function(
 
         itemViewContainer: ".activities",
 
-        initialize: function()
+        initialize: function(options)
         {
             if (theMarsApp)
                 theMarsApp.user.on("change:settings", this.render, this);
 
             this.collection = this.model.itemsCollection;
+
+            this.selectionManager = (options && options.selectionManager) || theMarsApp.selectionManager;
 
             this.on("after:item:added", this.makeItemsDraggable, this);
             this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
@@ -75,12 +77,18 @@ function(
             "mouseenter .dayHeader": "onDayHeaderMouseEnter",
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
-            "mousedown .daySelected": "onDaySelectedClicked",
+            "click .daySelected": "onSelectedClicked",
 
             "click .addWorkout": "onAddWorkoutClicked",
             "mouseup": "onDayClicked",
             "mousedown .daySettings": "daySettingsClicked",
             "click": "onDayTouched"
+        },
+
+        onSelectedClicked: function(event)
+        {
+            // pointer-events: none; should prevent the from being called, but IE10 doesn't support pointer-events
+            this.selectionManager.clearSelection();
         },
 
         onItemSort: function()
@@ -231,9 +239,9 @@ function(
         _doSelect: function(e)
         {
             e.preventDefault();
-            theMarsApp.selectionManager.setSelection(this.model, e);
+            this.selectionManager.setSelection(this.model, e);
 
-            if(theMarsApp.selectionManager.selection.length > 1)
+            if(this.selectionManager.selection.length > 1)
             {
                 var rangeSettingsView = new SelectedRangeSettingsView();
                 rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
