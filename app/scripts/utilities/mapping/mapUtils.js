@@ -53,11 +53,13 @@ function(
             {
                 var gmapLayer = new L.Google('ROADMAP');
                 var gTerrainLayer = new L.Google("TERRAIN");
+                var satelliteLayer = new L.Google("SATELLITE");
 
                 baseMaps =
                 {
                     "Terrain": gTerrainLayer,
                     "Google": gmapLayer,
+                    "Satellite": satelliteLayer,
                     "OSM": osmLayer,
                     "Cloudmade": cloudmadeLayer,
                     "Leaflet": leafletLayer
