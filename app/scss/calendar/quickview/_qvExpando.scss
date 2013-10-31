@@ -966,7 +966,8 @@
         height: 100%;
 
         overflow: auto;
-
+        @include nice-scrollbar;
+        
         &.invisible
         {
             visibility:hidden;
