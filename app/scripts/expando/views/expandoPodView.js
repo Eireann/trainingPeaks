@@ -30,6 +30,11 @@ function(
             template: expandoPodTemplate
         },
 
+        events:
+        {
+            "click .close": "_removePod",
+        },
+
         initialize: function(options)
         {
             this.childView = options.childView;
@@ -80,8 +85,12 @@ function(
         _onChildHasNoData: function()
         {
             this.$el.addClass("noData");
-        }
+        },
 
+        _removePod: function()
+        {
+            this.model.destroy();
+        }
 
     });
 

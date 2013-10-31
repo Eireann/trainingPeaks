@@ -32,6 +32,7 @@ function(
         },
 
         itemView: ExpandoPodTileView,
+        itemViewContainer: ".availablePods",
 
         collection: new AvailableExpandoPodsCollection()
 

@@ -18,7 +18,7 @@ function(
         tagName: "div",
         className: function()
         {
-            var className = "podTile expandoPodTile cf";
+            var className = "podTile expandoPodTile cf expandoPodType-" + this.model.get("podType");
             if(this.model.get("premium"))
             {
                 className += " premium";
