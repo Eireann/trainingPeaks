@@ -110,12 +110,12 @@ function(findOrderedArrayIndexByValue)
             };
         },
 
-        getTemperatureMinimum: function(data, dataParser, x1, x2)
+        getTemperatureMinimum: function(data, graphData, x1, x2)
         {
             if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                return this.getTemperatureMinimumOnRange(data, dataParser, x1, x2);
+                return this.getTemperatureMinimumOnRange(data, graphData, x1, x2);
 
-            return dataParser.minTemperature;
+            return graphData.minTemperature;
         },
 
         getElevationInfoOnRange: function(dataByChannel, x1, x2)

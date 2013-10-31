@@ -164,8 +164,6 @@ function(
             if (this.plot)
                 this.unbindPlotEvents();
 
-            this.$plot.css({ "min-height": 1, "min-width": 1 });
-
             if($.plot)
             {
                 this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);

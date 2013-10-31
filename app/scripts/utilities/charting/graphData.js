@@ -71,7 +71,7 @@ function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                     return DataParserUtils.getElevationInfo(data, elevationInfo).min;
 
                 case "Temperature":
-                    return DataParserUtils.getTemperatureMinimum(data);
+                    return DataParserUtils.getTemperatureMinimum(data, this.minTemperature);
 
                 default:
                     return 0;

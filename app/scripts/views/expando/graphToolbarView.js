@@ -16,13 +16,13 @@ function(
     return TP.ItemView.extend(
     {
         className: "graphToolbar cf",
-        
+
         template:
         {
             type: "handlebars",
             template: graphToolbarTemplate
         },
-        
+
         initialize: function(options)
         {
 
@@ -37,25 +37,25 @@ function(
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
             this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this.render, this));
         },
-        
+
         events:
         {
             "change input[name=filterPeriod]": "_onFilterPeriodChanged",
-            "click button.graphSeriesButton": "_onGraphSeriesButtonClicked",
-            "click button.graphZoomButton": "_onZoomClicked",
-            "click button.graphResetButton": "_onResetClicked",
-            "click button.graphTimeButton": "_onGraphTimeButtonClicked",
-            "click button.graphDistanceButton": "_onGraphDistanceButtonClicked",
-            "click button.graphCutButton": "_onCutClicked"
+            "click button[data-series]": "_onGraphSeriesButtonClicked",
+            "click .zoom": "_onZoomClicked",
+            "click .reset": "_onResetClicked",
+            "click .time": "_onGraphTimeButtonClicked",
+            "click .distance": "_onGraphDistanceButtonClicked",
+            "click .cut": "_onCutClicked"
         },
- 
+
         modelEvents: {},
-        
+
         ui:
         {
             "zoomResetButton": "button.graphResetButton"
         },
-       
+
         serializeData: function()
         {
             // Grab speed label based _on model workout type
@@ -64,7 +64,7 @@ function(
             var cadenceLabel = this.model ? TP.utils.units.getUnitsLabel("cadence", this.model.get("workoutTypeValueId")) : "RPM";
             var tempLabel = this.model ? TP.utils.units.getUnitsLabel("temperature", this.model.get("workoutTypeValueId")) : "F";
             var torqueLabel = this.model ? TP.utils.units.getUnitsLabel("torque", this.model.get("workoutTypeValueId")) : "IN-LBS";
-            
+
             // Some workout type speeds need to be shown as "pace" units
             if (this.model && _.contains([1,3,12,13], this.model.get("workoutTypeValueId")))
             {
@@ -78,7 +78,7 @@ function(
                 tempLabel: tempLabel
             };
         },
- 
+
         setFilterPeriod: function(period)
         {
             this.$("input[name=filterPeriod]").val(period);
@@ -93,7 +93,7 @@ function(
         {
             this.ui.zoomResetButton.removeClass("hidden");
         },
-        
+
         _onFilterPeriodChanged: function(event)
         {
             if (!event.target)
@@ -112,12 +112,12 @@ function(
             var offset = seriesButton.offset();
             this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
         },
-        
+
         _onZoomClicked: function()
         {
             this.trigger("zoom");
         },
-        
+
         _onResetClicked: function()
         {
             this.trigger("reset");
@@ -127,19 +127,19 @@ function(
         _hideZoomButton: function ()
         {
             this.ui.zoomResetButton.addClass("hidden");
-        }, 
+        },
 
         _onGraphTimeButtonClicked: function ()
         {
-            this.$el.find("button.graphTimeButton").addClass("bold");
-            this.$el.find("button.graphDistanceButton").removeClass("bold");
+            this.$(".time").addClass("bold");
+            this.$(".distance").removeClass("bold");
             this.trigger("enableTimeAxis");
         },
-        
+
         _onGraphDistanceButtonClicked: function ()
         {
-            this.$el.find("button.graphTimeButton").removeClass("bold");
-            this.$el.find("button.graphDistanceButton").addClass("bold");
+            this.$(".time").removeClass("bold");
+            this.$(".distance").addClass("bold");
             this.trigger("enableDistanceAxis");
         },
 
@@ -169,9 +169,8 @@ function(
 
         _updateButtonStates: function()
         {
-
             var availableChannels = this.model.get("detailData").get("availableDataChannels");
-            this.$(".graphSeriesButton").each(function()
+            this.$(".seriesButtons button").each(function()
             {
                 var $self = $(this);
                 var seriesName = $self.data("series");
@@ -181,42 +180,41 @@ function(
                 }
             });
 
-            this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
+            this.$(".seriesDisabled").removeClass("seriesDisabled");
             _.each(this.model.get("detailData").get("disabledDataChannels"), function(channel)
             {
-                this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
+                this.$("button[data-series=" + channel + "]").addClass("seriesDisabled");
             }, this);
 
             if(!_.contains(availableChannels, "Distance"))
             {
-                this.$(".graphDistanceButton").remove();
-                this.$(".graphTimeButton").remove();
+                this.$(".distance").remove();
+                this.$(".time").remove();
             }
             else
             {
-                var currentXAxis = this.model.get("detailData").getDataParser().xaxis;
+                var currentXAxis = this.model.get("detailData").graphData.xaxis;
                 if(currentXAxis === "distance")
                 {
-                    this.$(".graphDistanceButton").addClass("bold");
-                    this.$(".graphTimeButton").removeClass("bold");
+                    this.$(".distance").addClass("bold");
+                    this.$(".time").removeClass("bold");
                 }
-                else
+
                 {
-                    this.$(".graphDistanceButton").removeClass("bold");
-                    this.$(".graphTimeButton").addClass("bold");
-                }
-            }
+                    this.$(".distance").removeClass("bold");
+                    this.$(".time").addClass("bold");
+                }            }
         },
 
         _onSelectionChange: function()
         {
             if(this.stateModel.has("primaryRange"))
             {
-                this.$(".graphCutButton").removeClass("hidden");
+                this.$(".cut").removeClass("hidden");
             }
             else
             {
-                this.$(".graphCutButton").addClass("hidden");
+                this.$(".cut").addClass("hidden");
             }
         }
     });

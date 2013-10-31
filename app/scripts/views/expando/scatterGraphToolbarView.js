@@ -19,7 +19,6 @@ function(
 
         initialize: function(options)
         {
-
             if (!options.stateModel)
                 throw new Error("stateModel is required for expando graph toolbar view");
 
@@ -32,52 +31,8 @@ function(
 
         events:
         {
-            "change input[name=filterPeriod]": "onFilterPeriodChanged",
-            "click button.graphResetButton": "onResetClicked",
-            "click button.graphTimeButton": "onGraphTimeButtonClicked",
-            "click button.graphDistanceButton": "onGraphDistanceButtonClicked"
-        },
-
-        onFilterPeriodChanged: function(event)
-        {
-            if (!event.target)
-                return;
-
-            var period = parseInt(event.target.value, 10);
-            this.trigger("filterPeriodChanged", period);
-        },
-
-        setFilterPeriod: function(period)
-        {
-            this.$("input[name=filterPeriod]").val(period);
-        },
-
-        onZoomClicked: function()
-        {
-            this.trigger("zoom");
-        },
-
-        onResetClicked: function()
-        {
-            this.trigger("reset");
-            this.hideZoomButton();
-        },
-
-        hideZoomButton: function ()
-        {
-            this.ui.zoomResetButton.addClass("hidden");
-        },
-
-        onGraphZoomed: function()
-        {
-            this.ui.zoomResetButton.removeClass("hidden");
-        },
-
-        onGraphTimeButtonClicked: function ()
-        {
-            this.$el.find("button.graphTimeButton").addClass("bold");
-            this.$el.find("button.graphDistanceButton").removeClass("bold");
-            this.trigger("enableTimeAxis");
+            "click .graphXAxisButton": "onGraphButtonClicked",
+            "click .graphYAxisButton": "onGraphButtonClicked"
         },
 
         onGraphDistanceButtonClicked: function ()

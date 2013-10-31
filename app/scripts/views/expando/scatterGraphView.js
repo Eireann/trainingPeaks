@@ -53,7 +53,6 @@ function(
             this.stateModel = options.stateModel;
 
             this.detailDataPromise = options.detailDataPromise;
-            this.lastFilterPeriod = this.getInitialFilterPeriod();
             this.currentAxis = "time";
             this.selections = [];
 
@@ -153,12 +152,8 @@ function(
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
-            // this.flotOptions.zoom.dataParser = this._getGraphData();
-            this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             this.flotOptions.grid.borderColor = "#9a9999";
-
-            this.$plot.css({ "min-height": 1, "min-width": 1 });
 
             if($.plot)
             {
@@ -166,37 +161,12 @@ function(
                 this._restoreSelection();
             }
 
-            this.setInitialToolbarSmoothing(this.lastFilterPeriod);
-
             this.trigger("hasData");
-        },
-
-        getInitialFilterPeriod: function()
-        {
-            if (this.hasOwnProperty("lastFilterPeriod"))
-                return this.lastFilterPeriod;
-            else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
-                return 0;
-            else
-                return 5;
-        },
-
-        setInitialToolbarSmoothing: function(period)
-        {
-            this.graphToolbar.setFilterPeriod(period);
         },
 
         overlayGraphToolbar: function()
         {
             this.graphToolbar = new GraphToolbarView({ dataParser: this._getGraphData(), model: this.model, stateModel: this.stateModel });
-
-            // this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
-
-            // this.graphToolbar.on("zoom", this.onToolbarZoom, this);
-            // this.graphToolbar.on("reset", this.resetZoom, this);
-            // this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
-            // this.graphToolbar.on("enableDistanceAxis", this.enableDistanceAxis, this);
-
             this.$("#scatterGraphToolbar").append(this.graphToolbar.render().$el);
         },
 
@@ -217,18 +187,6 @@ function(
 
             this.zoomRange = this.stateModel.get("primaryRange");
             this._applyZoom();
-        },
-
-        resetZoom: function()
-        {
-            if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomReset", "eventLabel": "" });
-
-            this.plot.resetZoom();
-            this.zoomRange = null;
-            this._restoreSelection();
         },
 
         _applyZoom: function()
