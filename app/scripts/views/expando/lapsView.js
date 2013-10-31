@@ -189,7 +189,11 @@ function(
 
         _deleteLap: function()
         {
-            this.model.set({'deleted': true,'isFocused': false, 'isSelected': false});
+            if(this.model.get("isFocused"))
+            {
+                this.stateModel.set("primaryRange", null);
+            }
+            this.model.set({ deleted: true, isFocused: false });
             this.$el.addClass('deleted');
             this.model.trigger('lap:markedAsDeleted', this.model);
             this.undelegateEvents();

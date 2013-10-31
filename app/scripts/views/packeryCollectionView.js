@@ -31,17 +31,16 @@ function(
         initialize: function(options)
         {
 
-            _.defaults(options, {
+            _.merge(options, {
                 packery:
                 {
                     rowHeight: 410,
                     columnWidth: 410,
                     gutter: 10
-                }
-            });
-
-            this.resizable = options.resizable;
-            this.packeryOptions = options.packery;
+                },
+                resizable: { enabled: false },
+                droppable: { enabled: false, scope: "packery" }
+            }, _.defaults);
 
             PackeryCollectionView.__super__.initialize.apply(this, arguments);
 
@@ -96,11 +95,15 @@ function(
 
         _setupDroppable: function()
         {
-            this.$el.droppable({
-                over: _.bind(this._addDraggableToPackery, this),
-                out:  _.bind(this._removeDraggableFromPackery, this),
-                drop: _.bind(this._dropDraggableIntoPackery, this)
-            });
+            if(this.options.droppable.enabled)
+            {
+                this.$el.droppable({
+                    scope: this.options.droppable.scope,
+                    over: _.bind(this._addDraggableToPackery, this),
+                    out:  _.bind(this._removeDraggableFromPackery, this),
+                    drop: _.bind(this._dropDraggableIntoPackery, this)
+                });
+            }
         },
 
         _updatePackerySort: function()
@@ -173,14 +176,14 @@ function(
             view.$el.resizable({
                 start: function(event, ui)
                 {
-                    var x = self.packeryOptions.columnWidth;
-                    var y = self.packeryOptions.rowHeight;
+                    var x = self.options.packery.columnWidth;
+                    var y = self.options.packery.rowHeight;
 
                     var width = _.isNumber(x) ? x : $(x).width();
                     var height = _.isNumber(y) ? y : $(y).height();
 
                     view.$el.resizable("option", {
-                        grid: [ width + self.packeryOptions.gutter, height + self.packeryOptions.gutter ],
+                        grid: [ width + self.options.packery.gutter, height + self.options.packery.gutter ],
                         minWidth: width * 0.9,
                         minHeight: height * 0.9,
                         maxWidth: self.$el.width(),
@@ -196,14 +199,14 @@ function(
 
                 stop: function(event, ui)
                 {
-                    var x = self.packeryOptions.columnWidth;
-                    var y = self.packeryOptions.rowHeight;
+                    var x = self.options.packery.columnWidth;
+                    var y = self.options.packery.rowHeight;
 
                     var width = _.isNumber(x) ? x : $(x).width();
                     var height = _.isNumber(y) ? y : $(y).height();
 
-                    var cols = Math.round((ui.element.width() + self.packeryOptions.gutter) / (width + self.packeryOptions.gutter));
-                    var rows = Math.round((ui.element.height() + self.packeryOptions.gutter) / (height + self.packeryOptions.gutter));
+                    var cols = Math.round((ui.element.width() + self.options.packery.gutter) / (width + self.options.packery.gutter));
+                    var rows = Math.round((ui.element.height() + self.options.packery.gutter) / (height + self.options.packery.gutter));
 
                     ui.element.css({
                         width: "",
@@ -226,10 +229,10 @@ function(
         {
             var self = this;
 
-            itemView.$el.draggable({ scope: "packery" });
+            itemView.$el.draggable({ scope: "packery-items" });
             collectionView.packery.bindUIDraggableEvents(itemView.$el);
 
-            if(this.resizable)
+            if(this.options.resizable.enabled)
             {
                 collectionView._setupResizable(itemView);
             }
@@ -247,24 +250,21 @@ function(
         },
 
         _addDraggableToPackery: function(event, ui) {
-            if(ui.draggable.hasClass("chartTile")) // TODO: Make generic
-            {
-                if (this.tmp.view) return; // Just in case draggable gets confused
+            if (this.tmp.view) return; // Just in case draggable gets confused
 
-                this.tmp.draggable = ui.draggable;
-                this.tmp.model = new this.collection.model(ui.draggable.data("model").attributes, this.collection.modelOptions);
-                this.addChildView(this.tmp.model, this.collection, {temporary: true});
-                this.tmp.view = this.children.last();
-                this.tmp.view.$el.addClass("ui-draggable-dragging");
+            this.tmp.draggable = ui.draggable;
+            this.tmp.model = new this.collection.model(ui.draggable.data("model").attributes, this.collection.modelOptions);
+            this.addChildView(this.tmp.model, this.collection, {temporary: true});
+            this.tmp.view = this.children.last();
+            this.tmp.view.$el.addClass("ui-draggable-dragging");
 
-                this.tmp.view.$el.css("position", "absolute");
+            this.tmp.view.$el.css("position", "absolute");
 
-                ui.helper.css("visibility", "hidden");
+            ui.helper.css("visibility", "hidden");
 
-                this.packery.itemDragStart(this.tmp.view.el);
-                this._moveDraggableForPackery(event, ui);
-                ui.draggable.on("drag", this._moveDraggableForPackery);
-            }
+            this.packery.itemDragStart(this.tmp.view.el);
+            this._moveDraggableForPackery(event, ui);
+            ui.draggable.on("drag", this._moveDraggableForPackery);
         },
 
         _removeDraggableFromPackery: function(event, ui) {
