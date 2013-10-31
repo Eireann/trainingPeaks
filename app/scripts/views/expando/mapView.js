@@ -24,7 +24,7 @@ function (
             template: mapTemplate
         },
 
-        modelEvents: {}, 
+        modelEvents: {},
 
         initialize: function(options)
         {
@@ -67,7 +67,7 @@ function (
         {
             if(_.intersection(["flatSamples", "disabledDataChannels", "availableDataChannels", "channelCuts"], _.keys(model.changed)).length)
             {
-                this._getDataParser().resetLatLonArray();
+                this._getGraphData().resetLatLonArray();
                 this.createAndDisplayMap();
             }
         },
@@ -81,7 +81,7 @@ function (
                 return;
             }
 
-            var latLongArray = this._getDataParser().getLatLonArray();
+            var latLongArray = this._getGraphData().getLatLonArray();
             if (latLongArray)
             {
 
@@ -97,7 +97,7 @@ function (
 
                 //this.baseLayers.push(this.addMouseHoverBuffer(latLongArray));
                 this.baseLayers.push(MapUtils.setMapData(this.map, latLongArray));
-                this.baseLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 10));
+                this.baseLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getGraphData(), 10));
                 this.baseLayers.push(MapUtils.addStartMarker(this.map, latLongArray[0]));
                 this.baseLayers.push(MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]));
             }
@@ -204,7 +204,7 @@ function (
             {
                 return null;
             }
-            var latLngs = this._getDataParser().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var latLngs = this._getGraphData().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
             var mapLayer = MapUtils.createHighlight(latLngs, options);
 
             var selection = {
@@ -213,7 +213,7 @@ function (
                 range: workoutStatsForRange,
                 mapLayer: mapLayer
             };
-            
+
             return selection;
         },
 
@@ -237,7 +237,7 @@ function (
 
         _onHoverChange: function (state, offset, options)
         {
-            if (!this.map || !this._getDataParser().hasLatLongData)
+            if (!this.map || !this._getGraphData().hasLatLongData)
             {
                 return;
             }
@@ -247,8 +247,8 @@ function (
             }
             else
             {
-                var latLong = this._getDataParser().getLatLongFromOffset(offset);
-                
+                var latLong = this._getGraphData().getLatLongFromOffset(offset);
+
                 if (latLong !== null)
                 {
                     this.showHoverMarker(latLong.lat, latLong.lng);
@@ -321,9 +321,9 @@ function (
             }
         },
 
-        _getDataParser: function()
+        _getGraphData: function()
         {
-            return this.model.get("detailData").getDataParser();
+            return this.model.get("detailData").graphData;
         }
     });
 });
