@@ -75,11 +75,11 @@ function()
         {
             TSS: { light: "#df0a08", dark: "#b90807" },
             IF: { light: "#5aadff", dark: "#3399ff" },
-            bars: { light: "rgba(27, 130, 206, 50)", dark: "#115282"},
+            bars: { light: "rgba(27, 130, 206, 100)", dark: "#115282"},
             showPlanned: {
-                completed: { light: "rgba(79,156,214, 70)", dark: "#47789D"},
-                plannedGreaterThanCompleted: { light: "rgba(200, 200, 200, 70)", dark: "#adadad"},
-                completedGreaterThanPlanned: { light: "rgba(27, 130, 206, 50)", dark: "#115282"}
+                completed: { light: "rgba(79,156,214, 100)", dark: "#47789D"},
+                plannedGreaterThanCompleted: { light: "rgba(200, 200, 200, 100)", dark: "#adadad"},
+                completedGreaterThanPlanned: { light: "rgba(27, 130, 206, 100)", dark: "#115282"}
             }
         },
 
