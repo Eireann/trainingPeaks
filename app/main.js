@@ -22,12 +22,13 @@ else
 {
     define(
     [
+        "polyfills/console",
         "utilities/rollbarManager",
         "shared/patches/wrapForRollbar",
         "TP",
         "app"
     ],
-    function(RollbarManager, rollbarPatches, TP, MarsApp)
+    function(consolePolyfill, RollbarManager, rollbarPatches, TP, MarsApp)
     {
 
         var theApp = new MarsApp();

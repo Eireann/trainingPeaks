@@ -23,6 +23,7 @@
             "quickview": "scripts/quickview",
             "expando": "scripts/expando",
             "shared": "scripts/shared", 
+            "polyfills": "../vendor/js/polyfills",
             
             // jQuery related, but not managed by bower yet ...
             "jqueryui": "../vendor/js/libs/jqueryui",
