@@ -49,6 +49,8 @@ function(
             this.view = new this.viewClass(_.extend({ el: this.ui.content }, this.options));
             this.ui.content.addClass(_.result(this.view, "className"));
 
+            this.listenTo(this.view, "close", _.bind(this.close, this));
+
             if(this.$el.parent().length === 0)
             {
                 $("body").append(this.$el);
