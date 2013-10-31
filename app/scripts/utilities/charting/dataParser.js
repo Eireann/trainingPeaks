@@ -6,7 +6,7 @@
 function(DataParserUtils, findOrderedArrayIndexByValue)
 {
     var DataParser = function(options) {
-        _.extend(this, options.graphData);
+        _.extend(this, options);
     };
 
     _.extend(DataParser.prototype,
@@ -14,22 +14,22 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
         loadData:  function(flatSamples)
         {
             // Re-initialize so array's don't double in length
-            this.xAxisDistanceValues = [];
+            this.graphData.xAxisDistanceValues = [];
 
-            this.flatSamples = flatSamples;
-            this.dataByAxisAndChannel = this.parseDataByAxisAndChannel(flatSamples, this.xAxisDistanceValues);
+            this.graphData.flatSamples = flatSamples;
+            this.graphData.dataByAxisAndChannel = this.parseDataByAxisAndChannel(flatSamples, this.graphData.xAxisDistanceValues);
 
             // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-            this.elevationInfo = DataParserUtils.getElevationInfoOnRange(this.dataByAxisAndChannel[this.xaxis]);
+            this.graphData.elevationInfo = DataParserUtils.getElevationInfoOnRange(this.graphData.dataByAxisAndChannel[this.graphData.xaxis]);
 
-            this.minTemperature = DataParserUtils.getTemperatureMinimumOnRange(this.dataByAxisAndChannel[this.xaxis]);
+            this.graphData.minTemperature = DataParserUtils.getTemperatureMinimumOnRange(this.graphData.dataByAxisAndChannel[this.graphData.xaxis]);
 
-            if (this.dataByAxisAndChannel && this.dataByAxisAndChannel[this.xaxis] && this.dataByAxisAndChannel[this.xaxis].Latitude && this.dataByAxisAndChannel[this.xaxis].Longitude)
-                this.hasLatLongData = true;
+            if (this.graphData.dataByAxisAndChannel && this.graphData.dataByAxisAndChannel[this.graphData.xaxis] && this.graphData.dataByAxisAndChannel[this.graphData.xaxis].Latitude && this.graphData.dataByAxisAndChannel[this.graphData.xaxis].Longitude)
+                this.graphData.hasLatLongData = true;
             else
-                this.hasLatLongData = false;
+                this.graphData.hasLatLongData = false;
 
-            this.latLonArray = null;
+            this.graphData.latLonArray = null;
         },
 
         parseDataByAxisAndChannel: function(flatSamples, xAxisDistanceValues)

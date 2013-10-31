@@ -394,7 +394,7 @@ function (
 
         _resetDataParser: function()
         {
-            this._dataParser.resetExcludedRanges();
+            this.graphData.resetExcludedRanges();
             this._dataParser.loadData(this.get("flatSamples"));
         },
 

@@ -1,10 +1,11 @@
 define(
 [
+    "utilities/charting/chartColors",
     "utilities/charting/dataParserUtils",
     "utilities/charting/findOrderedArrayIndexByValue",
     "utilities/charting/flotUtils"
 ],
-function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
+function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 {
     var defaultChannelOrder =
     [
@@ -19,7 +20,6 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         "Temperature"
     ];
 
-    _.extend(GraphData, {defaultChannelOrder: defaultChannelOrder});
 
     var GraphData = function()
     {
@@ -37,6 +37,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         this.latLonArray = null;
     };
 
+    _.extend(GraphData, {defaultChannelOrder: defaultChannelOrder});
 
     GraphData.prototype =
     {
@@ -58,7 +59,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getYAxes: function(series)
         {
-            return FlotUtils.generateYAxes(series, this.workoutTypeValueId, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo);
+            return FlotUtils.generateYAxes(series, this.workoutTypeValueId, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo, this);
         },
 
         getMinimumForAxis: function(series, data, elevationInfo)
@@ -201,6 +202,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         {
             return _.difference(this.flatSamples.channelMask, this.excludedSeries);
         },
+
         removeExcludedRangesFromData: function(data, excludedRanges, channel, offsetType, offsetsOfSamples)
         {
             if(!excludedRanges || !excludedRanges.length)
@@ -333,7 +335,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 }
 
                 seriesArray.push(seriesOptions);
-            });
+            }, this);
 
             var orderedSeriesArray = [];
 

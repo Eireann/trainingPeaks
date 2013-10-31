@@ -8,7 +8,7 @@ define(
 function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
 {
     var FlotUtils = {
-        generateYAxes: function(series, workoutTypeValueId, data, elevationInfo)
+        generateYAxes: function(series, workoutTypeValueId, data, elevationInfo, graphData)
         {
             var yaxes = [];
             var axisIndex = 1;
@@ -31,7 +31,7 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                 {
                     show: true,
                     label: s.label,
-                    min: FlotUtils.getMinimumForAxis(s.label, data, elevationInfo),
+                    min: graphData.getMinimumForAxis(s.label, data, elevationInfo),
                     color: "transparent",
                     tickColor: "transparent",
                     font:
