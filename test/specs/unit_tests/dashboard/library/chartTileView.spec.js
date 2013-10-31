@@ -17,11 +17,11 @@ function(TP, ChartTileView)
 
         describe("draggability", function()
         {
-            var view;
+            var model, view;
 
             beforeEach(function()
             {
-                var model = new TP.Model({ chartType: 42 });
+                model = new TP.Model({ chartType: 42 });
                 view = new ChartTileView({ model: model });
             });
 
@@ -37,8 +37,7 @@ function(TP, ChartTileView)
                 view.render();
 
                 var data = view.$el.data();
-                expect(data.ItemType).toEqual("Chart");
-                expect(data.ChartType).toEqual(42);
+                expect(data.model).toEqual(model);
             });
 
         });

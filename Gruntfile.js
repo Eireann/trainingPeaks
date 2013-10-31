@@ -300,6 +300,21 @@ module.exports = function(grunt)
               type: 'lcov',
               dir: 'coverage'
           }
+        },
+
+        lodash:
+        {
+            tp:
+            {
+                options:
+                {
+                    modifier: 'underscore',
+                    exports: ['amd', 'commonjs', 'global', 'node'],
+                    plus: ['merge'],
+                    flags: ['debug']
+                },
+                dest: 'vendor/js/libs/lodash.TP.js'
+            }
         }
 
     });
@@ -318,6 +333,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
     grunt.loadNpmTasks("grunt-webfont");
+    grunt.loadNpmTasks("grunt-lodash");
 
 
     // TESTING:

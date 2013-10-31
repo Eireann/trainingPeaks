@@ -1102,3 +1102,11 @@
         width: 75px;
     }
 }
+
+.addExpandoPod > .availablePods
+{
+    @include nice-scrollbar;
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 6px;
+}
