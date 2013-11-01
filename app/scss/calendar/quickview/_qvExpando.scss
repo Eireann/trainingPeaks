@@ -761,20 +761,20 @@
                     top: -1px;
                 }
 
-                span {
-                    cursor: pointer;
-                    // display: inline-block;
-                    @include calc(width, "100% - 20px");
-                    &:hover {
-                        color:$TPGrey4;
+                .actions
+                {
+                    .delete
+                    {
+                        margin: 5px 0 0;
+                        width: 13px;
                     }
                 }
 
-                .actions {
-                    margin:0 0 10px 0;
-                    @include buttons(0, 65px, $fontSizeSmall);
-                    padding-left:20px;
-                    padding-top:5px;
+                .lapDescription
+                {
+                    display: inline-block;
+                    width: calc(100% - 40px);
+                    vertical-align: top;
                 }
 
                 &.highlight {
@@ -790,14 +790,13 @@
                 }
 
                 .editLapName {
-                    display:inline-block;
-
-                    @include inputs(auto, 22px, $fontSizeSmall, $fontFamilyRegular);
+                    @include inputs(120px, 22px, $fontSizeSmall, $fontFamilyRegular);
                     input {
+                        display: inline-block;
                         text-align: left !important;
                         margin: 0 5px 0 0;
                         padding:0 5px;
-                        position:relative;
+                        position: relative;
                         z-index: 2;
                         font-size: 1em;
                     }

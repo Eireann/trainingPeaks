@@ -26,7 +26,7 @@ module.exports = function (grunt) {
 
             // add locale specific details
             localeOptions.out = localeSingleFile;
-            localeOptions.locale = localeName;
+            localeOptions.locale = localeName + "-fallback";
 
             if(!_.isArray(localeOptions.include))
             {
@@ -135,7 +135,7 @@ module.exports = function (grunt) {
         };
 
         var targets = ['release'];
-        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.js", "apiConfig.dev.js", "vendor/js/libs/leaflet/"];
+        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.dev.js", "vendor/js/libs/leaflet/"];
 
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
@@ -165,7 +165,7 @@ module.exports = function (grunt) {
     });
 
 
-    // Copies english values as defaults to language files so the app doesn't break
+    // Copies english values as defaults to fallback language files so the app doesn't break
     grunt.registerTask("add-defaults-to-i18n-files", "Add defaults to i18n language files", function()
     {
 
@@ -179,13 +179,11 @@ module.exports = function (grunt) {
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
         {
-            if(localeName !== "en_us")
-            {
-                var localeJsonFile = "app/templates/i18n/" + localeName + ".json";
-                var localeJson = readAsJSON(localeJsonFile);
-                localeJson = _.defaults(localeJson, englishJson);
-                fs.writeFileSync(localeJsonFile, JSON.stringify(localeJson, null, 4));
-            }
+            var localeJsonFile = "app/templates/i18n/" + localeName + ".json";
+            var localeFallbackJsonFile = "app/templates/i18n/" + localeName + "-fallback.json";
+            var localeJson = readAsJSON(localeJsonFile);
+            localeJson = _.defaults(localeJson, englishJson);
+            fs.writeFileSync(localeFallbackJsonFile, JSON.stringify(localeJson, null, 4));
         });
     });
 
