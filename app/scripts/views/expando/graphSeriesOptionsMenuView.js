@@ -89,5 +89,5 @@ function(
         style: "list"
     });
 
-    return GraphSeriesOptionsMenuView
+    return GraphSeriesOptionsMenuView;
 });

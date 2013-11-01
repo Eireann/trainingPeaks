@@ -40,7 +40,7 @@ function(
 
             if(options.modal)
             {
-                this.modal = options.modal 
+                this.modal = options.modal;
             }
         },
 
