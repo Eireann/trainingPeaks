@@ -248,7 +248,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["apiConfig.js", "web.config"]
+                    "build/release": ["web.config"]
                 }
             },
 

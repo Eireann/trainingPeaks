@@ -135,7 +135,7 @@ module.exports = function (grunt) {
         };
 
         var targets = ['release'];
-        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.js", "apiConfig.dev.js", "vendor/js/libs/leaflet/"];
+        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.dev.js", "vendor/js/libs/leaflet/"];
 
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
