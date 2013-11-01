@@ -235,7 +235,7 @@ function(
             {
                 var dataManagerOptions = {
                     identityMap: new IdentityMap(),
-                    resetPatterns: [/athletes\/[0-9]+\/workouts/]
+                    resetPatterns: [/athletes\/\d+\/workouts/, /athletes\/\d+\/timedmetrics/]
                 };
 
                 this.dataManager = new DataManager(dataManagerOptions);
