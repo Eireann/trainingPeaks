@@ -49,7 +49,8 @@
     "fs-extra": "~0.6.4",
     "grunt-webfont": "~0.1.9",
     "lodash-cli": "~2.2.1",
-    "grunt-lodash": "~0.3.0"
+    "grunt-lodash": "~0.3.0",
+    "grunt-targethtml": "~0.2.6"
   },
   "preferGlobal": "false"
 }

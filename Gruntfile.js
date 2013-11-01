@@ -162,7 +162,14 @@ module.exports = function(grunt)
             build:
             {
                 src: "index.html",
-                dest: "build/release/index.html"
+                dest: "build/release/index.html",
+                options:
+                {
+                    curlyTags:
+                    {
+                        apiConfig: grunt.file.read(grunt.option("dev") ? "apiConfig.dev.js" : "apiConfig.js")
+                    }
+                }
             },
             build_debug:
             {
@@ -334,6 +341,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-istanbul");
     grunt.loadNpmTasks("grunt-webfont");
     grunt.loadNpmTasks("grunt-lodash");
+    grunt.loadNpmTasks("grunt-targethtml");
 
 
     // TESTING:
