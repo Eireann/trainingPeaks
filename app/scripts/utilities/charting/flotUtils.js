@@ -79,8 +79,48 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             });
 
             return yaxes;
-        }
+        },
 
+        seriesOptions: function(data, channel, options)
+        {
+            var fillOpacity = channel === "Elevation" ? 0.3 : null;
+
+            var seriesOptions =
+            {
+                color: chartColors.seriesColorByChannel[channel],
+                data: data,
+                label: channel,
+                lines:
+                {
+                    fill: fillOpacity
+                },
+                shadowSize: 0
+            };
+
+            // right power should be dashed
+            if(channel === "RightPower")
+            {
+                seriesOptions.lines = {
+                    show: false
+                };
+                seriesOptions.dashes = {
+                    show: true,
+                    lineWidth: 1
+                };
+            }
+
+            if (channel === "Elevation")
+            {
+                seriesOptions.color = "#FFFFFF";
+                seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
+                _.each(data, function(dataPoint)
+                {
+                    dataPoint.push(options.minElevation);
+                });
+            }
+
+            return seriesOptions;
+        }
 
     };
 

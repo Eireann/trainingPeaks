@@ -23,55 +23,63 @@ function(
                 throw new Error("stateModel is required for expando graph toolbar view");
 
             this.stateModel = options.stateModel;
-
-            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._updateButtonStates, this));
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
+            this.xaxis = options.xaxis;
+            this.yaxis = options.yaxis;
+            this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._updateButtonList, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonList, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
 
         events:
         {
-            "click .graphXAxisButton": "onGraphButtonClicked",
-            "click .graphYAxisButton": "onGraphButtonClicked"
+            "click button": "onGraphButtonClicked"
         },
 
-        onGraphDistanceButtonClicked: function ()
+        onGraphButtonClicked: function(e)
         {
-            this.$el.find("button.graphTimeButton").removeClass("bold");
-            this.$el.find("button.graphDistanceButton").addClass("bold");
-            this.trigger("enableDistanceAxis");
+            var $target = $(e.target);
+            $target.siblings().addClass("seriesDisabled");
+            $target.removeClass("seriesDisabled");
+            this.trigger("scatterGraph:axisChange", {series: $target.data('series'), axis: $target.parent().data('axis')});
         },
 
         onRender: function()
         {
-            this._updateButtonStates();
+            this._updateButtonList();
         },
 
-        _updateButtonStates: function()
+        _updateButtonList: function()
         {
-
-            var availableChannels = this.model.get("detailData").get("availableDataChannels");
-            this.$(".graphSeriesButton").each(function()
+            var self = this;
+            var availableChannels = _.clone(this.model.get("detailData").get("availableDataChannels"));
+            availableChannels.push("Time");
+            this.$(".seriesButtons button").each(function()
             {
-                var $self = $(this);
-                var seriesName = $self.data("series");
+                var $button = $(this);
+                var axis = $button.parent().data("axis");
+                var seriesName = $button.data("series");
                 if(!_.contains(availableChannels, seriesName))
                 {
-                    $self.remove();
+                    $button.remove();
+                }
+                else
+                {
+                    if(axis === "x")
+                    {
+                        if(seriesName === self.xaxis)
+                        {
+                            $button.removeClass("seriesDisabled");
+                        }
+                    }
+                    else
+                    {
+                        if(seriesName === self.yaxis)
+                        {
+                            $button.removeClass("seriesDisabled");
+                        }
+                    }
                 }
             });
-
-            this.$(".graphSeriesDisabled").removeClass("graphSeriesDisabled");
-            _.each(this.model.get("detailData").get("disabledDataChannels"), function(channel)
-            {
-                this.$("button.graphSeriesButton[data-series=" + channel + "]").addClass("graphSeriesDisabled");
-            }, this);
-
-            if(!_.contains(availableChannels, "Distance"))
-            {
-                this.$(".graphDistanceButton").remove();
-                this.$(".graphTimeButton").remove();
-            }
         },
 
         serializeData: function()

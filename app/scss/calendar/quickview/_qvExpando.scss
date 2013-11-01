@@ -174,7 +174,7 @@
         padding-left: 10px;
         padding-right: 10px;
         overflow:hidden;
-        #graphToolbar, #scatterGraphToolbar
+        #graphToolbar
         {
             height: 35px;
         }
@@ -201,6 +201,7 @@
 
         #scatterGraphToolbar
         {
+            height: 70px;
             button
             {
                 &.distance,
@@ -216,6 +217,21 @@
                 {
                     @include linearGradient(top, #a5b3b6, #84979c);
                 }
+                &.seriesDisabled
+                {
+                    @include linearGradient(top, #ffffff, #dfddde);
+                    color: $TPGrey10;
+                    opacity:.5;
+                    &:hover {
+                        color: $TPGrey4;
+                    };
+                }
+            }
+
+            label
+            {
+                float: left;
+                padding: 4px 5px 5px 0px;
             }
         }
 
@@ -225,7 +241,6 @@
             padding: 0;
             margin: 0;
             width:100%;
-
 
             .graphButtonContain {
                 float:right;

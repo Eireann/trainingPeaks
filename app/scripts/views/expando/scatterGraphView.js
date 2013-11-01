@@ -26,7 +26,7 @@ function(
     flotZoom,
     flotMultiSelection,
     chartColors,
-    GraphToolbarView,
+    ScatterGraphToolbarView,
     graphTemplate
     )
 {
@@ -40,9 +40,6 @@ function(
             template: graphTemplate
         },
 
-
-        modelEvents: {},
-
         initialize: function(options)
         {
             _.bindAll(this, "createFlotGraph", "onFirstRender");
@@ -53,7 +50,6 @@ function(
             this.stateModel = options.stateModel;
 
             this.detailDataPromise = options.detailDataPromise;
-            this.currentAxis = "time";
             this.selections = [];
 
             this.firstRender = true;
@@ -95,9 +91,16 @@ function(
         {
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
-
+            this.setInitialXYAxis();
             this.overlayGraphToolbar();
             this.createFlotGraph();
+        },
+
+        setInitialXYAxis: function()
+        {
+            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+            this.currentXAxis = availableChannels[0];
+            this.currentYAxis = availableChannels[1];
         },
 
         createFlotGraph: function()
@@ -108,7 +111,6 @@ function(
 
         drawPlot: function()
         {
-
             this.$el.removeClass("noData");
 
 
@@ -121,10 +123,10 @@ function(
 
             var self = this;
 
-            if (!this.allSeries)
-            {
-                this.allSeries = this._getGraphData().getSeries();
-            }
+            // if (!this.allSeries)
+            // {
+            //     this.allSeries = this._getGraphData().getSeries();
+            // }
 
             this._getGraphData().workoutTypeValueId = this.model.get("workoutTypeValueId");
             this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
@@ -142,7 +144,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
+                $tooltipEl.html(flotCustomToolTip(enabledSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
@@ -166,53 +168,22 @@ function(
 
         overlayGraphToolbar: function()
         {
-            this.graphToolbar = new GraphToolbarView({ dataParser: this._getGraphData(), model: this.model, stateModel: this.stateModel });
+            var params =
+            {
+                model: this.model,
+                stateModel: this.stateModel,
+                xaxis: this.currentXAxis,
+                yaxis: this.currentYAxis
+            };
+            this.graphToolbar = new ScatterGraphToolbarView(params);
             this.$("#scatterGraphToolbar").append(this.graphToolbar.render().$el);
-        },
-
-        onToolbarZoom: function()
-        {
-            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
-                _.bind(this.zoomGraph, this)
-            );
-        },
-
-        zoomGraph: function()
-        {
-            if (!this.plot)
-                return;
-
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
-
-            this.zoomRange = this.stateModel.get("primaryRange");
-            this._applyZoom();
-        },
-
-        _applyZoom: function()
-        {
-            if(!this.zoomRange)
-            {
-                return;
-            }
-
-            this._setSelectionToRange(this.zoomRange, true, { force: true });
-            if (this.plot.zoomToSelection())
-            {
-                this.graphToolbar.onGraphZoomed();
-            }
-            else
-            {
-                this.zoomRange = null;
-            }
-            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
         },
 
         _setSelectionToRange: function(range, preventEvent, options)
         {
             var from;
             var to;
-
+            this.currentAxis = "time";
             if(!this.plot) return;
 
             if((range && range !== this.zoomRange) || (options && options.force))
@@ -244,7 +215,6 @@ function(
 
         _restoreSelection: function()
         {
-            this._applyZoom();
             this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
             this._applyRanges();
             if (this.plot)

@@ -1,11 +1,10 @@
 define(
 [
-    "utilities/charting/chartColors",
     "utilities/charting/dataParserUtils",
     "utilities/charting/findOrderedArrayIndexByValue",
     "utilities/charting/flotUtils"
 ],
-function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
+function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 {
     var defaultChannelOrder =
     [
@@ -84,16 +83,6 @@ function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 this.latLonArray = this.generateLatLonFromData(this.dataByAxisAndChannel[this.xaxis]);
 
             return this.latLonArray;
-        },
-
-        getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
-        {
-            if(!this.hasLatLongData) return [];
-
-            var sampleStartIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, startMsOffset);
-            var sampleEndIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, endMsOffset);
-
-            return generateLatLonFromDataBetweenIndexes.call(this, this.dataByAxisAndChannel[this.xaxis], sampleStartIndex, sampleEndIndex);
         },
 
         createCorrectedElevationChannel: function (elevations)
@@ -285,8 +274,6 @@ function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 if (channel === "Latitude" || channel === "Longitude")
                     return;
 
-                var fillOpacity = channel === "Elevation" ? 0.3 : null;
-
                 var data = [];
                 if(!_.isUndefined(x1) && !_.isUndefined(x2))
                 {
@@ -300,39 +287,7 @@ function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 // remove cut ranges
                 this.removeExcludedRangesFromData(data, excludedRanges, channel, xaxis, offsetsOfSamples);
 
-                var seriesOptions =
-                {
-                    color: chartColors.seriesColorByChannel[channel],
-                    data: data,
-                    label: channel,
-                    lines:
-                    {
-                        fill: fillOpacity
-                    },
-                    shadowSize: 0
-                };
-
-                // right power should be dashed
-                if(channel === "RightPower")
-                {
-                    seriesOptions.lines = {
-                        show: false
-                    };
-                    seriesOptions.dashes = {
-                        show: true,
-                        lineWidth: 1
-                    };
-                }
-
-                if (channel === "Elevation")
-                {
-                    seriesOptions.color = "#FFFFFF";
-                    seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
-                    _.each(data, function(dataPoint)
-                    {
-                        dataPoint.push(minElevation);
-                    });
-                }
+                var seriesOptions = FlotUtils.seriesOptions(data, channel, { minElevation: minElevation });
 
                 seriesArray.push(seriesOptions);
             }, this);
@@ -390,6 +345,6 @@ function(chartColors, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             return this.generateLatLonFromDataBetweenIndexes(dataByAxisAndChannel, sampleStartIndex, sampleEndIndex);
         }
 
-    }
+    };
     return GraphData;
 });
