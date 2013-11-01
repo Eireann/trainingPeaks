@@ -10,6 +10,8 @@
 /plato/
 /coverage/
 /test/webApiJson/
+app/templates/i18n/*-fallback.json
+
 *.csproj*
 *.suo
 /*.sln.DotSettings.user
