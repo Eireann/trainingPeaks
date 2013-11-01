@@ -16,7 +16,7 @@ function (
     return TP.ItemView.extend(
     {
 
-        className: "expandoMapPod",
+        wrapperClassName: "expandoMapPod",
 
         template:
         {

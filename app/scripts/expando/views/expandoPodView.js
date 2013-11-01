@@ -50,7 +50,12 @@ function(
             var self = this;
             var $child = this.$(".expandoPodContent");
             this.childView.setElement($child);
-            this.$el.addClass(this.childView.className);
+            $child.addClass(this.childView.className);
+            if(this.childView.wrapperClassName)
+            {
+                this.$el.addClass(this.childView.wrapperClassName);
+            }
+
 
             this.childView.render();
         },
