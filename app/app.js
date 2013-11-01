@@ -466,6 +466,23 @@ function(
                     }
                 );
             });
+
+            // close the top most modal view on escape
+            this.addInitializer(function ()
+            {
+                $(document).on("keyup.closeModalOnEscape", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 27)
+                    {
+                        if(!evt.isDefaultPrevented())
+                        {
+                            $(".modalOverlay:last").trigger("click");
+                        }
+                    }
+                }
+                );
+            });
         },
 
         touchEnabled: false,

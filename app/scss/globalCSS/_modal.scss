@@ -3,15 +3,27 @@
 
 .modalOverlay
 {
-    position:absolute;
-    z-index:100;
-    
-    top:0px;
-    bottom:0px;
-    left:0px;
-    right:0px;
 
     background-color:transparent;
+
+    &:not(.hidden)
+    {
+        position:absolute;
+        z-index:100;
+        
+        top:0px;
+        bottom:0px;
+        left:0px;
+        right:0px;
+    }
+
+
+    &.hidden
+    {
+        position:relative;
+        height: 0px;
+        width: 0px;
+    }
 }
 
 .modal

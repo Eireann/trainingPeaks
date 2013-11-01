@@ -15,16 +15,9 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
     
             var detailDataSpy = jasmine.createSpyObj("Workout Detail Data", ["disableChannel", "enableChannel", "cutChannel", "get"]);
 
-            var workoutModel = new TP.Model({
-                workoutTypeValueId: 1,
-                detailData: detailDataSpy
-            });
-
-
             return new GraphSeriesOptionsMenuView({ 
-                stateModel: stateModel, 
-                model: workoutModel,
-                series: series
+                detailDataModel: detailDataSpy,
+                model: new TP.Model({ series: series, title: "My Series" })
             });
         }
 
@@ -34,7 +27,7 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             beforeEach(function()
             {
                 view = buildView("Cadence");
-                view.model.get("detailData").get.andReturn([]); // get("disabledDataChannels")
+                view.detailDataModel.get.andReturn([]); // get("disabledDataChannels")
                 view.render();
             });
 
@@ -51,7 +44,7 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             it("Should call disableChannel", function()
             {
                 view.$(".hideSeries").trigger("click");
-                expect(view.model.get("detailData").disableChannel).toHaveBeenCalledWith("Cadence");
+                expect(view.detailDataModel.disableChannel).toHaveBeenCalledWith("Cadence");
             });
         });
 
@@ -61,7 +54,7 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             beforeEach(function()
             {
                 view = buildView("Cadence");
-                view.model.get("detailData").get.andReturn(["Cadence"]); // get("disabledDataChannels")
+                view.detailDataModel.get.andReturn(["Cadence"]); // get("disabledDataChannels")
                 view.render();
             });
 
@@ -78,7 +71,7 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             it("Should call enableChannel", function()
             {
                 view.$(".showSeries").trigger("click");
-                expect(view.model.get("detailData").enableChannel).toHaveBeenCalledWith("Cadence");
+                expect(view.detailDataModel.enableChannel).toHaveBeenCalledWith("Cadence");
             });
         });
 
@@ -88,7 +81,7 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             beforeEach(function()
             {
                 view = buildView("Cadence");
-                view.model.get("detailData").get.andReturn([]); // get("disabledDataChannels")
+                view.detailDataModel.get.andReturn([]); // get("disabledDataChannels")
                 view.render();
             });
 
@@ -100,14 +93,14 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             it("Should confirm before cutting channel", function()
             {
                 view.$(".deleteSeries").trigger("click");
-                expect(view.model.get("detailData").cutChannel).not.toHaveBeenCalled();
+                expect(view.detailDataModel.cutChannel).not.toHaveBeenCalled();
             });
 
             it("Should call cutChannel", function()
             {
                 view.$(".deleteSeries").trigger("click");
                 view.confirmationView.trigger("userConfirmed");
-                expect(view.model.get("detailData").cutChannel).toHaveBeenCalledWith("Cadence" );
+                expect(view.detailDataModel.cutChannel).toHaveBeenCalledWith("Cadence" );
             });
         });
 
