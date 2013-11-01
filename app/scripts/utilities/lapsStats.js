@@ -7,9 +7,8 @@ define(
 function(
     _,
     TP,
-    formatLapData,
-    testHelpers
-)
+    formatLapData
+    )
 {
     var channelToStatsMap = {
         Power: ["Avg Power", "Max Power", "NP"],
