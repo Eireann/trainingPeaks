@@ -187,8 +187,7 @@ function(
             var existingModal = $(".modalOverlay:last");           
 
             // make an overlay
-            var onOverlayClick = function () { this.trigger("clickoutside"); this.close(); };
-            this.createOverlay({ mask: this.modal.mask, noOverlay: this.modal.noOverlay, onOverlayClick: onOverlayClick});
+            this.createOverlay(_.isObject(this.modal) ? this.modal : {});
             _.bindAll(this, "close");
 
             // make $el absolute and put it on the body
@@ -203,7 +202,6 @@ function(
             this.rePositionView();
             this.watchForWindowResize();
 
-            this.enableEscapeKey();
             this.closeOnRouteChange(this.close);
 
             // set on top of other modals
@@ -222,7 +220,7 @@ function(
 
         createOverlay: function(modalSettings)
         {
-            modalSettings = _.extend({ mask: true, noOverlay: false, onOverlayClick: null}, modalSettings);
+            modalSettings = _.defaults(modalSettings, { mask: false, overlayClass: "", onOverlayClick: null});
 
             this.$overlay = $("<div></div>");
             this.$overlay.addClass("modalOverlay");
@@ -231,10 +229,10 @@ function(
             if (modalSettings.mask)
                 this.$overlay.addClass("modalOverlayMask");
 
-            if (!modalSettings.noOverlay)
-            {
-                theMarsApp.getBodyElement().append(this.$overlay);
-            }
+            if(modalSettings.overlayClass)
+                this.$overlay.addClass(modalSettings.overlayClass);
+
+            theMarsApp.getBodyElement().append(this.$overlay);
 
             if(modalSettings.onOverlayClick)
             {
@@ -244,6 +242,10 @@ function(
                     modalSettings.onOverlayClick.apply(self);
                 };
                 this.$overlay.on("click", onOverlayClick);
+            }
+            else
+            {
+                this.$overlay.on("click", _.bind(this.close, this));
             }
         },
 
@@ -334,28 +336,8 @@ function(
             }
         },
 
-        enableEscapeKey: function()
-        {
-            _.bindAll(this, "onEscapeKey");
-            $(document).on("keyup.esc", this.onEscapeKey);
-        },
-
-        disableEscapeKey: function()
-        {
-            $(document).off("keyup.esc", this.onEscapeKey);
-        },
-
-        onEscapeKey: function(e)
-        {
-            if (e.which === 27 && !e.isDefaultPrevented())
-            {
-                this.close();
-            }
-        },
-
         closeModal: function()
         {
-            this.disableEscapeKey();
             this.stopWatchingWindowResize();
             if (this.$overlay)
             {

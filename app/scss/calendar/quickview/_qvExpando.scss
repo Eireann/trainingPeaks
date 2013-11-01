@@ -1098,9 +1098,7 @@
 
 
 .expandoGraphSeriesOptionsMenu {
-    .hoverBox.uparrow {
-        width: 75px;
-    }
+    min-width: 75px;
 }
 
 .addExpandoPod > .availablePods

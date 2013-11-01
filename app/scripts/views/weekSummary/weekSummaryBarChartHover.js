@@ -11,7 +11,7 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, weekSummaryBarC
     return TP.ItemView.extend(
     {
 
-        modal: {noOverlay: true},
+        modal: { overlayClass: "hidden" },
         showThrobbers: false,
         tagName: "div",
         className: "weekSummaryBarChartHover",
