@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" ?>
 <parameters>
   <parameter name="DeployTarget" >
-    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{DEPLOY_TARGET}" />
+    <parameterEntry kind="TextFile" scope="index.html" match="{DEPLOY_TARGET}" />
   </parameter>
   <parameter name="WWWRoot" >
-    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{WWW_ROOT}" />
+    <parameterEntry kind="TextFile" scope="index.html" match="{WWW_ROOT}" />
   </parameter>
   <parameter name="HomeRoot" >
-    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{HOME_ROOT}" />
+    <parameterEntry kind="TextFile" scope="index.html" match="{HOME_ROOT}" />
   </parameter>
   <parameter name="CMSRoot" >
-    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{CMS_ROOT}" />
+    <parameterEntry kind="TextFile" scope="index.html" match="{CMS_ROOT}" />
   </parameter>  
   <parameter name="ApiRoot" >
-    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{API_ROOT}" />
+    <parameterEntry kind="TextFile" scope="index.html" match="{API_ROOT}" />
   </parameter>
   <parameter name="OauthRoot" >
-    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{OAUTH_ROOT}" />
+    <parameterEntry kind="TextFile" scope="index.html" match="{OAUTH_ROOT}" />
   </parameter>
   <parameter name="GoogleAnalyticsAccount" >
-      <parameterEntry kind="TextFile" scope="apiConfig.js" match="{GA_ACCOUNT}" />
+      <parameterEntry kind="TextFile" scope="index.html" match="{GA_ACCOUNT}" />
   </parameter>
 </parameters>

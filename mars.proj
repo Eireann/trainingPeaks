@@ -52,7 +52,7 @@
 			<MarsBuild Condition=" '$(MarsBuild)' == '' ">DEVELOPER BUILD</MarsBuild>
 		</PropertyGroup>
 		<ItemGroup>
-			<MarsConfig Include="$(OutputDir)\**\apiConfig.js" />
+			<MarsConfig Include="$(OutputDir)\**\index.html" />
 			<MapFiles Include="$(OutputDir)\**\*.single.min.js.map" />
 		</ItemGroup>
 
