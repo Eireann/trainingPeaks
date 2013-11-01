@@ -93,7 +93,7 @@ function(
         }, this);
     }
 
-    function buildSeriesOptionsWithPlannedValues(data, subTypeOptions, barWidth)
+    function buildSeriesOptionsWithPlannedValues(data, subTypeOptions, barWidth, colors)
     {
         // offset to account for tss/if bars side by side
         var offset = -(barWidth / 2);
@@ -104,26 +104,26 @@ function(
         // charting y axis builder needs the series units
         var completedSeries = _.defaults({
             data: [],
-            color: chartColors.workoutSummary.showPlanned.completed.light,
+            color: colors.completed.light,
             bars: {
-                fillColor: { colors: [chartColors.workoutSummary.showPlanned.completed.light, chartColors.workoutSummary.showPlanned.completed.dark] }
+                fillColor: { colors: [colors.completed.light, colors.completed.dark] }
             }
         }, subTypeOptions.series[0]);
 
         var plannedGreaterThanCompletedSeries = {
             data: [],
-            color: chartColors.workoutSummary.showPlanned.plannedGreaterThanCompleted.light,
+            color: colors.plannedGreaterThanCompleted.light,
             bars: {
-                fillColor: { colors: [chartColors.workoutSummary.showPlanned.plannedGreaterThanCompleted.light, chartColors.workoutSummary.showPlanned.plannedGreaterThanCompleted.dark] }
+                fillColor: { colors: [colors.plannedGreaterThanCompleted.light, colors.plannedGreaterThanCompleted.dark] }
             },
             yaxis: 1 // share the first y axis
         };
 
         var completedGreaterThanPlannedSeries = {
             data: [],
-            color: chartColors.workoutSummary.showPlanned.completedGreaterThanPlanned.light,
+            color: colors.completedGreaterThanPlanned.light,
             bars: {
-                fillColor: { colors: [chartColors.workoutSummary.showPlanned.completedGreaterThanPlanned.light, chartColors.workoutSummary.showPlanned.completedGreaterThanPlanned.dark] }
+                fillColor: { colors: [colors.completedGreaterThanPlanned.light, colors.completedGreaterThanPlanned.dark] }
             },
             yaxis: 1 // share the first y axis
         };
@@ -321,15 +321,6 @@ function(
                 return subType.chartType === parseInt(this.get('chartType'), 10);
             }, this);
             this.subType.hasPlanned = this.subType.plannedSeries && this.subType.plannedSeries.length > 0;
-
-            _.each(this.subType.plannedSeries, function(serie)
-            {
-                _.defaults(serie,
-                {
-                    color: chartColors.workoutSummary.planned
-                });
-            });
-
             this._validateWorkoutTypes();
         },
 
@@ -345,6 +336,21 @@ function(
             {
                 workoutTypeName = TP.utils.workout.types.getNameById(workoutTypeIds[0]);
                 return chartColors.gradients.workoutType[workoutTypeName.toLowerCase().replace(/[^a-z]/g,"")];
+            }
+        },
+
+        _getColorForWorkoutTypeWithPlanned: function()
+        {
+            var workoutTypeIds = this.get('workoutTypeIds'),
+                workoutTypeName;
+            if (workoutTypeIds.length !== 1)
+            {
+                return chartColors.workoutSummary.plannedCompleted.defaults;
+            }
+            else
+            {
+                workoutTypeName = TP.utils.workout.types.getNameById(workoutTypeIds[0]);
+                return _.defaults(chartColors.workoutSummary.plannedCompleted[workoutTypeName.toLowerCase().replace(/[^a-z]/g,"")], chartColors.workoutSummary.plannedCompleted.defaults);
             }
         },
 
@@ -414,9 +420,8 @@ function(
 
             if(this.subType.hasPlanned && this.get("showPlanned"))
             {
-                series = buildSeriesOptionsWithPlannedValues(data, this.subType, barWidth);
+                series = buildSeriesOptionsWithPlannedValues(data, this.subType, barWidth, this._getColorForWorkoutTypeWithPlanned());
                 flotOptions.series.stack = true;
-                flotOptions.series.stackSpacing = 1;
             }
             else
             { 
