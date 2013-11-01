@@ -196,7 +196,11 @@ function(
             if (this.modal.shadow)
                 this.$el.addClass("modalShadow");
 
-            theMarsApp.getBodyElement().append(this.$el);
+            // mars app may not be defined if we render a modal view for testing
+            if(typeof theMarsApp !== "undefined")
+            {
+                theMarsApp.getBodyElement().append(this.$el);
+            }
 
             // dynamic centering
             this.rePositionView();
@@ -232,7 +236,11 @@ function(
             if(modalSettings.overlayClass)
                 this.$overlay.addClass(modalSettings.overlayClass);
 
-            theMarsApp.getBodyElement().append(this.$overlay);
+            // mars app may not be defined if we render a modal view for testing
+            if(typeof theMarsApp !== "undefined")
+            {
+                theMarsApp.getBodyElement().append(this.$overlay);
+            }
 
             if(modalSettings.onOverlayClick)
             {
@@ -330,7 +338,7 @@ function(
 
         closeOnRouteChange: function(onClose)
         {
-            if(theMarsApp.router)
+            if(typeof theMarsApp !== "undefined" && theMarsApp.router)
             {
                 theMarsApp.router.once("route", onClose, this);
             }
