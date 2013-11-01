@@ -15,7 +15,8 @@ function (userTypeUtilities)
             var userType = userTypeUtilities.getNameById(theMarsApp.user.getAccountSettings().get("userType"));
             arguments[1].dimension1 = userType;
         }
-        
-        window.ga.apply(this, arguments);
+    
+        if (window.ga !== "undefined" && typeof window.ga === "function")
+            window.ga.apply(this, arguments); 
     };
 });
