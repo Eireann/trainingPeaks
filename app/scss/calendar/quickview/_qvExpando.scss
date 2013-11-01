@@ -920,6 +920,24 @@
             display: block;
             z-index:2;
         }
+
+        .leaflet-control-container
+        {
+            position: absolute;
+            top: 16px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    .leaflet-control-container
+    {
+        position: absolute;
+        top: 16px;
+        bottom: 0;
+        left: 0;
+        right: 0;
     }
 
     &.menuOpen
@@ -944,20 +962,28 @@
         border: 1px solid $TPGrey11;
     }
 
-    .epxandoPodHeader
+    .expandoPodHeader
     {
         position: absolute;
         top: 0;
         right: 0;
+        width: 100%;
+        height: 22px;
+        z-index: 500;
 
         display: none;
+    }
 
-        &:hover, .hover
-        {
-            display: block;
-            background: white;
-        }
+    &:hover .expandoPodHeader
+    {
+        display: block;
+    }
 
+    &.expandoMapPod .expandoPodHeader
+    {
+        background: rgba(255,255,255,0.8);
+
+        &:hover { background: white; }
     }
 
     .expandoPodContent
