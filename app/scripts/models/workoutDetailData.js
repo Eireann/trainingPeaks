@@ -113,11 +113,6 @@ function (
             this.set("disabledDataChannels", _.without(this.get("disabledDataChannels"), series));
         },
 
-        getDataParser: function()
-        {
-            return this._dataParser;
-        },
-
         hasSensorData: function()
         {
             return this.hasLaps() || this.hasSamples();
@@ -160,11 +155,11 @@ function (
                 // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
                 if(isFullChannel)
                 {
-                    this._dataParser.excludeChannel(series);
+                    this.graphData.excludeChannel(series);
                 }
                 else
                 {
-                    this._dataParser.excludeRange(series, begin, end);
+                    this.graphData.excludeRange(series, begin, end);
                 }
                 this.set("channelCuts", channelCuts);
                 this.disableChannel(series);
