@@ -96,7 +96,7 @@ function()
                 },
                 swim: {
                     completed: { light: "#53b5d8", dark: "#4a889e" },
-                    completedGreaterThanPlanned: { light: "#20a3d1", dark: "#0832b1" }
+                    completedGreaterThanPlanned: { light: "#20a3d1", dark: "#0382b1" }
                 },
                 brick: {
                     completed: { light: "#ba5b7c", dark: "#9a536d" },
