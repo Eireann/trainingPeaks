@@ -49,13 +49,6 @@ function(
             this.view = new this.viewClass(_.extend({ el: this.ui.content }, this.options));
             this.ui.content.addClass(_.result(this.view, "className"));
 
-            // apply list style if the option was passed to TomahawkView.wrap
-            var tomahawkStyle = _.result(this.tomahawkOptions, "style");
-            if(tomahawkStyle && tomahawkStyle === "list")
-            {
-                this.$el.addClass("tomahawkList");
-            }
-
             this.listenTo(this.view, "close", _.bind(this.close, this));
 
             if(this.$el.parent().length === 0)
@@ -157,11 +150,19 @@ function(
 
     TomahawkView.wrap = function(viewClass, options)
     {
-        viewClass.Tomahawk = TomahawkView.extend(
+       
+        var viewClassDefinition = {
+            viewClass: viewClass
+        };
+
+        // apply list style if the option was passed to TomahawkView.wrap
+        if(_.result(options, "style") === "list")
         {
-            viewClass: viewClass,
-            tomahawkOptions: options
-        });
+            viewClassDefinition.className = "tomahawk tomahawkList";
+        }
+ 
+        viewClass.Tomahawk = TomahawkView.extend(viewClassDefinition);
+
     };
 
 
