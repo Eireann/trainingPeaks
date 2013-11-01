@@ -29,7 +29,7 @@ function(
         {
             "click .showSeries": "_showSeries",
             "click .hideSeries": "_hideSeries",
-            "click .deleteSeries": "_deleteSeries" 
+            "click .deleteSeries": "_deleteSeries"
         },
 
         template:
@@ -85,7 +85,9 @@ function(
 
     });
 
-    TomahawkView.wrap(GraphSeriesOptionsMenuView);
+    TomahawkView.wrap(GraphSeriesOptionsMenuView, {
+        style: "list"
+    });
 
     return GraphSeriesOptionsMenuView
 });

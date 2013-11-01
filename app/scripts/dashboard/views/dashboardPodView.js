@@ -341,6 +341,11 @@ function(
             this.model.destroy();
         },
 
+        enableEscapeKey: function()
+        {
+            $(document).on("keyup.esc", _.bind(this.onEscapeKey, this));
+        },
+
         onEscapeKey: function(e)
         {
             if (e.which === 27)

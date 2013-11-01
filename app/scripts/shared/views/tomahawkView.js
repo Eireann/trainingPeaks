@@ -14,7 +14,7 @@ function(
     {
 
         className: "tomahawk",
-        modal: true,
+        modal: true, 
 
         template:
         {
@@ -37,17 +37,24 @@ function(
         {
             this.offset = options.offset;
             this.target = options.target;
-        },
 
-        serializeData: function()
-        {
-            return { hasClose: true };
+            if(options.modal)
+            {
+                this.modal = options.modal 
+            }
         },
 
         onRender: function()
         {
             this.view = new this.viewClass(_.extend({ el: this.ui.content }, this.options));
             this.ui.content.addClass(_.result(this.view, "className"));
+
+            // apply list style if the option was passed to TomahawkView.wrap
+            var tomahawkStyle = _.result(this.tomahawkOptions, "style");
+            if(tomahawkStyle && tomahawkStyle === "list")
+            {
+                this.$el.addClass("tomahawkList");
+            }
 
             this.listenTo(this.view, "close", _.bind(this.close, this));
 
@@ -148,11 +155,12 @@ function(
 
     });
 
-    TomahawkView.wrap = function(viewClass)
+    TomahawkView.wrap = function(viewClass, options)
     {
         viewClass.Tomahawk = TomahawkView.extend(
         {
-            viewClass: viewClass
+            viewClass: viewClass,
+            tomahawkOptions: options
         });
     };
 

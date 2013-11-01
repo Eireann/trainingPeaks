@@ -7,11 +7,6 @@
     background: #fff;
     padding: 21px 12px 15px;
 
-    &.tomahawkList
-    {
-        padding: 12px;
-    }
-
     .closeIcon
     {
         position: absolute;
@@ -22,6 +17,32 @@
         margin: 0;
         padding: 0;
     }
+    
+    &.tomahawkList
+    {
+        padding: 12px;
+
+        .closeIcon
+        {
+            display: none;
+        }
+
+        label
+        {
+            color:$TPGrey10;
+            cursor: pointer;
+            font-size:$fontSizeSmall;
+            font-family: $fontFamilyRegular;
+            font-weight:normal;
+            padding: 4px 0;
+            margin:0;
+
+            &:hover {
+                color:$TPGrey4;
+            }
+        }
+    }
+
 }
 
 .tomahawkArrow
