@@ -47,7 +47,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
                 if(model instanceof WorkoutModel)
                 {
-                    date = model.get("startTime");
+                    date = model.get("startTime") || model.get("startTimePlanned");
                     time = date ? date.replace(/.*T/, "") : null;
                     key = [1, time];
                 }
@@ -64,7 +64,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
                 return key;
             };
-            this.itemsCollection.on("change:startTime change:timeStamp", this.itemsCollection.sort, this.itemsCollection);
+            this.itemsCollection.on("change:startTime change:startTimePlanned change:timeStamp", this.itemsCollection.sort, this.itemsCollection);
         },
 
 

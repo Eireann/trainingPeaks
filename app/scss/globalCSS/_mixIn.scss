@@ -266,6 +266,8 @@
 
 @mixin noDataMessage()
 {
+    position: relative; // make sure this element has a position attribute so the noDataMessage will fit nicely
+
     .noDataMessage
     {
         display: none;

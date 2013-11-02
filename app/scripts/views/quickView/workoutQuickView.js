@@ -129,7 +129,7 @@ function(
 
             this.tabs = [];
 
-            this.resetTabRenderedState();
+            this.tabRendered = [];
             
             this.initializeHeaderActions();
             this.initializeFileUploads();
@@ -149,11 +149,6 @@ function(
             this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
         },
        
-        resetTabRenderedState: function()
-        {
-            this.tabRendered = [];
-        },
-
         stopWorkoutDetailsFetch: function ()
         {
             this.off("close", this.stopWorkoutDetailsFetch);
@@ -205,7 +200,7 @@ function(
 
         onSensorDataChange: function()
         {
-            if (this.model.get("detailData").attributes.flatSamples !== null)
+            if (this.model.get("detailData").hasSamples())
             {
                 this.$(".mapGraphTab").removeClass("missingData");
             }
@@ -359,6 +354,10 @@ function(
             {
                 tab.render();
                 this.tabRendered[this.currentTabIndex] = true;
+            }
+            else
+            {
+                tab.reRender();
             }
 
             this.ui.quickViewContent.find(".tabContent").hide();

@@ -162,7 +162,14 @@ module.exports = function(grunt)
             build:
             {
                 src: "index.html",
-                dest: "build/release/index.html"
+                dest: "build/release/index.html",
+                options:
+                {
+                    curlyTags:
+                    {
+                        apiConfig: grunt.file.read(grunt.option("dev") ? "apiConfig.dev.js" : "apiConfig.js")
+                    }
+                }
             },
             build_debug:
             {
@@ -241,7 +248,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["apiConfig.js", "web.config"]
+                    "build/release": ["web.config"]
                 }
             },
 
@@ -300,6 +307,21 @@ module.exports = function(grunt)
               type: 'lcov',
               dir: 'coverage'
           }
+        },
+
+        lodash:
+        {
+            tp:
+            {
+                options:
+                {
+                    modifier: 'underscore',
+                    exports: ['amd', 'commonjs', 'global', 'node'],
+                    plus: ['merge'],
+                    flags: ['debug']
+                },
+                dest: 'vendor/js/libs/lodash.TP.js'
+            }
         }
 
     });
@@ -318,6 +340,8 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
     grunt.loadNpmTasks("grunt-webfont");
+    grunt.loadNpmTasks("grunt-lodash");
+    grunt.loadNpmTasks("grunt-targethtml");
 
 
     // TESTING:

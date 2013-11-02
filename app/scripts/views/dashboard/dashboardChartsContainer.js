@@ -81,7 +81,8 @@ function(
             this.packeryCollectionView = new PackeryCollectionView({
                 itemView: dashboardChartBuilder.buildChartView,
                 collection: this.filteredCollection,
-                itemViewOptions: { dataManager: this.dataManager }
+                itemViewOptions: { dataManager: this.dataManager },
+                droppable: { enabled: true }
             });
 
             this.listenTo(this.packeryCollectionView, "reorder", _.bind(this._onReorderCharts, this));

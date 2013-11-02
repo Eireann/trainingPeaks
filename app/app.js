@@ -2,7 +2,6 @@ define(
 [
     "underscore",
     "TP",
-    "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/ajax402",
     "framework/tooltips",
@@ -29,7 +28,6 @@ define(
 function(
     _,
     TP,
-    ajaxCaching,
     initializeAjaxTimezone,
     initializeAjax402,
     ToolTips,
@@ -112,7 +110,6 @@ function(
             this.apiConfig = apiConfig;
         },
 
-        ajaxCachingEnabled: false,
         historyEnabled: true,
 
 
@@ -209,8 +206,6 @@ function(
             this.addInitializer(function()
             {
                 initializeAjaxTimezone();
-                if (this.ajaxCachingEnabled)
-                    this.ajaxCaching = ajaxCaching.initialize();
             });
 
             // display build info
@@ -240,7 +235,7 @@ function(
             {
                 var dataManagerOptions = {
                     identityMap: new IdentityMap(),
-                    resetPatterns: [/athletes\/[0-9]+\/workouts/]
+                    resetPatterns: [/athletes\/\d+\/workouts/, /athletes\/\d+\/timedmetrics/]
                 };
 
                 this.dataManager = new DataManager(dataManagerOptions);
@@ -469,6 +464,23 @@ function(
                             }
                         }
                     }
+                );
+            });
+
+            // close the top most modal view on escape
+            this.addInitializer(function ()
+            {
+                $(document).on("keyup.closeModalOnEscape", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 27)
+                    {
+                        if(!evt.isDefaultPrevented())
+                        {
+                            $(".modalOverlay:last").trigger("click");
+                        }
+                    }
+                }
                 );
             });
         },

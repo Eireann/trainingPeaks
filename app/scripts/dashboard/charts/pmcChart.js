@@ -193,7 +193,6 @@ function(
                 if (itemDate === today)
                 {
 
-                    //console.log(itemDate + " is today");
                     chartPoints.TSS.push([dayMomentValue, item.tssActual]);
                     chartPoints.TSSFuture.push([dayMomentValue, null]);
 
@@ -211,7 +210,6 @@ function(
                     // put all future value into the Future points arrays
                 } else if (itemDate > today)
                 {
-                    //console.log(itemDate + " is future");
                     chartPoints.TSSFuture.push([dayMomentValue, item.tssPlanned]);
                     chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
                     chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
@@ -226,7 +224,6 @@ function(
                     // put past values into the past point arrays
                 } else
                 {
-                    //console.log(itemDate + " is past");
                     chartPoints.TSS.push([dayMomentValue, item.tssActual]);
                     chartPoints.ATL.push([dayMomentValue, item.atl]);
                     chartPoints.CTL.push([dayMomentValue, item.ctl]);

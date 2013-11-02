@@ -35,11 +35,14 @@ function(
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
+            this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this.render, this));
         },
         
         events:
         {
             "change input[name=filterPeriod]": "_onFilterPeriodChanged",
+            "mouseover button.graphSeriesButton": "_onGraphSeriesButtonHover",
+            "mouseout button.graphSeriesButton": "_onGraphSeriesButtonMouseOut",
             "click button.graphSeriesButton": "_onGraphSeriesButtonClicked",
             "click button.graphZoomButton": "_onZoomClicked",
             "click button.graphResetButton": "_onResetClicked",
@@ -92,7 +95,7 @@ function(
         {
             this.ui.zoomResetButton.removeClass("hidden");
         },
-        
+
         _onFilterPeriodChanged: function(event)
         {
             if (!event.target)
@@ -102,14 +105,67 @@ function(
             this.trigger("filterPeriodChanged", period);
         },
 
+        _onGraphSeriesButtonHover: function(event)
+        {
+            this.mouseOverTarget = $(event.target);
+            this._openSeriesOptionsMenuWithDelay({
+                modal: {
+                    overlayClass: "hidden" 
+                }
+            });
+        },
+
+        _openSeriesOptionsMenuWithDelay: _.debounce(function(options)
+        {
+            if(this.mouseOverTarget && !this.seriesOptionsMenu)
+            {
+                this.seriesOptionsMenuFromMouseover = this._openSeriesOptionsMenu(this.mouseOverTarget, options);
+            }
+        }, 500),
+
+        _onGraphSeriesButtonMouseOut: function(event)
+        {
+            this.mouseOverTarget = null;
+            if(this.seriesOptionsMenuFromMouseover)
+            {
+                this.seriesOptionsMenuFromMouseover.close();
+                this.seriesOptionsMenuFromMouseover = null;
+                this.seriesOptionsMenu = null;
+            }
+        },
+
         _onGraphSeriesButtonClicked: function(event)
         {
             var seriesButton = $(event.target);
+            this._openSeriesOptionsMenu(seriesButton);
+        },
 
-            var seriesName = seriesButton.data("series");
-            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView({ model: this.model, parentEl: this.$el, series: seriesName, stateModel: this.stateModel });
-            var offset = seriesButton.offset();
-            this.seriesOptionsMenu.render().top(offset.top + seriesButton.height()).left(offset.left - (seriesButton.width() / 2));
+        _openSeriesOptionsMenu: function(seriesButton, additionalOptions)
+        {
+            var tomahawkOptions = {  
+                model: new TP.Model({
+                    series: seriesButton.data("series"),
+                    title: seriesButton.data("title")}),
+                detailDataModel: this.model.get("detailData"),
+                target: seriesButton,
+                offset: "top"
+            };
+
+            if(additionalOptions)
+            {
+                tomahawkOptions = _.defaults(additionalOptions, tomahawkOptions);
+            }
+
+            this.seriesOptionsMenu = new GraphSeriesOptionsMenuView.Tomahawk(tomahawkOptions);
+
+            this.seriesOptionsMenu.render();
+
+            this.listenTo(this.seriesOptionsMenu, "close", _.bind(function()
+            {
+                this.seriesOptionsMenu = null;
+            }, this));
+
+            return this.seriesOptionsMenu;
         },
         
         _onZoomClicked: function()

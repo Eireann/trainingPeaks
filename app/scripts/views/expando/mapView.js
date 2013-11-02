@@ -16,7 +16,7 @@ function (
     return TP.ItemView.extend(
     {
 
-        className: "expandoMapPod",
+        wrapperClassName: "expandoMapPod",
 
         template:
         {
@@ -92,7 +92,7 @@ function (
                     this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
                 }
 
-                this.removeItemsFromMap(this.baseLayers);
+                MapUtils.removeItemsFromMap(this.map, this.baseLayers);
                 this.baseLayers = [];
 
                 //this.baseLayers.push(this.addMouseHoverBuffer(latLongArray));
@@ -233,32 +233,6 @@ function (
             {
                 this.map.removeLayer(selection.mapLayer);
             }
-        },
-
-        removeItemsFromMap: function(items)
-        {
-            if(!this.map)
-            {
-                return;
-            }
-            _.each(items, function(item)
-            {
-                if(_.isArray(item))
-                {
-                    this.removeItemsFromMap(item);
-                }
-                else
-                {
-                    if(_.isFunction(item.removeFrom))
-                    {
-                        item.removeFrom(this.map);
-                    }
-                    else
-                    {
-                        this.map.removeLayer(item);
-                    }
-                }
-            }, this);
         },
 
         _onHoverChange: function (state, offset, options)

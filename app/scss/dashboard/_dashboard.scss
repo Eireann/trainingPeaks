@@ -205,13 +205,13 @@
     margin: 10px;
     */
 
+    @include noDataMessage;
+    
     position: absolute; 
     padding: 15px 0 0 0;
 
     border: 1px solid transparent;
     cursor: pointer;
-
-    @include noDataMessage;
 
     .chartTitle, 
     .customDateRange {
@@ -881,12 +881,12 @@
     }
 }
 
-.chartTile {
+.chartTile, .podTile {
     @include libraryTile();
     margin:0 0 5px 0;
     padding:3px 3px 2px 3px;
 
-    .chartTileIcon {
+    .chartTileIcon, .podTileIcon {
         width: 25px;
         height: 25px;
         float: left;
@@ -895,7 +895,7 @@
         background-color: $TPGrey2;
     }
 
-    .chartTileName {
+    .chartTileName, .podTileName {
         font-size: $fontSizeSmaller;
         font-family: $fontFamilyHeavy;
         font-weight:normal;

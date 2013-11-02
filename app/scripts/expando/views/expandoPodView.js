@@ -30,6 +30,11 @@ function(
             template: expandoPodTemplate
         },
 
+        events:
+        {
+            "click .close": "_removePod",
+        },
+
         initialize: function(options)
         {
             this.childView = options.childView;
@@ -46,6 +51,11 @@ function(
             var $child = this.$(".expandoPodContent");
             this.childView.setElement($child);
             $child.addClass(this.childView.className);
+            if(this.childView.wrapperClassName)
+            {
+                this.$el.addClass(this.childView.wrapperClassName);
+            }
+
 
             this.childView.render();
         },
@@ -80,8 +90,12 @@ function(
         _onChildHasNoData: function()
         {
             this.$el.addClass("noData");
-        }
+        },
 
+        _removePod: function()
+        {
+            this.model.destroy();
+        }
 
     });
 

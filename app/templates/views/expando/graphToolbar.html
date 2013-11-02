@@ -21,13 +21,13 @@
 
 <div class="graphButtonContain cf">
 	<div class="seriesButtons">
-		<button class="graphSeriesButton graphElevationButton" data-series="Elevation">{{ elevationLabel }}</button>
-		<button class="graphSeriesButton graphSpeedButton" data-series="Speed">{{ speedLabel }}</button>
-		<button class="graphSeriesButton graphHeartRateButton" data-series="HeartRate">BPM</button>
-		<button class="graphSeriesButton graphPowerButton" data-series="Power">W</button>
-		<button class="graphSeriesButton graphRightPowerButton" data-series="RightPower">W</button>
-		<button class="graphSeriesButton graphTorqueButton" data-series="Torque">{{ torqueLabel }}</button>
-		<button class="graphSeriesButton graphCadenceButton" data-series="Cadence">{{ cadenceLabel }}</button>
-		<button class="graphSeriesButton graphTemperatureButton" data-series="Temperature">{{ tempLabel }}</button>
+		<button class="graphSeriesButton graphElevationButton" data-title="{{$ "Elevation" }}" data-series="Elevation">{{ elevationLabel }}</button>
+		<button class="graphSeriesButton graphSpeedButton" data-title="{{$ "Speed" }}" data-series="Speed">{{ speedLabel }}</button>
+		<button class="graphSeriesButton graphHeartRateButton" data-title="{{$ "HeartRate" }}" data-series="HeartRate">BPM</button>
+		<button class="graphSeriesButton graphPowerButton" data-title="{{$ "Power" }}" data-series="Power">W</button>
+		<button class="graphSeriesButton graphRightPowerButton" data-title="{{$ "RightPower" }}" data-series="RightPower">W</button>
+		<button class="graphSeriesButton graphTorqueButton" data-title="{{$ "Torque" }}" data-series="Torque">{{ torqueLabel }}</button>
+		<button class="graphSeriesButton graphCadenceButton" data-title="{{$ "Cadence" }}" data-series="Cadence">{{ cadenceLabel }}</button>
+		<button class="graphSeriesButton graphTemperatureButton" data-title="{{$ "Temperature" }}" data-series="Temperature">{{ tempLabel }}</button>
 	</div>
 </div>

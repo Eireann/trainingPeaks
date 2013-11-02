@@ -47,6 +47,7 @@ function (
         defaults:
         {
             "workoutId": null,
+            "uploadedFileId": null,
             "flatSamples": null,
             "rangesStats": null,
             "peakCadences": null,
@@ -191,8 +192,7 @@ function (
                 lapsStats: this._getEditedLapsStats()
             };
 
-            var command = new SaveWorkoutDetailDataCommand(params);
-            command.workoutId = this.get('workoutId');
+            var command = new SaveWorkoutDetailDataCommand(params, { workoutId: this.get('workoutId'), uploadedFileId: this.get('uploadedFileId')});
             return command.execute()
                 .done(_.bind(this._afterSaveEdits, this));
         },

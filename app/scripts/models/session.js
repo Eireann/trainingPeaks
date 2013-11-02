@@ -13,7 +13,6 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
     return TP.Model.extend(
     {
-        storageLocation: localStorage,
 
         defaults:
         {
@@ -45,6 +44,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
             });
 
             this.userPromise = $.Deferred();
+            this.userAccessPromise = $.Deferred();
             this.user = new UserModel();
             this.userAccessRights =  new UserAccessRightsModel();
 
@@ -63,7 +63,10 @@ function (_, TP, UserModel, UserAccessRightsModel)
         _fetchUser: function(options)
         {
             var self = this;
-            this.userAccessPromise = this.userAccessRights.fetch();
+            this.userAccessRights.fetch().done(function()
+            {
+                self.userAccessPromise.resolve();
+            });
             this.user.fetch(options).done(function()
             {
                 self.userPromise.resolve();
@@ -114,7 +117,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         authenticationComplete: function(callback)
         {
-            this.userPromise.done(callback);
+            $.when(this.userPromise, this.userAccessPromise).done(callback);
         },
 
         logout: function()

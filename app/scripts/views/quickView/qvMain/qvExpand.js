@@ -180,7 +180,6 @@ function (_, TP, ExpandoController, UserConfirmationView, closeExpandoWithoutSav
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "collapseClicked", "eventLabel": "" });
 
             this.expanded = false;
-            this.resetTabRenderedState();
             this.animateOneStepCollapse();
         },
 
@@ -201,7 +200,7 @@ function (_, TP, ExpandoController, UserConfirmationView, closeExpandoWithoutSav
                 self.centerViewInWindow();
 
                 // refresh current tab in case data was changed
-                self.tabs[self.currentTabIndex].render();
+                self.renderCurrentTab();
             };
 
             var collapseDuration = 300;

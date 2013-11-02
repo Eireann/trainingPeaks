@@ -1,19 +1,20 @@
 define(
 [
     "TP",
+    "shared/views/tomahawkView",
     "views/userConfirmationView",
     "hbs!templates/views/expando/deleteSeriesConfirmationTemplate",
     "hbs!templates/views/expando/graphSeriesOptionsMenuTemplate",
 ],
 function(
          TP,
+         TomahawkView,
          UserConfirmationView,
          deleteConfirmationTemplate,
          optionsMenuTemplate)
 {
-    return TP.ItemView.extend(
+    GraphSeriesOptionsMenuView = TP.ItemView.extend(
     {
-        modal: true,
         showThrobbers: false,
         tagName: "div",
 
@@ -21,15 +22,14 @@ function(
 
         initialize: function(options)
         {
-            this.detailDataModel = this.model.get("detailData");
-            this.series = options.series;
+            this.detailDataModel = options.detailDataModel;
         },
 
         events:
         {
             "click .showSeries": "_showSeries",
             "click .hideSeries": "_hideSeries",
-            "click .deleteSeries": "_deleteSeries" 
+            "click .deleteSeries": "_deleteSeries"
         },
 
         template:
@@ -40,7 +40,7 @@ function(
 
         onRender: function()
         {
-            if(_.contains(this.detailDataModel.get("disabledDataChannels"), this.series))
+            if(_.contains(this.detailDataModel.get("disabledDataChannels"), this.model.get("series")))
             {
                 this.$(".hideSeries").remove();
             }
@@ -53,15 +53,15 @@ function(
         _showSeries: function()
         {
             this.close();
-            this.detailDataModel.enableChannel(this.series);
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.series });
+            this.detailDataModel.enableChannel(this.model.get("series"));
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.model.get("series") });
         },
 
         _hideSeries: function()
         {
             this.close();
-            this.detailDataModel.disableChannel(this.series);
-            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.series });
+            this.detailDataModel.disableChannel(this.model.get("series"));
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": this.model.get("series") });
         },
 
         _deleteSeries: function()
@@ -70,7 +70,7 @@ function(
             this.confirmationView = new UserConfirmationView(
             {
                 template: deleteConfirmationTemplate,
-                model: new TP.Model({ series: this.series })
+                model: new TP.Model({ series: this.model.get("series") })
             });
 
             this.confirmationView.render();
@@ -78,10 +78,16 @@ function(
             var self = this;
             this.confirmationView.on("userConfirmed", function()
             {
-                self.detailDataModel.cutChannel(self.series);
+                self.detailDataModel.cutChannel(self.model.get("series"));
             });
 
         }
 
     });
+
+    TomahawkView.wrap(GraphSeriesOptionsMenuView, {
+        style: "list"
+    });
+
+    return GraphSeriesOptionsMenuView;
 });

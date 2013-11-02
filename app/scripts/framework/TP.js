@@ -187,8 +187,7 @@ function(
             var existingModal = $(".modalOverlay:last");           
 
             // make an overlay
-            var onOverlayClick = function () { this.trigger("clickoutside"); this.close(); };
-            this.createOverlay({ mask: this.modal.mask, noOverlay: this.modal.noOverlay, onOverlayClick: onOverlayClick});
+            this.createOverlay(_.isObject(this.modal) ? this.modal : {});
             _.bindAll(this, "close");
 
             // make $el absolute and put it on the body
@@ -197,13 +196,16 @@ function(
             if (this.modal.shadow)
                 this.$el.addClass("modalShadow");
 
-            theMarsApp.getBodyElement().append(this.$el);
+            // mars app may not be defined if we render a modal view for testing
+            if(typeof theMarsApp !== "undefined")
+            {
+                theMarsApp.getBodyElement().append(this.$el);
+            }
 
             // dynamic centering
             this.rePositionView();
             this.watchForWindowResize();
 
-            this.enableEscapeKey();
             this.closeOnRouteChange(this.close);
 
             // set on top of other modals
@@ -222,7 +224,7 @@ function(
 
         createOverlay: function(modalSettings)
         {
-            modalSettings = _.extend({ mask: true, noOverlay: false, onOverlayClick: null}, modalSettings);
+            modalSettings = _.defaults(modalSettings, { mask: false, overlayClass: "", onOverlayClick: null});
 
             this.$overlay = $("<div></div>");
             this.$overlay.addClass("modalOverlay");
@@ -231,7 +233,11 @@ function(
             if (modalSettings.mask)
                 this.$overlay.addClass("modalOverlayMask");
 
-            if (!modalSettings.noOverlay)
+            if(modalSettings.overlayClass)
+                this.$overlay.addClass(modalSettings.overlayClass);
+
+            // mars app may not be defined if we render a modal view for testing
+            if(typeof theMarsApp !== "undefined")
             {
                 theMarsApp.getBodyElement().append(this.$overlay);
             }
@@ -244,6 +250,10 @@ function(
                     modalSettings.onOverlayClick.apply(self);
                 };
                 this.$overlay.on("click", onOverlayClick);
+            }
+            else
+            {
+                this.$overlay.on("click", _.bind(this.close, this));
             }
         },
 
@@ -328,34 +338,14 @@ function(
 
         closeOnRouteChange: function(onClose)
         {
-            if(theMarsApp.router)
+            if(typeof theMarsApp !== "undefined" && theMarsApp.router)
             {
                 theMarsApp.router.once("route", onClose, this);
             }
         },
 
-        enableEscapeKey: function()
-        {
-            _.bindAll(this, "onEscapeKey");
-            $(document).on("keyup.esc", this.onEscapeKey);
-        },
-
-        disableEscapeKey: function()
-        {
-            $(document).off("keyup.esc", this.onEscapeKey);
-        },
-
-        onEscapeKey: function(e)
-        {
-            if (e.which === 27 && !e.isDefaultPrevented())
-            {
-                this.close();
-            }
-        },
-
         closeModal: function()
         {
-            this.disableEscapeKey();
             this.stopWatchingWindowResize();
             if (this.$overlay)
             {

@@ -86,6 +86,122 @@ function(
                 expect(selectionManager.pasteClipboardToSelection).toHaveBeenCalled();
             });
 
+            describe("When a modal view is open", function()
+            {
+                beforeEach(function()
+                {
+                    $("<div></div>").addClass("modalOverlayMask").appendTo($body);
+                });
+
+                it("Ctrl-C should not cause copy", function()
+                {
+                    spyOn(selectionManager, "copySelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "C".charCodeAt(), ctrlKey: true });
+                    $body.trigger(e);
+                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Cmd-C should not cause copy", function()
+                {
+                    spyOn(selectionManager, "copySelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "C".charCodeAt(), metaKey: true });
+                    $body.trigger(e);
+                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Ctrl-X should not cause cut", function()
+                {
+                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "X".charCodeAt(), ctrlKey: true });
+                    $body.trigger(e);
+                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Cmd-X should not cause cut", function()
+                {
+                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "X".charCodeAt(), metaKey: true });
+                    $body.trigger(e);
+                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Ctrl-V should not cause paste", function()
+                {
+                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    var e = new $.Event("keydown", { which: "V".charCodeAt(), ctrlKey: true });
+                    $body.trigger(e);
+                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                });
+
+                it("Cmd-V should not cause paste", function()
+                {
+                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    var e = new $.Event("keydown", { which: "V".charCodeAt(), metaKey: true });
+                    $body.trigger(e);
+                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                });
+
+            });
+
+            describe("When an input is focused", function()
+            {
+                var $input;
+
+                beforeEach(function()
+                {
+                    $input = $("<input type='text'/>");
+                    $input.focus().appendTo($body);
+                });
+
+                it("Ctrl-C should not cause copy", function()
+                {
+                    spyOn(selectionManager, "copySelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "C".charCodeAt(), ctrlKey: true });
+                    $input.trigger(e);
+                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Cmd-C should not cause copy", function()
+                {
+                    spyOn(selectionManager, "copySelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "C".charCodeAt(), metaKey: true });
+                    $input.trigger(e);
+                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Ctrl-X should not cause cut", function()
+                {
+                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "X".charCodeAt(), ctrlKey: true });
+                    $input.trigger(e);
+                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Cmd-X should not cause cut", function()
+                {
+                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    var e = new $.Event("keydown", { which: "X".charCodeAt(), metaKey: true });
+                    $input.trigger(e);
+                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                });
+
+                it("Ctrl-V should not cause paste", function()
+                {
+                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    var e = new $.Event("keydown", { which: "V".charCodeAt(), ctrlKey: true });
+                    $input.trigger(e);
+                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                });
+
+                it("Cmd-V should not cause paste", function()
+                {
+                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    var e = new $.Event("keydown", { which: "V".charCodeAt(), metaKey: true });
+                    $input.trigger(e);
+                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                });
+
+            });
         });
 
         describe("Cut/Copy/Paste functionality", function()

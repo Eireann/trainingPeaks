@@ -85,7 +85,6 @@ function(
             {
                 athleteId: theMarsApp.user.getCurrentAthleteId(),
                 workoutDay: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat),
-                startTime: moment(this.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat),
                 title: "",
                 workoutTypeValueId: workoutTypeId
             });
