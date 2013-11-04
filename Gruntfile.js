@@ -322,6 +322,14 @@ module.exports = function(grunt)
                 },
                 dest: 'vendor/js/libs/lodash.TP.js'
             }
+        },
+
+        bower:
+        {
+            default:
+            {
+                rjsConfig: 'app/config.js'
+            }
         }
 
     });
@@ -342,6 +350,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-webfont");
     grunt.loadNpmTasks("grunt-lodash");
     grunt.loadNpmTasks("grunt-targethtml");
+    grunt.loadNpmTasks("grunt-bower-requirejs");
 
 
     // TESTING:

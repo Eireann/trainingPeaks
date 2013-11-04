@@ -2,8 +2,61 @@
 <html>
   <head>
     <title>Mars Mocha Tests</title>
-    <link rel="stylesheet" href="../bower_components/mocha/css/mocha.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="../bower_components/mocha/mocha.css" type="text/css" charset="utf-8" />
   </head>
   <body>
+    <div id="mocha"></div>
+
+    <script src="../bower_components/requirejs/require.js"></script>
+    <script>
+      requirejs(
+      [
+        "../app/config"
+      ],
+      function(commonConfig)
+      {
+
+        requirejs.config(commonConfig);
+        requirejs.config(
+        {
+          baseUrl: '../app',
+          paths: { specs: '../test/specs' }
+        });
+
+        requirejs(
+        [
+          "mocha",
+          "chai",
+          "sinon",
+          "jquery"
+        ],
+        function(
+          mocha,
+          chai,
+          sinon,
+          $
+        )
+        {
+
+          mocha.setup("bdd");
+
+          window.expect = chai.expect;
+          window.sinon = sinon.sandbox.create();
+
+          afterEach(function()
+          {
+            window.sinon.restore();
+          });
+
+          requirejs(["app", "../test/specs"], function(theApp, specs)
+          {
+            sinon.useFakeXMLHttpRequest();
+            mocha.run();
+          });
+
+        });
+
+      });
+    </script>
   </body>
 </html>

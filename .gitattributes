@@ -17,3 +17,6 @@ web.config text eol=crlf
 # Denote all files that are truly binary and should not be modified.
 *.png binary
 *.jpg binary
+
+# Don't worry about line endings in bower_components
+bower_components/** binary

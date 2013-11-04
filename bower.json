@@ -1,0 +1,11 @@
+{
+  "name": "Mars",
+  "private": true,
+  "dependencies": {
+    "mocha": "~1.14.0",
+    "chai": "~1.8.1",
+    "sinon": "http://sinonjs.org/releases/sinon-1.7.3.js",
+    "requirejs": "~2.1.9",
+    "jquery": "~2.0.3"
+  }
+}
