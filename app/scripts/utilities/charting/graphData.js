@@ -24,7 +24,6 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
     {
         this.xaxis = "time";
         this.scatter = {};
-        this.yaxis = "elevation";
         this.disabledSeries = [];
         this.excludedSeries = [];
         this.excludedRanges = [];
@@ -50,6 +49,43 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             return this.generateSeriesFromData(this.flatSamples, this.dataByAxisAndChannel[this.xaxis], this.minElevation, this.xaxis, this.xAxisDistanceValues, this.disabledSeries, this.excludedSeries, this.excludedRanges, x1, x2);
         },
 
+        getSeriesForAxes: function(xaxis, yaxis, x1, x2)
+        {
+              var data = [];
+              var channel = "time";
+
+              if(!_.isUndefined(x1) && !_.isUndefined(x2))
+              {
+                  startIdx = DataParserUtils.findIndexByXAxisOffset(x1);
+                  endIdx = DataParserUtils.findIndexByXAxisOffset(x2);
+                  offsetsOfSamples = offsetsOfSamples.slice(startIdx, endIdx + 1);
+              }
+
+              if(!_.isUndefined(x1) && !_.isUndefined(x2))
+              {
+                  data = this.dataByAxisAndChannel[channel].slice(startIdx, endIdx + 1);
+              }
+              else
+              {
+                  data = _.clone(this.dataByAxisAndChannel[channel]);
+              }
+
+              // remove cut ranges
+              this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
+
+              var seriesOptions = FlotUtils.seriesOptions(data, yaxis, { minElevation: this.elevationInfo.min });
+
+              var newSeries = []
+              _.each(data[xaxis], function(dataPoint, index)
+              {
+                  var xaxisValue = data[xaxis][index][1];
+                  var yaxisValue = data[yaxis][index][1];
+                  newSeries.push([xaxisValue, yaxisValue]);
+              }, this);
+              seriesOptions.data = newSeries;
+
+              return [seriesOptions];
+        },
 
         resetLatLonArray: function()
         {
@@ -120,10 +156,10 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 return null;
         },
 
-        getDataByChannel: function (channel)
+        getDataByAxisAndChannel: function (axis, channel)
         {
-            if (_.has(this.dataByAxisAndChannel[this.xaxis], channel))
-                return this.dataByAxisAndChannel[this.xaxis][channel];
+            if (_.has(this.dataByAxisAndChannel[axis], channel))
+                return this.dataByAxisAndChannel[axis][channel];
             else
                 return null;
         },
@@ -255,8 +291,8 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             var startIdx, endIdx;
             if(!_.isUndefined(x1) && !_.isUndefined(x2))
             {
-                startIdx = GraphDataParser.findIndexByXAxisOffset(x1);
-                endIdx = GraphDataParser.findIndexByXAxisOffset(x2);
+                startIdx = DataParserUtils.findIndexByXAxisOffset(x1);
+                endIdx = DataParserUtils.findIndexByXAxisOffset(x2);
                 offsetsOfSamples = offsetsOfSamples.slice(startIdx, endIdx + 1);
             }
 

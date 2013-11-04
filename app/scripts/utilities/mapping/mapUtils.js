@@ -190,7 +190,7 @@ function(
             var latLonArray = graphData.getLatLonArray();
             if (latLonArray)
             {
-                var distances = graphData.getDataByChannel("Distance");
+                var distances = graphData.getDataByAxisAndChannel("distance", "Distance");
                 var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
                 var nextMarker = intervals.distanceBetweenMarkers;
 

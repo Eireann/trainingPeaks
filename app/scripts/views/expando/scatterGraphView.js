@@ -58,6 +58,7 @@ function(
 
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model, "scatterGraph:axisChange", _.bind(this._onSetXYAxis, this));
         },
 
         onRender: function()
@@ -131,7 +132,7 @@ function(
             this._getGraphData().workoutTypeValueId = this.model.get("workoutTypeValueId");
             this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
-            var enabledSeries = this._getGraphData().getSeries();
+            var enabledSeries = this._getGraphData().getSeriesForAxes(this.currentXAxis, this.currentYAxis);
 
             if(!enabledSeries.length)
             {
@@ -144,7 +145,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(enabledSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
+                $tooltipEl.html(flotCustomToolTip(enabledSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
@@ -183,25 +184,25 @@ function(
         {
             var from;
             var to;
-            this.currentAxis = "time";
+
             if(!this.plot) return;
 
             if((range && range !== this.zoomRange) || (options && options.force))
             {
 
-                if (this.currentAxis === "time")
+                if (this.currentXAxis === "time")
                 {
                     from = range.get("begin");
                     to = range.get("end");
                 }
-                else if (this.currentAxis === "distance")
+                else if (this.currentXAxis === "distance")
                 {
                     from = this._getGraphData().getDistanceFromMsOffset(range.get("begin"));
                     to = this._getGraphData().getDistanceFromMsOffset(range.get("end"));
                 }
                 else
                 {
-                    throw new Error("GraphView: invalid X Axis type: " + this.currentAxis);
+                    // TODO: potentially add other series types here
                 }
 
                 this.plot.setSelection({ xaxis: { from: from, to: to } }, preventEvent);
@@ -221,6 +222,19 @@ function(
             {
                 this.plot.triggerRedrawOverlay();
             }
+        },
+
+        _onSetXYAxis: function(data)
+        {
+            if(data.axis === "x")
+            {
+                this.currentXAxis = data.series;
+            }
+            else
+            {
+                this.currentYAxis = data.series;
+            }
+            this._onSeriesChanged();
         },
 
         _onSeriesChanged: function()

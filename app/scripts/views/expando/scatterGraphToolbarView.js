@@ -40,7 +40,7 @@ function(
             var $target = $(e.target);
             $target.siblings().addClass("seriesDisabled");
             $target.removeClass("seriesDisabled");
-            this.trigger("scatterGraph:axisChange", {series: $target.data('series'), axis: $target.parent().data('axis')});
+            this.model.trigger("scatterGraph:axisChange", {series: $target.data('series'), axis: $target.parent().data('axis')});
         },
 
         onRender: function()
