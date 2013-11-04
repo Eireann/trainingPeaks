@@ -1,5 +1,7 @@
 define(
 [
+    "underscore",
+    "moment",
     "TP",
     "framework/chart",
     "utilities/charting/jquery.flot.stack",
@@ -10,6 +12,8 @@ define(
     "dashboard/views/workoutSummaryChartSettingsView"
 ],
 function(
+    _,
+    moment,
     TP,
     Chart,
     flotStack,
