@@ -937,6 +937,13 @@
         bottom: 0;
         left: 0;
         right: 0;
+
+        .leaflet-top {
+
+            .leaflet-control {
+                margin-top:20px;
+            }
+        }
     }
 
     &.menuOpen
@@ -978,15 +985,15 @@
         display: block;
     }
 
-    &.expandoMapPod .expandoPodHeader
-    {
-        background: rgba(255,255,255,0.8);
-
-        &:hover { background: white; }
+    &.expandoMapPod .expandoPodHeader {
+        background: rgba(0,0,0,0.4);
+        
+        &:hover { 
+            background: rgba(0,0,0,0.5);
+        }
     }
 
-    .expandoPodContent
-    {
+    .expandoPodContent {
         width: 100%;
         height: 100%;
 
