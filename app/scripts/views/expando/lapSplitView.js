@@ -24,8 +24,14 @@ function(
 
         events:
         {
-            "click td.lap": "handleLapClickEditable",
-            "click :not(td.lap)": "_onClick"
+            "click": "_onClick"
+        },
+
+        modelEvents:
+        {
+            "state:change:isDeleted": "_markIfDeleted",
+            "state:change:isFocused": "_markIfFocused",
+            "change": "render"
         },
 
         tagName: 'tr',
@@ -60,10 +66,10 @@ function(
                     subsetLapData.push( { key: keyName, value: allLapData[keyName] } );
                 }, this);
 
-            return { lapData: subsetLapData, isCut: this.model.get("isCut") };
+            return { lapData: subsetLapData, _state: this.model.getState().toJSON() };
         },
 
-        handleLapClickEditable: function(e)
+        _startEditing: function(e)
         {
             var $currentTarget = $(e.currentTarget);
             if($currentTarget.hasClass('editing')) return false;
@@ -83,23 +89,44 @@ function(
 
         onRender: function()
         {
-            if(this.model.get('deleted'))
-            {
-                this._markAsDeleted();
-            }
+            this._markIfDeleted();
+            this._markIfFocused();            
             ToolTips.enableTooltips();
         },
 
-        _onClick: function()
+        _onClick: function(e)
         {
-            this.stateModel.set("primaryRange", this.model);
+            // first clicks sets model as focused, second click begins editing
+            if(!this.model.getState().get("isFocused"))
+            {
+                this.stateModel.set("primaryRange", this.model);
+            }
+            else if(this.model.getState().get("isLap") && !this.model.getState().get("isEditing"))
+            {
+                this._startEditing(e);
+            }
         },
 
-        _markAsDeleted: function()
+        _markIfDeleted: function()
         {
-            this.$('td.lap').attr('disabled', true);
-            this.undelegateEvents();
-            this.$el.addClass('deleted');
+            if(this.model.getState().get('isDeleted'))
+            {
+                this.$('td.lap').attr('disabled', true);
+                this.undelegateEvents();
+                this.$el.addClass('deleted');
+            }
+        },
+
+        _markIfFocused: function()
+        {
+            if(this.model.getState().get("isFocused"))
+            {
+                this.$el.addClass('highlight');
+            }
+            else
+            {
+                this.$el.removeClass("highlight");
+            }
         },
 
         _onInputChange: function(e)

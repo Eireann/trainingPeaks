@@ -1,4 +1,4 @@
-{{#ifNot isCut}}
+{{#ifNot _state.isCut}}
     {{#each lapData}}
       <td class="{{key}}" {{#ifEquals key "lap"}}title="{{$ "ClickToEdit" }}"{{/ifEquals}}>{{value}}</td>
     {{/each}}

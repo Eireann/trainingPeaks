@@ -33,10 +33,11 @@ function(
 
         modelEvents:
         {
-            "change:isFocused": "_onFocusedChange",
-            "change:isSelected": "_onSelectedChange",
+            "state:change:isFocused": "_onFocusedChange",
+            "state:change:isSelected": "_onSelectedChange",
+            "state:change:isDeleted": "_onDeletedChange",
             "change:name": "_onNameChange",
-            "change:isLap change:totalTime change:isCut": "render"
+            "state:change:isLap change:totalTime state:change:isCut": "render"
         },
 
         events:
@@ -56,8 +57,9 @@ function(
         {
             this._onFocusedChange();
             this._onSelectedChange();
+            this._onDeletedChange();
 
-            if(this.model.get("isEditing"))
+            if(this.model.getState().get("isEditing"))
             {
                 this._startEditing();
             }
@@ -70,6 +72,7 @@ function(
             {
                 data.name += " (" + data.formattedValue + ")";
             }
+            data._state = this.model.getState().toJSON();
             return data;
         },
 
@@ -77,7 +80,7 @@ function(
         {
             this.render();
 
-            if(this.model.get("isFocused"))
+            if(this.model.getState().get("isFocused"))
             {
                 this.stateModel.trigger('change:primaryRange', this.stateModel, this.model);
             }
@@ -85,23 +88,33 @@ function(
 
         _onFocusedChange: function()
         {
-            var focused = !!this.model.get("isFocused");
+            var focused = !!this.model.getState().get("isFocused");
             this.$el.toggleClass("highlight", focused);
         },
 
         _onSelectedChange: function()
         {
-            this.$("input[type=checkbox]").attr("checked", !!this.model.get("isSelected"));
+            this.$("input[type=checkbox]").attr("checked", !!this.model.getState().get("isSelected"));
+        },
+
+        _onDeletedChange: function()
+        {
+            if(this.model.getState().get("isDeleted"))
+            {
+                this.$el.addClass('deleted');
+                this.undelegateEvents();
+                this.$('input').attr('disabled', true);
+            }
         },
 
         _onClick: function(e)
         {
             // first clicks sets model as focused, second click begins editing
-            if(!this.model.get("isFocused"))
+            if(!this.model.getState().get("isFocused"))
             {
                 this.stateModel.set("primaryRange", this.model);
             }
-            else if(this.model.get("isLap") && !this.model.get("isEditing"))
+            else if(this.model.getState().get("isLap") && !this.model.getState().get("isEditing"))
             {
                 this._startEditing();
             }
@@ -109,10 +122,10 @@ function(
 
         _startEditing: function()
         {
-            if(this.model.get("isLap"))
+            if(this.model.getState().get("isLap"))
             {
 
-                this.model.set("isEditing", true);
+                this.model.getState().set("isEditing", true);
                 var $container = this.$(".editLapName");
                 var $input = $('<input type="text"/>');
                 $input.val(this.model.get("name"));
@@ -135,10 +148,10 @@ function(
 
         _stopEditing: function(e, cancel)
         {
-            if(this.model.get("isLap"))
+            if(this.model.getState().get("isLap"))
             {
 
-                this.model.set("isEditing", false);
+                this.model.getState().set("isEditing", false);
 
                 var $input = this.$("input[type=text]");
 
@@ -168,20 +181,16 @@ function(
 
         _onClickAdd: function(e)
         {
-            this.model.set({temporary: false, isLap: true, isEditing: true});
+            this.model.getState().set({temporary: false, isLap: true, isEditing: true});
         },
 
         _deleteLap: function()
         {
-            if(this.model.get("isFocused"))
+            if(this.model.getState().get("isFocused"))
             {
                 this.stateModel.set("primaryRange", null);
             }
-            this.model.set({ deleted: true, isFocused: false });
-            this.$el.addClass('deleted');
-            this.model.trigger('lap:markedAsDeleted', this.model);
-            this.undelegateEvents();
-            this.$('input').attr('disabled', true);
+            this.model.getState().set({ isDeleted: true });
             this.stateModel.removeRange(this.model);
         },
 

@@ -90,7 +90,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
         initialize: function(attrs, options)
         {
-            this.myBackboneModelPrototype.initialize.apply(this, arguments);
+            this.constructor.__super__.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
 
             this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }, options));
