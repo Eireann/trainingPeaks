@@ -40,5 +40,28 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
             controller.views.header.$el.find('input.datepicker').trigger("change");
             expect(controller.showDate).toHaveBeenCalledWith("2013-08-28");
         });
+
+        it("Should display the current month and year, based on the last day of the current week", function()
+        {
+            var stateModel = new TP.Model({ date: moment().format("YYYY-MM-DD") });
+            var view = new CalendarHeaderView({ model: stateModel });
+            view.render();
+
+            stateModel.set("date", "2013-10-21");
+            expect(view.$(".calendarMonthLabel").text()).toContain("October");
+
+            stateModel.set("date", "2013-10-28");
+            expect(view.$(".calendarMonthLabel").text()).toContain("November");
+
+            stateModel.set("date", "2013-11-25");
+            expect(view.$(".calendarMonthLabel").text()).toContain("December");
+
+            stateModel.set("date", "2013-12-23");
+            expect(view.$(".calendarMonthLabel").text()).toContain("December");
+
+            stateModel.set("date", "2013-12-30");
+            expect(view.$(".calendarMonthLabel").text()).toContain("January");
+        });
+
     });
 });

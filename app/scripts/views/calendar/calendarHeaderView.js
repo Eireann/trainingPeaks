@@ -77,26 +77,22 @@ function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizati
 
         formatMonth: function(value)
         {
-            if (value)
-            {
-                return moment(value).format("MMMM");
-            }
-            else
-            {
-                return "";
-            }
+            return this._getLastDayOfWeek(value).format("MMMM");
         },
 
         formatYear: function(value)
         {
-            if (value)
+            return this._getLastDayOfWeek(value).format("YYYY");
+        },
+
+        _getLastDayOfWeek: function(value)
+        {
+            var date = moment(value);
+            if(date.day() !== 0)
             {
-                return moment(value).format("YYYY");
+                date.day(7);
             }
-            else
-            {
-                return "";
-            }
+            return date;
         },
 
         modelEvents: {
