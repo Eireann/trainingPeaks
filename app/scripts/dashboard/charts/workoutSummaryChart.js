@@ -320,6 +320,14 @@ function(
 
         initialize: function(attributes, options)
         {
+            // The KJ by Week chart never had this setting,
+            // leading to values that are inconsistently handled by the code
+            // Default anything not explicitly set to "By Day" to "By Week"
+            if(this.get("dateGrouping") !== 1)
+            {
+                this.set("dateGrouping", 2);
+            }
+
             this.subType = _.find(this.subTypes, function(subType)
             {
                 return subType.chartType === parseInt(this.get('chartType'), 10);
