@@ -13,7 +13,7 @@ function(
     TP,
     DataParser,
     defaultFlotOptions,
-    flotCustomToolTip,
+    FlotCustomToolTip,
     toolTipPositioner,
     MapUtils,
     workoutTypes,
@@ -181,7 +181,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                $tooltipEl.html(FlotCustomToolTip.buildGraphToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), "time"));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
             var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);

@@ -21,7 +21,7 @@ function(
     defaultFlotOptions,
     flotToolTip,
     flotSelection,
-    flotCustomToolTip,
+    FlotCustomToolTip,
     toolTipPositioner,
     flotZoom,
     flotMultiSelection,
@@ -146,7 +146,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildGraphToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 

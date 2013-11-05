@@ -21,7 +21,7 @@ function(
     defaultFlotOptions,
     flotToolTip,
     flotSelection,
-    flotCustomToolTip,
+    FlotCustomToolTip,
     toolTipPositioner,
     flotZoom,
     flotMultiSelection,
@@ -58,7 +58,6 @@ function(
 
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
-            this.listenTo(this.model, "scatterGraph:axisChange", _.bind(this._onSetXYAxis, this));
         },
 
         onRender: function()
@@ -145,18 +144,25 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(enabledSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(enabledSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
-            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentAxis, this.model.get("workoutTypeValueId"));
+            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentXAxis, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
-            this.flotOptions.grid.borderColor = "#9a9999";
+            this.flotOptions.grid.borderColor = "#9A9999";
+            // override default behavior of graphing for right power only.
+            if(enabledSeries[0].label === 'RightPower')
+            {
+                enabledSeries[0].lines.show = false;
+                delete enabledSeries[0].dashes;
+            }
+            enabledSeries[0].color = "#D9DA0E"
 
             if($.plot)
             {
@@ -177,6 +183,7 @@ function(
                 yaxis: this.currentYAxis
             };
             this.graphToolbar = new ScatterGraphToolbarView(params);
+            this.listenTo(this.graphToolbar, "scatterGraph:axisChange", _.bind(this._onChangeXYAxis, this));
             this.$("#scatterGraphToolbar").append(this.graphToolbar.render().$el);
         },
 
@@ -224,7 +231,7 @@ function(
             }
         },
 
-        _onSetXYAxis: function(data)
+        _onChangeXYAxis: function(data)
         {
             if(data.axis === "x")
             {

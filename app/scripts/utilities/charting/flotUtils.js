@@ -7,7 +7,8 @@ define(
 ],
 function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
 {
-    var FlotUtils = {
+    var FlotUtils =
+    {
         generateYAxes: function(series, workoutTypeValueId, data, elevationInfo, graphData)
         {
             var yaxes = [];
