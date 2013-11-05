@@ -83,7 +83,6 @@ define([
 'specs/unit_tests/expando/views/lapsView.spec',
 'specs/unit_tests/expando/views/qvOptionsMenuView.spec',
 'specs/unit_tests/framework/APIModel.spec',
-'specs/unit_tests/framework/ajaxCaching.spec',
 'specs/unit_tests/framework/clipboard.spec',
 'specs/unit_tests/framework/dataManager.spec',
 'specs/unit_tests/framework/filteredSubCollection.spec',

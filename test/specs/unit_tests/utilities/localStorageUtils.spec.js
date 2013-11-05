@@ -87,7 +87,7 @@ function(
                 sinon.spy(localStorage, "removeItem");
                 localStorageUtils.setItem("quota", "will be exceeded");
                 expect(localStorageUtils.getItem("quota")).to.eql("will be exceeded");
-                expect(localStorage.setItem.calls.length).to.eql(2);
+                expect(localStorage.setItem.callCount).to.eql(2);
                 expect(localStorage.removeItem).to.have.been.calledWith(prefix + "quota");
             });
 
@@ -109,7 +109,7 @@ function(
 
                 expect(setItem).to.not.throw();
                 expect(localStorageUtils.getItem("quota")).to.be.null;
-                expect(localStorage.setItem.calls.length).to.eql(2);
+                expect(localStorage.setItem.callCount).to.eql(2);
             });
 
             it("Should re-throw any other errors", function()

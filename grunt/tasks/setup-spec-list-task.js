@@ -26,7 +26,7 @@ module.exports = function(grunt)
                     {
                         specs.push(specName);
                     });
-                } else if(fs.statSync(filePath).isFile() && file.indexOf(".spec.js") > 0)
+                } else if(fs.statSync(filePath).isFile() && /\.spec\.js$/.test(file))
                 {
                     specs.push(path.join(baseName, file));
                 }

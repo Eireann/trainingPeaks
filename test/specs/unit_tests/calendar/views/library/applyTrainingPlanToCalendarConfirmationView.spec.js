@@ -12,11 +12,15 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 
 	describe("applyTrainingPlanToCalendarConfirmationView ", function()
 	{
-		var trainingPlan = new TrainingPlan({planId: 123});
-		var today = moment().format("MM-DD-YYYY");
-		var baselineDate = moment("09-02-2013"); // a monday
-		trainingPlan.details.fetch = function() { return new $.Deferred().resolve(); };
-		trainingPlan.details.set({startDate: moment().format("MM-DD-YYYY")});
+		var trainingPlan, today, baselineDate;
+		beforeEach(function()
+		{
+			trainingPlan = new TrainingPlan({planId: 123});
+			today = moment().format("MM-DD-YYYY");
+			baselineDate = moment("09-02-2013"); // a monday
+			trainingPlan.details.fetch = function() { return new $.Deferred().resolve(); };
+			trainingPlan.details.set({startDate: moment().format("MM-DD-YYYY")});
+		});
 
 		it("Should be loaded as a module", function()
 		{

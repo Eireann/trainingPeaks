@@ -40,9 +40,6 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
             // capture ajax calls
             this.setupFakeAjax();
 
-            // ajaxCaching doesn't play nicely with our fake xhr ...
-            this.theApp.ajaxCachingEnabled = false;
-
             // backbone history doesn't work well with our tests for some reason
             this.theApp.historyEnabled = false;
 

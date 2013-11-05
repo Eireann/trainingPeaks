@@ -16,6 +16,7 @@
       <div id="info"></div>
     </div>
 
+    <script src="../apiConfig.dev.js"></script>
     <script src="../bower_components/mocha/mocha.js"></script>
 
     <script src="../bower_components/requirejs/require.js"></script>
@@ -73,8 +74,8 @@
             window.sinon = sinon.sandbox.create();
           });
 
-          window.setImmediate = function(cb) { cb(); };
-          define("setImmediate", [], function() { return window.setImmediate; });
+          // window.setImmediate = function(cb) { cb(); };
+          // define("setImmediate", [], function() { return window.setImmediate; });
 
           requirejs(
           [
