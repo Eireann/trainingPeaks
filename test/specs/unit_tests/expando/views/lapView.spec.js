@@ -162,8 +162,8 @@ function(
                 view.model.getState().set("isLap", true);
                 view.render();
                 view.$(".lapDescription").trigger("click").trigger("click");
-                expect(view.$(".editLapName input").length).toBe(1);
                 expect(view.model.getState().get("isEditing")).toBeTruthy();
+                expect(view.$el.is(".editing")).toBeTruthy();
             });
 
             it("Should not make a lap editable on the first click", function()
@@ -171,7 +171,7 @@ function(
                 view.model.getState().set("isLap", true);
                 view.render();
                 view.$(".lapDescription").trigger("click");
-                expect(view.$(".editLapName input").length).toBe(0);
+                expect(view.$el.is(".editing")).toBeFalsy();
                 expect(view.model.getState().get("isEditing")).toBeFalsy();
             });
 
@@ -179,17 +179,18 @@ function(
             {
                 view.render();
                 view.$(".lapDescription").trigger("click").trigger("click");
-                expect(view.$(".editLapName input").length).toBe(0);
+                expect(view.$el.is(".editing")).toBeFalsy();
+                expect(view.$("input.lapName").length).toBe(0);
                 expect(view.model.getState().get("isEditing")).toBeFalsy();
             });
 
             it("Should save name changes on blur", function()
             {
                 view.model.getState().set("isLap", true);
-                view.model.getState().set("isEditing", true);
                 view.model.set("name", "Old Name");
                 view.render();
-                view.$(".editLapName input").val("New Name").trigger("blur");
+                view.$el.trigger("click").trigger("click");
+                view.$("input.lapName").val("New Name").trigger("blur");
                 expect(view.model.get("name")).toBe("New Name");
                 expect(view.model.getState().get("isEditing")).toBeFalsy();
             });
@@ -197,10 +198,10 @@ function(
             it("Should save name changes on enter key", function()
             {
                 view.model.getState().set("isLap", true);
-                view.model.getState().set("isEditing", true);
                 view.model.set("name", "Old Name");
                 view.render();
-                view.$(".editLapName input").val("New Name").trigger("enter");
+                view.$el.trigger("click").trigger("click");
+                view.$("input.lapName").val("New Name").trigger("enter");
                 expect(view.model.get("name")).toBe("New Name");
                 expect(view.model.getState().get("isEditing")).toBeFalsy();
             });
@@ -208,10 +209,10 @@ function(
             it("Should cancel changes on cancel (escape key)", function()
             {
                 view.model.getState().set("isLap", true);
-                view.model.getState().set("isEditing", true);
                 view.model.set("name", "Old Name");
                 view.render();
-                view.$(".editLapName input").val("New Name").trigger("cancel");
+                view.$el.trigger("click").trigger("click");
+                view.$("input.lapName").val("New Name").trigger("cancel");
                 expect(view.model.get("name")).toBe("Old Name");
                 expect(view.model.getState().get("isEditing")).toBeFalsy();
             });
@@ -221,7 +222,7 @@ function(
                 view.model.set("name", "Old Name");
                 view.render();
                 view.model.set("name", "New Name");
-                expect(view.$(".editLapName").text()).toEqual("New Name");
+                expect(view.$("span.lapName").text()).toEqual("New Name");
             });
         });
 

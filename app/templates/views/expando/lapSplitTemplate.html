@@ -1,5 +1,15 @@
 {{#ifNot _state.isCut}}
     {{#each lapData}}
-      <td class="{{key}}" {{#ifEquals key "lap"}}title="{{$ "ClickToEdit" }}"{{/ifEquals}}>{{value}}</td>
+        {{#ifEquals key "lap"}}
+            <td class="name" title="{{$ "ClickToEdit" }}">
+                <span class="lapName">{{value}}</span>
+                <input class="lapName" value="{{ value }}" type="text"/>
+                <span class="actions">
+                    <i class="delete closeIcon"></i>
+                </span>
+            </td>
+        {{else}}
+            <td class="{{key}}">{{value}}</td>
+        {{/ifEquals}}
     {{/each}}
 {{/ifNot}}

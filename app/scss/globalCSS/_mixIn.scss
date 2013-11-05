@@ -111,9 +111,9 @@
 	}
 }
 
-@mixin inputs($width, $height, $fontSize, $fontFamily) 
+@mixin inputs($width, $height, $fontSize, $fontFamily, $selector: input) 
 {
-	input
+	#{$selector}
 	{
 		width: $width;
 		height: $height;
@@ -125,7 +125,7 @@
         @include box-shadow(none);
 	}
 
-    input[disabled='disabled']
+    #{$selector}[disabled='disabled']
     {
         cursor: default;
     }
