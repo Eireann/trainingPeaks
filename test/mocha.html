@@ -38,21 +38,36 @@
         requirejs(
         [
           "underscore",
+          "q",
           "chai",
           "sinon",
           "sinon-chai",
-          "jquery"
+          "jquery",
         ],
         function(
           _,
+          Q,
           chai,
           sinon,
           sinonChai,
           $
         )
         {
+          window.Q = Q;
+
+          Q.makePromise.prototype.until = function(check, message, timeout)
+          {
+            message = message || "Timed out waiting";
+            timeout = timeout || 2000;
+            function wait()
+            {
+              return check() || Q.delay(0).then(wait);
+            }
+            return Q(wait()).timeout(timeout, message);
+          };
 
           mocha.setup("bdd");
+          mocha.timeout(5000);
 
           chai.use(sinonChai);
 
@@ -74,8 +89,10 @@
             window.sinon = sinon.sandbox.create();
           });
 
-          // window.setImmediate = function(cb) { cb(); };
-          // define("setImmediate", [], function() { return window.setImmediate; });
+          // TODO: Ideally we wouldn't stub out setImmediate, but some tests break right now.
+          // Fix the tests so we can use the real setImmediate
+          window.setImmediate = function(cb) { cb(); };
+          define("setImmediate", [], function() { return window.setImmediate; });
 
           requirejs(
           [

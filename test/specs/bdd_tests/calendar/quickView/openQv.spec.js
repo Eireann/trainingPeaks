@@ -135,25 +135,24 @@ function(
                 expect($body.find(".workoutQuickView").length).to.equal(1);
             });
 
-            it("Should request detail data", function()
+            it("Should request detail data", function(done)
             {
 
-                // open the qv
-                runs(function()
+                Q()
+                .then(function()
                 {
                     $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");
-                });
-
-                // wait for detail data reqeust
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return testHelpers.hasRequest("GET", "detaildata");
-                }, "Detail Data was never requested", 5000);
-
-                runs(function()
+                }, "Detail Data was never requested")
+                .then(function()
                 {
                     expect(testHelpers.hasRequest("GET", "detaildata")).to.equal(true); 
-                });
+                })
+                .nodeify(done);
+
             });
 
         });

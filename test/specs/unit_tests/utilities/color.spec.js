@@ -27,61 +27,70 @@ function($, colorUtils)
 
             describe("get image color at right edge", function()
             {
-                it("Should return correct values for a black image", function()
+                it("Should return correct values for a black image", function(done)
                 {
                     var img = $("<img/>")[0];
                     img.src = blackImageData;
 
                     img.loaded = false;
                     $(img).load(function() { this.loaded = true; });
-                    waitsFor(function()
+
+                    Q()
+                    .until(function()
                     {
                         return img.loaded;
-                    }, "The image should have loaded", 100);
-
-                    runs(function()
+                    }, "The image should have loaded", 100)
+                    .then(function()
                     {
                         var colorValues = colorUtils.getImageColorAtRightEdge(img);
                         assertColors(colorValues, 0, 0, 0, 1, 0);
-                    });
+                    })
+                    .nodeify(done);
+
                 });
 
-                it("Should return correct values for a white image", function()
+                it("Should return correct values for a white image", function(done)
                 {
                     var img = $("<img/>")[0];
                     img.src = whiteImageData;
 
                     img.loaded = false;
                     $(img).load(function() { this.loaded = true; });
-                    waitsFor(function()
+
+                    Q()
+                    .then(function()
                     {
                         return img.loaded;
-                    }, "The image should have loaded", 100);
-
-                    runs(function()
+                    }, "The image should have loaded", 100)
+                    .then(function()
                     {
                         var colorValues = colorUtils.getImageColorAtRightEdge(img);
                         assertColors(colorValues, 255, 255, 255, 1, 255);
-                    });
+                    })
+                    .nodeify(done);
+
                 });
 
-                it("Should return correct values for a red image", function()
+                it("Should return correct values for a red image", function(done)
                 {
                     var img = $("<img/>")[0];
                     img.src = redImageData;
 
                     img.loaded = false;
                     $(img).load(function() { this.loaded = true; });
-                    waitsFor(function()
+
+                    Q()
+                    .until(function()
                     {
                         return img.loaded;
-                    }, "The image should have loaded", 100);
-
-                    runs(function()
+                    }, "The image should have loaded", 100)
+                    .then(function()
                     {
                         var colorValues = colorUtils.getImageColorAtRightEdge(img);
                         assertColors(colorValues, 237, 28, 36, 1, 73);
-                    });
+                    })
+                    .nodeify(done);
+
                 });
             });
 

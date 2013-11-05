@@ -29,7 +29,7 @@ function($, TP, moment, GraphToolbarView)
             });
         });
 
-        it("Should trigger an event when the slider bar changes value", function()
+        it("Should trigger an event when the slider bar changes value", function(done)
         {
 
             view.render();
@@ -42,18 +42,19 @@ function($, TP, moment, GraphToolbarView)
                 period = p;
             });
 
-            runs(function()
+            Q()
+            .then(function()
             {
                 view.$("input[name=filterPeriod]").val(50).change();
-            });
-
-            waitsFor(function () { return called; }, 5000);
-
-            runs(function()
+            })
+            .until(function () { return called; })
+            .then(function()
             {
                 expect(called).to.equal(true);
                 expect(period).to.equal(50);
-            });
+            })
+            .nodeify(done);
+
         });
 
         it("Should correctly serialize data for distance units", null,function()

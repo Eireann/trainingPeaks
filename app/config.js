@@ -50,7 +50,8 @@ requirejs.config(
         requirejs: '../bower_components/requirejs/require',
         sinon: '../bower_components/sinon/index',
         jquery: '../bower_components/jquery/jquery',
-        'sinon-chai': '../bower_components/sinon-chai/index'
+        'sinon-chai': '../bower_components/sinon-chai/index',
+        q: '../bower_components/q/q'
     },
     hbs: {
         templateExtension: 'html',
@@ -94,14 +95,14 @@ requirejs.config(
         jquerySelectBox: [
             'jquery'
         ],
-        "flot/jquery.flot": [
+        'flot/jquery.flot': [
             'jquery'
         ],
-        "flot/jquery.flot.crosshair": [
-            "flot/jquery.flot"
+        'flot/jquery.flot.crosshair': [
+            'flot/jquery.flot'
         ],
-        "flot/jquery.flot.resize": [
-            "flot/jquery.flot"
+        'flot/jquery.flot.resize': [
+            'flot/jquery.flot'
         ],
         mocha: {
             exports: 'mocha'

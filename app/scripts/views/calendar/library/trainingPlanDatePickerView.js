@@ -156,12 +156,12 @@ function(
 
         getStartDayOfWeekIndex: function()
         {
-            return this.model.details.has("startDate") ? moment(this.model.details.get("startDate")).day() : 1;
+            return this.model.details.has("startDate") ? moment(this.model.details.get("startDate"), "MM-DD-YYYY").day() : 1;
         },
 
         getEndDayOfWeekIndex: function()
         {
-            return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
+            return this.model.details.has("endDate") ? moment(this.model.details.get("endDate"), "MM-DD-YYYY").day() : 0;
         }
 
     });

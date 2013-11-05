@@ -331,7 +331,11 @@ module.exports = function(grunt)
                 bail: false,
                 log: true,
                 run: false,
-                reporter: process.env.TEAMCITY_PROJECT_NAME ? "Teamcity" : "Spec"
+                reporter: process.env.TEAMCITY_PROJECT_NAME ? "Teamcity" : "Spec",
+                mocha:
+                {
+                    grep: grunt.option("grep")
+                }
             },
 
             default:

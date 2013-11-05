@@ -17,7 +17,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 		{
 			trainingPlan = new TrainingPlan({planId: 123});
 			today = moment().format("MM-DD-YYYY");
-			baselineDate = moment("09-02-2013"); // a monday
+			baselineDate = moment("09-02-2013", "MM-DD-YYYY"); // a monday
 			trainingPlan.details.fetch = function() { return new $.Deferred().resolve(); };
 			trainingPlan.details.set({startDate: moment().format("MM-DD-YYYY")});
 		});

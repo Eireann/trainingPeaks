@@ -46,126 +46,108 @@ function(
                 testHelpers.stopTheApp();
             });
 
-            it("Should display the expando", function()
+            it("Should display the expando", function(done)
             {
 
-                // open the qv
-                runs(function()
+                Q()
+                .then(function()
                 {
                     $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");
                     // open the qv
                     expect($body.find(".workoutQuickView").is(".expanded")).to.equal(false);
-                });
-
-                // wait for detail data reqeust
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return testHelpers.hasRequest("GET", "detaildata");
-                }, "Detail Data was never requested", 5000);
-               
-                runs(function()
+                }, "Detail Data was never requested")
+                .then(function()
                 {
                     // load detaildata
                     testHelpers.resolveRequest("GET", "detaildata", detailData);
 
                     // click to expand
                     $body.find(".workoutQuickView .expandButton").trigger("click");
-                });
-
-                // wait for expansion
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return $body.find(".workoutQuickView.expanded").length === 1;
-                }, "Expando was never expanded", 5000);
-
-                runs(function()
+                }, "Expando was never expanded")
+                .then(function()
                 {
                     expect($body.find(".workoutQuickView").is(".expanded")).to.equal(true);
-                });
+                })
+                .nodeify(done);
+
             });
 
-            it("Should display a list of laps", function()
+            it("Should display a list of laps", function(done)
             {
 
                 // open the qv
-                runs(function()
+                Q()
+                .then(function()
                 {
                     $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");
-                });
-
-                // wait for detail data reqeust
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return testHelpers.hasRequest("GET", "detaildata");
-                }, "Detail Data was never requested", 5000);
-                
-                runs(function()
+                }, "Detail Data was never requested")
+                .then(function()
                 {
                     // load detaildata
                     testHelpers.resolveRequest("GET", "detaildata", detailData);
 
                     // click to expand
                     $body.find(".workoutQuickView .expandButton").trigger("click");
-                });
-
-                // wait for expansion
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return $body.find(".workoutQuickView.expanded").length === 1;
-                }, "Expando was never expanded", 5000);
-
-                // wait for laps
-                waitsFor(function()
+                }, "Expando was never expanded")
+                .until(function()
                 {
                     return $body.find(".workoutQuickView .expandoLapsRegion").length === 1;
-                }, "Laps region was never rendered", 5000);
-
-                runs(function()
+                }, "Laps region was never rendered")
+                .then(function()
                 {
                     expect($body.find(".workoutQuickView .expandoLapsRegion").length).to.equal(1);
                     expect($body.find(".workoutQuickView .expandoLapsRegion").text()).to.contain("Entire Workout");
                     expect($body.find(".workoutQuickView .expandoLapsRegion").text()).to.contain("Lap #1");
-                });
+                })
+                .nodeify(done);
 
             });
 
-            it("Should display stats if they have values, or -- if they are in the master set but have no values", function()
+            it("Should display stats if they have values, or -- if they are in the master set but have no values", function(done)
             {
 
-                // open the qv
-                runs(function()
+                Q()
+                .then(function()
                 {
                     $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");
-                });
-
-                // wait for detail data reqeust
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return testHelpers.hasRequest("GET", "detaildata");
-                }, "Detail Data was never requested", 5000);
-                
-                runs(function()
+                }, "Detail Data was never requested")
+                .then(function()
                 {
                     // load detaildata
                     testHelpers.resolveRequest("GET", "detaildata", detailData);
 
                     // click to expand
                     $body.find(".workoutQuickView .expandButton").trigger("click");
-                });
-
-                // wait for expansion
-                waitsFor(function()
+                })
+                .until(function()
                 {
                     return $body.find(".workoutQuickView.expanded").length === 1;
-                }, "Expando was never expanded", 5000);
-
-                // wait for Stats
-                waitsFor(function()
+                }, "Expando was never expanded")
+                .until(function()
                 {
                     return $body.find(".workoutQuickView .expandoStatsRegion").length === 1;
-                }, "Stats region was never rendered", 5000);
-
-                runs(function()
+                }, "Stats region was never rendered")
+                .then(function()
                 {
                     var expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
                     expect($body.find(".workoutQuickView .expandoStatsRegion").length).to.equal(1);
@@ -185,7 +167,8 @@ function(
 
                     expect(expandoStatsText).to.contain("Lap #1");
                     expect(expandoStatsText).to.contain("TSS --");
-                });
+                })
+                .nodeify(done);
 
             });
         });
