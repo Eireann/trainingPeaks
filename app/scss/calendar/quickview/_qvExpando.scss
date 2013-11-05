@@ -65,7 +65,7 @@
 
         &.deleted
         {
-            background-color: rgba(142,178,216,0.25);
+            //background-color: rgba(142,178,216,0.25);
             text-decoration: line-through;
         }
     }
@@ -514,11 +514,16 @@
             &.highlight
             {
                 background-color: rgba(142,178,216,0.25);
+
+                span.lapName
+                {
+                    margin-top: 5px;
+                }
             }
 
             .name
             {
-                width: 150px;
+                width: 155px;
             }
 
             &.editable
@@ -527,15 +532,9 @@
                 {
                     width: 120px;
                 }
+
             }
 
-            &.deleted
-            {
-                .lapName
-                {
-                    text-decoration: line-through;
-                }
-            }            
         }
 
     }
@@ -853,7 +852,7 @@
                 &.deleted
                 {
                     text-decoration: none;
-                    .lapDescription
+                    .lapName
                     {
                         text-decoration: line-through;
                     }
