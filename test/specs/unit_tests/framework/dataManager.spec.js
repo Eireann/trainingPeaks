@@ -1,4 +1,4 @@
-requirejs([
+define([
     "jquery",
     "backbone",
     "TP", 

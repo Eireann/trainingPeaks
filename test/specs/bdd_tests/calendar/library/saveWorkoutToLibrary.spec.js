@@ -1,4 +1,4 @@
-requirejs(
+define(
     [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",

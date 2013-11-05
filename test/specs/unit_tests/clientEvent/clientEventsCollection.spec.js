@@ -1,4 +1,4 @@
-﻿requirejs(
+﻿define(
 ["TP",
  "models/clientEventsCollection"],
  function(TP, ClientEventsCollection)

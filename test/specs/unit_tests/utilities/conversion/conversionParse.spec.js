@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "testUtils/testHelpers",
     "TP",

@@ -1,5 +1,4 @@
-﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "TP",
     "views/quickView/summaryView/summaryViewStickitBindings"

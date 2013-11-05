@@ -1,4 +1,4 @@
-﻿requirejs([
+﻿define([
           "underscore",
           "utilities/localStorageUtils"
           ],

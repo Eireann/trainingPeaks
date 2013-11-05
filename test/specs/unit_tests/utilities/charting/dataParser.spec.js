@@ -1,7 +1,7 @@
-﻿requirejs(
+﻿define(
 [
     "utilities/charting/dataParser",
-    "../test/specs/unit_tests/utilities/charting/dataParserTestData"
+    "./dataParserTestData"
 ],
 function(DataParser, testData)
 {

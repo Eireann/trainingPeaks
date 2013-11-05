@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "handlebars",
     "utilities/wrapTemplate"

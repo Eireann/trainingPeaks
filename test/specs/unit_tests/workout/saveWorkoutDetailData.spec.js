@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "models/commands/saveWorkoutDetailData"
 ],

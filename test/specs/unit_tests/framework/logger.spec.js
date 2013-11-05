@@ -1,4 +1,4 @@
-﻿requirejs(
+﻿define(
 ["TP",
  "framework/logger"],
  function(TP, Logger)

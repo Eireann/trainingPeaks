@@ -1,5 +1,4 @@
-﻿// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "TP",
     "models/workoutModel",

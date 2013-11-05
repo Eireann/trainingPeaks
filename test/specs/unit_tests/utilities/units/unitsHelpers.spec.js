@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "TP",
     "utilities/conversion/convertToViewUnits",
