@@ -267,7 +267,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "coverage": ["bower_components/**", "vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.js"]
+                    "coverage": ["bower_components/**", "vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.dev.js"]
                 }
             },
 
