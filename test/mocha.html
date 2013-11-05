@@ -16,6 +16,8 @@
       <div id="info"></div>
     </div>
 
+    <script src="../bower_components/mocha/mocha.js"></script>
+
     <script src="../bower_components/requirejs/require.js"></script>
     <script>
       requirejs(
@@ -35,7 +37,6 @@
         requirejs(
         [
           "underscore",
-          "mocha",
           "chai",
           "sinon",
           "sinon-chai",
@@ -43,7 +44,6 @@
         ],
         function(
           _,
-          mocha,
           chai,
           sinon,
           sinonChai,

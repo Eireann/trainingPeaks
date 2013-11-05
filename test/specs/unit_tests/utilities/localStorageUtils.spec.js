@@ -1,11 +1,9 @@
 ﻿requirejs([
           "underscore",
-          "localStorage",
           "utilities/localStorageUtils"
           ],
 function(
          _,
-         localStorage,
          localStorageUtils
          )
 {

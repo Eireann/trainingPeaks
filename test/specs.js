@@ -78,6 +78,7 @@ define([
 'specs/unit_tests/expando/views/graphSeriesOptionsView.spec',
 'specs/unit_tests/expando/views/graphToolbarView.spec',
 'specs/unit_tests/expando/views/graphView.spec',
+'specs/unit_tests/expando/views/lapView.spec',
 'specs/unit_tests/expando/views/lapsSplitsView.spec',
 'specs/unit_tests/expando/views/lapsView.spec',
 'specs/unit_tests/expando/views/qvOptionsMenuView.spec',
@@ -123,4 +124,4 @@ define([
 'specs/unit_tests/zoneCalculators/powerZoneCalculatorView.spec',
 'specs/unit_tests/zoneCalculators/speedZoneCalculatorView.spec',
 'specs/unit_tests/zoneCalculators/zoneCalculator.spec'
-], function() { });
+], function() {});

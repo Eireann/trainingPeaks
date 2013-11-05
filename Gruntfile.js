@@ -267,7 +267,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "coverage": ["vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.js"]
+                    "coverage": ["bower_components/**", "vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.js"]
                 }
             },
 
@@ -278,15 +278,6 @@ module.exports = function(grunt)
                     "build/debug": ["coverage/lcov-report/**"]
                 }
             }
-        },
-
-        // jasmine testsuites
-        jasmine_node:
-        {
-            specFolder: "test/specs",
-            extensions: "spec.js",
-            useRequireJs: './app/config/jasmineRequirejsConfig.js',
-            forceExit: true
         },
 
         instrument: {
@@ -304,10 +295,10 @@ module.exports = function(grunt)
 
         makeReport: {
             src: 'coverage/coverage/**/*.json',
-          options : {
-              type: 'lcov',
-              dir: 'coverage'
-          }
+            options : {
+                type: 'lcov',
+                dir: 'coverage'
+            }
         },
 
         lodash:
@@ -331,6 +322,27 @@ module.exports = function(grunt)
             {
                 rjsConfig: 'app/config.js'
             }
+        },
+
+        mocha:
+        {
+            options:
+            {
+                bail: false,
+                log: true,
+                run: false,
+                reporter: process.env.TEAMCITY_PROJECT_NAME ? "Teamcity" : "Spec"
+            },
+
+            default:
+            {
+                src: [ "test/mocha.html" ],
+            },
+
+            coverage:
+            {
+                src: [ "coverage/test/mocha.html" ],
+            }
         }
 
     });
@@ -352,18 +364,17 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-lodash");
     grunt.loadNpmTasks("grunt-targethtml");
     grunt.loadNpmTasks("grunt-bower-requirejs");
+    grunt.loadNpmTasks("grunt-mocha");
 
 
     // TESTING:
     // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
-    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "jasmine_node"]);
-    grunt.registerTask("unit_test", ["unit_test_config", "clean:coverage", "jshint", "jasmine_node"]);
-    grunt.registerTask("bdd_test", ["bdd_test_config", "clean:coverage", "jshint", "jasmine_node"]);
+    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "mocha:default"]);
 
     // REPORTING:
     // grunt plato:dummy makes complexity reports available at localhost:8905/plato
     // grunt coverage makes coverage reports available at localhost:8905/coverage/lcov-report/index.html,
-    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'jasmine_node_coverage_config', 'jasmine_node', 'storeCoverage', 'makeReport']);
+    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'mocha:coverage', 'storeCoverage', 'makeReport']);
 
     // BUILDING:
 
@@ -379,20 +390,4 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["add-defaults-to-i18n-files", "build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files", "revision"]);
-
-    // TASKS THAT ARE USED BY OTHER TASKS
-    grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
-    {
-        var jasmineOptions = grunt.config.get('jasmine_node');
-        jasmineOptions.specFolder = "test/specs/bdd_tests";
-        grunt.config.set('jasmine_node', jasmineOptions);
-    });
-
-    grunt.registerTask("unit_test_config", "Configure for jasmine node unit tests", function()
-    {
-        var jasmineOptions = grunt.config.get('jasmine_node');
-        jasmineOptions.specFolder = "test/specs/unit_tests";
-        grunt.config.set('jasmine_node', jasmineOptions);
-    });
-
 };
