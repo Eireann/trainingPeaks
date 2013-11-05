@@ -35,15 +35,22 @@ function(
             "click .actionDelete": "_doDelete"
         },
 
+        initialize: function(options)
+        {
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+
+            this.on("render", this._selectSelf, this);
+        },
+
         _doCut: function()
         {
-            this.model.trigger("workout:cut", this.model);
+            this.selectionManager.cutSelectionToClipboard();
             this.close();
         },
 
         _doCopy: function()
         {
-            this.model.trigger("workout:copy", this.model);
+            this.selectionManager.copySelectionToClipboard();
             this.close();
         },
 
@@ -64,6 +71,11 @@ function(
                 self.model.destroy({ wait: true });
             });
 
+        },
+
+        _selectSelf: function()
+        {
+            this.selectionManager.setSelection(this.model);
         }
 
     });

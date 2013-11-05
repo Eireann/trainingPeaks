@@ -28,13 +28,13 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
 
         onCopyClicked: function()
         {
-            this.model.trigger("workout:copy", this.model);
+            this.selectionManager.copySelectionToClipboard();
             this.close();
         },
         
         onCutClicked: function()
         {
-            this.model.trigger("workout:cut", this.model);
+            this.selectionManager.cutSelectionToClipboard();
             this.close();
         },
         
@@ -49,7 +49,6 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
         {
             this.close();
             this.trigger("mouseleave", e);
-            //delete this;
         },
 
         initialize: function(options)
@@ -58,6 +57,10 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
             this.posY = options.top;
             this.parentEl = options.parentEl;
             this.inheritedClassNames = options.className;
+
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+
+            this.on("render", this._selectSelf, this);
         },
 
         attributes: function()
@@ -82,6 +85,11 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
             this.deleteConfirmationView.render();
             var self = this;
             this.deleteConfirmationView.on("userConfirmed", function () { self.model.destroy({ wait: true }); });
+        },
+
+        _selectSelf: function()
+        {
+            this.selectionManager.setSelection(this.model);
         }
     });
 });
