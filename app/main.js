@@ -7,9 +7,12 @@ function(config)
 
     requirejs(
     [
-        "jquery"
+        "jquery",
+        "flot/jquery.flot",
+        "flot/jquery.flot.crosshair",
+        "flot/jquery.flot.resize"
     ],
-    function($)
+    function($, flot, flotCrosshair, flotResize)
     {
             
         function cookiesAreEnabled()

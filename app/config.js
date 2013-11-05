@@ -94,8 +94,14 @@ requirejs.config(
         jquerySelectBox: [
             'jquery'
         ],
-        flot: [
+        "flot/jquery.flot": [
             'jquery'
+        ],
+        "flot/jquery.flot.crosshair": [
+            "flot/jquery.flot"
+        ],
+        "flot/jquery.flot.resize": [
+            "flot/jquery.flot"
         ],
         mocha: {
             exports: 'mocha'
