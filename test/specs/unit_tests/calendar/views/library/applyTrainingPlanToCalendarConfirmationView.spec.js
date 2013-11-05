@@ -16,7 +16,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 		{
 			trainingPlan = new TrainingPlan({planId: 123});
 			today = moment().format("MM-DD-YYYY");
-			baselineDate = moment("09-02-2013", "MM-DD-YYYY"); // a monday
+			baselineDate = moment("2013-09-02"); // a monday
 			trainingPlan.details.fetch = function() { return new $.Deferred().resolve(); };
 			trainingPlan.details.set({startDate: moment().format("MM-DD-YYYY")});
 		});
@@ -55,7 +55,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 			var nextEligibleTuesday = tuesday;
 			
 			// plan must start on a tuesday
-			trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY"), hasWeeklyGoals: true});
+			trainingPlan.details.set({startDate: tuesday.format("YYYY-MM-DD"), hasWeeklyGoals: true});
 
 			var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday});
 			view.modal = null;

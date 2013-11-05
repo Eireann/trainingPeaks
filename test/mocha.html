@@ -53,6 +53,8 @@
                     $
                 )
                 {
+                    $.fx.off = true;
+
                     window.fakeXhr = sinon.useFakeXMLHttpRequest();
                     window.fakeXhr.useFilters = true;
                     window.fakeXhr.addFilter(function(method, url, async, user, pass)

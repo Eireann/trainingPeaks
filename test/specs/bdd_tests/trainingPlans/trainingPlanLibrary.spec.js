@@ -33,9 +33,9 @@ function(
 
         it("Should display the training plans library container after clicking on the library icon", function()
         {
-            expect($mainRegion.find(".trainingPlanLibrary").is(":visible")).to.equal(false);
+            expect($mainRegion.find(".trainingPlanLibrary").closest(".open")).to.have.length(0);
             $mainRegion.find("#plansLibrary").trigger("click");
-            expect($mainRegion.find(".trainingPlanLibrary").is(":visible")).to.equal(true);
+            expect($mainRegion.find(".trainingPlanLibrary").closest(".open")).to.have.length(1);
         });
 
         it("Should request the training plan library data on calendar load", function()

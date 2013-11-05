@@ -115,7 +115,7 @@ function(
                 var request = testHelpers.findRequest("PUT", "timedmetrics/1");
                 expect(JSON.parse(request.requestBody)).to.eql(metric);
 
-                testHelpers.resolveRequest("PUT", "timedmetrics/1");
+                testHelpers.resolveRequest("PUT", "timedmetrics/1", "{}");
                 expect($body.find(".metricQuickView").length).to.equal(0);
             });
 
@@ -152,7 +152,7 @@ function(
                 var request = testHelpers.findRequest("PUT", "timedmetrics/1");
                 expect(JSON.parse(request.requestBody)).to.eql(metric);
 
-                testHelpers.resolveRequest("PUT", "timedmetrics/1");
+                testHelpers.resolveRequest("PUT", "timedmetrics/1", "{}");
                 expect($body.find(".metricQuickView").length).to.equal(0);
             });
 

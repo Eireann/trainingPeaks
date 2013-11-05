@@ -22,7 +22,7 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
             this.infoRegion.$el = $("<div id='info'></div>");
             this.$body.append(this.navRegion.$el);
             this.$body.append(this.mainRegion.$el);
-            this.$body.append(this.infoRegion.$el)
+            this.$body.append(this.infoRegion.$el);
 
             // since we override the body element, may need to initialize events on it again
             this.watchForFirstTouch();
