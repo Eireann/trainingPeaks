@@ -85,7 +85,7 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
             }
             else
             {
-                throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
+                throw Error("Cannot find request to resolve: " + httpVerb + " " + urlPattern);
             }
         },
 
@@ -166,19 +166,17 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
             $.support.cors = true;
             this.fakeAjaxRequests = [];
-            this.xhr.onCreate = function(xhr)
+            window.fakeXhr.onCreate = function(xhr)
             {
-                //console.log(xhr);
                 self.fakeAjaxRequests.push(xhr);
             };
         },
 
         removeFakeAjax: function()
         {
-            if(this.xhr)
+            if(window.fakeXhr)
             {
-                this.xhr.restore();
-                this.xhr = null;
+                window.fakeXhr.onCreate = null;
             }
             this.clearRequests();
         },
@@ -223,9 +221,6 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
             return TP.utils.deepClone(obj);
         }
     };
-
-    testHelpers.theApp.start();
-    testHelpers.setupRegionElements.call(testHelpers.theApp);
 
     return testHelpers;
 

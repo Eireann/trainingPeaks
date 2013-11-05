@@ -22,7 +22,7 @@ function(
         {
             var userData = xhrData.users.barbkprem;
             testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-            spyOn($.fn, 'selectBoxIt'); // selectBoxIt freezes...
+            sinon.stub($.fn, 'selectBoxIt'); // selectBoxIt freezes...
         });
 
         afterEach(function()
@@ -33,7 +33,7 @@ function(
 
         it("Should load successfully as a module", function()
         {
-            expect(UserSettingsView).toBeDefined();
+            expect(UserSettingsView).to.not.be.undefined;
         });
 
         it("Should not throw durring lifecycle calls", function()
@@ -49,17 +49,17 @@ function(
             var view = new UserSettingsView({ model: testHelpers.theApp.user });
             view.render();
 
-            expect(view.$("input[name=address]").length).toBe(1);
-            expect(view.$("input[name=address]").val()).toBe("Original Address");
+            expect(view.$("input[name=address]").length).to.equal(1);
+            expect(view.$("input[name=address]").val()).to.equal("Original Address");
             view.$("input[name=address]").val("New Address").trigger("change");
-            expect(view.$("input[name=address]").val()).toBe("New Address");
+            expect(view.$("input[name=address]").val()).to.equal("New Address");
 
             view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
-            expect(view.$("input[name=address]").length).toBe(0);
+            expect(view.$("input[name=address]").length).to.equal(0);
 
             view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
-            expect(view.$("input[name=address]").length).toBe(1);
-            expect(view.$("input[name=address]").val()).toBe("New Address");
+            expect(view.$("input[name=address]").length).to.equal(1);
+            expect(view.$("input[name=address]").val()).to.equal("New Address");
             view.close();
         });
 
@@ -70,9 +70,9 @@ function(
             view.render();
 
             view.$("input[name=address]").val("New Address").trigger("change");
-            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).to.equal("Original Address");
             view.$("button.save").trigger("click");
-            expect(testHelpers.theApp.user.get("address")).toBe("New Address");
+            expect(testHelpers.theApp.user.get("address")).to.equal("New Address");
 
             view.close();
         });
@@ -84,9 +84,9 @@ function(
             view.render();
 
             view.$("input[name=address]").val("New Address").trigger("change");
-            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).to.equal("Original Address");
             view.$("button.cancel").trigger("click");
-            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).to.equal("Original Address");
 
         });
 
@@ -99,7 +99,7 @@ function(
             view.$("input[name=address]").val("New Address").trigger("change");
             view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             view.$(".tabbedLayoutNav > li:not(.active):first .tabbedLayoutNavLink").trigger("click");
-            expect(testHelpers.theApp.user.get("address")).toBe("Original Address");
+            expect(testHelpers.theApp.user.get("address")).to.equal("Original Address");
         });
 
     });

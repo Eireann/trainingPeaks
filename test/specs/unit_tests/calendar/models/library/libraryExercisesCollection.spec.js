@@ -9,15 +9,15 @@ function(testHelpers, LibraryExercisesCollection)
     {
         it("should load as a module", function()
         {
-            expect(LibraryExercisesCollection).toBeDefined();
+            expect(LibraryExercisesCollection).to.not.be.undefined;
         });
 
         it("Should have a valid url", function()
         {
 
             var url = LibraryExercisesCollection.prototype.url();
-            expect(url).toContain(testHelpers.theApp.apiRoot);
-            expect(url).toContain("/exerciselibrary/v1/libraryitems");
+            expect(url).to.contain(testHelpers.theApp.apiRoot);
+            expect(url).to.contain("/exerciselibrary/v1/libraryitems");
 
         });
     });

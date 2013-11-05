@@ -29,14 +29,14 @@ function(
 
         it("should load as a module", function()
         {
-            expect(CalendarDay).toBeDefined();
+            expect(CalendarDay).to.not.be.undefined;
         });
 
         it("should use date as id", function()
         {
             var theDay = '2012-01-01';
             var calendarDay = new CalendarDay({ date: theDay });
-            expect(calendarDay.id).toEqual(theDay);
+            expect(calendarDay.id).to.eql(theDay);
 
         });
 
@@ -48,8 +48,8 @@ function(
                 var workout = new WorkoutModel({ workoutDay: "2011-03-02T00:00:00", workoutId: "12345" });
                 calendarDay.add(workout);
                 var workouts = calendarDay.itemsCollection;
-                expect(workouts).not.toBeNull();
-                expect(workouts.get("Workout:" + workout.id)).toBe(ActivityModel.wrap(workout));
+                expect(workouts).to.not.be.null;
+                expect(workouts.get("Workout:" + workout.id)).to.equal(ActivityModel.wrap(workout));
             });
 
         });

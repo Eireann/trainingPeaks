@@ -14,19 +14,19 @@ function(TP, ExerciseLibraryView, ExerciseLibraryItemView, ExerciseLibraryAddIte
     {
         it("Should be loaded as a module", function()
         {
-            expect(ExerciseLibraryView).toBeDefined();
+            expect(ExerciseLibraryView).to.not.be.undefined;
         });
 
         describe("getItemView", function()
         {
             it("Should return TP.ItemView if no item is passed", function()
             {
-                expect(ExerciseLibraryView.prototype.getItemView()).toBe(TP.ItemView);
+                expect(ExerciseLibraryView.prototype.getItemView()).to.equal(TP.ItemView);
             });
 
             it("Should return ExerciseLibraryItemView if item is passed", function()
             {
-                expect(ExerciseLibraryView.prototype.getItemView({})).toBe(ExerciseLibraryItemView);
+                expect(ExerciseLibraryView.prototype.getItemView({})).to.equal(ExerciseLibraryItemView);
             });
         });
 
@@ -35,9 +35,9 @@ function(TP, ExerciseLibraryView, ExerciseLibraryItemView, ExerciseLibraryAddIte
 //         {
 //             it("Should subscribe to add click events", function()
 //             {
-//                 expect(ExerciseLibraryView.prototype.events["click button#add"]).toBeDefined();
-//                 expect(ExerciseLibraryView.prototype.events["click button#add"]).toBe("addToLibrary");
-//                 expect(typeof ExerciseLibraryView.prototype.addToLibrary).toBe("function");
+//                 expect(ExerciseLibraryView.prototype.events["click button#add"]).to.not.be.undefined;
+//                 expect(ExerciseLibraryView.prototype.events["click button#add"]).to.equal("addToLibrary");
+//                 expect(typeof ExerciseLibraryView.prototype.addToLibrary).to.equal("function");
 //             });
 
 //         });

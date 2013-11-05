@@ -28,19 +28,19 @@ function(
 
         it("Should have a training plans library icon", function()
         {
-            expect($mainRegion.find("#plansLibrary").length).toBe(1);
+            expect($mainRegion.find("#plansLibrary").length).to.equal(1);
         });
 
         it("Should display the training plans library container after clicking on the library icon", function()
         {
-            expect($mainRegion.find(".trainingPlanLibrary").is(":visible")).toBe(false);
+            expect($mainRegion.find(".trainingPlanLibrary").is(":visible")).to.equal(false);
             $mainRegion.find("#plansLibrary").trigger("click");
-            expect($mainRegion.find(".trainingPlanLibrary").is(":visible")).toBe(true);
+            expect($mainRegion.find(".trainingPlanLibrary").is(":visible")).to.equal(true);
         });
 
         it("Should request the training plan library data on calendar load", function()
         {
-            expect(testHelpers.hasRequest("GET", "plans/v1/plans$")).toBe(true);
+            expect(testHelpers.hasRequest("GET", "plans/v1/plans$")).to.equal(true);
         });
 
         it("Should resolve the training plan library data request without errors", function()
@@ -49,7 +49,7 @@ function(
             {
                 testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
             };
-            expect(resolvePlans).not.toThrow();
+            expect(resolvePlans).to.not.throw();
         });
 
         describe("Search", function()
@@ -76,29 +76,29 @@ function(
 
             it("Should have a search box", function()
             {
-                expect($searchBox.length).toBe(1);
+                expect($searchBox.length).to.equal(1);
             });
 
             it("Should filter exact matches on key up", function()
             {
-                expect($library.find(".trainingPlan").length).toBe(3);
+                expect($library.find(".trainingPlan").length).to.equal(3);
                 $searchBox.val("training plan one");
                 $searchBox.trigger("keyup");
-                expect($library.find(".trainingPlan").length).toBe(1);
+                expect($library.find(".trainingPlan").length).to.equal(1);
                 var libraryContainerText = $library.text();
-                expect(libraryContainerText).toContain("Training Plan One");
-                expect(libraryContainerText).not.toContain("Training Plan Three");
+                expect(libraryContainerText).to.contain("Training Plan One");
+                expect(libraryContainerText).to.not.contain("Training Plan Three");
             });
 
             it("Should match words or partial words in any order", function()
             {
-                expect($library.find(".trainingPlan").length).toBe(3);
+                expect($library.find(".trainingPlan").length).to.equal(3);
                 $searchBox.val("three plan train");
                 $searchBox.trigger("keyup");
-                expect($library.find(".trainingPlan").length).toBe(1);
+                expect($library.find(".trainingPlan").length).to.equal(1);
                 var libraryContainerText = $library.text();
-                expect(libraryContainerText).toContain("Training Plan Three");
-                expect(libraryContainerText).not.toContain("Training Plan One");
+                expect(libraryContainerText).to.contain("Training Plan Three");
+                expect(libraryContainerText).to.not.contain("Training Plan One");
             });
 
         });

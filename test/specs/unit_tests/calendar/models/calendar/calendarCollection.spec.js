@@ -18,7 +18,7 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
     {
         it("should load as a module", function()
         {
-            expect(CalendarCollection).toBeDefined();
+            expect(CalendarCollection).to.not.be.undefined;
         });
 
         describe("prepareNext and preparePrevious", function()
@@ -47,15 +47,15 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
             {
                 it("should return the models", function()
                 {
-                    expect(collection.preparePrevious(2).length).toEqual(2);
+                    expect(collection.preparePrevious(2).length).to.eql(2);
                 });
 
                 it("should add the models to the collection (via prependWeek)", function()
                 {
-                    spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
-                    spyOn(collection, "prependWeek");
+                    sinon.stub(collection, "requestWorkouts").returns(new $.Deferred());
+                    sinon.stub(collection, "prependWeek");
                     collection.preparePrevious(1);
-                    expect(collection.prependWeek).toHaveBeenCalledWith(startDate.subtract("days", 7));
+                    expect(collection.prependWeek).to.have.been.calledWith(startDate.subtract("days", 7));
                 });
             });
 
@@ -63,20 +63,20 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
             {
                 it("should not request workouts", function()
                 {
-                    spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
+                    sinon.stub(collection, "requestWorkouts").returns(new $.Deferred());
                     collection.preparePrevious(1);
-                    expect(collection.requestWorkouts).not.toHaveBeenCalled();
+                    expect(collection.requestWorkouts).to.not.have.been.called;
                 });
                 it("should return the models", function()
                 {
-                    expect(collection.prepareNext(2).length).toEqual(2);
+                    expect(collection.prepareNext(2).length).to.eql(2);
                 });
                 it("should add the models to the collection (via appendWeek)", function()
                 {
-                    spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
-                    spyOn(collection, "appendWeek");
+                    sinon.stub(collection, "requestWorkouts").returns(new $.Deferred());
+                    sinon.stub(collection, "appendWeek");
                     collection.prepareNext(1);
-                    expect(collection.appendWeek).toHaveBeenCalledWith(endDate.add("days", 1));
+                    expect(collection.appendWeek).to.have.been.calledWith(endDate.add("days", 1));
                 });
             });
         });
@@ -95,9 +95,9 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
 
             var dayInsideOfWeek = moment().day(3);
 
-            expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
-            expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
+            expect(function() { collection.getDayModel(dayInsideOfWeek); }).to.not.throw();
+            expect(collection.getDayModel(dayInsideOfWeek)).to.not.be.undefined;
+            expect(collection.getDayModel(dayInsideOfWeek).get("date")).to.equal(dayInsideOfWeek.format("YYYY-MM-DD"));
         });
 
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Monday", function()
@@ -114,9 +114,9 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
 
             var dayInsideOfWeek = moment().day(3);
 
-            expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
-            expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
+            expect(function() { collection.getDayModel(dayInsideOfWeek); }).to.not.throw();
+            expect(collection.getDayModel(dayInsideOfWeek)).to.not.be.undefined;
+            expect(collection.getDayModel(dayInsideOfWeek).get("date")).to.equal(dayInsideOfWeek.format("YYYY-MM-DD"));
 
         });
 
@@ -128,9 +128,9 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 var contextWithoutSummary = _.extend({ summaryViewEnabled: false, daysCollection: new TP.Collection() }, CalendarCollection.prototype);
                 var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithoutSummary, moment(startDate));
 
-                expect(weekCollection.length).toBe(7);
-                expect(weekCollection.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollection.at(6).get("date")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollection.length).to.equal(7);
+                expect(weekCollection.at(0).get("date")).to.equal(startDate.format("YYYY-MM-DD"));
+                expect(weekCollection.at(6).get("date")).to.equal(startDate.add("days", 6).format("YYYY-MM-DD"));
                 
                
             });
@@ -142,21 +142,21 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 var contextWithSummary = _.extend({ summaryViewEnabled: true, daysCollection: new TP.Collection() }, CalendarCollection.prototype);
                 var weekCollectionWithSummary = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithSummary, moment(startDate));
 
-                expect(weekCollectionWithSummary.length).toBe(8);
-                expect(weekCollectionWithSummary.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollectionWithSummary.at(6).get("date")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
-                expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
+                expect(weekCollectionWithSummary.length).to.equal(8);
+                expect(weekCollectionWithSummary.at(0).get("date")).to.equal(startDate.format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(6).get("date")).to.equal(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(7).isSummary).to.equal(true);
             });
 
             it("Should add seven days to the daysCollection", function()
             {
                 var startDate = moment();
 
-                var daysSpy = jasmine.createSpyObj("DaysCollection spy", ["add"]);
+                var daysSpy = createSpyObj("DaysCollection spy", ["add"]);
                 var context = _.extend({ summaryViewEnabled: false, daysCollection: daysSpy }, CalendarCollection.prototype);
                 var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
-                expect(daysSpy.add).toHaveBeenCalled();
-                expect(daysSpy.add.calls.length).toEqual(7);
+                expect(daysSpy.add).to.have.been.called;
+                expect(daysSpy.add.calls.length).to.eql(7);
             });
 
         });
@@ -183,24 +183,24 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
 
             it("Should create collection of days the appropriate dates", function()
             {
-                spyOn(collection, "createWeekCollectionStartingOn").andCallThrough();
+                sinon.spy(collection, "createWeekCollectionStartingOn");
                 collection.prependWeek(expectedStartDate);
-                expect(collection.createWeekCollectionStartingOn).toHaveBeenCalled();
-                var lastCall = collection.createWeekCollectionStartingOn.mostRecentCall;
-                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+                expect(collection.createWeekCollectionStartingOn).to.have.been.called;
+                var lastCall = collection.createWeekCollectionStartingOn.lastCall;
+                expect(lastCall.args[0].format(dateFormat)).to.eql(expectedStartDate.format(dateFormat));
             });
 
 
             it("Should call collection.add with at:0 and append:false options", function()
             {
-                spyOn(collection, "add").andCallThrough();
+                sinon.spy(collection, "add");
                 collection.prependWeek(expectedStartDate);
-                expect(collection.add).toHaveBeenCalled();
-                var lastCall = collection.add.mostRecentCall;
-                expect(lastCall.args[1].at).toBeDefined();
-                expect(lastCall.args[1].at).toEqual(0);
-                expect(lastCall.args[1].append).toBeDefined();
-                expect(lastCall.args[1].append).toBe(false);
+                expect(collection.add).to.have.been.called;
+                var lastCall = collection.add.lastCall;
+                expect(lastCall.args[1].at).to.not.be.undefined;
+                expect(lastCall.args[1].at).to.eql(0);
+                expect(lastCall.args[1].append).to.not.be.undefined;
+                expect(lastCall.args[1].append).to.equal(false);
             });
         });
 
@@ -227,21 +227,21 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
 
             it("Should create collection of days the appropriate dates", function()
             {
-                spyOn(collection, "createWeekCollectionStartingOn").andCallThrough();
+                sinon.spy(collection, "createWeekCollectionStartingOn");
                 collection.appendWeek(expectedStartDate);
-                expect(collection.createWeekCollectionStartingOn).toHaveBeenCalled();
-                var lastCall = collection.createWeekCollectionStartingOn.mostRecentCall;
-                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+                expect(collection.createWeekCollectionStartingOn).to.have.been.called;
+                var lastCall = collection.createWeekCollectionStartingOn.lastCall;
+                expect(lastCall.args[0].format(dateFormat)).to.eql(expectedStartDate.format(dateFormat));
             });
 
             it("Should call collection.add with append option", function()
             {
-                spyOn(collection, "add").andCallThrough();
+                sinon.spy(collection, "add");
                 collection.appendWeek(expectedStartDate);
-                expect(collection.add).toHaveBeenCalled();
-                var lastCall = collection.add.mostRecentCall;
-                expect(lastCall.args[1].append).toBeDefined();
-                expect(lastCall.args[1].append).toBe(true);
+                expect(collection.add).to.have.been.called;
+                var lastCall = collection.add.lastCall;
+                expect(lastCall.args[1].append).to.not.be.undefined;
+                expect(lastCall.args[1].append).to.equal(true);
             });
         });
 
@@ -270,17 +270,17 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
 
             xit("Should call moveToDay on workout", function()
             {
-                spyOn(workout, "moveToDay");
+                sinon.stub(workout, "moveToDay");
                 collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow, tomorrowCalendarDay);
+                expect(workout.moveToDay).to.have.been.calledWith(tomorrow, tomorrowCalendarDay);
             });
 
         });
 
         it("Sets up the weeks based on a start and end date ", function()
         {
-            expect(CalendarCollection.prototype.setUpWeeks).toBeDefined();
-            expect(typeof CalendarCollection.prototype.setUpWeeks).toBe("function");
+            expect(CalendarCollection.prototype.setUpWeeks).to.not.be.undefined;
+            expect(typeof CalendarCollection.prototype.setUpWeeks).to.equal("function");
 
             var i = 0;
             var context = new CalendarCollection([],
@@ -290,19 +290,19 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 dataManager: new DataManager()
             });
             
-            spyOn(context.activitiesCollection, "reset");
-            spyOn(context.daysCollection, "reset");
-            spyOn(context, "add");
+            sinon.stub(context.activitiesCollection, "reset");
+            sinon.stub(context.daysCollection, "reset");
+            sinon.stub(context, "add");
 
             var startDate = moment("2013-01-01");
             var endDate = moment("2013-03-01");
             CalendarCollection.prototype.setUpWeeks.call(context, startDate, endDate);
 
-            expect(context.startDate.unix()).toBe(startDate.unix());
-            expect(context.endDate.unix()).toBe(endDate.unix());
-            expect(context.activitiesCollection.reset).toHaveBeenCalled();
-            expect(context.daysCollection.reset).toHaveBeenCalled();
-            expect(context.add.argsForCall[0][0].length).toBe(9);
+            expect(context.startDate.unix()).to.equal(startDate.unix());
+            expect(context.endDate.unix()).to.equal(endDate.unix());
+            expect(context.activitiesCollection.reset).to.have.been.called;
+            expect(context.daysCollection.reset).to.have.been.called;
+            expect(context.add.argsForCall[0][0].length).to.equal(9);
         });
 
         describe("Cut, Copy, Paste", function()
@@ -322,21 +322,21 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 });
                 fakeData = {'some':'junk'};
                 dateToPasteTo = moment().format("YYYY-MM-DD");
-                copySpy = jasmine.createSpyObj("Copy Spy", ["copyToClipboard", "cutToClipboard", "onPaste"]);
-                copySpy.copyToClipboard.andReturn(fakeData);
-                copySpy.cutToClipboard.andReturn(fakeData);
-                copySpy.onPaste.andReturn(null);
+                copySpy = createSpyObj("Copy Spy", ["copyToClipboard", "cutToClipboard", "onPaste"]);
+                copySpy.copyToClipboard.returns(fakeData);
+                copySpy.cutToClipboard.returns(fakeData);
+                copySpy.onPaste.returns(null);
             });
 
             it("Should call subscribeToCopyPasteEvents", function()
             {
-                spyOn(CalendarCollection.prototype, "subscribeToCopyPasteEvents");
+                sinon.stub(CalendarCollection.prototype, "subscribeToCopyPasteEvents");
                 var collection = new CalendarCollection([], {
                     startDate: moment().day(0),
                     endDate: moment().day(6).add("weeks", 2),
                     dataManager: new DataManager()
                 });
-                expect(CalendarCollection.prototype.subscribeToCopyPasteEvents).toHaveBeenCalled();
+                expect(CalendarCollection.prototype.subscribeToCopyPasteEvents).to.have.been.called;
             });
 
             describe("onItemsCopy", function()
@@ -344,14 +344,14 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 it("Should call copyToClipboard", function()
                 {
                     collection.onItemsCopy(copySpy);
-                    expect(copySpy.copyToClipboard).toHaveBeenCalled();
+                    expect(copySpy.copyToClipboard).to.have.been.called;
                 });
 
                 it("Should copy to clipboard", function()
                 {
-                    spyOn(collection.clipboard, "set").andCallThrough();
+                    sinon.spy(collection.clipboard, "set");
                     collection.onItemsCopy(copySpy);
-                    expect(collection.clipboard.set).toHaveBeenCalledWith(fakeData, "copy");
+                    expect(collection.clipboard.set).to.have.been.calledWith(fakeData, "copy");
                 });
             });
 
@@ -360,14 +360,14 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 it("Should call cutToClipboard", function()
                 {
                     collection.onItemsCut(copySpy);
-                    expect(copySpy.cutToClipboard).toHaveBeenCalled();
+                    expect(copySpy.cutToClipboard).to.have.been.called;
                 });
 
                 it("Should cut to clipboard", function()
                 {
-                    spyOn(collection.clipboard, "set").andCallThrough();
+                    sinon.spy(collection.clipboard, "set");
                     collection.onItemsCut(copySpy);
-                    expect(collection.clipboard.set).toHaveBeenCalledWith(fakeData, "cut");
+                    expect(collection.clipboard.set).to.have.been.calledWith(fakeData, "cut");
                 });
             });
 
@@ -375,42 +375,42 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
             {
                 it("Should check whether clipboard is empty", function()
                 {
-                    spyOn(collection.clipboard, "hasData").andReturn(false);
+                    sinon.stub(collection.clipboard, "hasData").returns(false);
                     collection.onPaste(dateToPasteTo);
-                    expect(collection.clipboard.hasData).toHaveBeenCalled();
+                    expect(collection.clipboard.hasData).to.have.been.called;
                 });
 
                 it("Should call onPaste of clipboard data", function()
                 {
                     collection.clipboard.set(copySpy, "copy");
                     collection.onPaste(dateToPasteTo);
-                    expect(copySpy.onPaste).toHaveBeenCalledWith(dateToPasteTo);
+                    expect(copySpy.onPaste).to.have.been.calledWith(dateToPasteTo);
                 });
 
                 it("Should call addItems", function()
                 {
                     var fakeItem = {};
-                    spyOn(collection, "addItems");
+                    sinon.stub(collection, "addItems");
                     collection.clipboard.set(copySpy, "copy");
-                    copySpy.onPaste.andReturn(fakeItem);
+                    copySpy.onPaste.returns(fakeItem);
                     collection.onPaste(dateToPasteTo);
-                    expect(collection.addItems).toHaveBeenCalledWith(fakeItem);
+                    expect(collection.addItems).to.have.been.calledWith(fakeItem);
                 });
 
                 it("Should empty the clipboard after pasting a cut", function()
                 {
                     collection.clipboard.set(copySpy, "cut");
-                    spyOn(collection.clipboard, "empty");
+                    sinon.stub(collection.clipboard, "empty");
                     collection.onPaste(dateToPasteTo);
-                    expect(collection.clipboard.empty).toHaveBeenCalled();
+                    expect(collection.clipboard.empty).to.have.been.called;
                 });
 
                 it("Should empty the clipboard after pasting a copy", function()
                 {
                     collection.clipboard.set(copySpy, "copy");
-                    spyOn(collection.clipboard, "empty");
+                    sinon.stub(collection.clipboard, "empty");
                     collection.onPaste(dateToPasteTo);
-                    expect(collection.clipboard.empty).not.toHaveBeenCalled();
+                    expect(collection.clipboard.empty).to.not.have.been.called;
                 });
             });
 
@@ -436,20 +436,20 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                     workouts.push(new TP.Model());
                 }
 
-                spyOn(collection, "addItem");
+                sinon.stub(collection, "addItem");
             });
 
             it("Should work with empty values", function()
             {
                 collection.addItems(null);
-                expect(collection.addItem).not.toHaveBeenCalled();
+                expect(collection.addItem).to.not.have.been.called;
             });
 
             it("Should work with single items", function()
             {
                 var workout = new TP.Model();
                 collection.addItems(workout);
-                expect(collection.addItem).toHaveBeenCalledWith(workout);
+                expect(collection.addItem).to.have.been.calledWith(workout);
             });
 
             it("Should work with collections", function()
@@ -457,7 +457,7 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 collection.addItems(new TP.Collection(workouts));
                 _.each(workouts, function(workout)
                 {
-                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                    expect(collection.addItem).to.have.been.calledWith(workout);
                 });
             });
 
@@ -466,7 +466,7 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 collection.addItems(workouts);
                 _.each(workouts, function(workout)
                 {
-                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                    expect(collection.addItem).to.have.been.calledWith(workout);
                 });
             });
 
@@ -481,7 +481,7 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
                 collection.addItems(nestedWorkouts);
                 _.each(workouts, function(workout)
                 {
-                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                    expect(collection.addItem).to.have.been.calledWith(workout);
                 });
             });
 
@@ -513,27 +513,27 @@ function($, TP, moment, DataManager, testHelpers, xhrData, WorkoutModel, Activit
 
             it("should be in the correct day collection", function()
             {
-                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(true);
+                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).to.equal(true);
             });
 
             it("moving the workout should move to the correct day collection immediately", function()
             {
                 workout.moveToDay(newDate);
-                expect(collection.getDayModel(newDate).itemsCollection.contains(activity)).toBe(true);
+                expect(collection.getDayModel(newDate).itemsCollection.contains(activity)).to.equal(true);
             });
 
             it("moving the workout should remove the workout from the old collection", function()
             {
                 workout.moveToDay(newDate);
-                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(false);
+                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).to.equal(false);
             });
 
             it("if moving the workout fails it should revert to the original date", function()
             {
                 workout.moveToDay(newDate);
                 testHelpers.rejectRequest("PUT", "/workouts/");
-                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(true);
-                expect(collection.getDayModel(newDate).itemsCollection.contains(activity)).toBe(false);
+                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).to.equal(true);
+                expect(collection.getDayModel(newDate).itemsCollection.contains(activity)).to.equal(false);
             });
 
         });

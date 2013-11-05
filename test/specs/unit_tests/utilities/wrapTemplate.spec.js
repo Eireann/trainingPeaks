@@ -18,21 +18,21 @@ function(Handlebars, wrapTemplate)
 
         it("Should be loaded as a module", function()
         {
-            expect(typeof wrapTemplate).toBe("function");
+            expect(typeof wrapTemplate).to.equal("function");
         });
 
         it("Should contain the inner template results", function()
         {
             var wrappedHtml = wrapTemplate(myContext, myInnerTemplate, myOuterTemplate, "innerHtml");
-            expect(wrappedHtml).toContain(myContext.title);
-            expect(wrappedHtml).toContain(myContext.description);
-            expect(wrappedHtml).toContain(myInnerTemplate(myContext));
+            expect(wrappedHtml).to.contain(myContext.title);
+            expect(wrappedHtml).to.contain(myContext.description);
+            expect(wrappedHtml).to.contain(myInnerTemplate(myContext));
         });
 
         it("Should contain the outer template results", function()
         {
             var wrappedHtml = wrapTemplate(myContext, myInnerTemplate, myOuterTemplate, "innerHtml");
-            expect(wrappedHtml).toContain("<div id='outerTemplate'>");
+            expect(wrappedHtml).to.contain("<div id='outerTemplate'>");
         });
     });
 });

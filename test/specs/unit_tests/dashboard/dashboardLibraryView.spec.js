@@ -20,12 +20,12 @@ function(TP, DashboardLibraryView)
                 }
             };
 
-            viewOptions.collections.charts.addAllAvailableCharts = jasmine.createSpy("addAllAvailableCharts");
+            viewOptions.collections.charts.addAllAvailableCharts = sinon.stub();
         });
 
         it("Should be loaded as a module", function()
         {
-            expect(DashboardLibraryView).toBeDefined();
+            expect(DashboardLibraryView).to.not.be.undefined;
         });
 
         describe("Rendering", function()
@@ -40,14 +40,14 @@ function(TP, DashboardLibraryView)
              {
                  var library = new DashboardLibraryView(viewOptions);
                  library.render();
-                 expect(library.$("#activeLibraryContainer").length).toEqual(1);
+                 expect(library.$("#activeLibraryContainer").length).to.eql(1);
              });
 
              it("Should have an #tabs element", function()
              {
                  var library = new DashboardLibraryView(viewOptions);
                  library.render();
-                 expect(library.$("#tabs").length).toEqual(1);
+                 expect(library.$("#tabs").length).to.eql(1);
              });
         });
 
@@ -55,10 +55,10 @@ function(TP, DashboardLibraryView)
         {
             it("Should watch for tab click events", function()
             {
-                expect(DashboardLibraryView.prototype.events["click #tabs > div"]).toBeDefined();
-                expect(DashboardLibraryView.prototype.events["click #tabs > div"]).toBe("_onTabClick");
-                expect(DashboardLibraryView.prototype._onTabClick).toBeDefined();
-                expect(typeof DashboardLibraryView.prototype._onTabClick).toBe('function');
+                expect(DashboardLibraryView.prototype.events["click #tabs > div"]).to.not.be.undefined;
+                expect(DashboardLibraryView.prototype.events["click #tabs > div"]).to.equal("_onTabClick");
+                expect(DashboardLibraryView.prototype._onTabClick).to.not.be.undefined;
+                expect(typeof DashboardLibraryView.prototype._onTabClick).to.equal('function');
             });
 
         });

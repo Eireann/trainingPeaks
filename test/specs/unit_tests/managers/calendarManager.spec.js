@@ -28,12 +28,12 @@ function(
 
         it("should start with empty weeks, days, and activities collections", function()
         {
-            expect(calendarManager.weeks).toBeDefined();
-            expect(calendarManager.weeks.length).toEqual(0);
-            expect(calendarManager.days).toBeDefined();
-            expect(calendarManager.days.length).toEqual(0);
-            expect(calendarManager.activities).toBeDefined();
-            expect(calendarManager.activities.length).toEqual(0);
+            expect(calendarManager.weeks).to.not.be.undefined;
+            expect(calendarManager.weeks.length).to.eql(0);
+            expect(calendarManager.days).to.not.be.undefined;
+            expect(calendarManager.days.length).to.eql(0);
+            expect(calendarManager.activities).to.not.be.undefined;
+            expect(calendarManager.activities.length).to.eql(0);
         });
 
         it(".ensure(today) should add 1 week and 7 days", function()
@@ -41,8 +41,8 @@ function(
 
             calendarManager.ensure(moment());
 
-            expect(calendarManager.weeks.length).toEqual(1);
-            expect(calendarManager.days.length).toEqual(7);
+            expect(calendarManager.weeks.length).to.eql(1);
+            expect(calendarManager.days.length).to.eql(7);
 
         });
 
@@ -52,8 +52,8 @@ function(
             calendarManager.ensure(moment());
             calendarManager.ensure(moment().add(1, "week"));
 
-            expect(calendarManager.weeks.length).toEqual(2);
-            expect(calendarManager.days.length).toEqual(14);
+            expect(calendarManager.weeks.length).to.eql(2);
+            expect(calendarManager.days.length).to.eql(14);
 
         });
 
@@ -63,8 +63,8 @@ function(
             calendarManager.ensure(moment());
             calendarManager.ensure(moment().subtract(1, "week"));
 
-            expect(calendarManager.weeks.length).toEqual(2);
-            expect(calendarManager.days.length).toEqual(14);
+            expect(calendarManager.weeks.length).to.eql(2);
+            expect(calendarManager.days.length).to.eql(14);
 
         });
 
@@ -74,8 +74,8 @@ function(
             calendarManager.ensure(moment().subtract(1, "week"));
             calendarManager.ensure(moment().add(1, "week"));
 
-            expect(calendarManager.weeks.length).toEqual(3);
-            expect(calendarManager.days.length).toEqual(21);
+            expect(calendarManager.weeks.length).to.eql(3);
+            expect(calendarManager.days.length).to.eql(21);
 
         });
 
@@ -83,16 +83,16 @@ function(
         {
             calendarManager.ensureRange(moment().subtract(1, "week"), moment().add(1, "week"));
 
-            expect(calendarManager.weeks.length).toEqual(3);
-            expect(calendarManager.days.length).toEqual(21);
+            expect(calendarManager.weeks.length).to.eql(3);
+            expect(calendarManager.days.length).to.eql(21);
         });
 
         it(".ensureRange(next week, last week) (i.e. backwards) should still add 3 week and 21 days", function()
         {
             calendarManager.ensureRange(moment().add(1, "week"), moment().subtract(1, "week"));
 
-            expect(calendarManager.weeks.length).toEqual(3);
-            expect(calendarManager.days.length).toEqual(21);
+            expect(calendarManager.weeks.length).to.eql(3);
+            expect(calendarManager.days.length).to.eql(21);
         });
 
         describe(".aroundChanges", function()
@@ -100,8 +100,8 @@ function(
 
             it("should always trigger before/after:changes even if an exception is thrown", function()
             {
-                var beforeEvent = jasmine.createSpy();
-                var afterEvent = jasmine.createSpy();
+                var beforeEvent = sinon.stub();
+                var afterEvent = sinon.stub();
 
                 calendarManager.weeks.on("before:changes", beforeEvent);
                 calendarManager.days.on("before:changes", beforeEvent);
@@ -111,8 +111,8 @@ function(
 
                 try { calendarManager.aroundChanges(function() { throw "Error"; }); } catch(e) {}
 
-                expect(beforeEvent.callCount).toEqual(2);
-                expect(afterEvent.callCount).toEqual(2);
+                expect(beforeEvent.callCount).to.eql(2);
+                expect(afterEvent.callCount).to.eql(2);
             });
 
         });
@@ -131,7 +131,7 @@ function(
                 it("should return the added weeks", function()
                 {
                     var weeks = calendarManager.weeks.preparePrevious(4);
-                    expect(weeks.length).toEqual(4);
+                    expect(weeks.length).to.eql(4);
                 });
 
                 it("should add count weeks to the collection", function()
@@ -139,7 +139,7 @@ function(
                     calendarManager.ensure(moment());
                     calendarManager.weeks.preparePrevious(4);
 
-                    expect(calendarManager.weeks.length).toEqual(5);
+                    expect(calendarManager.weeks.length).to.eql(5);
                 });
 
             });
@@ -155,7 +155,7 @@ function(
                 it("should return the added weeks", function()
                 {
                     var weeks = calendarManager.weeks.prepareNext(4);
-                    expect(weeks.length).toEqual(4);
+                    expect(weeks.length).to.eql(4);
                 });
 
                 it("should add count weeks to the collection", function()
@@ -163,7 +163,7 @@ function(
                     calendarManager.ensure(moment());
                     calendarManager.weeks.prepareNext(4);
 
-                    expect(calendarManager.weeks.length).toEqual(5);
+                    expect(calendarManager.weeks.length).to.eql(5);
                 });
 
             });
@@ -184,7 +184,7 @@ function(
                 it("should return the added days", function()
                 {
                     var days = calendarManager.days.preparePrevious(4);
-                    expect(days.length).toEqual(4);
+                    expect(days.length).to.eql(4);
                 });
 
                 it("should add count days to the collection", function()
@@ -192,7 +192,7 @@ function(
                     calendarManager.ensure(moment());
                     calendarManager.days.preparePrevious(4);
 
-                    expect(calendarManager.days.length).toBeGreaterThan(5);
+                    expect(calendarManager.days.length).to.be.gt(5);
                 });
 
             });
@@ -208,7 +208,7 @@ function(
                 it("should return the added days", function()
                 {
                     var days = calendarManager.days.prepareNext(4);
-                    expect(days.length).toEqual(4);
+                    expect(days.length).to.eql(4);
                 });
 
                 it("should add count days to the collection", function()
@@ -216,7 +216,7 @@ function(
                     calendarManager.ensure(moment());
                     calendarManager.days.prepareNext(4);
 
-                    expect(calendarManager.days.length).toBeGreaterThan(5);
+                    expect(calendarManager.days.length).to.be.gt(5);
                 });
 
             });
@@ -234,8 +234,8 @@ function(
                 calendarManager.addItem(workout);
                 calendarManager.addItem(metric);
 
-                expect(calendarManager.days.get("2013-05-25").itemsCollection.length).toEqual(1);
-                expect(calendarManager.days.get("2013-03-14").itemsCollection.length).toEqual(1);
+                expect(calendarManager.days.get("2013-05-25").itemsCollection.length).to.eql(1);
+                expect(calendarManager.days.get("2013-03-14").itemsCollection.length).to.eql(1);
             });
 
             it("should add activities to the correct day collection when their date is changed", function()
@@ -249,8 +249,8 @@ function(
                 workout.set("workoutDay", "2013-05-27");
                 metric.set("timeStamp", "2013-02-02T10:01:11");
 
-                expect(calendarManager.days.get("2013-05-27").itemsCollection.length).toEqual(1);
-                expect(calendarManager.days.get("2013-02-02").itemsCollection.length).toEqual(1);
+                expect(calendarManager.days.get("2013-05-27").itemsCollection.length).to.eql(1);
+                expect(calendarManager.days.get("2013-02-02").itemsCollection.length).to.eql(1);
             });
 
             it("should remove activities from the old day collection when their date is changed", function()
@@ -264,8 +264,8 @@ function(
                 workout.set("workoutDay", "2013-05-27");
                 metric.set("timeStamp", "2013-02-02");
 
-                expect(calendarManager.days.get("2013-05-25").itemsCollection.length).toEqual(0);
-                expect(calendarManager.days.get("2013-03-14").itemsCollection.length).toEqual(0);
+                expect(calendarManager.days.get("2013-05-25").itemsCollection.length).to.eql(0);
+                expect(calendarManager.days.get("2013-03-14").itemsCollection.length).to.eql(0);
             });
 
             it("should remove activites when the activites are destroyed", function()
@@ -279,8 +279,8 @@ function(
                 workout.destroy();
                 metric.destroy();
 
-                expect(calendarManager.days.get("2013-05-25").itemsCollection.length).toEqual(0);
-                expect(calendarManager.days.get("2013-03-14").itemsCollection.length).toEqual(0);
+                expect(calendarManager.days.get("2013-05-25").itemsCollection.length).to.eql(0);
+                expect(calendarManager.days.get("2013-03-14").itemsCollection.length).to.eql(0);
             });
 
         });
@@ -297,7 +297,7 @@ function(
                 calendarManager.addItem(workout);
                 calendarManager.addItem(metric);
 
-                expect(calendarManager.activities.length).toEqual(2);
+                expect(calendarManager.activities.length).to.eql(2);
 
             });
 
@@ -308,11 +308,11 @@ function(
 
             it("should reset the dataManager", function()
             {
-                spyOn(dataManager, "forceReset");
+                sinon.stub(dataManager, "forceReset");
 
                 calendarManager.reset();
 
-                expect(dataManager.forceReset).toHaveBeenCalled();
+                expect(dataManager.forceReset).to.have.been.called;
             });
 
             it("should remove all activities", function()
@@ -325,7 +325,7 @@ function(
 
                 calendarManager.reset();
 
-                expect(calendarManager.activities.length).toEqual(0);
+                expect(calendarManager.activities.length).to.eql(0);
             });
 
             it("should set all weeks to the unfetched state", function()
@@ -337,7 +337,7 @@ function(
 
                 calendarManager.reset();
 
-                expect(calendarManager.weeks.first().getState().get("isFetched")).toEqual(false);
+                expect(calendarManager.weeks.first().getState().get("isFetched")).to.eql(false);
 
             });
 
@@ -354,8 +354,8 @@ function(
                 calendarManager.addItem(workout);
                 calendarManager.addItem(metric);
 
-                expect(calendarManager.get(WorkoutModel, 1)).toEqual(workout);
-                expect(calendarManager.get(MetricModel, 1)).toEqual(metric);
+                expect(calendarManager.get(WorkoutModel, 1)).to.eql(workout);
+                expect(calendarManager.get(MetricModel, 1)).to.eql(metric);
             });
 
         });

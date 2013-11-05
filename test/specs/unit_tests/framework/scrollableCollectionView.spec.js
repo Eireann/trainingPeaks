@@ -21,7 +21,7 @@ requirejs(
 
         it("Should be exposed as a module", function()
         {
-            expect(view).toBeDefined();
+            expect(view).to.not.be.undefined;
         });
 
         // pending
@@ -31,34 +31,34 @@ requirejs(
                     endDate: moment().day(7).add("weeks", 2)
                 }),
                 view = new ScrollableCollectionView({collection: collection});
-            spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
+            sinon.stub(collection, "requestWorkouts").returns(new $.Deferred());
             collection.prepareNext(3);
             view.scrollToModel(collection.at(2));
         });
 
         it("Should fetch more results when scrolling above the threshhold", function() {
-            spyOn(view.$el, "scrollTop").andReturn(0);
-            spyOn(view.$el, "height").andReturn(100);
-            spyOn(view.$el, "prop").andReturn(200);
-            spyOn(view, "snapToChild").andReturn([]);
+            sinon.stub(view.$el, "scrollTop").returns(0);
+            sinon.stub(view.$el, "height").returns(100);
+            sinon.stub(view.$el, "prop").returns(200);
+            sinon.stub(view, "snapToChild").returns([]);
 
-            spyOn(view, "_fetchMore");
+            sinon.stub(view, "_fetchMore");
             view.render();
             view.$el.trigger('scroll'); // this passes when the spec is run alone, but breaks the full spec suite run task
-            expect(view._fetchMore).toHaveBeenCalledWith('top');
+            expect(view._fetchMore).to.have.been.calledWith('top');
         });
 
         // pending
         it("Should fetch more results when scrolling below the bottom threshhold", function() {
-            spyOn(view.$el, "scrollTop").andReturn(2000);
-            spyOn(view.$el, "prop").andReturn(2200);
-            spyOn(view.$el, "height").andReturn(100);
-            spyOn(view, "snapToChild").andReturn([]);
+            sinon.stub(view.$el, "scrollTop").returns(2000);
+            sinon.stub(view.$el, "prop").returns(2200);
+            sinon.stub(view.$el, "height").returns(100);
+            sinon.stub(view, "snapToChild").returns([]);
 
-            spyOn(view, "_fetchMore");
+            sinon.stub(view, "_fetchMore");
             view.render();
             view.$el.trigger('scroll'); // this passes when the spec is run alone, but breaks the full spec suite run task
-            expect(view._fetchMore).toHaveBeenCalledWith('bottom');
+            expect(view._fetchMore).to.have.been.calledWith('bottom');
         });
      });
 
@@ -81,7 +81,7 @@ requirejs(
 
         it("Should be exposed as a module", function() 
         {
-            expect(adapterCollection).toBeDefined();
+            expect(adapterCollection).to.not.be.undefined;
         });
 
         it("Should add models added to the sourceCollection", function()
@@ -89,7 +89,7 @@ requirejs(
             var model = new TP.Model();
             collection.add(model);
 
-            expect(adapterCollection.length).toBe(1);
+            expect(adapterCollection.length).to.equal(1);
         });
         it("Should remove models removed from the sourceCollection", function()
         {
@@ -97,16 +97,16 @@ requirejs(
             collection.add(model);
             collection.remove(model);
 
-            expect(adapterCollection.length).toBe(0);
+            expect(adapterCollection.length).to.equal(0);
         });
 
         it("Should not add models added to the sourceCollection that are outside the current range", function()
         {
             _.times(3, function(){ collection.add(new TP.Model()); });
-            expect(adapterCollection.length).toBe(3);
+            expect(adapterCollection.length).to.equal(3);
             var model = new TP.Model();
             collection.add(model);
-            expect(adapterCollection.indexOf(model)).toBe(-1);
+            expect(adapterCollection.indexOf(model)).to.equal(-1);
         });
 
         it("Should limit the number of models to maxSize by dropping models from the end if we add to the first half of the current source range", function()
@@ -115,8 +115,8 @@ requirejs(
 
             var model = new TP.Model();
             collection.add(model, {at: 1});
-            expect(adapterCollection.indexOf(model)).toBe(1);
-            expect(adapterCollection.length).toBe(3);
+            expect(adapterCollection.indexOf(model)).to.equal(1);
+            expect(adapterCollection.length).to.equal(3);
         });
 
         it("Should limit the number of models to maxSize by dropping models from the beginning if we add to the second half of the current source range", function()
@@ -125,8 +125,8 @@ requirejs(
 
             var model = new TP.Model();
             collection.add(model, {at: 2});
-            expect(adapterCollection.indexOf(model)).toBe(1);
-            expect(adapterCollection.length).toBe(3);
+            expect(adapterCollection.indexOf(model)).to.equal(1);
+            expect(adapterCollection.length).to.equal(3);
         });
         it("Should fill in the adapter collection with models from the end of the source collection to maintain adapter collections size", function()
         {
@@ -134,8 +134,8 @@ requirejs(
             collection.add(models);
             var model = adapterCollection.at(2);
             collection.remove(model);
-            expect(adapterCollection.length).toBe(3);
-            expect(adapterCollection.last()).toBe(models[3]);
+            expect(adapterCollection.length).to.equal(3);
+            expect(adapterCollection.last()).to.equal(models[3]);
         });
         it("Should fill in the adapter collection with models from the beginning of the source collection to maintain adapter collections size", function()
         {
@@ -144,8 +144,8 @@ requirejs(
             collection.add(models[0], {at: 0});
             collection.add(models[4], {at: 4});
             collection.remove(collection.at(1));
-            expect(adapterCollection.length).toBe(3);
-            expect(adapterCollection.first()).toBe(models[0]);
+            expect(adapterCollection.length).to.equal(3);
+            expect(adapterCollection.first()).to.equal(models[0]);
         });
      });
  }

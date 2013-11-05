@@ -5,7 +5,8 @@ s/toBeTruthy()/to.be.ok/g
 s/toBeFalsy()/to.not.be.ok/g
 s/toBeHidden()/to.be.hidden/g
 s/toBeVisible()/to.be.visible/g
-s/toBeCloseTo/to.be.closeTo/g
+s/toBeCloseTo(\(.*\), \(.*\))/to.be.closeTo(\1, Math.pow(10, -\2) \/ 2)/g
+s/toBeCloseTo(\(.*\))/to.be.closeTo(\1, Math.pow(10, -2) \/ 2)/g
 s/toBeGreaterThan/to.be.gt/g
 s/toBeLessThan/to.be.lt/g
 s/toBe/to.equal/g

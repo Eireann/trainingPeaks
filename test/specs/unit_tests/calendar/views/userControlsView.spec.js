@@ -16,7 +16,7 @@ function ($, Backbone, UserModel, UserControlsView)
 
         it("Loads as a module", function()
         {
-            expect(UserControlsView).toBeDefined();
+            expect(UserControlsView).to.not.be.undefined;
         });
 
         xit("Renders the UserSettings view when the usernameLabel is clicked", function()

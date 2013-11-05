@@ -9,7 +9,7 @@ function($, ajaxCaching)
 
         it("Should have an initialize method", function()
         {
-            expect(typeof ajaxCaching.initialize).toBe("function");
+            expect(typeof ajaxCaching.initialize).to.equal("function");
         });
 
         describe("sync", function()
@@ -18,25 +18,25 @@ function($, ajaxCaching)
             it("Should call Backbone.sync if request type is not read", function()
             {
                 var ret = {};
-                spyOn(ajaxCaching, 'backboneSync').andReturn(ret);
+                sinon.stub(ajaxCaching, 'backboneSync').returns(ret);
                 var method = 'update';
                 var model = {};
                 var settings = {};
                 var returnedValue = ajaxCaching.sync(method, model, settings);
-                expect(ajaxCaching.backboneSync).toHaveBeenCalledWith(method, model, settings);
-                expect(returnedValue).toBe(ret);
+                expect(ajaxCaching.backboneSync).to.have.been.calledWith(method, model, settings);
+                expect(returnedValue).to.equal(ret);
             });
 
             it("Should call Backbone.sync if model is not cacheable", function()
             {
                 var ret = {};
-                spyOn(ajaxCaching, 'backboneSync').andReturn(ret);
+                sinon.stub(ajaxCaching, 'backboneSync').returns(ret);
                 var method = 'read';
                 var model = {};
                 var settings = {};
                 var returnedValue = ajaxCaching.sync(method, model, settings);
-                expect(ajaxCaching.backboneSync).toHaveBeenCalledWith(method, model, settings);
-                expect(returnedValue).toBe(ret);
+                expect(ajaxCaching.backboneSync).to.have.been.calledWith(method, model, settings);
+                expect(returnedValue).to.equal(ret);
             });
 
             describe("read", function()
@@ -46,8 +46,8 @@ function($, ajaxCaching)
                  
                 beforeEach(function()
                 {
-                    deferredSpy = jasmine.createSpyObj("deferred spy", ["done"]);
-                    spyOn(ajaxCaching, "addCachingDeferred").andReturn(deferredSpy);
+                    deferredSpy = createSpyObj("deferred spy", ["done"]);
+                    sinon.stub(ajaxCaching, "addCachingDeferred").returns(deferredSpy);
                     settings = {
                         type: "read",
                         success: function() { }
@@ -67,7 +67,7 @@ function($, ajaxCaching)
                     };
                     var settings = {};
                     ajaxCaching.sync(method, model, settings);
-                    expect(ajaxCaching.addCachingDeferred).toHaveBeenCalledWith(method, model, settings, ajaxCaching.backboneSync);
+                    expect(ajaxCaching.addCachingDeferred).to.have.been.calledWith(method, model, settings, ajaxCaching.backboneSync);
                 });
 
                 it("Should call deferred.done with Backbone's settings.success", function()
@@ -82,7 +82,7 @@ function($, ajaxCaching)
                         success: function() { }
                     };
                     ajaxCaching.sync(method, model, settings);
-                    expect(deferredSpy.done).toHaveBeenCalledWith(settings.success);
+                    expect(deferredSpy.done).to.have.been.calledWith(settings.success);
                 });
 
                 it("Should return a deferred", function()
@@ -94,7 +94,7 @@ function($, ajaxCaching)
                     };
                     var settings = {};
                     var returnedValue = ajaxCaching.sync(method, model, settings);
-                    expect(returnedValue).toBe(deferredSpy);
+                    expect(returnedValue).to.equal(deferredSpy);
                 });
 
             });
@@ -109,10 +109,10 @@ function($, ajaxCaching)
 
             beforeEach(function()
             {
-                jQueryXhrDeferredSpy = jasmine.createSpyObj("deferred spy", ["always", "done", "fail", "pipe", "progress", "then"]);
-                cachingDeferredSpy = jasmine.createSpyObj("deferred spy", ["always", "done", "fail", "pipe", "progress", "then"]);
-                spyOn(ajaxCaching, "backboneSync").andReturn(jQueryXhrDeferredSpy);
-                spyOn($, "Deferred").andReturn(cachingDeferredSpy);
+                jQueryXhrDeferredSpy = createSpyObj("deferred spy", ["always", "done", "fail", "pipe", "progress", "then"]);
+                cachingDeferredSpy = createSpyObj("deferred spy", ["always", "done", "fail", "pipe", "progress", "then"]);
+                sinon.stub(ajaxCaching, "backboneSync").returns(jQueryXhrDeferredSpy);
+                sinon.stub($, "Deferred").returns(cachingDeferredSpy);
                 settings = {
                     type: "read",
                     success: function() { }
@@ -128,7 +128,7 @@ function($, ajaxCaching)
                 };
                 var settings = {};
                 var ret = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
-                expect(ret).toBe(jQueryXhrDeferredSpy);
+                expect(ret).to.equal(jQueryXhrDeferredSpy);
             });
 
         });
@@ -143,8 +143,8 @@ function($, ajaxCaching)
             {
                 jQueryXhrDeferred = new $.Deferred();
                 cachingDeferred = new $.Deferred();
-                spyOn(ajaxCaching, "backboneSync").andReturn(jQueryXhrDeferred);
-                spyOn($, "Deferred").andReturn(cachingDeferred);
+                sinon.stub(ajaxCaching, "backboneSync").returns(jQueryXhrDeferred);
+                sinon.stub($, "Deferred").returns(cachingDeferred);
                 settings = {
                     type: "read",
                     success: function() { }
@@ -160,8 +160,8 @@ function($, ajaxCaching)
                 };
                 var settings = {};
                 ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
-                expect(settings.hasOwnProperty("ajaxCachingDeferred")).toBe(true);
-                expect(settings.ajaxCachingDeferred).toBe(cachingDeferred);
+                expect(settings.hasOwnProperty("ajaxCachingDeferred")).to.equal(true);
+                expect(settings.ajaxCachingDeferred).to.equal(cachingDeferred);
             });
 
             it("Should call inner deferred's methods", function()
@@ -174,14 +174,14 @@ function($, ajaxCaching)
                 var settings = {};
                 var deferredFunctionNames = ["done", "fail", "progress", "then"];
                 var jqXhr = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
-                expect(jqXhr).toBe(jQueryXhrDeferred);
+                expect(jqXhr).to.equal(jQueryXhrDeferred);
                 _.each(deferredFunctionNames, function(methodName)
                 {
-                    spyOn(cachingDeferred[methodName], 'apply').andReturn(cachingDeferred);
-                    var callback = jasmine.createSpy("Some callback");
+                    sinon.stub(cachingDeferred[methodName], 'apply').returns(cachingDeferred);
+                    var callback = sinon.stub();
                     jqXhr[methodName](callback);
-                    expect(cachingDeferred[methodName].apply).toHaveBeenCalledWith(cachingDeferred, [callback]);
-                    expect(callback).not.toHaveBeenCalled();
+                    expect(cachingDeferred[methodName].apply).to.have.been.calledWith(cachingDeferred, [callback]);
+                    expect(callback).to.not.have.been.called;
                 });
             });
 
@@ -195,8 +195,8 @@ function($, ajaxCaching)
 
             beforeEach(function()
             {
-                xhr = jasmine.createSpyObj("XHR Response Spy", ["getResponseHeader"]);
-                spyOn(ajaxCaching, "writeCache");
+                xhr = createSpyObj("XHR Response Spy", ["getResponseHeader"]);
+                sinon.stub(ajaxCaching, "writeCache");
             });
 
             afterEach(function()
@@ -206,43 +206,43 @@ function($, ajaxCaching)
             it("Should not call ajaxCaching.writeCache if status is notmodified", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notmodified", xhr, settings);
-                expect(ajaxCaching.writeCache).not.toHaveBeenCalled();
+                expect(ajaxCaching.writeCache).to.not.have.been.called;
             });
 
             it("Should not call ajaxCaching.writeCache if status is not success", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notfound", xhr, settings);
-                expect(ajaxCaching.writeCache).not.toHaveBeenCalled();
+                expect(ajaxCaching.writeCache).to.not.have.been.called;
             });
 
             it("Should call ajaxCaching.writeCache if status is success", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "success", xhr, settings);
-                expect(ajaxCaching.writeCache).toHaveBeenCalled();
+                expect(ajaxCaching.writeCache).to.have.been.called;
             });
 
             it("Should include the request url in the cache key", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("something", "success", xhr, settings);
-                expect(ajaxCaching.writeCache).toHaveBeenCalled();
-                expect(ajaxCaching.writeCache.mostRecentCall.args[0].indexOf(settings.url) >= 0).toBe(true);
+                expect(ajaxCaching.writeCache).to.have.been.called;
+                expect(ajaxCaching.writeCache.lastCall.args[0].indexOf(settings.url) >= 0).to.equal(true);
             });
 
             it("Should include the response data in cached object", function()
             {
                 var response = "{some: 'json data'}";
                 ajaxCaching.saveResponseToLocalStorage(response, "success", xhr, settings);
-                expect(ajaxCaching.writeCache).toHaveBeenCalled();
-                expect(ajaxCaching.writeCache.mostRecentCall.args[1].data).toBe(response);
+                expect(ajaxCaching.writeCache).to.have.been.called;
+                expect(ajaxCaching.writeCache.lastCall.args[1].data).to.equal(response);
             });
 
             it("Should include the last modified date in cached object", function()
             {
                 var lastModified = "2013-01-01T00:00:00";
-                xhr.getResponseHeader.andReturn(lastModified);
+                xhr.getResponseHeader.returns(lastModified);
                 ajaxCaching.saveResponseToLocalStorage("", "success", xhr, settings);
-                expect(ajaxCaching.writeCache).toHaveBeenCalled();
-                expect(ajaxCaching.writeCache.mostRecentCall.args[1].lastModifiedDate).toBe(lastModified);
+                expect(ajaxCaching.writeCache).to.have.been.called;
+                expect(ajaxCaching.writeCache.lastCall.args[1].lastModifiedDate).to.equal(lastModified);
             });
 
         });
@@ -264,8 +264,8 @@ function($, ajaxCaching)
                 settings = { url: 'some/url' };
                 xhr = {};
 
-                spyOn(ajaxCaching, "resolveRequestWithCachedData");
-                spyOn(ajaxCaching, "addRequestCacheHeaders");
+                sinon.stub(ajaxCaching, "resolveRequestWithCachedData");
+                sinon.stub(ajaxCaching, "addRequestCacheHeaders");
 
             });
 
@@ -275,23 +275,23 @@ function($, ajaxCaching)
 
             it("Should check cache", function()
             {
-                spyOn(ajaxCaching, "readCache");
+                sinon.stub(ajaxCaching, "readCache");
                 ajaxCaching.checkCache(xhr, settings);
-                expect(ajaxCaching.readCache).toHaveBeenCalled();
+                expect(ajaxCaching.readCache).to.have.been.called;
             });
 
             it("Should resolve request if we have cached data", function()
             {
-                spyOn(ajaxCaching, "readCache").andReturn(cachedObject);
+                sinon.stub(ajaxCaching, "readCache").returns(cachedObject);
                 ajaxCaching.checkCache(xhr, settings);
-                expect(ajaxCaching.resolveRequestWithCachedData).toHaveBeenCalledWith(xhr, settings, cachedObject.data);
+                expect(ajaxCaching.resolveRequestWithCachedData).to.have.been.calledWith(xhr, settings, cachedObject.data);
             });
 
             it("Should add request headers if we have cached data", function()
             {
-                spyOn(ajaxCaching, "readCache").andReturn(cachedObject);
+                sinon.stub(ajaxCaching, "readCache").returns(cachedObject);
                 ajaxCaching.checkCache(xhr, settings);
-                expect(ajaxCaching.addRequestCacheHeaders).toHaveBeenCalledWith(xhr, cachedObject.lastModified);
+                expect(ajaxCaching.addRequestCacheHeaders).to.have.been.calledWith(xhr, cachedObject.lastModified);
             });
 
         });
@@ -305,13 +305,13 @@ function($, ajaxCaching)
                 var settings = {
                     ajaxCachingDeferred: new $.Deferred()
                 };
-                spyOn(settings.ajaxCachingDeferred, "resolveWith").andCallThrough();
-                spyOn(ajaxCaching, "saveResponseToLocalStorage");
+                sinon.spy(settings.ajaxCachingDeferred, "resolveWith");
+                sinon.stub(ajaxCaching, "saveResponseToLocalStorage");
                 var cachedData = "some data";
 
                 var doneWasCalled = false;
 
-                var theCallback = jasmine.createSpy("the callback").andCallFake(function()
+                var theCallback = sinon.spy(function()
                 {
                     doneWasCalled = true;
                 });
@@ -330,9 +330,9 @@ function($, ajaxCaching)
 
                 runs(function()
                 {
-                    expect(settings.ajaxCachingDeferred.resolveWith).toHaveBeenCalledWith(settings, [cachedData, "success", xhr]);
-                    expect(theCallback).toHaveBeenCalledWith(cachedData, "success", xhr);
-                    expect(ajaxCaching.saveResponseToLocalStorage).not.toHaveBeenCalled();
+                    expect(settings.ajaxCachingDeferred.resolveWith).to.have.been.calledWith(settings, [cachedData, "success", xhr]);
+                    expect(theCallback).to.have.been.calledWith(cachedData, "success", xhr);
+                    expect(ajaxCaching.saveResponseToLocalStorage).to.not.have.been.called;
                 });
 
             });
@@ -347,8 +347,8 @@ function($, ajaxCaching)
             beforeEach(function()
             {
                 ajaxCachingDeferred = new $.Deferred();
-                spyOn(ajaxCaching, "backboneSync").andReturn(new $.Deferred());
-                spyOn($, "Deferred").andReturn(ajaxCachingDeferred);
+                sinon.stub(ajaxCaching, "backboneSync").returns(new $.Deferred());
+                sinon.stub($, "Deferred").returns(ajaxCachingDeferred);
             });
 
             it("Should not resolve the sync deferred", function()
@@ -360,14 +360,14 @@ function($, ajaxCaching)
                 };
                 var settings = {};
                 var ret = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
-                spyOn(ajaxCachingDeferred, "resolveWith").andCallThrough();
-                spyOn(ajaxCachingDeferred, "resolve").andCallThrough();
-                spyOn(ajaxCaching, "saveResponseToLocalStorage");
+                sinon.spy(ajaxCachingDeferred, "resolveWith");
+                sinon.spy(ajaxCachingDeferred, "resolve");
+                sinon.stub(ajaxCaching, "saveResponseToLocalStorage");
 
                 var cachedData = "some data";
                 ret.resolveWith(settings, [cachedData, 'success', ret]);
-                expect(ajaxCachingDeferred.resolveWith).not.toHaveBeenCalled();
-                expect(ajaxCachingDeferred.resolve).not.toHaveBeenCalled();
+                expect(ajaxCachingDeferred.resolveWith).to.not.have.been.called;
+                expect(ajaxCachingDeferred.resolve).to.not.have.been.called;
 
             });
 
@@ -380,13 +380,13 @@ function($, ajaxCaching)
                 };
                 var settings = {};
                 var ret = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
-                spyOn(ret, "resolveWith").andCallThrough();
-                spyOn(ajaxCaching, "saveResponseToLocalStorage");
+                sinon.spy(ret, "resolveWith");
+                sinon.stub(ajaxCaching, "saveResponseToLocalStorage");
                 var cachedData = "some data";
 
                 var doneWasCalled = false;
 
-                var theCallback = jasmine.createSpy("the callback").andCallFake(function()
+                var theCallback = sinon.spy(function()
                 {
                     doneWasCalled = true;
                 });
@@ -405,8 +405,8 @@ function($, ajaxCaching)
 
                 runs(function()
                 {
-                    expect(theCallback).toHaveBeenCalledWith(cachedData, "success", ret);
-                    expect(ajaxCaching.saveResponseToLocalStorage).toHaveBeenCalled();
+                    expect(theCallback).to.have.been.calledWith(cachedData, "success", ret);
+                    expect(ajaxCaching.saveResponseToLocalStorage).to.have.been.called;
                 });
 
             });

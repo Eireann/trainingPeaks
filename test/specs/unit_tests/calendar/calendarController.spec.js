@@ -61,20 +61,20 @@ function(
 
         it("Should load successfully as a module", function()
         {
-            expect(CalendarController).toBeDefined();
+            expect(CalendarController).to.not.be.undefined;
         });
 
         describe("Initialize controller", function()
         {
             it("Should have a getLayout method", function()
             {
-                expect(typeof CalendarController.prototype.getLayout).toBe("function");
+                expect(typeof CalendarController.prototype.getLayout).to.equal("function");
             });
             
             it("Should have a layout", function()
             {
                 var controller = buildController();
-                expect(controller.getLayout()).toBeDefined();
+                expect(controller.getLayout()).to.not.be.undefined;
             });
 
         });
@@ -86,49 +86,49 @@ function(
             beforeEach(function()
             {
                 controller = buildController();
-                spyOn(controller, "showViewsInRegions");
-                spyOn(controller, "showDate");
+                sinon.stub(controller, "showViewsInRegions");
+                sinon.stub(controller, "showDate");
             });
 
             it("Should initialize the header", function()
             {
-                spyOn(controller, "initializeHeader").andCallThrough();
+                sinon.spy(controller, "initializeHeader");
                 controller.show();
-                expect(controller.initializeHeader).toHaveBeenCalled();
+                expect(controller.initializeHeader).to.have.been.called;
             });
 
             it("Should initialize the calendar", function()
             {
-                spyOn(controller, "initializeCalendar");
+                sinon.stub(controller, "initializeCalendar");
                 controller.show();
-                expect(controller.initializeCalendar).toHaveBeenCalled();
+                expect(controller.initializeCalendar).to.have.been.called;
             });
 
             it("Should initialize the library", function()
             {
-                spyOn(controller, "initializeLibrary");
+                sinon.stub(controller, "initializeLibrary");
                 controller.show();
-                expect(controller.initializeLibrary).toHaveBeenCalled();
+                expect(controller.initializeLibrary).to.have.been.called;
             });
 
             it("Should display the views in their regions", function()
             {
                 controller.show();
-                expect(controller.showViewsInRegions).toHaveBeenCalled();
+                expect(controller.showViewsInRegions).to.have.been.called;
             });
 
             it("Should load the library data after user loads", function()
             {
-                spyOn(controller, "loadLibraryData").andReturn([]);
+                sinon.stub(controller, "loadLibraryData").returns([]);
                 controller.show();
-                expect(controller.loadLibraryData).toHaveBeenCalled();
+                expect(controller.loadLibraryData).to.have.been.called;
             });
 
             it("Should load the calendar data after user loads", function()
             {
-                spyOn(controller, "loadCalendarData").andReturn([]);
+                sinon.stub(controller, "loadCalendarData").returns([]);
                 controller.show();
-                expect(controller.loadCalendarData).toHaveBeenCalled();
+                expect(controller.loadCalendarData).to.have.been.called;
             });
         });
 
@@ -137,10 +137,10 @@ function(
             it("Should create a CalendarView", function()
             {
                 var controller = buildController();
-                spyOn(CalendarView.prototype, "initialize").andCallThrough();
+                sinon.spy(CalendarView.prototype, "initialize");
                 controller.initializeHeader();
                 controller.initializeCalendar();
-                expect(CalendarView.prototype.initialize).toHaveBeenCalled();
+                expect(CalendarView.prototype.initialize).to.have.been.called;
             });
 
         });
@@ -151,9 +151,9 @@ function(
             it("Should call requestWorkouts once for each week", function()
             {
                 var controller = buildController();
-                spyOn(controller.calendarManager, "loadActivities");
+                sinon.stub(controller.calendarManager, "loadActivities");
                 controller.loadCalendarData();
-                expect(controller.calendarManager.loadActivities).toHaveBeenCalled();
+                expect(controller.calendarManager.loadActivities).to.have.been.called;
             });
 
         });
@@ -167,7 +167,7 @@ function(
                 {
                     var controller = buildController();
                     controller.initializeLibrary();
-                    expect(controller.libraryCollections.exerciseLibraries).toBeDefined();
+                    expect(controller.libraryCollections.exerciseLibraries).to.not.be.undefined;
                 });
                 
             });
@@ -176,9 +176,9 @@ function(
             {
                 var controller = buildController();
                 controller.initializeLibrary();
-                spyOn(controller.libraryCollections.exerciseLibraries, "fetch");
+                sinon.stub(controller.libraryCollections.exerciseLibraries, "fetch");
                 controller.loadLibraryData();
-                expect(controller.libraryCollections.exerciseLibraries.fetch).toHaveBeenCalled();
+                expect(controller.libraryCollections.exerciseLibraries.fetch).to.have.been.called;
             });
         });
 
@@ -187,9 +187,9 @@ function(
             it("Should create a LibraryView", function()
             {
                 var controller = buildController();
-                spyOn(LibraryView.prototype, "initialize").andCallThrough();
+                sinon.spy(LibraryView.prototype, "initialize");
                 controller.initializeLibrary();
-                expect(LibraryView.prototype.initialize).toHaveBeenCalled();
+                expect(LibraryView.prototype.initialize).to.have.been.called;
             });
 
         });
@@ -202,11 +202,11 @@ function(
             beforeEach(function()
             {
                 controller = buildController();
-                spyOn(controller.calendarManager, "reset");
+                sinon.stub(controller.calendarManager, "reset");
                 controller.initializeHeader();
                 controller.initializeCalendar();
-                spyOn(controller.views.calendar, "scrollToDate");
-                controller.views.calendar = jasmine.createSpyObj("calendar view spy", ["scrollToDate"]);
+                sinon.stub(controller.views.calendar, "scrollToDate");
+                controller.views.calendar = createSpyObj("calendar view spy", ["scrollToDate"]);
             });
 
             it("Should scroll to date, but not reset, if within current date range", function()
@@ -215,8 +215,8 @@ function(
                 controller.endDate = moment().day(0).add("weeks", 3);
                 var showDate = moment().day(3).add("weeks", 1);
                 controller.showDate(showDate);
-                expect(controller.calendarManager.reset).not.toHaveBeenCalled();
-                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+                expect(controller.calendarManager.reset).to.not.have.been.called;
+                expect(controller.views.calendar.scrollToDate).to.have.been.called;
 
             });
 
@@ -226,7 +226,7 @@ function(
                 controller.endDate = moment().day(0).add("weeks", 3);
                 var showDate = moment().day(3).add("weeks", 16);
                 controller.showDate(showDate);
-                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+                expect(controller.views.calendar.scrollToDate).to.have.been.called;
             });
 
             it("Should prepend week if date is before current range", function()
@@ -235,8 +235,8 @@ function(
                 controller.endDate = moment().day(0).add("weeks", 3);
                 var showDate = moment().day(3).subtract("weeks", 5);
                 controller.showDate(showDate);
-                expect(controller.calendarManager.reset).not.toHaveBeenCalled();
-                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+                expect(controller.calendarManager.reset).to.not.have.been.called;
+                expect(controller.views.calendar.scrollToDate).to.have.been.called;
 
             });
 
@@ -246,8 +246,8 @@ function(
                 controller.endDate = moment().day(0).add("weeks", 3);
                 var showDate = moment().day(3).add("weeks", 6);
                 controller.showDate(showDate);
-                expect(controller.calendarManager.reset).not.toHaveBeenCalled();
-                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+                expect(controller.calendarManager.reset).to.not.have.been.called;
+                expect(controller.views.calendar.scrollToDate).to.have.been.called;
             });
         });
 

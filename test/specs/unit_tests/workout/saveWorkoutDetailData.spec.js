@@ -9,10 +9,10 @@ function(SaveWorkoutDetailDataCommand)
         it("Should start with default values", function()
         {
             var command = new SaveWorkoutDetailDataCommand({},{workoutId: 1, uploadedFileId: 2});
-            expect(command.get("lapsStats")).toBe(null);
-            expect(command.get("channelCuts")).toBe(null);
-            expect(command.get("sampleEdits")).toBe(null);
-            expect(command.get("applyElevationCorrection")).toBe(false);
+            expect(command.get("lapsStats")).to.equal(null);
+            expect(command.get("channelCuts")).to.equal(null);
+            expect(command.get("sampleEdits")).to.equal(null);
+            expect(command.get("applyElevationCorrection")).to.equal(false);
         });
 
         describe("Channel edit ids", function()
@@ -23,7 +23,7 @@ function(SaveWorkoutDetailDataCommand)
             beforeEach(function()
             {
                 command = new SaveWorkoutDetailDataCommand({},{workoutId: 1, uploadedFileId: 2});
-                spyOn(command, "save");
+                sinon.stub(command, "save");
             });
 
             it("Should throw an exception for invalid channel names", function()
@@ -39,7 +39,7 @@ function(SaveWorkoutDetailDataCommand)
                         endTimeInMilliseconds: 1000
                     }
                 ]);
-                expect(execCommand).toThrow();
+                expect(execCommand).to.throw();
 
                 command.set("channelCuts", [
                     {
@@ -48,7 +48,7 @@ function(SaveWorkoutDetailDataCommand)
                         channel: null
                     }
                 ]);
-                expect(execCommand).toThrow();
+                expect(execCommand).to.throw();
 
                 command.set("channelCuts", [
                     {
@@ -57,7 +57,7 @@ function(SaveWorkoutDetailDataCommand)
                         channel: "WrongChannelName"
                     }
                 ]);
-                expect(execCommand).toThrow();
+                expect(execCommand).to.throw();
 
                 command.set("channelCuts", [
                     {
@@ -66,7 +66,7 @@ function(SaveWorkoutDetailDataCommand)
                         channel: "Power"
                     }
                 ]);
-                expect(execCommand).not.toThrow();
+                expect(execCommand).to.not.throw();
             });
 
             it("Should set channel ids for valid channel names", function()
@@ -92,9 +92,9 @@ function(SaveWorkoutDetailDataCommand)
 
                 command.execute();
 
-                expect(command.get("channelCuts")[0].channel).toBe(128);
-                expect(command.get("channelCuts")[1].channel).toBe(2);
-                expect(command.get("channelCuts")[2].channel).toBe(1024);
+                expect(command.get("channelCuts")[0].channel).to.equal(128);
+                expect(command.get("channelCuts")[1].channel).to.equal(2);
+                expect(command.get("channelCuts")[2].channel).to.equal(1024);
 
             });
         });

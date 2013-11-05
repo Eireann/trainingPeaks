@@ -14,12 +14,12 @@ function (TP, AttachmentUploadMenuView)
 
         it("has an initializer", function()
         {
-            expect(AttachmentUploadMenuView).toBeDefined();
+            expect(AttachmentUploadMenuView).to.not.be.undefined;
 
             var model = new TP.Model();
             model.set("details", new TP.Model());
             
-            expect(function() { new AttachmentUploadMenuView({ model: model, direction: "left" }); }).not.toThrow();
+            expect(function() { new AttachmentUploadMenuView({ model: model, direction: "left" }); }).to.not.throw();
         });
     });
 });

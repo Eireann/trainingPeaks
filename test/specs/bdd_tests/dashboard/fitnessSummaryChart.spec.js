@@ -74,13 +74,13 @@ function(
 
             it("Should display one dashboard chart", function()
             {
-                expect($mainRegion.find(".dashboardChart").length).toBe(1);
-                expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").length).toBe(1);
+                expect($mainRegion.find(".dashboardChart").length).to.equal(1);
+                expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").length).to.equal(1);
             });
 
             it("Should request fitness summary data", function()
             {
-                expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(true);
+                expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).to.equal(true);
             });
 
             describe("Chart date settings", function()
@@ -88,26 +88,26 @@ function(
                 it("Should open the settings tomahawk", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings").length).toBe(1);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(1);
                 });
 
                 it("Should have a date picker in the settings tomahawk", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings .dashboardDatePicker").length).toBe(1);
+                    expect($body.find(".dashboardChartSettings .dashboardDatePicker").length).to.equal(1);
                 });
 
                 it("Should close when clicking on the close icon", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings").length).toBe(1);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(1);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                 });
 
                 it("Should save the user settings on settings close", function()
@@ -115,9 +115,9 @@ function(
                     var $body = testHelpers.theApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(false);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(false);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(true);
                 });
 
                 it("Should not request new data on settings close if parameters haven't changed", function()
@@ -125,9 +125,9 @@ function(
                     var $body = testHelpers.theApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(false);
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).to.equal(false);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(false);
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).to.equal(false);
                 });
 
                 it("Should use dates entered in settings tomahawk", function()
@@ -146,10 +146,10 @@ function(
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
                     // should request tomahawk dates
-                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-04-01/2012-12-24")).toBe(true);
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-04-01/2012-12-24")).to.equal(true);
 
                     // should not request dashboard dates
-                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2013-01-01/2013-04-15")).toBe(false);
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2013-01-01/2013-04-15")).to.equal(false);
 
                 });
 
@@ -188,8 +188,8 @@ function(
                     testHelpers.clearRequests();
                     testHelpers.theApp.dataManager.forceReset();
                     applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2012-01-01", "2016-04-15");
-                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(true);   
-                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-01-01/2016-04-15")).toBe(true);
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).to.equal(true);   
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-01-01/2016-04-15")).to.equal(true);
                 });
 
             });
@@ -199,7 +199,7 @@ function(
 
                 it("Should default to Planned Distance", function()
                 {
-                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Planned Distance");
+                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).to.contain("Planned Distance");
                 });
 
                 it("Should update chart when settings are changed", function()
@@ -212,7 +212,7 @@ function(
 
                     testHelpers.resolveRequest("GET", "reporting/fitnesssummary", []);
 
-                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Completed Distance");
+                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).to.contain("Completed Distance");
 
                 });
 
@@ -223,7 +223,7 @@ function(
                     $body.find(".dashboardChartSettings select.summaryType").val("3").trigger("change");
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings select.summaryType").val()).toEqual("3");
+                    expect($body.find(".dashboardChartSettings select.summaryType").val()).to.eql("3");
                 });
 
             });
@@ -271,14 +271,14 @@ function(
 
                 it("Should display two dashboard charts", function()
                 {
-                    expect($mainRegion.find(".dashboardChart").length).toBe(2);
-                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").length).toBe(2);
+                    expect($mainRegion.find(".dashboardChart").length).to.equal(2);
+                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").length).to.equal(2);
                 });
 
                 it("Should share data across multiple charts", function()
                 {
                     var fitnessSummaryRequests = testHelpers.findAllRequests("GET", "reporting/fitnesssummary");
-                    expect(fitnessSummaryRequests.length).toBe(1);
+                    expect(fitnessSummaryRequests.length).to.equal(1);
                 });
             });
 
@@ -321,14 +321,14 @@ function(
 
                 it("Should display two dashboard charts", function()
                 {
-                    expect($mainRegion.find(".dashboardChart").length).toBe(2);
-                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").length).toBe(2);
+                    expect($mainRegion.find(".dashboardChart").length).to.equal(2);
+                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").length).to.equal(2);
                 });
 
                 it("Should not share data across multiple charts", function()
                 {
                     var fitnessSummaryRequests = testHelpers.findAllRequests("GET", "reporting/fitnesssummary");
-                    expect(fitnessSummaryRequests.length).toBe(2);
+                    expect(fitnessSummaryRequests.length).to.equal(2);
                 });
             });
 

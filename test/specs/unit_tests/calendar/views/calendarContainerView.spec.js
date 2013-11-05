@@ -15,7 +15,7 @@ function($, TP, moment, DataManager, CalendarView)
 
         it("Should be loaded as a module", function()
         {
-            expect(CalendarView).toBeDefined();
+            expect(CalendarView).to.not.be.undefined;
         });
 
         describe("Workout drag and drop", function()
@@ -30,13 +30,13 @@ function($, TP, moment, DataManager, CalendarView)
                 };
                 var collection =  new CalendarCollection(null, collection_options);
 
-                spyOn(collection, "getWeekModelForDay").andReturn(new TP.Model());
+                sinon.stub(collection, "getWeekModelForDay").returns(new TP.Model());
                 var calendarView = new CalendarView({ collection: collection });
                 var weekView, dayView = {};
                 var options = {};
-                spyOn(calendarView, "trigger");
+                sinon.stub(calendarView, "trigger");
                 calendarView.onItemDropped(weekView, dayView, options);
-                expect(calendarView.trigger).toHaveBeenCalledWith("itemDropped", options);
+                expect(calendarView.trigger).to.have.been.calledWith("itemDropped", options);
             });
         });
     });

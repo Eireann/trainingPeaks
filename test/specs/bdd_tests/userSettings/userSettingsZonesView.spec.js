@@ -23,7 +23,7 @@ function(
             var userData = xhrData.users.barbkprem;
             testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
             testHelpers.resolveRequest("GET", "fitness/v1/athletes/426489/settings", xhrData.athleteSettings.barbkprem);
-            spyOn($.fn, 'selectBoxIt'); // selectBoxIt freezes...
+            sinon.stub($.fn, 'selectBoxIt'); // selectBoxIt freezes...
         });
 
         afterEach(function()
@@ -34,7 +34,7 @@ function(
 
         it("Should load successfully as a module", function()
         {
-            expect(UserSettingsZonesView).toBeDefined();
+            expect(UserSettingsZonesView).to.not.be.undefined;
         });
 
         it("Should not throw durring lifecycle calls", function()

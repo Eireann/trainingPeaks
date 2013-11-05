@@ -87,13 +87,13 @@ function(
 
             it("Should display one dashboard chart", function()
             {
-                expect($mainRegion.find(".dashboardChart").length).toBe(1);
-                expect($mainRegion.find(".dashboardChart.peaksChart").length).toBe(1);
+                expect($mainRegion.find(".dashboardChart").length).to.equal(1);
+                expect($mainRegion.find(".dashboardChart.peaksChart").length).to.equal(1);
             });
 
             it("Should request mean/max bests data", function()
             {
-                expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).toBe(true);
+                expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).to.equal(true);
             });
 
             describe("Chart date settings", function()
@@ -101,27 +101,27 @@ function(
                 it("Should open the settings tomahawk", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                     $mainRegion.find(".dashboardChart.peaksChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings").length).toBe(1);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(1);
                 });
 
                 it("Should have a date picker in the settings tomahawk", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.peaksChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker").length).toBe(1);
-                    expect($body.find(".dashboardChartSettings .comparisonDateOptionsRegion .dashboardDatePicker").length).toBe(1);
+                    expect($body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker").length).to.equal(1);
+                    expect($body.find(".dashboardChartSettings .comparisonDateOptionsRegion .dashboardDatePicker").length).to.equal(1);
                 });
 
                 it("Should close when clicking on the close icon", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                     $mainRegion.find(".dashboardChart.peaksChart .settings").trigger("mousedown");
-                    expect($body.find(".dashboardChartSettings").length).toBe(1);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(1);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                 });
 
                 it("Should save the user settings on settings close", function()
@@ -129,9 +129,9 @@ function(
                     var $body = testHelpers.theApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.peaksChart .settings").trigger("mousedown");
-                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(false);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(false);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(true);
                 });
 
                 it("Should not request new data on settings close if parameters haven't changed", function()
@@ -139,9 +139,9 @@ function(
                     var $body = testHelpers.theApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.peaksChart .settings").trigger("mousedown");
-                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).toBe(false);
+                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).to.equal(false);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).toBe(false);
+                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).to.equal(false);
                 });
 
                 it("Should use dates entered in settings tomahawk", function()
@@ -160,10 +160,10 @@ function(
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
                     // should request tomahawk dates
-                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests/2012-04-01/2012-12-24")).toBe(true);
+                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests/2012-04-01/2012-12-24")).to.equal(true);
 
                     // should not request dashboard dates
-                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests/2013-01-01/2013-04-15")).toBe(false);
+                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests/2013-01-01/2013-04-15")).to.equal(false);
 
                 });
 
@@ -203,8 +203,8 @@ function(
                     testHelpers.clearRequests();
                     testHelpers.theApp.dataManager.forceReset();
                     applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2012-01-01", "2016-04-15");
-                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).toBe(true);   
-                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests/2012-01-01/2016-04-15")).toBe(true);
+                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests")).to.equal(true);   
+                    expect(testHelpers.hasRequest("POST", "reporting/meanmaxbests/2012-01-01/2016-04-15")).to.equal(true);
                 });
 
             });

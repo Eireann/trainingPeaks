@@ -56,26 +56,35 @@
           chai.use(sinonChai);
 
           window.expect = chai.expect;
-          window.sinon = sinon.sandbox.create();
 
           window.createSpyObj = function(name, methods)
           {
             var obj = {};
             _.each(methods, function(name)
             {
-              obj[name] = window.sinon.mock();
+              obj[name] = window.sinon.stub();
             });
             return obj;
           };
 
-          afterEach(function()
+          beforeEach(function()
           {
-            window.sinon.restore();
+            if(window.sinon) window.sinon.restore();
+            window.sinon = sinon.sandbox.create();
           });
 
-          requirejs(["app", "../test/specs"], function(theApp, specs)
+          window.setImmediate = function(cb) { cb(); };
+          define("setImmediate", [], function() { return window.setImmediate; });
+
+          requirejs(
+          [
+            "Backbone.Marionette.Handlebars",
+            "app",
+            "../test/specs"
+          ],
+          function(bmhbs, theApp, specs)
           {
-            sinon.useFakeXMLHttpRequest();
+            window.fakeXhr = sinon.useFakeXMLHttpRequest();
             mocha.run();
           });
 

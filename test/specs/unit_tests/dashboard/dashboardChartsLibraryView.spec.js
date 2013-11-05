@@ -13,7 +13,7 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
 
         it("Should be loaded as a module", function()
         {
-            expect(DashboardChartsLibraryView).toBeDefined();
+            expect(DashboardChartsLibraryView).to.not.be.undefined;
         });
 
         it("Should instantiate", function()
@@ -22,26 +22,26 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
             {
                 var view = new DashboardChartsLibraryView();
             };
-            expect(newLibrary).not.toThrow();
+            expect(newLibrary).to.not.throw();
         });
 
         it("Should render", function()
         {
             var view = new DashboardChartsLibraryView();
             view.render();
-            expect(view.$el).toBeDefined();
+            expect(view.$el).to.not.be.undefined;
         });
 
         describe("getItemView", function()
         {
             it("Should return TP.ItemView if no item is passed", function()
             {
-                expect(DashboardChartsLibraryView.prototype.getItemView()).toBe(TP.ItemView);
+                expect(DashboardChartsLibraryView.prototype.getItemView()).to.equal(TP.ItemView);
             });
 
             it("Should return ChartTileView if item is passed", function()
             {
-                expect(DashboardChartsLibraryView.prototype.getItemView({})).toBe(ChartTileView);
+                expect(DashboardChartsLibraryView.prototype.getItemView({})).to.equal(ChartTileView);
             });
         });
 
@@ -63,14 +63,14 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
 
             it("Should start with items in collection", function()
             {
-                expect(view.collection.length).toBe(3);
+                expect(view.collection.length).to.equal(3);
             });
 
             it("Should filter on keyup", function()
             {
                 view.ui.search.val("xxxxxxxxxx");
                 view.ui.search.trigger("keyup");
-                expect(view.collection.length).toBe(0);
+                expect(view.collection.length).to.equal(0);
             });
 
         });

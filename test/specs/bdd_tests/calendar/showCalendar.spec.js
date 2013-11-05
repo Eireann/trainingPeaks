@@ -30,21 +30,21 @@ function(
 
         it("Should not display a list of athletes in the calendar", function()
         {
-            expect($mainRegion.find("#athleteCalendarSelect").length).toBe(0);
+            expect($mainRegion.find("#athleteCalendarSelect").length).to.equal(0);
         });
 
         xit("Should display today in the calendar", function()
         {
-            expect($mainRegion.find("#calendarContainer .day.today").length).toBe(1);
+            expect($mainRegion.find("#calendarContainer .day.today").length).to.equal(1);
         });
 
         xit("Should be able to navigate away and back to the calendar", function()
         {
-            expect($mainRegion.find("#calendarContainer").length).toBe(1);
+            expect($mainRegion.find("#calendarContainer").length).to.equal(1);
             testHelpers.theApp.router.navigate("dashboard", { trigger: true });
-            expect($mainRegion.find("#calendarContainer").length).toBe(0);
+            expect($mainRegion.find("#calendarContainer").length).to.equal(0);
             testHelpers.theApp.router.navigate("calendar", { trigger: true });
-            expect($mainRegion.find("#calendarContainer").length).toBe(1);
+            expect($mainRegion.find("#calendarContainer").length).to.equal(1);
         });
 
         xdescribe("Should remember what date I was viewing when navigating in and out of the calendar", function()
@@ -62,21 +62,21 @@ function(
 
             it("Should store the date in the header model", function()
             {
-                expect(controller.views.calendar.calendarHeaderModel.get('currentDay')).toBe("2013-01-28");
+                expect(controller.views.calendar.calendarHeaderModel.get('currentDay')).to.equal("2013-01-28");
             });
 
             it("Should go back to that date when navigating to dashboard and back to calendar", function()
             {
                 testHelpers.theApp.router.navigate("dashboard", {trigger: true});
                 testHelpers.theApp.router.navigate("calendar", {trigger: true});
-                expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).toBe("2013-01-28");
+                expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).to.equal("2013-01-28");
             });
 
             xit("Should go back to that date when navigating to home and back to calendar", function()
             {
                 testHelpers.theApp.router.navigate("home", {trigger: true});
                 testHelpers.theApp.router.navigate("calendar", {trigger: true});
-                expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).toBe("2013-01-28");
+                expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).to.equal("2013-01-28");
             });
 
             xit("Should go back to that date when navigating to home then dashboard then back to calendar", function()
@@ -84,7 +84,7 @@ function(
                 testHelpers.theApp.router.navigate("home", {trigger: true});
                 testHelpers.theApp.router.navigate("dashboard", {trigger: true});
                 testHelpers.theApp.router.navigate("calendar", {trigger: true});
-                expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).toBe("2013-01-28");
+                expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).to.equal("2013-01-28");
             });
 
         });

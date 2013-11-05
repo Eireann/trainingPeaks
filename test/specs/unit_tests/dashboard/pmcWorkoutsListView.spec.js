@@ -25,8 +25,8 @@ function(
 		it("Should provide the right data to the template", function()
 		{
 			var result = view.serializeData();
-			expect(result.date).toBe(moment().format("MM-DD-YYYY"));
-			expect(result.workouts.length).toBe(1);
+			expect(result.date).to.equal(moment().format("MM-DD-YYYY"));
+			expect(result.workouts.length).to.equal(1);
 		});
 
 	});

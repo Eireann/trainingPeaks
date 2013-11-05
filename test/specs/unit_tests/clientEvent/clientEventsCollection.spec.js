@@ -9,10 +9,10 @@
          {
              it("Should call create", function()
              {
-                 var mySpy = jasmine.createSpyObj("Create Events", ["create"]);
+                 var mySpy = createSpyObj("Create Events", ["create"]);
                  var myEventParams = { Event: 'some event data' };
                  ClientEventsCollection.prototype.logEvent.call(mySpy, myEventParams);
-                 expect(mySpy.create).toHaveBeenCalledWith(myEventParams);
+                 expect(mySpy.create).to.have.been.calledWith(myEventParams);
              });
 
          });

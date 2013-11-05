@@ -28,7 +28,7 @@ function(
 
         it("should load as a module", function()
         {
-            expect(WorkoutsCollection).toBeDefined();
+            expect(WorkoutsCollection).to.not.be.undefined;
         });
 
         describe("url", function()
@@ -43,8 +43,8 @@ function(
                     startDate.format(dateFormat) + "/" +
                     endDate.format(dateFormat);
                 var workouts = new WorkoutsCollection([], { startDate: startDate, endDate: endDate });
-                expect(workouts.url()).toContain(expectedUrl);
-                expect(workouts.url()).toContain(testHelpers.theApp.apiRoot);
+                expect(workouts.url()).to.contain(expectedUrl);
+                expect(workouts.url()).to.contain(testHelpers.theApp.apiRoot);
             });
         });
 

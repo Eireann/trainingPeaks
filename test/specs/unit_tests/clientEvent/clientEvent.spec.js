@@ -8,7 +8,7 @@
 
          it("Should load as a module", function ()
          {
-             expect(ClientEvent).toBeDefined();
+             expect(ClientEvent).to.not.be.undefined;
          });
 
          it("Should not allow to create an event without an Event attribute", function()
@@ -24,8 +24,8 @@
                  var event = new ClientEvent();
              }
 
-             expect(goodEvent).not.toThrow();
-             expect(badEvent).toThrow();
+             expect(goodEvent).to.not.throw();
+             expect(badEvent).to.throw();
          });
      });
 

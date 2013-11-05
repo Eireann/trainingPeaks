@@ -26,15 +26,15 @@ function(
                 {
                     return model.getNumericList(accessRights.accessRightIds.CanViewPods);
                 };
-                expect(requestNonNumericType).toThrow();
+                expect(requestNonNumericType).to.throw();
             });
 
             it("Should return an empty array if no value is present for the key", function()
             {
                 var model = new UserAccessRightsModel();
                 var accessRightsValue = model.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                expect(_.isArray(accessRightsValue)).toBe(true);
-                expect(accessRightsValue.length).toBe(0);
+                expect(_.isArray(accessRightsValue)).to.equal(true);
+                expect(accessRightsValue.length).to.equal(0);
             });
 
             it("Should return an array of numbers if a value is present", function()
@@ -44,8 +44,8 @@ function(
                     "rights":[xhrData.accessRights.planFutureWorkouts]
                 });
                 var accessRightsValue = model.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                expect(_.isArray(accessRightsValue)).toBe(true);
-                expect(accessRightsValue[0]).toBe(4);
+                expect(_.isArray(accessRightsValue)).to.equal(true);
+                expect(accessRightsValue[0]).to.equal(4);
             });
 
         });
@@ -60,15 +60,15 @@ function(
                 {
                     return model.getStringList(accessRights.accessRightIds.CanUsePerspectives);
                 };
-                expect(requestNonStringType).toThrow();
+                expect(requestNonStringType).to.throw();
             });
 
             it("Should return an empty array if no value is present for the key", function()
             {
                 var model = new UserAccessRightsModel();
                 var accessRightsValue = model.getStringList(accessRights.ids.CanViewPods);
-                expect(_.isArray(accessRightsValue)).toBe(true);
-                expect(accessRightsValue.length).toBe(0);
+                expect(_.isArray(accessRightsValue)).to.equal(true);
+                expect(accessRightsValue.length).to.equal(0);
             });
 
             it("Should return an array of strings if a value is present", function()
@@ -78,8 +78,8 @@ function(
                     "rights":[xhrData.accessRights.canViewPods]
                 });
                 var accessRightsValue = model.getStringList(accessRights.ids.CanViewPods);
-                expect(_.isArray(accessRightsValue)).toBe(true);
-                expect(accessRightsValue[0]).toBe("journal_GroundControl");
+                expect(_.isArray(accessRightsValue)).to.equal(true);
+                expect(accessRightsValue[0]).to.equal("journal_GroundControl");
             });
 
         });
@@ -94,14 +94,14 @@ function(
                 {
                     return model.getNumber(accessRights.accessRightIds.CanViewPods);
                 };
-                expect(requestNonNumericType).toThrow();
+                expect(requestNonNumericType).to.throw();
             });
 
             it("Should return null if no value is present for the key", function()
             {
                 var model = new UserAccessRightsModel();
                 var accessRightsValue = model.getNumber(accessRights.ids.MaximumExercisesInOwnedLibrary);
-                expect(accessRightsValue).toBeNull();
+                expect(accessRightsValue).to.be.null;
             });
 
             it("Should return a numeric value if present", function()
@@ -116,7 +116,7 @@ function(
                     }]
                 });
                 var accessRightsValue = model.getNumber(accessRights.ids.MaximumExercisesInOwnedLibrary);
-                expect(accessRightsValue).toBe(5);
+                expect(accessRightsValue).to.equal(5);
             });
 
         });

@@ -29,8 +29,8 @@ function(
     {
         it("Should have a valid contructor", function()
         {
-            expect(LapsView).toBeDefined();
-            expect(function() { new LapsView({ model: buildWorkoutModel(), detailDataPromise: {}, stateModel: new ExpandoStateModel() }); }).not.toThrow();
+            expect(LapsView).to.not.be.undefined;
+            expect(function() { new LapsView({ model: buildWorkoutModel(), detailDataPromise: {}, stateModel: new ExpandoStateModel() }); }).to.not.throw();
         });
     });
 });

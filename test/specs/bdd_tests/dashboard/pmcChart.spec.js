@@ -36,7 +36,7 @@ function(
             beforeEach(function()
             {
                 chart = dashboardChartBuilder.buildChartModel(chartAttributes, { dataManager: new DataManager() }); 
-                spyOn(chart, "save");
+                sinon.stub(chart, "save");
             });
 
             it("Should have functional checkbox options in the tomahawk", function()
@@ -50,19 +50,19 @@ function(
                     // set to false, checkbox should be off
                     chartSettingsView = chart.createChartSettingsView();
                     chartSettingsView.render();
-                    expect(chartSettingsView.$el.has("input[type=checkbox]#" + fieldName)).toBeTruthy();
-                    expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).toBeFalsy();
+                    expect(chartSettingsView.$el.has("input[type=checkbox]#" + fieldName)).to.be.ok;
+                    expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).to.not.be.ok;
 
                     // check and apply, should update model
                     chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).prop("checked", true).trigger("change");
-                    expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).toBeTruthy();
+                    expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).to.be.ok;
                     chartSettingsView.$el.find("button.apply").trigger("click");
-                    expect(chart.get(fieldName)).toBe(true);
+                    expect(chart.get(fieldName)).to.equal(true);
 
                     // re-render should show new value
                     chartSettingsView = chart.createChartSettingsView();
                     chartSettingsView.render();
-                    expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).toBeTruthy();
+                    expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).to.be.ok;
 
                 });
             });
@@ -77,18 +77,18 @@ function(
                     chart.set(fieldName, i);
                     chartSettingsView = chart.createChartSettingsView();
                     chartSettingsView.render();
-                    expect(chartSettingsView.$el.has("input[type=number]#" + fieldName)).toBeTruthy();
-                    expect(chartSettingsView.$el.find("input[type=number]#" + fieldName).val()).toEqual(Number(i).toString());
+                    expect(chartSettingsView.$el.has("input[type=number]#" + fieldName)).to.be.ok;
+                    expect(chartSettingsView.$el.find("input[type=number]#" + fieldName).val()).to.eql(Number(i).toString());
 
                     // change should save in the model
                     chartSettingsView.$el.find("input[type=number]#" + fieldName).val(i + 10).trigger("change");
                     chartSettingsView.$el.find("button.apply").trigger("click");
-                    expect(chart.get(fieldName)).toBe(i + 10);
+                    expect(chart.get(fieldName)).to.equal(i + 10);
 
                     // updated value should show in the view
                     chartSettingsView = chart.createChartSettingsView();
                     chartSettingsView.render();
-                    expect(chartSettingsView.$el.find("input[type=number]#" + fieldName).val()).toEqual(Number(i + 10).toString());
+                    expect(chartSettingsView.$el.find("input[type=number]#" + fieldName).val()).to.eql(Number(i + 10).toString());
                 });
             });
         });

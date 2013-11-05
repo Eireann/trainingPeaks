@@ -71,13 +71,13 @@ function(
 
             it("Should display one dashboard chart", function()
             {
-                expect($mainRegion.find(".dashboardChart").length).toBe(1);
-                expect($mainRegion.find(".dashboardChart.timeInZones").length).toBe(1);
+                expect($mainRegion.find(".dashboardChart").length).to.equal(1);
+                expect($mainRegion.find(".dashboardChart.timeInZones").length).to.equal(1);
             });
 
             it("Should request time in zones data", function()
             {
-                expect(testHelpers.hasRequest("POST", "reporting/timeinzones")).toBe(true);
+                expect(testHelpers.hasRequest("POST", "reporting/timeinzones")).to.equal(true);
             });
 
             // these checkboxes aren't behaving right here, but they're working in the app
@@ -87,16 +87,16 @@ function(
                 it("Should open the settings tomahawk", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
-                    expect($body.find(".dashboardChartSettings").length).toBe(0);
+                    expect($body.find(".dashboardChartSettings").length).to.equal(0);
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
-                    expect($body.find(".timeInZonesChartSettings").length).toBe(1);
+                    expect($body.find(".timeInZonesChartSettings").length).to.equal(1);
                 });
 
                 it("Should have workout type checkboxes in the settings tomahawk", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
-                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox]").length).not.toBe(0);
+                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox]").length).to.not.equal(0);
                 });
 
                 it("Should retain workout type settings when reopening settings view", function()
@@ -109,16 +109,16 @@ function(
                     {
                         $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").trigger("click");
                     }
-                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(false);
+                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).to.equal(false);
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
-                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(true);
+                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).to.equal(true);
                     $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
 
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
-                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked")).toBe(false);
-                    expect(testHelpers.theApp.user.getDashboardSettings().get("pods.0.workoutTypeIds").length).toBe(1);
-                    expect(testHelpers.theApp.user.getDashboardSettings().get("pods.0.workoutTypeIds.0")).toEqual(1);
-                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(true);
+                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked")).to.equal(false);
+                    expect(testHelpers.theApp.user.getDashboardSettings().get("pods.0.workoutTypeIds").length).to.equal(1);
+                    expect(testHelpers.theApp.user.getDashboardSettings().get("pods.0.workoutTypeIds.0")).to.eql(1);
+                    expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).to.equal(true);
 
                 });
 
@@ -134,13 +134,13 @@ function(
                     }
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
                     $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(true);
                 });
 
                 it("Should update chart title after changing workout type", function()
                 {
-                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).toContain("All");
-                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("Swim");
+                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.contain("All");
+                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.not.contain("Swim");
 
                     // open settings, uncheck 'all workout types', and check swim
                     var $body = testHelpers.theApp.getBodyElement();
@@ -152,8 +152,8 @@ function(
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
                     $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
                     testHelpers.resolveRequest("POST", "reporting/timeinzones", {});
-                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("All");
-                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).toContain("Swim");
+                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.not.contain("All");
+                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.contain("Swim");
                 });
 
                 it("Should request new data after changing workout type", function()
@@ -168,7 +168,7 @@ function(
                     }
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
                     $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("POST", "reporting/timeinzones")).toBe(true);
+                    expect(testHelpers.hasRequest("POST", "reporting/timeinzones")).to.equal(true);
                 });
 
 
@@ -227,24 +227,24 @@ function(
 
             it("Should have three pods", function()
             {
-                expect($mainRegion.find(".dashboardChart").length).toBe(3);
-                expect($mainRegion.find(".dashboardChart.timeInZones").length).toBe(3);
+                expect($mainRegion.find(".dashboardChart").length).to.equal(3);
+                expect($mainRegion.find(".dashboardChart.timeInZones").length).to.equal(3);
             });
 
             it("Should have correct titles in pods", function()
             {
-                expect($($mainRegion.find(".dashboardChart.timeInZones")[0]).find(".chartTitle").text()).toContain("Heart Rate");
-                expect($($mainRegion.find(".dashboardChart.timeInZones")[1]).find(".chartTitle").text()).toContain("Power");
-                expect($($mainRegion.find(".dashboardChart.timeInZones")[2]).find(".chartTitle").text()).toContain("Speed");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[0]).find(".chartTitle").text()).to.contain("Heart Rate");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[1]).find(".chartTitle").text()).to.contain("Power");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[2]).find(".chartTitle").text()).to.contain("Speed");
             });
 
             it("Should request correct data type for each pod", function()
             {
                 var tizRequests = testHelpers.findAllRequests("POST", "reporting/timeinzones");
-                expect(tizRequests.length).toBe(3);
-                expect(JSON.parse(tizRequests[0].requestBody).timeInZonesType).toEqual(1);
-                expect(JSON.parse(tizRequests[1].requestBody).timeInZonesType).toEqual(2);
-                expect(JSON.parse(tizRequests[2].requestBody).timeInZonesType).toEqual(3);
+                expect(tizRequests.length).to.equal(3);
+                expect(JSON.parse(tizRequests[0].requestBody).timeInZonesType).to.eql(1);
+                expect(JSON.parse(tizRequests[1].requestBody).timeInZonesType).to.eql(2);
+                expect(JSON.parse(tizRequests[2].requestBody).timeInZonesType).to.eql(3);
             });
 
         });

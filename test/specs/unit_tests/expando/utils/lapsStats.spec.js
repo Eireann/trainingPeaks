@@ -75,7 +75,7 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
                     checkAttr = function(attr) {
                         it("Should include " + attr + " in the serialized data", function()
                         {
-                            expect(_.contains(serializedData.headerNames, attr)).toBeTruthy();
+                            expect(_.contains(serializedData.headerNames, attr)).to.be.ok;
                         });
                     };
 
@@ -86,74 +86,74 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
                 it("Should serialize six rows of data", function()
                 {
-                    expect(serializedData.rowData.length).toBe(6);
+                    expect(serializedData.rowData.length).to.equal(6);
                 });
                 it("Should format time appropriately", function()
                 {
-                    expect(serializedData.rowData[0][1]).toBe("00:00");
+                    expect(serializedData.rowData[0][1]).to.equal("00:00");
                 });
                 it("Should include NGP for run or walk workouts", function()
                 {
                     model.set({workoutTypeValueId: 3});
-                    expect(_.contains(serializedData.headerNames, "NGP")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "NGP")).to.be.ok;
                 });
                 it("Should exclude NGP for other workout types", function()
                 {
                     model.set({workoutTypeValueId: 1});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "NGP")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "NGP")).to.not.be.ok;
                 });
                 it("Should exclude Normalized Power for run and walk workouts", function()
                 {
                     model.set({workoutTypeValueId: 3});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "NP")).to.not.be.ok;
                 });
                 it("Should include Normalized Power for bike workouts", function()
                 {
                     model.set({workoutTypeValueId: 2});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "NP")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "NP")).to.be.ok;
                 });
                 it("Should format TSS label correctly", function()
                 {
                     setTSSsource(model, "RunningTss");
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "rTSS")).toBeTruthy();
-                    expect(_.contains(serializedData.headerNames, "TSS")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "rTSS")).to.be.ok;
+                    expect(_.contains(serializedData.headerNames, "TSS")).to.not.be.ok;
                 });
                 it("Should show Average Speed for rides (as opposed to Average Pace)", function()
                 {
                     model.set({workoutTypeValueId: 2});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeFalsy();
-                    expect(_.contains(serializedData.headerNames, "Avg Speed")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "Avg Pace")).to.not.be.ok;
+                    expect(_.contains(serializedData.headerNames, "Avg Speed")).to.be.ok;
                 });
                 it("Should show Average Pace for runs, walks, and swims (as opposed to Average Speed)", function()
                 {
                     model.set({workoutTypeValueId: 3});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "Avg Pace")).to.be.ok;
 
                     model.set({workoutTypeValueId: 13});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "Avg Pace")).to.be.ok;
 
                     model.set({workoutTypeValueId: 1});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "Avg Pace")).to.be.ok;
                 });
                 it("Should not show maximum cadence for swim workouts", function()
                 {
                     model.set({workoutTypeValueId: 1});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Max Cadence")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "Max Cadence")).to.not.be.ok;
                 });
                 it("Should show maximum power for bike workouts", function()
                 {
                     model.set({workoutTypeValueId: 2});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Max Power")).toBeTruthy();
+                    expect(_.contains(serializedData.headerNames, "Max Power")).to.be.ok;
                 });
             });
 
@@ -164,17 +164,17 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
                 it("Should serialize six rows of data", function()
                 {
-                    expect(serializedData.rowData.length).toBe(6);
+                    expect(serializedData.rowData.length).to.equal(6);
                 });
 
                 it("Should exclude Avg Heart Rate", function()
                 {
-                    expect(_.contains(serializedData.headerNames, "Avg Heart Rate")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "Avg Heart Rate")).to.not.be.ok;
                 });
 
                 it("Should exclude Max Heart Rate", function()
                 {
-                    expect(_.contains(serializedData.headerNames, "Max Heart Rate")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "Max Heart Rate")).to.not.be.ok;
                 });
             });
 
@@ -185,21 +185,21 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
                 it("Should serialize six rows of data", function()
                 {
-                    expect(serializedData.rowData.length).toBe(6);
+                    expect(serializedData.rowData.length).to.equal(6);
                 });
 
                 it("Should exclude Normalized Power", function()
                 {
                     model.set({workoutTypeValueId: 2});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "NP")).to.not.be.ok;
                 });
 
                 it("Should exclude Max Power", function()
                 {
                     model.set({workoutTypeValueId: 2});
                     serializedData = serializeData(model);
-                    expect(_.contains(serializedData.headerNames, "Max Power")).toBeFalsy();
+                    expect(_.contains(serializedData.headerNames, "Max Power")).to.not.be.ok;
                 });
             });
         });
@@ -211,7 +211,7 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
                 checkOrder = function(attr, i, tssType, serializedData) {
                     it("Should include the " + attr + " field in location " + i + " for " + tssType + " layout", function()
                     {
-                        expect(serializedData.headerNames[i]).toBe(attr);
+                        expect(serializedData.headerNames[i]).to.equal(attr);
                     });
                 };
 

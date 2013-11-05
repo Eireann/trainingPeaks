@@ -49,15 +49,15 @@ function(
                     it("should display 0s", function()
                     {
                         createView(0);
-                        expect(view.$("input[name=value]").val()).toEqual("0");
+                        expect(view.$("input[name=value]").val()).to.eql("0");
                     });
 
                     it("should parse 0s as 0", function()
                     {
                         createView(42);
                         view.$("input[name=value]").val("0").change();
-                        expect(model.get("value")).toEqual(0);
-                        expect(view.$("input[name=value]").val()).toEqual("0");
+                        expect(model.get("value")).to.eql(0);
+                        expect(view.$("input[name=value]").val()).to.eql("0");
                     });
                 }
                 else
@@ -66,22 +66,22 @@ function(
                     {
                         createView(42);
                         view.$("input[name=value]").val("0").change();
-                        expect(model.get("value")).toEqual(metricInfo.min);
+                        expect(model.get("value")).to.eql(metricInfo.min);
                     });
                 }
 
                 it("should display null's as a blank string", function()
                 {
                     createView(null);
-                    expect(view.$("input[name=value]").val()).toEqual("");
+                    expect(view.$("input[name=value]").val()).to.eql("");
                 });
 
                 it("should parse blank strings as null", function()
                 {
                     createView(42);
                     view.$("input[name=value]").val("").change();
-                    expect(model.get("value")).toEqual(null);
-                    expect(view.$("input[name=value]").val()).toEqual("");
+                    expect(model.get("value")).to.eql(null);
+                    expect(view.$("input[name=value]").val()).to.eql("");
                 });
 
 
@@ -105,13 +105,13 @@ function(
                 it("should display a select box with an empty value", function()
                 {
                     createView(null);
-                    expect(view.$("select[name=value]").val()).toEqual("");
+                    expect(view.$("select[name=value]").val()).to.eql("");
                 });
 
                 it("should display a select box with an empty value even when the metric has a value", function()
                 {
                     createView(metricInfo.enumeration[0].value);
-                    expect(view.$("select[name=value] option[value=]").length).toEqual(1);
+                    expect(view.$("select[name=value] option[value=]").length).to.eql(1);
                 });
 
             });

@@ -56,31 +56,31 @@ function (
                     return collection.deleteSelectedItems();
                 };
 
-                expect(badModel).toThrow();
+                expect(badModel).to.throw();
             });
 
             it("should not trigger a destroy on each model until after request", function ()
             {
-                spyOn(Backbone, "ajax").andReturn(new $.Deferred());
+                sinon.stub(Backbone, "ajax").returns(new $.Deferred());
                 var collection = new SelectedActivitiesCollection(models);
 
                 _.each(models, function(item, index)
                 {
-                    spyOn(item, "trigger");
+                    sinon.stub(item, "trigger");
                 }, this);
 
                 collection.deleteSelectedItems();
                 
                 _.each(models, function (item, index)
                 {
-                    expect(item.trigger).not.toHaveBeenCalled();
+                    expect(item.trigger).to.not.have.been.called;
                 }, this);
             });
 
             it("should call a delete on the appropriate url, with the appropriate parameters", function()
             {
 
-                spyOn(Backbone, "ajax").andReturn(new $.Deferred());
+                sinon.stub(Backbone, "ajax").returns(new $.Deferred());
 
                 var collection = new SelectedActivitiesCollection(models);
 
@@ -99,19 +99,19 @@ function (
                     data: JSON.stringify(postData)
                 };
 
-                expect(Backbone.ajax).toHaveBeenCalledWith(expectedAjaxOptions);
+                expect(Backbone.ajax).to.have.been.calledWith(expectedAjaxOptions);
 
             });
             
             it("should trigger destroy after request returns", function ()
             {
                 var deferred = new $.Deferred();
-                spyOn(Backbone, "ajax").andReturn(deferred);
+                sinon.stub(Backbone, "ajax").returns(deferred);
                 var collection = new SelectedActivitiesCollection(models);
 
                 _.each(models, function (item, index)
                 {
-                    spyOn(item, "trigger");
+                    sinon.stub(item, "trigger");
                 }, this);
 
                 collection.deleteSelectedItems();
@@ -120,7 +120,7 @@ function (
                 
                 _.each(models, function (item, index)
                 {
-                    expect(item.trigger).toHaveBeenCalledWith('destroy', item);
+                    expect(item.trigger).to.have.been.calledWith('destroy', item);
                 }, this);
 
             });

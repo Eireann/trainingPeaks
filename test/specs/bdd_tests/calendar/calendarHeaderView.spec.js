@@ -26,7 +26,7 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
 
         it("Should be loaded as a module", function()
         {
-            expect(CalendarHeaderView).toBeDefined();
+            expect(CalendarHeaderView).to.not.be.undefined;
         });
 
         it("Should update the calendar when a specific date is requested through the datepicker", function()
@@ -35,10 +35,10 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
             var controller = new CalendarController({ dataManager: new DataManager() });
             controller.initializeHeader();
             controller.showHeader();
-            spyOn(controller, "showDate");
+            sinon.stub(controller, "showDate");
             controller.views.header.$el.find('input.datepicker').val("8/28/2013");
             controller.views.header.$el.find('input.datepicker').trigger("change");
-            expect(controller.showDate).toHaveBeenCalledWith("2013-08-28");
+            expect(controller.showDate).to.have.been.calledWith("2013-08-28");
         });
     });
 });

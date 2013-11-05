@@ -17,7 +17,7 @@ function (TP, WorkoutFileAttachment)
                 workoutFileAttachment.url();
             };
 
-            expect(getUrl).toThrow();
+            expect(getUrl).to.throw();
 
         });
     });

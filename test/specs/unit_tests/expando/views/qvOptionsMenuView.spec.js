@@ -36,8 +36,8 @@ function(
                 var view = new QVOptionsMenuView({ model: new TP.Model() });
             };
 
-            expect(constructorWithNoModel).toThrow();
-            expect(constructorWithNoDetailData).toThrow();
+            expect(constructorWithNoModel).to.throw();
+            expect(constructorWithNoDetailData).to.throw();
         });
 
         describe("Elevation Correction option", function()
@@ -46,14 +46,14 @@ function(
             {
                 var view = new QVOptionsMenuView({ model: buildWorkoutModel() });
                 view.render();
-                expect(view.$el.find("#elevationCorrectionLabel").length).toEqual(1);
+                expect(view.$el.find("#elevationCorrectionLabel").length).to.eql(1);
             });
 
             it("Should disable the correction label if there is not lat lng data", function()
             {
                 var view = new QVOptionsMenuView({ model: buildWorkoutModel() });
                 view.render();
-                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeTruthy();
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).to.be.ok;
             });
 
             it("Should enable the correction label if there is lat lng data", function()
@@ -66,7 +66,7 @@ function(
 
                 var view = new QVOptionsMenuView({ model: workoutModel });
                 view.render();
-                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeFalsy();
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).to.not.be.ok;
             });
 
             it("Should enable the correction label if the lat lng data arrives after initial render", function()
@@ -75,14 +75,14 @@ function(
                 var view = new QVOptionsMenuView({ model: workoutModel });
 
                 view.render();
-                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeTruthy();
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).to.be.ok;
 
                 workoutModel.get("detailData").set("flatSamples", {
                     hasLatLngData: true
                 });
                 workoutModel.get("detailData").set("availableDataChannels", ["Elevation"]);
 
-                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeFalsy();
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).to.not.be.ok;
             });
 
         });

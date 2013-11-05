@@ -18,11 +18,11 @@ function($, colorUtils)
 
             var assertColors = function(colorValues, r, g, b, a, gray)
             {
-                expect(colorValues.r).toBe(r);
-                expect(colorValues.g).toBe(g);
-                expect(colorValues.b).toBe(b);
-                expect(colorValues.gray).toBe(gray);
-                expect(colorValues.a).toBe(a);
+                expect(colorValues.r).to.equal(r);
+                expect(colorValues.g).to.equal(g);
+                expect(colorValues.b).to.equal(b);
+                expect(colorValues.gray).to.equal(gray);
+                expect(colorValues.a).to.equal(a);
             };
 
             describe("get image color at right edge", function()

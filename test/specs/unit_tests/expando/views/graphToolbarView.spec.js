@@ -51,16 +51,16 @@ function($, TP, moment, GraphToolbarView)
 
             runs(function()
             {
-                expect(called).toBe(true);
-                expect(period).toBe(50);
+                expect(called).to.equal(true);
+                expect(period).to.equal(50);
             });
         });
 
         it("Should correctly serialize data for distance units", null,function()
         {
-            expect(view.serializeData().speedLabel).toBe("yds");
+            expect(view.serializeData().speedLabel).to.equal("yds");
             view.model.set({workoutTypeValueId: 3});
-            expect(view.serializeData().speedLabel).toBe("mph");
+            expect(view.serializeData().speedLabel).to.equal("mph");
         });
 
         describe("Button States", function()
@@ -73,40 +73,40 @@ function($, TP, moment, GraphToolbarView)
             it("Should contain a button for each channel in the available data series", function()
             {
                 _.each(["HeartRate", "Speed", "Power", "Cadence", "Elevation"], function(channel){
-                    expect(view.$(".graphSeriesButton[data-series=" + channel + "]").length).toBe(1);
+                    expect(view.$(".graphSeriesButton[data-series=" + channel + "]").length).to.equal(1);
                 });
             });
 
             it("Should not contain buttons for channels that are not in the available data series", function()
             {
                 _.each(["Torque", "RightPower", "Temperature"], function(channel){
-                    expect(view.$(".graphSeriesButton[data-series=" + channel + "]").length).toBe(0);
+                    expect(view.$(".graphSeriesButton[data-series=" + channel + "]").length).to.equal(0);
                 });
             });
 
             it("Should disable buttons that are in the disabled data series", function()
             {
-                expect(view.$(".graphSeriesButton[data-series=Cadence]").is(".graphSeriesDisabled")).toBeTruthy();
+                expect(view.$(".graphSeriesButton[data-series=Cadence]").is(".graphSeriesDisabled")).to.be.ok;
             });
 
             it("Should not disable buttons that are not in the disabled data series", function()
             {
                 _.each(["HeartRate", "Speed", "Power", "Elevation"], function(channel){
-                    expect(view.$(".graphSeriesButton[data-series=" + channel + "]").is(".graphSeriesDisabled")).toBeFalsy();
+                    expect(view.$(".graphSeriesButton[data-series=" + channel + "]").is(".graphSeriesDisabled")).to.not.be.ok;
                 });
             });
 
             it("Should update available buttons when a channel is removed", function()
             {
                 view.model.get("detailData").set("availableDataChannels", ["HeartRate", "Speed", "Power", "Cadence"]);
-                expect(view.$(".graphSeriesButton[data-series=Elevation]").length).toBe(0);
+                expect(view.$(".graphSeriesButton[data-series=Elevation]").length).to.equal(0);
             });
 
             it("Should update disabled buttons when a channel is enabled or disabled", function()
             {
                 view.model.get("detailData").set("disabledDataChannels", ["Speed"]);
-                expect(view.$(".graphSeriesButton[data-series=Speed]").is(".graphSeriesDisabled")).toBeTruthy();
-                expect(view.$(".graphSeriesButton[data-series=Cadence]").is(".graphSeriesDisabled")).toBeFalsy();
+                expect(view.$(".graphSeriesButton[data-series=Speed]").is(".graphSeriesDisabled")).to.be.ok;
+                expect(view.$(".graphSeriesButton[data-series=Cadence]").is(".graphSeriesDisabled")).to.not.be.ok;
             });
 
         });

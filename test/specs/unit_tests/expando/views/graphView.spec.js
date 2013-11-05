@@ -11,8 +11,8 @@ function($, TP, moment, GraphView)
     {
         it("Should have a valid contructor", function()
         {
-            expect(GraphView).toBeDefined();
-            expect(function() { new GraphView({ model: new TP.Model({ detailData: new TP.Model() }), detailDataPromise: {} }); }).not.toThrow();
+            expect(GraphView).to.not.be.undefined;
+            expect(function() { new GraphView({ model: new TP.Model({ detailData: new TP.Model() }), detailDataPromise: {} }); }).to.not.throw();
         });
     });
 });

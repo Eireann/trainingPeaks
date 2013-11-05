@@ -185,7 +185,7 @@ function(
                     new Model(DetailDataJSON);
                 }
                 var elapsedTime = +new Date() - startTime;
-                expect(elapsedTime).toBeLessThan(10);
+                expect(elapsedTime).to.be.lt(10);
             });
         });
 
@@ -200,7 +200,7 @@ function(
                     new Model(DetailDataJSON);
                 }
                 var elapsedTime = +new Date() - startTime;
-                expect(elapsedTime).toBeGreaterThan(100);
+                expect(elapsedTime).to.be.gt(100);
             });
         });
 
@@ -229,7 +229,7 @@ function(
                     model.set(DetailDataJSON, { disableDevValidations: true });
                 }
                 var elapsedTime = +new Date() - startTime;
-                expect(elapsedTime).toBeLessThan(10);
+                expect(elapsedTime).to.be.lt(10);
             });
         });
 
@@ -259,7 +259,7 @@ function(
                     collection.set(WorkoutCollectionJSON, { disableDevValidations: true });
                 }
                 var elapsedTime = +new Date() - startTime;
-                expect(elapsedTime).toBeLessThan(10);
+                expect(elapsedTime).to.be.lt(10);
             });
         });
 
@@ -288,7 +288,7 @@ function(
                     model.set(SingleWorkoutJSON, { disableDevValidations: true });
                 }
                 var elapsedTime = +new Date() - startTime;
-                expect(elapsedTime).toBeLessThan(10);
+                expect(elapsedTime).to.be.lt(10);
             });
         });
     });

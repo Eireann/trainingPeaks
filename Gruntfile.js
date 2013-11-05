@@ -28,6 +28,7 @@ module.exports = function(grunt)
                 browser: true,
                 devel: true,
                 sub: true,
+                expr: true, // Allow  chai syntax. TODO: Move to test only jshint
                 globals:
                 {
                     "apiConfig": true,

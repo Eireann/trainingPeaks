@@ -11,7 +11,7 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
     {
         it("Should be loaded as a module", function()
         {
-            expect(LibraryView).toBeDefined();
+            expect(LibraryView).to.not.be.undefined;
         });
 
         describe("Rendering", function()
@@ -23,21 +23,21 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
                 {
                     library.render();
                 };
-                expect(renderIt).not.toThrow();
+                expect(renderIt).to.not.throw();
             });
 
             it("Should have an #activeLibraryContainer element", function()
             {
                 var library = new LibraryView();
                 library.render();
-                expect(library.$("#activeLibraryContainer").length).toEqual(1);
+                expect(library.$("#activeLibraryContainer").length).to.eql(1);
             });
 
             it("Should have an #tabs element", function()
             {
                 var library = new LibraryView();
                 library.render();
-                expect(library.$("#tabs").length).toEqual(1);
+                expect(library.$("#tabs").length).to.eql(1);
             });
         });
 
@@ -45,10 +45,10 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
         {
             it("Should watch for tab click events", function()
             {
-                expect(LibraryView.prototype.events["click #tabs > div"]).toBeDefined();
-                expect(LibraryView.prototype.events["click #tabs > div"]).toBe("_onTabClick");
-                expect(LibraryView.prototype._onTabClick).toBeDefined();
-                expect(typeof LibraryView.prototype._onTabClick).toBe('function');
+                expect(LibraryView.prototype.events["click #tabs > div"]).to.not.be.undefined;
+                expect(LibraryView.prototype.events["click #tabs > div"]).to.equal("_onTabClick");
+                expect(LibraryView.prototype._onTabClick).to.not.be.undefined;
+                expect(typeof LibraryView.prototype._onTabClick).to.equal('function');
             });
         });
 
