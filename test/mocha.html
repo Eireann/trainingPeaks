@@ -7,6 +7,15 @@
   <body>
     <div id="mocha"></div>
 
+    <!-- Hide content divs -->
+    <div style="display: none;">
+      <div id="wrapper">
+        <div id="navigation"></div>
+        <div id="outerMain"><div role="main" id="main"></div></div>
+      </div>
+      <div id="info"></div>
+    </div>
+
     <script src="../bower_components/requirejs/require.js"></script>
     <script>
       requirejs(
@@ -25,23 +34,39 @@
 
         requirejs(
         [
+          "underscore",
           "mocha",
           "chai",
           "sinon",
+          "sinon-chai",
           "jquery"
         ],
         function(
+          _,
           mocha,
           chai,
           sinon,
+          sinonChai,
           $
         )
         {
 
           mocha.setup("bdd");
 
+          chai.use(sinonChai);
+
           window.expect = chai.expect;
           window.sinon = sinon.sandbox.create();
+
+          window.createSpyObj = function(name, methods)
+          {
+            var obj = {};
+            _.each(methods, function(name)
+            {
+              obj[name] = window.sinon.mock();
+            });
+            return obj;
+          };
 
           afterEach(function()
           {

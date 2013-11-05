@@ -166,8 +166,6 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
             $.support.cors = true;
             this.fakeAjaxRequests = [];
-            this.xhr = sinon.useFakeXMLHttpRequest();
-
             this.xhr.onCreate = function(xhr)
             {
                 //console.log(xhr);
@@ -227,6 +225,7 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
     };
 
     testHelpers.theApp.start();
+    testHelpers.setupRegionElements.call(testHelpers.theApp);
 
     return testHelpers;
 

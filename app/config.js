@@ -49,7 +49,8 @@ requirejs.config(
         mocha: '../bower_components/mocha/mocha',
         requirejs: '../bower_components/requirejs/require',
         sinon: '../bower_components/sinon/index',
-        jquery: '../bower_components/jquery/jquery'
+        jquery: '../bower_components/jquery/jquery',
+        'sinon-chai': '../bower_components/sinon-chai/index'
     },
     hbs: {
         templateExtension: 'html',
@@ -82,19 +83,19 @@ requirejs.config(
             exports: 'Backbone'
         },
         jqueryOutside: [
-            "jquery"
+            'jquery'
         ],
         originalSetImmediate: [
 
         ],
         jqueryTextAreaResize: [
-            "jquery"
+            'jquery'
         ],
         jquerySelectBox: [
-            "jquery"
+            'jquery'
         ],
         flot: [
-            "jquery"
+            'jquery'
         ],
         mocha: {
             exports: 'mocha'

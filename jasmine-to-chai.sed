@@ -6,6 +6,8 @@ s/toBeFalsy()/to.not.be.ok/g
 s/toBeHidden()/to.be.hidden/g
 s/toBeVisible()/to.be.visible/g
 s/toBeCloseTo/to.be.closeTo/g
+s/toBeGreaterThan/to.be.gt/g
+s/toBeLessThan/to.be.lt/g
 s/toBe/to.equal/g
 s/toEqual/to.eql/g
 s/toContain/to.contain/g
