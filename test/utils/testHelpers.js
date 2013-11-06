@@ -62,11 +62,13 @@ function(_, Backbone, TP, xhrData, MarsApp)
         stopTheApp: function()
         {
 
+
             if (this.theApp)
             {
                 this.theApp.stop();
-                this.theApp.$body.find("div").remove();
-                this.theApp.$body.remove();
+                this.theApp._regionManager.closeRegions();
+                //this.theApp.$body.find("div").remove();
+                //this.theApp.$body.remove();
                 Backbone.history.stop();
                 Backbone.history.handlers = [];
             }
@@ -130,7 +132,6 @@ function(_, Backbone, TP, xhrData, MarsApp)
         findRequest: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            //console.log(this.fakeAjaxRequests);
             return _.find(this.fakeAjaxRequests, function(req)
             {
                 //console.log(req);
@@ -230,6 +231,11 @@ function(_, Backbone, TP, xhrData, MarsApp)
             return TP.utils.deepClone(obj);
         }
     };
+
+    before(function()
+    {
+        testHelpers.theApp.start();
+    });
 
     return testHelpers;
 
