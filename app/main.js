@@ -48,7 +48,7 @@ function(config)
             ],
             function(consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
             {
-                var theApp = new MarsApp();
+                var theApp = window.theMarsApp = new MarsApp({"$body": $("body")});
 
                 if(window._rollbarEnvironment && window._rollbarEnvironment === 'dummy')
                 {

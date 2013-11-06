@@ -113,16 +113,17 @@ function(
         historyEnabled: true,
 
 
-        constructor: function()
+        constructor: function(options)
         {
+
+            if(!options || !options.$body)
+            {
+                throw new Error("TheMarsApp constructor requires a body element");
+            }
 
             TP.Application.apply(this, arguments);
 
-            window.theMarsApp = this;
-            if (typeof global !== 'undefined')
-            {
-                global.theMarsApp = this;
-            }
+            this.$body = options.$body;
 
             this.addAllShutdowns();
             this.setApiConfig();
@@ -547,9 +548,6 @@ function(
 
         getBodyElement: function()
         {
-            if (!this.$body)
-                this.$body = $("body");
-
             return this.$body;
         },
 

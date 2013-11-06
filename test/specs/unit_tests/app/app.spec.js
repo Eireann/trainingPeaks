@@ -8,7 +8,18 @@ function( _, testHelpers )
     describe("The Mars App", function()
     {
 
-        var theApp = testHelpers.theApp;
+        var theApp;
+
+        beforeEach(function()
+        {
+            testHelpers.startTheApp();
+            theApp = testHelpers.theApp;
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
 
         it("Should exist globally", function()
         {
@@ -18,7 +29,6 @@ function( _, testHelpers )
 
         describe("App Initializers", function()
         {
-            theApp.start();
 
             it("Should have a session", function()
             {

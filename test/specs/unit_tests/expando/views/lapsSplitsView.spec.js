@@ -50,15 +50,11 @@ function(moment, _, TP, LapsSplitsView, WorkoutModel, detailDataLapsStats)
 
 		describe("Rendering", function()
 		{
-			var model, view;
-			beforeEach(function()
-			{
-				model = buildWorkoutModel(allDataChannels);
-				view = new LapsSplitsView({model: model});
-				view.render();
-			});
 			it("Should have a table with table rows", function()
 			{
+				var model = buildWorkoutModel(allDataChannels);
+				var view = new LapsSplitsView({model: model});
+				view.render();
 				expect(view.$el.find('table').length).to.be.ok;
 				expect(view.$el.find('th').length).to.be.gt(10); // every workout has at least 10 fields
 				expect(view.$el.find('tr').length).to.equal(7); // rows including header row

@@ -7,15 +7,6 @@
     <body>
         <div id="mocha"></div>
 
-        <!-- Hide content divs -->
-        <div style="display: none;">
-            <div id="wrapper">
-                <div id="navigation"></div>
-                <div id="outerMain"><div role="main" id="main"></div></div>
-            </div>
-            <div id="info"></div>
-        </div>
-
         <script src="../apiConfig.dev.js"></script>
         <script src="../bower_components/mocha/mocha.js"></script>
 
@@ -105,16 +96,24 @@
                     define("setImmediate", [], function() { return window.setImmediate; });
 
                     requirejs(
-                    [
-                        "Backbone.Marionette.Handlebars",
-                        "app",
-                        "../test/specs"
-                    ],
-                    function(bmhbs, theApp, specs)
+                    ["app"],
+                    function(MarsApp)
                     {
-                        window.fakeXhr.useFilters = false;
-                        mocha.run();
+                        window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
+
+                        requirejs(
+                        [
+                            "Backbone.Marionette.Handlebars",
+                            "../test/specs"
+                        ],
+                        function(bmhbs, MarsApp, specs)
+                        {
+
+                            window.fakeXhr.useFilters = false;
+                            mocha.run();
+                        });
                     });
+
 
                 });
 

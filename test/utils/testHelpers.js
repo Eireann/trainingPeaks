@@ -11,11 +11,10 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
     var testHelpers = {
 
-        theApp: new MarsApp(),
+        theApp: new MarsApp({"$body": $("<body></body>")}),
 
         setupRegionElements: function()
         {
-            this.$body = $("<body></body>");
             this.navRegion.$el = $("<div id='navigation'></div>");
             this.mainRegion.$el = $("<div id='main'></div>");
             this.infoRegion.$el = $("<div id='info'></div>");
@@ -34,7 +33,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
             this.stopTheApp();
 
-            this.theApp = new MarsApp();
+            this.theApp = window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
 
             // capture ajax calls
             this.setupFakeAjax();
@@ -62,13 +61,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         stopTheApp: function()
         {
-            if(this.theApp.$body && this.theApp.$body[0] !== document.body) {
-                this.theApp.$body.remove();
-            }
 
             if (this.theApp)
             {
                 this.theApp.stop();
+                this.theApp.$body.find("div").remove();
+                this.theApp.$body.remove();
                 Backbone.history.stop();
                 Backbone.history.handlers = [];
             }
