@@ -53,7 +53,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             };
 
             if (axisType === "time")
-                toolTipData.xAxisOffset = formatDateTime.decimalSecondsAsTime(xAxisOffset / 1000);
+                toolTipData.xAxisOffset = conversion.formatUnitsValue(axisType, xAxisOffset);
             else
                 toolTipData.xAxisOffset = conversion.formatUnitsValue(axisType, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType }) + " " + unitLabels(axisType, workoutType);
 
@@ -81,16 +81,9 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
 
             var lowerCaseAxisName = axisType.toLowerCase();
 
-            if (lowerCaseAxisName === "time")
-            {
-                toolTipData.x.value = formatDateTime.decimalSecondsAsTime(xAxisOffset / 1000);
-            }
-            else
-            {
-                toolTipData.x.label = axisType;
-                toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
-                toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
-            }
+            toolTipData.x.label = axisType;
+            toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
+            toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
 
             var toolTipSeries = this.formatYAxisData(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
 

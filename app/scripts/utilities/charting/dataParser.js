@@ -94,6 +94,14 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
                         xAxisZeroAlreadySet = true;
                 }
             }
+
+            // This allows no special hacks for Time in the graphing of data
+            dataByAxisAndChannel.time['Time'] = [];
+            _.each(flatSamples.msOffsetsOfSamples, function(ms)
+            {
+                dataByAxisAndChannel.time['Time'].push([ms, ms]);
+            });
+
             return dataByAxisAndChannel;
         }
 

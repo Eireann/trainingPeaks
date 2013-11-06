@@ -162,7 +162,7 @@ function(
                 enabledSeries[0].lines.show = false;
                 delete enabledSeries[0].dashes;
             }
-            enabledSeries[0].color = "#D9DA0E"
+            enabledSeries[0].color = "#D9DA0E";
 
             if($.plot)
             {

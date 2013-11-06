@@ -75,13 +75,11 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
               var seriesOptions = FlotUtils.seriesOptions(data, yaxis, { minElevation: this.elevationInfo.min });
 
-              var newSeries = []
+              var newSeries = [];
               _.each(data[xaxis], function(dataPoint, index)
               {
-                  var xaxisValue = data[xaxis][index][1];
-                  var yaxisValue = data[yaxis][index][1];
-                  newSeries.push([xaxisValue, yaxisValue]);
-              }, this);
+                  newSeries.push([data[xaxis][index][1], data[yaxis][index][1]]);
+              });
               seriesOptions.data = newSeries;
 
               return [seriesOptions];
