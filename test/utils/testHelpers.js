@@ -66,9 +66,9 @@ function(_, Backbone, TP, xhrData, MarsApp)
             if (this.theApp)
             {
                 this.theApp.stop();
+                this.theApp.$body.find("*").remove(); // this has to happen before closeRegions, or else some things don't get cleaned up
+                this.theApp.$body.remove();
                 this.theApp._regionManager.closeRegions();
-                //this.theApp.$body.find("div").remove();
-                //this.theApp.$body.remove();
                 Backbone.history.stop();
                 Backbone.history.handlers = [];
             }
@@ -232,10 +232,10 @@ function(_, Backbone, TP, xhrData, MarsApp)
         }
     };
 
-    before(function()
+    /*before(function()
     {
         testHelpers.theApp.start();
-    });
+    });*/
 
     return testHelpers;
 
