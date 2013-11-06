@@ -39,7 +39,7 @@
     max-width: calc(100% - 26px);
 
     .titleBar {
-        width:110%;
+        width:calc(100% + 10px);
         margin-left:-5px;
 
         h2.modaltitle {
@@ -58,7 +58,7 @@
         }
         
         #closeIcon, .closeIcon {
-            margin:8px 5px 0 10px;
+            margin:9px 9px 0 0;
         }
     }
 
