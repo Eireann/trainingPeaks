@@ -66,6 +66,24 @@ function(
                 }, this);
             });
 
+            // clean up data manager
+            this.addShutdown(function()
+            {
+                if(this.dataManager)
+                {
+                    this.dataManager.forceReset();
+                }
+            });
+
+            // stop calendar manager event bindings
+            this.addShutdown(function()
+            {
+                if(this.calendarManager)
+                {
+                    this.calendarManager.stopListening();
+                }
+            });
+
             // done
             this.addShutdown(function()
             {
