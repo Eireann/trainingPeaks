@@ -4,10 +4,9 @@ define(
     "backbone",
     "TP",
     "testUtils/xhrDataStubs",
-    "testUtils/sinon",
     "app"
 ],
-function(_, Backbone, TP, xhrData, sinon_, MarsApp)
+function(_, Backbone, TP, xhrData, MarsApp)
 {
 
     var testHelpers = {
@@ -63,10 +62,22 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
         stopTheApp: function()
         {
+            if(this.theApp.$body && this.theApp.$body[0] !== document.body) {
+                this.theApp.$body.remove();
+            }
+
             if (this.theApp)
             {
                 this.theApp.stop();
+                Backbone.history.stop();
+                Backbone.history.handlers = [];
             }
+
+
+            $("body > *:not(#mocha)").remove();
+            $("body").off();
+            $(document).off();
+            $(window).off();
 
             this.removeFakeAjax();
             localStorage.clear();
@@ -147,6 +158,9 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
         clearRequests: function()
         {
+            _.each(this.fakeAjaxRequests, function(xhr) {
+                xhr.respond(500, [], "");
+            });
             this.fakeAjaxRequests = [];
         },
 
