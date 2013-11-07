@@ -25,8 +25,8 @@ requirejs.config(
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
         flot: "../vendor/js/libs/flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
-        lodash: "../vendor/js/libs/lodash.TP",
-        underscore: "../vendor/js/libs/lodash.TP",
+        lodash: "../bower_components/lodash/dist/lodash.compat",
+        underscore: "../bower_components/lodash/dist/lodash.compat",
         backbone: "../vendor/js/libs/backbone",
         "backbone.marionette": "../vendor/js/libs/backbone.marionette",
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
@@ -54,7 +54,7 @@ requirejs.config(
         handlebars: "../bower_components/handlebars/handlebars",
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
         text: "../bower_components/requirejs-text/text",
-        "i18n": "../bower_components/requirejs-i18n/i18n"
+        i18n: "../bower_components/requirejs-i18n/i18n",
     },
     shim: {
         handlebars: {

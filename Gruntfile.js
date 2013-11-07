@@ -6,8 +6,6 @@ module.exports = function(grunt)
 {
     grunt.initConfig(
     {
-        locales: ["en_us", "fr_fr", "it_it"],
-
         jshint:
         {
             all:
@@ -110,7 +108,7 @@ module.exports = function(grunt)
                         "../vendor/js/libs/almond"
                     ],
                     path: { handlebars: "handlebars.runtime" },
-                    stubModuels: ["hbs"],
+                    stubModuels: ["hbs", "text"],
                     wrap: false,
                     optimize: "none",
                     useSourceUrl: true
@@ -217,60 +215,46 @@ module.exports = function(grunt)
         {
             debug:
             {
-                files:
-                {
-                    "build/debug": [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
-                }
+                dest: "build/debug/",
+                src: [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
             },
 
             build_common:
             {
-                files:
-                {
-                    "build/release": [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
-                }
+                dest: "build/release/",
+                src: [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
             },
 
             build_debug:
             {
-                files:
-                {
-                    "build/release": ["apiConfig.dev.js"]
-                }
+                dest: "build/release/",
+                srd: ["apiConfig.dev.js"]
             },
 
             build:
             {
-                files:
-                {
-                    "build/release": ["web.config"]
-                }
+                dest: "build/release/",
+                src: ["web.config"]
             },
 
             // stuff that needs to get instrumented for test coverage to work
             pre_instrument:
             {
-                files:
-                {
-                    "coverage": ["test/**", "app/**"]
-                }
+                dest: "coverage/",
+                src: ["test/**", "app/**"]
             },
 
             // stuff that needs to be clean and not modified by test coverage instrumentation
             post_instrument:
             {
-                files:
-                {
-                    "coverage": ["bower_components/**", "vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.dev.js"]
-                }
+                dest: "coverage/",
+                src: ["bower_components/**", "vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.dev.js"]
             },
 
             build_coverage:
             {
-                files:
-                {
-                    "build/debug": ["coverage/lcov-report/**"]
-                }
+                dest: "build/debug/",
+                src: ["coverage/lcov-report/**"]
             }
         },
 
@@ -292,21 +276,6 @@ module.exports = function(grunt)
             options : {
                 type: 'lcov',
                 dir: 'coverage'
-            }
-        },
-
-        lodash:
-        {
-            tp:
-            {
-                options:
-                {
-                    modifier: 'underscore',
-                    exports: ['amd', 'commonjs', 'global', 'node'],
-                    plus: ['merge'],
-                    flags: ['debug']
-                },
-                dest: 'vendor/js/libs/lodash.TP.js'
             }
         },
 
@@ -351,15 +320,15 @@ module.exports = function(grunt)
     * npm-tasks like this:
     */
     grunt.loadTasks("grunt/tasks");
-    grunt.loadTasks("grunt/uglify");
     grunt.loadNpmTasks("grunt-contrib-clean");
+    grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-htmlmin");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
     grunt.loadNpmTasks("grunt-webfont");
-    grunt.loadNpmTasks("grunt-lodash");
     grunt.loadNpmTasks("grunt-targethtml");
     grunt.loadNpmTasks("grunt-bower-requirejs");
     grunt.loadNpmTasks("grunt-mocha");
@@ -383,9 +352,9 @@ module.exports = function(grunt)
     // grunt build builds a single minified js for dev/uat/live, at build/release
     // grunt build_debug does the same but doesn't minify, and points to local dev config
     // removed "plato:build" as last step of build_common
-    grunt.registerTask("build_common", ["clean", "jshint", "coverage", "i18n_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
-    grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
+    grunt.registerTask("build_common", ["clean", "jshint", "coverage", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
+    grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_fast", ["clean", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files", "revision"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "revision"]);
 };

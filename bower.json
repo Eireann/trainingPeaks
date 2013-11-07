@@ -12,6 +12,7 @@
     "backbone.marionette.handlebars": "~0.2.0",
     "handlebars": "1.0.0",
     "requirejs-text": "~2.0.10",
-    "requirejs-i18n": "~2.0.4"
+    "requirejs-i18n": "~2.0.4",
+    "lodash": "~2.2.1"
   }
 }
