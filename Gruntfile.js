@@ -216,7 +216,7 @@ module.exports = function(grunt)
             build_debug:
             {
                 dest: "build/release/",
-                srd: ["apiConfig.dev.js"]
+                src: ["apiConfig.dev.js"]
             },
 
             build:
@@ -324,11 +324,9 @@ module.exports = function(grunt)
 
 
     // TESTING:
-    // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
     grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "mocha:default"]);
 
     // REPORTING:
-    // grunt plato:dummy makes complexity reports available at localhost:8905/plato
     // grunt coverage makes coverage reports available at localhost:8905/coverage/lcov-report/index.html,
     grunt.registerTask('coverage', ['clean:coverage', 'setup-spec-list', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'mocha:coverage', 'storeCoverage', 'makeReport']);
 
@@ -340,7 +338,6 @@ module.exports = function(grunt)
 
     // grunt build builds a single minified js for dev/uat/live, at build/release
     // grunt build_debug does the same but doesn't minify, and points to local dev config
-    // removed "plato:build" as last step of build_common
     grunt.registerTask("build_common", ["clean", "jshint", "coverage", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_fast", ["clean", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
