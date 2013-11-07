@@ -54,42 +54,6 @@ function(
 
     var MarsApp = TP.Application.extend(
     {
-        addAllShutdowns: function()
-        {
-
-            // close all of the controllers, which should close each of their corresponding layouts and views
-            this.addShutdown(function()
-            {
-                _.each(_.keys(this.controllers), function(controllerName)
-                {
-                    this.controllers[controllerName].close();
-                }, this);
-            });
-
-            // clean up data manager
-            this.addShutdown(function()
-            {
-                if(this.dataManager)
-                {
-                    this.dataManager.forceReset();
-                }
-            });
-
-            // stop calendar manager event bindings
-            this.addShutdown(function()
-            {
-                if(this.calendarManager)
-                {
-                    this.calendarManager.stopListening();
-                }
-            });
-
-            // done
-            this.addShutdown(function()
-            {
-                this.started = false;
-            });
-        },
 
         setApiConfig: function()
         {
@@ -143,7 +107,6 @@ function(
 
             this.$body = options.$body;
 
-            this.addAllShutdowns();
             this.setApiConfig();
 
             this.off();
@@ -430,10 +393,6 @@ function(
                 DragAndDropFileUploadWidget.initialize(this.getBodyElement(), this.getBodyElement().find("#messages"));
             });
 
-            this.addInitializer(function()
-            {
-                this.started = true;
-            });
 
             // filter non-numeric input
             this.addInitializer(function ()
@@ -502,6 +461,7 @@ function(
                 }
                 );
             });
+
         },
 
         touchEnabled: false,
@@ -567,12 +527,8 @@ function(
         getBodyElement: function()
         {
             return this.$body;
-        },
-
-        reloadApp: function()
-        {
-            window.location.reload();
         }
+
     });
 
     return MarsApp;
