@@ -46,24 +46,7 @@ function(
     });
 
     // Marionette stuff
-    TP.Application = Backbone.Marionette.Application.extend({
-
-        shutdownHandlers: [],
-
-        addShutdown: function(fn)
-        {
-            this.shutdownHandlers.push(fn);
-        },
-
-        stop: function()
-        {
-            _.each(this.shutdownHandlers, function(onStop)
-            {
-                onStop.call(this);
-            }, this);
-        }
-
-    });
+    TP.Application = Backbone.Marionette.Application;
 
     TP.Controller = Backbone.Marionette.Controller.extend(
     {

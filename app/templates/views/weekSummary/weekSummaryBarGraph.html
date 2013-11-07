@@ -1,8 +1,8 @@
 <div class="weekSummaryBarGraph {{ workoutTypeCssName workoutTypeId }} {{ cssClass }}">
-    {{#comment}}
+    {{!--
     If completed < planned, the background bar (planned amount) is gray, and the foreground bar (completed) is a light colored gradient
     If completed > planned, the background bar (completed amount) is a dark colored gradient, and the foreground bar (planned) is a light colored gradient
-    {{/comment}}
+    --}}
     {{#if completedMoreThanPlanned }}
       <div class="bar background completed {{ workoutTypeCssName workoutTypeId }} darkGradient" style="width:{{ completedWidthPercent }}%;"></div>
       <div class="bar foreground planned {{ workoutTypeCssName workoutTypeId }} lightGradient" style="width:{{ plannedWidthPercent }}%;"></div>

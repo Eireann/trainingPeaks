@@ -52,6 +52,7 @@ function(
                 }, this);
 
             return { lapData: subsetLapData, _state: this.model.getState().toJSON() };
+
         }
 
     });

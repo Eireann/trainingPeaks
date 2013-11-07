@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
@@ -31,27 +30,27 @@ function(
         it("Should not open the new item view for a click on the day if touch is not enabled", function()
         {
             // not visible yet
-            expect($body.find(".newItemView").length).toBe(0);
+            expect($body.find(".newItemView").length).to.equal(0);
 
             // click add workout
             $mainRegion.find("#calendarContainer .day.today").trigger("click");
 
             // should still not be visible
-            expect($body.find(".newItemView").length).toBe(0);
+            expect($body.find(".newItemView").length).to.equal(0);
         });
 
         it("Should enable touch on the first touch event", function()
         {
             // starts with touch disabled
-            expect(testHelpers.theApp.isTouchEnabled()).toBe(false);
-            expect($body.is(".touchEnabled")).toBe(false);
+            expect(testHelpers.theApp.isTouchEnabled()).to.equal(false);
+            expect($body.is(".touchEnabled")).to.equal(false);
 
             // first touch start
             $body.trigger("touchstart");
 
             // touch is now enabled
-            expect(testHelpers.theApp.isTouchEnabled()).toBe(true);
-            expect($body.is(".touchEnabled")).toBe(true);
+            expect(testHelpers.theApp.isTouchEnabled()).to.equal(true);
+            expect($body.is(".touchEnabled")).to.equal(true);
         });
 
         it("Should open the new item view for a click on the day if touch is enabled", function()
@@ -60,27 +59,28 @@ function(
             testHelpers.theApp.enableTouch();
 
             // not visible yet
-            expect($body.find(".newItemView").length).toBe(0);
+            expect($body.find(".newItemView").length).to.equal(0);
 
             // click add workout
             $mainRegion.find("#calendarContainer .day.today").trigger("click");
 
             // should be visible
-            expect($body.find(".newItemView").length).toBe(1);
+            expect($body.find(".newItemView").length).to.equal(1);
         });
 
         // I think this fails due to how we're setting up the body element in test helpers, but works ok in browser
-        xit("Should not listen to touch events after the first touch", function()
+        it("Should not listen to touch events after the first touch", function()
         {
 
             // first touch start
-            spyOn(testHelpers.theApp, "enableTouch");
+            var enableTouch = sinon.stub(testHelpers.theApp, "enableTouch");
             $body.trigger("touchstart");
-            expect(testHelpers.theApp.enableTouch).toHaveBeenCalled();
+            expect(testHelpers.theApp.enableTouch).to.have.been.called;
 
             // touch again
+            enableTouch.reset();
             $body.trigger("touchstart");
-            expect(testHelpers.theApp.enableTouch).not.toHaveBeenCalled();
+            expect(testHelpers.theApp.enableTouch).to.not.have.been.called;
         });
     });
 

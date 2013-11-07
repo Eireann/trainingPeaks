@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "underscore",
     "jquery",
@@ -71,13 +70,13 @@ function(
 
             it("Should display one dashboard chart", function()
             {
-                expect($mainRegion.find(".dashboardChart").length).toBe(1);
-                expect($mainRegion.find(".dashboardChart.timeInZones").length).toBe(1);
+                expect($mainRegion.find(".dashboardChart").length).to.equal(1);
+                expect($mainRegion.find(".dashboardChart.timeInZones").length).to.equal(1);
             });
 
             it("Should request time in zones data", function()
             {
-                expect(testHelpers.hasRequest("POST", "reporting/timeinzonesbyweek")).toBe(true);
+                expect(testHelpers.hasRequest("POST", "reporting/timeinzonesbyweek")).to.equal(true);
             });
 
         });
@@ -133,24 +132,24 @@ function(
 
             it("Should have three pods", function()
             {
-                expect($mainRegion.find(".dashboardChart").length).toBe(3);
-                expect($mainRegion.find(".dashboardChart.timeInZones").length).toBe(3);
+                expect($mainRegion.find(".dashboardChart").length).to.equal(3);
+                expect($mainRegion.find(".dashboardChart.timeInZones").length).to.equal(3);
             });
 
             it("Should have correct titles in pods", function()
             {
-                expect($($mainRegion.find(".dashboardChart.timeInZones")[0]).find(".chartTitle").text()).toContain("Heart Rate");
-                expect($($mainRegion.find(".dashboardChart.timeInZones")[1]).find(".chartTitle").text()).toContain("Power");
-                expect($($mainRegion.find(".dashboardChart.timeInZones")[2]).find(".chartTitle").text()).toContain("Speed");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[0]).find(".chartTitle").text()).to.contain("Heart Rate");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[1]).find(".chartTitle").text()).to.contain("Power");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[2]).find(".chartTitle").text()).to.contain("Speed");
             });
 
             it("Should request correct data type for each pod", function()
             {
                 var tizRequests = testHelpers.findAllRequests("POST", "reporting/timeinzonesbyweek");
-                expect(tizRequests.length).toBe(3);
-                expect(JSON.parse(tizRequests[0].requestBody).timeInZonesType).toEqual(1);
-                expect(JSON.parse(tizRequests[1].requestBody).timeInZonesType).toEqual(2);
-                expect(JSON.parse(tizRequests[2].requestBody).timeInZonesType).toEqual(3);
+                expect(tizRequests.length).to.equal(3);
+                expect(JSON.parse(tizRequests[0].requestBody).timeInZonesType).to.eql(1);
+                expect(JSON.parse(tizRequests[1].requestBody).timeInZonesType).to.eql(2);
+                expect(JSON.parse(tizRequests[2].requestBody).timeInZonesType).to.eql(3);
             });
 
         });

@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "moment",
     "framework/APIModel"
@@ -23,8 +23,8 @@ function(moment, APIModel)
                 {
                     model.set("tomorrow", moment().add("days", 1).format("YYYY-MM-DD"));
                 };
-                expect(setString).not.toThrow();
-                expect(setMoment).toThrow("Do not use moments as model attributes, due to performance issues");
+                expect(setString).to.not.throw();
+                expect(setMoment).to.throw("Do not use moments as model attributes, due to performance issues");
             });
         });
 
@@ -33,7 +33,7 @@ function(moment, APIModel)
             it("Should require a webAPIModelName", function()
             {
                 var TestModel = APIModel.APIDeepModel.extend({});
-                expect(TestModel).toThrow();
+                expect(TestModel).to.throw();
             });
 
             it("Should not be able to set a key that is not defined in defaults", function()
@@ -59,8 +59,8 @@ function(moment, APIModel)
                     model.set("badkey", "SomeValue");
                 }
 
-                expect(setGoodKey).not.toThrow();
-                expect(setBadKey).toThrow();
+                expect(setGoodKey).to.not.throw();
+                expect(setBadKey).to.throw();
             });
 
             it("Should not be able to get a key that is not defined in defaults", function()
@@ -86,8 +86,8 @@ function(moment, APIModel)
                     return model.get("badkey");
                 }
 
-                expect(getGoodKey).not.toThrow();
-                expect(getBadKey).toThrow();
+                expect(getGoodKey).to.not.throw();
+                expect(getBadKey).to.throw();
             });
 
             it("Should also work with a defaults function", function()
@@ -116,8 +116,8 @@ function(moment, APIModel)
                     model.set("badkey", "SomeValue");
                 }
 
-                expect(setGoodKey).not.toThrow();
-                expect(setBadKey).toThrow();
+                expect(setGoodKey).to.not.throw();
+                expect(setBadKey).to.throw();
             });
 
             it("Should not allow to set moment objects as attributes", function()
@@ -141,8 +141,8 @@ function(moment, APIModel)
                 {
                     model.set("tomorrow", moment().add("days", 1).format("YYYY-MM-DD"));
                 };
-                expect(setString).not.toThrow();
-                expect(setMoment).toThrow("test: Do not use moments as model attributes, due to performance issues");
+                expect(setString).to.not.throw();
+                expect(setMoment).to.throw("test: Do not use moments as model attributes, due to performance issues");
             });
         });
     });

@@ -1,5 +1,4 @@
-﻿// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
     ["models/library/exerciseLibrary"],
 function (ExerciseLibrary)
 {
@@ -8,24 +7,24 @@ function (ExerciseLibrary)
 
         it("Should load as a module", function ()
         {
-            expect(ExerciseLibrary).toBeDefined();
+            expect(ExerciseLibrary).to.not.be.undefined;
         });
 
         it("intialize should create a new library exercise collection", function ()
         {
             var exerciseLibrary = new ExerciseLibrary();
 
-            expect(exerciseLibrary.exercises).toBeDefined();
+            expect(exerciseLibrary.exercises).to.not.be.undefined;
         });
 
         it("should fetch library exercises", function ()
         {
             var exerciseLibrary = new ExerciseLibrary();
 
-            spyOn(exerciseLibrary.exercises, "fetch");
+            sinon.stub(exerciseLibrary.exercises, "fetch");
             exerciseLibrary.fetchExercises();
 
-            expect(exerciseLibrary.exercises.fetch).toHaveBeenCalled();
+            expect(exerciseLibrary.exercises.fetch).to.have.been.called;
         });
 
         it("should not fetch library exercises", function ()
@@ -33,10 +32,10 @@ function (ExerciseLibrary)
             var exerciseLibrary = new ExerciseLibrary();
             exerciseLibrary.exercises.length = 2;
 
-            spyOn(exerciseLibrary.exercises, "fetch");
+            sinon.stub(exerciseLibrary.exercises, "fetch");
             exerciseLibrary.fetchExercises();
 
-            expect(exerciseLibrary.exercises.fetch).not.toHaveBeenCalled();
+            expect(exerciseLibrary.exercises.fetch).to.not.have.been.called;
         });
 
     });

@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "testUtils/testHelpers",
     "TP",
@@ -15,7 +15,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         {
             it("conversion." + methodName + "(" + testValue.input + ") Should return " + testValue.output, function()
             {
-                expect(conversion[methodName](testValue.input, testValue.options)).toEqual(testValue.output);
+                expect(conversion[methodName](testValue.input, testValue.options)).to.eql(testValue.output);
             });
         });
 

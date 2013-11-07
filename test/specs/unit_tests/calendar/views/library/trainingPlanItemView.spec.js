@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "TP",
     "views/calendar/library/trainingPlanItemView"
@@ -13,13 +12,13 @@ function(TP, TrainingPlanItemView)
             var itemView = new TrainingPlanItemView({model: new TP.Model({title: "Foobar", id: 123 })});
             itemView.model.webAPIModelName = "TrainingPlan";
 
-            spyOn(itemView, "makeDraggable").andCallThrough();
-            spyOn(itemView.$el, "draggable").andCallThrough();
+            sinon.spy(itemView, "makeDraggable");
+            sinon.spy(itemView.$el, "draggable");
 
             itemView.render();
 
-            expect(itemView.makeDraggable).toHaveBeenCalled();
-            expect(itemView.$el.draggable).toHaveBeenCalled();
+            expect(itemView.makeDraggable).to.have.been.called;
+            expect(itemView.$el.draggable).to.have.been.called;
         });
     });
 

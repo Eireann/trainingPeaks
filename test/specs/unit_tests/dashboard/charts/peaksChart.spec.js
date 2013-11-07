@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "TP",
     "framework/dataManager",
@@ -20,9 +19,9 @@ function(
             var chart = new PeaksChart({chartType: 8}, {dataManager: new DataManager() });
             var comparisonDateOptions = chart.get("comparisonDateOptions");
 
-            expect(comparisonDateOptions.startDate).toBe(null);
-            expect(comparisonDateOptions.endDate).toBe(null);
-            expect(comparisonDateOptions.quickDateSelectOption).toBe(1);
+            expect(comparisonDateOptions.startDate).to.equal(null);
+            expect(comparisonDateOptions.endDate).to.equal(null);
+            expect(comparisonDateOptions.quickDateSelectOption).to.equal(1);
         });
 
     });

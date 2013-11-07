@@ -1,4 +1,4 @@
-﻿requirejs(
+﻿define(
 [
     "utilities/charting/findOrderedArrayIndexByValue"
 ],
@@ -9,21 +9,21 @@ function(findOrderedArrayIndexByValue)
         it("returns -1 when the list is empty", function()
         {
             var list = [];
-            expect(findOrderedArrayIndexByValue(list, 0)).toBe(-1);
+            expect(findOrderedArrayIndexByValue(list, 0)).to.equal(-1);
         });
 
         it("returns the last index if the value is not within the list", function()
         {
             var list = [1, 2, 3, 4, 5, 6, 7, 8];
-            expect(findOrderedArrayIndexByValue(list, 10)).toBe(7);
+            expect(findOrderedArrayIndexByValue(list, 10)).to.equal(7);
         });
 
         it("returns the correct index if the value is within the list", function()
         {
             var list = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-            expect(findOrderedArrayIndexByValue(list, 10)).toBe(0);
-            expect(findOrderedArrayIndexByValue(list, 20)).toBe(1);
-            expect(findOrderedArrayIndexByValue(list, 100)).toBe(9);
+            expect(findOrderedArrayIndexByValue(list, 10)).to.equal(0);
+            expect(findOrderedArrayIndexByValue(list, 20)).to.equal(1);
+            expect(findOrderedArrayIndexByValue(list, 100)).to.equal(9);
         });
 
         it("works on a very long list", function()
@@ -35,7 +35,7 @@ function(findOrderedArrayIndexByValue)
                 list.push(i);
             }
 
-            expect(findOrderedArrayIndexByValue(list, 9999)).toBe(9999);
+            expect(findOrderedArrayIndexByValue(list, 9999)).to.equal(9999);
         });
     });
 });

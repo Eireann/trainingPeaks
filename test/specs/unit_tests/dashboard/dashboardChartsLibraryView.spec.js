@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "TP",
     "views/dashboard/dashboardChartsLibraryView",
@@ -13,7 +12,7 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
 
         it("Should be loaded as a module", function()
         {
-            expect(DashboardChartsLibraryView).toBeDefined();
+            expect(DashboardChartsLibraryView).to.not.be.undefined;
         });
 
         it("Should instantiate", function()
@@ -22,26 +21,26 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
             {
                 var view = new DashboardChartsLibraryView();
             };
-            expect(newLibrary).not.toThrow();
+            expect(newLibrary).to.not.throw();
         });
 
         it("Should render", function()
         {
             var view = new DashboardChartsLibraryView();
             view.render();
-            expect(view.$el).toBeDefined();
+            expect(view.$el).to.not.be.undefined;
         });
 
         describe("getItemView", function()
         {
             it("Should return TP.ItemView if no item is passed", function()
             {
-                expect(DashboardChartsLibraryView.prototype.getItemView()).toBe(TP.ItemView);
+                expect(DashboardChartsLibraryView.prototype.getItemView()).to.equal(TP.ItemView);
             });
 
             it("Should return ChartTileView if item is passed", function()
             {
-                expect(DashboardChartsLibraryView.prototype.getItemView({})).toBe(ChartTileView);
+                expect(DashboardChartsLibraryView.prototype.getItemView({})).to.equal(ChartTileView);
             });
         });
 
@@ -56,21 +55,35 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
                 collection.add(new TP.Model({name: "B"}));
                 collection.add(new TP.Model({name: "C"}));
 
-                view = new DashboardChartsLibraryView({collection: collection});
+                var featureAuthorizer = {
+
+                    features: {
+                        UsePod: null,
+                        ViewPod: null
+                    },
+
+                    canAccessFeature: function() { return true; }
+                };
+
+                view = new DashboardChartsLibraryView({collection: collection, featureAuthorizer: featureAuthorizer });
 
                 view.render();
             });
 
             it("Should start with items in collection", function()
             {
-                expect(view.collection.length).toBe(3);
+                expect(view.collection.length).to.equal(3);
             });
 
             it("Should filter on keyup", function()
             {
                 view.ui.search.val("xxxxxxxxxx");
                 view.ui.search.trigger("keyup");
-                expect(view.collection.length).toBe(0);
+                expect(view.collection.length).to.equal(0);
+
+                view.ui.search.val("A");
+                view.ui.search.trigger("keyup");
+                expect(view.collection.length).to.equal(1);
             });
 
         });

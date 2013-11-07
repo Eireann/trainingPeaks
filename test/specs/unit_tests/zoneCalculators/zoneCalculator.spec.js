@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "jquery",
     "testUtils/xhrDataStubs",
@@ -34,7 +34,7 @@ function (
             {
                 var success = false;
                 var deferred = new $.Deferred();
-                spyOn(heartRateZonesCalculator, "_ajax").andReturn(deferred);
+                sinon.stub(heartRateZonesCalculator, "_ajax").returns(deferred);
                 heartRateZonesCalculator.calculate(heartRateZonesModel);
 
                 deferred.done(function()
@@ -43,14 +43,14 @@ function (
                 });
 
                 deferred.resolveWith(deferred, [{zones: []}]);
-                expect(success).toBe(true);
+                expect(success).to.equal(true);
             });
 
             it("Should fail if the api returns null", function()
             {
                 var failed = false;
                 var ajaxDeferred = new $.Deferred();
-                spyOn(heartRateZonesCalculator, "_ajax").andReturn(ajaxDeferred);
+                sinon.stub(heartRateZonesCalculator, "_ajax").returns(ajaxDeferred);
                 var calculatorDeferred = heartRateZonesCalculator.calculate(heartRateZonesModel);
 
                 calculatorDeferred.fail(function()
@@ -60,14 +60,14 @@ function (
 
                 ajaxDeferred.resolveWith(ajaxDeferred, [ null ]);
 
-                expect(failed).toBe(true);
+                expect(failed).to.equal(true);
             });
 
             it("Should fail if the api fails", function()
             {
                 var failed = false;
                 var ajaxDeferred = new $.Deferred();
-                spyOn(heartRateZonesCalculator, "_ajax").andReturn(ajaxDeferred);
+                sinon.stub(heartRateZonesCalculator, "_ajax").returns(ajaxDeferred);
                 var calculatorDeferred = heartRateZonesCalculator.calculate(heartRateZonesModel);
 
                 calculatorDeferred.fail(function()
@@ -76,7 +76,7 @@ function (
                 });
 
                 ajaxDeferred.reject();
-                expect(failed).toBe(true);
+                expect(failed).to.equal(true);
             });
 
         });
@@ -103,36 +103,36 @@ function (
 
             it("Should call the correct endpoint", function()
             {
-                spyOn(heartRateZonesCalculator, "_ajax").andReturn(new $.Deferred());
+                sinon.stub(heartRateZonesCalculator, "_ajax").returns(new $.Deferred());
                 heartRateZonesCalculator.calculate(heartRateZonesModel);
-                expect(heartRateZonesCalculator._ajax).toHaveBeenCalled();
-                var options = heartRateZonesCalculator._ajax.calls[0].args[0];
+                expect(heartRateZonesCalculator._ajax).to.have.been.called;
+                var options = heartRateZonesCalculator._ajax.getCall(0).args[0];
                 var expectedUrl = new RegExp("/zonescalculator/v1/heartrate");
-                expect(expectedUrl.test(options.url)).toBe(true);
+                expect(expectedUrl.test(options.url)).to.equal(true);
             });
 
             it("Should pass the correct parameters", function()
             {
-                spyOn(heartRateZonesCalculator, "_ajax").andReturn(new $.Deferred());
+                sinon.stub(heartRateZonesCalculator, "_ajax").returns(new $.Deferred());
                 heartRateZonesModel.set("threshold", 150);
                 heartRateZonesModel.set("maximumHeartRate", 200);
                 heartRateZonesModel.set("restingHeartRate", 50);
 
                 heartRateZonesCalculator.calculate(heartRateZonesModel);
-                expect(heartRateZonesCalculator._ajax).toHaveBeenCalled();
-                var postData = heartRateZonesCalculator._ajax.calls[0].args[0].data;
+                expect(heartRateZonesCalculator._ajax).to.have.been.called;
+                var postData = heartRateZonesCalculator._ajax.getCall(0).args[0].data;
 
-                expect(postData.LTHR).toBe(150);
-                expect(postData.maxHR).toBe(200);
-                expect(postData.restingHR).toBe(50);
-                expect(postData.zoneType).toBe(1);
+                expect(postData.LTHR).to.equal(150);
+                expect(postData.maxHR).to.equal(200);
+                expect(postData.restingHR).to.equal(50);
+                expect(postData.zoneType).to.equal(1);
 
             });
 
             it("Should set the appropriate values on the model", function()
             {
                 var ajaxDeferred = new $.Deferred();
-                spyOn(heartRateZonesCalculator, "_ajax").andReturn(ajaxDeferred);
+                sinon.stub(heartRateZonesCalculator, "_ajax").returns(ajaxDeferred);
                 heartRateZonesCalculator.calculate(heartRateZonesModel);
 
                 var serverResponse = {
@@ -144,10 +144,10 @@ function (
 
                 ajaxDeferred.resolveWith(ajaxDeferred, [ serverResponse ]);
 
-                expect(heartRateZonesModel.get("threshold")).toBe(162);
-                expect(heartRateZonesModel.get("maximumHeartRate")).toBe(198);
-                expect(heartRateZonesModel.get("restingHeartRate")).toBe(42);
-                expect(heartRateZonesModel.get("zones").length).toBe(2);
+                expect(heartRateZonesModel.get("threshold")).to.equal(162);
+                expect(heartRateZonesModel.get("maximumHeartRate")).to.equal(198);
+                expect(heartRateZonesModel.get("restingHeartRate")).to.equal(42);
+                expect(heartRateZonesModel.get("zones").length).to.equal(2);
             });
 
         });
@@ -172,31 +172,31 @@ function (
 
             it("Should call the correct endpoint", function()
             {
-                spyOn(powerZonesCalculator, "_ajax").andReturn(new $.Deferred());
+                sinon.stub(powerZonesCalculator, "_ajax").returns(new $.Deferred());
                 powerZonesCalculator.calculate(powerZonesModel);
-                expect(powerZonesCalculator._ajax).toHaveBeenCalled();
-                var options = powerZonesCalculator._ajax.calls[0].args[0];
+                expect(powerZonesCalculator._ajax).to.have.been.called;
+                var options = powerZonesCalculator._ajax.getCall(0).args[0];
                 var expectedUrl = new RegExp("/zonescalculator/v1/power");
-                expect(expectedUrl.test(options.url)).toBe(true);
+                expect(expectedUrl.test(options.url)).to.equal(true);
             });
 
             it("Should pass the correct parameters", function()
             {
-                spyOn(powerZonesCalculator, "_ajax").andReturn(new $.Deferred());
+                sinon.stub(powerZonesCalculator, "_ajax").returns(new $.Deferred());
                 powerZonesModel.set("threshold", 250);
 
                 powerZonesCalculator.calculate(powerZonesModel);
-                expect(powerZonesCalculator._ajax).toHaveBeenCalled();
-                var postData = powerZonesCalculator._ajax.calls[0].args[0].data;
+                expect(powerZonesCalculator._ajax).to.have.been.called;
+                var postData = powerZonesCalculator._ajax.getCall(0).args[0].data;
 
-                expect(postData.LTPower).toBe(250);
-                expect(postData.zoneType).toBe(11);
+                expect(postData.LTPower).to.equal(250);
+                expect(postData.zoneType).to.equal(11);
             });
 
             it("Should set the appropriate values on the model", function()
             {
                 var ajaxDeferred = new $.Deferred();
-                spyOn(powerZonesCalculator, "_ajax").andReturn(ajaxDeferred);
+                sinon.stub(powerZonesCalculator, "_ajax").returns(ajaxDeferred);
                 powerZonesCalculator.calculate(powerZonesModel);
 
                 var serverResponse = {
@@ -206,8 +206,8 @@ function (
 
                 ajaxDeferred.resolveWith(ajaxDeferred, [ serverResponse ]);
 
-                expect(powerZonesModel.get("threshold")).toBe(199);
-                expect(powerZonesModel.get("zones").length).toBe(3);
+                expect(powerZonesModel.get("threshold")).to.equal(199);
+                expect(powerZonesModel.get("zones").length).to.equal(3);
             });
 
         });
@@ -232,33 +232,33 @@ function (
 
             it("Should call the correct endpoint", function()
             {
-                spyOn(speedZonesCalculator, "_ajax").andReturn(new $.Deferred());
+                sinon.stub(speedZonesCalculator, "_ajax").returns(new $.Deferred());
                 speedZonesCalculator.calculate(speedZonesModel);
-                expect(speedZonesCalculator._ajax).toHaveBeenCalled();
-                var options = speedZonesCalculator._ajax.calls[0].args[0];
+                expect(speedZonesCalculator._ajax).to.have.been.called;
+                var options = speedZonesCalculator._ajax.getCall(0).args[0];
                 var expectedUrl = new RegExp("/zonescalculator/v1/speed");
-                expect(expectedUrl.test(options.url)).toBe(true);
+                expect(expectedUrl.test(options.url)).to.equal(true);
             });
 
             it("Should pass the correct parameters", function()
             {
-                spyOn(speedZonesCalculator, "_ajax").andReturn(new $.Deferred());
+                sinon.stub(speedZonesCalculator, "_ajax").returns(new $.Deferred());
                 speedZonesModel.set("threshold", 5);
                 speedZonesModel.set("testDistance", 3);
 
                 speedZonesCalculator.calculate(speedZonesModel);
-                expect(speedZonesCalculator._ajax).toHaveBeenCalled();
-                var postData = speedZonesCalculator._ajax.calls[0].args[0].data;
+                expect(speedZonesCalculator._ajax).to.have.been.called;
+                var postData = speedZonesCalculator._ajax.getCall(0).args[0].data;
 
-                expect(postData.speed).toBe(5);
-                expect(postData.distance).toBe(3);
-                expect(postData.zoneType).toBe(13);
+                expect(postData.speed).to.equal(5);
+                expect(postData.distance).to.equal(3);
+                expect(postData.zoneType).to.equal(13);
             });
 
             it("Should set the appropriate values on the model", function()
             {
                 var ajaxDeferred = new $.Deferred();
-                spyOn(speedZonesCalculator, "_ajax").andReturn(ajaxDeferred);
+                sinon.stub(speedZonesCalculator, "_ajax").returns(ajaxDeferred);
                 speedZonesCalculator.calculate(speedZonesModel);
 
                 var serverResponse = {
@@ -268,8 +268,8 @@ function (
 
                 ajaxDeferred.resolveWith(ajaxDeferred, [ serverResponse ]);
 
-                expect(speedZonesModel.get("threshold")).toBe(4.62);
-                expect(speedZonesModel.get("zones").length).toBe(1);
+                expect(speedZonesModel.get("threshold")).to.equal(4.62);
+                expect(speedZonesModel.get("zones").length).to.equal(1);
             });
 
         });
