@@ -187,6 +187,9 @@ charts or filled areas).
         plot.hooks.drawSeries.push(function(plot, canvas, series) { 
             var stackSpacing = series.stackSpacing;
             if(series.stack && !series.horizontal && stackSpacing) {
+
+                // track the original points and work from those each time,
+                // so we don't accumulate stack spacing on each redraw
                 if(series.datapoints.original)
                 {
                     series.datapoints.points = series.datapoints.original.slice();
@@ -199,9 +202,19 @@ charts or filled areas).
                 var points = series.datapoints.points;
                 var pointsize = series.datapoints.pointsize;
 
+                // i = point min
+                // i - 1 = point max y
+                // i - 2 = point x
                 for(var i = pointsize - 1; i < points.length; i += pointsize)
                 {
-                    if(points[i] !== 0)
+                    // if i and i - 1 are the same, then this bar has a zero value,
+                    // so just set it back to zero so it doesn't draw a ghost bar
+                    if(points[i] === points[i - 1])
+                    {
+                        points[i] = 0;
+                        points[i - 1] = 0;
+                    }
+                    else if(points[i] !== 0)
                     {
                         points[i] = series.yaxis.c2p(series.yaxis.p2c(points[i]) - stackSpacing);
                     }

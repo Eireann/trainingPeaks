@@ -3,15 +3,27 @@
 
 .modalOverlay
 {
-    position:absolute;
-    z-index:100;
-    
-    top:0px;
-    bottom:0px;
-    left:0px;
-    right:0px;
 
     background-color:transparent;
+
+    &:not(.hidden)
+    {
+        position:absolute;
+        z-index:100;
+        
+        top:0px;
+        bottom:0px;
+        left:0px;
+        right:0px;
+    }
+
+
+    &.hidden
+    {
+        position:relative;
+        height: 0px;
+        width: 0px;
+    }
 }
 
 .modal
@@ -27,7 +39,7 @@
     max-width: calc(100% - 26px);
 
     .titleBar {
-        width:110%;
+        width:calc(100% + 10px);
         margin-left:-5px;
 
         h2.modaltitle {
@@ -46,7 +58,7 @@
         }
         
         #closeIcon, .closeIcon {
-            margin:8px 5px 0 10px;
+            margin:9px 9px 0 0;
         }
     }
 

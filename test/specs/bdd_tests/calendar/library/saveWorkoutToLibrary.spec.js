@@ -1,4 +1,4 @@
-requirejs(
+define(
     [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
@@ -38,7 +38,7 @@ function(
 
         it("Should accept draggables in the workout library", function()
         {
-            expect(ExerciseLibraryView.prototype.onWorkoutDropped).toBeDefined();
+            expect(ExerciseLibraryView.prototype.onWorkoutDropped).to.not.be.undefined;
         });
 
         describe("Should open and populate the save-workout-to-library confirmation view from a dropped workout", function()
@@ -46,7 +46,7 @@ function(
             var exerciseLibraryView;
             beforeEach(function()
             {
-                spyOn(ExerciseLibraryView.prototype, "initialize").andReturn(null);
+                sinon.stub(ExerciseLibraryView.prototype, "initialize").returns(null);
                 exerciseLibraryView = new ExerciseLibraryView({model: new TP.Model({selected: '321'})});
                 
                 exerciseLibraryView.onWorkoutDropped(null, {
@@ -62,12 +62,12 @@ function(
             
             it("Should attach a valid confirmation view", function()
             {
-                expect(exerciseLibraryView.saveToLibraryConfirmationView).toBeDefined();
+                expect(exerciseLibraryView.saveToLibraryConfirmationView).to.not.be.undefined;
             });
 
             it("Should send the correct model", function()
             {
-                expect(exerciseLibraryView.saveToLibraryConfirmationView.model).toBe(workout);
+                expect(exerciseLibraryView.saveToLibraryConfirmationView.model).to.equal(workout);
             });
 
         });

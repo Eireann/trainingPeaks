@@ -1,5 +1,4 @@
-﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [ 
     "jquery",
     "backbone",
@@ -16,10 +15,10 @@ function ($, Backbone, UserModel, UserControlsView)
 
         it("Loads as a module", function()
         {
-            expect(UserControlsView).toBeDefined();
+            expect(UserControlsView).to.not.be.undefined;
         });
 
-        xit("Renders the UserSettings view when the usernameLabel is clicked", function()
+        xit("Renders the UserSettings view when the usernameLabel is clicked (TODO: fix or remove)", function()
         {
             var view = new UserControlsView({ model: new UserModel() });
             view.$("#userName").trigger("click");

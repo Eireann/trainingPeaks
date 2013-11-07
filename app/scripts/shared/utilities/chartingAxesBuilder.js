@@ -13,27 +13,30 @@ function(
 
             _.each(series, function(series)
             {
-                if(series.yaxisInfo)
+                if(!series.yaxis)
                 {
-                    axes.push(series.yaxisInfo);
-                    series.yaxis = axes.length;
-                }
-                else if(series.units)
-                {
-                    if(!axesIndexByUnits[series.units])
+                    if(series.yaxisInfo)
                     {
-                        axes.push(ChartingAxesBuilder.makeAxisForUnits(series.units, options, series.yaxisExtraInfo));
-                        axesIndexByUnits[series.units] = axes.length;
+                        axes.push(series.yaxisInfo);
+                        series.yaxis = axes.length;
                     }
+                    else if(series.units)
+                    {
+                        if(!axesIndexByUnits[series.units])
+                        {
+                            axes.push(ChartingAxesBuilder.makeAxisForUnits(series.units, options, series.yaxisExtraInfo));
+                            axesIndexByUnits[series.units] = axes.length;
+                        }
 
-                    series.yaxis = axesIndexByUnits[series.units];
-                }
-                else
-                {
-                    axes.push({
-                        min: options.min
-                    });
-                    series.yaxis = axes.length;
+                        series.yaxis = axesIndexByUnits[series.units];
+                    }
+                    else
+                    {
+                        axes.push({
+                            min: options.min
+                        });
+                        series.yaxis = axes.length;
+                    }
                 }
             });
 

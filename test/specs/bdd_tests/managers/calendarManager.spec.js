@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
@@ -48,26 +47,26 @@ function(
             it("should update flags (by week), with success", function()
             {
 
-                expect(weeks[0].getState().get("isWaiting")).toBe(true);
-                expect(weeks[1].getState().get("isWaiting")).toBe(true);
+                expect(weeks[0].getState().get("isWaiting")).to.equal(true);
+                expect(weeks[1].getState().get("isWaiting")).to.equal(true);
 
                 testHelpers.resolveRequest("GET", "/workouts/2013-09-30", []);
                 testHelpers.resolveRequest("GET", "/timedmetrics/2013-09-30", []);
 
-                expect(weeks[0].getState().get("isWaiting")).toBe(false);
-                expect(weeks[1].getState().get("isWaiting")).toBe(true);
+                expect(weeks[0].getState().get("isWaiting")).to.equal(false);
+                expect(weeks[1].getState().get("isWaiting")).to.equal(true);
                 
-                expect(weeks[0].getState().get("isFetched")).toBe(true);
-                expect(weeks[1].getState().get("isFetched")).toBe(false);
+                expect(weeks[0].getState().get("isFetched")).to.equal(true);
+                expect(weeks[1].getState().get("isFetched")).to.equal(false);
 
                 testHelpers.resolveRequest("GET", "/workouts/2013-10-07", []);
                 testHelpers.resolveRequest("GET", "/timedmetrics/2013-10-07", []);
 
-                expect(weeks[0].getState().get("isWaiting")).toBe(false);
-                expect(weeks[1].getState().get("isWaiting")).toBe(false);
+                expect(weeks[0].getState().get("isWaiting")).to.equal(false);
+                expect(weeks[1].getState().get("isWaiting")).to.equal(false);
                 
-                expect(weeks[0].getState().get("isFetched")).toBe(true);
-                expect(weeks[1].getState().get("isFetched")).toBe(true);
+                expect(weeks[0].getState().get("isFetched")).to.equal(true);
+                expect(weeks[1].getState().get("isFetched")).to.equal(true);
 
             });
 
@@ -83,34 +82,34 @@ function(
                 testHelpers.clearRequests();
                 calendarManager.loadActivities("2013-09-30", "2013-10-07");
 
-                expect(testHelpers.hasRequest("GET", "/workouts/2013-09-30")).toBe(false);
-                expect(testHelpers.hasRequest("GET", "/timedmetrics/2013-09-30")).toBe(false);
-                expect(testHelpers.hasRequest("GET", "/workouts/2013-10-07")).toBe(false);
-                expect(testHelpers.hasRequest("GET", "/timedmetrics/2013-10-07")).toBe(false);
+                expect(testHelpers.hasRequest("GET", "/workouts/2013-09-30")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "/timedmetrics/2013-09-30")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "/workouts/2013-10-07")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "/timedmetrics/2013-10-07")).to.equal(false);
 
             });
 
             // Need to fix data manager to pass through failures
-            xit("should update flags (by week), with failure", function()
+            xit("should update flags (by week), with failure (TODO: fix data manager to handle request failures, then fix this test)", function()
             {
 
                 testHelpers.rejectRequest("GET", "/workouts/2013-09-30");
                 testHelpers.resolveRequest("GET", "/timedmetrics/2013-09-30", []);
 
-                expect(weeks[0].getState().get("isWaiting")).toBe(false);
-                expect(weeks[1].getState().get("isWaiting")).toBe(true);
+                expect(weeks[0].getState().get("isWaiting")).to.equal(false);
+                expect(weeks[1].getState().get("isWaiting")).to.equal(true);
 
-                expect(weeks[0].getState().get("isFailed")).toBe(true);
-                expect(weeks[1].getState().get("isFailed")).toBe(false);
+                expect(weeks[0].getState().get("isFailed")).to.equal(true);
+                expect(weeks[1].getState().get("isFailed")).to.equal(false);
 
                 testHelpers.resolveRequest("GET", "/workouts/2013-10-07", []);
                 testHelpers.rejectRequest("GET", "/timedmetrics/2013-10-07");
 
-                expect(weeks[0].getState().get("isWaiting")).toBe(false);
-                expect(weeks[1].getState().get("isWaiting")).toBe(false);
+                expect(weeks[0].getState().get("isWaiting")).to.equal(false);
+                expect(weeks[1].getState().get("isWaiting")).to.equal(false);
 
-                expect(weeks[0].getState().get("isFailed")).toBe(true);
-                expect(weeks[1].getState().get("isFailed")).toBe(true);
+                expect(weeks[0].getState().get("isFailed")).to.equal(true);
+                expect(weeks[1].getState().get("isFailed")).to.equal(true);
 
             });
 

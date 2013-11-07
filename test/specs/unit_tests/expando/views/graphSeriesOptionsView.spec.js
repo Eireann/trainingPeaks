@@ -1,4 +1,4 @@
-﻿requirejs(
+﻿define(
 [
     "jquery",
     "TP",
@@ -13,18 +13,11 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
         {
             var stateModel = new TP.Model();
     
-            var detailDataSpy = jasmine.createSpyObj("Workout Detail Data", ["disableChannel", "enableChannel", "cutChannel", "get"]);
-
-            var workoutModel = new TP.Model({
-                workoutTypeValueId: 1,
-                detailData: detailDataSpy
-            });
-
+            var detailDataSpy = createSpyObj("Workout Detail Data", ["disableChannel", "enableChannel", "cutChannel", "get"]);
 
             return new GraphSeriesOptionsMenuView({ 
-                stateModel: stateModel, 
-                model: workoutModel,
-                series: series
+                detailDataModel: detailDataSpy,
+                model: new TP.Model({ series: series, title: "My Series" })
             });
         }
 
@@ -34,24 +27,24 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             beforeEach(function()
             {
                 view = buildView("Cadence");
-                view.model.get("detailData").get.andReturn([]); // get("disabledDataChannels")
+                view.detailDataModel.get.returns([]); // get("disabledDataChannels")
                 view.render();
             });
 
             it("Should have a hide option", function()
             {
-                expect(view.$(".hideSeries").length).toBe(1);
+                expect(view.$(".hideSeries").length).to.equal(1);
             });
 
             it("Should not have a show option", function()
             {
-                expect(view.$(".showSeries").length).toBe(0);
+                expect(view.$(".showSeries").length).to.equal(0);
             });
 
             it("Should call disableChannel", function()
             {
                 view.$(".hideSeries").trigger("click");
-                expect(view.model.get("detailData").disableChannel).toHaveBeenCalledWith("Cadence");
+                expect(view.detailDataModel.disableChannel).to.have.been.calledWith("Cadence");
             });
         });
 
@@ -61,24 +54,24 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             beforeEach(function()
             {
                 view = buildView("Cadence");
-                view.model.get("detailData").get.andReturn(["Cadence"]); // get("disabledDataChannels")
+                view.detailDataModel.get.returns(["Cadence"]); // get("disabledDataChannels")
                 view.render();
             });
 
             it("Should have a show option", function()
             {
-                expect(view.$(".showSeries").length).toBe(1);
+                expect(view.$(".showSeries").length).to.equal(1);
             });
 
             it("Should not have a hide option", function()
             {
-                expect(view.$(".hideSeries").length).toBe(0);
+                expect(view.$(".hideSeries").length).to.equal(0);
             });
 
             it("Should call enableChannel", function()
             {
                 view.$(".showSeries").trigger("click");
-                expect(view.model.get("detailData").enableChannel).toHaveBeenCalledWith("Cadence");
+                expect(view.detailDataModel.enableChannel).to.have.been.calledWith("Cadence");
             });
         });
 
@@ -88,26 +81,26 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
             beforeEach(function()
             {
                 view = buildView("Cadence");
-                view.model.get("detailData").get.andReturn([]); // get("disabledDataChannels")
+                view.detailDataModel.get.returns([]); // get("disabledDataChannels")
                 view.render();
             });
 
             it("Should have a delete option", function()
             {
-                expect(view.$(".deleteSeries").length).toBe(1);
+                expect(view.$(".deleteSeries").length).to.equal(1);
             });
 
             it("Should confirm before cutting channel", function()
             {
                 view.$(".deleteSeries").trigger("click");
-                expect(view.model.get("detailData").cutChannel).not.toHaveBeenCalled();
+                expect(view.detailDataModel.cutChannel).to.not.have.been.called;
             });
 
             it("Should call cutChannel", function()
             {
                 view.$(".deleteSeries").trigger("click");
                 view.confirmationView.trigger("userConfirmed");
-                expect(view.model.get("detailData").cutChannel).toHaveBeenCalledWith("Cadence" );
+                expect(view.detailDataModel.cutChannel).to.have.been.calledWith("Cadence" );
             });
         });
 

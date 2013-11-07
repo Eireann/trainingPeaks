@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "testUtils/testHelpers",
     "TP",
@@ -24,7 +23,7 @@ function(testHelpers, TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
 
         it("should be loaded as a module", function()
         {
-            expect(CalendarWeekView).toBeDefined();
+            expect(CalendarWeekView).to.not.be.undefined;
         });
 
         it("should render days and summary", function()
@@ -40,9 +39,9 @@ function(testHelpers, TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
             var weekView = new CalendarWeekView({ model: weekModel });
             weekView.render();
 
-            expect(weekView.children.length).toEqual(2);
-            expect(weekView.children.findByIndex(0) instanceof CalendarDayView).toBe(true);
-            expect(weekView.children.findByIndex(1) instanceof WeekSummaryView).toBe(true);
+            expect(weekView.children.length).to.eql(2);
+            expect(weekView.children.findByIndex(0) instanceof CalendarDayView).to.equal(true);
+            expect(weekView.children.findByIndex(1) instanceof WeekSummaryView).to.equal(true);
         });
     });
 

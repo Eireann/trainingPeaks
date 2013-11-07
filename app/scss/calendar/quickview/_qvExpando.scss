@@ -273,11 +273,9 @@
                     padding-right:10px;
                 }
 
-                button
-                {
-                    &.hidden
-                    {
-                        visibility: hidden;
+                button {
+                    &.hidden {
+                        display: none;
                     }
 
                     font-size: $fontSizeSmall;
@@ -319,6 +317,10 @@
                     &.distance
                     {
                         margin-right: 12px;
+                    }
+
+                    &.cut {
+                        margin-left: 12px;
                     }
 
                     &.distance,
@@ -789,20 +791,20 @@
                     top: -1px;
                 }
 
-                span {
-                    cursor: pointer;
-                    // display: inline-block;
-                    @include calc(width, "100% - 20px");
-                    &:hover {
-                        color:$TPGrey4;
+                .actions
+                {
+                    .delete
+                    {
+                        margin: 5px 0 0;
+                        width: 13px;
                     }
                 }
 
-                .actions {
-                    margin:0 0 10px 0;
-                    @include buttons(0, 65px, $fontSizeSmall);
-                    padding-left:20px;
-                    padding-top:5px;
+                .lapDescription
+                {
+                    display: inline-block;
+                    width: calc(100% - 40px);
+                    vertical-align: top;
                 }
 
                 &.highlight {
@@ -818,14 +820,13 @@
                 }
 
                 .editLapName {
-                    display:inline-block;
-
-                    @include inputs(auto, 22px, $fontSizeSmall, $fontFamilyRegular);
+                    @include inputs(120px, 22px, $fontSizeSmall, $fontFamilyRegular);
                     input {
+                        display: inline-block;
                         text-align: left !important;
                         margin: 0 5px 0 0;
                         padding:0 5px;
-                        position:relative;
+                        position: relative;
                         z-index: 2;
                         font-size: 1em;
                     }
@@ -948,6 +949,31 @@
             display: block;
             z-index:2;
         }
+
+        .leaflet-control-container
+        {
+            position: absolute;
+            top: 16px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    .leaflet-control-container
+    {
+        position: absolute;
+        top: 16px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        .leaflet-top {
+
+            .leaflet-control {
+                margin-top:20px;
+            }
+        }
     }
 
     &.menuOpen
@@ -972,28 +998,37 @@
         border: 1px solid $TPGrey11;
     }
 
-    .epxandoPodHeader
+    .expandoPodHeader
     {
         position: absolute;
         top: 0;
         right: 0;
+        width: 100%;
+        height: 22px;
+        z-index: 500;
 
         display: none;
-
-        &:hover, .hover
-        {
-            display: block;
-            background: white;
-        }
-
     }
 
-    .expandoPodContent
+    &:hover .expandoPodHeader
     {
+        display: block;
+    }
+
+    &.expandoMapPod .expandoPodHeader {
+        background: rgba(0,0,0,0.4);
+
+        &:hover {
+            background: rgba(0,0,0,0.5);
+        }
+    }
+
+    .expandoPodContent {
         width: 100%;
         height: 100%;
 
         overflow: auto;
+        @include nice-scrollbar;
 
         &.invisible
         {
@@ -1125,7 +1160,13 @@
 
 
 .expandoGraphSeriesOptionsMenu {
-    .hoverBox.uparrow {
-        width: 75px;
-    }
+    min-width: 75px;
+}
+
+.addExpandoPod > .availablePods
+{
+    @include nice-scrollbar;
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 6px;
 }

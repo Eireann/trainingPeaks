@@ -22,25 +22,25 @@ function(TP, testHelpers)
         {
             var workout = new TP.Model();
             workout.set({ distance: 20, totalTime: 1, tssActual: 100, distancePlanned: 20, totalTimePlanned: 1, tssPlanned: 100 });
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("mi");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("mi");
 
             workout.set("distance", null);
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("");
 
             workout.set("totalTime", null);
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("TSS");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("TSS");
             
             workout.set("tssActual", null);
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("mi");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("mi");
 
             workout.set("distancePlanned", null);
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("");
 
             workout.set("totalTimePlanned", null);
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("TSS");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("TSS");
 
             workout.set("tssPlanned", null);
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("");
             
 
         });
@@ -49,7 +49,7 @@ function(TP, testHelpers)
         it("Should accept a JSON object", function ()
         {
             var workout = { distance: 20, totalTime: 1, tssActual: 100 };
-            expect(TP.utils.workout.keyStat.formatUnits(workout)).toBe("mi");
+            expect(TP.utils.workout.keyStat.formatUnits(workout)).to.equal("mi");
         });
         
         

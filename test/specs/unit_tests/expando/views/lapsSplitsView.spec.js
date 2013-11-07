@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "moment",
     "underscore",
@@ -40,28 +40,24 @@ function(moment, _, TP, LapsSplitsView, WorkoutModel, detailDataLapsStats)
 
 		it("Should be defined as a module", function()
 		{
-			expect(LapsSplitsView).toBeDefined();
+			expect(LapsSplitsView).to.not.be.undefined;
 		});
 
 		it("Should require an attached model", function()
 		{
-			expect(function() { new LapsSplitsView({}); }).toThrow();
+			expect(function() { new LapsSplitsView({}); }).to.throw();
 		});
 
 		describe("Rendering", function()
 		{
-			var model, view;
-			beforeEach(function()
-			{
-				model = buildWorkoutModel(allDataChannels);
-				view = new LapsSplitsView({model: model});
-				view.render();
-			});
 			it("Should have a table with table rows", function()
 			{
-				expect(view.$el.find('table').length).toBeTruthy();
-				expect(view.$el.find('th').length).toBeGreaterThan(10); // every workout has at least 10 fields
-				expect(view.$el.find('tr').length).toBe(7); // rows including header row
+				var model = buildWorkoutModel(allDataChannels);
+				var view = new LapsSplitsView({model: model});
+				view.render();
+				expect(view.$el.find('table').length).to.be.ok;
+				expect(view.$el.find('th').length).to.be.gt(10); // every workout has at least 10 fields
+				expect(view.$el.find('tr').length).to.equal(7); // rows including header row
 			});
 		});
 	});

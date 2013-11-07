@@ -1,5 +1,4 @@
-﻿// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "TP",
     "models/workoutModel",
@@ -20,7 +19,7 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             var view = new WorkoutCommentsEditorView({ model: workoutModel });
             view.render();
 
-            expect(view.$("#descriptionInput").val()).toEqual(descriptionText);
+            expect(view.$("#descriptionInput").val()).to.eql(descriptionText);
         });
 
         it("Should render post activity comments", function()
@@ -34,7 +33,7 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             var view = new WorkoutCommentsEditorView({ model: workoutModel });
             view.render();
 
-            expect(view.$el.html().indexOf(comments[0].comment)).not.toEqual(-1);
+            expect(view.$el.html().indexOf(comments[0].comment)).to.not.eql(-1);
         });
 
         it("Should see changes to description", function()
@@ -44,11 +43,11 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             view.render();
 
             var newDescription = "Here is a new description";
-            spyOn(workoutModel, "save");
+            sinon.stub(workoutModel, "save");
             view.$el.find("#descriptionInput").val(newDescription).blur();
 
-            expect(workoutModel.get("description")).toEqual(newDescription);
-            expect(workoutModel.save).toHaveBeenCalled();
+            expect(workoutModel.get("description")).to.eql(newDescription);
+            expect(workoutModel.save).to.have.been.called;
         });
 
         it("Should see new comments", function()
@@ -58,11 +57,11 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             view.render();
 
             var newComment = "Here is a new comment";
-            spyOn(workoutModel, "save");
+            sinon.stub(workoutModel, "save");
             view.$el.find("#postActivityCommentsInput").val(newComment).blur();
 
-            expect(workoutModel.get("newComment")).toEqual(newComment);
-            expect(workoutModel.save).toHaveBeenCalled();
+            expect(workoutModel.get("newComment")).to.eql(newComment);
+            expect(workoutModel.save).to.have.been.called;
         });
 
         it("Should make comment editable on click", function()
@@ -77,13 +76,13 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             var view = new WorkoutCommentsEditorView({ model: workoutModel });
             view.render();
 
-            expect(view.$el.html().indexOf(comments[0].comment)).not.toEqual(-1);
-            expect(view.$el.html().indexOf(comments[1].comment)).not.toEqual(-1);
-            expect(view.$el.find("textarea.commentBody").length).toEqual(0); 
+            expect(view.$el.html().indexOf(comments[0].comment)).to.not.eql(-1);
+            expect(view.$el.html().indexOf(comments[1].comment)).to.not.eql(-1);
+            expect(view.$el.find("textarea.commentBody").length).to.eql(0); 
 
             view.$el.find(".commentBody:first").trigger("mousedown");
 
-            expect(view.$el.find("textarea.commentBody").length).toEqual(1);
+            expect(view.$el.find("textarea.commentBody").length).to.eql(1);
         });
 
         it("Should save an edited comment on blur", function()
@@ -98,21 +97,21 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             var view = new WorkoutCommentsEditorView({ model: workoutModel });
             view.render();
 
-            spyOn(workoutModel, "save");
+            sinon.stub(workoutModel, "save");
 
             view.$el.find(".commentBody:first").trigger("mousedown");
 
             var editedComment = "an edited comment";
-            expect(view.$el.find("textarea.commentBody").length).toEqual(1);
+            expect(view.$el.find("textarea.commentBody").length).to.eql(1);
             view.$el.find("textarea.commentBody").val(editedComment);
             view.$el.find("textarea.commentBody").trigger("blur");
 
             // save it
-            expect(workoutModel.getPostActivityComments().models[0].get("comment")).toEqual(editedComment);
-            expect(workoutModel.save).toHaveBeenCalled();
+            expect(workoutModel.getPostActivityComments().models[0].get("comment")).to.eql(editedComment);
+            expect(workoutModel.save).to.have.been.called;
 
             // hide the input
-            expect(view.$el.find("textarea.commentBody").length).toEqual(0);
+            expect(view.$el.find("textarea.commentBody").length).to.eql(0);
         });
     });
 });

@@ -1,4 +1,4 @@
-requirejs([
+define([
     "jquery",
     "backbone",
     "TP", 
@@ -46,11 +46,11 @@ function(
             {
                 var deferred = dataManager.loadModel(FakeModel);
                 var fakeModel = deferred.model;
-                expect(deferred.state()).toBe("pending");
+                expect(deferred.state()).to.equal("pending");
                 fakeModel.resolve({ valueOne: "hello", valueTwo: "world" });
-                expect(deferred.state()).toBe("resolved");
-                expect(fakeModel.get("valueOne")).toBe("hello");
-                expect(fakeModel.get("valueTwo")).toBe("world");
+                expect(deferred.state()).to.equal("resolved");
+                expect(fakeModel.get("valueOne")).to.equal("hello");
+                expect(fakeModel.get("valueTwo")).to.equal("world");
             });
 
             it("Should return a common model instance", function()
@@ -60,14 +60,14 @@ function(
                 var fakeModelOne = deferredOne.model;
                 var fakeModelTwo = deferredTwo.model;
 
-                expect(fakeModelOne).toEqual(fakeModelTwo);
+                expect(fakeModelOne).to.eql(fakeModelTwo);
 
                 fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
 
-                expect(deferredOne.state()).toBe("resolved");
-                expect(deferredTwo.state()).toBe("resolved");
-                expect(fakeModelTwo.get("valueOne")).toBe("hello");
-                expect(fakeModelTwo.get("valueTwo")).toBe("world");
+                expect(deferredOne.state()).to.equal("resolved");
+                expect(deferredTwo.state()).to.equal("resolved");
+                expect(fakeModelTwo.get("valueOne")).to.equal("hello");
+                expect(fakeModelTwo.get("valueTwo")).to.equal("world");
             });
 
             it("Should resolve new request with previously resolved data", function()
@@ -75,15 +75,15 @@ function(
                 var deferredOne = dataManager.loadModel(FakeModel);
                 var fakeModelOne = deferredOne.model;
 
-                expect(deferredOne.state()).toBe("pending");
+                expect(deferredOne.state()).to.equal("pending");
                 fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
-                expect(deferredOne.state()).toBe("resolved");
+                expect(deferredOne.state()).to.equal("resolved");
 
                 var deferredTwo = dataManager.loadModel(FakeModel);
                 var fakeModelTwo = deferredTwo.model;
-                expect(deferredTwo.state()).toBe("resolved");
-                expect(fakeModelTwo.get("valueOne")).toBe("hello");
-                expect(fakeModelTwo.get("valueTwo")).toBe("world");
+                expect(deferredTwo.state()).to.equal("resolved");
+                expect(fakeModelTwo.get("valueOne")).to.equal("hello");
+                expect(fakeModelTwo.get("valueTwo")).to.equal("world");
             });
 
         });
@@ -94,31 +94,31 @@ function(
             it("Should reset when a matching model is saved", function()
             {
                 var saveModelUrl = "/fitness/v1/resetme/";
-                var resetSpy = jasmine.createSpy();
+                var resetSpy = sinon.stub();
                 dataManager.on("reset", resetSpy);
                 dataManager.reset(saveModelUrl); 
 
-                expect(resetSpy).toHaveBeenCalled();
+                expect(resetSpy).to.have.been.called;
             });
 
             it("Should not reset when a non matching model is saved", function()
             {
                 var saveModelUrl = "/fitness/v1/idontmatch/";
-                var resetSpy = jasmine.createSpy();
+                var resetSpy = sinon.stub();
                 dataManager.on("reset", resetSpy);
                 dataManager.reset(saveModelUrl);
                 
-                expect(resetSpy).not.toHaveBeenCalled();
+                expect(resetSpy).to.not.have.been.called;
             });
 
             it("Should not reset when an ignoreable model is saved", function()
             {
                 var saveModelUrl = "/fitness/v1/resetme/ignoreme/";
-                var resetSpy = jasmine.createSpy();
+                var resetSpy = sinon.stub();
                 dataManager.on("reset", resetSpy);
                 dataManager.reset(saveModelUrl);
                 
-                expect(resetSpy).not.toHaveBeenCalled();
+                expect(resetSpy).to.not.have.been.called;
             });
 
         });
@@ -128,26 +128,26 @@ function(
             it("Should resolve a request when the source request resolves", function()
             {
                 var ajaxDeferred = new $.Deferred();
-                spyOn(Backbone, "ajax").andCallFake(function(options){
+                sinon.stub(Backbone, "ajax", function(options){
                     options.deferred = ajaxDeferred;
                     return options.deferred;
                 });
 
                 var resolvedData = null;
                 var dataManagerDeferred = dataManager.fetchAjax("requestSignature", { url: "requestSignature", type: "GET", data: "" });
-                expect(dataManagerDeferred.state()).toBe("pending");
+                expect(dataManagerDeferred.state()).to.equal("pending");
 
                 dataManagerDeferred.done(function(data){ resolvedData = data; });
 
                 var results = { valueOne: "hello", valueTwo: "world" };
                 ajaxDeferred.resolve(results);
-                expect(dataManagerDeferred.state()).toBe("resolved");
-                expect(resolvedData).toBe(results);
+                expect(dataManagerDeferred.state()).to.equal("resolved");
+                expect(resolvedData).to.equal(results);
             });
 
             it("Should resolve multiple pending requests with the same data", function()
             {
-                spyOn(Backbone, "ajax").andCallFake(function(options){
+                sinon.stub(Backbone, "ajax", function(options){
                     options.deferred = new $.Deferred();
                     return options.deferred;
                 });
@@ -156,8 +156,8 @@ function(
                 var optionsTwo = { url: "requestSignature", type: "POST", data: "nothing" };
                 var dataManagerDeferredOne = dataManager.fetchAjax("requestSignature", optionsOne);
                 var dataManagerDeferredTwo = dataManager.fetchAjax("requestSignature", optionsTwo);
-                expect(dataManagerDeferredOne.state()).toBe("pending");
-                expect(dataManagerDeferredTwo.state()).toBe("pending");
+                expect(dataManagerDeferredOne.state()).to.equal("pending");
+                expect(dataManagerDeferredTwo.state()).to.equal("pending");
 
                 dataManagerDeferredOne.done(function(data){ optionsOne.resolvedData = data; });
                 dataManagerDeferredTwo.done(function(data){ optionsTwo.resolvedData = data; });
@@ -165,35 +165,35 @@ function(
                 var results = { valueOne: "hello", valueTwo: "world" };
 
                 optionsOne.deferred.resolve(results);
-                expect(dataManagerDeferredOne.state()).toBe("resolved");
-                expect(optionsOne.resolvedData).toBe(results);
+                expect(dataManagerDeferredOne.state()).to.equal("resolved");
+                expect(optionsOne.resolvedData).to.equal(results);
 
-                expect(dataManagerDeferredTwo.state()).toBe("resolved");
-                expect(optionsTwo.resolvedData).toBe(results);
+                expect(dataManagerDeferredTwo.state()).to.equal("resolved");
+                expect(optionsTwo.resolvedData).to.equal(results);
             });
 
             it("Should resolve new request with previously resolved data", function()
             {
-                spyOn(Backbone, "ajax").andCallFake(function(options){
+                sinon.stub(Backbone, "ajax", function(options){
                     options.deferred = new $.Deferred();
                     return options.deferred;
                 });
 
                 var optionsOne = { url: "requestSignature", type: "GET", data: "" };
                 var dataManagerDeferredOne = dataManager.fetchAjax("requestSignature", optionsOne);
-                expect(dataManagerDeferredOne.state()).toBe("pending");
+                expect(dataManagerDeferredOne.state()).to.equal("pending");
                 dataManagerDeferredOne.done(function(data){ optionsOne.resolvedData = data; });
 
                 var results = { valueOne: "hello", valueTwo: "world" };
                 optionsOne.deferred.resolve(results);
-                expect(dataManagerDeferredOne.state()).toBe("resolved");
-                expect(optionsOne.resolvedData).toBe(results);
+                expect(dataManagerDeferredOne.state()).to.equal("resolved");
+                expect(optionsOne.resolvedData).to.equal(results);
 
                 var optionsTwo = { url: "requestSignature", type: "POST", data: "nothing" };
                 var dataManagerDeferredTwo = dataManager.fetchAjax("requestSignature", optionsTwo);
-                expect(dataManagerDeferredTwo.state()).toBe("resolved");
+                expect(dataManagerDeferredTwo.state()).to.equal("resolved");
                 dataManagerDeferredTwo.done(function(data){ optionsTwo.resolvedData = data; });
-                expect(optionsTwo.resolvedData).toBe(results);
+                expect(optionsTwo.resolvedData).to.equal(results);
 
             });
         });

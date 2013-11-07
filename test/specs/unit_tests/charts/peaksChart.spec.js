@@ -1,5 +1,4 @@
-﻿// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "underscore",
     "TP",
@@ -41,14 +40,14 @@ function(
     {
         it("Should have a valid constructor", function ()
         {
-            expect(PeaksChartView).toBeDefined();
+            expect(PeaksChartView).to.not.be.undefined;
         });
 
         it("Should check for valid initialization parameters", function ()
         {
-            expect(function() { new PeaksChartView({ model: new TP.Model()  }); }).toThrow("PeaksChartView requires a chartColor object at construction time");
-            expect(function() { new PeaksChartView({ model: new TP.Model(), chartColor: {} }); }).toThrow("PeaksChartView requires a toolTipBuilder callback at construction time");
-            expect(function() { new PeaksChartView({ model: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).not.toThrow();
+            expect(function() { new PeaksChartView({ model: new TP.Model()  }); }).to.throw("PeaksChartView requires a chartColor object at construction time");
+            expect(function() { new PeaksChartView({ model: new TP.Model(), chartColor: {} }); }).to.throw("PeaksChartView requires a toolTipBuilder callback at construction time");
+            expect(function() { new PeaksChartView({ model: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).to.not.throw();
         });
 
         describe("Build Chart Points", function()
@@ -62,15 +61,15 @@ function(
 
             it("Should build chart points", function()
             {
-                expect(typeof PeaksChartView.prototype.buildPeaksFlotPoints).toBe("function");
-                expect(buildChartPoints).not.toThrow();
+                expect(typeof PeaksChartView.prototype.buildPeaksFlotPoints).to.equal("function");
+                expect(buildChartPoints).to.not.throw();
             });
 
             it("Should contain the correct number of points", function()
             {
                 var peaks = buildPeaks();
                 var chartPoints = buildChartPoints();
-                expect(chartPoints.length).toEqual(peaks.length);
+                expect(chartPoints.length).to.eql(peaks.length);
             });
 
             it("Should contain the correct peak value for each point", function()
@@ -80,10 +79,10 @@ function(
                 _.each(peaks, function(peak, index)
                 {
                     var chartPoint = chartPoints[index];
-                    expect(chartPoint).toBeDefined();
-                    expect(chartPoint.length).toEqual(2);
-                    expect(chartPoint[1]).toEqual(peak.value);
-                    expect(chartPoint[0]).toEqual(index);
+                    expect(chartPoint).to.not.be.undefined;
+                    expect(chartPoint.length).to.eql(2);
+                    expect(chartPoint[1]).to.eql(peak.value);
+                    expect(chartPoint[0]).to.eql(index);
                 }, this);
             });
 
@@ -94,8 +93,8 @@ function(
                 _.each(peaks, function(peak, index)
                 {
                     var chartPoint = chartPoints[index];
-                    expect(peak.value).toBe(null);
-                    expect(chartPoint[1]).toEqual(null);
+                    expect(peak.value).to.equal(null);
+                    expect(chartPoint[1]).to.eql(null);
                 }, this);
             });
 
@@ -106,8 +105,8 @@ function(
                 _.each(peaks, function(peak, index)
                 {
                     var chartPoint = chartPoints[index];
-                    expect(peak.value).toEqual(0);
-                    expect(chartPoint[1]).toEqual(null);
+                    expect(peak.value).to.eql(0);
+                    expect(chartPoint[1]).to.eql(null);
                 }, this);
             });
         });
@@ -122,27 +121,27 @@ function(
 
             it("Should return a one-item array", function()
             {
-                expect(dataSeries.length).toBe(1);
+                expect(dataSeries.length).to.equal(1);
             });
 
             it("Should contain the chart points", function()
             {
-                expect(dataSeries[0].data).toBeDefined();
-                expect(dataSeries[0].data).toBe(chartPoints);
+                expect(dataSeries[0].data).to.not.be.undefined;
+                expect(dataSeries[0].data).to.equal(chartPoints);
             });
 
             it("Should contain a 'lines' definition, to create a bar chart", function()
             {
-                expect(dataSeries[0].lines).toBeDefined();
+                expect(dataSeries[0].lines).to.not.be.undefined;
             });
 
             it("Should use the specified color gradient", function()
             {
                 var lines = dataSeries[0].lines;
-                expect(lines.fillColor).toBeDefined();
-                expect(lines.fillColor.colors).toBeDefined();
-                expect(lines.fillColor.colors).toContain(chartColor.light);
-                expect(lines.fillColor.colors).toContain(chartColor.dark);
+                expect(lines.fillColor).to.not.be.undefined;
+                expect(lines.fillColor.colors).to.not.be.undefined;
+                expect(lines.fillColor.colors).to.contain(chartColor.light);
+                expect(lines.fillColor.colors).to.contain(chartColor.dark);
             });
         });
 
@@ -152,8 +151,8 @@ function(
 
             it("Should enable line graph display", function()
             {
-                expect(chartOptions.series.lines).toBeDefined();
-                expect(chartOptions.series.lines.show).toBe(true);
+                expect(chartOptions.series.lines).to.not.be.undefined;
+                expect(chartOptions.series.lines.show).to.equal(true);
             });
         });
 

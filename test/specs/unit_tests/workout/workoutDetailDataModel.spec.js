@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "models/workoutDetailData"
 ],
@@ -13,21 +13,21 @@ function(WorkoutDetailDataModel)
 			it("Should begin with zero available channels", function()
 			{
 				var model = new WorkoutDetailDataModel();
-				expect(model.has("availableDataChannels")).toBeTruthy();
-				expect(model.get("availableDataChannels").length).toBe(0);
+				expect(model.has("availableDataChannels")).to.be.ok;
+				expect(model.get("availableDataChannels").length).to.equal(0);
 			});
 
 			it("Should begin with zero disabled channels", function()
 			{
 				var model = new WorkoutDetailDataModel();
-				expect(model.has("disabledDataChannels")).toBeTruthy();
-				expect(model.get("disabledDataChannels").length).toBe(0);
+				expect(model.has("disabledDataChannels")).to.be.ok;
+				expect(model.get("disabledDataChannels").length).to.equal(0);
 			});
 
 			it("Should begin with null channel cuts", function()
 			{
 				var model = new WorkoutDetailDataModel();
-				expect(model.has("channelCuts")).toBeFalsy();
+				expect(model.has("channelCuts")).to.not.be.ok;
 			});
 
 			it("Should read available channels from flatSamples.channelMask", function()
@@ -38,8 +38,8 @@ function(WorkoutDetailDataModel)
 				}});
 				
 
-				expect(model.has("availableDataChannels")).toBeTruthy();
-				expect(model.get("availableDataChannels").length).toBe(3);
+				expect(model.has("availableDataChannels")).to.be.ok;
+				expect(model.get("availableDataChannels").length).to.equal(3);
 			});
 
 			describe("Disable Channel", function()
@@ -55,12 +55,12 @@ function(WorkoutDetailDataModel)
 
 				it("Should add the channel to the disabledDataChannels list", function()
 				{
-					expect(_.contains(model.get("disabledDataChannels"), "Speed")).toBeTruthy();
+					expect(_.contains(model.get("disabledDataChannels"), "Speed")).to.be.ok;
 				});
 
 				it("Should not remove the channel from the availableDataChannels list", function()
 				{
-					expect(_.contains(model.get("availableDataChannels"), "Speed")).toBeTruthy();
+					expect(_.contains(model.get("availableDataChannels"), "Speed")).to.be.ok;
 				});
 
 			});
@@ -79,12 +79,12 @@ function(WorkoutDetailDataModel)
 
 				it("Should remove the channel from the disabledDataChannels list", function()
 				{
-					expect(_.contains(model.get("disabledDataChannels"), "Speed")).toBeFalsy();
+					expect(_.contains(model.get("disabledDataChannels"), "Speed")).to.not.be.ok;
 				});
 
 				it("Should not remove the channel from the availableDataChannels list", function()
 				{
-					expect(_.contains(model.get("availableDataChannels"), "Speed")).toBeTruthy();
+					expect(_.contains(model.get("availableDataChannels"), "Speed")).to.be.ok;
 				});
 			});
 
@@ -106,13 +106,13 @@ function(WorkoutDetailDataModel)
 
 				it("Should remove the channel from the availableDataChannels list", function()
 				{
-					expect(_.contains(model.get("availableDataChannels"), "Speed")).toBeFalsy();
+					expect(_.contains(model.get("availableDataChannels"), "Speed")).to.not.be.ok;
 				});
 
 				it("Should have channelCuts", function()
 				{
-					expect(model.has("channelCuts")).toBeTruthy();
-					expect(model.get("channelCuts").length).toBe(1);
+					expect(model.has("channelCuts")).to.be.ok;
+					expect(model.get("channelCuts").length).to.equal(1);
 				});
 
 			});

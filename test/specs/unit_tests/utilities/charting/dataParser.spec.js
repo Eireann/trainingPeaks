@@ -1,7 +1,7 @@
-﻿requirejs(
+﻿define(
 [
     "utilities/charting/dataParser",
-    "../test/specs/unit_tests/utilities/charting/dataParserTestData"
+    "./dataParserTestData"
 ],
 function(DataParser, testData)
 {
@@ -10,13 +10,13 @@ function(DataParser, testData)
 
         it("has a constructor", function ()
         {
-            expect(typeof DataParser).toBe("function");
-            expect(new DataParser()).toBeDefined();
-            expect(function() { new DataParser(); }).not.toThrow();
+            expect(typeof DataParser).to.equal("function");
+            expect(new DataParser()).to.not.be.undefined;
+            expect(function() { new DataParser(); }).to.not.throw();
 
             var dp = new DataParser();
 
-            expect(dp.flatSamples).toBe(null);
+            expect(dp.flatSamples).to.equal(null);
         });
 
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
@@ -40,25 +40,25 @@ function(DataParser, testData)
             
             it("has a loadData method", function()
             {
-                expect(DataParser.prototype.loadData).toBeDefined();
+                expect(DataParser.prototype.loadData).to.not.be.undefined;
                 expect(function()
                 {
                     dp.loadData(testData);
-                }).not.toThrow();
+                }).to.not.throw();
             });
 
             it("has a getSeries method which returns the entire series data", function ()
             {
                 var series = dp.getSeries();
 
-                expect(series.length).toBe(expectedLength);
+                expect(series.length).to.equal(expectedLength);
                 _.each(series, function(channel)
                 {
-                    expect(channel.data.length).toBe(testData.samples.length);
-                    expect(channel.color).toBeDefined();
-                    expect(channel.label).toBeDefined();
-                    expect(channel.lines).toBeDefined();
-                    expect(channel.shadowSize).toBeDefined();
+                    expect(channel.data.length).to.equal(testData.samples.length);
+                    expect(channel.color).to.not.be.undefined;
+                    expect(channel.label).to.not.be.undefined;
+                    expect(channel.lines).to.not.be.undefined;
+                    expect(channel.shadowSize).to.not.be.undefined;
                 });
             });
 
@@ -66,71 +66,71 @@ function(DataParser, testData)
             {
                 var slice = dp.getSeries(0, 3600000);
 
-                expect(slice.length).toBe(expectedLength);
+                expect(slice.length).to.equal(expectedLength);
                 _.each(slice, function (channel)
                 {
-                    expect(channel.color).toBeDefined();
-                    expect(channel.label).toBeDefined();
-                    expect(channel.lines).toBeDefined();
-                    expect(channel.shadowSize).toBeDefined();
+                    expect(channel.color).to.not.be.undefined;
+                    expect(channel.label).to.not.be.undefined;
+                    expect(channel.lines).to.not.be.undefined;
+                    expect(channel.shadowSize).to.not.be.undefined;
                 });
 
                 slice = dp.getSeries(3600000, 4000000);
-                expect(slice.length).toBe(expectedLength);
+                expect(slice.length).to.equal(expectedLength);
                 _.each(slice, function (channel) {
-                    expect(channel.color).toBeDefined();
-                    expect(channel.label).toBeDefined();
-                    expect(channel.lines).toBeDefined();
-                    expect(channel.shadowSize).toBeDefined();
+                    expect(channel.color).to.not.be.undefined;
+                    expect(channel.label).to.not.be.undefined;
+                    expect(channel.lines).to.not.be.undefined;
+                    expect(channel.shadowSize).to.not.be.undefined;
                 });
             });
 
             it("returns elevation info for the entire series", function()
             {
                 var info = dp.getElevationInfo();
-                expect(info.min).toBeDefined();
-                expect(info.isAllNegative).toBeDefined();
-                expect(info.min).toBe(minElevation);
-                expect(info.isAllNegative).toBe(false);
+                expect(info.min).to.not.be.undefined;
+                expect(info.isAllNegative).to.not.be.undefined;
+                expect(info.min).to.equal(minElevation);
+                expect(info.isAllNegative).to.equal(false);
             });
 
             it("returns elevation info for a given range based on x1 and x2 milliseconds offset into the series", function()
             {
                 var info = dp.getElevationInfo(0, 3600000);
-                expect(info.min).toBeDefined();
-                expect(info.isAllNegative).toBeDefined();
-                expect(info.min).toBe(minElevationOnRange);
-                expect(info.isAllNegative).toBe(false);
+                expect(info.min).to.not.be.undefined;
+                expect(info.isAllNegative).to.not.be.undefined;
+                expect(info.min).to.equal(minElevationOnRange);
+                expect(info.isAllNegative).to.equal(false);
             });
 
             it("returns a latLong array for the entire series", function()
             {
                 var latLonArray = dp.getLatLonArray();
-                expect(latLonArray).not.toBe(null);
-                expect(latLonArray.length).toBe(expectedLatLonLength);
+                expect(latLonArray).to.not.equal(null);
+                expect(latLonArray.length).to.equal(expectedLatLonLength);
             });
 
             it("generates yAxes for the entire series", function()
             {
                 var yaxes = dp.getYAxes(dp.getSeries());
-                expect(yaxes).not.toBe(null);
+                expect(yaxes).to.not.equal(null);
                 _.each(yaxes, function(yaxis)
                 {
-                    expect(yaxis.show).toBe(true);
-                    expect(yaxis.min).toBeDefined();
-                    expect(yaxis.label).toBeDefined();
+                    expect(yaxis.show).to.equal(true);
+                    expect(yaxis.min).to.not.be.undefined;
+                    expect(yaxis.label).to.not.be.undefined;
                     
                     if (yaxis.label === "Elevation")
-                        expect(yaxis.min).toBe(minElevation);
+                        expect(yaxis.min).to.equal(minElevation);
                     else if(yaxis.label === "Temperature")
-                        expect(yaxis.min).toBe(minTemperature);
+                        expect(yaxis.min).to.equal(minTemperature);
                     else
-                        expect(yaxis.min).toBe(0);
+                        expect(yaxis.min).to.equal(0);
 
-                    expect(yaxis.position).toBeDefined();
-                    expect(yaxis.color).toBeDefined();
-                    expect(yaxis.tickColor).toBeDefined();
-                    expect(yaxis.font).toBeDefined();
+                    expect(yaxis.position).to.not.be.undefined;
+                    expect(yaxis.color).to.not.be.undefined;
+                    expect(yaxis.tickColor).to.not.be.undefined;
+                    expect(yaxis.font).to.not.be.undefined;
                 });
             });
 
@@ -138,24 +138,24 @@ function(DataParser, testData)
             {
                 var yaxes = dp.getYAxes(dp.getSeries(3600000, 4000000));
                 
-                expect(yaxes).not.toBe(null);
+                expect(yaxes).to.not.equal(null);
                 _.each(yaxes, function (yaxis)
                 {
-                    expect(yaxis.show).toBe(true);
-                    expect(yaxis.min).toBeDefined();
-                    expect(yaxis.label).toBeDefined();
+                    expect(yaxis.show).to.equal(true);
+                    expect(yaxis.min).to.not.be.undefined;
+                    expect(yaxis.label).to.not.be.undefined;
 
                     if (yaxis.label === "Elevation")
-                        expect(yaxis.min).toBe(minElevation);
+                        expect(yaxis.min).to.equal(minElevation);
                     else if(yaxis.label === "Temperature")
-                        expect(yaxis.min).toBe(minTemperature);
+                        expect(yaxis.min).to.equal(minTemperature);
                     else
-                        expect(yaxis.min).toBe(0);
+                        expect(yaxis.min).to.equal(0);
 
-                    expect(yaxis.position).toBeDefined();
-                    expect(yaxis.color).toBeDefined();
-                    expect(yaxis.tickColor).toBeDefined();
-                    expect(yaxis.font).toBeDefined();
+                    expect(yaxis.position).to.not.be.undefined;
+                    expect(yaxis.color).to.not.be.undefined;
+                    expect(yaxis.tickColor).to.not.be.undefined;
+                    expect(yaxis.font).to.not.be.undefined;
                 });
             });
         });

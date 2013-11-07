@@ -23,7 +23,10 @@ define(
     "utilities/rollbarManager",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
-    "scripts/plugins/marionette.faderegion"
+    "scripts/plugins/marionette.faderegion",
+    "flot/jquery.flot",
+    "flot/jquery.flot.crosshair",
+    "flot/jquery.flot.resize",
 ],
 function(
     _,
@@ -49,29 +52,15 @@ function(
     RollbarManager,
     FeatureAuthorizer,
     notAllowedForAlphaTemplate,
-    fadeRegion)
+    fadeRegion,
+    flot,
+    flotCrosshair,
+    flotResize
+)
 {
 
     var MarsApp = TP.Application.extend(
     {
-        addAllShutdowns: function()
-        {
-
-            // close all of the controllers, which should close each of their corresponding layouts and views
-            this.addShutdown(function()
-            {
-                _.each(_.keys(this.controllers), function(controllerName)
-                {
-                    this.controllers[controllerName].close();
-                }, this);
-            });
-
-            // done
-            this.addShutdown(function()
-            {
-                this.started = false;
-            });
-        },
 
         setApiConfig: function()
         {
@@ -113,18 +102,18 @@ function(
         historyEnabled: true,
 
 
-        constructor: function()
+        constructor: function(options)
         {
+
+            if(!options || !options.$body)
+            {
+                throw new Error("TheMarsApp constructor requires a body element");
+            }
 
             TP.Application.apply(this, arguments);
 
-            window.theMarsApp = this;
-            if (typeof global !== 'undefined')
-            {
-                global.theMarsApp = this;
-            }
+            this.$body = options.$body;
 
-            this.addAllShutdowns();
             this.setApiConfig();
 
             this.off();
@@ -235,7 +224,7 @@ function(
             {
                 var dataManagerOptions = {
                     identityMap: new IdentityMap(),
-                    resetPatterns: [/athletes\/[0-9]+\/workouts/]
+                    resetPatterns: [/athletes\/\d+\/workouts/, /athletes\/\d+\/timedmetrics/]
                 };
 
                 this.dataManager = new DataManager(dataManagerOptions);
@@ -411,10 +400,6 @@ function(
                 DragAndDropFileUploadWidget.initialize(this.getBodyElement(), this.getBodyElement().find("#messages"));
             });
 
-            this.addInitializer(function()
-            {
-                this.started = true;
-            });
 
             // filter non-numeric input
             this.addInitializer(function ()
@@ -466,6 +451,24 @@ function(
                     }
                 );
             });
+
+            // close the top most modal view on escape
+            this.addInitializer(function ()
+            {
+                $(document).on("keyup.closeModalOnEscape", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(charCode === 27)
+                    {
+                        if(!evt.isDefaultPrevented())
+                        {
+                            $(".modalOverlay:last").trigger("click");
+                        }
+                    }
+                }
+                );
+            });
+
         },
 
         touchEnabled: false,
@@ -530,16 +533,9 @@ function(
 
         getBodyElement: function()
         {
-            if (!this.$body)
-                this.$body = $("body");
-
             return this.$body;
-        },
-
-        reloadApp: function()
-        {
-            window.location.reload();
         }
+
     });
 
     return MarsApp;

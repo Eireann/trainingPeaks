@@ -92,7 +92,7 @@ function(
                                                           searchText,
                                                           ["name"],
                                                           {
-                                                            featureAuthorizer: theMarsApp.featureAuthorizer
+                                                            featureAuthorizer: this.options && this.options.featureAuthorizer ? this.options.featureAuthorizer : theMarsApp.featureAuthorizer
                                                           }
                                                           );
             this._renderChildren();

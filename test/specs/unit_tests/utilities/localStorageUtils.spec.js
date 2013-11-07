@@ -1,11 +1,9 @@
-﻿requirejs([
+﻿define([
           "underscore",
-          "localStorage",
           "utilities/localStorageUtils"
           ],
 function(
          _,
-         localStorage,
          localStorageUtils
          )
 {
@@ -25,7 +23,7 @@ function(
 
             it("Should return null for unset keys", function()
             {
-                expect(localStorageUtils.getItem("unknownKey")).toBeNull();
+                expect(localStorageUtils.getItem("unknownKey")).to.be.null;
             });
 
             it("Should add a localStorageUtils_ prefix", function()
@@ -33,9 +31,9 @@ function(
                 var key = "testPrefix";
                 var value = "something";
                 localStorageUtils.setItem(key, value);
-                expect(localStorageUtils.getItem(key)).toEqual(value);
-                expect(localStorage.getItem(prefix + key)).toEqual(value);
-                expect(localStorage.getItem(key)).toEqual(null);               
+                expect(localStorageUtils.getItem(key)).to.eql(value);
+                expect(localStorage.getItem(prefix + key)).to.eql(value);
+                expect(localStorage.getItem(key)).to.eql(null);               
             });
 
             it("Should set and get a string value", function()
@@ -43,8 +41,8 @@ function(
                 var key = "testString";
                 var value = "i am a string";
                 localStorageUtils.setItem(key, value);
-                expect(localStorage.getItem(prefix + key)).toEqual(value);
-                expect(localStorageUtils.getItem(key)).toEqual(value);
+                expect(localStorage.getItem(prefix + key)).to.eql(value);
+                expect(localStorageUtils.getItem(key)).to.eql(value);
             });
 
             it("Should set an get object value", function()
@@ -52,8 +50,8 @@ function(
                 var key = "testItem";
                 var value = { name: "some object", attribute: "something" };
                 localStorageUtils.setItem(key, value);
-                expect(localStorage.getItem(prefix + key)).toEqual(JSON.stringify(value));
-                expect(localStorageUtils.getItem(key)).toEqual(value);
+                expect(localStorage.getItem(prefix + key)).to.eql(JSON.stringify(value));
+                expect(localStorageUtils.getItem(key)).to.eql(value);
             });
 
             it("Should overwrite existing values", function()
@@ -61,10 +59,10 @@ function(
                 var key = "testString";
                 var value = "i am a string";
                 localStorageUtils.setItem(key, value);
-                expect(localStorageUtils.getItem(key)).toEqual(value);
+                expect(localStorageUtils.getItem(key)).to.eql(value);
 
                 localStorageUtils.setItem(key, "New Value");
-                expect(localStorageUtils.getItem(key)).toEqual("New Value");
+                expect(localStorageUtils.getItem(key)).to.eql("New Value");
             });
 
             it("Should clear cache and try again on QuotaExceededError", function()
@@ -72,7 +70,7 @@ function(
                 
                 localStorage.setItem(prefix + "quota", "something old");
                 var doThrow = true;
-                spyOn(localStorage, "setItem").andCallFake(function(key, value)
+                sinon.stub(localStorage, "setItem", function(key, value)
                 {
                     if(doThrow)
                     {
@@ -86,17 +84,17 @@ function(
                     localStorage[key] = value;
                 });
 
-                spyOn(localStorage, "removeItem").andCallThrough();
+                sinon.spy(localStorage, "removeItem");
                 localStorageUtils.setItem("quota", "will be exceeded");
-                expect(localStorageUtils.getItem("quota")).toEqual("will be exceeded");
-                expect(localStorage.setItem.calls.length).toEqual(2);
-                expect(localStorage.removeItem).toHaveBeenCalledWith(prefix + "quota");
+                expect(localStorageUtils.getItem("quota")).to.eql("will be exceeded");
+                expect(localStorage.setItem.callCount).to.eql(2);
+                expect(localStorage.removeItem).to.have.been.calledWith(prefix + "quota");
             });
 
             it("Should fail silently on repeated QuotaExceededError, in case user's local storage is disabled", function()
             {
                 
-                spyOn(localStorage, "setItem").andCallFake(function(key, value)
+                sinon.stub(localStorage, "setItem", function(key, value)
                 {
                     var error = new Error("Error: An attempt was made to add something to storage that exceeded the quota");
                     error.code = 22;
@@ -109,14 +107,14 @@ function(
                     localStorageUtils.setItem("quota", "will be exceeded");
                 }
 
-                expect(setItem).not.toThrow();
-                expect(localStorageUtils.getItem("quota")).toBeNull();
-                expect(localStorage.setItem.calls.length).toEqual(2);
+                expect(setItem).to.not.throw();
+                expect(localStorageUtils.getItem("quota")).to.be.null;
+                expect(localStorage.setItem.callCount).to.eql(2);
             });
 
             it("Should re-throw any other errors", function()
             {
-                spyOn(localStorage, "setItem").andCallFake(function()
+                sinon.stub(localStorage, "setItem", function()
                 {
                     throw new Error("Some Exception");
                 });
@@ -126,7 +124,7 @@ function(
                     localStorageUtils.setItem("key", "value");
                 }
 
-                expect(badSetItem).toThrow("Some Exception");
+                expect(badSetItem).to.throw("Some Exception");
             });
         });
 
@@ -137,14 +135,14 @@ function(
             {
                 localStorageUtils.setItem("something", "some value");
                 localStorageUtils.removeItem("something");
-                expect(localStorageUtils.getItem("something")).toBeNull();
+                expect(localStorageUtils.getItem("something")).to.be.null;
             });
 
             it("Should not remove items without the localStorageUtils_ prefix", function()
             {
                 localStorage.setItem("other key", "something");
                 localStorageUtils.removeItem("other key");
-                expect(localStorage.getItem("other key")).toEqual("something");
+                expect(localStorage.getItem("other key")).to.eql("something");
             });
         });
 
@@ -155,8 +153,8 @@ function(
                 localStorageUtils.setItem("Item One", "My Item");
                 localStorageUtils.setItem("Item Two", "Another Item");
                 localStorageUtils.clearStorage();
-                expect(localStorageUtils.getItem("Item One")).toBeNull();
-                expect(localStorageUtils.getItem("Item Two")).toBeNull();
+                expect(localStorageUtils.getItem("Item One")).to.be.null;
+                expect(localStorageUtils.getItem("Item Two")).to.be.null;
             });
 
             it("Should not remove values without the prefix", function()
@@ -164,9 +162,9 @@ function(
                 localStorage.setItem("Item One", "My Item");
                 localStorageUtils.setItem("Item Two", "Another Item");
                 localStorageUtils.clearStorage();
-                expect(localStorageUtils.getItem("Item One")).toBeNull();
-                expect(localStorageUtils.getItem("Item Two")).toBeNull();
-                expect(localStorage.getItem("Item One")).toEqual("My Item");
+                expect(localStorageUtils.getItem("Item One")).to.be.null;
+                expect(localStorageUtils.getItem("Item Two")).to.be.null;
+                expect(localStorage.getItem("Item One")).to.eql("My Item");
             });
         });
 

@@ -1,5 +1,4 @@
-﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "jquery",
     "views/userConfirmationView",
@@ -12,20 +11,20 @@ function ($, UserConfirmationView, deleteConfirmationTemplate)
         it("Should close on cancel", function ()
         {
             var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
-            spyOn(deleteConfirmationView, "close");
+            sinon.stub(deleteConfirmationView, "close");
             deleteConfirmationView.onCancelled();
-            expect(deleteConfirmationView.close).toHaveBeenCalled();
+            expect(deleteConfirmationView.close).to.have.been.called;
         });
         
         it("Should trigger event 'userConfirmed' and close", function()
         {
             var viewOptions = { template: deleteConfirmationTemplate };
             var deleteConfirmationView = new UserConfirmationView(viewOptions);
-            spyOn(deleteConfirmationView, "trigger");
-            spyOn(deleteConfirmationView, "close");
+            sinon.stub(deleteConfirmationView, "trigger");
+            sinon.stub(deleteConfirmationView, "close");
             deleteConfirmationView.onConfirmed();
-            expect(deleteConfirmationView.trigger).toHaveBeenCalledWith("userConfirmed", viewOptions);
-            expect(deleteConfirmationView.close).toHaveBeenCalled();
+            expect(deleteConfirmationView.trigger).to.have.been.calledWith("userConfirmed", viewOptions);
+            expect(deleteConfirmationView.close).to.have.been.called;
         });
     });
 });

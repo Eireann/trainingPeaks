@@ -185,6 +185,12 @@ function(
         {
             if(!ui || !this.ui || !this.ui.weeksContainer)
                 return;
+
+            var scope = $(e.target).draggable("option", "scope");
+            if(scope !== "default")
+            {
+                return;
+            }
             
             var calendarContainer = this.ui.weeksContainer.closest("#calendarContainer");
 

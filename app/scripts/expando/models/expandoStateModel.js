@@ -30,6 +30,16 @@ function(
             this.set("primaryRange", null);
         },
 
+        addRange: function(model)
+        {
+            this.get("ranges").add(model);
+        },
+
+        removeRange: function(model)
+        {
+            this.get("ranges").remove(model);
+        },
+
         _onStatsRangeChange: function(self, range)
         {
             if(this.primaryRange)

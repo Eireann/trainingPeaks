@@ -1,7 +1,7 @@
 module.exports = function(grunt)
 {
 
-    var _ = require('underscore');
+    var _ = require('lodash');
     var path = require('path');
     var fs = require('fs');
 
@@ -10,7 +10,7 @@ module.exports = function(grunt)
     {
 
         var specsFolder = "test/specs";
-        var specListPath = "test/specsList.js";
+        var specListPath = "test/specs.js";
 
         function listSpecsInFolder(specsFolder, baseName)
         {
@@ -26,7 +26,7 @@ module.exports = function(grunt)
                     {
                         specs.push(specName);
                     });
-                } else if(fs.statSync(filePath).isFile() && file.indexOf(".spec.js") > 0)
+                } else if(fs.statSync(filePath).isFile() && /\.spec\.js$/.test(file))
                 {
                     specs.push(path.join(baseName, file));
                 }
@@ -35,12 +35,10 @@ module.exports = function(grunt)
             return specs;
         }
 
-
-
         var specs = listSpecsInFolder(specsFolder, "specs");
-        var specList = "define([],function() { \nreturn [\n'";
+        var specList = "define([\n'";
         specList += specs.join("',\n'").replace(/\\/g, "/").replace(/\.js/g, '');
-        specList += "'\n];\n});";
+        specList += "'\n], function() {});";
         var outFile = fs.openSync(specListPath, "w");
         fs.writeSync(outFile, specList);
         fs.closeSync(outFile);

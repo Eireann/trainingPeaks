@@ -57,12 +57,11 @@ function(
         {
             this.$el.data(
             {
-                ItemType: 'Chart',
-                ChartType: this.model.get("chartType"),
                 model: this.model
             });
             this.$el.draggable(
             {
+                scope: "packery",
                 helper: "clone",
                 appendTo: theMarsApp.getBodyElement(),
                 zIndex: 100,
