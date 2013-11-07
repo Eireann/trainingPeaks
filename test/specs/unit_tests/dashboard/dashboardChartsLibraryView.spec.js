@@ -55,7 +55,17 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
                 collection.add(new TP.Model({name: "B"}));
                 collection.add(new TP.Model({name: "C"}));
 
-                view = new DashboardChartsLibraryView({collection: collection});
+                var featureAuthorizer = {
+
+                    features: {
+                        UsePod: null,
+                        ViewPod: null
+                    },
+
+                    canAccessFeature: function() { return true; }
+                };
+
+                view = new DashboardChartsLibraryView({collection: collection, featureAuthorizer: featureAuthorizer });
 
                 view.render();
             });
@@ -70,6 +80,10 @@ function(TP, DashboardChartsLibraryView, ChartTileView)
                 view.ui.search.val("xxxxxxxxxx");
                 view.ui.search.trigger("keyup");
                 expect(view.collection.length).to.equal(0);
+
+                view.ui.search.val("A");
+                view.ui.search.trigger("keyup");
+                expect(view.collection.length).to.equal(1);
             });
 
         });
