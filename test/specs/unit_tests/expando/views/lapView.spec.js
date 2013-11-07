@@ -2,13 +2,11 @@
 [
     "jquery",
     "TP",
-    "framework/tooltips",
     "views/expando/lapView"
 ],
 function(
     $,
     TP,
-    ToolTips,
     LapView
     )
 {
@@ -57,7 +55,7 @@ function(
 
             it("Should set the highlight class if the model is not focused", function()
             {
-                view.model.set("isFocused", true);
+                view.model.getState().set("isFocused", true);
                 view.render();
                 expect(view.$el.is(".highlight")).to.be.ok;
             });
@@ -70,7 +68,7 @@ function(
 
             it("Should check the checkbox if the model is selected", function()
             {
-                view.model.set("isSelected", true);
+                view.model.getState().set("isSelected", true);
                 view.render();
                 expect(view.$("input[type=checkbox]").is(":checked")).to.be.ok;
             });
@@ -87,15 +85,15 @@ function(
             it("Should add the highlight class when the model becomes focused", function()
             {
                 view.render();
-                view.model.set("isFocused", true);
+                view.model.getState().set("isFocused", true);
                 expect(view.$el.is(".highlight")).to.be.ok;
             });
 
             it("Should remove the highlight state when the model loses focus", function()
             {
-                view.model.set("isFocused", true);
+                view.model.getState().set("isFocused", true);
                 view.render();
-                view.model.set("isFocused", false);
+                view.model.getState().set("isFocused", false);
                 expect(view.$el.is(".highlight")).to.not.be.ok;
             });
 
@@ -112,15 +110,15 @@ function(
             it("Should check the checkbox when the model becomes selected", function()
             {
                 view.render();
-                view.model.set("isSelected", true);
+                view.model.getState().set("isSelected", true);
                 expect(view.$("input[type=checkbox]").is(":checked")).to.be.ok;
             });
 
             it("Should uncheck the checkbox when the model becomes unselected", function()
             {
-                view.model.set("isSelected", true);
+                view.model.getState().set("isSelected", true);
                 view.render();
-                view.model.set("isSelected", false);
+                view.model.getState().set("isSelected", false);
                 expect(view.$("input[type=checkbox]").is(":checked")).to.not.be.ok;
             });
 
@@ -133,7 +131,7 @@ function(
 
             it("Should remove lap range from state model on checkbox click", function()
             {
-                view.model.set("isSelected", true);
+                view.model.getState().set("isSelected", true);
                 view.render();
                 view.$("input[type=checkbox]").attr("checked", false).trigger("change");
                 expect(view.stateModel.removeRange).to.have.been.calledWith(view.model);
@@ -149,71 +147,67 @@ function(
                 {
                     if(key === "primaryRange")
                     {
-                        model.set("isFocused", true);    
+                        model.getState().set("isFocused", true);    
                     }
                 });
-
-                sinon.stub(ToolTips, "enableTooltips");
-                sinon.stub(ToolTips, "disableTooltips");
             });
 
             it("Should make a lap editable on the second click", function()
             {
-                view.model.set("isLap", true);
+                view.model.getState().set("isLap", true);
                 view.render();
-                view.$(".lapDescription").trigger("click").trigger("click");
-                expect(view.$(".editLapName input").length).to.equal(1);
-                expect(view.model.get("isEditing")).to.be.ok;
+                view.$el.trigger("click").trigger("click");
+                expect(view.$el.is(".editing")).to.be.ok;
+                expect(view.model.getState().get("isEditing")).to.be.ok;
             });
 
             it("Should not make a lap editable on the first click", function()
             {
-                view.model.set("isLap", true);
+                view.model.getState().set("isLap", true);
                 view.render();
-                view.$(".lapDescription").trigger("click");
-                expect(view.$(".editLapName input").length).to.equal(0);
-                expect(view.model.get("isEditing")).to.not.be.ok;
+                view.$el.trigger("click");
+                expect(view.$el.is(".editing")).to.not.be.ok;
+                expect(view.model.getState().get("isEditing")).to.not.be.ok;
             });
 
             it("Should not make other ranges editable", function()
             {
                 view.render();
-                view.$(".lapDescription").trigger("click").trigger("click");
-                expect(view.$(".editLapName input").length).to.equal(0);
-                expect(view.model.get("isEditing")).to.not.be.ok;
+                view.$el.trigger("click").trigger("click");
+                expect(view.$el.is(".editing")).to.not.be.ok;
+                expect(view.model.getState().get("isEditing")).to.not.be.ok;
             });
 
             it("Should save name changes on blur", function()
             {
-                view.model.set("isLap", true);
-                view.model.set("isEditing", true);
+                view.model.getState().set("isLap", true);
                 view.model.set("name", "Old Name");
                 view.render();
-                view.$(".editLapName input").val("New Name").trigger("blur");
+                view.$el.trigger("click").trigger("click");
+                view.$("input.lapName").val("New Name").trigger("blur");
                 expect(view.model.get("name")).to.equal("New Name");
-                expect(view.model.get("isEditing")).to.not.be.ok;
+                expect(view.model.getState().get("isEditing")).to.not.be.ok;
             });
 
             it("Should save name changes on enter key", function()
             {
-                view.model.set("isLap", true);
-                view.model.set("isEditing", true);
+                view.model.getState().set("isLap", true);
                 view.model.set("name", "Old Name");
                 view.render();
-                view.$(".editLapName input").val("New Name").trigger("enter");
+                view.$el.trigger("click").trigger("click");
+                view.$("input.lapName").val("New Name").trigger("enter");
                 expect(view.model.get("name")).to.equal("New Name");
-                expect(view.model.get("isEditing")).to.not.be.ok;
+                expect(view.model.getState().get("isEditing")).to.not.be.ok;
             });
 
             it("Should cancel changes on cancel (escape key)", function()
             {
-                view.model.set("isLap", true);
-                view.model.set("isEditing", true);
+                view.model.getState().set("isLap", true);
                 view.model.set("name", "Old Name");
                 view.render();
-                view.$(".editLapName input").val("New Name").trigger("cancel");
+                view.$("input.lapName").val("New Name").trigger("cancel");
                 expect(view.model.get("name")).to.equal("Old Name");
-                expect(view.model.get("isEditing")).to.not.be.ok;
+                expect(view.model.getState().get("isEditing")).to.not.be.ok;
             });
 
             it("Should render name changes triggered on the model", function()
@@ -221,7 +215,8 @@ function(
                 view.model.set("name", "Old Name");
                 view.render();
                 view.model.set("name", "New Name");
-                expect(view.$(".editLapName").text()).to.eql("New Name");
+                console.log(view.$el.html());
+                expect(view.$("span.lapName").text()).to.eql("New Name");
             });
         });
 
@@ -229,7 +224,7 @@ function(
         {
             it("Should have a delete icon for laps", function()
             {
-                view.model.set("isLap", true);
+                view.model.getState().set("isLap", true);
                 view.render();
                 expect(view.$(".delete").length).to.equal(1);
             });
@@ -242,7 +237,7 @@ function(
 
             it("Should display a confirmation on clicking the delete icon", function()
             {
-                view.model.set("isLap", true);
+                view.model.getState().set("isLap", true);
                 view.render();
                 view.$(".delete").trigger("click");
                 expect(view.deleteConfirmationView).to.not.be.null;
@@ -250,20 +245,20 @@ function(
 
             it("Should delete the lap on user confirmation", function()
             {
-                view.model.set("isLap", true);
+                view.model.getState().set("isLap", true);
                 view.render();
                 view.$(".delete").trigger("click");
                 view.deleteConfirmationView.trigger("userConfirmed");
-                expect(view.model.get("deleted")).to.be.ok;
+                expect(view.model.getState().get("isDeleted")).to.be.ok;
             });
 
             it("Should not delete the lap on user cancel", function()
             {
-                view.model.set("isLap", true);
+                view.model.getState().set("isLap", true);
                 view.render();
                 view.$(".delete").trigger("click");
                 view.deleteConfirmationView.trigger("userCancelled");
-                expect(view.model.get("deleted")).to.not.be.ok;
+                expect(view.model.getState().get("isDeleted")).to.not.be.ok;
             });
         });
     });

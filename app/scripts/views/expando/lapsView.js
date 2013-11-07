@@ -62,19 +62,22 @@ function(
             {
                 self.collection.remove(
                     self.collection.find(
-                        function(model){return model.get("temporary") ? true : false;}
+                        function(model){return model.getState().get("temporary") ? true : false;}
                     )
                 );
 
-                if(range && range.get("temporary"))
+                if(range && range.getState().get("temporary"))
                 {
                     self.collection.unshift(range);
                 }
             });
 
             // when a model that was temporary changes to become a permanent lap, add it to the detaildata laps collection
-            this.listenTo(this.collection, "change:isLap", function(model) {
-                self.model.get("detailData").getRangeCollectionFor("laps").unshift(model);
+            this.listenTo(this.collection, "state:change:temporary", function(model) {
+                if(model.getState().get("isLap") && !model.getState().get("temporary"))
+                {
+                    self.model.get("detailData").getRangeCollectionFor("laps").unshift(model);
+                }
             });
 
             this.listenTo(this.model.get("detailData"), "change:channelCuts", _.bind(this._enableOrDisable, this));

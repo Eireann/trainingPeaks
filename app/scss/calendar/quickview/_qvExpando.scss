@@ -4,11 +4,71 @@
 {
     min-width: 1150px;
 
-    .deleted
+    .lap
     {
-        background-color: rgba(142,178,216,0.25);
-        // opacity: 0.5;
-        text-decoration: line-through;
+
+        .lapName
+        {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        &.highlight
+        {
+            color:$TPGrey4;
+            font-family:$fontFamilyHeavy;
+
+            .actions
+            {
+                .delete
+                {
+                    margin: 5px 0 0;
+                    width: 13px;
+                }
+            }
+
+        }
+
+        &:not(.highlight) {
+            .actions
+            {
+                display: none;
+            }
+        }
+
+        &.editing
+        {
+            span.lapName
+            {
+                display: none;
+            }
+
+            @include inputs(120px, 22px, $fontSizeSmall, $fontFamilyRegular, "input[type=text]");
+            input.lapName {
+                display: inline-block;
+                text-align: left !important;
+                margin: 0 5px 0 0;
+                padding:0 5px;
+                position: relative;
+                z-index: 2;
+                font-size: 1em;
+            }
+        }
+
+        &:not(.editing)
+        {
+            input.lapName
+            {
+                display: none;
+            }
+        }
+
+        &.deleted
+        {
+            //background-color: rgba(142,178,216,0.25);
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
     }
 }
 
@@ -449,6 +509,35 @@
             padding-left: 10px;
             margin-left: -10px;
         }
+
+        .lap
+        {
+            &.highlight
+            {
+                background-color: rgba(142,178,216,0.25);
+
+                span.lapName
+                {
+                    margin-top: 5px;
+                }
+            }
+
+            .name
+            {
+                width: 155px;
+            }
+
+            &.editable
+            {
+                .lapName
+                {
+                    width: 120px;
+                }
+
+            }
+
+        }
+
     }
 
     .expandoPackeryRegion {
@@ -687,7 +776,6 @@
             {
                 display: none;
             }
-
         }
 
         .controls
@@ -749,25 +837,10 @@
                 text-align: left;
                 cursor: pointer;
 
-                &.deleted {
-                    .editLapName {
-                        text-decoration: line-through;
-                    }
-                }
-
                 input[type="checkbox"] {
                     margin: 0 5px 0 0;
                     position: relative;
                     top: -1px;
-                }
-
-                .actions
-                {
-                    .delete
-                    {
-                        margin: 5px 0 0;
-                        width: 13px;
-                    }
                 }
 
                 .lapDescription
@@ -777,30 +850,15 @@
                     vertical-align: top;
                 }
 
-                &.highlight {
-                    color:$TPGrey4;
-                    font-family:$fontFamilyHeavy;
-                }
-
-                &:not(.highlight) {
-                    .actions
+                &.deleted
+                {
+                    text-decoration: none;
+                    .lapName
                     {
-                        display: none;
+                        text-decoration: line-through;
                     }
                 }
 
-                .editLapName {
-                    @include inputs(120px, 22px, $fontSizeSmall, $fontFamilyRegular);
-                    input {
-                        display: inline-block;
-                        text-align: left !important;
-                        margin: 0 5px 0 0;
-                        padding:0 5px;
-                        position: relative;
-                        z-index: 2;
-                        font-size: 1em;
-                    }
-                }
             }
         }
     }

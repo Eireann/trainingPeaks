@@ -1,30 +1,19 @@
 define(
 [
     "underscore",
-    "TP",
     "utilities/lapsStats",
+    "views/expando/editableLapView",
     "hbs!templates/views/expando/lapSplitTemplate"
 ],
 function(
     _,
-    TP, 
     LapsStats,
+    EditableLapView,
     lapSplitTemplate
     )
 {
-    return TP.ItemView.extend(
+    return EditableLapView.extend(
     {
-
-        initialize: function(options)
-        {
-            this.stateModel = options.stateModel;
-        },
-
-        events:
-        {
-            "click td.lap": "handleLapClickEditable",
-            "click :not(td.lap)": "_onClick"
-        },
 
         tagName: 'tr',
 
@@ -33,6 +22,10 @@ function(
             type: "handlebars",
             template: lapSplitTemplate
         },
+
+        modelEvents: _.defaults({
+            "change": "render"
+        }, EditableLapView.prototype.modelEvents),
 
         serializeData: function()
         {
@@ -58,68 +51,8 @@ function(
                     subsetLapData.push( { key: keyName, value: allLapData[keyName] } );
                 }, this);
 
-            return { lapData: subsetLapData, isCut: this.model.get("isCut") };
-        },
+            return { lapData: subsetLapData, _state: this.model.getState().toJSON() };
 
-        handleLapClickEditable: function(e)
-        {
-            var $currentTarget = $(e.currentTarget);
-            if($currentTarget.hasClass('editing')) return false;
-            e.preventDefault();
-
-            this.stateModel.set("primaryRange", this.model);
-            var $lapName = this.$("td.lap");
-            var $input = $('<input type="text"/>');
-            $input.val($lapName.text());
-            $lapName.empty().append($input).addClass('editing');
-            $input.on("change", _.bind(this._onInputChange, this));
-            $input.on("blur enter", _.bind(this._stopEditing, this));
-            $input.on("cancel", _.bind(this._cancelEditing, this));
-            $input.focus().select();
-        },
-
-        onRender: function()
-        {
-            if(this.model.get('deleted'))
-            {
-                this._markAsDeleted();
-            }
-        },
-
-        _onClick: function()
-        {
-            this.stateModel.set("primaryRange", this.model);
-        },
-
-        _markAsDeleted: function()
-        {
-            this.$('td.lap').attr('disabled', true);
-            this.undelegateEvents();
-            this.$el.addClass('deleted');
-        },
-
-        _onInputChange: function(e)
-        {
-            var $input = $(e.currentTarget);
-            this.model.set("name", $.trim($input.val()));
-        },
-
-        _cancelEditing: function(e)
-        {
-            this._stopEditing(e, true);
-        },
-
-        _stopEditing: function(e, cancel)
-        {
-            e.preventDefault();
-            var $input = $(e.currentTarget);
-
-            if(!cancel)
-            {
-                this.model.set("name", $.trim($input.val()));
-            }
-            $input.closest("td").html(this.model.get("name")).removeClass("editing");
-            $input.off("change blur enter cancel");
         }
 
     });

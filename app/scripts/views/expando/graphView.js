@@ -360,7 +360,8 @@ function(
                 endOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
+            range.getState().set("temporary", true);
             this.stateModel.set("primaryRange", range);
         },
 

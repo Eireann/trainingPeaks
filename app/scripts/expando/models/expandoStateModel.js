@@ -44,13 +44,13 @@ function(
         {
             if(this.primaryRange)
             {
-                this.primaryRange.set("isFocused", false);
+                this.primaryRange.getState().set("isFocused", false);
             }
             this.primaryRange = range;
 
             if(range)
             {
-                range.set("isFocused", true);
+                range.getState().set("isFocused", true);
 
                 if(!range.hasLoaded)
                 {
@@ -61,12 +61,12 @@ function(
 
         _onRangeAdded: function(range)
         {
-            range.set("isSelected", true);
+            range.getState().set("isSelected", true);
         },
 
         _onRangeRemoved: function(range)
         {
-            range.set("isSelected", false);
+            range.getState().set("isSelected", false);
         }
 
     });
