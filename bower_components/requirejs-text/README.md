@@ -28,7 +28,7 @@ can be hard to manage, particularly for multi-line HTML.
 The text.js AMD loader plugin can help with this issue. It will automatically be
 loaded if the text! prefix is used for a dependency. Download the plugin and put
 it in the app's [baseUrl](http://requirejs.org/docs/api.html#config-baseUrl)
-directory.
+directory (or use the [paths config](http://requirejs.org/docs/api.html#config-paths) to place it in other areas).
 
 You can specify a text file resource as a dependency like so:
 
@@ -107,7 +107,7 @@ build profile:
     optimizeAllPluginResources: true
 
 In some cases, you may want the text plugin to not try the .js resource, maybe
-because you hae configured CORS on the other server, and you know that only
+because you have configured CORS on the other server, and you know that only
 browsers that support CORS will be used. In that case you can use the
 [module config](http://requirejs.org/docs/api.html#config-moduleconfig)
 (requires RequireJS 2+) to override some of the basic logic the plugin uses to
@@ -125,7 +125,7 @@ requirejs.config({
                 //port: port of page text.js is running on
                 //Use protocol, hostname, and port to compare against the url
                 //being requested.
-                //Return true of false. true means "use xhr", false means
+                //Return true or false. true means "use xhr", false means
                 //"fetch the .js version of this resource".
             }
         }
@@ -154,6 +154,10 @@ requirejs.config({
                 //Overrides the creation of the XHR object. Return an XHR
                 //object from this function.
                 //Available in text.js 2.0.1 or later.
+            },
+            onXhrComplete: function (xhr, url) {
+                //Called whenever an XHR has completed its work. Useful
+                //if browser-specific xhr cleanup needs to be done.
             }
         }
     }

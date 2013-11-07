@@ -23,7 +23,10 @@ define(
     "utilities/rollbarManager",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
-    "scripts/plugins/marionette.faderegion"
+    "scripts/plugins/marionette.faderegion",
+    "flot/jquery.flot",
+    "flot/jquery.flot.crosshair",
+    "flot/jquery.flot.resize",
 ],
 function(
     _,
@@ -49,7 +52,11 @@ function(
     RollbarManager,
     FeatureAuthorizer,
     notAllowedForAlphaTemplate,
-    fadeRegion)
+    fadeRegion,
+    flot,
+    flotCrosshair,
+    flotResize
+)
 {
 
     var MarsApp = TP.Application.extend(

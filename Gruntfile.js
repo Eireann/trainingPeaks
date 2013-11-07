@@ -13,11 +13,8 @@ module.exports = function(grunt)
             all:
             [
                 "Gruntfile.js",
-                "test/specs/**/*.js",
-                "app/*.js",
-                "app/scripts/**/*.js",
-                "!app/Handlebars.js",
-                "app/templates/**/*.json"
+                "test/**.js",
+                "app/**.js",
             ],
             options:
             {
@@ -104,19 +101,15 @@ module.exports = function(grunt)
             {
                 options:
                 {
-                    baseUrl: "app",
+                    mainConfigFile: "app/config.js",
                     out: "build/release/single.js",
+                    baseUrl: "app",
                     name: "main",
                     include: [
-                        "../vendor/js/libs/almond",
-                        "../vendor/js/libs/HandlebarsRuntime",
-                        "../vendor/js/libs/flot/jquery.flot",
-                        "../vendor/js/libs/flot/jquery.flot.crosshair",
-                        "../vendor/js/libs/flot/jquery.flot.resize",
-                        "Backbone.Marionette.Handlebars",
-                        "testUtils/testHelpers"
+                        "../vendor/js/libs/almond"
                     ],
-                    excludeShallow: ["hbs", "Handlebars"],
+                    path: { handlebars: "handlebars.runtime" },
+                    stubModuels: ["hbs"],
                     wrap: false,
                     optimize: "none",
                     useSourceUrl: true
@@ -389,9 +382,9 @@ module.exports = function(grunt)
     // grunt build builds a single minified js for dev/uat/live, at build/release
     // grunt build_debug does the same but doesn't minify, and points to local dev config
     // removed "plato:build" as last step of build_common
-    grunt.registerTask("build_common", ["clean", "jshint", "coverage", "requirejs_config", "i18n_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
+    grunt.registerTask("build_common", ["clean", "jshint", "i18n_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
-    grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
+    grunt.registerTask("build_debug_fast", ["clean", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["add-defaults-to-i18n-files", "build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files", "revision"]);
 };

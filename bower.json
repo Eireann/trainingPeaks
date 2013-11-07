@@ -8,6 +8,9 @@
     "sinon-chai": "https://raw.github.com/domenic/sinon-chai/2.4.0/lib/sinon-chai.js",
     "requirejs": "~2.1.9",
     "jquery": "~2.0.3",
-    "q": "~0.9.7"
+    "q": "~0.9.7",
+    "backbone.marionette.handlebars": "~0.2.0",
+    "handlebars": "1.0.0",
+    "requirejs-text": "~2.0.10"
   }
 }

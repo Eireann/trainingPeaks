@@ -194,37 +194,21 @@ src:url("assets/fonts/c07fef9e-a934-42d7-92ad-69205f2b8a00.eot?#iefix") format("
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
-  <script data-main="./app/main" src="./bower_components/requirejs/require.js"></script>
+  <script src="./bower_components/requirejs/require.js"></script>
+  <script src="./app/config.js"></script>
+  <script>require(["main"]);</script>
   <!--<!(endif)-->
 
   <!--(if target build)>
   <script src="single.min.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
   <!(endif)-->
 
   <!--(if target build_debug)>
   <script src="single.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
   <!(endif)-->
 
   <!--(if target build_debug_min)>
   <script src="single.min.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
   <!(endif)-->
 <script>
     var gaAnalyticsKey = (window.apiConfig && window.apiConfig.gaAccount) ? window.apiConfig.gaAccount : "UA-42726244-3";
