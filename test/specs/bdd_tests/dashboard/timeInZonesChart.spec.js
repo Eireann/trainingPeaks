@@ -80,7 +80,7 @@ function(
             });
 
             // these checkboxes aren't behaving right here, but they're working in the app
-            xdescribe("Chart workout type settings", function()
+            describe("Chart workout type settings", function()
             {
 
                 it("Should open the settings tomahawk", function()
@@ -98,7 +98,7 @@ function(
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox]").length).to.not.equal(0);
                 });
 
-                it("Should retain workout type settings when reopening settings view", function()
+                xit("Should retain workout type settings when reopening settings view (TODO: fix checkbox handling for this test)", function()
                 {
 
                     // open settings, uncheck 'all workout types', and check swim
@@ -136,7 +136,7 @@ function(
                     expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(true);
                 });
 
-                it("Should update chart title after changing workout type", function()
+                xit("Should update chart title after changing workout type (TODO: fix checkbox handling for this test)", function()
                 {
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.contain("All");
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.not.contain("Swim");
@@ -155,7 +155,7 @@ function(
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).to.contain("Swim");
                 });
 
-                it("Should request new data after changing workout type", function()
+                xit("Should request new data after changing workout type (TODO: fix checkbox handling for this test)", function()
                 {
                     testHelpers.clearRequests();
                     // open settings, uncheck 'all workout types', and check swim

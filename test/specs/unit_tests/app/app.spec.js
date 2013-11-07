@@ -50,11 +50,6 @@ function( _, testHelpers )
                 expect(theMarsApp.controllers.calendarController).to.not.be.undefined;
             });
 
-            xit("Should have a home controller", function()
-            {
-                expect(theMarsApp.controllers.homeController).to.not.be.undefined;
-            });
-
             it("Should have a dashboard controller", function()
             {
                 expect(theMarsApp.controllers.dashboardController).to.not.be.undefined;

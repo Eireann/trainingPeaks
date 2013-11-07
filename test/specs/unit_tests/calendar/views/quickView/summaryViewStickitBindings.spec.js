@@ -144,7 +144,7 @@ function (TP, summaryViewStickitBindings)
         });
 
         // needs refactoring
-        xdescribe("performModelSave method which performs the model update", function()
+        xdescribe("performModelSave method which performs the model update (TODO: fix or remove this test)", function()
         {
             it("sets a non-description value in the model", function()
             {

@@ -32,12 +32,12 @@ function(
             expect($mainRegion.find("#athleteCalendarSelect").length).to.equal(0);
         });
 
-        xit("Should display today in the calendar", function()
+        it("Should display today in the calendar", function()
         {
             expect($mainRegion.find("#calendarContainer .day.today").length).to.equal(1);
         });
 
-        xit("Should be able to navigate away and back to the calendar", function()
+        it("Should be able to navigate away and back to the calendar", function()
         {
             expect($mainRegion.find("#calendarContainer").length).to.equal(1);
             testHelpers.theApp.router.navigate("dashboard", { trigger: true });
@@ -46,7 +46,7 @@ function(
             expect($mainRegion.find("#calendarContainer").length).to.equal(1);
         });
 
-        xdescribe("Should remember what date I was viewing when navigating in and out of the calendar", function()
+        xdescribe("Should remember what date I was viewing when navigating in and out of the calendar (TODO: fix these tests)", function()
         {
             var controller, calendarContainerView;
             beforeEach(function()
@@ -71,14 +71,14 @@ function(
                 expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).to.equal("2013-01-28");
             });
 
-            xit("Should go back to that date when navigating to home and back to calendar", function()
+            it("Should go back to that date when navigating to home and back to calendar", function()
             {
                 testHelpers.theApp.router.navigate("home", {trigger: true});
                 testHelpers.theApp.router.navigate("calendar", {trigger: true});
                 expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).to.equal("2013-01-28");
             });
 
-            xit("Should go back to that date when navigating to home then dashboard then back to calendar", function()
+            it("Should go back to that date when navigating to home then dashboard then back to calendar", function()
             {
                 testHelpers.theApp.router.navigate("home", {trigger: true});
                 testHelpers.theApp.router.navigate("dashboard", {trigger: true});

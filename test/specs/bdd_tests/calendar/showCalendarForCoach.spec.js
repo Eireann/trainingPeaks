@@ -52,7 +52,7 @@ function(
         });
 
         // routing doesn't work properly here?
-        xdescribe("For athlete id from url", function()
+        xdescribe("For athlete id from url (TODO: Why doesn't router.navigate to a specific athlete id work? would be nice to be able to test this behavior)", function()
         {
 
             beforeEach(function()
@@ -78,7 +78,7 @@ function(
             });
         });
 
-        xdescribe("Switch athlete from dropdown", function()
+        describe("Switch athlete from dropdown", function()
         {
 
             it("Should have the first user set as the current athlete id", function()
@@ -96,7 +96,7 @@ function(
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456")).to.equal(false);
             });
 
-            it("Should change the user id on selecting a new athlete", function()
+            xit("Should change the user id on selecting a new athlete (TODO: doesn't work, same router issue as above)", function()
             {
                 $mainRegion.find("#athleteCalendarSelect").val(23456).trigger("change");
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);

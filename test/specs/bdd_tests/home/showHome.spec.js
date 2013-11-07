@@ -9,7 +9,7 @@ function(
 )
 {
 
-    xdescribe("Home", function()
+    xdescribe("Home (Disabled until we start work on home again)", function()
     {
 
         var $mainRegion;

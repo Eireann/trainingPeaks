@@ -18,7 +18,7 @@ function ($, Backbone, UserModel, UserControlsView)
             expect(UserControlsView).to.not.be.undefined;
         });
 
-        xit("Renders the UserSettings view when the usernameLabel is clicked", function()
+        xit("Renders the UserSettings view when the usernameLabel is clicked (TODO: fix or remove)", function()
         {
             var view = new UserControlsView({ model: new UserModel() });
             view.$("#userName").trigger("click");

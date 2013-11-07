@@ -10,7 +10,7 @@ define(
 function($, TP, moment, DataManager, CalendarContainerView, ScrollableCollectionView)
 {
 
-    xdescribe("CalendarContainerView Scrolling", function()
+    xdescribe("CalendarContainerView Scrolling (TODO: we should probably have a working test for scrolling to date)", function()
     {
 
         it("Should scroll to a given date", function ()

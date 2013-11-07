@@ -69,15 +69,16 @@ function(
         });
 
         // I think this fails due to how we're setting up the body element in test helpers, but works ok in browser
-        xit("Should not listen to touch events after the first touch", function()
+        it("Should not listen to touch events after the first touch", function()
         {
 
             // first touch start
-            sinon.stub(testHelpers.theApp, "enableTouch");
+            var enableTouch = sinon.stub(testHelpers.theApp, "enableTouch");
             $body.trigger("touchstart");
             expect(testHelpers.theApp.enableTouch).to.have.been.called;
 
             // touch again
+            enableTouch.reset();
             $body.trigger("touchstart");
             expect(testHelpers.theApp.enableTouch).to.not.have.been.called;
         });
