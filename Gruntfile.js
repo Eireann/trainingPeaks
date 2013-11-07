@@ -1,4 +1,4 @@
-var _ = require("underscore");
+var _ = require("lodash");
 var path = require("path");
 var fs = require("fs");
 
@@ -106,7 +106,7 @@ module.exports = function(grunt)
                     name: "main",
                     include: [
                         "../vendor/js/libs/almond"
-                    ],
+                    ].concat(_.map(fs.readdirSync("app/scripts/affiliates"), function(code) { return "affiliates/" + code + "/settings"; })),
                     path: { handlebars: "handlebars.runtime" },
                     stubModuels: ["hbs", "text"],
                     wrap: false,
@@ -192,17 +192,10 @@ module.exports = function(grunt)
             coverage:
             {
                 src: ["coverage"]
-            }
-        },
-
-        deleteFiles:
-        {
-            build:
+            },
+            post_build:
             {
-                files:
-                {
-                    "build/release": ["build/release/**/single.js", "build/debug/**/single.js"]
-                }
+                src: ["build/**/single.js"]
             }
         },
 
@@ -322,6 +315,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-contrib-compass");
     grunt.loadNpmTasks("grunt-istanbul");
     grunt.loadNpmTasks("grunt-webfont");
     grunt.loadNpmTasks("grunt-targethtml");
@@ -336,7 +330,7 @@ module.exports = function(grunt)
     // REPORTING:
     // grunt plato:dummy makes complexity reports available at localhost:8905/plato
     // grunt coverage makes coverage reports available at localhost:8905/coverage/lcov-report/index.html,
-    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'mocha:coverage', 'storeCoverage', 'makeReport']);
+    grunt.registerTask('coverage', ['clean:coverage', 'setup-spec-list', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'mocha:coverage', 'storeCoverage', 'makeReport']);
 
     // BUILDING:
 
@@ -351,5 +345,5 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_fast", ["clean", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "revision"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "clean:post_build", "targethtml:build", "revision"]);
 };

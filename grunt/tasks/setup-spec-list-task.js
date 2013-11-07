@@ -1,7 +1,7 @@
 module.exports = function(grunt)
 {
 
-    var _ = require('underscore');
+    var _ = require('lodash');
     var path = require('path');
     var fs = require('fs');
 
