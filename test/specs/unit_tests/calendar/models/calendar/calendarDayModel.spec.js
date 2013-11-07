@@ -131,7 +131,6 @@ function(
 
                 it("Should call pasted on each of the copied workouts", function()
                 {
-                    console.profile("Pasted");
                     var dateToPasteTo = "2030-12-25";
                     var copiedItems = calendarDay.cloneForCopy();
                     copiedItems.each(function(item)
@@ -143,7 +142,6 @@ function(
                     {
                         expect(item.pasted).to.have.been.calledWith({ date: dateToPasteTo });
                     });
-                    console.profileEnd("Pasted");
                 });
 
             });

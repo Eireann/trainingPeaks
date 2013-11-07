@@ -59,7 +59,7 @@
                     Q.makePromise.prototype.until = function(check, message, timeout)
                     {
                         message = message || "Timed out waiting";
-                        timeout = timeout || 3000;
+                        timeout = timeout || 5000;
                         function wait()
                         {
                             return check() || Q.delay(0).then(wait);
@@ -68,7 +68,7 @@
                     };
 
                     mocha.setup("bdd");
-                    mocha.timeout(5000);
+                    mocha.timeout(10000);
 
                     chai.use(sinonChai);
 
