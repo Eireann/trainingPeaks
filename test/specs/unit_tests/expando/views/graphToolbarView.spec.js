@@ -57,11 +57,16 @@ function($, TP, moment, GraphToolbarView)
 
         });
 
-        it("Should correctly serialize data for distance units", null,function()
+        it("Should display correct button label for distance units", function()
         {
-            expect(view.serializeData().speedLabel).to.equal("yds");
-            view.model.set({workoutTypeValueId: 3});
-            expect(view.serializeData().speedLabel).to.equal("mph");
+            // defaults to metric units unless we have specified units for app user
+            
+            // for swim
+            expect(view.serializeData().speedLabel).to.equal("sec/100m");
+
+            // for bike
+            view.model.set({workoutTypeValueId: 2});
+            expect(view.serializeData().speedLabel).to.equal("kph");
         });
 
         describe("Button States", function()
