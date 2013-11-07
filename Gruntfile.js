@@ -140,13 +140,8 @@ module.exports = function(grunt)
             },
             build:
             {
-                files:
-                {
-                    "build/release/single.min.js":
-                    [
-                        "build/release/single.js"
-                    ]
-                }
+                dest: "build/release/single.min.js",
+                src: "build/release/single.js"
             }
         },
 

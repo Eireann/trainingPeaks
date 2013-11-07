@@ -25,8 +25,8 @@ requirejs.config(
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
         flot: "../vendor/js/libs/flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
-        lodash: "../bower_components/lodash/dist/lodash.compat",
-        underscore: "../bower_components/lodash/dist/lodash.compat",
+        lodash: "../bower_components/lodash/dist/lodash",
+        underscore: "../bower_components/lodash/dist/lodash",
         backbone: "../vendor/js/libs/backbone",
         "backbone.marionette": "../vendor/js/libs/backbone.marionette",
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
@@ -110,11 +110,6 @@ requirejs.config(
         },
         sinon: {
             exports: "sinon"
-        }
-    },
-    config: {
-        i18n: {
-            locale: "en-us"
         }
     }
 });
