@@ -123,11 +123,6 @@ function(
 
             var self = this;
 
-            // if (!this.allSeries)
-            // {
-            //     this.allSeries = this._getGraphData().getSeries();
-            // }
-
             this._getGraphData().workoutTypeValueId = this.model.get("workoutTypeValueId");
             this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
@@ -148,10 +143,11 @@ function(
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
-            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentXAxis, this.model.get("workoutTypeValueId"));
+            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentXAxis.toLowerCase(), this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;
+            this.flotOptions.highlightColor = "#000000";
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };

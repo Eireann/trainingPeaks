@@ -46,7 +46,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getSeries: function(x1, x2)
         {
-            return this.generateSeriesFromData(this.flatSamples, this.dataByAxisAndChannel[this.xaxis], this.minElevation, this.xaxis, this.xAxisDistanceValues, this.disabledSeries, this.excludedSeries, this.excludedRanges, x1, x2);
+            return this.generateSeriesFromData(this.flatSamples, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo.min, this.xaxis, this.xAxisDistanceValues, this.disabledSeries, this.excludedSeries, this.excludedRanges, x1, x2);
         },
 
         getSeriesForAxes: function(xaxis, yaxis, x1, x2)

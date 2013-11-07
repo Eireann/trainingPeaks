@@ -50,6 +50,10 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                         {
                             return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: workoutTypeValueId } );
                         }
+                        else if(s.label === "Time")
+                        {
+                            return conversion.formatUnitsValue("time", value);
+                        }
                         return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: workoutTypeValueId}), 10);
                     },
                     labelWidth: showSpeedAsPace ? 27 : 15
