@@ -2,10 +2,11 @@ define(function(require) {
 
     var Handlebars = require("handlebars");
     var text = require("text");
+    var i18n = require("i18n!locales/nls/templates");
 
     var buildMap = {};
 
-    Handlebars.registerHelper("$", function() { return "i18n"; });
+    Handlebars.registerHelper("$", function(key) { return i18n[key]; });
     Handlebars.registerHelper("comment", function() { return ""; });
 
     function process(template) {

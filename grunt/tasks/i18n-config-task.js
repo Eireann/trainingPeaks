@@ -26,7 +26,7 @@ module.exports = function (grunt) {
 
             // add locale specific details
             localeOptions.out = localeSingleFile;
-            localeOptions.locale = localeName + "-fallback";
+            localeOptions.config = { i18n: { locale: localeName.split('_')[0] } };
 
             if(!_.isArray(localeOptions.include))
             {
@@ -51,6 +51,8 @@ module.exports = function (grunt) {
             {
                 // grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
             }
+
+            console.log(localeOptions);
 
             // add it into the requirejs options
             requireJsOptions[localeName] = { options: localeOptions };
@@ -162,29 +164,6 @@ module.exports = function (grunt) {
         });
 
 
-    });
-
-
-    // Copies english values as defaults to fallback language files so the app doesn't break
-    grunt.registerTask("add-defaults-to-i18n-files", "Add defaults to i18n language files", function()
-    {
-
-        function readAsJSON(filepath)
-        {
-            return JSON.parse(fs.readFileSync(filepath, "utf-8"));
-        }
-        var locales = grunt.config('locales');
-        var englishJson = readAsJSON("app/templates/i18n/en_us.json");
-
-        // build options for each locale - set the single.js filename and the locale
-        _.each(locales, function(localeName)
-        {
-            var localeJsonFile = "app/templates/i18n/" + localeName + ".json";
-            var localeFallbackJsonFile = "app/templates/i18n/" + localeName + "-fallback.json";
-            var localeJson = readAsJSON(localeJsonFile);
-            localeJson = _.defaults(localeJson, englishJson);
-            fs.writeFileSync(localeFallbackJsonFile, JSON.stringify(localeJson, null, 4));
-        });
     });
 
 };

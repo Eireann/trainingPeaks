@@ -53,12 +53,8 @@ requirejs.config(
         "backbone.marionette.handlebars": "../bower_components/backbone.marionette.handlebars/backbone.marionette.handlebars",
         handlebars: "../bower_components/handlebars/handlebars",
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
-        "text": "../bower_components/requirejs-text/text"
-    },
-    hbs: {
-        templateExtension: "html",
-        i18nDirectory: "templates/i18n/",
-        helperPathCallback: function (name) { return "scripts/helpers/" + name; }
+        text: "../bower_components/requirejs-text/text",
+        "i18n": "../bower_components/requirejs-i18n/i18n"
     },
     shim: {
         handlebars: {
@@ -114,6 +110,11 @@ requirejs.config(
         },
         sinon: {
             exports: "sinon"
+        }
+    },
+    config: {
+        i18n: {
+            locale: "en-us"
         }
     }
 });

@@ -1,14 +1,13 @@
 require(
 [
     "jquery",
-    "boot"
+    "boot",
 ],
 function(
     $,
     boot
 )
 {
-        
     function cookiesAreEnabled()
     {
         var cookieEnabled = (navigator.cookieEnabled) ? true : false;

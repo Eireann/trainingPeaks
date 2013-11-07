@@ -1,4 +1,4 @@
-{
+define({
     "Date": "Data",
     "Day": "Giorno",
 
@@ -126,4 +126,4 @@
     "Hybrid": "Ibrido",
 
     "hr": "ore"
-}
+});

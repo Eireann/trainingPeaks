@@ -1,4 +1,4 @@
-{
+define({
     "Yes": "Yes",
     "No": "No",
 
@@ -462,4 +462,4 @@
     "ConfirmDeleteLap": "Are you sure you want to delete the lap?",
     "RightPower": "Right Power"
 
-}
+});
