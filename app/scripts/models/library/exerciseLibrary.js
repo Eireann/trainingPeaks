@@ -27,6 +27,7 @@ function (TP, LibraryExercisesCollection)
             libraryName: "",
             listInDirectory: false,
             ownerId: 0,
+            ownerName: "",
             priceRecursMonthly: false,
             selected: false
         },
