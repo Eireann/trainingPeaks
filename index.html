@@ -122,22 +122,15 @@ src:url("assets/fonts/c07fef9e-a934-42d7-92ad-69205f2b8a00.eot?#iefix") format("
   <div id="info"></div>
 
   <!-- Third Party Libraries -->
-  <!--(if target dummy)><!-->
-  <script src="./vendor/js/libs/jquery/jquery.js"></script>
-  <!--<!(endif)-->
-
   <!--(if target build)>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script src="//maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <!(endif)-->
 
   <!--(if target build_debug)>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <script src="//maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <!(endif)-->
 
   <!--(if target build_debug_min)>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <script src="//maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <!(endif)-->
 
@@ -195,46 +188,27 @@ src:url("assets/fonts/c07fef9e-a934-42d7-92ad-69205f2b8a00.eot?#iefix") format("
   <!(endif)-->
 
   <!--(if target dummy)><!-->
-  <script src="./vendor/js/libs/flot/jquery.flot.js"></script>
-  <script src="./vendor/js/libs/flot/jquery.flot.crosshair.js"></script>
-  <script src="./vendor/js/libs/flot/jquery.flot.resize.js"></script>
   <script src="//maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <!--<!(endif)-->
 
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
-  <script data-main="./app/config/config" src="./vendor/js/libs/require.js"></script>
+  <script src="./bower_components/requirejs/require.js"></script>
+  <script src="./app/config.js"></script>
+  <script>require(["main"]);</script>
   <!--<!(endif)-->
 
   <!--(if target build)>
   <script src="single.min.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
   <!(endif)-->
 
   <!--(if target build_debug)>
   <script src="single.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
   <!(endif)-->
 
   <!--(if target build_debug_min)>
   <script src="single.min.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
   <!(endif)-->
 <script>
     var gaAnalyticsKey = (window.apiConfig && window.apiConfig.gaAccount) ? window.apiConfig.gaAccount : "UA-42726244-3";

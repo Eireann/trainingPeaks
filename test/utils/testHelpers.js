@@ -4,28 +4,23 @@ define(
     "backbone",
     "TP",
     "testUtils/xhrDataStubs",
-    "testUtils/sinon",
     "app"
 ],
-function(_, Backbone, TP, xhrData, sinon_, MarsApp)
+function(_, Backbone, TP, xhrData, MarsApp)
 {
 
     var testHelpers = {
 
-        theApp: new MarsApp(),
+        theApp: new MarsApp({"$body": $("<body></body>")}),
 
         setupRegionElements: function()
         {
-            this.$body = $("<body></body>");
-            this.navRegion.$el = $("<div id='navigation'></div>");
-            this.mainRegion.$el = $("<div id='main'></div>");
-            this.infoRegion.$el = $("<div id='info'></div>");
-            this.$body.append(this.navRegion.$el);
-            this.$body.append(this.mainRegion.$el);
-            this.$body.append(this.infoRegion.$el)
-
-            // since we override the body element, may need to initialize events on it again
-            this.watchForFirstTouch();
+            this.theApp.navRegion.$el = $("<div id='navigation'></div>");
+            this.theApp.mainRegion.$el = $("<div id='main'></div>");
+            this.theApp.infoRegion.$el = $("<div id='info'></div>");
+            this.theApp.$body.append(this.theApp.navRegion.$el);
+            this.theApp.$body.append(this.theApp.mainRegion.$el);
+            this.theApp.$body.append(this.theApp.infoRegion.$el);
         },
 
         startTheApp: function()
@@ -35,41 +30,56 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
             this.stopTheApp();
 
-            this.theApp = new MarsApp();
+            this.theApp = window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
 
             // capture ajax calls
             this.setupFakeAjax();
 
-            // ajaxCaching doesn't play nicely with our fake xhr ...
-            this.theApp.ajaxCachingEnabled = false;
-
             // backbone history doesn't work well with our tests for some reason
             this.theApp.historyEnabled = false;
-
-            // disable window reload
-            var helper = this;
-            this.theApp.reloadApp = function()
-            {
-                helper.startTheApp();
-            };
 
             // disable fade in/out timeouts for all layouts
             TP.Layout.prototype.fadeIn = false;
             TP.Layout.prototype.fadeOut = false;
 
-            // setup fake html regions
-            this.theApp.on("initialize:before", this.setupRegionElements, this.theApp);
+            // setup fake html regions, so it doesn't look for them on the html page and so we can reach them for testing
+            this.theApp.on("initialize:before", this.setupRegionElements, this);
 
             // start the app
             this.theApp.start();
+
+            // flag as started so we know whether to shut it down
+            this.theApp.started = true;
         },
 
         stopTheApp: function()
         {
-            if (this.theApp)
+
+            // if we have an application instance, do as much as possible to cleanup memory usage
+            if (this.theApp && this.theApp.started)
             {
-                this.theApp.stop();
+
+                // this has to happen before closing regions and controllers, or else some things don't get cleaned up
+                this.theApp.$body.find("*").remove(); 
+                this.theApp.$body.remove();
+
+                _.each(this.theApp.controllers, function(controller)
+                {
+                    controller.close();
+                });
+
+                this.theApp._regionManager.closeRegions();
+                this.theApp.dataManager.forceReset();
+                this.theApp.calendarManager.stopListening();
+                Backbone.history.stop();
+                Backbone.history.handlers = [];
             }
+
+            // remove any html elements and event handlers that were added to the body, document, and window either by the app or by jquery plugins
+            $("body > *:not(#mocha)").remove();
+            $("body").off();
+            $(document).off();
+            $(window).off();
 
             this.removeFakeAjax();
             localStorage.clear();
@@ -85,7 +95,7 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
             }
             else
             {
-                throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
+                throw Error("Cannot find request to resolve: " + httpVerb + " " + urlPattern);
             }
         },
 
@@ -124,7 +134,6 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
         findRequest: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            //console.log(this.fakeAjaxRequests);
             return _.find(this.fakeAjaxRequests, function(req)
             {
                 //console.log(req);
@@ -150,6 +159,9 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
         clearRequests: function()
         {
+            _.each(this.fakeAjaxRequests, function(xhr) {
+                xhr.respond(500, [], "");
+            });
             this.fakeAjaxRequests = [];
         },
 
@@ -166,21 +178,17 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
 
             $.support.cors = true;
             this.fakeAjaxRequests = [];
-            this.xhr = sinon.useFakeXMLHttpRequest();
-
-            this.xhr.onCreate = function(xhr)
+            window.fakeXhr.onCreate = function(xhr)
             {
-                //console.log(xhr);
                 self.fakeAjaxRequests.push(xhr);
             };
         },
 
         removeFakeAjax: function()
         {
-            if(this.xhr)
+            if(window.fakeXhr)
             {
-                this.xhr.restore();
-                this.xhr = null;
+                window.fakeXhr.onCreate = null;
             }
             this.clearRequests();
         },
@@ -225,8 +233,6 @@ function(_, Backbone, TP, xhrData, sinon_, MarsApp)
             return TP.utils.deepClone(obj);
         }
     };
-
-    testHelpers.theApp.start();
 
     return testHelpers;
 

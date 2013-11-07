@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "underscore",
     "moment",
@@ -17,17 +16,17 @@ function(
         function MockSelectionClass(models)
         {
             this.models = models;
-            this.activate = jasmine.createSpy();
-            this.deactivate = jasmine.createSpy();
-            this.fakeAction = jasmine.createSpy();
+            this.activate = sinon.stub();
+            this.deactivate = sinon.stub();
+            this.fakeAction = sinon.stub();
         }
 
         function MockRangeSelectionClass(models)
         {
             this.models = models;
-            this.activate = jasmine.createSpy();
-            this.deactivate = jasmine.createSpy();
-            this.extendTo = jasmine.createSpy().andReturn(true);
+            this.activate = sinon.stub();
+            this.deactivate = sinon.stub();
+            this.extendTo = sinon.stub().returns(true);
         }
 
         var selectionManager;
@@ -52,19 +51,19 @@ function(
             it("should use the sepecified selection class", function()
             {
                 selectionManager.setSelection(item);
-                expect(selectionManager.selection instanceof MockSelectionClass).toBe(true);
+                expect(selectionManager.selection instanceof MockSelectionClass).to.equal(true);
             });
 
             it("should pass in the item when constructing the selection", function()
             {
                 selectionManager.setSelection(item);
-                expect(selectionManager.selection.models).toEqual([item]);
+                expect(selectionManager.selection.models).to.eql([item]);
             });
 
             it("should activate the selection", function()
             {
                 selectionManager.setSelection(item);
-                expect(selectionManager.selection.activate).toHaveBeenCalled();
+                expect(selectionManager.selection.activate).to.have.been.called;
             });
 
             it("should deactivate the previous selection", function()
@@ -73,13 +72,13 @@ function(
                 var previousSelection = selectionManager.selection;
 
                 selectionManager.setSelection(_.clone(item));
-                expect(previousSelection.deactivate).toHaveBeenCalled();
+                expect(previousSelection.deactivate).to.have.been.called;
             });
 
             it("should not fail if shift key is held", function()
             {
                 selectionManager.setSelection(item, { shiftKey: true });
-                expect(selectionManager.selection.activate).toHaveBeenCalled();
+                expect(selectionManager.selection.activate).to.have.been.called;
             });
 
         });
@@ -99,11 +98,11 @@ function(
             it("should extend the selection if shift is held", function()
             {
                 selectionManager.setSelection(_.clone(item));
-                expect(selectionManager.selection.activate).toHaveBeenCalled();
+                expect(selectionManager.selection.activate).to.have.been.called;
                 var selection = selectionManager.selection;
                 selectionManager.setSelection(_.clone(item), { shiftKey: true });
-                expect(selectionManager.selection.extendTo).toHaveBeenCalled();
-                expect(selectionManager.selection).toEqual(selection);
+                expect(selectionManager.selection.extendTo).to.have.been.called;
+                expect(selectionManager.selection).to.eql(selection);
             });
 
         });
@@ -124,12 +123,12 @@ function(
 
             it("should pass in all items", function()
             {
-                expect(selectionManager.selection.models).toEqual(items);
+                expect(selectionManager.selection.models).to.eql(items);
             });
 
             it("should activate the selection", function()
             {
-                expect(selectionManager.selection.activate).toHaveBeenCalled();
+                expect(selectionManager.selection.activate).to.have.been.called;
             });
 
         });
@@ -151,7 +150,7 @@ function(
                 var selection = selectionManager.selection;
 
                 selectionManager.clearSelection();
-                expect(selection.deactivate).toHaveBeenCalled();
+                expect(selection.deactivate).to.have.been.called;
             });
 
             it("should not fail if there is no selection", function()
@@ -163,7 +162,7 @@ function(
             {
                 selectionManager.setSelection(item);
                 selectionManager.clearSelection();
-                expect(selectionManager.selection).toBe(null);
+                expect(selectionManager.selection).to.equal(null);
             });
 
         });
@@ -182,20 +181,20 @@ function(
 
             it("should return false if there is no selection", function()
             {
-                expect(selectionManager.execute("fake")).toBe(false);
+                expect(selectionManager.execute("fake")).to.equal(false);
             });
 
             it("should return false if the selection has no such action", function()
             {
                 selectionManager.setSelection(item);
-                expect(selectionManager.execute("doesnotexist")).toBe(false);
+                expect(selectionManager.execute("doesnotexist")).to.equal(false);
             });
 
             it("should call the action if it has one", function()
             {
                 selectionManager.setSelection(item);
                 selectionManager.execute("fake");
-                expect(selectionManager.selection.fakeAction).toHaveBeenCalled();
+                expect(selectionManager.selection.fakeAction).to.have.been.called;
             });
 
         });

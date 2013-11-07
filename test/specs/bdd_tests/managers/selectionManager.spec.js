@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "jquery",
     "testUtils/testHelpers",
@@ -40,50 +39,50 @@ function(
 
             it("Ctrl-C should cause copy", function()
             {
-                spyOn(selectionManager, "copySelectionToClipboard");
+                sinon.stub(selectionManager, "copySelectionToClipboard");
                 var e = new $.Event("keydown", { which: "C".charCodeAt(), ctrlKey: true });
                 $body.trigger(e);
-                expect(selectionManager.copySelectionToClipboard).toHaveBeenCalled();
+                expect(selectionManager.copySelectionToClipboard).to.have.been.called;
             });
 
             it("Cmd-C should cause copy", function()
             {
-                spyOn(selectionManager, "copySelectionToClipboard");
+                sinon.stub(selectionManager, "copySelectionToClipboard");
                 var e = new $.Event("keydown", { which: "C".charCodeAt(), metaKey: true });
                 $body.trigger(e);
-                expect(selectionManager.copySelectionToClipboard).toHaveBeenCalled();
+                expect(selectionManager.copySelectionToClipboard).to.have.been.called;
             });
 
             it("Ctrl-X should cause cut", function()
             {
-                spyOn(selectionManager, "cutSelectionToClipboard");
+                sinon.stub(selectionManager, "cutSelectionToClipboard");
                 var e = new $.Event("keydown", { which: "X".charCodeAt(), ctrlKey: true });
                 $body.trigger(e);
-                expect(selectionManager.cutSelectionToClipboard).toHaveBeenCalled();
+                expect(selectionManager.cutSelectionToClipboard).to.have.been.called;
             });
 
             it("Cmd-X should cause cut", function()
             {
-                spyOn(selectionManager, "cutSelectionToClipboard");
+                sinon.stub(selectionManager, "cutSelectionToClipboard");
                 var e = new $.Event("keydown", { which: "X".charCodeAt(), metaKey: true });
                 $body.trigger(e);
-                expect(selectionManager.cutSelectionToClipboard).toHaveBeenCalled();
+                expect(selectionManager.cutSelectionToClipboard).to.have.been.called;
             });
 
             it("Ctrl-V should cause paste", function()
             {
-                spyOn(selectionManager, "pasteClipboardToSelection");
+                sinon.stub(selectionManager, "pasteClipboardToSelection");
                 var e = new $.Event("keydown", { which: "V".charCodeAt(), ctrlKey: true });
                 $body.trigger(e);
-                expect(selectionManager.pasteClipboardToSelection).toHaveBeenCalled();
+                expect(selectionManager.pasteClipboardToSelection).to.have.been.called;
             });
 
             it("Cmd-V should cause paste", function()
             {
-                spyOn(selectionManager, "pasteClipboardToSelection");
+                sinon.stub(selectionManager, "pasteClipboardToSelection");
                 var e = new $.Event("keydown", { which: "V".charCodeAt(), metaKey: true });
                 $body.trigger(e);
-                expect(selectionManager.pasteClipboardToSelection).toHaveBeenCalled();
+                expect(selectionManager.pasteClipboardToSelection).to.have.been.called;
             });
 
             describe("When a modal view is open", function()
@@ -95,50 +94,50 @@ function(
 
                 it("Ctrl-C should not cause copy", function()
                 {
-                    spyOn(selectionManager, "copySelectionToClipboard");
+                    sinon.stub(selectionManager, "copySelectionToClipboard");
                     var e = new $.Event("keydown", { which: "C".charCodeAt(), ctrlKey: true });
                     $body.trigger(e);
-                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.copySelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Cmd-C should not cause copy", function()
                 {
-                    spyOn(selectionManager, "copySelectionToClipboard");
+                    sinon.stub(selectionManager, "copySelectionToClipboard");
                     var e = new $.Event("keydown", { which: "C".charCodeAt(), metaKey: true });
                     $body.trigger(e);
-                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.copySelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Ctrl-X should not cause cut", function()
                 {
-                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    sinon.stub(selectionManager, "cutSelectionToClipboard");
                     var e = new $.Event("keydown", { which: "X".charCodeAt(), ctrlKey: true });
                     $body.trigger(e);
-                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.cutSelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Cmd-X should not cause cut", function()
                 {
-                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    sinon.stub(selectionManager, "cutSelectionToClipboard");
                     var e = new $.Event("keydown", { which: "X".charCodeAt(), metaKey: true });
                     $body.trigger(e);
-                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.cutSelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Ctrl-V should not cause paste", function()
                 {
-                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    sinon.stub(selectionManager, "pasteClipboardToSelection");
                     var e = new $.Event("keydown", { which: "V".charCodeAt(), ctrlKey: true });
                     $body.trigger(e);
-                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                    expect(selectionManager.pasteClipboardToSelection).to.not.have.been.called;
                 });
 
                 it("Cmd-V should not cause paste", function()
                 {
-                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    sinon.stub(selectionManager, "pasteClipboardToSelection");
                     var e = new $.Event("keydown", { which: "V".charCodeAt(), metaKey: true });
                     $body.trigger(e);
-                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                    expect(selectionManager.pasteClipboardToSelection).to.not.have.been.called;
                 });
 
             });
@@ -155,50 +154,50 @@ function(
 
                 it("Ctrl-C should not cause copy", function()
                 {
-                    spyOn(selectionManager, "copySelectionToClipboard");
+                    sinon.stub(selectionManager, "copySelectionToClipboard");
                     var e = new $.Event("keydown", { which: "C".charCodeAt(), ctrlKey: true });
                     $input.trigger(e);
-                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.copySelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Cmd-C should not cause copy", function()
                 {
-                    spyOn(selectionManager, "copySelectionToClipboard");
+                    sinon.stub(selectionManager, "copySelectionToClipboard");
                     var e = new $.Event("keydown", { which: "C".charCodeAt(), metaKey: true });
                     $input.trigger(e);
-                    expect(selectionManager.copySelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.copySelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Ctrl-X should not cause cut", function()
                 {
-                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    sinon.stub(selectionManager, "cutSelectionToClipboard");
                     var e = new $.Event("keydown", { which: "X".charCodeAt(), ctrlKey: true });
                     $input.trigger(e);
-                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.cutSelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Cmd-X should not cause cut", function()
                 {
-                    spyOn(selectionManager, "cutSelectionToClipboard");
+                    sinon.stub(selectionManager, "cutSelectionToClipboard");
                     var e = new $.Event("keydown", { which: "X".charCodeAt(), metaKey: true });
                     $input.trigger(e);
-                    expect(selectionManager.cutSelectionToClipboard).not.toHaveBeenCalled();
+                    expect(selectionManager.cutSelectionToClipboard).to.not.have.been.called;
                 });
 
                 it("Ctrl-V should not cause paste", function()
                 {
-                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    sinon.stub(selectionManager, "pasteClipboardToSelection");
                     var e = new $.Event("keydown", { which: "V".charCodeAt(), ctrlKey: true });
                     $input.trigger(e);
-                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                    expect(selectionManager.pasteClipboardToSelection).to.not.have.been.called;
                 });
 
                 it("Cmd-V should not cause paste", function()
                 {
-                    spyOn(selectionManager, "pasteClipboardToSelection");
+                    sinon.stub(selectionManager, "pasteClipboardToSelection");
                     var e = new $.Event("keydown", { which: "V".charCodeAt(), metaKey: true });
                     $input.trigger(e);
-                    expect(selectionManager.pasteClipboardToSelection).not.toHaveBeenCalled();
+                    expect(selectionManager.pasteClipboardToSelection).to.not.have.been.called;
                 });
 
             });
@@ -233,9 +232,9 @@ function(
                 testHelpers.resolveRequest("PUT", "workouts/1", {});
                 testHelpers.resolveRequest("PUT", "timedmetrics/1", {});
 
-                expect(workout.getCalendarDay()).toEqual("2013-10-25");
-                expect(metric.getCalendarDay()).toEqual("2013-10-25");
-                expect(metric.get("timeStamp")).toEqual("2013-10-25T13:26:42");
+                expect(workout.getCalendarDay()).to.eql("2013-10-25");
+                expect(metric.getCalendarDay()).to.eql("2013-10-25");
+                expect(metric.get("timeStamp")).to.eql("2013-10-25T13:26:42");
 
             });
 
@@ -252,11 +251,11 @@ function(
                 testHelpers.resolveRequest("POST", "workouts", {});
                 testHelpers.resolveRequest("POST", "timedmetrics", {});
 
-                expect(workout.getCalendarDay()).toEqual("2013-10-22");
-                expect(metric.getCalendarDay()).toEqual("2013-10-22");
-                expect(metric.get("timeStamp")).toEqual("2013-10-22T13:26:42");
+                expect(workout.getCalendarDay()).to.eql("2013-10-22");
+                expect(metric.getCalendarDay()).to.eql("2013-10-22");
+                expect(metric.get("timeStamp")).to.eql("2013-10-22T13:26:42");
 
-                expect(calendarManager.days.get("2013-10-25").itemsCollection.length).toEqual(2);
+                expect(calendarManager.days.get("2013-10-25").itemsCollection.length).to.eql(2);
 
             });
 
@@ -270,7 +269,7 @@ function(
 
                 testHelpers.resolveRequest("PUT", "workouts/1", {});
 
-                expect(workout.getCalendarDay()).toEqual("2013-10-24");
+                expect(workout.getCalendarDay()).to.eql("2013-10-24");
             });
 
             it("should cut, paste metircs", function()
@@ -283,7 +282,7 @@ function(
 
                 testHelpers.resolveRequest("PUT", "metrics/1", {});
 
-                expect(metric.getCalendarDay()).toEqual("2013-10-24");
+                expect(metric.getCalendarDay()).to.eql("2013-10-24");
             });
             it("should copy, paste workouts", function()
             {
@@ -295,8 +294,8 @@ function(
 
                 testHelpers.resolveRequest("POST", "workouts", {});
 
-                expect(workout.getCalendarDay()).toEqual("2013-10-22");
-                expect(calendarManager.days.get("2013-10-24").itemsCollection.length).toEqual(1);
+                expect(workout.getCalendarDay()).to.eql("2013-10-22");
+                expect(calendarManager.days.get("2013-10-24").itemsCollection.length).to.eql(1);
             });
 
             it("should cut, paste metircs", function()
@@ -309,8 +308,8 @@ function(
 
                 testHelpers.resolveRequest("POST", "metrics", {});
 
-                expect(metric.getCalendarDay()).toEqual("2013-10-22");
-                expect(calendarManager.days.get("2013-10-24").itemsCollection.length).toEqual(1);
+                expect(metric.getCalendarDay()).to.eql("2013-10-22");
+                expect(calendarManager.days.get("2013-10-24").itemsCollection.length).to.eql(1);
             });
 
 
