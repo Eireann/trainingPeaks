@@ -2,13 +2,11 @@
 [
     "jquery",
     "TP",
-    "framework/tooltips",
     "views/expando/lapView"
 ],
 function(
     $,
     TP,
-    ToolTips,
     LapView
     )
 {
@@ -152,9 +150,6 @@ function(
                         model.getState().set("isFocused", true);    
                     }
                 });
-
-                spyOn(ToolTips, "enableTooltips");
-                spyOn(ToolTips, "disableTooltips");
             });
 
             it("Should make a lap editable on the second click", function()

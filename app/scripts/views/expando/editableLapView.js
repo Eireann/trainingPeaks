@@ -2,14 +2,12 @@
 [
     "underscore",
     "TP",
-    "framework/tooltips",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteLapTemplate"
 ],
 function(
     _,
     TP,
-    ToolTips,
     UserConfirmationView,
     deleteLapTemplate
 )
@@ -91,7 +89,6 @@ function(
 
         _startEditing: function()
         {
-            ToolTips.disableTooltips();
             this.model.getState().set("isEditing", true);
             this.$el.addClass("editing");
             this.$("input.lapName").focus().select();
@@ -108,7 +105,6 @@ function(
             // check whether we are in edit state, not just if the isEditing flag, as the lapView could also be editin
             if(this.$el.is(".editing"))
             {
-                ToolTips.enableTooltips();
                 this.model.getState().set("isEditing", false);
                 if(!cancel)
                 {

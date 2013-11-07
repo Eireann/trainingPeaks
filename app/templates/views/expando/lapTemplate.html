@@ -1,8 +1,8 @@
 {{#ifNot _state.isCut}}
     <input type="checkbox">
 
-    <div class="lapDescription" {{#if _state.isLap}}title="{{$ 'ClickToEdit' }}"{{/if}}>
-        <span class="lapName">{{ name }}</span>
+    <div class="lapDescription">
+        <span class="lapName"{{#if _state.isLap}} title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</span>
         {{#if _state.isLap}}
         <input class="lapName" value="{{ name }}" type="text"/>
         {{/if}}
