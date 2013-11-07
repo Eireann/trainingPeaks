@@ -28,13 +28,14 @@ function (TP, LibraryExercisesCollection)
             listInDirectory: false,
             ownerId: 0,
             priceRecursMonthly: false,
-            selected: false
+            selected: false,
+            ownerName: null
         },
 
         initialize: function(options)
         {
             this.exercises = new LibraryExercisesCollection();
-            
+
             //#this.exercises.on("select", this.onSelect, this);
 
             // Users have the ability to purchase Libraries from other users/coaches. Those might be named the same as

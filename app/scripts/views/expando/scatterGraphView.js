@@ -143,7 +143,7 @@ function(
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
-            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentXAxis.toLowerCase(), this.model.get("workoutTypeValueId"));
+            this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentXAxis, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;

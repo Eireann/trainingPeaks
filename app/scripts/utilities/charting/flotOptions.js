@@ -126,6 +126,8 @@ function (_, TP, flotFilter, chartColors)
 
         getPointOptions: function (onHoverHandler, axisType, workoutTypeId)
         {
+            var lowerCaseAxisName = axisType.toLowerCase();
+
             return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
                 {
                     selection:
@@ -160,13 +162,16 @@ function (_, TP, flotFilter, chartColors)
                             min: 0,
                             color: "transparent",
                             tickColor: "transparent",
-
+                            font:
+                            {
+                                color: chartColors.seriesColorByChannel[axisType]
+                            },
                             tickFormatter: function (value, axis)
                             {
-                                var formattedValue = TP.utils.conversion.formatUnitsValue(axisType, value, { defaultValue: 0, workoutTypeId: workoutTypeId });
-                                if (axisType !== "time")
+                                var formattedValue = TP.utils.conversion.formatUnitsValue(lowerCaseAxisName, value, { defaultValue: 0, workoutTypeId: workoutTypeId });
+                                if (lowerCaseAxisName !== "time")
                                 {
-                                    formattedValue = formattedValue + " " + TP.utils.units.getUnitsLabel(axisType, workoutTypeId);
+                                    formattedValue = formattedValue + " " + TP.utils.units.getUnitsLabel(lowerCaseAxisName, workoutTypeId);
                                 }
                                 return formattedValue;
                             },
@@ -175,7 +180,7 @@ function (_, TP, flotFilter, chartColors)
                                 var ticksArray = [];
                                 var max = axis.datamax;
 
-                                if (axisType && axisType === "time")
+                                if (lowerCaseAxisName && lowerCaseAxisName === "time")
                                 {
                                     if (axis.tickSize <= 120000)
                                         axis.tickSize = 120000;
@@ -203,7 +208,7 @@ function (_, TP, flotFilter, chartColors)
 
                                 while (max > 0)
                                 {
-                                    if (axisType && axisType === "distance")
+                                    if (lowerCaseAxisName && lowerCaseAxisName === "distance")
                                         max -= axis.tickSize;
                                     ticksArray.push(axis.datamax - max);
                                     max -= axis.tickSize;
