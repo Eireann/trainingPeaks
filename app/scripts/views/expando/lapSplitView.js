@@ -3,14 +3,12 @@ define(
     "underscore",
     "TP",
     "utilities/lapsStats",
-    "framework/tooltips",
     "hbs!templates/views/expando/lapSplitTemplate"
 ],
 function(
     _,
     TP, 
     LapsStats,
-    ToolTips,
     lapSplitTemplate
     )
 {
@@ -71,7 +69,6 @@ function(
 
             this.stateModel.set("primaryRange", this.model);
             var $lapName = this.$("td.lap");
-            ToolTips.disableTooltips();
             var $input = $('<input type="text"/>');
             $input.val($lapName.text());
             $lapName.empty().append($input).addClass('editing');
@@ -87,7 +84,6 @@ function(
             {
                 this._markAsDeleted();
             }
-            ToolTips.enableTooltips();
         },
 
         _onClick: function()
@@ -124,7 +120,6 @@ function(
             }
             $input.closest("td").html(this.model.get("name")).removeClass("editing");
             $input.off("change blur enter cancel");
-            ToolTips.enableTooltips();
         }
 
     });
