@@ -6,7 +6,12 @@ define(function(require) {
 
     var buildMap = {};
 
-    Handlebars.registerHelper("$", function(key) { return i18n[key]; });
+    Handlebars.registerHelper("$", function(key) {
+        var text = Handlebars.Utils.escapeExpression(i18n[key]);
+        var html = text.replace(/\n/g, '<br/>');
+
+        return new Handlebars.SafeString(html);
+    });
     Handlebars.registerHelper("comment", function() { return ""; });
 
     function process(template) {
