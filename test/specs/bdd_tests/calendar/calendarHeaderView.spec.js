@@ -48,21 +48,21 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
             view.render();
 
             stateModel.set("date", "2013-10-21");
-            expect(view.$(".calendarMonthLabel").text()).toContain("October");
-            expect(view.$(".calendarMonthLabel").text()).toContain("2013");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("October");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("2013");
 
             stateModel.set("date", "2013-10-28");
-            expect(view.$(".calendarMonthLabel").text()).toContain("November");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("November");
 
             stateModel.set("date", "2013-11-25");
-            expect(view.$(".calendarMonthLabel").text()).toContain("December");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("December");
 
             stateModel.set("date", "2013-12-23");
-            expect(view.$(".calendarMonthLabel").text()).toContain("December");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("December");
 
             stateModel.set("date", "2013-12-30");
-            expect(view.$(".calendarMonthLabel").text()).toContain("January");
-            expect(view.$(".calendarMonthLabel").text()).toContain("2014");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("January");
+            expect(view.$(".calendarMonthLabel").text()).to.contain("2014");
         });
 
     });

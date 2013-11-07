@@ -16,7 +16,7 @@
 /*.sln.DotSettings.user
 *.swp
 
-test/specsList.js
+test/specs.js
 JSLintOptions.xml
 /SeleniumSuite/bin
 /SeleniumSuite/obj
