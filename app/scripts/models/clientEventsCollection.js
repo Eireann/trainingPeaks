@@ -17,7 +17,7 @@ function (TP, ClientEvent)
         logEvent: function(eventData)
         {
             this.create(eventData);
-            theMarsApp.logger.debug("Logged event: " + JSON.stringify(eventData));
+            //theMarsApp.logger.debug("Logged event: " + JSON.stringify(eventData));
         }
 
     });
