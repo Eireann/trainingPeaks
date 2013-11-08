@@ -28,6 +28,16 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                     axisIndex++;
                 }
 
+                var labelWidth = 15;
+                if(showSpeedAsPace)
+                {
+                    labelWidth = 27;
+                }
+                else if(s.label === "Time")
+                {
+                    labelWidth = 39;
+                }
+
                 var axisOptions =
                 {
                     show: true,
@@ -56,7 +66,7 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                         }
                         return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: workoutTypeValueId}), 10);
                     },
-                    labelWidth: showSpeedAsPace ? 27 : 15
+                    labelWidth: labelWidth
                 };
 
                 yaxes.push(axisOptions);
