@@ -37,6 +37,12 @@ function(
 
         settingsView: pmcChartSettings, 
 
+        constructor: function(options)
+        {
+            PmcChart.__super__.constructor.apply(this, arguments);
+            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
+        },
+
         defaults: {
                 atlConstant: 7,
                 atlConstant2: 14,
@@ -134,8 +140,8 @@ function(
             }
 
             var date = moment(dataItem.workoutDay).format(CalendarUtility.idFormat);
-            var day = theMarsApp.calendarManager.days.get(date);
-            theMarsApp.calendarManager.loadActivities(date);
+            var day = this.calendarManager.days.get(date);
+            this.calendarManager.loadActivities(date);
 
             var view = new PmcWorkoutsListView.Tomahawk({ model: day, target: $.Event("", position), offset: "right" });
             return view;
