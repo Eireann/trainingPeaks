@@ -552,10 +552,16 @@
     }
 }
 
-.pmcWorkoutsList
-{
+.pmcWorkoutsList {
+    max-width: 150px;
+
     ul {
         list-style:none;
+
+        li {
+            padding-bottom: 5px;
+            margin-bottom: 5px !important;
+        }
     }
 
     h6 {
@@ -563,6 +569,27 @@
         font-size: $fontSizeSmall;
         color: $TPGrey3;
         font-weight: normal;
+    }
+    .workoutDiv {
+        border:1px solid transparent;
+
+        &:hover {
+            border: 1px solid $TPGrey11;
+            z-index: 2;
+        }
+
+        .workoutBody {
+            line-height:1;
+        }
+
+        .workoutIcon {
+            margin-top: 1px !important;
+            z-index: 1;
+        }
+
+        .workoutDistanceTime {
+            padding: 11px 0px 0px 30px !important;
+        }
     }
 }
 
