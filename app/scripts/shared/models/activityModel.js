@@ -36,7 +36,7 @@ function(
         _updatePrefixedId: function()
         {
             var model = this.unwrap();
-            this.set("id", model.id ? model.webAPIModelName + ":" + model.id : null);
+            this.set("id", ActivityModel.getActivityId({ model: model }));
         },
 
         _retrigger: function()
@@ -77,33 +77,51 @@ function(
     };
 
 
-    ActivityModel.getActivityId = function(ModelClass, model)
+    ActivityModel.getActivityId = function(options)
     {
         // already an activity model, so already has a prefixed id
-        if(model instanceof ActivityModel)
+        if(options.model && options.model instanceof ActivityModel)
         {
-            return model.id;
+            return options.model.id;
         }
 
-        // make sure the model class is valid
-        if(ModelClass.prototype.hasOwnProperty("webAPIModelName") && ModelClass.prototype.hasOwnProperty("idAttribute"))
+        // constructor and model or attributes
+        if(options.klass &&
+           options.model &&
+           options.klass.prototype.hasOwnProperty("webAPIModelName") &&
+           options.klass.prototype.hasOwnProperty("idAttribute"))
         {
-            var prefix = ModelClass.prototype.webAPIModelName;
-            var idAttribute = ModelClass.prototype.idAttribute;
+            var prefix = options.klass.prototype.webAPIModelName;
+            var idAttribute = options.klass.prototype.idAttribute;
 
             // already a model of the right type, get the id and prefix it
-            if(model instanceof ModelClass)
+            if(options.model instanceof options.klass)
             {
-                return prefix + ":" + model.id;
+                return prefix + ":" + options.model.id;
             }
 
-            // raw attributes with the correct id property
-            if(_.isObject(model) && model.hasOwnProperty(idAttribute))
+            // attributes object with the correct id property
+            if(_.isObject(options.model) && options.model.hasOwnProperty(idAttribute))
             {
-                return prefix + ":" + model[idAttribute];
+                return prefix + ":" + options.model[idAttribute];
             }
         }
 
+        // constructor and id
+        if(options.klass &&
+           options.id &&
+           options.klass.prototype.hasOwnProperty("webAPIModelName"))
+        {
+            return options.klass.prototype.webAPIModelName + ":" + options.id;
+        }
+       
+        // api model
+        if(options.model && options.model.webAPIModelName && options.model.id)
+        {
+            return options.model.webAPIModelName + ":" + options.model.id;
+        } 
+
+        // not enough info to build an id
         return null;
     };
 

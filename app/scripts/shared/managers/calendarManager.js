@@ -125,7 +125,7 @@ function(
 
         get: function(klass, id)
         {
-            var item = this.activities.get([klass.prototype.webAPIModelName, id].join(":"));
+            var item = this.activities.get(ActivityModel.getActivityId({ klass: klass, id: id}));
             return ActivityModel.unwrap(item);
         },
 
@@ -244,9 +244,12 @@ function(
             this.activities.add(item);
         },
 
-        addOrUpdateItem: function(ModelClass, modelData)
+        addOrUpdateItem: function(klass, modelData)
         {
-            var activityId = ActivityModel.getActivityId(ModelClass, modelData);
+            var activityId = ActivityModel.getActivityId({
+                klass: klass,
+                model: modelData
+            });
 
             var existingActivity = this.activities.get(activityId);
             if(existingActivity)
@@ -257,7 +260,7 @@ function(
             }
 
             // no existing activity found, add to collection
-            var newItem = new ModelClass(modelData);
+            var newItem = new klass(modelData);
             var activity = ActivityModel.wrap(newItem);
             this.activities.add(activity);
             return newItem;
