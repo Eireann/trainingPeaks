@@ -36,7 +36,7 @@ function(
         _updatePrefixedId: function()
         {
             var model = this.unwrap();
-            this.set("id", model.id ? model.webAPIModelName + ":" + model.id : null);
+            this.set("id", ActivityModel.getActivityId(model));
         },
 
         _retrigger: function()
@@ -74,6 +74,50 @@ function(
     ActivityModel.unwrap = function(model)
     {
         return _.isFunction(model && model.unwrap) ? model.unwrap() : model;
+    };
+
+
+    ActivityModel.getActivityId = function(options)
+    {
+
+        // As a special case a model may be passed in instead of options
+        if(options instanceof Backbone.Model)
+        {
+            var model = options;
+            if(model instanceof ActivityModel)
+            {
+                return model.id;
+            }
+            else
+            {
+                return model.id ? model.webAPIModelName + ":" + model.id : null;
+            }
+        }
+
+        options = _.clone(options);
+
+        // Derive id from attributes and klass, if needed
+        if(!options.id && options.attributes && options.klass)
+        {
+            options.id = options.attributes[options.klass.prototype.idAttribute || "id"];
+        }
+
+        // Derive prefix from klass, if needed
+        if(!options.prefix && options.klass)
+        {
+            options.prefix = options.klass.prototype.webAPIModelName;
+        }
+
+        // Create composite key
+        if(options.prefix && options.id)
+        {
+            return options.prefix + ":" + options.id;
+        }
+        else
+        {
+           return null;
+        }
+
     };
 
     return ActivityModel;
