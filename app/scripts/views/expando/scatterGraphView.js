@@ -212,14 +212,17 @@ function(
 
             if(!_.contains(availableChannels, this.currentXAxis))
             {
-                this.graphToolbar.xaxis = this.currentXAxis = availableChannels[0];
+                this.currentXAxis = availableChannels[0];
             }
             if(!_.contains(availableChannels, this.currentYAxis))
             {
-                this.graphToolbar.yaxis = this.currentYAxis = availableChannels[0];
+                this.currentYAxis = availableChannels[0];
             }
 
+            this.graphToolbar.xaxis = this.currentXAxis;
+            this.graphToolbar.yaxis = this.currentYAxis;
             this.graphToolbar.render();
+
             this._onSeriesChanged();
         },
 
