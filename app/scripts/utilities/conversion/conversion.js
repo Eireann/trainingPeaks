@@ -3,13 +3,14 @@
     "underscore",
     "moment",
     "utilities/datetime/datetime",
+    "utilities/datetime/format",
     "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
     "utilities/units/labels"
-], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
+], function(_, moment, datetimeUtils, formatDateTime, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
 {
     var conversion = {
 
@@ -527,7 +528,7 @@
             return value === null ? "" : conversion.fixNewlinesForFormat(value);
         },
 
-        // converts CRLF \r\n or LF \n to CR \r 
+        // converts CRLF \r\n or LF \n to CR \r
         // FLEX WANTS \r, not \n, don't ask me why ...
         fixNewlinesForParse: function(value)
         {
@@ -621,6 +622,11 @@
                 return null;
             }
             return datetimeUtils.parse(value, options.dateFormat);
+        },
+
+        formatTime: function(value, options)
+        {
+            return formatDateTime.decimalSecondsAsTime(value / 1000);
         },
 
         /*
@@ -763,6 +769,9 @@
 
                 case "date":
                     return conversion.formatDate(value, options);
+
+                case "time":
+                    return conversion.formatTime(value, options);
 
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);

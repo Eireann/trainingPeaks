@@ -38,6 +38,11 @@ function(
                 cols: 2
             },
             {
+                podType: 6,
+                name: "Scatter Graph",
+                cols: 2
+            },
+            {
                 podType: 4, // Time In Zones
                 variant: 1, // Heart Rate
                 name: "Time In Zones - Heart Rate"

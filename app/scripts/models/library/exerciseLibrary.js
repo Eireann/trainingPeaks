@@ -35,7 +35,7 @@ function (TP, LibraryExercisesCollection)
         initialize: function(options)
         {
             this.exercises = new LibraryExercisesCollection();
-            
+
             //#this.exercises.on("select", this.onSelect, this);
 
             // Users have the ability to purchase Libraries from other users/coaches. Those might be named the same as

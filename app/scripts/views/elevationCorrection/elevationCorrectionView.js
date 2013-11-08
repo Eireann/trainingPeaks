@@ -4,7 +4,7 @@
     "TP",
     "models/elevationCorrection",
     "utilities/charting/flotOptions",
-    "utilities/charting/chartColors",    
+    "utilities/charting/chartColors",
     "utilities/conversion/conversion",
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
@@ -48,7 +48,6 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
             this.buildModels(options);
             this.listenToModelEvents();
 
-            this._getDataParser().setXAxis("distance");
             this.setOriginalElevation();
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "opened", "eventLabel": "" });
@@ -74,30 +73,30 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
                 throw new Error("ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel");
         },
 
-        setOriginalElevation: function() 
-        { 
-            this.originalElevation = this._getDataParser().getDataByChannel("Elevation"); 
-            var elevationMinimum = this.findMinimumElevation(this.originalElevation); 
-            this.addMinimumElevation(this.originalElevation, elevationMinimum); 
-        }, 
- 
-        findMinimumElevation: function (modelData) 
-        { 
-            var minimum = null; 
-            _.each(modelData, function (item, index) 
-            { 
-                if (item[1] < minimum || minimum === null) 
-                    minimum = item[1]; 
-            }); 
-            return minimum; 
-        }, 
- 
-        addMinimumElevation: function (originalElevation, minimumElevation) 
-        { 
-            _.each(originalElevation, function (item, index) 
-            { 
-                item[2] = minimumElevation; 
-            }); 
+        setOriginalElevation: function()
+        {
+            this.originalElevation = this._getGraphData().getDataByChannel("distance", "Elevation");
+            var elevationMinimum = this.findMinimumElevation(this.originalElevation);
+            this.addMinimumElevation(this.originalElevation, elevationMinimum);
+        },
+
+        findMinimumElevation: function (modelData)
+        {
+            var minimum = null;
+            _.each(modelData, function (item, index)
+            {
+                if (item[1] < minimum || minimum === null)
+                    minimum = item[1];
+            });
+            return minimum;
+        },
+
+        addMinimumElevation: function (originalElevation, minimumElevation)
+        {
+            _.each(originalElevation, function (item, index)
+            {
+                item[2] = minimumElevation;
+            });
         },
 
         onRender: function()
@@ -155,7 +154,7 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
                 color: "#ffffff",
                 data: this.originalElevation,
                 label: TP.utils.translate("Original"),
-               
+
                 lines:
                 {
                     show: true,
@@ -172,7 +171,7 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
                 series.push(
                 {
                     color: "#e61101",
-                    data: this._getDataParser().createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations")),
+                    data: this._getGraphData().createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations")),
                     label: TP.utils.translate("Corrected"),
                     shadowSize: 0
                 });
@@ -221,21 +220,21 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "applied", "eventLabel": "" });
         },
-        
+
         onElevationCorrectionApplied: function ()
         {
             // need to determine if we can listen to detailData to avoid this .done(_.bind) business.
             this.workoutModel.get("detailData").fetch().done(_.bind(this.showUpdatedElevationProfile, this));
             this.workoutModel.fetch();
         },
-        
+
         showUpdatedElevationProfile: function()
         {
             this.setOriginalElevation();
             this.renderPlot();
             this.ui.chart.removeClass("waiting");
         },
-        
+
         onResetClicked: function()
         {
             this.close();
@@ -246,9 +245,9 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
             return this.workoutModel.get("detailData").get("uploadedFileId");
         },
 
-        _getDataParser: function()
+        _getGraphData: function()
         {
-            return this.workoutModel.get("detailData").getDataParser();
+            return this.workoutModel.get("detailData").graphData;
         }
 
     });
