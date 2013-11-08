@@ -76,5 +76,36 @@ function(
         return _.isFunction(model && model.unwrap) ? model.unwrap() : model;
     };
 
+
+    ActivityModel.getActivityId = function(ModelClass, model)
+    {
+        // already an activity model, so already has a prefixed id
+        if(model instanceof ActivityModel)
+        {
+            return model.id;
+        }
+
+        // make sure the model class is valid
+        if(ModelClass.prototype.hasOwnProperty("webAPIModelName") && ModelClass.prototype.hasOwnProperty("idAttribute"))
+        {
+            var prefix = ModelClass.prototype.webAPIModelName;
+            var idAttribute = ModelClass.prototype.idAttribute;
+
+            // already a model of the right type, get the id and prefix it
+            if(model instanceof ModelClass)
+            {
+                return prefix + ":" + model.id;
+            }
+
+            // raw attributes with the correct id property
+            if(_.isObject(model) && model.hasOwnProperty(idAttribute))
+            {
+                return prefix + ":" + model[idAttribute];
+            }
+        }
+
+        return null;
+    };
+
     return ActivityModel;
 });
