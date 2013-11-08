@@ -1,0 +1,28 @@
+.userUpgradeView
+{
+    max-width: none;
+
+    .dialogContent
+    {
+        overflow: hidden;
+    }
+}
+
+.upgradeLeft
+{
+    float: left;
+    width: 240px;
+    margin-right: 20px;
+}
+
+.upgradeRight
+{
+    float: right;
+    width: 480px;
+}
+
+.upgradeSlideImage
+{
+    width: 480px;
+    height: 480px * 9 / 16;
+}

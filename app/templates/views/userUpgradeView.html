@@ -1,8 +1,20 @@
-﻿<div class="titleBar"><h2>{{$ "PremiumFeature" }}</h2></div>
+﻿<div class="titleBar"><h2>{{$ "PremiumFeature" }}</h2><i class="closeIcon"></i></div>
 <div class="dialogContent">
-    <p>{{$ "UpgradeMessage" }}</p>
 
-    <div class="dialogButtons">
-        <button id="userConfirm" name="ok">{{$ "OK" }}</button>
+    <div class="upgradeLeft">
+        <div class="upgradeSlidePosition"></div>
+        <h3 class="upgradeSlideTitle"></h3>
+        <p class="upgradeSlideText"></p>
+
+        <a class="upgradeButton" href="{{ upgradeUrl }}" target="_blank">Upgrade</a>
     </div>
+
+    <div class="upgradeRight">
+        <img class="upgradeSlideImage">
+        <div class="upgradeSlideNav">
+            <span class="upgradeSlidePrev">Prev</span>
+            <span class="upgradeSlideNext">Next</span>
+        </div>
+    </div>
+
 </div>

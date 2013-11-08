@@ -67,9 +67,11 @@ function(
 
         onUserFetchFail: function()
         {
-            theMarsApp.featureAuthorizer.showUpgradeMessage(function()
-            {
-                theMarsApp.session.logout();
+            theMarsApp.featureAuthorizer.showUpgradeMessage({
+                onClose: function()
+                {
+                    theMarsApp.session.logout();
+                }
             });
         },
 
