@@ -573,6 +573,7 @@
     .workoutDiv {
         border:1px solid transparent;
 
+
         &:hover {
             border: 1px solid $TPGrey11;
             z-index: 2;
@@ -583,12 +584,18 @@
         }
 
         .workoutIcon {
-            margin-top: 1px !important;
             z-index: 1;
+            line-height: 1;
         }
 
         .workoutDistanceTime {
-            padding: 11px 0px 0px 30px !important;
+            padding: 13px 0px 0px 30px !important;
+        }
+
+        .workoutLabel {
+            .workoutTime {
+                font-family:$fontFamilyRegular;
+            }
         }
     }
 }
