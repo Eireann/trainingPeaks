@@ -261,8 +261,7 @@ function(
 
             // no existing activity found, add to collection
             var newItem = new klass(modelData);
-            var activity = ActivityModel.wrap(newItem);
-            this.activities.add(activity);
+            this.addItem(newItem);
             return newItem;
         },
 
