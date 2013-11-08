@@ -3,20 +3,21 @@ define(
 	"underscore",
 	"TP",
 	"views/quickView/workoutQuickView",
+	"shared/views/tomahawkView",
+	"models/workoutModel",
 	"hbs!templates/views/dashboard/pmcWorkoutsList"
 ],
 function(
 	_,
 	TP,
 	WorkoutQuickView,
+	TomahawkView,
+	WorkoutModel,
 	pmcWorkoutsListTemplate
-	)
+)
 {
-	var PmcWorkoutsList = TP.ItemView.extend({
+	var PmcWorkoutsListView = TP.ItemView.extend({
 
-		modal: true,
-		showThrobbers: false,
-		tagName: "div",
 		className: "pmcWorkoutsList",
 
 		template:
@@ -27,61 +28,42 @@ function(
 
 		initialize: function(options)
 		{
-			this.position = options.position;
-			this.dataPromise = options.dataPromise;
-			this.dataPromise.done(_.bind(this.render, this));
+			this.listenTo(this.model.itemsCollection, "add change remove", _.bind(this.render, this));
 		},
 
 		onRender: function()
 		{
-			this.$el.find('.hoverBox').addClass('leftarrow');
-			this.top(this.position.y - 33);
-			this.left(this.position.x + 20);
-
-			this.ensureInView();
-
-			// hide hover modal
 			$('#flotTip').hide();
 		},
-
-		ensureInView: function()
-		{
-
-			// make sure we're fully on the screen
-			var windowBottom = $(window).height() - 10;
-			var myBottom = this.$el.position().top + this.$el.height();
-
-			if(myBottom > windowBottom)
-			{
-				var arrowOffset = (myBottom - windowBottom) + 40;
-				this.top(windowBottom - this.$el.height());
-				this.$(".arrow").css("top", arrowOffset + "px");
-			}
-		},
-
+		
 		serializeData: function()
 		{
+			var workouts =  _.filter(this.model.items(), function(item) { return item instanceof WorkoutModel; });
+
 			return {
-				workouts: this.collection.toJSON(),
-				date: this.collection.startDate.format("MM-DD-YYYY")
+				workouts: _.map(workouts, function(workout) { return workout.toJSON(); }),
+				date: this.model.id
 			};
 		},
 
 		events:
 		{
-			'click a': 'showWorkoutQV'
+			'click .workout': 'showWorkoutQV'
 		},
 
 		showWorkoutQV: function(e)
 		{
 			e.preventDefault();
-			var workoutId = $(e.target).data('id');
-			var model = this.collection.get(workoutId);
+			var workoutId = $(e.currentTarget).data('workout-id');
+			var model = this.model.getItem(WorkoutModel, workoutId);
 			new WorkoutQuickView({ model: model }).render();
+			this.close();
 			return false;
 		}
 	});
 
-	return PmcWorkoutsList;
+	TomahawkView.wrap(PmcWorkoutsListView, { style: "list" });
+
+	return PmcWorkoutsListView;
 });
 
