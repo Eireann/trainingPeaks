@@ -166,7 +166,6 @@ function(findOrderedArrayIndexByValue)
                     endIdx = this.findIndexByChannelAndOffset(dataByChannel, "time", x2, msOffsetsOfSamples);
                 }
 
-                console.log(dataByChannel);
                 for(startIdx; startIdx <= endIdx; startIdx++)
                 {
                     var value = dataByChannel["Temperature"][startIdx][1];
@@ -175,7 +174,6 @@ function(findOrderedArrayIndexByValue)
                 }
             }
 
-            console.log("minTemp:" + minTemperature);
             return minTemperature;
         }
 

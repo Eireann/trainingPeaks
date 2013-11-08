@@ -11,6 +11,7 @@ define(
     "utilities/charting/jquery.flot.zoom",
     "utilities/charting/jquery.flot.multiselection",
     "utilities/charting/chartColors",
+    "utilities/charting/findOrderedArrayIndexByValue",
     "views/expando/scatterGraphToolbarView",
     "hbs!templates/views/expando/scatterGraphTemplate"
 ],
@@ -26,6 +27,7 @@ function(
     flotZoom,
     flotMultiSelection,
     chartColors,
+    findOrderedArrayIndexByValue,
     ScatterGraphToolbarView,
     graphTemplate
     )
@@ -111,7 +113,6 @@ function(
         {
             this.$el.removeClass("noData");
 
-
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
             {
                 this.$el.addClass("noData");
@@ -135,9 +136,22 @@ function(
 
             var yaxes = this._getGraphData().getYAxes(enabledSeries);
 
+            // override default behavior of graphing for right power only.
+            if(enabledSeries[0].label === 'RightPower')
+            {
+                enabledSeries[0].lines.show = false;
+                delete enabledSeries[0].dashes;
+            }
+            enabledSeries[0].color = "#D9DA0E";
+            enabledSeries[0].name = "primarySeries";
+
+            var rangesSeries = this._createSeriesFromRanges(enabledSeries[0]);
+
+            rangesSeries.push(enabledSeries[0]);
+
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(enabledSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(rangesSeries, rangesSeries, flotItem.series.name, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
@@ -150,18 +164,10 @@ function(
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             this.flotOptions.grid.borderColor = "#9A9999";
-            // override default behavior of graphing for right power only.
-            if(enabledSeries[0].label === 'RightPower')
-            {
-                enabledSeries[0].lines.show = false;
-                delete enabledSeries[0].dashes;
-            }
-            enabledSeries[0].color = "#D9DA0E";
 
             if($.plot)
             {
-                this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
-                this._restoreSelection();
+                this.plot = $.plot(this.$plot, rangesSeries, this.flotOptions);
             }
 
             this.trigger("hasData");
@@ -179,50 +185,6 @@ function(
             this.graphToolbar = new ScatterGraphToolbarView(params);
             this.listenTo(this.graphToolbar, "scatterGraph:axisChange", _.bind(this._onChangeXYAxis, this));
             this.$("#scatterGraphToolbar").append(this.graphToolbar.render().$el);
-        },
-
-        _setSelectionToRange: function(range, preventEvent, options)
-        {
-            var from;
-            var to;
-
-            if(!this.plot) return;
-
-            if((range && range !== this.zoomRange) || (options && options.force))
-            {
-
-                if (this.currentXAxis === "time")
-                {
-                    from = range.get("begin");
-                    to = range.get("end");
-                }
-                else if (this.currentXAxis === "distance")
-                {
-                    from = this._getGraphData().getDistanceFromMsOffset(range.get("begin"));
-                    to = this._getGraphData().getDistanceFromMsOffset(range.get("end"));
-                }
-                else
-                {
-                    // TODO: potentially add other series types here
-                }
-
-                this.plot.setSelection({ xaxis: { from: from, to: to } }, preventEvent);
-
-            }
-            else
-            {
-                this.plot.clearSelection(preventEvent);
-            }
-        },
-
-        _restoreSelection: function()
-        {
-            this._setSelectionToRange(this.stateModel.get("primaryRange"), true);
-            this._applyRanges();
-            if (this.plot)
-            {
-                this.plot.triggerRedrawOverlay();
-            }
         },
 
         _onChangeXYAxis: function(data)
@@ -247,105 +209,65 @@ function(
 
         watchForControllerEvents: function()
         {
-            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
-            this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
-            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
-            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onPrimaryRangeChange, this));
+            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeChange, this));
+            this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeChange, this));
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangeChange, this));
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onRangeChange, this));
         },
 
-        _onRangeAdded: function(range, ranges, options)
+        _createSeriesFromRanges: function(enabledSeries)
         {
-            this._addRange(range);
-        },
+            var rangesSeries = [];
+            var primaryRange = this.stateModel.get("primaryRange");
+            var ranges = this.stateModel.get("ranges");
+            var seriesCount = 0;
 
-        _onRangeRemoved: function(range, ranges, options)
-        {
-            var selection = this.findGraphSelection(range.get("begin"), range.get("end"));
-            if(selection)
+            if(primaryRange && primaryRange.get('isFocused'))
             {
-                this.removeSelectionFromGraph(selection);
-                this.selections = _.without(this.selections, selection);
-            }
-        },
+                var range = primaryRange;
+                var copiedSeries = _.clone(enabledSeries);
+                var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
+                var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
+                //create new array for series
+                copiedSeries.data = [];
 
-        _onRangesReset: function(ranges, options)
-        {
-            this._applyRanges();
-        },
-
-        _onPrimaryRangeChange: function(stateModel, range, options)
-        {
-            this._setSelectionToRange(range, true);
-        },
-
-        _applyRanges: function()
-        {
-            _.each(this.selections, this.removeSelectionFromGraph, this);
-            this.selections = [];
-            this.stateModel.get("ranges").each(this._addRange, this);
-        },
-
-        _addRange: function(range)
-        {
-            var selection = this.findGraphSelection(range.get("begin"), range.get("end"));
-            if (!selection)
-            {
-                selection = this.createGraphSelection(range);
-                this.addSelectionToGraph(selection);
-            }
-        },
-
-        findGraphSelection: function(begin, end)
-        {
-            return _.find(this.selections, function(selection)
-            {
-                return selection.begin === begin && selection.end === end;
-            });
-        },
-
-        createGraphSelection: function(workoutStatsForRange, options)
-        {
-            var selection =
-            {
-                begin: workoutStatsForRange.get("begin"),
-                end: workoutStatsForRange.get("end")
-            };
-
-            return selection;
-        },
-
-        addSelectionToGraph: function (selection)
-        {
-            var from = selection.begin;
-            var to = selection.end;
-
-            if (this.currentAxis === "distance")
-            {
-                from = this._getGraphData().getDistanceFromMsOffset(from);
-                to = this._getGraphData().getDistanceFromMsOffset(to);
+                for(var i = begin, j = 0; i <= end; i++, j++)
+                {
+                    copiedSeries.data[j] = _.clone(enabledSeries.data[i]);
+                    enabledSeries.data[i] = null;
+                }
+                copiedSeries.color = "#0000FF";
+                copiedSeries.name = "series" + seriesCount++;
+                rangesSeries.push(copiedSeries);
             }
 
-            selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } });
-            this.selections.push(selection);
-        },
-
-        removeSelectionFromGraph: function(selection)
-        {
-            this.plot.clearMultiSelection(selection.selection);
-        },
-
-        onUnSelectAll: function()
-        {
-            _.each(this.selections, function(selection)
+            if(ranges && ranges.length > 0)
             {
-                this.removeSelectionFromGraph(selection);
-            }, this);
-            this.selections = [];
+                ranges.each(function(range)
+                {
+                    var copiedSeries = _.clone(enabledSeries);
+                    var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
+                    var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
+
+                    copiedSeries.data = [];
+
+                    for(var i = begin; i <= end; i++)
+                    {
+                        copiedSeries.data.push(_.clone(enabledSeries.data[i]));
+                        enabledSeries.data[i] = null;
+                    }
+                    copiedSeries.color = "#FF0000";
+                    rangesSeries.push(copiedSeries);
+                    copiedSeries.name = "series" + seriesCount++;
+                }, this);
+            }
+
+            return rangesSeries;
         },
 
-        stashHeight: function(offsetRatio)
+        _onRangeChange: function()
         {
-            this.offsetRatio = offsetRatio;
+            this._onSeriesChanged();
         },
 
         _getGraphData: function()

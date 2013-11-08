@@ -157,7 +157,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getMsOffsetFromDistance: function (distance)
         {
-            var index = findIndexByChannelAndOffset.call(this, distance);
+            var index = DataParserUtils.findIndexByChannelAndOffset(this.xAxisDistanceValues, this.xaxis, xAxisOffset, this.flatSamples.msOffsetsOfSamples);
 
             if(index !== null && index < this.flatSamples.msOffsetsOfSamples.length)
                 return this.flatSamples.msOffsetsOfSamples[index];
@@ -168,8 +168,8 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         getDistanceFromMsOffset: function (msOffset)
         {
             var index = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, msOffset);
-            if (index !== null && index < this.getDataByChannel("Distance").length)
-                return this.getDataByChannel("Distance")[index][1];
+            if (index !== null && index < this.getDataByAxisAndChannel("distance", "Distance").length)
+                return this.getDataByAxisAndChannel("distance", "Distance")[index][1];
             return null;
         },
 

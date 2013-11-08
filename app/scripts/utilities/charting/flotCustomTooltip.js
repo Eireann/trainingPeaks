@@ -73,6 +73,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
         buildScatterGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, axisType)
         {
             var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
+            var hoveredSeries = _.find(enabledDataSeries, function(s) { return s.name === hoveredSeriesName; });
             var toolTipData =
             {
                 x: {},
@@ -85,7 +86,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
             toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
 
-            var toolTipSeries = this.formatYAxisData(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
+            var toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
 
             toolTipData.y.value = toolTipSeries[0].value;
             toolTipData.y.units = toolTipSeries[0].units;

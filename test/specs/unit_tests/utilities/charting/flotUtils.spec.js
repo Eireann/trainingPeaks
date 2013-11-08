@@ -43,7 +43,6 @@ function(DataParser, GraphData, testData)
             it("generates yAxes for the entire series", function()
             {
                 var yaxes = graphData.getYAxes(graphData.getSeries());
-                console.log(yaxes);
                 expect(yaxes).to.not.equal(null);
                 _.each(yaxes, function(yaxis)
                 {
