@@ -302,6 +302,35 @@ function(
 
         });
 
+        describe(".addOrUpdateItem", function()
+        {
+
+            it("should add the items to the activites collection", function()
+            {
+                calendarManager.addOrUpdateItem(WorkoutModel, { workoutDay: "2013-05-25" });
+                calendarManager.addOrUpdateItem(MetricModel, { timeStamp: "2013-03-14T15:00:00" });
+
+                expect(calendarManager.activities.length).to.eql(2);
+
+            });
+
+            it("should update existing items in the activites collection", function()
+            {
+
+                var workout = calendarManager.addOrUpdateItem(WorkoutModel, { workoutId: 12345, workoutDay: "2013-05-25" });
+
+                var updatedWorkoutData = { workoutId: 12345, description: "Now i have a description" };
+                var updatedWorkout = calendarManager.addOrUpdateItem(WorkoutModel, updatedWorkoutData);
+
+                expect(calendarManager.activities.length).to.eql(1);
+                expect(updatedWorkout).to.equal(workout);
+                expect(workout.get("workoutDay")).to.eql("2013-05-25");
+                expect(workout.get("description")).to.eql("Now i have a description");
+
+            });
+
+        });
+
         describe(".reset", function()
         {
 
