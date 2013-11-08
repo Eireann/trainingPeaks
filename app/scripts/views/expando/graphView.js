@@ -154,7 +154,7 @@ function(
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
-            // this.flotOptions.zoom.dataParser = this._getGraphData();
+            this.flotOptions.zoom.graphData = this._getGraphData();
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             this.flotOptions.grid.borderColor = "#9a9999";

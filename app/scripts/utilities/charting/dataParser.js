@@ -6,7 +6,11 @@
 function(DataParserUtils, findOrderedArrayIndexByValue)
 {
     var DataParser = function(options) {
-        _.extend(this, options);
+        if(!options.graphData)
+        {
+            throw Error("DataParser requires a graphData object");
+        }
+        this.graphData = options.graphData;
     };
 
     _.extend(DataParser.prototype,
@@ -20,7 +24,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue)
             this.graphData.dataByAxisAndChannel = this.parseDataByAxisAndChannel(flatSamples, this.graphData.xAxisDistanceValues);
 
             // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-            this.graphData.elevationInfo = DataParserUtils.getElevationInfoOnRange(this.graphData.dataByAxisAndChannel[this.graphData.xaxis]);
+            this.graphData.elevationInfo = DataParserUtils.getElevationInfoOnRange(this.graphData.dataByAxisAndChannel[this.graphData.xaxis], flatSamples);
 
             this.graphData.minTemperature = DataParserUtils.getTemperatureMinimumOnRange(this.graphData.dataByAxisAndChannel[this.graphData.xaxis]);
 

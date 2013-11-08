@@ -29,8 +29,7 @@ function (TP, LibraryExercisesCollection)
             ownerId: 0,
             ownerName: "",
             priceRecursMonthly: false,
-            selected: false,
-            ownerName: null
+            selected: false
         },
 
         initialize: function(options)

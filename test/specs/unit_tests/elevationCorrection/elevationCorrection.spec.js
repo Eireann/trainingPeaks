@@ -4,9 +4,9 @@
     "jquery",
     "TP",
     "views/elevationCorrection/elevationCorrectionView",
-    "utilities/charting/dataParser"
+    "utilities/charting/graphData"
 ],
-    function (_, $, TP, ElevationCorrectionView, DataParser)
+    function (_, $, TP, ElevationCorrectionView, GraphData)
     {
         function buildWorkoutModel()
         {
@@ -51,7 +51,7 @@
 
             describe("Plot Rendering", function()
             {
-                
+
                 it("Should contain original elevation", function()
                 {
                     var originalElevation = [100, 102, 110];
@@ -64,20 +64,20 @@
                     expect(series.length).to.equal(1);
                     expect(series[0].data).to.equal(originalElevation);
                 });
- 
+
                 it("Should contain corrected elevation if it is available", function()
                 {
                     var originalElevation = [100, 102, 110];
                     var correctedElevation = [103, 105, 114];
 
-                    var dataParser = new DataParser();
-                    sinon.stub(dataParser, "createCorrectedElevationChannel").returns(correctedElevation);
+                    var graphData = new GraphData();
+                    sinon.stub(graphData, "createCorrectedElevationChannel").returns(correctedElevation);
 
                     var viewContext = {
                         model: buildWorkoutModel(),
                         originalElevation: originalElevation,
                         elevationCorrectionModel: new TP.Model({elevations: correctedElevation}),
-                        _getDataParser: function(){return dataParser;}
+                        _getGraphData: function(){return graphData;}
                     };
 
                     var series = ElevationCorrectionView.prototype.buildPlotSeries.apply(viewContext);
@@ -103,7 +103,7 @@
                                 elevationGain: 2,
                                 elevationLoss: 0,
                                 grade: 3
-                            } 
+                            }
                         })
                     });
 
@@ -125,7 +125,7 @@
 
                 it("Should correctly serialize data after elevation correction data is fetched", function()
                 {
-                
+
                     var serializedData = viewContext.serializeData();
 
                     expect(serializedData.correctedMin).to.eql(elevationCorrectionModel.get("min"));

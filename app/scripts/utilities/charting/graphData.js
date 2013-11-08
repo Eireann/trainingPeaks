@@ -49,26 +49,12 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             return this.generateSeriesFromData(this.flatSamples, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo.min, this.xaxis, this.xAxisDistanceValues, this.disabledSeries, this.excludedSeries, this.excludedRanges, x1, x2);
         },
 
-        getSeriesForAxes: function(xaxis, yaxis, x1, x2)
+        getSeriesForAxes: function(xaxis, yaxis)
         {
               var data = [];
               var channel = "time";
 
-              if(!_.isUndefined(x1) && !_.isUndefined(x2))
-              {
-                  startIdx = DataParserUtils.findIndexByXAxisOffset(x1);
-                  endIdx = DataParserUtils.findIndexByXAxisOffset(x2);
-                  offsetsOfSamples = offsetsOfSamples.slice(startIdx, endIdx + 1);
-              }
-
-              if(!_.isUndefined(x1) && !_.isUndefined(x2))
-              {
-                  data = this.dataByAxisAndChannel[channel].slice(startIdx, endIdx + 1);
-              }
-              else
-              {
-                  data = _.clone(this.dataByAxisAndChannel[channel]);
-              }
+              data = _.clone(this.dataByAxisAndChannel[channel]);
 
               // remove cut ranges
               this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
@@ -95,16 +81,15 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             return FlotUtils.generateYAxes(series, this.workoutTypeValueId, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo, this);
         },
 
-        getMinimumForAxis: function(series, data, elevationInfo)
+        getMinimumForAxis: function(series, data, elevationInfo, x1, x2)
         {
             switch(series)
             {
-
                 case "Elevation":
-                    return DataParserUtils.getElevationInfo(data, elevationInfo).min;
+                    return DataParserUtils.getElevationInfo(data, elevationInfo, x1, x2, this.flatSamples.msOffsetsOfSamples).min;
 
                 case "Temperature":
-                    return DataParserUtils.getTemperatureMinimum(data, this.minTemperature);
+                    return DataParserUtils.getTemperatureMinimum(data, this.minTemperature, x1, x2, this.flatSamples.msOffsetsOfSamples);
 
                 default:
                     return 0;
@@ -289,8 +274,8 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             var startIdx, endIdx;
             if(!_.isUndefined(x1) && !_.isUndefined(x2))
             {
-                startIdx = DataParserUtils.findIndexByXAxisOffset(x1);
-                endIdx = DataParserUtils.findIndexByXAxisOffset(x2);
+                startIdx = DataParserUtils.findIndexByChannelAndOffset(dataByChannel, xaxis, x1, flatSamples.msOffsetsOfSamples);
+                endIdx = DataParserUtils.findIndexByChannelAndOffset(dataByChannel, xaxis, x2, flatSamples.msOffsetsOfSamples);
                 offsetsOfSamples = offsetsOfSamples.slice(startIdx, endIdx + 1);
             }
 

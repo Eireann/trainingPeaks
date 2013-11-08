@@ -99,10 +99,10 @@ function(findOrderedArrayIndexByValue)
             return _.find(seriesArray, function(s) { return s.label === channelName; });
         },
 
-        getElevationInfo: function(data, elevationInfo, x1, x2)
+        getElevationInfo: function(data, elevationInfo, x1, x2, msOffsetsOfSamples)
         {
             if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                return this.getElevationInfoOnRange(data, x1, x2);
+                return this.getElevationInfoOnRange(data, x1, x2, msOffsetsOfSamples);
 
             return {
                 min: elevationInfo.min,
@@ -110,15 +110,15 @@ function(findOrderedArrayIndexByValue)
             };
         },
 
-        getTemperatureMinimum: function(data, graphData, x1, x2)
+        getTemperatureMinimum: function(data, minTemperature, x1, x2, msOffsetsOfSamples)
         {
             if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-                return this.getTemperatureMinimumOnRange(data, graphData, x1, x2);
+                return this.getTemperatureMinimumOnRange(data, x1, x2, msOffsetsOfSamples);
 
-            return graphData.minTemperature;
+            return minTemperature;
         },
 
-        getElevationInfoOnRange: function(dataByChannel, x1, x2)
+        getElevationInfoOnRange: function(dataByChannel, x1, x2, msOffsetsOfSamples)
         {
             var elevationIsAllNegative = true;
             var minElevation = 10000;
@@ -130,8 +130,8 @@ function(findOrderedArrayIndexByValue)
 
                 if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
                 {
-                    startIdx = findIndexByXAxisOffset.call(this, x1);
-                    endIdx = findIndexByXAxisOffset.call(this, x2);
+                    startIdx = this.findIndexByChannelAndOffset(dataByChannel, "time", x1, msOffsetsOfSamples);
+                    endIdx = this.findIndexByChannelAndOffset(dataByChannel, "time", x2, msOffsetsOfSamples);
                 }
 
                 for(startIdx; startIdx <= endIdx; startIdx++)
@@ -139,8 +139,9 @@ function(findOrderedArrayIndexByValue)
                     var value = dataByChannel["Elevation"][startIdx][1];
                     elevationIsAllNegative = elevationIsAllNegative && (value === null ? true : value < 0);
                     value = value === null ? 999999999999999 : value;
-                    if (value < minElevation)
+                    if (value < minElevation) {
                         minElevation = value;
+                    }
                 }
             }
 
@@ -150,7 +151,7 @@ function(findOrderedArrayIndexByValue)
             };
         },
 
-        getTemperatureMinimumOnRange: function(dataByChannel, x1, x2)
+        getTemperatureMinimumOnRange: function(dataByChannel, x1, x2, msOffsetsOfSamples)
         {
             var minTemperature = 0;
 
@@ -161,10 +162,11 @@ function(findOrderedArrayIndexByValue)
 
                 if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
                 {
-                    startIdx = findIndexByXAxisOffset.call(this, x1);
-                    endIdx = findIndexByXAxisOffset.call(this, x2);
+                    startIdx = this.findIndexByChannelAndOffset(dataByChannel, "time", x1, msOffsetsOfSamples);
+                    endIdx = this.findIndexByChannelAndOffset(dataByChannel, "time", x2, msOffsetsOfSamples);
                 }
 
+                console.log(dataByChannel);
                 for(startIdx; startIdx <= endIdx; startIdx++)
                 {
                     var value = dataByChannel["Temperature"][startIdx][1];
@@ -173,6 +175,7 @@ function(findOrderedArrayIndexByValue)
                 }
             }
 
+            console.log("minTemp:" + minTemperature);
             return minTemperature;
         }
 

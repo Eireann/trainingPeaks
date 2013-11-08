@@ -54,8 +54,6 @@ function(
 
             this.firstRender = true;
 
-            this.repaintHeight = _.debounce(this.repaintHeight, 200);
-
             this.listenTo(this.model.get("detailData"), "change:disabledDataChannels", _.bind(this._onSeriesChanged, this));
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
         },
