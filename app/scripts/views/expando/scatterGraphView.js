@@ -56,7 +56,7 @@ function(
 
             this.firstRender = true;
 
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onSeriesChanged, this));
+            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onAvailableDataChannels, this));
         },
 
         onRender: function()
@@ -206,6 +206,23 @@ function(
             this.drawPlot();
         },
 
+        _onAvailableDataChannels: function(model)
+        {
+            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+
+            if(!_.contains(availableChannels, this.currentXAxis))
+            {
+                this.graphToolbar.xaxis = this.currentXAxis = availableChannels[0];
+            }
+            if(!_.contains(availableChannels, this.currentYAxis))
+            {
+                this.graphToolbar.yaxis = this.currentYAxis = availableChannels[0];
+            }
+
+            this.graphToolbar.render();
+            this._onSeriesChanged();
+        },
+
         watchForControllerEvents: function()
         {
             this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeChange, this));
@@ -223,45 +240,36 @@ function(
 
             if(primaryRange && primaryRange.get('isFocused'))
             {
-                var range = primaryRange;
-                var copiedSeries = _.clone(enabledSeries);
-                var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
-                var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
-                //create new array for series
-                copiedSeries.data = [];
-
-                for(var i = begin, j = 0; i <= end; i++, j++)
-                {
-                    copiedSeries.data[j] = _.clone(enabledSeries.data[i]);
-                    enabledSeries.data[i] = null;
-                }
-                copiedSeries.color = "#0000FF";
-                copiedSeries.name = "series" + seriesCount++;
-                rangesSeries.push(copiedSeries);
+                this._createRange(enabledSeries, primaryRange, rangesSeries, seriesCount++, "#0000FF");
             }
 
             if(ranges && ranges.length > 0)
             {
                 ranges.each(function(range)
                 {
-                    var copiedSeries = _.clone(enabledSeries);
-                    var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
-                    var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
-
-                    copiedSeries.data = [];
-
-                    for(var i = begin; i <= end; i++)
-                    {
-                        copiedSeries.data.push(_.clone(enabledSeries.data[i]));
-                        enabledSeries.data[i] = null;
-                    }
-                    copiedSeries.color = "#FF0000";
-                    rangesSeries.push(copiedSeries);
-                    copiedSeries.name = "series" + seriesCount++;
+                    this._createRange(enabledSeries, range, rangesSeries, seriesCount++, "#FF0000");
                 }, this);
             }
 
             return rangesSeries;
+        },
+
+        _createRange: function(enabledSeries, range, rangesSeries, seriesCount, color)
+        {
+            var copiedSeries = _.clone(enabledSeries);
+            var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
+            var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
+
+            copiedSeries.data = [];
+
+            for(var i = begin; i <= end; i++)
+            {
+                copiedSeries.data.push(_.clone(enabledSeries.data[i]));
+                enabledSeries.data[i] = null;
+            }
+            copiedSeries.name = "series" + seriesCount;
+            copiedSeries.color = color;
+            rangesSeries.push(copiedSeries);
         },
 
         _onRangeChange: function()

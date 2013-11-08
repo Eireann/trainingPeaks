@@ -25,7 +25,6 @@ function(
             this.stateModel = options.stateModel;
             this.xaxis = options.xaxis;
             this.yaxis = options.yaxis;
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonList, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
         },
 

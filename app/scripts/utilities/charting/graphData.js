@@ -59,7 +59,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
               // remove cut ranges
               this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
 
-              var seriesOptions = FlotUtils.seriesOptions(data, yaxis, { minElevation: this.elevationInfo.min });
+              var seriesOptions = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
 
               var newSeries = [];
               _.each(data[xaxis], function(dataPoint, index)
