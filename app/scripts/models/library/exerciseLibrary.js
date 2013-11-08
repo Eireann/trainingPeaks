@@ -27,7 +27,7 @@ function (TP, LibraryExercisesCollection)
             libraryName: "",
             listInDirectory: false,
             ownerId: 0,
-            ownerName: "",
+            ownerName: null,
             priceRecursMonthly: false,
             selected: false
         },
@@ -40,9 +40,15 @@ function (TP, LibraryExercisesCollection)
 
             // Users have the ability to purchase Libraries from other users/coaches. Those might be named the same as
             // other libraries that already exist in the User's list. Let's add the owner's name if it's not our library.
-            // TODO: Conver OwnerId to Owner Name (in API?)
-            if(this.get("ownerId") !== theMarsApp.user.get("userId"))
-                this.set("libraryName", this.get("libraryName") + " (" + this.get("ownerId") + ")", { silent: true });
+            if (this.get("ownerId") !== theMarsApp.user.get("userId"))
+            {
+                var ownerName = this.get("ownerId");
+                if (this.get("ownerName") != null)
+                {
+                    ownerName = this.get("ownerName");
+                }
+                this.set("libraryName", this.get("libraryName") + " (" + ownerName + ")", { silent: true });
+            }
         },
 
         fetchExercises: function(force)
