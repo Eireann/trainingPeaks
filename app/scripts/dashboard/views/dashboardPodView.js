@@ -354,7 +354,7 @@ function(
 
         _disableDrag: function()
         {
-            if(this.$el.data("uiDraggable"))
+            if(this.$el.data("ui-draggable"))
             {
                 this.$el.draggable("disable");
             } 
@@ -362,7 +362,7 @@ function(
 
         _enableDrag: function()
         {
-            if(this.$el.data("uiDraggable"))
+            if(this.$el.data("ui-draggable"))
             {
                 this.$el.draggable("enable");
             }
