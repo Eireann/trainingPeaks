@@ -67,7 +67,7 @@ function(
 
         _onClick: function(e)
         {
-            if(e.isDefaultPrevented())
+            if(e.isDefaultPrevented() || $(e.target).is("input"))
             {
                 return;
             }
