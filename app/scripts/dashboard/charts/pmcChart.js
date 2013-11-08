@@ -11,6 +11,7 @@
     "models/workoutsCollection",
     "dashboard/views/pmcChartSettings",
     "dashboard/views/PmcWorkoutsListView",
+    "shared/utilities/calendarUtility",
     "hbs!dashboard/templates/pmcChart"
 ],
 function(
@@ -25,6 +26,7 @@ function(
     WorkoutsCollection,
     pmcChartSettings,
     PmcWorkoutsListView,
+    CalendarUtility,
     pmcChartTemplate
     )
 {
@@ -34,6 +36,12 @@ function(
         pointRadius: 1.5,
 
         settingsView: pmcChartSettings, 
+
+        constructor: function(options)
+        {
+            PmcChart.__super__.constructor.apply(this, arguments);
+            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
+        },
 
         defaults: {
                 atlConstant: 7,
@@ -131,16 +139,11 @@ function(
                 return;
             }
 
-            var day = dataItem.workoutDay;
+            var date = moment(dataItem.workoutDay).format(CalendarUtility.idFormat);
+            var day = this.calendarManager.days.get(date);
+            this.calendarManager.loadActivities(date);
 
-            var dataPromise = this.dataManager.loadCollection(WorkoutsCollection, {startDate: moment(day), endDate: moment(day)});
-            var workouts = dataPromise.collection;
-
-            var screenPosition = {
-                x: position.pageX,
-                y: position.pageY
-            };
-            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise, position: screenPosition});
+            var view = new PmcWorkoutsListView.Tomahawk({ model: day, target: $.Event("", position), offset: "right" });
             return view;
         },
 

@@ -80,6 +80,12 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             this.itemsCollection.remove(item);
         },
 
+        getItem: function(klass, id)
+        {
+            var item = this.itemsCollection.get([klass.prototype.webAPIModelName, id].join(":"));
+            return ActivityModel.unwrap(item);
+        },
+
         reset: function(models, options)
         {
             models = _.map(models, _.bind(ActivityModel.wrap, ActivityModel));

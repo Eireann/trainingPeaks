@@ -7,7 +7,7 @@ define(
     "utilities/charting/chartColors",
     "framework/dataManager",
     "dashboard/charts/pmcChart",
-    "models/workoutsCollection"
+    "shared/managers/calendarManager"
 ],
 function(
     $,
@@ -17,8 +17,8 @@ function(
     chartColors,
     DataManager,
     PmcChart,
-    WorkoutsCollection
-    )
+    CalendarManager
+)
 {
 
     var buildPmcModelData = function(howManyItems, future)
@@ -569,8 +569,8 @@ function(
                 modelData = buildPmcModelData(10);
                 chart = buildPmcChart();
                 chart.rawData = modelData;
-                workoutsCollection = new WorkoutsCollection([], { startDate: moment(), endDate: moment() });
-                sinon.stub(chart.dataManager, "loadCollection").returns(_.extend(new $.Deferred().resolve(), { collection: workoutsCollection }));
+                chart.calendarManager = new CalendarManager({ dataManager: new DataManager() });
+                sinon.stub(chart.calendarManager, "loadActivities");
                 tomahawkView = chart.createItemDetailView({dataIndex: 2},{pageX: 10, pageY: 10});
             });
 

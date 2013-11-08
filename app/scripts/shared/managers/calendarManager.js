@@ -178,6 +178,11 @@ function(
 
         loadActivities: function(start, end)
         {
+            if(_.isUndefined(end))
+            {
+                end = start;
+            }
+
             this.ensureRange(start, end);
 
             var promises = _.map(CalendarUtility.weeksForRange(start, end), this._loadActivitiesForWeek, this);
