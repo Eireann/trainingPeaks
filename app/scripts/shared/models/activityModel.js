@@ -36,7 +36,7 @@ function(
         _updatePrefixedId: function()
         {
             var model = this.unwrap();
-            this.set("id", ActivityModel.getActivityId({ model: model }));
+            this.set("id", ActivityModel.getActivityId(model));
         },
 
         _retrigger: function()
@@ -79,50 +79,45 @@ function(
 
     ActivityModel.getActivityId = function(options)
     {
-        // already an activity model, so already has a prefixed id
-        if(options.model && options.model instanceof ActivityModel)
-        {
-            return options.model.id;
-        }
 
-        // constructor and model or attributes
-        if(options.klass &&
-           options.model &&
-           options.klass.prototype.hasOwnProperty("webAPIModelName") &&
-           options.klass.prototype.hasOwnProperty("idAttribute"))
+        // As a special case a model may be passed in instead of options
+        if(options instanceof Backbone.Model)
         {
-            var prefix = options.klass.prototype.webAPIModelName;
-            var idAttribute = options.klass.prototype.idAttribute;
-
-            // already a model of the right type, get the id and prefix it
-            if(options.model instanceof options.klass)
+            var model = options;
+            if(model instanceof ActivityModel)
             {
-                return prefix + ":" + options.model.id;
+                return model.id;
             }
-
-            // attributes object with the correct id property
-            if(_.isObject(options.model) && options.model.hasOwnProperty(idAttribute))
+            else
             {
-                return prefix + ":" + options.model[idAttribute];
+                return model.id ? model.webAPIModelName + ":" + model.id : null;
             }
         }
 
-        // constructor and id
-        if(options.klass &&
-           options.id &&
-           options.klass.prototype.hasOwnProperty("webAPIModelName"))
-        {
-            return options.klass.prototype.webAPIModelName + ":" + options.id;
-        }
-       
-        // api model
-        if(options.model && options.model.webAPIModelName && options.model.id)
-        {
-            return options.model.webAPIModelName + ":" + options.model.id;
-        } 
+        options = _.clone(options);
 
-        // not enough info to build an id
-        return null;
+        // Derive id from attributes and klass, if needed
+        if(!options.id && options.attributes && options.klass)
+        {
+            options.id = options.attributes[options.klass.prototype.idAttribute || "id"];
+        }
+
+        // Derive prefix from klass, if needed
+        if(!options.prefix && options.klass)
+        {
+            options.prefix = options.klass.prototype.webAPIModelName;
+        }
+
+        // Create composite key
+        if(options.prefix && options.id)
+        {
+            return options.prefix + ":" + options.id;
+        }
+        else
+        {
+           return null;
+        }
+
     };
 
     return ActivityModel;

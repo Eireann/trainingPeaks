@@ -248,7 +248,7 @@ function(
         {
             var activityId = ActivityModel.getActivityId({
                 klass: klass,
-                model: modelData
+                attributes: modelData
             });
 
             var existingActivity = this.activities.get(activityId);
