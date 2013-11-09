@@ -559,7 +559,6 @@
         list-style:none;
 
         li {
-            padding-bottom: 5px;
             margin-bottom: 5px !important;
         }
     }
@@ -571,16 +570,18 @@
         font-weight: normal;
     }
     .workoutDiv {
-        border:1px solid transparent;
-
+        border:1px solid #cccccc;
 
         &:hover {
             border: 1px solid $TPGrey11;
-            z-index: 2;
+        }
+
+        .workoutHeader {
+            height: 31px;
         }
 
         .workoutBody {
-            line-height:1;
+            line-height: 1;
         }
 
         .workoutIcon {

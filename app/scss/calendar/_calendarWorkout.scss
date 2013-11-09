@@ -15,13 +15,7 @@
 
     &.workoutList
     {
-        margin: 0;
         border: none;
-        border-bottom: 1px solid $TPGrey2;
-
-        &:last-child {
-            border: none;
-        }
     }
 
     &.dragHelper
