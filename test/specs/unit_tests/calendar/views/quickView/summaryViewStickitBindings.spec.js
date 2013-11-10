@@ -1,5 +1,4 @@
-﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "TP",
     "views/quickView/summaryView/summaryViewStickitBindings"
@@ -14,8 +13,8 @@ function (TP, summaryViewStickitBindings)
 
         it("has an initializer", function()
         {
-            expect(summaryViewStickitBindings.initializeStickit).toBeDefined();
-            expect(typeof summaryViewStickitBindings.initializeStickit).toBe("function");
+            expect(summaryViewStickitBindings.initializeStickit).to.not.be.undefined;
+            expect(typeof summaryViewStickitBindings.initializeStickit).to.equal("function");
         });
 
         it("performs StickIt bindings on render, only once", function()
@@ -41,14 +40,14 @@ function (TP, summaryViewStickitBindings)
             });
 
             summaryViewStickitBindings.initializeStickit();
-            spyOn(summaryViewStickitBindings, "stickit");
+            sinon.stub(summaryViewStickitBindings, "stickit");
             summaryViewStickitBindings.trigger("render");
 
-            expect(summaryViewStickitBindings.stickit).toHaveBeenCalled();
-            expect(summaryViewStickitBindings.stickit.callCount).toBe(1);
+            expect(summaryViewStickitBindings.stickit).to.have.been.called;
+            expect(summaryViewStickitBindings.stickit.callCount).to.equal(1);
 
             summaryViewStickitBindings.trigger("render");
-            expect(summaryViewStickitBindings.stickit.callCount).toBe(1);
+            expect(summaryViewStickitBindings.stickit.callCount).to.equal(1);
         });
 
         it("removes StickIt bindings on close", function()
@@ -78,10 +77,10 @@ function (TP, summaryViewStickitBindings)
             });
 
             summaryViewStickitBindings.initializeStickit();
-            spyOn(summaryViewStickitBindings, "unstickit");
+            sinon.stub(summaryViewStickitBindings, "unstickit");
 
             summaryViewStickitBindings.trigger("close");
-            expect(summaryViewStickitBindings.unstickit).toHaveBeenCalled();
+            expect(summaryViewStickitBindings.unstickit).to.have.been.called;
 
         });
 
@@ -114,7 +113,7 @@ function (TP, summaryViewStickitBindings)
 
                 context.model.set(options.observe, oldValue);
 
-                expect(summaryViewStickitBindings.checkIfModelSaveRequired.call(context, newValue, options)).toBe(false);
+                expect(summaryViewStickitBindings.checkIfModelSaveRequired.call(context, newValue, options)).to.equal(false);
             });
 
             it("returns true when the new and old values differ", function ()
@@ -140,12 +139,12 @@ function (TP, summaryViewStickitBindings)
 
                 context.model.set(options.observe, oldValue);
 
-                expect(summaryViewStickitBindings.checkIfModelSaveRequired.call(context, newValue, options)).toBe(true);
+                expect(summaryViewStickitBindings.checkIfModelSaveRequired.call(context, newValue, options)).to.equal(true);
             });
         });
 
         // needs refactoring
-        xdescribe("performModelSave method which performs the model update", function()
+        xdescribe("performModelSave method which performs the model update (TODO: fix or remove this test)", function()
         {
             it("sets a non-description value in the model", function()
             {
@@ -168,13 +167,13 @@ function (TP, summaryViewStickitBindings)
                     model: new TP.Model()
                 };
 
-                spyOn(context.model, "save");
+                sinon.stub(context.model, "save");
                 context.model.set(options.observe, oldValue);
 
                 summaryViewStickitBindings.performModelUpdate.call(context, newValue, options);
 
-                expect(context.model.get(options.observe)).toBe(newValue);
-                expect(context.model.save).toHaveBeenCalled();
+                expect(context.model.get(options.observe)).to.equal(newValue);
+                expect(context.model.save).to.have.been.called;
             });
             
             it("sets a new description value in the model", function()
@@ -192,13 +191,13 @@ function (TP, summaryViewStickitBindings)
                     model: new TP.Model()
                 };
 
-                spyOn(context.model, "save");
+                sinon.stub(context.model, "save");
                 context.model.set(options.observe, oldValue);
 
                 summaryViewStickitBindings.performModelUpdate.call(context, newValue, options);
 
-                expect(context.model.get(options.observe)).toBe(newValue);
-                expect(context.model.save).toHaveBeenCalled();
+                expect(context.model.get(options.observe)).to.equal(newValue);
+                expect(context.model.save).to.have.been.called;
             });
         });
     });

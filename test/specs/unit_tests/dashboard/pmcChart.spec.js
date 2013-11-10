@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "jquery",
     "moment",
@@ -8,7 +7,7 @@ requirejs(
     "utilities/charting/chartColors",
     "framework/dataManager",
     "dashboard/charts/pmcChart",
-    "models/workoutsCollection"
+    "shared/managers/calendarManager"
 ],
 function(
     $,
@@ -18,8 +17,8 @@ function(
     chartColors,
     DataManager,
     PmcChart,
-    WorkoutsCollection
-    )
+    CalendarManager
+)
 {
 
     var buildPmcModelData = function(howManyItems, future)
@@ -64,21 +63,21 @@ function(
         
         it("Should load successfully as a module", function()
         {
-            expect(PmcChart).toBeDefined();
+            expect(PmcChart).to.not.be.undefined;
         });
 
         it("Should set correct default settings", function()
         {
             var chart = buildPmcChart();
-            expect(chart.get("atlConstant")).toBe(7);
-            expect(chart.get("ctlConstant")).toBe(42);
-            expect(chart.get("atlStartValue")).toBe(0);
-            expect(chart.get("ctlStartValue")).toBe(0);
-            expect(chart.get("workoutTypeIds").length).toBe(1);
-            expect(chart.get("workoutTypeIds.0")).toBe("0");
-            expect(chart.get("showIntensityFactorPerDay")).toBe(true);
-            expect(chart.get("showTSBFill")).toBe(false);
-            expect(chart.get("showTSSPerDay")).toBe(true);
+            expect(chart.get("atlConstant")).to.equal(7);
+            expect(chart.get("ctlConstant")).to.equal(42);
+            expect(chart.get("atlStartValue")).to.equal(0);
+            expect(chart.get("ctlStartValue")).to.equal(0);
+            expect(chart.get("workoutTypeIds").length).to.equal(1);
+            expect(chart.get("workoutTypeIds.0")).to.equal("0");
+            expect(chart.get("showIntensityFactorPerDay")).to.equal(true);
+            expect(chart.get("showTSBFill")).to.equal(false);
+            expect(chart.get("showTSSPerDay")).to.equal(true);
         });
 
         describe("Data parsing", function()
@@ -98,15 +97,15 @@ function(
 
                     it("Should return TSS data in the flot points", function()
                     {
-                        expect(chartPoints.TSS).toBeDefined();
-                        expect(chartPoints.TSS.length).toEqual(modelData.length);
+                        expect(chartPoints.TSS).to.not.be.undefined;
+                        expect(chartPoints.TSS.length).to.eql(modelData.length);
                     });
 
                     it("Should put the correct values in the TSS points", function()
                     {
                         _.each(chartPoints.TSS, function(chartPoint, index)
                         {
-                            expect(Number(chartPoint[1])).toEqual(index * 10);
+                            expect(Number(chartPoint[1])).to.eql(index * 10);
                         });
                     });
 
@@ -114,13 +113,13 @@ function(
                     {
                         expect(
                             moment(chartPoints.TSS[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSS[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -138,15 +137,15 @@ function(
 
                     it("Should return ATL data in the flot points", function()
                     {
-                        expect(chartPoints.ATL).toBeDefined();
-                        expect(chartPoints.ATL.length).toEqual(modelData.length);
+                        expect(chartPoints.ATL).to.not.be.undefined;
+                        expect(chartPoints.ATL.length).to.eql(modelData.length);
                     });
 
                     it("Should put the correct values in the ATL points", function()
                     {
                         _.each(chartPoints.ATL, function(chartPoint, index)
                         {
-                            expect(chartPoint[1]).toEqual(index * 5);
+                            expect(chartPoint[1]).to.eql(index * 5);
                         });
                     });
 
@@ -154,13 +153,13 @@ function(
                     {
                         expect(
                             moment(chartPoints.ATL[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.ATL[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -178,15 +177,15 @@ function(
 
                     it("Should return IF data in the flot points", function()
                     {
-                        expect(chartPoints.IF).toBeDefined();
-                        expect(chartPoints.IF.length).toEqual(modelData.length);
+                        expect(chartPoints.IF).to.not.be.undefined;
+                        expect(chartPoints.IF.length).to.eql(modelData.length);
                     });
 
                     it("Should put the correct values in the IF points", function()
                     {
                         _.each(chartPoints.IF, function(chartPoint, index)
                         {
-                            expect(chartPoint[1]).toEqual(index * 0.11);
+                            expect(chartPoint[1]).to.eql(index * 0.11);
                         });
                     });
 
@@ -194,13 +193,13 @@ function(
                     {
                         expect(
                             moment(chartPoints.IF[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.IF[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -218,15 +217,15 @@ function(
 
                     it("Should return CTL data in the flot points", function()
                     {
-                        expect(chartPoints.CTL).toBeDefined();
-                        expect(chartPoints.CTL.length).toEqual(modelData.length);
+                        expect(chartPoints.CTL).to.not.be.undefined;
+                        expect(chartPoints.CTL.length).to.eql(modelData.length);
                     });
 
                     it("Should put the correct values in the CTL points", function()
                     {
                         _.each(chartPoints.CTL, function(chartPoint, index)
                         {
-                            expect(chartPoint[1]).toEqual(index * 20);
+                            expect(chartPoint[1]).to.eql(index * 20);
                         });
                     });
 
@@ -234,13 +233,13 @@ function(
                     {
                         expect(
                             moment(chartPoints.CTL[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.CTL[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -259,15 +258,15 @@ function(
 
                     it("Should return TSB data in the flot points", function()
                     {
-                        expect(chartPoints.TSB).toBeDefined();
-                        expect(chartPoints.TSB.length).toEqual(modelData.length);
+                        expect(chartPoints.TSB).to.not.be.undefined;
+                        expect(chartPoints.TSB.length).to.eql(modelData.length);
                     });
 
                     it("Should put the correct values in the TSB points", function()
                     {
                         _.each(chartPoints.TSB, function(chartPoint, index)
                         {
-                            expect(chartPoint[1]).toEqual(index - 20);
+                            expect(chartPoint[1]).to.eql(index - 20);
                         });
                     });
 
@@ -275,13 +274,13 @@ function(
                     {
                         expect(
                             moment(chartPoints.TSB[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSB[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -302,35 +301,35 @@ function(
 
                     it("Should return TSS data in the flot points", function()
                     {
-                        expect(chartPoints.TSS).toBeDefined();
-                        expect(chartPoints.TSSFuture).toBeDefined();
-                        expect(chartPoints.TSS.length).toEqual(modelData.length);
-                        expect(chartPoints.TSSFuture.length).toEqual(modelData.length);
+                        expect(chartPoints.TSS).to.not.be.undefined;
+                        expect(chartPoints.TSSFuture).to.not.be.undefined;
+                        expect(chartPoints.TSS.length).to.eql(modelData.length);
+                        expect(chartPoints.TSSFuture.length).to.eql(modelData.length);
                     });
 
                     it("Should not put today's TSS value in both past and future", function()
                     {
-                        expect(chartPoints.TSS[0][1]).toEqual(0);
-                        expect(chartPoints.TSSFuture[0][1]).toEqual(null);
+                        expect(chartPoints.TSS[0][1]).to.eql(0);
+                        expect(chartPoints.TSSFuture[0][1]).to.eql(null);
                     });
 
                     it("Should put future TSS value only in future", function()
                     {
-                        expect(chartPoints.TSS[9][1]).toEqual(null);
-                        expect(chartPoints.TSSFuture[9][1]).toEqual(135);
+                        expect(chartPoints.TSS[9][1]).to.eql(null);
+                        expect(chartPoints.TSSFuture[9][1]).to.eql(135);
                     });
 
                     it("Should include a date for each TSS point", function()
                     {
                         expect(
                             moment(chartPoints.TSSFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSSFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -348,35 +347,35 @@ function(
 
                     it("Should return TSB data in the flot points", function()
                     {
-                        expect(chartPoints.TSB).toBeDefined();
-                        expect(chartPoints.TSBFuture).toBeDefined();
-                        expect(chartPoints.TSB.length).toEqual(modelData.length);
-                        expect(chartPoints.TSBFuture.length).toEqual(modelData.length);
+                        expect(chartPoints.TSB).to.not.be.undefined;
+                        expect(chartPoints.TSBFuture).to.not.be.undefined;
+                        expect(chartPoints.TSB.length).to.eql(modelData.length);
+                        expect(chartPoints.TSBFuture.length).to.eql(modelData.length);
                     });
 
                     it("Should put today's TSB value in both past and future", function()
                     {
-                        expect(chartPoints.TSB[0][1]).toEqual(-20);
-                        expect(chartPoints.TSBFuture[0][1]).toEqual(-20);
+                        expect(chartPoints.TSB[0][1]).to.eql(-20);
+                        expect(chartPoints.TSBFuture[0][1]).to.eql(-20);
                     });
 
                     it("Should put future TSB value only in future", function()
                     {
-                        expect(chartPoints.TSB[9][1]).toEqual(null);
-                        expect(chartPoints.TSBFuture[9][1]).toEqual(-11);
+                        expect(chartPoints.TSB[9][1]).to.eql(null);
+                        expect(chartPoints.TSBFuture[9][1]).to.eql(-11);
                     });
 
                     it("Should include a date for each TSB point", function()
                     {
                         expect(
                             moment(chartPoints.TSBFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSBFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -394,35 +393,35 @@ function(
 
                     it("Should return ATL data in the flot points", function()
                     {
-                        expect(chartPoints.ATL).toBeDefined();
-                        expect(chartPoints.ATLFuture).toBeDefined();
-                        expect(chartPoints.ATL.length).toEqual(modelData.length);
-                        expect(chartPoints.ATLFuture.length).toEqual(modelData.length);
+                        expect(chartPoints.ATL).to.not.be.undefined;
+                        expect(chartPoints.ATLFuture).to.not.be.undefined;
+                        expect(chartPoints.ATL.length).to.eql(modelData.length);
+                        expect(chartPoints.ATLFuture.length).to.eql(modelData.length);
                     });
 
                     it("Should put today's ATL value in both past and future", function()
                     {
-                        expect(chartPoints.ATL[0][1]).toEqual(0);
-                        expect(chartPoints.ATLFuture[0][1]).toEqual(0);
+                        expect(chartPoints.ATL[0][1]).to.eql(0);
+                        expect(chartPoints.ATLFuture[0][1]).to.eql(0);
                     });
 
                     it("Should put future ATL value only in future", function()
                     {
-                        expect(chartPoints.ATL[9][1]).toEqual(null);
-                        expect(chartPoints.ATLFuture[9][1]).toEqual(45);
+                        expect(chartPoints.ATL[9][1]).to.eql(null);
+                        expect(chartPoints.ATLFuture[9][1]).to.eql(45);
                     });
 
                     it("Should include a date for each ATL point", function()
                     {
                         expect(
                             moment(chartPoints.ATLFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.ATLFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -440,35 +439,35 @@ function(
 
                     it("Should return IF data in the flot points", function()
                     {
-                        expect(chartPoints.IF).toBeDefined();
-                        expect(chartPoints.IFFuture).toBeDefined();
-                        expect(chartPoints.IF.length).toEqual(modelData.length);
-                        expect(chartPoints.IFFuture.length).toEqual(modelData.length);
+                        expect(chartPoints.IF).to.not.be.undefined;
+                        expect(chartPoints.IFFuture).to.not.be.undefined;
+                        expect(chartPoints.IF.length).to.eql(modelData.length);
+                        expect(chartPoints.IFFuture.length).to.eql(modelData.length);
                     });
 
                     it("Should not put today's IF value in both past and future", function()
                     {
-                        expect(chartPoints.IF[0][1]).toEqual(0);
-                        expect(chartPoints.IFFuture[0][1]).toEqual(null);
+                        expect(chartPoints.IF[0][1]).to.eql(0);
+                        expect(chartPoints.IFFuture[0][1]).to.eql(null);
                     });
 
                     it("Should put future IF value only in future", function()
                     {
-                        expect(chartPoints.IF[9][1]).toEqual(null);
-                        expect(chartPoints.IFFuture[9][1]).toEqual(9 * 0.11);
+                        expect(chartPoints.IF[9][1]).to.eql(null);
+                        expect(chartPoints.IFFuture[9][1]).to.eql(9 * 0.11);
                     });
 
                     it("Should include a date for each IF point", function()
                     {
                         expect(
                             moment(chartPoints.IFFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.IFFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -485,35 +484,35 @@ function(
 
                     it("Should return CTL data in the flot points", function()
                     {
-                        expect(chartPoints.CTL).toBeDefined();
-                        expect(chartPoints.CTLFuture).toBeDefined();
-                        expect(chartPoints.CTL.length).toEqual(modelData.length);
-                        expect(chartPoints.CTLFuture.length).toEqual(modelData.length);
+                        expect(chartPoints.CTL).to.not.be.undefined;
+                        expect(chartPoints.CTLFuture).to.not.be.undefined;
+                        expect(chartPoints.CTL.length).to.eql(modelData.length);
+                        expect(chartPoints.CTLFuture.length).to.eql(modelData.length);
                     });
 
                     it("Should put today's CTL value in both past and future", function()
                     {
-                        expect(chartPoints.CTL[0][1]).toEqual(0);
-                        expect(chartPoints.CTLFuture[0][1]).toEqual(0);
+                        expect(chartPoints.CTL[0][1]).to.eql(0);
+                        expect(chartPoints.CTLFuture[0][1]).to.eql(0);
                     });
 
                     it("Should put future CTL value only in future", function()
                     {
-                        expect(chartPoints.CTL[9][1]).toEqual(null);
-                        expect(chartPoints.CTLFuture[9][1]).toEqual(180);
+                        expect(chartPoints.CTL[9][1]).to.eql(null);
+                        expect(chartPoints.CTLFuture[9][1]).to.eql(180);
                     });
 
                     it("Should include a date for each CTL point", function()
                     {
                         expect(
                             moment(chartPoints.CTLFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.CTLFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
-                        ).toEqual(
+                        ).to.eql(
                             moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
@@ -529,9 +528,9 @@ function(
             {
                 var modelData = buildPmcModelData(10);
                 var chart = buildPmcChart();
-                spyOn(chart, "shouldShowTSS").andReturn(true);
-                spyOn(chart, "shouldShowIF").andReturn(true);
-                spyOn(chart, "shouldShowTSBFill").andReturn(true);
+                sinon.stub(chart, "shouldShowTSS").returns(true);
+                sinon.stub(chart, "shouldShowIF").returns(true);
+                sinon.stub(chart, "shouldShowTSBFill").returns(true);
                 var chartPoints = chart.buildFlotPoints(modelData);
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
@@ -539,7 +538,7 @@ function(
             // because we need an extra series for IF future fill and ATL future fill
             it("Should contain eleven items (five past, seven future)", function()
             {
-                expect(chartSeries.length).toBe(12);
+                expect(chartSeries.length).to.equal(12);
             });
         });
 
@@ -548,12 +547,12 @@ function(
 
             it("Should say 'PMC - Workout Type: All' if no workout types are set", function()
             {
-                expect(TP.utils.workout.types.getListOfNames([0], "All")).toEqual("All");
+                expect(TP.utils.workout.types.getListOfNames([0], "All")).to.eql("All");
             });
 
             it("Should include workout types if set", function()
             {
-                expect(TP.utils.workout.types.getListOfNames([1, 2, 3])).toEqual("Swim, Bike, Run");
+                expect(TP.utils.workout.types.getListOfNames([1, 2, 3])).to.eql("Swim, Bike, Run");
             });
 
         });
@@ -570,14 +569,14 @@ function(
                 modelData = buildPmcModelData(10);
                 chart = buildPmcChart();
                 chart.rawData = modelData;
-                workoutsCollection = new WorkoutsCollection([], { startDate: moment(), endDate: moment() });
-                spyOn(chart.dataManager, "loadCollection").andReturn(_.extend(new $.Deferred().resolve(), { collection: workoutsCollection }));
+                chart.calendarManager = new CalendarManager({ dataManager: new DataManager() });
+                sinon.stub(chart.calendarManager, "loadActivities");
                 tomahawkView = chart.createItemDetailView({dataIndex: 2},{pageX: 10, pageY: 10});
             });
 
             it("Should instantiate a PmcWorkoutsListView", function()
             {
-                expect(tomahawkView).toBeDefined();
+                expect(tomahawkView).to.not.be.undefined;
             });
 
         });

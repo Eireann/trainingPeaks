@@ -1,4 +1,4 @@
-﻿requirejs(
+﻿define(
 [
     "utilities/charting/chartColors"
 ],
@@ -8,8 +8,8 @@ function(chartColors)
     {
         it("should be a valid object", function()
         {
-            expect(chartColors).toBeDefined();
-            expect(chartColors.seriesColorByChannel).toBeDefined();
+            expect(chartColors).to.not.be.undefined;
+            expect(chartColors.seriesColorByChannel).to.not.be.undefined;
         });
     });
 });

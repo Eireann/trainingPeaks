@@ -1,4 +1,4 @@
-﻿requirejs(
+﻿define(
 ["framework/clipboard"],
 function(Clipboard)
 {
@@ -8,9 +8,9 @@ function(Clipboard)
         it("Should know whether it has data", function()
          {
              var clipboard = new Clipboard();
-             expect(clipboard.hasData()).toBe(false);
+             expect(clipboard.hasData()).to.equal(false);
              clipboard.set('some data', 'copy');
-             expect(clipboard.hasData()).toBe(true);
+             expect(clipboard.hasData()).to.equal(true);
          });
 
          it("Should not accept invalid values", function()
@@ -20,7 +20,7 @@ function(Clipboard)
              {
                  clipboard.set('', 'cut');
              };
-             expect(setNothing).toThrow();
+             expect(setNothing).to.throw();
          });
 
          it("Should not accept invalid actions", function()
@@ -30,30 +30,30 @@ function(Clipboard)
              {
                  clipboard.set('some data');
              };
-             expect(doNothing).toThrow();
+             expect(doNothing).to.throw();
              var doPut = function()
              {
                  clipboard.set('some data', 'put');
              };
-             expect(doPut).toThrow();
+             expect(doPut).to.throw();
          });
 
          it("Should maintain the correct action name", function()
          {
              var clipboard = new Clipboard();
              clipboard.set("some data", "cut");
-             expect(clipboard.getAction()).toBe("cut");
+             expect(clipboard.getAction()).to.equal("cut");
              clipboard.set("some other data", "copy");
-             expect(clipboard.getAction()).toBe("copy");
+             expect(clipboard.getAction()).to.equal("copy");
          });
 
          it("Should maintain the correct value", function()
          {
              var clipboard = new Clipboard();
              clipboard.set("some data", "cut");
-             expect(clipboard.getValue()).toBe("some data");
+             expect(clipboard.getValue()).to.equal("some data");
              clipboard.set("some other data", "copy");
-             expect(clipboard.getValue()).toBe("some other data");
+             expect(clipboard.getValue()).to.equal("some other data");
          });
        
     });

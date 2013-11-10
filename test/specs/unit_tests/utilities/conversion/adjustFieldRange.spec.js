@@ -1,4 +1,4 @@
-requirejs(
+define(
 [
     "utilities/conversion/adjustFieldRange"
 ],
@@ -11,29 +11,29 @@ function(adjustFieldRange)
         it("Should not allow values less than minimum " + min, function()
         {
             var tooLow = (min > 0) ? min / 2 : min - 1;
-            expect(adjustFieldRange(tooLow, key)).toEqual(min);
+            expect(adjustFieldRange(tooLow, key)).to.eql(min);
         });
 
         it("Should not allow values greater than max " + max, function()
         {
             var tooHigh = max + 1;
-            expect(adjustFieldRange(tooHigh, key)).toEqual(max);
+            expect(adjustFieldRange(tooHigh, key)).to.eql(max);
         });
 
         it("Should allow values between min " + min + " and max " + max, function()
         {
             var withinRange = (min + max) / 2;
-            expect(adjustFieldRange(withinRange, key)).toBe(withinRange);
+            expect(adjustFieldRange(withinRange, key)).to.equal(withinRange);
         });
 
         it("Should allow values at the very top of the range " + max, function()
         {
-            expect(adjustFieldRange(max, key)).toBe(max);
+            expect(adjustFieldRange(max, key)).to.equal(max);
         });
 
         it("Should allow values at the very bottom of the range " + min, function()
         {
-            expect(adjustFieldRange(min, key)).toBe(min);
+            expect(adjustFieldRange(min, key)).to.equal(min);
         });
     };
 
@@ -43,15 +43,15 @@ function(adjustFieldRange)
         it("Should return if the value is not a number", function()
         {
             var nan = Number("x");
-            expect(isNaN(adjustFieldRange(nan, "duration"))).toBeTruthy();
-            expect(isNaN(adjustFieldRange(undefined, "duration"))).toBeTruthy();
+            expect(isNaN(adjustFieldRange(nan, "duration"))).to.be.ok;
+            expect(isNaN(adjustFieldRange(undefined, "duration"))).to.be.ok;
         });
 
         it("Should return if the field type is not valid", function()
         {
             var value = 53;
             var fieldType = 'unknown';
-            expect(adjustFieldRange(value, fieldType)).toBe(value);
+            expect(adjustFieldRange(value, fieldType)).to.equal(value);
         });
 
         describe("Duration", function()

@@ -21,7 +21,7 @@ function(
     defaultFlotOptions,
     flotToolTip,
     flotSelection,
-    flotCustomToolTip,
+    FlotCustomToolTip,
     toolTipPositioner,
     flotZoom,
     flotMultiSelection,
@@ -87,7 +87,7 @@ function(
                 this.createFlotGraph();
             }
         },
-        
+
         watchForModelChanges: function()
         {
             this.listenTo(this.model.get("detailData"), "change:flatSamples", _.bind(this.createFlotGraph, this));
@@ -103,7 +103,7 @@ function(
         },
 
         createFlotGraph: function()
-        {            
+        {
             this.$plot = this.$("#plot");
             this.drawPlot();
         },
@@ -120,18 +120,18 @@ function(
                 this.trigger("noData");
                 return;
             }
-            
+
             var self = this;
 
             if (!this.allSeries)
             {
-                this.allSeries = this._getDataParser().getSeries();
+                this.allSeries = this._getGraphData().getSeries();
             }
 
-            this._getDataParser().workoutTypeValueId = this.model.get("workoutTypeValueId");
-            this._getDataParser().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
+            this._getGraphData().workoutTypeValueId = this.model.get("workoutTypeValueId");
+            this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
-            var enabledSeries = this._getDataParser().getSeries();
+            var enabledSeries = this._getGraphData().getSeries();
 
             if(!enabledSeries.length)
             {
@@ -140,29 +140,27 @@ function(
                 return;
             }
 
-            var yaxes = this._getDataParser().getYAxes(enabledSeries);
+            var yaxes = this._getGraphData().getYAxes(enabledSeries);
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildGraphToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
-            
+
             this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
-            this.flotOptions.zoom.dataParser = this._getDataParser();
+            this.flotOptions.zoom.dataParser = this._getGraphData();
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
             this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             this.flotOptions.grid.borderColor = "#9a9999";
 
             if (this.plot)
                 this.unbindPlotEvents();
-
-            this.$plot.css({ "min-height": 1, "min-width": 1 });
 
             if($.plot)
             {
@@ -193,7 +191,7 @@ function(
 
         overlayGraphToolbar: function()
         {
-            this.graphToolbar = new GraphToolbarView({ dataParser: this._getDataParser(), model: this.model, stateModel: this.stateModel });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this._getGraphData(), model: this.model, stateModel: this.stateModel });
 
             this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
 
@@ -217,13 +215,13 @@ function(
         {
             if (!this.plot)
                 return;
-            
+
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
 
             this.zoomRange = this.stateModel.get("primaryRange");
             this._applyZoom();
         },
-        
+
         resetZoom: function()
         {
             if (!this.plot)
@@ -272,8 +270,8 @@ function(
                 }
                 else if (this.currentAxis === "distance")
                 {
-                    from = this._getDataParser().getDistanceFromMsOffset(range.get("begin"));
-                    to = this._getDataParser().getDistanceFromMsOffset(range.get("end"));
+                    from = this._getGraphData().getDistanceFromMsOffset(range.get("begin"));
+                    to = this._getGraphData().getDistanceFromMsOffset(range.get("end"));
                 }
                 else
                 {
@@ -281,7 +279,7 @@ function(
                 }
 
                 this.plot.setSelection({ xaxis: { from: from, to: to } }, preventEvent);
-            
+
             }
             else
             {
@@ -299,7 +297,7 @@ function(
                 this.plot.triggerRedrawOverlay();
             }
         },
-        
+
         applyFilter: function(period)
         {
             if (!this.plot)
@@ -319,7 +317,7 @@ function(
             plotPlaceHolder.bind("plotselected", this.onPlotSelected);
             plotPlaceHolder.bind("plotunselected", this.onPlotUnSelected);
             plotPlaceHolder.bind("plothover", this.onPlotHover);
-            
+
             this.on("close", this.unbindPlotEvents, this);
         },
 
@@ -345,10 +343,10 @@ function(
 
             var plotSelectionFrom = this.plot.getSelection().xaxis.from;
             var plotSelectionTo = this.plot.getSelection().xaxis.to;
-            
+
             var startOffsetMs;
             var endOffsetMs;
-            
+
             if (this.currentAxis === "time")
             {
                 startOffsetMs = Math.round(plotSelectionFrom);
@@ -356,11 +354,12 @@ function(
             }
             else
             {
-                startOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionFrom);
-                endOffsetMs = this._getDataParser().getMsOffsetFromDistance(plotSelectionTo);
+                startOffsetMs = this._getGraphData().getMsOffsetFromDistance(plotSelectionFrom);
+                endOffsetMs = this._getGraphData().getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection", temporary: true });
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
+            range.getState().set("temporary", true);
             this.stateModel.set("primaryRange", range);
         },
 
@@ -373,7 +372,7 @@ function(
         {
             this.stateModel.set("hover", pos.x);
         },
-       
+
         onMouseLeave: function(event)
         {
             this.stateModel.set("hover", null);
@@ -383,7 +382,7 @@ function(
         {
             if(_.intersection(["disabledDataChannels", "availableDataChannels", "channelCuts"], _.keys(model.changed)).length)
             {
-                this.drawPlot(); 
+                this.drawPlot();
             }
         },
 
@@ -397,10 +396,10 @@ function(
 //             this.resetZoom();
 //             this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
-            this._getDataParser().setXAxis("time");
+            this._getGraphData().setXAxis("time");
             this.drawPlot();
         },
-        
+
         enableDistanceAxis: function ()
         {
             if (this.currentAxis === "distance")
@@ -411,7 +410,7 @@ function(
             // this.resetZoom();
             // this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
-            this._getDataParser().setXAxis("distance");
+            this._getGraphData().setXAxis("distance");
             this.drawPlot();
         },
 
@@ -488,11 +487,11 @@ function(
         {
             var from = selection.begin;
             var to = selection.end;
-            
+
             if (this.currentAxis === "distance")
             {
-                from = this._getDataParser().getDistanceFromMsOffset(from);
-                to = this._getDataParser().getDistanceFromMsOffset(to);
+                from = this._getGraphData().getDistanceFromMsOffset(from);
+                to = this._getGraphData().getDistanceFromMsOffset(to);
             }
 
             selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } });
@@ -518,9 +517,9 @@ function(
             this.offsetRatio = offsetRatio;
         },
 
-        _getDataParser: function()
+        _getGraphData: function()
         {
-            return this.model.get("detailData").getDataParser();
+            return this.model.get("detailData").graphData;
         }
 
     });

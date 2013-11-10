@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "underscore",
     "moment",
@@ -45,9 +44,9 @@ function(
 
                 it("should not jump the gun", function()
                 {
-                    expect(items[0].getState().get("isSelected")).toBeFalsy();
-                    expect(items[1].getState().get("isSelected")).toBeFalsy();
-                    expect(items[2].getState().get("isSelected")).toBeFalsy();
+                    expect(items[0].getState().get("isSelected")).to.not.be.ok;
+                    expect(items[1].getState().get("isSelected")).to.not.be.ok;
+                    expect(items[2].getState().get("isSelected")).to.not.be.ok;
                 });
 
                 it("should set the isSelected state flag on members", function()
@@ -55,9 +54,9 @@ function(
 
                     selection.activate();
 
-                    expect(items[0].getState().get("isSelected")).toBe(true);
-                    expect(items[1].getState().get("isSelected")).toBe(true);
-                    expect(items[2].getState().get("isSelected")).toBe(true);
+                    expect(items[0].getState().get("isSelected")).to.equal(true);
+                    expect(items[1].getState().get("isSelected")).to.equal(true);
+                    expect(items[2].getState().get("isSelected")).to.equal(true);
 
                 });
 
@@ -70,7 +69,7 @@ function(
 
                     selection.add(item);
 
-                    expect(item.getState().get("isSelected")).toBe(true);
+                    expect(item.getState().get("isSelected")).to.equal(true);
 
                 });
 
@@ -79,7 +78,7 @@ function(
 
                     selection.activate();
                     selection.remove(items[0]);
-                    expect(items[0].getState().get("isSelected")).toBe(false);
+                    expect(items[0].getState().get("isSelected")).to.equal(false);
 
                 });
 
@@ -94,9 +93,9 @@ function(
                     selection.activate();
                     selection.deactivate();
 
-                    expect(items[0].getState().get("isSelected")).toBe(false);
-                    expect(items[1].getState().get("isSelected")).toBe(false);
-                    expect(items[2].getState().get("isSelected")).toBe(false);
+                    expect(items[0].getState().get("isSelected")).to.equal(false);
+                    expect(items[1].getState().get("isSelected")).to.equal(false);
+                    expect(items[2].getState().get("isSelected")).to.equal(false);
 
                 });
 
@@ -110,7 +109,7 @@ function(
 
                     selection.add(item);
 
-                    expect(item.getState().get("isSelected")).toBe(false);
+                    expect(item.getState().get("isSelected")).to.equal(false);
 
                 });
 

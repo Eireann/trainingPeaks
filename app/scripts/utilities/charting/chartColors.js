@@ -14,7 +14,9 @@ function()
                 "Speed": "#0b8200",
                 "Elevation": "#6e96b9",
                 "Temperature": "#0A0AFF",
-                "Torque": "#BDBDBD"
+                "Torque": "#BDBDBD",
+                "Distance": "#7b1f40",
+                "Time": "#84979c"
             },
 
         pmcColors:
@@ -53,7 +55,7 @@ function()
                         rowing: { light: "#3bc7ed", dark: "#14afd9" },
                         walk: { light: "#e6d701", dark: "#aba001" },
                         other: { light: "#c116c9", dark: "#8e1094" },
-                        dayoff: { light: "#a5b3b6", dark: "#84979c" } 
+                        dayoff: { light: "#a5b3b6", dark: "#84979c" }
                     },
                 trainingZones:
                 {
@@ -73,10 +75,72 @@ function()
 
         workoutSummary:
         {
-            planned: "#adadad",
-            bars: { light: "#1b82ce", dark: "#125689" },
             TSS: { light: "#df0a08", dark: "#b90807" },
-            IF: { light: "#5aadff", dark: "#3399ff" }
+            IF: { light: "#5aadff", dark: "#3399ff" },
+            bars: { light: "rgb(27, 130, 206)", dark: "#115282"},
+            plannedCompleted: {
+                defaults: {
+                    plannedGreaterThanCompleted: { light: "#c8c8c8", dark: "#adadad"},
+                    completed: { light: "#4F9CD6", dark: "#47789D"},
+                    completedGreaterThanPlanned: { light: "#1B82CE", dark: "#115282"}
+                },
+                bike: {
+                    completed: { light: "#a153d8", dark: "#7b4a9e" },
+                    completedGreaterThanPlanned: { light: "#8820d1", dark: "#561484" }
+                },
+                strength: {
+                    completed: { light: "#a75ca3", dark: "#80507d" },
+                    completedGreaterThanPlanned: { light: "#912c8a", dark: "#551a51" }
+                },
+                run: {
+                    completed: { light: "#5f9cb0", dark: "#517885" },
+                    completedGreaterThanPlanned: { light: "#30819c", dark: "#1e5162" }
+                },
+                swim: {
+                    completed: { light: "#53b5d8", dark: "#4a889e" },
+                    completedGreaterThanPlanned: { light: "#20a3d1", dark: "#0382b1" }
+                },
+                brick: {
+                    completed: { light: "#ba5b7c", dark: "#9a536d" },
+                    completedGreaterThanPlanned: { light: "#aa2b58", dark: "#7b1f40" }
+                },
+                crosstrain: {
+                    completed: { light: "#cb4bd2", dark: "#a848ad" },
+                    completedGreaterThanPlanned: { light: "#c116c9", dark: "#8e1094" }
+                },
+                race: {
+                    completed: { light: "#3bc4c5", dark: "#3b9c9c" },
+                    completedGreaterThanPlanned: { light: "#00b7b7", dark: "#007c7c" }
+                },
+                mountainbike: {
+                    completed: { light: "#ad8f67", dark: "#907a5c" },
+                    completedGreaterThanPlanned: { light: "#99703a", dark: "#6e512a" }
+                },
+                custom: {
+                    completed: { light: "#cb4bd2", dark: "#a848ad" },
+                    completedGreaterThanPlanned: { light: "#c116c9", dark: "#8e1094" }
+                },
+                xcski: {
+                    completed: { light: "#e09f86", dark: "#d98565" },
+                    completedGreaterThanPlanned: { light: "#dd8663", dark: "#d26033" }
+                },
+                rowing: {
+                    completed: { light: "#67d0ed", dark: "#4cc0e0" },
+                    completedGreaterThanPlanned: { light: "#3bc7ed", dark: "#14afd9" }
+                },
+                walk: {
+                    completed: { light: "#e7dc3c", dark: "#bfb73c" },
+                    completedGreaterThanPlanned: { light: "#e6d701", dark: "#aba001" }
+                },
+                other: {
+                    completed: { light: "#cb4bd2", dark: "#a848ad" },
+                    completedGreaterThanPlanned: { light: "#c116c9", dark: "#8e1094" }
+                },
+                dayoff: {
+                    completed: { light: "#b6c1c4", dark: "#a0aeb2" },
+                    completedGreaterThanPlanned: { light: "#a5b3b6", dark: "#84979c" }
+                }
+            }
         },
 
         chartSelection: "#e61101",

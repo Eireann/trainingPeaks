@@ -1,5 +1,4 @@
-﻿// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "jquery",
     "moment",
@@ -38,20 +37,20 @@ function(
 
         it("Should have a list of features", function()
         {
-            expect(featureAuthorizer.features).toBeDefined();
+            expect(featureAuthorizer.features).to.not.be.undefined;
         });
 
         it("Should have some features in the list of features", function()
         {
-            expect(featureAuthorizer.features.SaveWorkoutToDate).toBeDefined();
+            expect(featureAuthorizer.features.SaveWorkoutToDate).to.not.be.undefined;
         });
 
         describe("canAccessFeature", function()
         {
             it("Should have a canAccessFeature method to check whether a user can access a feature", function()
             {
-                expect(featureAuthorizer.canAccessFeature).toBeDefined();
-                expect(_.isFunction(featureAuthorizer.canAccessFeature)).toBe(true);
+                expect(featureAuthorizer.canAccessFeature).to.not.be.undefined;
+                expect(_.isFunction(featureAuthorizer.canAccessFeature)).to.equal(true);
             });
 
             it("Should throw an exception if an invalid feature is used", function()
@@ -61,7 +60,7 @@ function(
                     return featureAuthorizer.canAccessFeature(null);
                 };
 
-                expect(invalidFeature).toThrow();
+                expect(invalidFeature).to.throw();
             });
 
             it("Should throw an exception if featureChecker doesn't return boolean", function()
@@ -73,7 +72,7 @@ function(
                     return featureAuthorizer.canAccessFeature(returnsSomethingElse);
                 };
 
-                expect(runsInvalidFeatureChecker).toThrow();
+                expect(runsInvalidFeatureChecker).to.throw();
             });
 
             it("Should return a boolean if a valid feature is used", function()
@@ -82,7 +81,7 @@ function(
                     featureAuthorizer.features.SaveWorkoutToDate,
                     {targetDate: "2013-01-01"}
                 );
-                expect(typeof userCanPlanWorkouts).toBe("boolean");
+                expect(typeof userCanPlanWorkouts).to.equal("boolean");
             });
 
         });
@@ -91,28 +90,28 @@ function(
         {
             it("Should have a runCallbackOrShowUpgradeMessage method", function()
             {
-                expect(featureAuthorizer.runCallbackOrShowUpgradeMessage).toBeDefined();
-                expect(_.isFunction(featureAuthorizer.runCallbackOrShowUpgradeMessage)).toBe(true);
+                expect(featureAuthorizer.runCallbackOrShowUpgradeMessage).to.not.be.undefined;
+                expect(_.isFunction(featureAuthorizer.runCallbackOrShowUpgradeMessage)).to.equal(true);
             });
 
             it("Should run the callback if feature is authorized", function()
             {
-                spyOn(featureAuthorizer, "showUpgradeMessage");
-                var callback = jasmine.createSpy("the callback");
+                sinon.stub(featureAuthorizer, "showUpgradeMessage");
+                var callback = sinon.stub();
                 var myFeatureCheckerReturnsTrue = function(){return true;};
                 featureAuthorizer.runCallbackOrShowUpgradeMessage(myFeatureCheckerReturnsTrue, callback);
-                expect(callback).toHaveBeenCalled();
-                expect(featureAuthorizer.showUpgradeMessage).not.toHaveBeenCalled();
+                expect(callback).to.have.been.called;
+                expect(featureAuthorizer.showUpgradeMessage).to.not.have.been.called;
             });
 
             it("Should not run the callback if feature is authorized", function()
             {
-                spyOn(featureAuthorizer, "showUpgradeMessage");
-                var callback = jasmine.createSpy("the callback");
+                sinon.stub(featureAuthorizer, "showUpgradeMessage");
+                var callback = sinon.stub();
                 var myFeatureCheckerReturnsFalse = function(){return false;};
                 featureAuthorizer.runCallbackOrShowUpgradeMessage(myFeatureCheckerReturnsFalse, callback);
-                expect(callback).not.toHaveBeenCalled();
-                expect(featureAuthorizer.showUpgradeMessage).toHaveBeenCalled();
+                expect(callback).to.not.have.been.called;
+                expect(featureAuthorizer.showUpgradeMessage).to.have.been.called;
             });
         });
 
@@ -148,14 +147,14 @@ function(
                                 unauthorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
  
                      expect(featureAuthorizer.features.SaveWorkoutToDate(
                                 user,
                                 authorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
 
                 it("Should allow only an authorized user to save workout to a future date", function()
@@ -166,14 +165,14 @@ function(
                                 unauthorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
 
                      expect(featureAuthorizer.features.SaveWorkoutToDate(
                                 user,
                                 authorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
             });
 
@@ -205,14 +204,14 @@ function(
                                 unauthorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
                     
                      expect(featureAuthorizer.features.ShiftWorkouts(
                                 user,
                                 authorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
             });
 
@@ -244,14 +243,14 @@ function(
                                 unauthorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
                     
                      expect(featureAuthorizer.features.ViewPod(
                                 user,
                                 authorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
 
             });
@@ -284,14 +283,14 @@ function(
                                 unauthorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
                     
                      expect(featureAuthorizer.features.UsePod(
                                 user,
                                 authorizedUserAccessRights,
                                 attributes
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
 
             });
@@ -322,13 +321,13 @@ function(
                                 user,
                                 unauthorizedUserAccessRights
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
                     
                      expect(featureAuthorizer.features.ElevationCorrection(
                                 user,
                                 authorizedUserAccessRights
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
 
             });
@@ -359,13 +358,13 @@ function(
                                 user,
                                 unauthorizedUserAccessRights
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
                     
                      expect(featureAuthorizer.features.ViewGraphRanges(
                                 user,
                                 authorizedUserAccessRights
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
                 });
 
             });
@@ -419,7 +418,7 @@ function(
                                     collection: collectionUnderLimit
                                 }
                             )
-                    ).toBe(true);
+                    ).to.equal(true);
 
                     expect(featureAuthorizer.features.AddWorkoutTemplateToLibrary(
                                 user,
@@ -428,7 +427,7 @@ function(
                                     collection: collectionOverLimit
                                 }
                             )
-                    ).toBe(false);
+                    ).to.equal(false);
                    
                 });
 

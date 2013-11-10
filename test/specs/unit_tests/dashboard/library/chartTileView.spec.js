@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "TP",
     "views/dashboard/library/chartTileView"
@@ -12,7 +11,7 @@ function(TP, ChartTileView)
 
         it("Should be loaded as a module", function()
         {
-            expect(ChartTileView).toBeDefined();
+            expect(ChartTileView).to.not.be.undefined;
         });
 
         describe("draggability", function()
@@ -27,9 +26,9 @@ function(TP, ChartTileView)
 
             it("Should be made draggable when rendered", function()
             {
-                spyOn(view.$el, "draggable").andCallThrough();
+                sinon.spy(view.$el, "draggable");
                 view.render();
-                expect(view.$el.draggable).toHaveBeenCalled();
+                expect(view.$el.draggable).to.have.been.called;
             });
 
             it("Should add data attributes to $el for dragging", function()
@@ -37,7 +36,7 @@ function(TP, ChartTileView)
                 view.render();
 
                 var data = view.$el.data();
-                expect(data.model).toEqual(model);
+                expect(data.model).to.eql(model);
             });
 
         });

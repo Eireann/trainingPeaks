@@ -1,5 +1,4 @@
-﻿// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "underscore",
     "TP",
@@ -34,14 +33,14 @@ function(
     {
         it("Should have a valid constructor", function ()
         {
-            expect(TimeInZonesChartView).toBeDefined();
+            expect(TimeInZonesChartView).to.not.be.undefined;
         });
 
         it("Should check for valid initialization parameters", function ()
         {
-            expect(function () { new TimeInZonesChartView({ model: new TP.Model() }); }).toThrow("TimeInZonesChartView requires a chartColor object at construction time");
-            expect(function() { new TimeInZonesChartView({ model: new TP.Model(), chartColor: {} }); }).toThrow("TimeInZonesChartView requires a toolTipBuilder callback at construction time");
-            expect(function() { new TimeInZonesChartView({ model: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).not.toThrow();
+            expect(function () { new TimeInZonesChartView({ model: new TP.Model() }); }).to.throw("TimeInZonesChartView requires a chartColor object at construction time");
+            expect(function() { new TimeInZonesChartView({ model: new TP.Model(), chartColor: {} }); }).to.throw("TimeInZonesChartView requires a toolTipBuilder callback at construction time");
+            expect(function() { new TimeInZonesChartView({ model: new TP.Model(), chartColor: {}, toolTipBuilder: function() { } }); }).to.not.throw();
         });
 
         describe("Build Chart Points", function()
@@ -55,16 +54,16 @@ function(
 
             it("Should build chart points", function()
             {
-                expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints).toBe("function");
-                expect(buildChartPoints).not.toThrow();
+                expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints).to.equal("function");
+                expect(buildChartPoints).to.not.throw();
             });
 
             it("Should contain the correct number of points", function()
             {
                 var timeInZones = buildTimeInZones();
                 var chartPoints = buildChartPoints();
-                expect(chartPoints.length).toEqual(timeInZones.length);
-                expect(timeInZones.length).toEqual(10);
+                expect(chartPoints.length).to.eql(timeInZones.length);
+                expect(timeInZones.length).to.eql(10);
             });
 
             it("Should contain the correct minutes value for each point", function()
@@ -74,10 +73,10 @@ function(
                 _.each(timeInZones, function(timeInZone, index)
                 {
                     var chartPoint = chartPoints[index];
-                    expect(chartPoint).toBeDefined();
-                    expect(chartPoint.length).toEqual(2);
-                    expect(chartPoint[1] * 60).toEqual(timeInZone.seconds);
-                    expect(chartPoint[0]).toEqual(index);
+                    expect(chartPoint).to.not.be.undefined;
+                    expect(chartPoint.length).to.eql(2);
+                    expect(chartPoint[1] * 60).to.eql(timeInZone.seconds);
+                    expect(chartPoint[0]).to.eql(index);
                 }, this);
             });
         });
@@ -92,27 +91,27 @@ function(
 
             it("Should return a one-item array", function()
             {
-                expect(dataSeries.length).toBe(1);
+                expect(dataSeries.length).to.equal(1);
             });
 
             it("Should contain the chart points", function()
             {
-                expect(dataSeries[0].data).toBeDefined();
-                expect(dataSeries[0].data).toBe(chartPoints);
+                expect(dataSeries[0].data).to.not.be.undefined;
+                expect(dataSeries[0].data).to.equal(chartPoints);
             });
 
             it("Should contain a 'bars' definition, to create a bar chart", function()
             {
-                expect(dataSeries[0].bars).toBeDefined();
+                expect(dataSeries[0].bars).to.not.be.undefined;
             });
 
             it("Should use the specified color gradient", function()
             {
                 var bars = dataSeries[0].bars;
-                expect(bars.fillColor).toBeDefined();
-                expect(bars.fillColor.colors).toBeDefined();
-                expect(bars.fillColor.colors).toContain(chartColor.light);
-                expect(bars.fillColor.colors).toContain(chartColor.dark);
+                expect(bars.fillColor).to.not.be.undefined;
+                expect(bars.fillColor.colors).to.not.be.undefined;
+                expect(bars.fillColor.colors).to.contain(chartColor.light);
+                expect(bars.fillColor.colors).to.contain(chartColor.dark);
             });
         });
 
@@ -122,8 +121,8 @@ function(
 
             it("Should enable bar graph display", function()
             {
-                expect(chartOptions.series.bars).toBeDefined();
-                expect(chartOptions.series.bars.show).toBe(true);
+                expect(chartOptions.series.bars).to.not.be.undefined;
+                expect(chartOptions.series.bars.show).to.equal(true);
             });
         });
 

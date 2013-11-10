@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "views/calendar/library/exerciseLibraryAddItemView"
 ],
@@ -11,7 +10,7 @@ function(ExerciseLibraryAddItemView)
 
         it("Should be loaded as a module", function()
         {
-            expect(ExerciseLibraryAddItemView).toBeDefined();
+            expect(ExerciseLibraryAddItemView).to.not.be.undefined;
         });
 
     });

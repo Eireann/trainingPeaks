@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "underscore",
     "testUtils/testHelpers"
@@ -9,51 +8,56 @@ function( _, testHelpers )
     describe("The Mars App", function()
     {
 
-        var theApp = testHelpers.theApp;
+        var theApp;
+
+        beforeEach(function()
+        {
+            testHelpers.startTheApp();
+            theApp = testHelpers.theApp;
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
 
         it("Should exist globally", function()
         {
             var globalNamespace = typeof window !== 'undefined' ? window : jasmine.getGlobal();
-            expect(_.keys(globalNamespace)).toContain('theMarsApp');
+            expect(_.keys(globalNamespace)).to.contain('theMarsApp');
         });
 
         describe("App Initializers", function()
         {
-            theApp.start();
 
             it("Should have a session", function()
             {
-                expect(theApp.hasOwnProperty('session')).toBeTruthy();
+                expect(theMarsApp.hasOwnProperty('session')).to.be.ok;
             });
 
             it("Should have a logger", function()
             {
-                expect(theApp.hasOwnProperty('logger')).toBeTruthy();
+                expect(theMarsApp.hasOwnProperty('logger')).to.be.ok;
             });
 
             it("Should have a navigation controller", function()
             {
-                expect(theApp.controllers.navigationController).toBeDefined();
+                expect(theMarsApp.controllers.navigationController).to.not.be.undefined;
             });
  
             it("Should have a calendar controller", function()
             {
-                expect(theApp.controllers.calendarController).toBeDefined();
-            });
-
-            xit("Should have a home controller", function()
-            {
-                expect(theApp.controllers.homeController).toBeDefined();
+                expect(theMarsApp.controllers.calendarController).to.not.be.undefined;
             });
 
             it("Should have a dashboard controller", function()
             {
-                expect(theApp.controllers.dashboardController).toBeDefined();
+                expect(theMarsApp.controllers.dashboardController).to.not.be.undefined;
             });
 
             it("Should have a client events tracker", function()
             {
-                expect(theApp.hasOwnProperty('clientEvents')).toBeTruthy();
+                expect(theMarsApp.hasOwnProperty('clientEvents')).to.be.ok;
             });
 
         });

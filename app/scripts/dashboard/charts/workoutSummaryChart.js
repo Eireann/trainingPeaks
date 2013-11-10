@@ -1,7 +1,10 @@
 define(
 [
+    "underscore",
+    "moment",
     "TP",
     "framework/chart",
+    "utilities/charting/jquery.flot.stack",
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
@@ -9,8 +12,11 @@ define(
     "dashboard/views/workoutSummaryChartSettingsView"
 ],
 function(
+    _,
+    moment,
     TP,
     Chart,
+    flotStack,
     chartColors,
     defaultFlotOptions,
     DashboardChartUtils,
@@ -54,6 +60,126 @@ function(
         key: "timeTotal",
         units: "duration"
     }];
+
+
+    function buildOrderedDataPoints(data, key, offset)
+    { 
+        var points = _.map(data, function(entry)
+        {
+            return [entry.date + offset, entry[key] || 0];
+        });
+
+        return _.sortBy(points, 0);
+    }
+
+    function buildSeriesOptionsWithoutPlannedValues(data, subTypeOptions, barWidth, defaultColors)
+    {
+        return _.map(subTypeOptions.series, function(series, i)
+        {
+            var colors = series.colors || defaultColors;
+
+            // offset to account for tss/if bars side by side
+            var offset = subTypeOptions.series.length === 1 ? -(barWidth / 2) : 0;
+            
+            var orderedPoints = buildOrderedDataPoints(data, series.key, offset);
+
+            var options = _.extend({
+                color: colors.light,
+                bars: {
+                    order: i,
+                    barWidth: barWidth  * (series.widthScale || 1),
+                    fillColor: { colors: [ colors.light, colors.dark ] }
+                }
+            }, series);
+
+            return _.extend({ data: orderedPoints }, options);
+
+        }, this);
+    }
+
+    function buildSeriesOptionsWithPlannedValues(data, subTypeOptions, barWidth, colors)
+    {
+        // offset to account for tss/if bars side by side
+        var offset = -(barWidth / 2);
+
+        var plannedValues =  buildOrderedDataPoints(data, subTypeOptions.plannedSeries[0].key, offset);
+        var completedValues =  buildOrderedDataPoints(data, subTypeOptions.series[0].key, offset);
+
+        // charting y axis builder needs the series units
+        var completedSeries = _.defaults({
+            data: [],
+            color: colors.completed.light,
+            bars: {
+                fillColor: { colors: [colors.completed.light, colors.completed.dark] }
+            }
+        }, subTypeOptions.series[0]);
+
+        var plannedGreaterThanCompletedSeries = {
+            data: [],
+            color: colors.plannedGreaterThanCompleted.light,
+            bars: {
+                fillColor: { colors: [colors.plannedGreaterThanCompleted.light, colors.plannedGreaterThanCompleted.dark] }
+            },
+            yaxis: 1 // share the first y axis
+        };
+
+        var completedGreaterThanPlannedSeries = {
+            data: [],
+            color: colors.completedGreaterThanPlanned.light,
+            bars: {
+                fillColor: { colors: [colors.completedGreaterThanPlanned.light, colors.completedGreaterThanPlanned.dark] }
+            },
+            yaxis: 1 // share the first y axis
+        };
+
+        _.each(plannedValues, function(plannedDataPoint, i)
+        {
+            var xIndex = plannedDataPoint[0];
+            var plannedValue = plannedDataPoint[1];
+            var completedValue = completedValues[i][1];
+
+            // round comparison values to account for slight rounding differences
+            var oneSignificantUnit;
+            if(this.units === "distance")
+            {
+                oneSignificantUnit = 1; // one meter
+            }
+            else
+            {
+                oneSignificantUnit = 1 / 3600; // one second
+            }
+
+            // each series should have either a value or 0,
+            // but never null, 
+            // or flot stack and flot mouseover calculations get confused
+            if((plannedValue - completedValue) >= oneSignificantUnit)
+            {
+                completedSeries.data.push([xIndex, completedValue]);
+                plannedGreaterThanCompletedSeries.data.push([xIndex, plannedValue - completedValue]);
+                completedGreaterThanPlannedSeries.data.push([xIndex, 0]);
+            }
+            else if((completedValue - plannedValue) >= oneSignificantUnit)
+            {
+                completedSeries.data.push([xIndex, plannedValue]);
+                plannedGreaterThanCompletedSeries.data.push([xIndex, 0]);
+                completedGreaterThanPlannedSeries.data.push([xIndex, completedValue - plannedValue]);
+            }
+            else if(completedValue >= oneSignificantUnit)
+            {
+                completedSeries.data.push([xIndex, completedValue]);
+                plannedGreaterThanCompletedSeries.data.push([xIndex, 0]); 
+                completedGreaterThanPlannedSeries.data.push([xIndex, 0]);
+            }
+            else
+            {
+                completedSeries.data.push([xIndex, 0]);
+                plannedGreaterThanCompletedSeries.data.push([xIndex, 0]); 
+                completedGreaterThanPlannedSeries.data.push([xIndex, 0]);
+            }
+        }, subTypeOptions.series[0]);
+
+        return [completedSeries, plannedGreaterThanCompletedSeries, completedGreaterThanPlannedSeries ];
+    }
 
     var WorkoutSummaryChart = Chart.extend({
 
@@ -194,21 +320,19 @@ function(
 
         initialize: function(attributes, options)
         {
-            var self = this;
+            // The KJ by Week chart never had this setting,
+            // leading to values that are inconsistently handled by the code
+            // Default anything not explicitly set to "By Day" to "By Week"
+            if(this.get("dateGrouping") !== 1)
+            {
+                this.set("dateGrouping", 2);
+            }
+
             this.subType = _.find(this.subTypes, function(subType)
             {
                 return subType.chartType === parseInt(this.get('chartType'), 10);
             }, this);
             this.subType.hasPlanned = this.subType.plannedSeries && this.subType.plannedSeries.length > 0;
-
-            _.each(this.subType.plannedSeries, function(serie)
-            {
-                _.defaults(serie,
-                {
-                    color: chartColors.workoutSummary.planned
-                });
-            });
-
             this._validateWorkoutTypes();
         },
 
@@ -224,6 +348,21 @@ function(
             {
                 workoutTypeName = TP.utils.workout.types.getNameById(workoutTypeIds[0]);
                 return chartColors.gradients.workoutType[workoutTypeName.toLowerCase().replace(/[^a-z]/g,"")];
+            }
+        },
+
+        _getColorForWorkoutTypeWithPlanned: function()
+        {
+            var workoutTypeIds = this.get('workoutTypeIds'),
+                workoutTypeName;
+            if (workoutTypeIds.length !== 1)
+            {
+                return chartColors.workoutSummary.plannedCompleted.defaults;
+            }
+            else
+            {
+                workoutTypeName = TP.utils.workout.types.getNameById(workoutTypeIds[0]);
+                return _.defaults(chartColors.workoutSummary.plannedCompleted[workoutTypeName.toLowerCase().replace(/[^a-z]/g,"")], chartColors.workoutSummary.plannedCompleted.defaults);
             }
         },
 
@@ -266,72 +405,49 @@ function(
 
         parseData: function(data)
         {
-            var self = this;
             data = this.data = this._preprocessData(data);
 
             // Calculate the bar width
             var dateGrouping = this.get("dateGrouping") === 1 ? "day" : "week";
             var barWidth = moment.duration(1, dateGrouping).valueOf() * 0.7 / this.subType.series.length;
 
-            var series = _.map(this.subType.series, function(series, i)
-            {
-                var colors = series.colors || self._getColorForWorkoutType();
-
-                return this._buildSeries(data, series.key, _.extend({
-                    onlySeries: this.subType.series.length === 1,
-                    color: colors.light,
-                    bars: {
-                        order: i,
-                        barWidth: barWidth  * (series.widthScale || 1),
-                        fillColor: { colors: [ colors.light, colors.dark ] }
-                    }
-                }, series));
-            }, this);
-
-            var plannedSeries = [];
-            
-            if(this.get("showPlanned")) {
-                plannedSeries = _.map(this.subType.plannedSeries, function(series)
+            var flotOptions = _.defaults({
+                bars:
                 {
-                    return this._buildSeries(data, series.key, _.extend({
-                        bars:
-                        {
-                            show: false
-                        },
-                        lines: {
-                            show: true
-                        }
-                    }, series));
-                }, this);
+                    show: true,
+                    barWidth: barWidth,
+                    lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
+                },
+                shadowSize: 0,
+                xaxis:
+                {
+                    ticks: _.bind(this._generateTimeTicks, this),
+                    tickFormatter: function(date)
+                    {
+                        return TP.utils.datetime.format(date); 
+                    },
+                    color: "transparent"
+                }
+            }, defaultFlotOptions.getBarOptions(null));
+
+            if(this.subType.hasPlanned && this.get("showPlanned"))
+            {
+                series = buildSeriesOptionsWithPlannedValues(data, this.subType, barWidth, this._getColorForWorkoutTypeWithPlanned());
+                flotOptions.series.stack = true;
+            }
+            else
+            { 
+                series = buildSeriesOptionsWithoutPlannedValues(data, this.subType, barWidth, this._getColorForWorkoutType());
             }
 
-            series = series.concat(plannedSeries);
-            var yaxes = ChartingAxesBuilder.makeYaxes(series, {
+            flotOptions.yaxes = ChartingAxesBuilder.makeYaxes(series, {
                 workoutTypeId: this._getSingleWorkoutTypeId(),
                 min: 0
             });
 
             return {
                 dataSeries: series,
-                flotOptions: _.defaults({
-                    bars:
-                    {
-                        show: true,
-                        barWidth: barWidth,
-                        lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
-                    },
-                    shadowSize: 0,
-                    yaxes: yaxes,
-                    xaxis:
-                    {
-                        ticks: _.bind(this._generateTimeTicks, this),
-                        tickFormatter: function(date)
-                        {
-                            return TP.utils.datetime.format(date); 
-                        },
-                        color: "transparent"
-                    }
-                }, defaultFlotOptions.getBarOptions(null))
+                flotOptions: flotOptions 
             };
         },
 
@@ -371,27 +487,6 @@ function(
                     return _.include(workoutTypeIds, parseInt(entry.workoutTypeId, 10));
                 });
             }
-
-            return data;
-        },
-
-        _augmentDataWithStartAndEndDates: function(data)
-        {
-            // Force start/end date to be included in chart.
-            var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
-            var dateGrouping = this.get("dateGrouping");
-            if(dateGrouping === 2) // Week
-            {
-                dateOptions.startDate = this._adjustDateToWeek(dateOptions.startDate);
-                dateOptions.endDate = this._adjustDateToWeek(dateOptions.endDate);
-            }
-
-            data.push({
-                workoutDay: dateOptions.startDate
-            });
-            data.push({
-                workoutDay: dateOptions.endDate
-            });
 
             return data;
         },
@@ -454,29 +549,7 @@ function(
             });
 
             return _.sortBy(_.values(mergedData), "date");
-        },
-
-        _buildSeries: function(data, key, options)
-        {
-            var offset = 0;
-            if(options.onlySeries)
-            {
-                offset = -(options.bars.barWidth / 2);
-            }
-
-            var points = _.map(data, function(entry)
-            {
-                return [entry.date + offset, entry[key] || 0];
-            });
-
-            _.defaults(options, {
-                colors: chartColors.gradients.heartRate
-            });
-
-            points = _.sortBy(points, 0);
-
-            return _.extend({ data: points }, options);
-        },
+        }, 
 
         buildTooltipData: function(flotItem)
         {

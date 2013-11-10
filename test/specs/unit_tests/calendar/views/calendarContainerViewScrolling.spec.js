@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "jquery",
     "TP",
@@ -11,7 +10,7 @@ requirejs(
 function($, TP, moment, DataManager, CalendarContainerView, ScrollableCollectionView)
 {
 
-    xdescribe("CalendarContainerView Scrolling", function()
+    xdescribe("CalendarContainerView Scrolling (TODO: we should probably have a working test for scrolling to date)", function()
     {
 
         it("Should scroll to a given date", function ()
@@ -23,15 +22,15 @@ function($, TP, moment, DataManager, CalendarContainerView, ScrollableCollection
                 },
                 collection =  new CalendarCollection(null, collection_options);
 
-            spyOn(collection, "getWeekModelForDay").andReturn(new TP.Model());
+            sinon.stub(collection, "getWeekModelForDay").returns(new TP.Model());
             
-            expect(CalendarContainerView.prototype.scrollToDate).toBeDefined();
-            expect(typeof CalendarContainerView.prototype.scrollToDate).toBe("function");
+            expect(CalendarContainerView.prototype.scrollToDate).to.not.be.undefined;
+            expect(typeof CalendarContainerView.prototype.scrollToDate).to.equal("function");
 
             var calendarContainerView = new CalendarContainerView({ calendarHeaderModel: new TP.Model(), collection: collection});
-            spyOn(calendarContainerView.weeksCollectionView, "scrollToModel");
+            sinon.stub(calendarContainerView.weeksCollectionView, "scrollToModel");
             calendarContainerView.scrollToDate(moment("2013-01-01"));
-            expect(calendarContainerView.weeksCollectionView.scrollToModel).toHaveBeenCalled();
+            expect(calendarContainerView.weeksCollectionView.scrollToModel).to.have.been.called;
         });
 
     });

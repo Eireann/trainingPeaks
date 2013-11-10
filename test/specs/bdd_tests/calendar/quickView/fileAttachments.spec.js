@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "moment",
     "testUtils/testHelpers",
@@ -39,19 +38,19 @@ function(
                 $body.find("[data-workoutid=3]").trigger("click"); // 3=run
 
                 // should have a qv
-                expect($body.find(".workoutQuickView").length).toBe(1);
+                expect($body.find(".workoutQuickView").length).to.equal(1);
 
                 // should not have a dialog yet
-                expect($body.find(".deleteConfirmation").length).toBe(0);
+                expect($body.find(".deleteConfirmation").length).to.equal(0);
 
                 // click attachment icon
                 $body.find(".addAttachment").trigger("click");
 
                 // should have a dialog
-                expect($body.find(".deleteConfirmation").length).toBe(1);
+                expect($body.find(".deleteConfirmation").length).to.equal(1);
 
                 // should not have an attachments menu
-                expect($body.find(".workoutFileUploadMenu").length).toBe(0);
+                expect($body.find(".workoutFileUploadMenu").length).to.equal(0);
             });
 
             it("Should allow adding attachments for a new workout", function()
@@ -62,7 +61,7 @@ function(
                 var sunday = moment().day(7).format("YYYY-MM-DD");
                 var thisWeekWorkouts = "workouts/" + monday + "/" + sunday;
                 var thisWeekMetrics = "timedmetrics/" + monday + "/" + sunday;
-                expect(testHelpers.hasRequest("GET", thisWeekWorkouts)).toBe(true);
+                expect(testHelpers.hasRequest("GET", thisWeekWorkouts)).to.equal(true);
 
                 var workouts = [
                     {
@@ -73,20 +72,20 @@ function(
                     }
                 ];
 
-                expect($mainRegion.find("#calendarContainer .day.today .workout").length).toBe(0);
+                expect($mainRegion.find("#calendarContainer .day.today .workout").length).to.equal(0);
                 testHelpers.resolveRequest("GET", thisWeekWorkouts, workouts);
                 testHelpers.resolveRequest("GET", thisWeekMetrics, []);
-                expect($mainRegion.find("#calendarContainer .day.today .workout").length).toBe(1);
+                expect($mainRegion.find("#calendarContainer .day.today .workout").length).to.equal(1);
 
                 $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");
 
-                expect($body.find(".workoutQuickView").length).toBe(1);
-                expect($body.find(".workoutFileUploadMenu").length).toBe(0);
-                expect($body.find(".deleteConfirmation").length).toBe(0);
+                expect($body.find(".workoutQuickView").length).to.equal(1);
+                expect($body.find(".workoutFileUploadMenu").length).to.equal(0);
+                expect($body.find(".deleteConfirmation").length).to.equal(0);
 
                 $body.find(".addAttachment").trigger("click");
-                expect($body.find(".workoutFileUploadMenu").length).toBe(1);
-                expect($body.find(".deleteConfirmation").length).toBe(0);
+                expect($body.find(".workoutFileUploadMenu").length).to.equal(1);
+                expect($body.find(".deleteConfirmation").length).to.equal(0);
 
             });
         });

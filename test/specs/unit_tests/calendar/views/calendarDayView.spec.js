@@ -1,5 +1,4 @@
-// use requirejs() instead of define() here, to keep jasmine test runner happy
-requirejs(
+define(
 [
     "moment",
     "TP",
@@ -24,7 +23,7 @@ function(
 
         it("Should be loaded as a module", function()
         {
-            expect(CalendarDayView).toBeDefined();
+            expect(CalendarDayView).to.not.be.undefined;
         });
 
         describe("render", function()
@@ -36,7 +35,7 @@ function(
                 var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
-                expect(dayView.$el.hasClass('day')).toBeTruthy();
+                expect(dayView.$el.hasClass('day')).to.be.ok;
             });
 
             it("Should add a 'today' class if the date is today", function()
@@ -45,16 +44,16 @@ function(
                 var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
-                expect(dayView.$el.hasClass('today')).toBeTruthy();
+                expect(dayView.$el.hasClass('today')).to.be.ok;
             });
 
-            it("Should not add a 'today' class if the date is not today", function()
+            it("Should not add a 'today' class if the date is to.notday", function()
             {
                 var tomorrow = moment().add("days", 1);
                 var dayModel = new CalendarDayModel({ date: tomorrow.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
-                expect(dayView.$el.hasClass('today')).toBeFalsy();
+                expect(dayView.$el.hasClass('today')).to.not.be.ok;
             });
 
             it("Should render a date", function()
@@ -63,7 +62,7 @@ function(
                 var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
-                expect(dayView.$el.html()).toContain(TP.utils.datetime.format(today, "calendarDay"));
+                expect(dayView.$el.html()).to.contain(TP.utils.datetime.format(today, "calendarDay"));
             });
 
             describe("Drag and drop", function()
@@ -73,9 +72,9 @@ function(
                 {
                     var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
                     var dayView = new CalendarDayView({ model: dayModel });
-                    spyOn(dayView.$el, "droppable");
+                    sinon.stub(dayView.$el, "droppable");
                     dayView.setUpDroppable();
-                    expect(dayView.$el.droppable).toHaveBeenCalled();
+                    expect(dayView.$el.droppable).to.have.been.called;
                 });
 
             });

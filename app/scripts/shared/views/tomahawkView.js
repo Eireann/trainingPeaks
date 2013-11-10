@@ -50,6 +50,7 @@ function(
             this.ui.content.addClass(_.result(this.view, "className"));
 
             this.listenTo(this.view, "close", _.bind(this.close, this));
+            this.listenTo(this.view, "render", _.bind(this.position, this));
 
             if(this.$el.parent().length === 0)
             {
@@ -71,18 +72,22 @@ function(
         position: function()
         {
             var self = this;
+
+            // Targeting a point event or short element the "arrow" element ends up too high
+            var verticalOffset = this.target.height && this.target.height() > 22 ? 8 : 24;
+
             var table =
             {
                 left:
                 {
-                    my: "right-12 top-8",
+                    my: "right-12 top-" + verticalOffset,
                     at: "left top",
                     collision: "flip fit",
                     axis: "horizontal"
                 },
                 right:
                 {
-                    my: "left+12 top-8",
+                    my: "left+12 top-" + verticalOffset,
                     at: "right top",
                     collision: "flip fit",
                     axis: "horizontal"

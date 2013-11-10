@@ -91,6 +91,9 @@ function(
             }, {
                 podType: 5, // Peaks
                 variant: 3, // Speed
+            }, {
+                podType: 6, // Scatter Graph
+                cols: 2
             }]);
 
             var data =

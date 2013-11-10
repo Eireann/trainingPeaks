@@ -3,6 +3,7 @@
     "underscore",
     "moment",
     "TP",
+    "utilities/charting/graphData",
     "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
@@ -13,6 +14,7 @@ function (
     _,
     moment,
     TP,
+    GraphData,
     DataParser,
     WorkoutStatsForRange,
     formatPeakTime,
@@ -32,7 +34,8 @@ function (
 
         initialize: function()
         {
-            this._dataParser = new DataParser();
+            this.graphData = new GraphData();
+            this._dataParser = new DataParser({graphData: this.graphData});
             this.rangeCollections = {};
             this.reset();
             this.on("sync", this.reset, this);
@@ -75,11 +78,13 @@ function (
             {
                 this._resetDataParser();
                 this._setOriginalLapsStats();
-                this._resetRangesForLaps();
+                this._resetRangeDataForLaps();
 
                 // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct state
                 this._resetChannels();
             });
+
+            this._resetStateForLaps();
 
             this.trigger("reset");
         },
@@ -90,11 +95,13 @@ function (
             {
                 this._resetDataParser();
                 this._resetLapEdits();
-                this._resetRangesForLaps();
+                this._resetRangeDataForLaps();
 
                 // set channels last as some views may be watching for events, make sure data parser and laps stats are already in correct stat
                 this._resetChannels();
             });
+
+            this._resetStateForLaps();
 
             this.trigger("reset");
         },
@@ -108,11 +115,6 @@ function (
         enableChannel: function(series)
         {
             this.set("disabledDataChannels", _.without(this.get("disabledDataChannels"), series));
-        },
-
-        getDataParser: function()
-        {
-            return this._dataParser;
         },
 
         hasSensorData: function()
@@ -149,7 +151,7 @@ function (
                 var channelCutDetails = {
                     channel: series,
                     startTimeInMilliseconds: begin,
-                    endTimeInMilliseconds: end 
+                    endTimeInMilliseconds: end
                 };
                 var channelCuts = this.has("channelCuts") ? _.clone(this.get("channelCuts")) : [];
                 channelCuts.push(channelCutDetails);
@@ -157,11 +159,11 @@ function (
                 // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
                 if(isFullChannel)
                 {
-                    this._dataParser.excludeChannel(series);
+                    this.graphData.excludeChannel(series);
                 }
                 else
                 {
-                    this._dataParser.excludeRange(series, begin, end);
+                    this.graphData.excludeRange(series, begin, end);
                 }
                 this.set("channelCuts", channelCuts);
                 this.disableChannel(series);
@@ -200,21 +202,15 @@ function (
         getRangeCollectionFor: function(rangeType)
         {
             var collection = this.rangeCollections[rangeType];
-            var data;
-            if(collection)
+
+            if(!collection)
             {
-                data = collection.select(function(lapStat) { return lapStat.get('deleted') || false; });
-                _.each(data, function(model)
-                {
-                    collection.remove(model, {silent: true});
-                });
-            }
-            else
-            {
-                data = this._getRangeDataFor(rangeType);
+                var data = this._getRangeDataFor(rangeType);
+                data = this._augmentRangeData(data, rangeType);
                 collection = new TP.Collection(data, { model: WorkoutStatsForRange });
                 this.rangeCollections[rangeType] = collection;
-                this._watchRangeDataFor(rangeType, _.bind(collection.set, collection));
+                this._augmentRangeState(collection, rangeType);
+                this._watchRangeDataFor(rangeType, collection);
                 this._watchRangeCollectionEvents(collection, rangeType);
             }
             return collection;
@@ -242,7 +238,7 @@ function (
             laps: {
                 "add": "_flagLapsAsEdited",
                 "change:name": "_flagLapsAsEdited",
-                "lap:markedAsDeleted": "_flagLapAsDeleted"
+                "state:change:isDeleted": "_flagLapAsDeleted"
             }
         },
 
@@ -273,12 +269,23 @@ function (
         {
             if(this.get("lapsStatsEdited") || this.get("lapDeleted"))
             {
-                return this.getRangeCollectionFor("laps").toJSON();
+                var lapsCollection = this.getRangeCollectionFor("laps");
+                this._removeDeletedLaps(lapsCollection);
+                return lapsCollection.toJSON();
             }
             else
             {
                 return null;
             }
+        },
+
+        _removeDeletedLaps: function(lapsCollection)
+        {
+            var deletedLaps = lapsCollection.select(function(lapStat) { return lapStat.getState().get('isDeleted') || false; });
+            _.each(deletedLaps, function(model)
+            {
+                lapsCollection.remove(model, {silent: true});
+            });
         },
 
         _getRangeDataFor: function(rangeType, onChange)
@@ -290,19 +297,17 @@ function (
                 throw new Error("Unknown range type: " + rangeType);
             }
 
-            var ranges = this.get(key);
-
-            return this._augmentRanges(ranges, rangeType);
-
+            return this.get(key);
         },
 
-        _watchRangeDataFor: function(rangeType, callback)
+        _watchRangeDataFor: function(rangeType, collection)
         {
             var key = this._rangeKeys[rangeType];
             this.on("change:" + key, function(model, value, options)
             {
-                value = this._augmentRanges(value, rangeType);
-                callback(value);
+                value = this._augmentRangeData(value, rangeType);
+                collection.set(value);
+                this._augmentRangeState(collection, rangeType);
             });
 
         },
@@ -322,13 +327,12 @@ function (
             }, this);
         },
 
-        _augmentRanges: function(ranges, rangeType)
+        _augmentRangeData: function(ranges, rangeType)
         {
             var defaults =
             {
                 workoutId: this.get("workoutId"),
-                hasLoaded: rangeType === "laps",
-                isLap: rangeType === "laps"
+                hasLoaded: rangeType === "laps"
             };
 
             if(rangeType !== "laps")
@@ -339,6 +343,19 @@ function (
             return _.map(ranges, function(range)
             {
                 return _.extend({}, defaults, range);
+            });
+        },
+
+        _augmentRangeState: function(rangeCollection, rangeType)
+        {
+            var defaultState =
+            {
+                isLap: rangeType === "laps"
+            };
+
+            rangeCollection.each(function(model)
+            {
+                model.getState().set(defaultState);
             });
         },
 
@@ -383,7 +400,7 @@ function (
                 //if the lap is not either completely before or after the selected range, then it overlaps in some way and should be cut
                 if(!(lap.get("end") < begin || lap.get("begin") > end ))
                 {
-                    lap.set("isCut", true);
+                    lap.getState().set("isCut", true);
                 }
 
             });
@@ -391,7 +408,7 @@ function (
 
         _resetDataParser: function()
         {
-            this._dataParser.resetExcludedRanges();
+            this.graphData.resetExcludedRanges();
             this._dataParser.loadData(this.get("flatSamples"));
         },
 
@@ -412,11 +429,21 @@ function (
             }
         },
 
-        _resetRangesForLaps: function()
+        _resetRangeDataForLaps: function()
         {
             if(this.rangeCollections.hasOwnProperty("laps"))
             {
-                this.getRangeCollectionFor("laps").reset(this._augmentRanges(this.get("lapsStats"), "laps"));
+                var lapsCollection = this.getRangeCollectionFor("laps");
+                lapsCollection.reset(this._augmentRangeData(this.get("lapsStats"), "laps"));
+            }
+        },
+
+        _resetStateForLaps: function()
+        {
+            if(this.rangeCollections.hasOwnProperty("laps"))
+            {
+                var lapsCollection = this.getRangeCollectionFor("laps");
+                this._augmentRangeState(lapsCollection, "laps");
             }
         },
 
@@ -479,9 +506,9 @@ function (
         {
             var potentiallyExpensiveChanges = ["flatSamples", "lapsStats", "originalLapsStats"];
 
-            // whenever we set flatsamples on this model, if it already has a flatsamples, 
+            // whenever we set flatsamples on this model, if it already has a flatsamples,
             // the _.isEqual comparison in backbone can be extremely slow
-            // assume that if we are setting flat samples, we want the change event, 
+            // assume that if we are setting flat samples, we want the change event,
             // so just set it to null for fast easy comparison
             _.each(potentiallyExpensiveChanges, function(expensiveChange)
             {

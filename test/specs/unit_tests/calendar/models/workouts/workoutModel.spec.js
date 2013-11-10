@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
 [
     "moment",
     "jquery",
@@ -30,7 +29,7 @@ function(
 
         it("Should load as a module", function()
         {
-            expect(WorkoutModel).toBeDefined();
+            expect(WorkoutModel).to.not.be.undefined;
         });
 
         it("Should use workoutId as model id", function()
@@ -38,7 +37,7 @@ function(
             var today = moment().format("YYYY-MM-DDTHH:mm:ss");
             var workoutId = "098765";
             var workout = new WorkoutModel({ workoutDay: today, workoutId: workoutId });
-            expect(workout.id).toEqual(workoutId);
+            expect(workout.id).to.eql(workoutId);
         });
 
         it("Should return correct calendar date", function()
@@ -46,7 +45,7 @@ function(
             var today = moment().format("YYYY-MM-DD");
             var workoutId = "098765";
             var workout = new WorkoutModel({ workoutDay: today, workoutId: workoutId });
-            expect(workout.getCalendarDay()).toEqual(moment().format("YYYY-MM-DD"));
+            expect(workout.getCalendarDay()).to.eql(moment().format("YYYY-MM-DD"));
         });
 
         describe("moveToDay", function()
@@ -70,14 +69,14 @@ function(
             {
                 workout.moveToDay(tomorrow);
                 testHelpers.resolveRequest("PUT", "", {});
-                expect(workout.getCalendarDay()).toEqual(tomorrow);
+                expect(workout.getCalendarDay()).to.eql(tomorrow);
             });
 
             it("Should not update workoutDay on failure", function()
             {
                 workout.moveToDay(tomorrow);
                 testHelpers.rejectRequest("PUT", "");
-                expect(workout.getCalendarDay()).toEqual(originalDate);
+                expect(workout.getCalendarDay()).to.eql(originalDate);
             });
         });
 
@@ -137,15 +136,15 @@ function(
             {
                 it("Should implement a cloneForCopy method", function()
                 {
-                    expect(WorkoutModel.prototype.cloneForCopy).toBeDefined();
-                    expect(typeof WorkoutModel.prototype.cloneForCopy).toBe("function");
+                    expect(WorkoutModel.prototype.cloneForCopy).to.not.be.undefined;
+                    expect(typeof WorkoutModel.prototype.cloneForCopy).to.equal("function");
 
                 });
 
                 it("Should return a WorkoutModel", function()
                 {
                     var result = workout.cloneForCopy();
-                    expect(workout instanceof WorkoutModel).toBe(true);
+                    expect(workout instanceof WorkoutModel).to.equal(true);
                 });
 
                 it("Should have all of the required 'planned' attributes", function()
@@ -153,7 +152,7 @@ function(
                     var copiedWorkout = workout.cloneForCopy();
                     _.each(attributesToCopy, function(attributeName)
                     {
-                        expect(copiedWorkout.get(attributeName)).toBe(workout.get(attributeName));
+                        expect(copiedWorkout.get(attributeName)).to.equal(workout.get(attributeName));
                     });
                 });
 
@@ -164,8 +163,8 @@ function(
                     {
                         if (!_.contains(attributesToCopy, attributeName))
                         {
-                            expect(copiedWorkout.get(attributeName)).toBe(WorkoutModel.prototype.defaults[attributeName]);
-                            expect(copiedWorkout.get(attributeName)).not.toBe(workout.get(attributeName));
+                            expect(copiedWorkout.get(attributeName)).to.equal(WorkoutModel.prototype.defaults[attributeName]);
+                            expect(copiedWorkout.get(attributeName)).to.not.equal(workout.get(attributeName));
                         }
                     });
                 });
@@ -175,26 +174,26 @@ function(
             {
                 it("Should implement an pasted method", function()
                 {
-                    expect(WorkoutModel.prototype.pasted).toBeDefined();
-                    expect(typeof WorkoutModel.prototype.pasted).toBe("function");
+                    expect(WorkoutModel.prototype.pasted).to.not.be.undefined;
+                    expect(typeof WorkoutModel.prototype.pasted).to.equal("function");
                 });
 
                 it("Should call moveToDay when pasting an existing workout from cut", function()
                 {
                     var cutWorkout = workout;
-                    spyOn(cutWorkout, "moveToDay");
+                    sinon.stub(cutWorkout, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
                     cutWorkout.pasted({ date: dateToPasteTo });
-                    expect(cutWorkout.moveToDay).toHaveBeenCalledWith(dateToPasteTo);
+                    expect(cutWorkout.moveToDay).to.have.been.calledWith(dateToPasteTo);
                 });
 
                 it("Should not call moveToDay when pasting a workout from copy", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
-                    spyOn(copiedWorkout, "moveToDay");
+                    sinon.stub(copiedWorkout, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
                     copiedWorkout.pasted({ date: dateToPasteTo });
-                    expect(copiedWorkout.moveToDay).not.toHaveBeenCalled();
+                    expect(copiedWorkout.moveToDay).to.not.have.been.called;
                 });
 
                 it("Should return a new workout when pasting a workout from copy", function()
@@ -202,8 +201,8 @@ function(
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
-                    expect(pastedWorkout instanceof WorkoutModel).toBe(true);
-                    expect(pastedWorkout).not.toBe(copiedWorkout);
+                    expect(pastedWorkout instanceof WorkoutModel).to.equal(true);
+                    expect(pastedWorkout).to.not.equal(copiedWorkout);
                 });
 
                 it("Should set the correct date on pasted workout", function()
@@ -211,7 +210,7 @@ function(
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
-                    expect(pastedWorkout.getCalendarDay()).toBe(dateToPasteTo);
+                    expect(pastedWorkout.getCalendarDay()).to.equal(dateToPasteTo);
                 });
 
                 it("Should not change the date of the copied workout", function()
@@ -219,8 +218,8 @@ function(
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
-                    expect(copiedWorkout.getCalendarDay()).not.toBe(dateToPasteTo);
-                    expect(copiedWorkout.getCalendarDay()).toBe(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
+                    expect(copiedWorkout.getCalendarDay()).to.not.equal(dateToPasteTo);
+                    expect(copiedWorkout.getCalendarDay()).to.equal(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
                 });
 
                 it("Should return a workout with all of the copied attributes", function()
@@ -250,7 +249,7 @@ function(
                     {
                         if (attributeName !== "workoutDay")
                         {
-                            expect(pastedWorkout.get(attributeName)).toBe(copiedWorkout.get(attributeName));
+                            expect(pastedWorkout.get(attributeName)).to.equal(copiedWorkout.get(attributeName));
                         }
                     });
 

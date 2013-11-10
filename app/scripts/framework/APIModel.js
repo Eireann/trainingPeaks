@@ -28,6 +28,15 @@ function(_, Backbone, DeepModel, moment, utils)
 
                 args[0] = "state:" + args[0];
 
+                // pass self, not self._$state
+                for(var i = 1; i<=args.length; i++)
+                {
+                    if(args[i] === self._$state)
+                    {
+                        args[i] = self;
+                    }
+                } 
+
                 self.trigger.apply(self, args);
             });
 
@@ -78,9 +87,7 @@ function(_, Backbone, DeepModel, moment, utils)
                 }
             }
             return this.promise;
-        },
-
-
+        }
 
     };
 

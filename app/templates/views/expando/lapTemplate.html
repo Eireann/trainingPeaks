@@ -1,17 +1,23 @@
-{{#ifNot isCut}}
+{{#ifNot _state.isCut}}
     <input type="checkbox">
-    {{#if isLap}}
+
+    <div class="lapDescription">
+        <span class="lapName"{{#if _state.isLap}} title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</span>
+        {{#if _state.isLap}}
+        <input class="lapName" value="{{ name }}" type="text"/>
+        {{/if}}
+        <span class="">{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
+    </div>
+
+    {{#if _state.isLap}}
       <span class="actions">
         <i class="delete closeIcon"></i>
       </span>
     {{/if}}
-    <div class="lapDescription">
-        <span class="editLapName" {{#if isLap}}title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</span>
-        <span class="">{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
-    </div>
-    {{#if temporary}}
+    {{#if _state.temporary}}
       <span class="actions">
         <span class="add">Add</span>
       </span>
     {{/if}}
+
 {{/ifNot}}

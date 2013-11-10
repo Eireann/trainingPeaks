@@ -1,5 +1,4 @@
-// use requirejs() here, not define(), for jasmine compatibility
-requirejs(
+define(
     ["models/library/libraryExercise"],
 function(LibraryExerciseModel)
 {
@@ -8,14 +7,14 @@ function(LibraryExerciseModel)
 
         it("Should load as a module", function()
         {
-            expect(LibraryExerciseModel).toBeDefined();
+            expect(LibraryExerciseModel).to.not.be.undefined;
         });
 
         it("Should use exerciseLibraryItemId as model id", function()
         {
             var exerciseId = "098765";
             var exercise = new LibraryExerciseModel({ exerciseLibraryItemId: exerciseId });
-            expect(exercise.id).toEqual(exerciseId);
+            expect(exercise.id).to.eql(exerciseId);
         });
 
     });

@@ -323,9 +323,8 @@ function(
         setupModalOverlay: function()
         {
             
-            this.createOverlay({ onOverlayClick: this._onExpandClicked });
+            this.createOverlay({ onOverlayClick: this._onExpandClicked, mask: true });
             this.$overlay.css("z-index", this.$el.css("z-index") - 1);
-            this.enableEscapeKey();
             this.closeOnRouteChange(this._onExpandClicked);
         },
 
@@ -341,20 +340,9 @@ function(
             this.model.destroy();
         },
 
-        enableEscapeKey: function()
-        {
-            $(document).on("keyup.esc", _.bind(this.onEscapeKey, this));
-        },
-
-        onEscapeKey: function(e)
-        {
-            if (e.which === 27)
-                this._onExpandClicked();
-        },
-
         _disableDrag: function()
         {
-            if(this.$el.data("uiDraggable"))
+            if(this.$el.data("ui-draggable"))
             {
                 this.$el.draggable("disable");
             } 
@@ -362,7 +350,7 @@ function(
 
         _enableDrag: function()
         {
-            if(this.$el.data("uiDraggable"))
+            if(this.$el.data("ui-draggable"))
             {
                 this.$el.draggable("enable");
             }
