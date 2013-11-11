@@ -255,7 +255,18 @@
 
             #graphToolbar
             {
-                display: none;
+                .graphButtonContain
+                {
+                    &.left
+                    {
+                        display: none;
+                    }
+                }
+
+                .graphSliderContain
+                {
+                    display: none;
+                }
             }
         }
 
