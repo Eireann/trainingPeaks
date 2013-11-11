@@ -250,7 +250,6 @@ function(
 
             series.push(this.buildCTLDataSeries(chartPoints.CTL, chartColors));
             series.push(this.buildCTLFutureDataSeries(chartPoints.CTLFuture, chartColors));
-            series.push(this.buildCTLFutureDataSeriesFill(chartPoints.CTLFuture, chartColors));
 
             series.push(this.buildTSBDataSeries(chartPoints.TSB, chartColors));
             if (this.shouldShowTSBFill())
@@ -422,32 +421,10 @@ function(
                 {
                     show: true,
                     lineWidth: this.lineThickness,
-                    fill: true,
-                    fillColor: { colors: [chartColors.pmcColors.ctlGradient.dark, chartColors.pmcColors.ctlGradient.light] }
                 },
                 yaxis: 1,
                 shadowSize: 0
 
-            };
-
-            return dataSeries;
-        },
-
-        buildCTLFutureDataSeriesFill: function (chartPoints, chartColors)
-        {
-            var dataSeries =
-            {
-                data: chartPoints,
-                color: "transparent",
-                lines:
-                {
-                    show: true,
-                    fill: true,
-                    fillColor: { colors: [chartColors.pmcColors.futureCTLGradient.light, chartColors.pmcColors.futureCTLGradient.dark] },
-                    lineWidth: this.lineThickness
-                },
-                yaxis: 1,
-                shadowSize: 0
             };
 
             return dataSeries;
