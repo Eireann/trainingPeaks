@@ -30,7 +30,13 @@ function(
 
         return new LapView({ 
             model: buildWorkoutModel(),
-            stateModel: stateModel 
+            stateModel: stateModel,
+            featureAuthorizer: {
+                canAccessFeature: function(){return true;},
+                features: {
+                    ViewGraphRanges: null
+                }
+            }
         });
     }
 
