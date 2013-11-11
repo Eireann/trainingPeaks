@@ -88,7 +88,8 @@ function(
 
                 var podType = podTypes.findById(attributes.podTypeId);
                 var viewablePods = userAccess.getStringList(accessRights.ids.CanViewPods);
-                return _.contains(viewablePods, podType.podAccessString);
+
+                return _.contains(viewablePods, podType.podAccessString) || podTypes.getDefaultValue(podType, "ViewPod");
             },
 
             /*
@@ -104,7 +105,7 @@ function(
 
                 var podType = podTypes.findById(attributes.podTypeId);
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
-                return _.contains(useablePods, podType.podAccessString);
+                return _.contains(useablePods, podType.podAccessString) || podTypes.getDefaultValue(podType, "UsePod");
             },
 
             /*

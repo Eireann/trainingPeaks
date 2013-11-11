@@ -238,11 +238,19 @@ function(
         },
         {
             podId: 152,
-            podAccessString: "view_Graph"
+            podAccessString: "view_Graph",
+            defaults: {
+                ViewPod: true,
+                UsePod: true
+            }
         },
         {
             podId: 153,
-            podAccessString: "view_Map"
+            podAccessString: "view_Map",
+            defaults: {
+                ViewPod: true,
+                UsePod: true
+            }
         },
         {
             podId: 154,
@@ -250,7 +258,11 @@ function(
         },
         {
             podId: 155,
-            podAccessString: "view_Route"
+            podAccessString: "view_Route",
+            defaults: {
+                ViewPod: true,
+                UsePod: true
+            }
         },
         {
             podId: 156,
@@ -302,6 +314,18 @@ function(
             }
 
             return pod; 
+        },
+
+        getDefaultValue: function(podType, key)
+        {
+            if(podType && podType.defaults && podType.defaults.hasOwnProperty(key))
+            {
+                return podType.defaults[key]; 
+            }
+            else
+            {
+                return false;
+            }
         }
     };
 
