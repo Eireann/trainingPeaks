@@ -2,6 +2,7 @@
 [
     "setImmediate",
     "TP",
+    "framework/filteredSubCollection",
     "views/packeryCollectionView",
     "layouts/expandoLayout",
     "views/expando/statsView",
@@ -13,6 +14,7 @@
 function(
     setImmediate,
     TP,
+    FilteredSubCollection,
     PackeryCollectionView,
     ExpandoLayout,
     StatsView,
@@ -22,6 +24,15 @@ function(
     ExpandoStateModel
 )
 {
+    function userCanUsePod(chartModel)
+    {
+        var featureAttributes = { podTypeId: chartModel.get("podType") };
+        return theMarsApp.featureAuthorizer.canAccessFeature(
+            theMarsApp.featureAuthorizer.features.UsePod,
+            featureAttributes
+        );
+    }
+
     return TP.Controller.extend(
     {
         getLayout: function()
@@ -99,9 +110,14 @@ function(
 
             var $sizer = $("<div class='sizer'></div>");
 
+            this.filteredCollection = new FilteredSubCollection(null, {
+                sourceCollection: podsCollection,
+                filterFunction: userCanUsePod
+            });
+
             this.views.packeryView = new PackeryCollectionView({
                 itemView: expandoPodBuilder.buildView,
-                collection: podsCollection,
+                collection: this.filteredCollection,
                 itemViewOptions: { data: data },
                 packery:
                 {

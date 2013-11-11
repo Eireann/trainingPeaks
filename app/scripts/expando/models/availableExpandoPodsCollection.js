@@ -1,18 +1,20 @@
 define(
 [
-    "TP"
+    "shared/models/premiumPodsCollection"
 ],
 function(
-    TP)
+    PremiumPodsCollection
+    )
 {
-    var AvailableExpandoPodsCollection = TP.Collection.extend(
+    var AvailableExpandoPodsCollection = PremiumPodsCollection.extend(
     {
-        model: TP.Model,
 
-        comparator: "name",
+        podTypeIdAttribute: "podType",
 
         initialize: function(models, options)
         {
+            this.constructor.__super__.initialize.call(this, models, options);
+
             if(!models)
             {
                 this.addAllAvailableCharts();
@@ -68,7 +70,6 @@ function(
             }
             ]);
         }
-
     });
 
     return AvailableExpandoPodsCollection;
