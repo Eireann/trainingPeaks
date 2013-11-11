@@ -28,7 +28,6 @@ function()
                 CTL: "#38709a",
                 TSS: "#b90807",
                 ctlGradient: { dark: "rgba(0,75,131,0.4)", light: "rgba(234,235,236,0.4)" },
-                futureCTLGradient: { dark: "rgba(234,235,236,0.0)", light: "rgba(255,255,255,0.0)" },
                 tsbGradient: { dark: "rgba(234, 235, 236, 0.4)", light: "rgba(255,165,0, 0.4)" }
             },
 
