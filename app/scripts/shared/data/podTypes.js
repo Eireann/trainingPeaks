@@ -140,7 +140,7 @@ function(
         },
         {
             podId: 37,
-            podAccessString: "pod_WorkoutSummaryReportDistance" // TODO: elevation gain by day/week doesn't exist in acl list
+            podAccessString: "pod_WorkoutSummaryReportElevation"
         },
         {
             podId: 100,
