@@ -150,19 +150,26 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
         cloneForCut: function()
         {
             var clone = this.clone();
-            clone.itemsCollection.set(this.itemsCollection.models);
+            clone.itemsCollection.set(this._filterItemsForCopyOrCut());
             return clone;
         },
 
         cloneForCopy: function()
         {
             var day = this.clone();
-            this.each(function(activity)
+            _.each(this._filterItemsForCopyOrCut(), function(activity)
             {
-                day.add(activity.cloneForCopy());
+                day.add(ActivityModel.unwrap(activity).cloneForCopy());
             });
-
             return day;
+        },
+
+        _filterItemsForCopyOrCut: function()
+        {
+            return this.itemsCollection.filter(function(model)
+            {
+                return !(ActivityModel.unwrap(model) instanceof MetricModel);
+            });
         }
 
     });

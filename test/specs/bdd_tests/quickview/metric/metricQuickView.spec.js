@@ -131,7 +131,7 @@ function(
                 expect($body.find(".metricQuickView").length).to.equal(0);
             });
 
-            it("Should not destroy the metrics and close the quickview when DELETE is clicked", function()
+            it("Should destroy the metrics and close the quickview when DELETE is clicked", function()
             {
                 $mainRegion.find("#calendarContainer .day.today .metric").trigger("mouseup");
                 expect($body.find(".metricQuickView").length).to.equal(1);
