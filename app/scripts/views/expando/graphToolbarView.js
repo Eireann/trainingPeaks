@@ -36,6 +36,7 @@ function(
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
             this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this.render, this));
+            this.featureAuthorizer = options.featureAuthorizer ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
         },
 
         events:
@@ -136,8 +137,16 @@ function(
 
         _onGraphSeriesButtonClicked: function(event)
         {
-            var seriesButton = $(event.target);
-            this._openSeriesOptionsMenu(seriesButton);
+            var self = this;
+
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.ExpandoDataEditing,
+                function()
+                {
+                    var seriesButton = $(event.target);
+                    self._openSeriesOptionsMenu(seriesButton);
+                }
+            );
         },
 
         _openSeriesOptionsMenu: function(seriesButton, additionalOptions)

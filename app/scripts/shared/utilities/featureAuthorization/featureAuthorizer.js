@@ -112,6 +112,16 @@ function(
             attributes: none
             options: none 
             */
+            ExpandoDataEditing: function(user, userAccess, attributes, options)
+            {   
+                var podType = podTypes.findByAccessName("expando_DataEditing");
+                return this.features.UsePod(user, userAccess, { podTypeId: podType.podId }, options);
+            },
+
+            /*
+            attributes: none
+            options: none 
+            */
             ElevationCorrection: function(user, userAccess, attributes, options)
             {   
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
@@ -154,7 +164,7 @@ function(
         {
             if(_.isFunction(featureChecker))
             {
-                var returnValue = featureChecker(this.user, this.userAccessRights, attributes, options);
+                var returnValue = featureChecker.call(this, this.user, this.userAccessRights, attributes, options);
                 if(typeof returnValue !== "boolean")
                 {
                     throw new Error("Feature checker should return a boolean");
