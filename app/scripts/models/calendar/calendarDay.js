@@ -159,7 +159,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             var day = this.clone();
             _.each(this._filterItemsForCopyOrCut(), function(activity)
             {
-                day.add(ActivityModel.unwrap(activity).cloneForCopy())
+                day.add(ActivityModel.unwrap(activity).cloneForCopy());
             });
             return day;
         },
@@ -168,7 +168,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
         {
             return this.itemsCollection.filter(function(model)
             {
-                return !(ActivityModel.unwrap(model) instanceof MetricModel)
+                return !(ActivityModel.unwrap(model) instanceof MetricModel);
             });
         }
 
