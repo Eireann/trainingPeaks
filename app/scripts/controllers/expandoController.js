@@ -96,9 +96,6 @@ function(
                 podType: 122 // Speed Time In Zones
             }, {
                 podType: 119 // Speed Peaks
-            }, {
-                podType: 156, // Scatter Graph
-                cols: 2
             }]);
 
             var data =
