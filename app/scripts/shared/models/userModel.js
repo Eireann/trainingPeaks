@@ -6,6 +6,7 @@
     "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel",
+    "shared/models/expandoSettingsModel",
     "shared/models/recurringPaymentsCollection",
     "shared/models/paymentHistoryCollection"
 ],
@@ -16,6 +17,7 @@ function(
     AccountSettingsModel,
     AthleteSettingsModel, 
     DashboardSettingsModel,
+    ExpandoSettingsModel,
     RecurringPaymentsCollection,
     PaymentHistoryCollection
          )
@@ -223,6 +225,15 @@ function(
             return this.dashboardSettings;
         },
 
+        getExpandoSettings: function()
+        {
+            if(!this.expandoSettings)
+            {
+                this.expandoSettings = new ExpandoSettingsModel(this.get("settings.expando"));
+            }
+            return this.expandoSettings;
+        },
+
         getMetricsSettings: function()
         {
             if(!this.metricsSettings)
@@ -275,6 +286,7 @@ function(
             this.getAffiliateSettings().set(data.settings.affiliate);
             this.getCalendarSettings().set(data.settings.calendar);
             this.getDashboardSettings().set(data.settings.dashboard);
+            this.getExpandoSettings().set(data.settings.expando);
             this.getMetricsSettings().set(data.settings.metrics);
             this.getWorkoutSettings().set(data.settings.workout);
         },

@@ -74,32 +74,8 @@ function(
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 
-            var podsCollection = new TP.Collection(
-            [{
-                podType: 153, // Map
-                cols: 2
-            }, {
-                podType: 152, // Graph
-                cols: 2
-            }, {
-                podType: 108, // Laps & Splits,
-                cols: 2
-            }, {
-                podType: 102 // Heart Rate Time In Zones
-            }, {
-                podType: 118 // Heart Rate Peaks
-            }, {
-                podType: 101 // Power Time In Zones
-            }, {
-                podType: 111 // Power Peaks
-            }, {
-                podType: 122 // Speed Time In Zones
-            }, {
-                podType: 119 // Speed Peaks
-            }, {
-                podType: 156, // Scatter Graph
-                cols: 2
-            }]);
+            this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayout(this.model.get("workoutTypeValueId"));
+            this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(this._onPodLayoutChanged, this));
 
             var data =
             {
@@ -111,7 +87,7 @@ function(
             var $sizer = $("<div class='sizer'></div>");
 
             this.filteredCollection = new FilteredSubCollection(null, {
-                sourceCollection: podsCollection,
+                sourceCollection: this.expandoPodLayout.getPodsCollection(),
                 filterFunction: userCanUsePod
             });
 
@@ -260,6 +236,12 @@ function(
             }, this);
 
             this.views.packeryView.layout();
+        },
+
+        _onPodLayoutChanged: function()
+        {
+            theMarsApp.user.getExpandoSettings().addOrUpdateLayout(this.expandoPodLayout);
+            theMarsApp.user.getExpandoSettings().save();
         }
 
     });

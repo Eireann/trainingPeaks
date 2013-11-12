@@ -46,27 +46,33 @@ function(
             },
             {
                 podType: 102, // Time In Zones
-                name: "Time In Zones - Heart Rate"
+                name: "Time In Zones - Heart Rate",
+                cols: 1
             },
             {
                 podType: 118, // Peaks
-                name: "Peaks - Heart Rate"
+                name: "Peaks - Heart Rate",
+                cols: 1
             },
             {
                 podType: 101, // Time In Zones
-                name: "Time In Zones - Power"
+                name: "Time In Zones - Power",
+                cols: 1
             },
             {
                 podType: 111, // Peaks
-                name: "Peaks - Power"
+                name: "Peaks - Power",
+                cols: 1
             },
             {
                 podType: 122, // Time In Zones
-                name: "Time In Zones - Speed"
+                name: "Time In Zones - Speed",
+                cols: 1
             },
             {
                 podType: 119, // Peaks
-                name: "Peaks - Speed"
+                name: "Peaks - Speed",
+                cols: 1
             }
             ]);
         }
