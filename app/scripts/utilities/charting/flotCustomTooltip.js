@@ -81,16 +81,21 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             };
 
             var lowerCaseAxisName = axisType.toLowerCase();
+            var avg = "";
+            if(hoveredSeriesName === "averageSeries")
+            {
+                avg = "Avg. ";
+            }
 
-            toolTipData.x.label = axisType;
+            toolTipData.x.label = avg + axisType;
             toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
             toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
 
             var toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
 
+            toolTipData.y.label = avg + toolTipSeries[0].label;
             toolTipData.y.value = toolTipSeries[0].value;
             toolTipData.y.units = toolTipSeries[0].units;
-            toolTipData.y.label = toolTipSeries[0].label;
 
             return flotScatterGraphToolTipTemplate(toolTipData);
         },

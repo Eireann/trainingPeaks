@@ -28,16 +28,6 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                     axisIndex++;
                 }
 
-                var labelWidth = 15;
-                if(showSpeedAsPace)
-                {
-                    labelWidth = 27;
-                }
-                else if(s.label === "Time")
-                {
-                    labelWidth = 39;
-                }
-
                 var axisOptions =
                 {
                     show: true,
@@ -65,9 +55,7 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                             return conversion.formatUnitsValue("time", value);
                         }
                         return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: workoutTypeValueId}), 10);
-                    },
-                    labelWidth: labelWidth
-                };
+                    }                };
 
                 yaxes.push(axisOptions);
             });
@@ -128,13 +116,40 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             {
                 seriesOptions.color = "#FFFFFF";
                 seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
-                _.each(data, function(dataPoint)
+
+                // This is a hack to only append a y axis offset for graphing once for negative elevation values.
+                if(data[0].length < 3)
                 {
-                    dataPoint.push(options.minElevation);
-                });
+                    _.each(data, function(dataPoint)
+                    {
+                        dataPoint.push(options.minElevation);
+                    });
+                }
             }
 
             return seriesOptions;
+        },
+
+        createBullseye: function(radius)
+        {
+            var bullseye =
+            {
+                points:
+                {
+                    show: true,
+                    fill: false,
+                    radius: radius,
+                    lineWidth: 0.50,
+                    symbol: function bullseye(ctx, x, y, radius, shadow)
+                    {
+                        ctx.arc(x, y, radius, 0, shadow ? Math.PI : Math.PI * 2, false);
+                        ctx.moveTo(x + 2 * radius, y);
+                        ctx.arc(x, y, 2 * radius, 0, shadow ? Math.PI : Math.PI * 2, false);
+                    }
+                }
+            };
+
+            return bullseye;
         }
 
     };

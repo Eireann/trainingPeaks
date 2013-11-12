@@ -33,6 +33,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         this.elevationInfo = {};
         this.minTemperature = null;
         this.latLonArray = null;
+        this.averageStats = {};
     };
 
     _.extend(GraphData, {defaultChannelOrder: defaultChannelOrder});
@@ -53,22 +54,38 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         {
               var data = [];
               var channel = "time";
+              var averageStats = this.averageStats[xaxis + yaxis] = {};
 
               data = _.clone(this.dataByAxisAndChannel[channel]);
 
               // remove cut ranges
               this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
 
-              var seriesOptions = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
+              var seriesData = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
 
               var newSeries = [];
+
+              averageStats["xaxis"] = 0;
+              averageStats["yaxis"] = 0;
+
+              var totalAvgCount = 0;
               _.each(data[xaxis], function(dataPoint, index)
               {
                   newSeries.push([data[xaxis][index][1], data[yaxis][index][1]]);
-              });
-              seriesOptions.data = newSeries;
 
-              return [seriesOptions];
+                  if(!_.isNaN(data[xaxis][index][1]) && !_.isNaN(data[yaxis][index][1]))
+                  {
+                      totalAvgCount++;
+                      averageStats["xaxis"] = averageStats["xaxis"] + data[xaxis][index][1];
+                      averageStats["yaxis"] = averageStats["yaxis"] + data[yaxis][index][1];
+                  }
+              }, this);
+              seriesData.data = newSeries;
+
+              averageStats["xaxis"] = averageStats["xaxis"] / totalAvgCount;
+              averageStats["yaxis"] = averageStats["yaxis"] / totalAvgCount;
+
+              return [seriesData];
         },
 
         resetLatLonArray: function()

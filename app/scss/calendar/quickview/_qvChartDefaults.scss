@@ -1,6 +1,6 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
-.chartTitle, 
+.chartTitle,
 .customDateRange {
     font-family: $fontFamilyHeavy;
     font-size: $fontSizeSmall;
@@ -9,7 +9,7 @@
     margin-top: 22px;
 }
 
-.xaxisLabel {   
+.xaxisLabel {
     font-family: $fontFamilyHeavy;
     font-size: $fontSizeXSmall;
     color: $TPGrey4;
@@ -29,26 +29,26 @@
     font-size: $fontSizeXSmall;
     color: $TPGrey4;
     text-align: center;
-    -webkit-transform: rotate(-90deg); 
-    -moz-transform: rotate(-90deg); 
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
     width: 100px;
     text-transform: uppercase;
 }
 
 .qvZonesTab {
     position:relative;
-    
+
     .chartContainer {
-        @include calc("width","100% - 58px");    
+        @include calc("width","100% - 58px");
         @include calc("height","100% - 82px");
         left: 30px;
         top: 21px;
-    }   
+    }
 
     .zonesChart {
 
         @include noDataMessage;
-        
+
         position: absolute;
         left: 14px;
         width: 298px;
@@ -96,7 +96,7 @@
         padding:3px 0 4px 0;
 
         .zoneText {
-            @include calc(width, "100% - 80px"); 
+            @include calc(width, "100% - 80px");
             display: inline-block;
             overflow: hidden;
             text-align: right;
@@ -122,7 +122,7 @@
             display: inline-block;
             vertical-align: top;
             @include inputs(70px, 22px, $fontSizeSmall, $fontFamilyRegular);
-            
+
             input {
                 color: $TPGrey3;
                 margin: 2px 0 0 5px;
@@ -141,7 +141,7 @@
         .peakName
         {
             display: inline-block;
-            @include calc(width, "100% - 120px"); 
+            @include calc(width, "100% - 120px");
             text-align: right;
             vertical-align: top;
             @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
@@ -158,7 +158,7 @@
             display: inline-block;
             vertical-align: top;
             @include inputs(70px, 22px, 12px, $fontFamilyRegular);
-            
+
             input {
                 text-align: right;
                 color: $TPGrey3;
@@ -171,7 +171,7 @@
             width: 25px;
             vertical-align: top;
             margin-left:5px;
-            
+
             @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
             label {
                 margin-top: 6px;
@@ -200,7 +200,7 @@
     .hoverBoxContents
     {
         padding: 0 7px 0 7px;
-       
+
         label {
             margin:0;
         }
@@ -271,21 +271,21 @@
     .time
     {
        font-family: $fontFamilyRegular;
-       font-size: $fontSizeLarge; 
+       font-size: $fontSizeLarge;
        text-align: center;
     }
 
     .value
     {
        font-family: $fontFamilyHeavy;
-       font-size: $fontSizeSmall; 
+       font-size: $fontSizeSmall;
        color: $TPGrey4;
        width: 45px;
        text-align: right;
        white-space: nowrap;
        display:inline-block;
     }
-   
+
     .units
     {
         font-family: $fontFamilyRegular;
@@ -322,7 +322,7 @@
     }
 
     .withPower
-    { 
+    {
        .RightPower
        {
             .value
