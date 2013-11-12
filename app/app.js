@@ -354,7 +354,11 @@ function(
             // show navigation
             this.addInitializer(function()
             {
-                this.navRegion.show(this.controllers.navigationController.getLayout());
+                var self = this;
+                this.session.userPromise.done(function()
+                {
+                    self.navRegion.show(self.controllers.navigationController.getLayout());
+                });
             });
 
             // Set up jQuery UI Tooltips
