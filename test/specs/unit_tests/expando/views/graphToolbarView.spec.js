@@ -25,7 +25,16 @@ function($, TP, moment, GraphToolbarView)
 
             view = new GraphToolbarView({
                 stateModel: stateModel,
-                model: workoutModel
+                model: workoutModel,
+                featureAuthorizer: {
+                    runCallbackOrShowUpgradeMessage: function(checker, callback)
+                    {
+                        callback();
+                    },
+                    features: {
+                        ExpandoDataEditing: null
+                    }
+                }
             });
         });
 

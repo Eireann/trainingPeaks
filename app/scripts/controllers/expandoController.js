@@ -2,6 +2,7 @@
 [
     "setImmediate",
     "TP",
+    "framework/filteredSubCollection",
     "views/packeryCollectionView",
     "layouts/expandoLayout",
     "views/expando/statsView",
@@ -13,6 +14,7 @@
 function(
     setImmediate,
     TP,
+    FilteredSubCollection,
     PackeryCollectionView,
     ExpandoLayout,
     StatsView,
@@ -22,6 +24,15 @@ function(
     ExpandoStateModel
 )
 {
+    function userCanUsePod(chartModel)
+    {
+        var featureAttributes = { podTypeId: chartModel.get("podType") };
+        return theMarsApp.featureAuthorizer.canAccessFeature(
+            theMarsApp.featureAuthorizer.features.UsePod,
+            featureAttributes
+        );
+    }
+
     return TP.Controller.extend(
     {
         getLayout: function()
@@ -65,34 +76,28 @@ function(
 
             var podsCollection = new TP.Collection(
             [{
-                podType: 1, // Map
+                podType: 153, // Map
                 cols: 2
             }, {
-                podType: 2, // Graph
+                podType: 152, // Graph
                 cols: 2
             }, {
-                podType: 3, // Laps & Splits,
+                podType: 108, // Laps & Splits,
                 cols: 2
             }, {
-                podType: 4, // Time In Zones
-                variant: 1, // Heart Rate
+                podType: 102 // Heart Rate Time In Zones
             }, {
-                podType: 5, // Peaks
-                variant: 1, // Heart Rate
+                podType: 118 // Heart Rate Peaks
             }, {
-                podType: 4, // Time In Zones
-                variant: 2, // Power
+                podType: 101 // Power Time In Zones
             }, {
-                podType: 5, // Peaks
-                variant: 2, // Power
+                podType: 111 // Power Peaks
             }, {
-                podType: 4, // Time In Zones
-                variant: 3, // Speed
+                podType: 122 // Speed Time In Zones
             }, {
-                podType: 5, // Peaks
-                variant: 3, // Speed
+                podType: 119 // Speed Peaks
             }, {
-                podType: 6, // Scatter Graph
+                podType: 156, // Scatter Graph
                 cols: 2
             }]);
 
@@ -105,9 +110,14 @@ function(
 
             var $sizer = $("<div class='sizer'></div>");
 
+            this.filteredCollection = new FilteredSubCollection(null, {
+                sourceCollection: podsCollection,
+                filterFunction: userCanUsePod
+            });
+
             this.views.packeryView = new PackeryCollectionView({
                 itemView: expandoPodBuilder.buildView,
-                collection: podsCollection,
+                collection: this.filteredCollection,
                 itemViewOptions: { data: data },
                 packery:
                 {
