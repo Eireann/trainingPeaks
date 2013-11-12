@@ -11,14 +11,14 @@ function(
         {
             id: "slide1",
             image: "images/assets/slide1.png",
-            title: "Slide 1",
-            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nisl leo. Integer porttitor sollicitudin porta. Ut vitae varius magna. Phasellus condimentum egestas bibendum. Quisque eu venenatis leo. Mauris egestas purus id iaculis elementum. Donec vulputate pellentesque tortor, non facilisis augue consequat non."
+            title: "Advanced Scheduling Tools",
+            html: "<p>Premium members can schedule future workouts and meals including:</p><ul><li>Copy and paste workouts</li><li>Drag and drop workouts into the future</li><li>Sync calendar with Outlook, Google and iCal</li></ul>"
         },
         {
             id: "slide2",
             image: "images/assets/slide2.png",
-            title: "Slide 2",
-            text: "Integer et ornare nisl, non aliquam nibh. Quisque sit amet ultrices augue. Etiam eget elementum lorem. Curabitur sed eros vitae metus bibendum feugiat. Praesent et euismod tellus. Suspendisse blandit felis sapien, et rhoncus sem congue sit amet. Mauris aliquet congue tortor, id ultrices turpis vulputate ac. Cras ut nisi sed purus condimentum blandit a eget mauris. Cras a nisi id arcu posuere ornare eu nec nunc."
+            title: "Performance Manager",
+            html: "<p>The Performance Manager Chart allows you to view your Acute Training Load (ATL), Chronic Training Load (CTL), Training Stress Balance (TSB) , Training Stress Score (TSS) and Intensity Factor (IF) side by side.</p>"
         }
     ];
 

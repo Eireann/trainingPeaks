@@ -55,7 +55,7 @@ function (TP, slides, userUpgradeTemplate)
             this.$(".upgradeSlidePosition").text("" + (this.index + 1) + "/" + slides.length);
 
             this.$(".upgradeSlideTitle").text(slide.title);
-            this.$(".upgradeSlideText").text(slide.text);
+            this.$(".upgradeSlideText").html(slide.html);
             this.$(".upgradeSlideImage").attr("src", slide.image);
         },
 

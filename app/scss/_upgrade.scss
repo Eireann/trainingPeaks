@@ -3,7 +3,10 @@
 
     .dialogContent {
         overflow: hidden;
-        height: 375px;
+        height: 311px;
+        
+        // to maintain 40px between bottom of buttons and bottom of window
+        min-height: 311px;
     }
 }
 
@@ -53,6 +56,7 @@
             float: left;
             height: 22px;
             width: 38px;
+            outline: none;
         }
 
         .upgradeSlidePrev {
@@ -84,6 +88,6 @@
 }
 
 .upgradeSlideImage {
-    width: 348px;
-    height: 348px * 9 / 16;
+    width: 352px;
+    height: 352px * 9 / 16;
 }
