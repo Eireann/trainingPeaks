@@ -12,6 +12,7 @@ define(
     "views/expando/graphView",
     "views/expando/mapView",
     "views/expando/lapsSplitsView",
+    "views/expando/lapsSplitsColumnChartView",
     "views/expando/scatterGraphView"
 ],
 function(
@@ -27,6 +28,7 @@ function(
     GraphView,
     MapView,
     LapsSplitsView,
+    LapsSplitsColumnChartView,
     ScatterGraphView
 )
 {
@@ -41,7 +43,6 @@ function(
                 detailDataPromise: options.data.detailDataPromise,
                 stateModel: options.data.stateModel
             });
-
         },
 
         152: function(options)
@@ -52,7 +53,6 @@ function(
                 detailDataPromise: options.data.detailDataPromise,
                 stateModel: options.data.stateModel
             });
-
         },
 
         108: function(options)
@@ -63,7 +63,6 @@ function(
                 detailDataPromise: options.data.detailDataPromise,
                 stateModel: options.data.stateModel
             });
-
         },
 
         102: function(options)
@@ -99,6 +98,16 @@ function(
         156: function(options)
         {
             return new ScatterGraphView(
+            {
+                model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise,
+                stateModel: options.data.stateModel
+            });
+        },
+
+        1081: function(options)
+        {
+            return new LapsSplitsColumnChartView(
             {
                 model: options.data.workout,
                 detailDataPromise: options.data.detailDataPromise,

@@ -31,25 +31,17 @@ function(
         {
             var data = [],
                 empties = {};
-            var obj = this.model.toJSON();
-
-            LapsStats.formatLapObject(obj, this.workoutDefaults, data, empties, this.model.collection.availableDataChannels);
-
-            var allLapData = {};
-            _.each(data[0], function(value, key)
-            {
-                var dataArray = key.split(' ');
-                var keyName = [dataArray[0].toLowerCase(), dataArray.slice(1).join('')].join('');
-
-                allLapData[keyName] = value;
-            });
-
+            var row = this.model.toJSON();
 
             var subsetLapData = [];
-            _.each(this.keyNames, function(keyName, index)
+            _.each(this.lapsStats.columns, function(column, index)
+            {
+                subsetLapData.push(
                 {
-                    subsetLapData.push( { key: keyName, value: allLapData[keyName] } );
-                }, this);
+                    key: column.id,
+                    value: this.lapsStats.processCell(column, row, {format: true})
+                });
+            }, this);
 
             return { lapData: subsetLapData, _state: this.model.getState().toJSON() };
 
