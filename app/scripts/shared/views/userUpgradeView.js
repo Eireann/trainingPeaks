@@ -35,7 +35,9 @@ function (TP, slides, userUpgradeTemplate)
 
         serializeData: function()
         {
-            return { slides: slides, upgradeUrl: apiConfig.cmsRoot + "/account" };
+            var userType = theMarsApp.user.getAccountSettings().get("userType");
+            var upgradeURL = userType === 5 ? theMarsApp.apiConfig.coachUpgradeURL : theMarsApp.apiConfig.upgradeURL;
+            return { slides: slides, upgradeUrl: upgradeURL.replace("http:","https:") };
         },
 
         onRender: function()

@@ -74,27 +74,25 @@ function(
             }
 
 
-            if(!this.featureAuthorizer.canAccessFeature(
-                this.featureAuthorizer.features.ViewGraphRanges
-            ))
-            {
-                this.featureAuthorizer.showUpgradeMessage();
-                return;
-            }
-
-            // first clicks sets model as focused, second click begins editing
-            if(!this.model.getState().get("isFocused"))
-            {
-                this.stateModel.set("primaryRange", this.model);
-            }
-            else if(this.model.getState().get("isLap") && !this.model.getState().get("isEditing"))
-            {
-                this._startEditing();
-            }
-            else if(this.model.getState().get("isLap") && !$(e.target).is("input.lapName"))
-            {
-                this._stopEditing(e);
-            }
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.ViewGraphRanges,
+                function()
+                {
+                    // first clicks sets model as focused, second click begins editing
+                    if(!this.model.getState().get("isFocused"))
+                    {
+                        this.stateModel.set("primaryRange", this.model);
+                    }
+                    else if(this.model.getState().get("isLap") && !this.model.getState().get("isEditing"))
+                    {
+                        this._startEditing();
+                    }
+                    else if(this.model.getState().get("isLap") && !$(e.target).is("input.lapName"))
+                    {
+                        this._stopEditing(e);
+                    }
+                }
+            )
         },
 
         _startEditing: function()

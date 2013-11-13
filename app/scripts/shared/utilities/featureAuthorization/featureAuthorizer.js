@@ -46,7 +46,7 @@ function(
             attributes: { targetDate: date } // the date to try to save to
             options: none
             */
-            SaveWorkoutToDate: Feature({ slideId: "slide2" }, function(user, userAccess, attributes, options)
+            SaveWorkoutToDate: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.targetDate)
                 {
@@ -71,7 +71,7 @@ function(
             attributes: none
             options: none
             */
-            ShiftWorkouts: Feature({}, function(user, userAccess, attributes, options)
+            ShiftWorkouts: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
                 var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
                 var currentAthleteType = user.getAthleteDetails().get("userType");
@@ -99,7 +99,7 @@ function(
             attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
             options: none 
             */
-            UsePod: Feature({}, function(user, userAccess, attributes, options)
+            UsePod: Feature({ slideId: "enhanced-analysis" }, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.podTypeId)
                 {
@@ -116,7 +116,7 @@ function(
             attributes: none
             options: none 
             */
-            ExpandoDataEditing: Feature({}, function(user, userAccess, attributes, options)
+            ExpandoDataEditing: Feature({ slideId: "data-editing" }, function(user, userAccess, attributes, options)
             {   
                 var podType = podTypes.findByAccessName("expando_DataEditing");
                 return this.features.UsePod(user, userAccess, { podTypeId: podType.podId }, options);
@@ -126,7 +126,7 @@ function(
             attributes: none
             options: none 
             */
-            ElevationCorrection: Feature({}, function(user, userAccess, attributes, options)
+            ElevationCorrection: Feature({ slideId: "elevation-correction" }, function(user, userAccess, attributes, options)
             {   
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
                 return _.contains(useablePods, "journal_GroundControl");
@@ -137,7 +137,7 @@ function(
             attributes: none
             options: none 
             */
-            ViewGraphRanges: Feature({}, function(user, userAccess, attributes, options)
+            ViewGraphRanges: Feature({ slideId: "map-and-graph" }, function(user, userAccess, attributes, options)
             {   
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
                 return _.contains(useablePods, "view_Ranges");
@@ -189,7 +189,7 @@ function(
             }
             else
             {
-                this.showUpgradeMessage(featureChecker.options);
+                this.showUpgradeMessage(_.extend({}, featureChecker.options, options));
             }
         },
 
