@@ -17,7 +17,7 @@ function(_, TP)
         {
             if(!this._podsCollection)
             {
-                var podsCollection = new TP.Collection(this.get("pods"));
+                var podsCollection = new TP.Collection(this.get("pods"), { comparator: "index" });
                 this.listenTo(podsCollection, "add remove change", function()
                 {
                     var args = Array.prototype.slice.call(arguments);

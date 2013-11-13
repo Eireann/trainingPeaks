@@ -16,13 +16,13 @@ function(
         var layout;
         beforeEach(function()
         {
-            layout = new ExpandoPodLayout({ layoutId: 8, pods: [{ index: 0, podType: 152 }, { index: 1, podType: 108 }] });
+            layout = new ExpandoPodLayout({ layoutId: 8, pods: [{ index: 1, podType: 108 }, { index: 0, podType: 152 }] });
         });
 
         describe(".getPodsCollection", function()
         {
 
-            it("Should return a collection containing all of the pods in this layout", function()
+            it("Should return a collection containing all of the pods in this layout, sorted by index", function()
             {
                 var collection = layout.getPodsCollection();
                 expect(collection.length).to.equal(2);

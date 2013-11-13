@@ -74,36 +74,6 @@ function(
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 
-            this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayout(this.model.get("workoutTypeValueId"));
-            this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(this._onPodLayoutChanged, this));
-
-            var data =
-            {
-                workout: this.model,
-                detailDataPromise: this.prefetchConfig.detailDataPromise,
-                stateModel: this.stateModel
-            };
-
-            var $sizer = $("<div class='sizer'></div>");
-
-            this.filteredCollection = new FilteredSubCollection(null, {
-                sourceCollection: this.expandoPodLayout.getPodsCollection(),
-                filterFunction: userCanUsePod
-            });
-
-            this.views.packeryView = new PackeryCollectionView({
-                itemView: expandoPodBuilder.buildView,
-                collection: this.filteredCollection,
-                itemViewOptions: { data: data },
-                packery:
-                {
-                    columnWidth: $sizer[0],
-                    rowHeight: $sizer[0],
-                    gutter: 10
-                },
-                resizable: { enabled: true },
-                droppable: { enabled: true }
-            });
 
             this.layout.$el.addClass("waiting");
 
@@ -138,8 +108,9 @@ function(
 
             setImmediate(function()
             {
-                self.layout.packeryRegion.show(self.views.packeryView);
+                self._createAndShowPackeryView();
                 self.onViewResize();
+                self._listenToPackeryReorder();
             });
         },
 
@@ -238,7 +209,62 @@ function(
             this.views.packeryView.layout();
         },
 
-        _onPodLayoutChanged: function()
+        _createAndShowPackeryView: function()
+        {
+            if(this.views.packeryView)
+            {
+                this.views.packeryView.close();
+                this.stopListening(this.expandoPodLayout.getPodsCollection());
+            }
+
+            this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayout(this.model.get("workoutTypeValueId"));
+            this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(this._savePodLayout, this));
+
+            var data =
+            {
+                workout: this.model,
+                detailDataPromise: this.prefetchConfig.detailDataPromise,
+                stateModel: this.stateModel
+            };
+
+            var $sizer = $("<div class='sizer'></div>");
+
+            this.filteredCollection = new FilteredSubCollection(null, {
+                sourceCollection: this.expandoPodLayout.getPodsCollection(),
+                filterFunction: userCanUsePod
+            });
+
+            this.views.packeryView = new PackeryCollectionView({
+                itemView: expandoPodBuilder.buildView,
+                collection: this.filteredCollection,
+                itemViewOptions: { data: data },
+                packery:
+                {
+                    columnWidth: $sizer[0],
+                    rowHeight: $sizer[0],
+                    gutter: 10
+                },
+                resizable: { enabled: true },
+                droppable: { enabled: true }
+            });
+            
+            this.layout.packeryRegion.show(this.views.packeryView);
+        },
+
+        _listenToPackeryReorder: function()
+        {
+            this.listenTo(this.views.packeryView, "reorder", _.bind(this._onReorderCharts, this));
+        },
+
+        _onReorderCharts: function()
+        {
+            //console.trace();
+            this.expandoPodLayout.getPodsCollection().sort();
+            console.log(this.expandoPodLayout.getPodsCollection().map(function(model){return model.get("podType") + ":" + model.get("index");}).join(","));
+            this._savePodLayout();
+        },
+
+        _savePodLayout: function()
         {
             theMarsApp.user.getExpandoSettings().addOrUpdateLayout(this.expandoPodLayout);
             theMarsApp.user.getExpandoSettings().save();
