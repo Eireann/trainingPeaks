@@ -73,23 +73,24 @@ function(
                 return;
             }
 
+            var self = this;
 
             this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
                 this.featureAuthorizer.features.ViewGraphRanges,
                 function()
                 {
                     // first clicks sets model as focused, second click begins editing
-                    if(!this.model.getState().get("isFocused"))
+                    if(!self.model.getState().get("isFocused"))
                     {
-                        this.stateModel.set("primaryRange", this.model);
+                        self.stateModel.set("primaryRange", self.model);
                     }
-                    else if(this.model.getState().get("isLap") && !this.model.getState().get("isEditing"))
+                    else if(self.model.getState().get("isLap") && !self.model.getState().get("isEditing"))
                     {
-                        this._startEditing();
+                        self._startEditing();
                     }
-                    else if(this.model.getState().get("isLap") && !$(e.target).is("input.lapName"))
+                    else if(self.model.getState().get("isLap") && !$(e.target).is("input.lapName"))
                     {
-                        this._stopEditing(e);
+                        self._stopEditing(e);
                     }
                 }
             );

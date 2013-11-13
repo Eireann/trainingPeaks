@@ -32,7 +32,7 @@ function(
             model: buildWorkoutModel(),
             stateModel: stateModel,
             featureAuthorizer: {
-                canAccessFeature: function(){return true;},
+                runCallbackOrShowUpgradeMessage: function(feature, callback){return callback();},
                 features: {
                     ViewGraphRanges: null
                 }
@@ -221,7 +221,6 @@ function(
                 view.model.set("name", "Old Name");
                 view.render();
                 view.model.set("name", "New Name");
-                console.log(view.$el.html());
                 expect(view.$("span.lapName").text()).to.eql("New Name");
             });
         });
