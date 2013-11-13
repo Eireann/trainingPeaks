@@ -53,6 +53,7 @@ function(
             timeZone: null,
             units: 2,
             userId: 0,
+            userIdentifierHash: "",
             userName: null,
             zipCode: null,
             zuoraAccountNumber: null,
