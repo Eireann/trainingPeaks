@@ -109,20 +109,7 @@ function(
             setImmediate(function()
             {
                 self._createAndShowPackeryView();
-                self.onViewResize();
-                self._listenToPackeryReorder();
             });
-        },
-
-        onSensorDataChange: function()
-        {
-
-            var self = this;
-            setImmediate(function()
-            {
-                self.onViewResize();
-            });
-
         },
 
         preFetchDetailData: function()
@@ -170,7 +157,6 @@ function(
         watchForModelChanges: function()
         {
             this.listenTo(this.model, "deviceFileUploaded", _.bind(this.reloadDetailData, this));
-            this.listenTo(this.model.get("detailData"), "changeSensorData", _.bind(this.onSensorDataChange, this));
         },
 
         reloadDetailData: function()
@@ -184,27 +170,32 @@ function(
 
         watchForWindowResize: function()
         {
-            _.bindAll(this, "onViewResize");
-            $(window).on("resize.expando", this.onViewResize);
+
+            // don't let any flot triggered resize events propagate to the window, but do pay attention to the actual resize
+            this.layout.$el.on("resize.expando", function(e){
+                if(!$(e.target).is(".ui-resizable-resizing"))
+                {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+
+            // window resize, and ui resize, trigger too many events
+            $(window).on("resize.expando", _.bind(_.debounce(this._onWindowResize, 500), this));
             this.on("close", this.stopWatchingWindowResize, this);
         },
 
         stopWatchingWindowResize: function()
         {
-            $(window).off("resize.expando", this.onViewResize);
+            $(window).off("resize.expando");
         },
 
-        onViewResize: function()
+        _onWindowResize: function(e)
         {
             if (this.disableViewsResize)
             {
                 return;
             }
-
-            _.each(this.views, function(view)
-            {
-                view.trigger("controller:resize");
-            }, this);
 
             this.views.packeryView.layout();
         },
@@ -218,7 +209,6 @@ function(
             }
 
             this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayout(this.model.get("workoutTypeValueId"));
-            this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(this._savePodLayout, this));
 
             var data =
             {
@@ -247,25 +237,17 @@ function(
                 resizable: { enabled: true },
                 droppable: { enabled: true }
             });
-            
+
+            // save on reorder, or when a pod is added or removed, or when cols or rows attribute changes
+            this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(_.debounce(this._savePodLayout, 500), this));
+            //this.listenTo(this.views.packeryView, "reorder", _.bind(this._savePodLayout, this));
+
             this.layout.packeryRegion.show(this.views.packeryView);
-        },
-
-        _listenToPackeryReorder: function()
-        {
-            this.listenTo(this.views.packeryView, "reorder", _.bind(this._onReorderCharts, this));
-        },
-
-        _onReorderCharts: function()
-        {
-            //console.trace();
-            this.expandoPodLayout.getPodsCollection().sort();
-            console.log(this.expandoPodLayout.getPodsCollection().map(function(model){return model.get("podType") + ":" + model.get("index");}).join(","));
-            this._savePodLayout();
         },
 
         _savePodLayout: function()
         {
+            this.expandoPodLayout.getPodsCollection().sort();
             theMarsApp.user.getExpandoSettings().addOrUpdateLayout(this.expandoPodLayout);
             theMarsApp.user.getExpandoSettings().save();
         }

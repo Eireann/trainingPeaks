@@ -1,9 +1,14 @@
 ﻿define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "shared/models/expandoPodSettingsModel"
 ],
-function(_, TP)
+function(
+         _,
+         TP,
+         ExpandoPodSettingsModel
+         )
 {
     var ExpandoPodLayout = TP.BaseModel.extend({
 
@@ -17,7 +22,7 @@ function(_, TP)
         {
             if(!this._podsCollection)
             {
-                var podsCollection = new TP.Collection(this.get("pods"), { comparator: "index" });
+                var podsCollection = new TP.Collection(this.get("pods"), { comparator: "index", model: ExpandoPodSettingsModel });
                 this.listenTo(podsCollection, "add remove change", function()
                 {
                     var args = Array.prototype.slice.call(arguments);

@@ -306,14 +306,16 @@ function (
 
         watchForControllerResize: function ()
         {
-            this.on("controller:resize", this.setViewSize, this);
+            $(window).on("resize.expandoMap", _.bind(this._updateMapSize, this));
+            this.on("pod:resize", this._updateMapSize, this);
             this.on("close", function ()
             {
-                this.off("controller:resize", this.setViewSize, this);
+                this.off("pod:resize", this._updateMapSize, this);
+                $(window).off("resize.expandoMap");
             }, this);
         },
 
-        setViewSize: function()
+        _updateMapSize: function()
         {
             if (this.map)
             {

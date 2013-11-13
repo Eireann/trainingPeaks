@@ -1,14 +1,18 @@
 define(
 [
-    "shared/models/premiumPodsCollection"
+    "shared/models/premiumPodsCollection",
+    "shared/models/expandoPodSettingsModel"
 ],
 function(
-    PremiumPodsCollection
+    PremiumPodsCollection,
+    ExpandoPodSettingsModel
     )
 {
     var AvailableChartsCollection = PremiumPodsCollection.extend(
     {
         podTypeIdAttribute: "chartType",
+
+        model: ExpandoPodSettingsModel,
 
         initialize: function(models, options)
         {
