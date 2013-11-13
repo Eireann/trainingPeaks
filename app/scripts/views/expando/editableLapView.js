@@ -92,7 +92,7 @@ function(
                         this._stopEditing(e);
                     }
                 }
-            )
+            );
         },
 
         _startEditing: function()
