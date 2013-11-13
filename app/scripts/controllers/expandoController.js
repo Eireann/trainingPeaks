@@ -157,6 +157,7 @@ function(
         watchForModelChanges: function()
         {
             this.listenTo(this.model, "deviceFileUploaded", _.bind(this.reloadDetailData, this));
+            this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this._createAndShowPackeryView, this));
         },
 
         reloadDetailData: function()
