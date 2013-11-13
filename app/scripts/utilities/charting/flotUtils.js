@@ -221,7 +221,7 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                 }
 
                 return ticksArray;
-            }
+            };
 
             return _func;
         }

@@ -115,6 +115,9 @@ define({
     "Energy": "Energy",
     "NormalizedPower": "Normalized Power",
     "Power": "Power",
+    "RightPower": "Right Power",
+    "PowerBalance": "Pwr. Bal.",
+    "Power Balance": "Power Balance",
     "Torque": "Torque",
     "Elevation": "Elevation",
     "Cadence": "Cadence",
@@ -324,7 +327,6 @@ define({
     "Corrected": "Corrected",
     "Gain": "Gain",
     "Loss": "Loss",
-    "PowerBalance": "Pwr. Bal.",
     "PublicTooltip": "Share your completed workout",
     "PublicTooltipTwitter": "Share your completed workout on Twitter",
     "PublicTooltipFacebook": "Share your completed workout on Facebook",
@@ -459,7 +461,5 @@ define({
     "ApplyExpandoEdits": "Click apply to save edits and update stats.",
 
     "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
-    "ConfirmDeleteLap": "Are you sure you want to delete the lap?",
-    "RightPower": "Right Power"
-
+    "ConfirmDeleteLap": "Are you sure you want to delete the lap?"
 });

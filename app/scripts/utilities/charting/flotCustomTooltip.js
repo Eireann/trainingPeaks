@@ -163,7 +163,6 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
                         });
                     }
 
-
                     toolTipSeries.push(config);
                 }
             }, this);
