@@ -23,34 +23,31 @@ function(_, colorUtils, affiliateUtils)
 
         setupHeader: function()
         {
-            if (theMarsApp.user.getAccountSettings()) 
+            if (affiliateUtils.isCoachedAccount())
+            {
+                this.$("#userControlsBackground").addClass("coachBanner");
+            } else if (affiliateUtils.isAffiliate())
+            {
+                this.$("#userControlsBackground").addClass("affiliateBanner");
+            }
+
+            if(!this.affiliateHeaderLoaded)
             {
                 if (affiliateUtils.isCoachedAccount())
                 {
-                    this.$("#userControlsBackground").addClass("coachBanner");
+                    this.loadCoachLogoImageData();
                 } else if (affiliateUtils.isAffiliate())
                 {
-                    this.$("#userControlsBackground").addClass("affiliateBanner");
+                    affiliateUtils.loadAffiliateStylesheet();
                 } 
-
-                if(!this.affiliateHeaderLoaded)
-                {
-                    if (affiliateUtils.isCoachedAccount())
-                    {
-                        this.loadCoachLogoImageData();
-                    } else if (affiliateUtils.isAffiliate())
-                    {
-                        affiliateUtils.loadAffiliateStylesheet();
-                    } 
-                    this.affiliateHeaderLoaded = true;
-                }
+                this.affiliateHeaderLoaded = true;
             }
         },
 
         loadCoachLogoImageData: function()
         {
-            _.bindAll(this, "onLogoDataLoaded");
-            affiliateUtils.loadLogoImageData().done(this.onLogoDataLoaded);
+            this.$("#userControlsBackground").css({ visibility: "hidden" });
+            affiliateUtils.loadLogoImageData().done(_.bind(this.onLogoDataLoaded, this));
         },
 
         onLogoDataLoaded: function(imageData)
@@ -63,6 +60,7 @@ function(_, colorUtils, affiliateUtils)
                 self.$(".personHeaderLogo").css("background-image", "none");
                 self.$(".personHeaderLogo").append(logo);
                 self.updateHeaderColorsFromImageData(this);
+                self.$("#userControlsBackground").css({ visibility: "" });
             });
         },
 

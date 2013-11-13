@@ -23,15 +23,11 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
             "click .upgradeButton": "onUpgradeClicked"
         },
 
-        modelEvents:
-        {
-            "change": "render"
-        },
+        modelEvents: {},
 
         initialize: function()
         {
             this.initializeCoachAndAffiliateCustomizations();
-            this.listenTo(this.model.getAccountSettings(), "change", _.bind(this.render, this));
         },
 
         onUsernameLabelClicked: function(e)
