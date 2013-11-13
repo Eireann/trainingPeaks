@@ -11,7 +11,7 @@
 		
 		<Configuration Condition="'$(Configuration)' == ''">Dev</Configuration>
         <OutputDir>$(MSBuildProjectDirectory)\build\release</OutputDir>
-		<GruntCmd>npm install -g grunt-cli &amp;&amp; npm install &amp;&amp; grunt</GruntCmd>
+	    <GruntCmd>npm rebuild &amp;&amp; ./node_module/.bin/grunt</GruntCmd>
 	</PropertyGroup>
 
 	<Import Project="$(BuildToolsPath)\MSBuild\trainingpeaks.build.targets" />
