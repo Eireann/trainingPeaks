@@ -46,6 +46,7 @@ function(
             language: null,
             lastName: null,
             latitude: null,
+            logonToHtml5: false,
             longitude: null,
             phone: null,
             profilePhotoUrl: null,
