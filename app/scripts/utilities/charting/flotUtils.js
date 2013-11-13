@@ -70,15 +70,10 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                         }
                         return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: workoutTypeValueId}), 10);
                     },
-                    labelWidth: labelWidth
+                    labelWidth: labelWidth,
+                    ticks: this.createTicksBasedOnAxis(s.label)
                 };
 
-                // This is outside the above definition because we only want it
-                // if we have "RightPower"
-                if(s.label === "RightPower")
-                {
-                    axisOptions.ticks = this.createTicksBasedOnAxis(s.label);
-                }
                 yaxes.push(axisOptions);
             }, this);
 
