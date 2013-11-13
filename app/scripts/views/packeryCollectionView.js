@@ -34,8 +34,8 @@ function(
             _.merge(options, {
                 packery:
                 {
-                    rowHeight: 410,
-                    columnWidth: 410,
+                    rowHeight: 393,
+                    columnWidth: 393,
                     gutter: 10
                 },
                 resizable: { enabled: false },
