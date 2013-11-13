@@ -134,7 +134,7 @@
 {
     min-width: 1007px;
     position: relative;
-    padding:10px 0px 0px 10px;
+    padding:10px;
     overflow-x: hidden;
 }
 
@@ -524,11 +524,11 @@
 
     /* general dashboard chart sizing */
     &:not(.fullScreen) {
-        width: 393px;
-        height: 393px;
+        width: 390px;
+        height: 390px;
 
         &.pmcChart {
-            width: 797px;
+            width: 790px;
             .chartContainer {
             
             }
