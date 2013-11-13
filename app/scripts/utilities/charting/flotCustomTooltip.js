@@ -42,7 +42,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             return true;
         },
 
-        buildGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, axisType)
+        buildGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, xAxisType)
         {
             var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
             var toolTipData =
@@ -52,10 +52,10 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
                 powerSeriesEnabled: powerSeriesEnabled
             };
 
-            if (axisType === "time")
-                toolTipData.xAxisOffset = conversion.formatUnitsValue(axisType, xAxisOffset);
+            if (xAxisType === "time")
+                toolTipData.xAxisOffset = conversion.formatUnitsValue(xAxisType, xAxisOffset);
             else
-                toolTipData.xAxisOffset = conversion.formatUnitsValue(axisType, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType }) + " " + unitLabels(axisType, workoutType);
+                toolTipData.xAxisOffset = conversion.formatUnitsValue(xAxisType, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType }) + " " + unitLabels(xAxisType, workoutType);
 
             var toolTipSeries = this.formatYAxisData(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled);
 
@@ -70,28 +70,42 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
 
             return flotToolTipTemplate(toolTipData);
         },
-        buildScatterGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, axisType)
+        buildScatterGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, xAxisType)
         {
-            var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
+            var powerSeriesEnabled = _.find(allDataSeries, function(s) { return s.label === "Power"; });
             var hoveredSeries = _.find(enabledDataSeries, function(s) { return s.name === hoveredSeriesName; });
             var toolTipData =
             {
                 x: {},
                 y: {}
             };
-
+            var toolTipSeries = [];
             var lowerCaseAxisName = axisType.toLowerCase();
             var avg = "";
+
             if(hoveredSeriesName === "averageSeries")
             {
                 avg = "Avg. ";
             }
 
-            toolTipData.x.label = avg + axisType;
-            toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
-            toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
+            if(xAxisType === "RightPower" && powerSeriesEnabled)
+            {
+                var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
+                if(!_.isEmpty(data))
+                {
+                    toolTipData.x.label = data.label;
+                    toolTipData.x.value = data.value;
+                    toolTipData.x.units = data.units;
+                }
+            }
+            else
+            {
+                toolTipData.x.label = xAxisType;
+                toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
+                toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
+            }
 
-            var toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
+            toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
 
             toolTipData.y.label = avg + toolTipSeries[0].label;
             toolTipData.y.value = toolTipSeries[0].value;
@@ -111,31 +125,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
                 if (!alwaysDisplay && !this.shouldDisplayToolTipValue(s.label, value))
                     return;
 
-                if (s.label === "RightPower" && powerSeriesEnabled)
-                {
-                    var totalPower = _.find(allDataSeries, function (ps) { return ps.label === "Power"; });
-
-                    if (!totalPower)
-                        return;
-
-                    totalPower = totalPower.data[hoveredIndex][1];
-
-                    if (!totalPower)
-                        return;
-
-                    var rightPowerPercentage = (100 * value / totalPower).toFixed(1);
-                    var leftPowerPercentage = (100 * (totalPower - value) / totalPower).toFixed(1);
-
-                    toolTipSeries.push(
-                    {
-                        label: "RightPower",
-                        value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
-                        units: "",
-                        current: (hoveredSeriesName === "Power" || hoveredSeriesName === "RightPower")
-                    });
-
-                    return;
-                }
+                this.formatBalancedPower(allDataSeries, s, powerSeriesEnabled, toolTipSeries, hoveredIndex, hoveredSeriesName);
 
                 //TODO Refactor: assuming the proper conversion field name is simply the lower-cased series name
                 //TODO is wrong. Should probably add a field to the series object in the data parser.
@@ -178,13 +168,46 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
                         });
                     }
 
-
                     toolTipSeries.push(config);
                 }
             }, this);
 
             return toolTipSeries;
+        },
+
+        calculateBalancedPower: function(allDataSeries, hoveredIndex, hoveredSeriesName)
+        {
+            var totalPower = _.find(allDataSeries, function (ps) { return ps.label === "Power"; });
+            var rightPower = _.find(allDataSeries, function (ps) { return ps.label === "RightPower"; });
+            if (!totalPower || !rightPower)
+                return null;
+
+            var totalPowerValue = totalPower.data[hoveredIndex][1];
+            var rightPowerValue = rightPower.data[hoveredIndex][1];
+
+            if (!totalPowerValue || !rightPowerValue)
+                return null;
+
+            var rightPowerPercentage = (100 * rightPowerValue / totalPowerValue).toFixed(1);
+            var leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue).toFixed(1);
+
+            return {
+                label: "RightPower",
+                value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
+                units: "",
+                current: (hoveredSeriesName === "Power" || hoveredSeriesName === "RightPower")
+            };
+        },
+
+        formatBalancedPower: function(allDataSeries, series, powerSeriesEnabled, toolTipSeries, hoveredIndex, hoveredSeriesName)
+        {
+            if (series.label === "RightPower" && powerSeriesEnabled)
+            {
+                var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
+                if(!_.isEmpty(data)) toolTipSeries.push(data);
+            }
         }
+
     };
 
     return FlotToolTip;

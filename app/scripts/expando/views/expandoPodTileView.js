@@ -45,7 +45,7 @@ function(
 
         remove: function()
         {
-            var helper = this.$el.data("ui-draggable").helper;
+            var helper = this.$el.data("ui-draggable") ? this.$el.data("ui-draggable").helper : null;
             if(helper && helper.is(".ui-draggable-dragging"))
             {
                 // We need to keep the element in the DOM until the drag finishes

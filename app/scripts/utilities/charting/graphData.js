@@ -52,40 +52,84 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getSeriesForAxes: function(xaxis, yaxis)
         {
-              var data = [];
-              var channel = "time";
-              var averageStats = this.averageStats[xaxis + yaxis] = {};
+            var data = [];
+            var channel = "time";
 
-              data = _.clone(this.dataByAxisAndChannel[channel]);
+            data = _.clone(this.dataByAxisAndChannel[channel]);
 
-              // remove cut ranges
-              this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
+            // remove cut ranges
+            this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
 
-              var seriesData = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
+            var seriesData = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
 
-              var newSeries = [];
+            var newSeries = this.processData(data, xaxis, yaxis);
+            seriesData.data = newSeries;
 
-              averageStats["xaxis"] = 0;
-              averageStats["yaxis"] = 0;
+            return [seriesData];
+        },
 
-              var totalAvgCount = 0;
-              _.each(data[xaxis], function(dataPoint, index)
-              {
-                  newSeries.push([data[xaxis][index][1], data[yaxis][index][1]]);
+        processData: function(data, xaxis, yaxis)
+        {
+            var newSeries = [];
+            var ecks;
+            var why;
+            var totalPowerValue;
+            var rightPowerValue;
+            var leftPowerPercentage;
+            var rightPowerPercentage;
+            var averageStats = this.averageStats[xaxis + yaxis] = {};
+            var balancedPowerAvailable = _.has(data, "RightPower");
+            var totalAvgCount = 0;
 
-                  if(!_.isNaN(data[xaxis][index][1]) && !_.isNaN(data[yaxis][index][1]))
-                  {
-                      totalAvgCount++;
-                      averageStats["xaxis"] = averageStats["xaxis"] + data[xaxis][index][1];
-                      averageStats["yaxis"] = averageStats["yaxis"] + data[yaxis][index][1];
-                  }
-              }, this);
-              seriesData.data = newSeries;
+            averageStats["xaxis"] = 0;
+            averageStats["yaxis"] = 0;
 
-              averageStats["xaxis"] = averageStats["xaxis"] / totalAvgCount;
-              averageStats["yaxis"] = averageStats["yaxis"] / totalAvgCount;
+            _.each(data[xaxis], function(dataPoint, index)
+            {
+                ecks = data[xaxis][index][1];
+                why = data[yaxis][index][1];
+                if(xaxis === "RightPower")
+                {
+                    totalPowerValue = data["Power"][index][1];
+                    rightPowerValue = data["RightPower"][index][1];
 
-              return [seriesData];
+                    rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
+                    leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue);
+                    ecks = rightPowerPercentage;
+                }
+
+                if(yaxis === "RightPower")
+                {
+                    totalPowerValue = data["Power"][index][1];
+                    rightPowerValue = data["RightPower"][index][1];
+
+                    rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
+                    leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue);
+
+                    why = rightPowerPercentage;
+                }
+                // This is a hack to prevent errant data from skewing graphs.
+                if(balancedPowerAvailable && (xaxis === "RightPower" || yaxis === "RightPower"))
+                {
+                    if(totalPowerValue < rightPowerValue)
+                    {
+                        data["Power"][index][1] = data["RightPower"][index][1] = null;
+                        ecks = why = null;
+                    }
+                }
+                if(_.isFinite(ecks) && _.isFinite(why))
+                {
+                    totalAvgCount++;
+                    averageStats["xaxis"] = averageStats["xaxis"] + ecks;
+                    averageStats["yaxis"] = averageStats["yaxis"] + why;
+                }
+                newSeries.push([ecks, why]);
+            });
+
+            averageStats["xaxis"] = averageStats["xaxis"] / totalAvgCount;
+            averageStats["yaxis"] = averageStats["yaxis"] / totalAvgCount;
+
+            return newSeries;
         },
 
         resetLatLonArray: function()

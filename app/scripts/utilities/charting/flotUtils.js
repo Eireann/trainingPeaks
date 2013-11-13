@@ -28,6 +28,20 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                     axisIndex++;
                 }
 
+                var labelWidth = 15;
+                if(showSpeedAsPace)
+                {
+                    labelWidth = 27;
+                }
+                else if(s.label === "Time")
+                {
+                    labelWidth = 42;
+                }
+                else if(s.label === "RightPower")
+                {
+                    labelWidth = 60;
+                }
+
                 var axisOptions =
                 {
                     show: true,
@@ -55,10 +69,13 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
                             return conversion.formatUnitsValue("time", value);
                         }
                         return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: workoutTypeValueId}), 10);
-                    }                };
+                    },
+                    labelWidth: labelWidth,
+                    ticks: this.createTicksBasedOnAxis(s.label)
+                };
 
                 yaxes.push(axisOptions);
-            });
+            }, this);
 
             // right power should share index with power if present
             var rightPowerAxis = DataParserUtils.findChannelInSeriesArray(yaxes, "RightPower");
@@ -150,8 +167,86 @@ function(chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
             };
 
             return bullseye;
-        }
+        },
 
+        createTicksBasedOnAxis: function(axisName)
+        {
+            var _func;
+            if(axisName === "RightPower")
+            {
+                _func = this.createPercentageTicks();
+            }
+            else
+            {
+                _func = this.createTicks();
+            }
+            return _func;
+        },
+
+        createPercentageTicks: function()
+        {
+            var _func = function(axis)
+            {
+                var tick = axis.max / 5;
+                var tickArray = [];
+                for(var i = 0; i < 6; i++)
+                {
+                    var index = i * 20;
+                    var percent = (100 - index) + "% / " + index + "%";
+                    tickArray.push([i * tick, percent]);
+                }
+                return tickArray;
+            };
+            return _func;
+        },
+
+        createTicks: function(axisName)
+        {
+            var _func = function(axis)
+            {
+                var lowerCaseAxisName = axisName;
+                var ticksArray = [];
+                var max = axis.datamax;
+
+                if (lowerCaseAxisName && lowerCaseAxisName === "time")
+                {
+                    if (axis.tickSize <= 120000)
+                        axis.tickSize = 120000;
+                    else if (axis.tickSize <= 300000)
+                        axis.tickSize = 300000;
+                    else if (axis.tickSize <= 600000)
+                        axis.tickSize = 600000;
+                    else if (axis.tickSize <= 900000)
+                        axis.tickSize = 900000;
+                    else if (axis.tickSize <= 1200000)
+                        axis.tickSize = 1200000;
+                    else if (axis.tickSize <= 1500000)
+                        axis.tickSize = 1500000;
+                    else if (axis.tickSize <= 1800000)
+                        axis.tickSize = 1800000;
+                    else if (axis.tickSize <= 2100000)
+                        axis.tickSize = 2100000;
+                    else if (axis.tickSize <= 2400000)
+                        axis.tickSize = 2400000;
+                    else if (axis.tickSize <= 2700000)
+                        axis.tickSize = 2700000;
+                    else
+                        axis.tickSize -= (axis.tickSize % 3000000);
+                }
+
+                while (max > 0)
+                {
+                    if (lowerCaseAxisName && lowerCaseAxisName === "distance")
+                        max -= axis.tickSize;
+                    ticksArray.push(axis.datamax - max);
+                    max -= axis.tickSize;
+                }
+
+                return ticksArray;
+            };
+
+            return _func;
+        }
     };
 
     return FlotUtils;

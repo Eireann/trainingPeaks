@@ -33,8 +33,11 @@ function(
 
         itemView: ExpandoPodTileView,
         itemViewContainer: ".availablePods",
-
-        collection: new AvailableExpandoPodsCollection()
+        
+        initialize: function()
+        {
+            this.collection = new AvailableExpandoPodsCollection(null, { featureAuthorizer: theMarsApp.featureAuthorizer });
+        }
 
     });
 

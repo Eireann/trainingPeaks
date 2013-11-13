@@ -36,6 +36,7 @@ function(
         initialize: function(options)
         {
             this.stateModel = options.stateModel;
+            this.featureAuthorizer = options.featureAuthorizer ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
         },
 
         onRender: function()
@@ -69,6 +70,15 @@ function(
         {
             if(e.isDefaultPrevented() || $(e.target).is("input"))
             {
+                return;
+            }
+
+
+            if(!this.featureAuthorizer.canAccessFeature(
+                this.featureAuthorizer.features.ViewGraphRanges
+            ))
+            {
+                this.featureAuthorizer.showUpgradeMessage();
                 return;
             }
 
