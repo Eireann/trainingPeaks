@@ -14,7 +14,7 @@ function(Handlebars, TP)
         }
         var typeName = TP.utils.workout.types.getNameById(workoutTypeId);
         // Remove any non alpha characters
-        typeName = typeName.replace(/[^a-z]/ig, "");
+        typeName = typeName.replace(/ /g, "");
         return typeName;
     }
 

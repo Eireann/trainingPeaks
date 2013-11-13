@@ -1,10 +1,19 @@
-{{#hoverBox this}}
-	<h6>Workouts on {{formatDate date}}</h6>
-    <ul>
-    	{{#each workouts}}
-    		<li>
-    			<a data-id="{{workoutId}}" href="#">{{{workoutTypeName workoutTypeValueId}}}</a>
-    		</li>
-    	{{/each}}
-    </ul>
-{{/hoverBox}}
+<h6>Workouts on {{formatDate date}}</h6>
+<ul>
+    {{#each workouts}}
+	<li class="workout workoutList {{ workoutTypeCssName workoutTypeValueId }}" data-workout-id="{{ workoutId }}">
+	    <div class="workoutDiv">
+		<div class="workoutHeader">
+		    <div class="workoutIcon" title="{{ workoutTypeName workoutTypeValueId }}"></div>
+		    <div class="workoutDistanceTime">
+			<span class="keystat">
+			    {{ formatKeyStat this }}<span class="units">{{ formatKeyStatUnits this }}</span>
+			</span>
+		    </div>
+		</div>
+		<div class="workoutBody">
+		    <span class="workoutLabel">{{ title }} <span class="workoutTime">{{ formatDate startTime "hh:mm A" }}</span></span>
+	    </div>
+	</li>
+    {{/each}}
+</ul>

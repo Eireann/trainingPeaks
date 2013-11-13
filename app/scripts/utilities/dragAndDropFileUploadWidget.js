@@ -153,10 +153,10 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                         $dropTarget.find(".uploadingText").hide();
                         $dropTarget.find(".uploadSuccess").show();
 
-                        _.each(workouts, function (workout)
+                        _.each(workouts, function (workoutData)
                         {
                             if (theMarsApp)
-                                theMarsApp.calendarManager.addItem(new WorkoutModel(workout));
+                                theMarsApp.calendarManager.addOrUpdateItem(WorkoutModel, workoutData);
                         });
 
                         $dropTarget.fadeOut(2000, function() { $dropTarget.find(".uploadingText").hide(); $dropTarget.find(".uploadSuccess").hide(); $dropTarget.remove(); $overlay.remove(); uploadInProgress = false; });

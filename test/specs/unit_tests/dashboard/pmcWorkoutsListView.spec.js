@@ -5,7 +5,9 @@ define(
     "TP",
     "testUtils/testHelpers",
     "dashboard/views/pmcWorkoutsListView",
-    "models/workoutsCollection"
+    "models/calendar/calendarDay",
+    "models/workoutModel",
+    "shared/models/metricModel"
 ],
 function(
     $,
@@ -13,20 +15,25 @@ function(
     TP,
     testHelpers,
     PmcWorkoutsListView,
-    WorkoutsCollection
-    )
+    CalendarDay,
+    WorkoutModel,
+    MetricModel
+)
 {
-	describe("PmcWorkoutsListView", function()
+    describe("PmcWorkoutsListView", function()
+    {
+	it("Should provide the right data to the template", function()
 	{
-		var workouts = new WorkoutsCollection([new TP.Model()], {startDate: moment(), endDate: moment()});
-		var view = new PmcWorkoutsListView({collection: workouts, dataPromise: new $.Deferred().resolve(), position: {x: 10, y: 10}});
+		var model = new CalendarDay({ date: "2013-10-04" });
+		model.add(new WorkoutModel({ workoutId: 2 }));
+		model.add(new MetricModel({ id: 1 }));
 
-		it("Should provide the right data to the template", function()
-		{
-			var result = view.serializeData();
-			expect(result.date).to.equal(moment().format("MM-DD-YYYY"));
-			expect(result.workouts.length).to.equal(1);
-		});
+		var view = new PmcWorkoutsListView({ model: model });
 
+		var result = view.serializeData();
+		expect(result.date).to.equal("2013-10-04");
+		expect(result.workouts.length).to.equal(1);
 	});
+
+    });
 });

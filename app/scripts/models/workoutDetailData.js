@@ -3,6 +3,7 @@
     "underscore",
     "moment",
     "TP",
+    "utilities/charting/graphData",
     "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
@@ -13,6 +14,7 @@ function (
     _,
     moment,
     TP,
+    GraphData,
     DataParser,
     WorkoutStatsForRange,
     formatPeakTime,
@@ -32,7 +34,8 @@ function (
 
         initialize: function()
         {
-            this._dataParser = new DataParser();
+            this.graphData = new GraphData();
+            this._dataParser = new DataParser({graphData: this.graphData});
             this.rangeCollections = {};
             this.reset();
             this.on("sync", this.reset, this);
@@ -114,11 +117,6 @@ function (
             this.set("disabledDataChannels", _.without(this.get("disabledDataChannels"), series));
         },
 
-        getDataParser: function()
-        {
-            return this._dataParser;
-        },
-
         hasSensorData: function()
         {
             return this.hasLaps() || this.hasSamples();
@@ -153,7 +151,7 @@ function (
                 var channelCutDetails = {
                     channel: series,
                     startTimeInMilliseconds: begin,
-                    endTimeInMilliseconds: end 
+                    endTimeInMilliseconds: end
                 };
                 var channelCuts = this.has("channelCuts") ? _.clone(this.get("channelCuts")) : [];
                 channelCuts.push(channelCutDetails);
@@ -161,11 +159,11 @@ function (
                 // update data parser before updating our own attributes, in case anybody is watching for changes on this model, data parser should already be in correct state
                 if(isFullChannel)
                 {
-                    this._dataParser.excludeChannel(series);
+                    this.graphData.excludeChannel(series);
                 }
                 else
                 {
-                    this._dataParser.excludeRange(series, begin, end);
+                    this.graphData.excludeRange(series, begin, end);
                 }
                 this.set("channelCuts", channelCuts);
                 this.disableChannel(series);
@@ -410,7 +408,7 @@ function (
 
         _resetDataParser: function()
         {
-            this._dataParser.resetExcludedRanges();
+            this.graphData.resetExcludedRanges();
             this._dataParser.loadData(this.get("flatSamples"));
         },
 
@@ -508,9 +506,9 @@ function (
         {
             var potentiallyExpensiveChanges = ["flatSamples", "lapsStats", "originalLapsStats"];
 
-            // whenever we set flatsamples on this model, if it already has a flatsamples, 
+            // whenever we set flatsamples on this model, if it already has a flatsamples,
             // the _.isEqual comparison in backbone can be extremely slow
-            // assume that if we are setting flat samples, we want the change event, 
+            // assume that if we are setting flat samples, we want the change event,
             // so just set it to null for fast easy comparison
             _.each(potentiallyExpensiveChanges, function(expensiveChange)
             {

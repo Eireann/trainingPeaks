@@ -8,7 +8,7 @@
 function (_, TP, flotFilter, chartColors)
 {
     return {
-        getMultiChannelOptions: function (onHoverHandler, xaxisType, workoutTypeId)
+        getMultiChannelOptions: function (onHoverHandler, axisType, workoutTypeId)
         {
             return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
                 {
@@ -39,12 +39,11 @@ function (_, TP, flotFilter, chartColors)
                             min: 0,
                             color: "transparent",
                             tickColor: "transparent",
-
                             tickFormatter: function (value, axis)
                             {
-                                if (typeof xaxisType !== "undefined" && xaxisType === "distance")
+                                if (axisType && axisType === "distance")
                                     return TP.utils.conversion.formatUnitsValue("distance", value, { defaultValue: null, workoutTypeId: workoutTypeId }) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
-                                
+
                                 var decimalHours = (value / (3600 * 1000));
                                 return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
                             },
@@ -53,7 +52,7 @@ function (_, TP, flotFilter, chartColors)
                                 var ticksArray = [];
                                 var max = axis.datamax;
 
-                                if (!(typeof xaxisType !== "undefined" && xaxisType === "distance"))
+                                if (axisType && axisType === "time")
                                 {
                                     if (axis.tickSize <= 120000)
                                         axis.tickSize = 120000;
@@ -81,7 +80,7 @@ function (_, TP, flotFilter, chartColors)
 
                                 while (max > 0)
                                 {
-                                    if (typeof xaxisType !== "undefined" && xaxisType === "distance")
+                                    if (axisType && axisType === "distance")
                                         max -= axis.tickSize;
                                     ticksArray.push(axis.datamax - max);
                                     max -= axis.tickSize;
@@ -123,6 +122,103 @@ function (_, TP, flotFilter, chartColors)
                     }
                 }
             });
+        },
+
+        getPointOptions: function (onHoverHandler, axisType, workoutTypeId)
+        {
+            var lowerCaseAxisName = axisType.toLowerCase();
+
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
+                {
+                    selection:
+                    {
+                        mode: null,
+                        color: chartColors.chartSelection
+                    },
+                    series:
+                    {
+                        points:
+                        {
+                            show: true,
+                            fill: false,
+                            radius: 1,
+                            symbol: function cross(ctx, x, y, radius, shadow) {
+                                var size = radius * Math.sqrt(Math.PI) / 2;
+                                ctx.moveTo(x - size, y - size);
+                                ctx.lineTo(x + size, y + size);
+                                ctx.moveTo(x - size, y + size);
+                                ctx.lineTo(x + size, y - size);
+                            }
+                        }
+                    },
+                    bars:
+                    {
+                        align: "left",
+                        barWidth: 0.8
+                    },
+                    xaxes:
+                    [
+                        {
+                            min: 0,
+                            color: "transparent",
+                            tickColor: "transparent",
+                            font:
+                            {
+                                color: chartColors.seriesColorByChannel[axisType]
+                            },
+                            tickFormatter: function (value, axis)
+                            {
+                                var formattedValue = TP.utils.conversion.formatUnitsValue(lowerCaseAxisName, value, { defaultValue: 0, workoutTypeId: workoutTypeId });
+                                if (lowerCaseAxisName !== "time")
+                                {
+                                    formattedValue = formattedValue + " " + TP.utils.units.getUnitsLabel(lowerCaseAxisName, workoutTypeId);
+                                }
+                                return formattedValue;
+                            },
+                            ticks: function (axis)
+                            {
+                                var ticksArray = [];
+                                var max = axis.datamax;
+
+                                if (lowerCaseAxisName && lowerCaseAxisName === "time")
+                                {
+                                    if (axis.tickSize <= 120000)
+                                        axis.tickSize = 120000;
+                                    else if (axis.tickSize <= 300000)
+                                        axis.tickSize = 300000;
+                                    else if (axis.tickSize <= 600000)
+                                        axis.tickSize = 600000;
+                                    else if (axis.tickSize <= 900000)
+                                        axis.tickSize = 900000;
+                                    else if (axis.tickSize <= 1200000)
+                                        axis.tickSize = 1200000;
+                                    else if (axis.tickSize <= 1500000)
+                                        axis.tickSize = 1500000;
+                                    else if (axis.tickSize <= 1800000)
+                                        axis.tickSize = 1800000;
+                                    else if (axis.tickSize <= 2100000)
+                                        axis.tickSize = 2100000;
+                                    else if (axis.tickSize <= 2400000)
+                                        axis.tickSize = 2400000;
+                                    else if (axis.tickSize <= 2700000)
+                                        axis.tickSize = 2700000;
+                                    else
+                                        axis.tickSize -= (axis.tickSize % 3000000);
+                                }
+
+                                while (max > 0)
+                                {
+                                    if (lowerCaseAxisName && lowerCaseAxisName === "distance")
+                                        max -= axis.tickSize;
+                                    ticksArray.push(axis.datamax - max);
+                                    max -= axis.tickSize;
+                                }
+
+                                return ticksArray;
+                            }
+                        }
+                    ]
+                });
         },
 
         getGlobalDefaultOptions: function (onHoverHandler)

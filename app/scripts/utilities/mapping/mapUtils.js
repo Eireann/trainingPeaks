@@ -116,7 +116,7 @@ function(
             }
 
             return L.polyline(leafletLatLongs, options);
- 
+
         },
 
         createHighlight: function(latLonArray, options)
@@ -149,9 +149,9 @@ function(
             return markers;
         },
 
-        calculateAndAddMileMarkers: function(map, dataParser, maxMarkers)
+        calculateAndAddMileMarkers: function(map, graphData, maxMarkers)
         {
-            var markers = this.calculateMileMarkers(dataParser, maxMarkers);
+            var markers = this.calculateMileMarkers(graphData, maxMarkers);
             _.each(markers, function(markerOptions)
             {
                 markerOptions.options.icon = new LeafletIcons.MileMarker(markerOptions);
@@ -184,13 +184,13 @@ function(
             return this.addMarkers(map, [marker]);
         },
 
-        calculateMileMarkers: function(dataParser, maxMarkers)
+        calculateMileMarkers: function(graphData, maxMarkers)
         {
             var markers = [];
-            var latLonArray = dataParser.getLatLonArray();
+            var latLonArray = graphData.getLatLonArray();
             if (latLonArray)
             {
-                var distances = dataParser.getDataByChannel("Distance");
+                var distances = graphData.getDataByAxisAndChannel("distance", "Distance");
                 var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
                 var nextMarker = intervals.distanceBetweenMarkers;
 
@@ -200,9 +200,9 @@ function(
                 // array index 0 = ms offset, 1 = distance (in meters?)
                 for (var i = 0; i < distances.length; i++)
                 {
-                    if (distances[i][1] >= nextMarker && dataParser.getLatLongByIndex(i))
+                    if (distances[i][1] >= nextMarker && graphData.getLatLongByIndex(i))
                     {
-                        var latLong = dataParser.getLatLongByIndex(i);
+                        var latLong = graphData.getLatLongByIndex(i);
                         markers.push({ latLng: [latLong.lat, latLong.lng], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
                         nextMarker += intervals.distanceBetweenMarkers;
                         markerNumber += intervals.countBy;
@@ -253,5 +253,5 @@ function(
         }
 
     };
-    
+
 });

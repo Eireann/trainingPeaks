@@ -13,7 +13,7 @@ function(
     TP,
     DataParser,
     defaultFlotOptions,
-    flotCustomToolTip,
+    FlotCustomToolTip,
     toolTipPositioner,
     MapUtils,
     workoutTypes,
@@ -113,14 +113,14 @@ function(
             {
                 return;
             }
-            // no map or graph 
+            // no map or graph
             else if (!this.model.get("detailData").hasSamples())
             {
                 this.$("#quickViewMap").addClass("noData");
                 this.$("#quickViewGraph").addClass("noMap").addClass("noData");
-            } 
+            }
             // graph but no map
-            else if (!this._getDataParser().hasLatLongData)
+            else if (!this._getGraphData().hasLatLongData)
             {
                 this.$("#quickViewMap").addClass("noData");
                 this.$("#quickViewGraph").addClass("noMap").removeClass("noData");
@@ -145,9 +145,9 @@ function(
             MapUtils.removeItemsFromMap(this.map, this.mapLayers);
             this.mapLayers = [];
 
-            var latLongArray = this._getDataParser().getLatLonArray();
+            var latLongArray = this._getGraphData().getLatLonArray();
             this.mapLayers.push(MapUtils.setMapData(this.map, latLongArray));
-            this.mapLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getDataParser(), 6));
+            this.mapLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getGraphData(), 6));
             this.mapLayers.push(MapUtils.addStartMarker(this.map, latLongArray[0]));
             this.mapLayers.push(MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]));
         },
@@ -155,7 +155,7 @@ function(
         createAndShowGraph: function()
         {
             var self = this;
-            
+
             var priority =
             [
                 "Power",
@@ -168,8 +168,9 @@ function(
             ];
 
             // Get all series & axes in the data set
-            var series = this._getDataParser().getSeries();
-            var yaxes = this._getDataParser().getYAxes(series);
+            var series = this._getGraphData().getSeries();
+            this._getGraphData().workoutTypeValueId = this.model.get("workoutTypeValueId");
+            var yaxes = this._getGraphData().getYAxes(series);
 
             // Hide all axes by default in the data set
             _.each(yaxes, function(axis)
@@ -180,7 +181,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                $tooltipEl.html(FlotCustomToolTip.buildGraphToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), "time"));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
             var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
@@ -189,7 +190,7 @@ function(
             flotOptions.xaxes[0].tickLength = 0;
             flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             flotOptions.grid.borderColor = "#9a9999";
-    
+
             if ($.plot)
             {
                 this.plot = $.plot(this.$("#quickViewGraph .graph"), series, flotOptions);
@@ -197,13 +198,13 @@ function(
                     this.plot.setFilter(0);
                 else
                     this.plot.setFilter(10);
-                
+
             }
         },
 
-        _getDataParser: function()
+        _getGraphData: function()
         {
-            return this.model.get("detailData").getDataParser();
+            return this.model.get("detailData").graphData;
         }
 
     };

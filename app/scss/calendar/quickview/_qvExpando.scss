@@ -239,9 +239,11 @@
             height: 35px;
         }
 
-        #plot
+        #plot, #scatterPlot
         {
             height: calc(100% - 50px);
+            min-height: 1;
+            min-width: 1;
         }
 
         &.noData
@@ -253,7 +255,54 @@
 
             #graphToolbar
             {
-                display: none;
+                .graphButtonContain
+                {
+                    &.left
+                    {
+                        display: none;
+                    }
+                }
+
+                .graphSliderContain
+                {
+                    display: none;
+                }
+            }
+        }
+
+        #scatterGraphToolbar
+        {
+            height: 50px;
+            button
+            {
+                &.distance,
+                &.time {
+                    margin: 0;
+                    opacity: 1.0;
+                }
+                &.distance
+                {
+                    @include linearGradient(top, #aa2b58, #7b1f40);
+                }
+                &.time
+                {
+                    @include linearGradient(top, #a5b3b6, #84979c);
+                }
+                &.seriesDisabled
+                {
+                    @include linearGradient(top, #ffffff, #dfddde);
+                    color: $TPGrey10;
+                    opacity:.5;
+                    &:hover {
+                        color: $TPGrey4;
+                    };
+                }
+            }
+
+            label
+            {
+                float: left;
+                padding: 4px 5px 5px 0px;
             }
         }
 
@@ -263,7 +312,6 @@
             padding: 0;
             margin: 0;
             width:100%;
-
 
             .graphButtonContain {
                 float:right;
@@ -279,6 +327,14 @@
 
                 .seriesButtons {
                     float:right;
+                    button
+                    {
+                        text-transform:uppercase;
+                        color: #ffffff;
+                        &:hover {
+                            color:#ffffff;
+                        }
+                    }
                 }
 
                 &.left {
@@ -292,7 +348,7 @@
                     &.hidden {
                         display: none;
                     }
-                    
+
                     font-size: $fontSizeSmall;
                     font-weight: normal;
                     font-family: $fontFamilyRegular;
@@ -329,76 +385,61 @@
                         border-right: 1px solid $TPGrey9;
                     }
 
-                    // &.graphZoomButton,
-                    &.graphDistanceButton
+                    &.distance
                     {
                         margin-right: 12px;
                     }
 
-                    &.graphCutButton {
+                    &.cut {
                         margin-left: 12px;
                     }
 
-                    &.graphDistanceButton,
-                    &.graphTimeButton {
+                    &.distance,
+                    &.time {
                         opacity: .5;
                     }
 
-                    &.graphDistanceButton
-                    {
-                        // border-left: none;
-                    }
-
-                    &.graphSeriesButton
-                    {
-                        text-transform:uppercase;
-                        color: #ffffff;
-                        &:hover {
-                            color:#ffffff;
-                        }
-                    }
-
-                    &.graphElevationButton
+                    &.elevation
                     {
                         @include linearGradient(top, #b5d8ff, #0f7ffd);
                     }
 
-                    &.graphSpeedButton
+                    &.speed
                     {
                         @include linearGradient(top, #10B500, #0B8200);
                     }
 
-                    &.graphHeartRateButton
+                    &.heartRate
                     {
                         @include linearGradient(top, #f8b3b6, #e61101);
                     }
 
-                    &.graphPowerButton
+                    &.power
                     {
                         @include linearGradient(top, #F8C7FF, #FF00FF);
                     }
 
-                    &.graphRightPowerButton
+                    &.rightPower
                     {
                         @include linearGradient(top, #F8C7FF, #FF00FF);
                     }
 
-                    &.graphTorqueButton
+                    &.torque
                     {
                         @include linearGradient(top, #D9D9D9, #BDBDBD);
                     }
 
-                    &.graphCadenceButton
+                    &.cadence
                     {
                         @include linearGradient(top, #FFCC00, #FFA500);
                     }
 
-                    &.graphTemperatureButton
+                    &.temperature
                     {
                         @include linearGradient(top, #0883FF, #0A0AFF);
                     }
 
-                    &.graphSeriesDisabled
+                    &.seriesDisabled
                     {
                         @include linearGradient(top, #ffffff, #dfddde);
                         color: $TPGrey10;
@@ -514,7 +555,7 @@
         {
             &.highlight
             {
-                background-color: rgba(142,178,216,0.25);
+                background-color: #d8dde5;
 
                 span.lapName
                 {
@@ -1045,8 +1086,8 @@
 
     &.expandoMapPod .expandoPodHeader {
         background: rgba(0,0,0,0.4);
-        
-        &:hover { 
+
+        &:hover {
             background: rgba(0,0,0,0.5);
         }
     }
@@ -1057,7 +1098,7 @@
 
         overflow: auto;
         @include nice-scrollbar;
-        
+
         &.invisible
         {
             visibility:hidden;

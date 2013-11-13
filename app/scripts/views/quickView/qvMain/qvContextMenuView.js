@@ -25,8 +25,10 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
             "click #workoutQuickViewMenuPrintLabel": "onPrintClicked"
         },
 
-        initialize: function ()
+        initialize: function(options)
         {
+            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "contextMenuOpened", "eventLabel": "" });
             
             this.on("before:reposition", this.beforeReposition, this);
@@ -58,8 +60,9 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "contextMenuCopyWorkoutClicked", "eventLabel": "" });
 
-            this.model.trigger("workout:copy", this.model);
-            this.trigger("copy");
+            this.selectionManager.setSelection(this.model);
+            this.selectionManager.copySelectionToClipboard();
+
             this.close();
         },
         
@@ -67,8 +70,9 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "contextMenuCutWorkoutClicked", "eventLabel": "" });
 
-            this.model.trigger("workout:cut", this.model);
-            this.trigger("cut");
+            this.selectionManager.setSelection(this.model);
+            this.selectionManager.cutSelectionToClipboard();
+
             this.close();
         },
 

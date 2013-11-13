@@ -239,7 +239,7 @@ function()
                 { value: 8, label: 'Healthy' },
                 { value: 9, label: 'Very Healthy' },
                 { value: 10, label: 'Extremely Healthy' }
-            ] 
+            ]
         },
         {
             id: 24,
@@ -422,7 +422,7 @@ function()
         },
         {
             id: 47,
-            label: "Time in Rem Sleep",
+            label: "Time in REM Sleep",
             units: "hours",
             min: 0,
             max: 24
@@ -438,7 +438,7 @@ function()
             id: 49,
             label: "Times Woken",
             units: "none",
-            min: 1,
+            min: 0,
             max: 1000
         },
         {
@@ -522,7 +522,7 @@ function()
             max: 500
         }
     ];
-    
+
     return metricTypes;
 });
 

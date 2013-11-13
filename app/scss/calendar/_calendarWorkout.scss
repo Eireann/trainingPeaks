@@ -13,6 +13,11 @@
     margin: 5px 4px 4px 2px;
     border:1px solid $TPGrey2;
 
+    &.workoutList
+    {
+        border: none;
+    }
+
     &.dragHelper
     {
         opacity: 0.6;
@@ -91,8 +96,8 @@
             {
                 padding: 15px 0px 0px 30px;
 
-                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
-                label
+                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal, "label, .keystat");
+                label, .keystat
                 {
                     display:inline-block;
                     width:100%;
@@ -112,7 +117,8 @@
         .workoutBody {
             color: $TPGrey4;
             padding: 2px 3px 3px 3px;
-            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal, "label, .workoutLabel");
+
             label {
                 white-space: pre-wrap;
                 cursor:pointer;

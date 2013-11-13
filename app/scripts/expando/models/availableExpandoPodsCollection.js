@@ -1,18 +1,20 @@
 define(
 [
-    "TP"
+    "shared/models/premiumPodsCollection"
 ],
 function(
-    TP)
+    PremiumPodsCollection
+    )
 {
-    var AvailableExpandoPodsCollection = TP.Collection.extend(
+    var AvailableExpandoPodsCollection = PremiumPodsCollection.extend(
     {
-        model: TP.Model,
 
-        comparator: "name",
+        podTypeIdAttribute: "podType",
 
         initialize: function(models, options)
         {
+            this.constructor.__super__.initialize.call(this, models, options);
+
             if(!models)
             {
                 this.addAllAvailableCharts();
@@ -23,55 +25,52 @@ function(
         {
             this.set([
             {
-                podType: 1,
+                podType: 153,
                 name: "Map",
                 cols: 2
             },
             {
-                podType: 2,
+                podType: 152,
                 name: "Graph",
                 cols: 2
             },
             {
-                podType: 3,
+                podType: 108,
                 name: "Laps & Splits",
                 cols: 2
             },
             {
-                podType: 4, // Time In Zones
-                variant: 1, // Heart Rate
+                podType: 156,
+                name: "Scatter Graph",
+                cols: 2
+            },
+            {
+                podType: 102, // Time In Zones
                 name: "Time In Zones - Heart Rate"
             },
             {
-                podType: 5, // Peaks
-                variant: 1, // Heart Rate
+                podType: 118, // Peaks
                 name: "Peaks - Heart Rate"
             },
             {
-                podType: 4, // Time In Zones
-                variant: 2, // Power
+                podType: 101, // Time In Zones
                 name: "Time In Zones - Power"
             },
             {
-                podType: 5, // Peaks
-                variant: 2, // Power
+                podType: 111, // Peaks
                 name: "Peaks - Power"
             },
             {
-                podType: 4, // Time In Zones
-                variant: 3, // Speed
+                podType: 122, // Time In Zones
                 name: "Time In Zones - Speed"
             },
             {
-                podType: 5, // Peaks
-                variant: 3, // Speed
+                podType: 119, // Peaks
                 name: "Peaks - Speed"
             }
             ]);
         }
-
     });
 
     return AvailableExpandoPodsCollection;
 });
-

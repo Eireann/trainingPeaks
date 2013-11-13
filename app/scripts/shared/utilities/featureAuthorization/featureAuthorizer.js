@@ -91,7 +91,8 @@ function(
 
                 var podType = podTypes.findById(attributes.podTypeId);
                 var viewablePods = userAccess.getStringList(accessRights.ids.CanViewPods);
-                return _.contains(viewablePods, podType.podAccessString);
+
+                return _.contains(viewablePods, podType.podAccessString) || podTypes.getDefaultValue(podType, "ViewPod");
             }),
 
             /*
@@ -107,7 +108,18 @@ function(
 
                 var podType = podTypes.findById(attributes.podTypeId);
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
-                return _.contains(useablePods, podType.podAccessString);
+
+                return _.contains(useablePods, podType.podAccessString) || podTypes.getDefaultValue(podType, "UsePod");
+            }),
+
+            /*
+            attributes: none
+            options: none 
+            */
+            ExpandoDataEditing: Feature({}, function(user, userAccess, attributes, options)
+            {   
+                var podType = podTypes.findByAccessName("expando_DataEditing");
+                return this.features.UsePod(user, userAccess, { podTypeId: podType.podId }, options);
             }),
 
             /*
@@ -156,7 +168,7 @@ function(
         {
             if(_.isFunction(featureChecker))
             {
-                var returnValue = featureChecker(this.user, this.userAccessRights, attributes, options);
+                var returnValue = featureChecker.call(this, this.user, this.userAccessRights, attributes, options);
                 if(typeof returnValue !== "boolean")
                 {
                     throw new Error("Feature checker should return a boolean");

@@ -10,7 +10,8 @@ define(
     "views/charts/speedPeaksChart",
     "views/expando/graphView",
     "views/expando/mapView",
-    "views/expando/lapsSplitsView"
+    "views/expando/lapsSplitsView",
+    "views/expando/scatterGraphView"
 ],
 function(
     TP,
@@ -23,13 +24,14 @@ function(
     SpeedPeaksChartView,
     GraphView,
     MapView,
-    LapsSplitsView
+    LapsSplitsView,
+    ScatterGraphView
 )
 {
 
     var viewsByType =
     {
-        1: function(options)
+        153: function(options)
         {
             return new MapView(
             {
@@ -40,7 +42,7 @@ function(
 
         },
 
-        2: function(options)
+        152: function(options)
         {
             return new GraphView(
             {
@@ -51,7 +53,7 @@ function(
 
         },
 
-        3: function(options)
+        108: function(options)
         {
             return new LapsSplitsView(
             {
@@ -62,81 +64,76 @@ function(
 
         },
 
-        4: function(options)
+        102: function(options)
         {
-            var ViewClass, variantName, zonesName;
-            switch(options.model.get("variant"))
-            {
-                case 1:
-                    ViewClass = HRTimeInZonesChartView;
-                    variantName = "HeartRate";
-                    zonesName = "heartRateZones";
-                    break;
-                case 2:
-                    ViewClass = PowerTimeInZonesChartView;
-                    variantName = "Power";
-                    zonesName = "powerZones";
-                    break;
-                case 3:
-                    ViewClass = SpeedTimeInZonesChartView;
-                    variantName = "Speed";
-                    zonesName = "speedZones";
-                    break;
-                default:
-                    throw new Error("Unknown Pod Vairant: " + model.get("variant"));
-            }
-
-            var workoutModel = options.data.workout;
-            var workoutDetailModel = workoutModel.get("details");
-            var workoutTypeId = workoutModel.get("workoutTypeValueId");
-            var zoneType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
-
-            return new ViewClass({
-                workoutType: workoutTypeId,
-                zoneType: zoneType,
-                model: options.data.workout,
-                stateModel: options.data.stateModel
-            });
+            return buildTimeInZonesChartView(HRTimeInZonesChartView, options);
         },
 
-        5: function(options)
+        118: function(options)
         {
-            var ViewClass, variantName, zonesName;
-            switch(options.model.get("variant"))
+            return buildPeaksChartView(HRPeaksChartView, options);
+        },
+
+        101: function(options)
+        {
+            return buildTimeInZonesChartView(PowerTimeInZonesChartView, options);
+        },
+
+        111: function(options)
+        {
+            return buildPeaksChartView(PowerPeaksChartView, options);
+        },
+
+        122: function(options)
+        {
+            return buildTimeInZonesChartView(SpeedTimeInZonesChartView, options);
+        },
+
+        119: function(options)
+        {
+            return buildPeaksChartView(SpeedPeaksChartView, options);
+        },
+
+        156: function(options)
+        {
+            return new ScatterGraphView(
             {
-                case 1:
-                    ViewClass = HRPeaksChartView;
-                    variantName = "HeartRate";
-                    zonesName = "heartRateZones";
-                    break;
-                case 2:
-                    ViewClass = PowerPeaksChartView;
-                    variantName = "Power";
-                    zonesName = "powerZones";
-                    break;
-                case 3:
-                    ViewClass = SpeedPeaksChartView;
-                    variantName = "Speed";
-                    zonesName = "speedZones";
-                    break;
-                default:
-                    throw new Error("Unknown Pod Vairant: " + model.get("variant"));
-            }
-
-            var workoutModel = options.data.workout;
-            var workoutDetailModel = workoutModel.get("details");
-            var workoutTypeId = workoutModel.get("workoutTypeValueId");
-            var peaksType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
-
-            return new ViewClass({
-                workoutType: workoutTypeId,
-                peaksType: peaksType,
                 model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise,
                 stateModel: options.data.stateModel
             });
         }
-
     };
+
+    function buildTimeInZonesChartView(ViewClass, options)
+    {
+        var workoutModel = options.data.workout;
+        var workoutDetailModel = workoutModel.get("details");
+        var workoutTypeId = workoutModel.get("workoutTypeValueId");
+        var zoneType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
+
+        return new ViewClass({
+            workoutType: workoutTypeId,
+            zoneType: zoneType,
+            model: options.data.workout,
+            stateModel: options.data.stateModel
+        });
+    }
+
+    function buildPeaksChartView(ViewClass, options)
+    {
+        var workoutModel = options.data.workout;
+        var workoutDetailModel = workoutModel.get("details");
+        var workoutTypeId = workoutModel.get("workoutTypeValueId");
+        var peaksType = _.contains([1,3,13,12], workoutTypeId) ? "Pace" : "Speed";
+
+        return new ViewClass({
+            workoutType: workoutTypeId,
+            peaksType: peaksType,
+            model: options.data.workout,
+            stateModel: options.data.stateModel
+        });
+    }
 
     function buildView(options)
     {

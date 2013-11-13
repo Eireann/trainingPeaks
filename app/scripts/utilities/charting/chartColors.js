@@ -14,7 +14,9 @@ function()
                 "Speed": "#0b8200",
                 "Elevation": "#6e96b9",
                 "Temperature": "#0A0AFF",
-                "Torque": "#BDBDBD"
+                "Torque": "#BDBDBD",
+                "Distance": "#7b1f40",
+                "Time": "#84979c"
             },
 
         pmcColors:
@@ -26,7 +28,6 @@ function()
                 CTL: "#38709a",
                 TSS: "#b90807",
                 ctlGradient: { dark: "rgba(0,75,131,0.4)", light: "rgba(234,235,236,0.4)" },
-                futureCTLGradient: { dark: "rgba(234,235,236,0.0)", light: "rgba(255,255,255,0.0)" },
                 tsbGradient: { dark: "rgba(234, 235, 236, 0.4)", light: "rgba(255,165,0, 0.4)" }
             },
 
@@ -53,7 +54,7 @@ function()
                         rowing: { light: "#3bc7ed", dark: "#14afd9" },
                         walk: { light: "#e6d701", dark: "#aba001" },
                         other: { light: "#c116c9", dark: "#8e1094" },
-                        dayoff: { light: "#a5b3b6", dark: "#84979c" } 
+                        dayoff: { light: "#a5b3b6", dark: "#84979c" }
                     },
                 trainingZones:
                 {
