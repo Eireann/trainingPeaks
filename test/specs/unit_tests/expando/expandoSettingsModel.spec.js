@@ -18,9 +18,7 @@ function(
         {
             var defaultLayout = { workoutTypeId: 0, pods: [{ podType: 152 }, { podType: 108 }] };
             var swimLayout = { workoutTypeId: 1, pods: [{ podType: 102 }] };
-            var runLayout = { workoutTypeId: 3, pods: [{ podType: 111 }, { podType: 112 }, { podType: 119 }] };
-            settings = new ExpandoSettingsModel({layouts: [swimLayout]});
-            settings._defaultLayouts = [defaultLayout, swimLayout, runLayout];
+            settings = new ExpandoSettingsModel({layouts: [defaultLayout, swimLayout]});
         });
 
         describe(".getLayoutForWorkoutType", function()
@@ -37,13 +35,6 @@ function(
             {
                 var layout = settings.getLayoutForWorkoutType(3);
                 expect(layout.get("workoutTypeId")).to.equal(3);
-                expect(layout.get("pods").length).to.equal(3);
-            });
-
-            it("Should return a default layout if no matching layout is found and no matching default exists", function()
-            {
-                var layout = settings.getLayoutForWorkoutType(5);
-                expect(layout.get("workoutTypeId")).to.equal(5);
                 expect(layout.get("pods").length).to.equal(2);
             });
 
@@ -67,7 +58,7 @@ function(
 
                 settings.addOrUpdateLayoutForWorkoutType(newLayout);
 
-                expect(settings.get("layouts").length).to.equal(2);
+                expect(settings.get("layouts").length).to.equal(3);
                 expect(settings.getLayoutForWorkoutType(10).get("pods").length).to.equal(3);
             });
 
@@ -78,7 +69,7 @@ function(
 
                 settings.addOrUpdateLayoutForWorkoutType(swimLayout);
 
-                expect(settings.get("layouts").length).to.equal(1);
+                expect(settings.get("layouts").length).to.equal(2);
                 expect(settings.getLayoutForWorkoutType(1).get("pods").length).to.equal(2);
             });
         });
