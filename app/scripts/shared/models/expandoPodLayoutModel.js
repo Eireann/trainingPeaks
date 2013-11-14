@@ -37,7 +37,7 @@ function(
 
         toJSON: function(options)
         {
-            var json = this.constructor.__super__.toJSON.call(this, options);
+            var json = TP.BaseModel.prototype.toJSON.call(this, options);
 
             if(this._podsCollection)
             {
