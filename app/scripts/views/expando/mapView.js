@@ -45,8 +45,9 @@ function (
             var self = this;
 
             this.watchForModelChanges();
-            this.watchForControllerEvents();
-            this.watchForControllerResize();
+            this._watchForStateModelChanges();
+            this._watchForPodResize();
+            this._watchForWindowResize();
             this.$el.addClass("waiting");
             this.$el.removeClass("hidden");
             setImmediate(function () { self.detailDataPromise.then(_.bind(self.onModelFetched, self)); });
@@ -130,7 +131,7 @@ function (
             this.hideHoverMarker();
         },
 
-        watchForControllerEvents: function ()
+        _watchForStateModelChanges: function ()
         {
             this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
             this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
@@ -304,13 +305,20 @@ function (
             }
         },
 
-        watchForControllerResize: function ()
+        _watchForPodResize: function ()
         {
-            $(window).on("resize.expandoMap", _.bind(this._updateMapSize, this));
             this.on("pod:resize", this._updateMapSize, this);
             this.on("close", function ()
             {
                 this.off("pod:resize", this._updateMapSize, this);
+            }, this);
+        },
+
+        _watchForWindowResize: function ()
+        {
+            $(window).on("resize.expandoMap", _.bind(this._updateMapSize, this));
+            this.on("close", function ()
+            {
                 $(window).off("resize.expandoMap");
             }, this);
         },
