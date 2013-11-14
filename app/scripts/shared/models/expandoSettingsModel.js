@@ -78,14 +78,99 @@ function(
                         index: 0,
                         podType: 153, // Map
                         cols: 2
-                    }, {
+                    },
+                    {
                         index: 1,
                         podType: 152, // Graph
                         cols: 2
-                    }, {
+                    },
+                    {
                         index: 2,
                         podType: 108, // Laps & Splits,
                         cols: 2
+                    }
+                ]
+            },
+
+            // bike 
+            {
+                workoutTypeId: 2,
+                pods: [
+                    {
+                        index: 0,
+                        podType: 153, // Map
+                        cols: 2
+                    },
+                    {
+                        index: 1,
+                        podType: 152, // Graph
+                        cols: 2
+                    },
+                    {
+                        index: 2,
+                        podType: 108, // Laps & Splits,
+                        cols: 2
+                    },
+                    {
+                        index: 3,
+                        podType: 101 // power time in zones 
+                    },
+                    {
+                        index: 4,
+                        podType: 111 // power peaks 
+                    }
+                ]
+            },
+
+            // run 
+            {
+                workoutTypeId: 3,
+                pods: [
+                    {
+                        index: 0,
+                        podType: 153, // Map
+                        cols: 2
+                    },
+                    {
+                        index: 1,
+                        podType: 108, // Laps & Splits,
+                        cols: 2
+                    },
+                    {
+                        index: 2,
+                        podType: 122 // speed time in zones 
+                    },
+                    {
+                        index: 3,
+                        podType: 119 // speed peaks 
+                    },
+                    {
+                        index: 4,
+                        podType: 102 // heart rate time in zones 
+                    },
+                    {
+                        index: 5,
+                        podType: 118 // heart rate peaks 
+                    }
+                ]
+            },
+
+            // swim 
+            {
+                workoutTypeId: 1,
+                pods: [
+                    {
+                        index: 0,
+                        podType: 108, // Laps & Splits,
+                        cols: 2
+                    },
+                    {
+                        index: 1,
+                        podType: 102 // heart rate time in zones 
+                    },
+                    {
+                        index: 2,
+                        podType: 118 // heart rate peaks 
                     }
                 ]
             }
@@ -96,34 +181,3 @@ function(
 
     return ExpandoSettingsModel;
 });
-
-/*
-
-[
-    {
-        podType: 153, // Map
-        cols: 2
-    }, {
-        podType: 152, // Graph
-        cols: 2
-    }, {
-        podType: 108, // Laps & Splits,
-        cols: 2
-    }, {
-        podType: 102 // Heart Rate Time In Zones
-    }, {
-        podType: 118 // Heart Rate Peaks
-    }, {
-        podType: 101 // Power Time In Zones
-    }, {
-        podType: 111 // Power Peaks
-    }, {
-        podType: 122 // Speed Time In Zones
-    }, {
-        podType: 119 // Speed Peaks
-    }, {
-        podType: 156, // Scatter Graph
-        cols: 2
-    }
-
-*/
