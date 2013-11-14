@@ -1,11 +1,13 @@
 define(
 [
+    "jquery",
     "underscore",
     "backbone",
     "utilities/workout/fileReader",
     "shared/models/profilePhotoFileData"
 ],
 function(
+    $,
     _,
     Backbone,
     FileReader,

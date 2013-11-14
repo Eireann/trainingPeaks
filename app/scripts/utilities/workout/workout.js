@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "utilities/workout/workoutTypes",
     "utilities/workout/determineCompletedWorkout",
     "utilities/workout/fileReader",
@@ -10,6 +11,7 @@
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance"
 ], function(
+    _,
     workoutTypes,
     determineCompletedWorkout,
     workoutFileReader,

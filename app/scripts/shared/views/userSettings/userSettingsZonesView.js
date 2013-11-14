@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "backbone",
@@ -11,6 +12,7 @@ define(
     "hbs!shared/templates/userSettings/userSettingsZonesTemplate"
 ],
 function(
+    $,
     _,
     TP,
     Backbone,

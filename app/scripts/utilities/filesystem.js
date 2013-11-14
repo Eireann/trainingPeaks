@@ -20,15 +20,15 @@
                         onSuccess(self.temporaryFs);
                     };
 
-                    var type = TEMPORARY;
+                    var type = window.TEMPORARY;
                     var length = 1024 * 1024 * 1024; // 1GB
 
-                    if (webkitRequestFileSystem)
+                    if (window.webkitRequestFileSystem)
                     {
-                        webkitRequestFileSystem(type, length, afterRequestFileSystem, onError);
-                    } else if (requestFileSystem)
+                        window.webkitRequestFileSystem(type, length, afterRequestFileSystem, onError);
+                    } else if (window.requestFileSystem)
                     {
-                        requestFileSystem(type, length, afterRequestFileSystem, onError);
+                        window.requestFileSystem(type, length, afterRequestFileSystem, onError);
                     }
                 } catch(e)
                 {
@@ -72,7 +72,7 @@
             var rawLength = raw.length;
             var array = new Uint8Array(new ArrayBuffer(rawLength));
 
-            for (i = 0; i < rawLength; i++)
+            for (var i = 0; i < rawLength; i++)
             {
                 array[i] = raw.charCodeAt(i);
             }

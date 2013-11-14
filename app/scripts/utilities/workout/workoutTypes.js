@@ -1,6 +1,8 @@
 ﻿define(
-[],
-function ()
+[
+    "underscore"
+],
+function (_)
 {
     var workoutTypesByName =
     {

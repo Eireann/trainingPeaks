@@ -1,7 +1,9 @@
 define([
+    "underscore",
     "TP"
 ],
 function(
+    _,
     TP
 )
 {

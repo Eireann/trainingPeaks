@@ -1,12 +1,13 @@
 define(
 [
+    "jquery",
     "underscore",
     "backbone",
     "backbone.deepmodel",
     "moment",
     "framework/utilities"
 ],
-function(_, Backbone, DeepModel, moment, utils)
+function($, _, Backbone, DeepModel, moment, utils)
 {
 
     var SharedBase =

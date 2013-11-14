@@ -1,6 +1,8 @@
 define(
 [
+    "jquery",
     "underscore",
+    "backbone",
     "TP",
     "framework/ajaxTimezone",
     "framework/ajax402",
@@ -29,7 +31,9 @@ define(
     "flot/jquery.flot.resize",
 ],
 function(
+    $,
     _,
+    Backbone,
     TP,
     initializeAjaxTimezone,
     initializeAjax402,
@@ -67,6 +71,8 @@ function(
             // simple dummy values for testing
             if (typeof apiConfig === "undefined" || typeof window.apiConfig === "undefined")
             {
+                /* global apiConfig: true */
+                /* exported apiConfig */
                 apiConfig =
                 {
                     configuration: 'debug',
@@ -168,9 +174,8 @@ function(
                     {
                         try
                         {
-                            if(Raven)
-                                Raven.captureException({event: event, xhr: xhr});
-                            else if(_rollbar)
+                            /* global  _rollbar: false */
+                            if(_rollbar)
                                 _rollbar.push({ event: event, xhr: xhr });
                         }
                         catch(e)

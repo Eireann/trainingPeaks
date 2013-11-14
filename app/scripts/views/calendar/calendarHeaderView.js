@@ -1,5 +1,7 @@
 define(
 [
+    "underscore",
+    "setImmediate",
     "TP",
     "framework/notYetImplemented",
     "moment",
@@ -8,7 +10,7 @@ define(
     "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/calendarHeader"
 ],
-function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizations, CalendarUtility, calendarHeaderTemplate)
+function(_, setImmediate, TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizations, CalendarUtility, calendarHeaderTemplate)
 {
     var calendarHeaderViewBase = {
 

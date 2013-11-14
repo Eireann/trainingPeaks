@@ -1,5 +1,7 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "layouts/athleteHomeLayout",
     "views/home/athlete/athleteHomeHeader",
@@ -8,6 +10,8 @@
     "views/home/athlete/athleteHomePods"
 ],
 function(
+    $,
+    _,
     TP,
     AthleteHomeLayout,
     AthleteHomeHeaderView,

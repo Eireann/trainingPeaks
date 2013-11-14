@@ -1,5 +1,6 @@
 define(
 [
+    "underscore",
     "TP",
     "framework/chart",
     "utilities/charting/chartColors",
@@ -8,6 +9,7 @@ define(
     "dashboard/views/timeInZonesChartSettings"
 ],
 function(
+    _,
     TP,
     Chart,
     chartColors,

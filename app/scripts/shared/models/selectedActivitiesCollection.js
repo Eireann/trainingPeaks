@@ -1,6 +1,7 @@
 ﻿define(
 [
     "underscore",
+    "backbone",
     "TP",
     "models/workoutModel",
     "shared/models/metricModel",
@@ -8,6 +9,7 @@
 ],
 function (
     _,
+    Backbone,
     TP,
     WorkoutModel,
     MetricModel,

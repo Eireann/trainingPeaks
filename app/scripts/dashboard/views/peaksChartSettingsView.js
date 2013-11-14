@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "jqueryui/spinner",
     "underscore",
     "TP",
@@ -10,6 +11,7 @@ define(
     "hbs!dashboard/templates/peaksChartSettings"
 ],
 function(
+    $,
     spinner,
     _,
     TP,

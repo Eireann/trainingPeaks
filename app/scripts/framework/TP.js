@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "backbone",
     "backbone.deepmodel",
@@ -14,6 +15,7 @@ define(
     "shared/data/tpSharedData"
 ],
 function(
+         $,
          _,
          Backbone,
          BackboneDeepModel,

@@ -1,6 +1,7 @@
 define(
 [
     "underscore",
+    "moment",
     "TP",
     "shared/models/activityModel",
     "shared/models/metricModel",
@@ -12,6 +13,7 @@ define(
 ],
 function(
     _,
+    moment,
     TP,
     ActivityModel,
     MetricModel,

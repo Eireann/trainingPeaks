@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "setImmediate",
     "underscore",
     "TP",
@@ -7,6 +8,7 @@ define(
     "hbs!shared/templates/tabbedLayout"
 ],
 function(
+    $,
     setImmediate,
     _,
     TP,

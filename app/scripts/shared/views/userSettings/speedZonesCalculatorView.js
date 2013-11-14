@@ -1,6 +1,8 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
+    "setImmediate",
     "TP",
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
@@ -10,7 +12,9 @@
     "hbs!shared/templates/userSettings/speedZonesCalculatorTemplate"
 ],
 function(
+    $,
     _,
+    setImmediate,
     TP,
     ZoneCalculatorDefinitions,
     ZoneCalculator,

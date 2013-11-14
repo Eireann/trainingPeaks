@@ -1,8 +1,10 @@
 define(
 [
+    "jquery",
     "utilities/charting/chartColors"
 ],
 function(
+    $,
     chartColors
     )
 {

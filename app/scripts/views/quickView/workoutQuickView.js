@@ -1,7 +1,8 @@
 ﻿define(
 [
-    "setImmediate",
+    "jquery",
     "underscore",
+    "setImmediate",
     "moment",
     "TP",
     "views/quickView/qvMain/qvStickitBindings",
@@ -19,8 +20,9 @@
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function(
-    setImmediate,
+    $,
     _,
+    setImmediate,
     moment,
     TP,
     qvStickitBindings,

@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "TP",
@@ -12,6 +13,7 @@
     "hbs!templates/views/charts/chartTooltip"
 ],
 function (
+    $,
     _,
     setImmediate,
     TP,

@@ -1,10 +1,12 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "hbs!dashboard/templates/chartWorkoutOptions"
 ],
 function(
+    $,
     _,
     TP,
     chartWorkoutOptionsTemplate

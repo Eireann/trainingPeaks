@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "views/userConfirmationView",
@@ -7,7 +8,8 @@ define(
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/quickView/attachmentFileUploadMenu"
 ],
-function(_,
+function($,
+         _,
          TP,
          UserConfirmationView,
          WorkoutFileAttachment,

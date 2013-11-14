@@ -1,9 +1,11 @@
 define(
 [
+    "jquery",
     "underscore",
     "utilities/charting/chartColors"
 ],
 function(
+    $,
     _,
     chartColors
     )

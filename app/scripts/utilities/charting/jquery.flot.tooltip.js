@@ -1,8 +1,10 @@
 define(
 [
+    "jquery"
 ],
 function(
-    )
+    $
+)
 {
 /*
  * jquery.flot.tooltip

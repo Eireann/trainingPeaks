@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "jqueryui/widget",
@@ -17,6 +18,7 @@
     "hbs!templates/views/calendar/library/exerciseLibraryView"
 ],
 function(
+    $,
     _,
     setImmediate,
     jqueryUiWidget,

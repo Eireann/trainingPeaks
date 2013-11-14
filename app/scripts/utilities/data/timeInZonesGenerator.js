@@ -1,7 +1,8 @@
 ﻿define(
 [
+    "underscore"
 ],
-function()
+function(_)
 {
     var getZoneSettingsByWorkoutTypeId = function(zoneSettingName, workoutTypeId)
     {

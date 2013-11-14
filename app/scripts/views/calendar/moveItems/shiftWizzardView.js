@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "moment",
     "jqueryui/datepicker",
     "jqueryui/spinner",
@@ -12,6 +13,7 @@
     "hbs!templates/views/calendar/moveItems/shiftWizzard"
 ],
 function(
+    $,
     moment,
     datepicker,
     spinner,

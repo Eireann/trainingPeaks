@@ -1,11 +1,13 @@
 define(
 [
     "underscore",
+    "setImmediate",
     "TP",
     "jqueryui/draggable"
 ],
 function(
     _,
+    setImmediate,
     TP,
     draggable
     )

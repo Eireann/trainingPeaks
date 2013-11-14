@@ -1,11 +1,13 @@
 define(
 [
+    "jquery",
     "TP",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
     "hbs!expando/templates/expandoPodTileTemplate"
 ],
 function(
+    $,
     TP,
     touchPunch,
     draggable,

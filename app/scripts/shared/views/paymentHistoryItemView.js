@@ -1,9 +1,11 @@
 define(
 [
+    "underscore",
     "TP",
     "hbs!shared/templates/paymentHistoryItemTemplate"
 ],
 function(
+    _,
     TP,
     paymentHistoryItemTemplate
 )

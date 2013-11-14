@@ -1,7 +1,9 @@
 ﻿define(
 [
+    "jquery"
 ],
 function(
+    $
     )
 {
 /*

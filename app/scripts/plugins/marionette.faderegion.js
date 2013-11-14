@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "backbone",
     "backbone.marionette",
     "TP"
 ],
-function(Marionette, TP)
+function(Backbone, Marionette, TP)
 {
     TP.Region.prototype.show = function(view)
     {

@@ -1,11 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
     "TP",
     "./timeInZonesChart",
     "utilities/charting/chartColors"
 ],
-function(_, TP, TimeInZonesChartView, chartColors)
+function(_, setImmediate, TP, TimeInZonesChartView, chartColors)
 {
     return TimeInZonesChartView.extend(
     {

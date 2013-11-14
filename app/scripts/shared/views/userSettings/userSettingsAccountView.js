@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "backbone",
     "shared/views/userSettingsFormView",
@@ -8,6 +9,7 @@
     "hbs!shared/templates/userSettings/userSettingsAccountTemplate"
 ],
 function(
+    _,
     TP,
     Backbone,
     UserSettingsFormView,

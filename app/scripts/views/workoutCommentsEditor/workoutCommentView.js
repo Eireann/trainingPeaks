@@ -1,12 +1,14 @@
 define(
 [
+    "jquery",
+    "setImmediate",
     "TP",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/workoutCommentsEditor/workoutComments",
     "hbs!templates/views/workoutCommentsEditor/editableWorkoutComments"
 ],
-function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
+function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {

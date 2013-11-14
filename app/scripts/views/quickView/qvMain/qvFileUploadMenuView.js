@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "models/workoutFileData",
@@ -10,6 +11,7 @@ define(
     "hbs!templates/views/quickView/workoutFileUploadMenu"
 ],
 function(
+    $,
     _,
     TP,
     WorkoutFileDataModel,

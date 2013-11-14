@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "models/imageData"
 ],
-function(_, ImageData)
+function($, _, ImageData)
 {
     var affiliateUtils =
     {

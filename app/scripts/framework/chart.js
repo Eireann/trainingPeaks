@@ -1,5 +1,7 @@
 define(
 [
+    "jquery",
+    "underscore",
     "backbone.marionette",
     "TP",
     "utilities/charting/jquery.flot.pie",
@@ -7,6 +9,8 @@ define(
     "views/dashboard/chartUtils"
 ],
 function(
+    $,
+    _,
     Marionette,
     TP,
     flotPiePlugin,

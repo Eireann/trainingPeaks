@@ -1,6 +1,8 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
+    "moment",
     "TP",
     "views/pageContainer/primaryContainerView",
     "views/calendar/calendarWeekView",
@@ -9,7 +11,9 @@
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
 function(
+    $,
     _,
+    moment,
     TP,
     PrimaryContainerView,
     CalendarWeekView,

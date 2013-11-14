@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "hbs!templates/views/navigation"
 ],
-function(_, TP, navigationViewTemplate)
+function($, _, TP, navigationViewTemplate)
 {
 
     return TP.ItemView.extend(

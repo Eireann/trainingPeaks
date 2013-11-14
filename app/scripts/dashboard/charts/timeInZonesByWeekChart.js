@@ -1,5 +1,8 @@
 define(
 [
+    "jquery",
+    "underscore",
+    "moment",
     "TP",
     "framework/chart",
     "utilities/charting/jquery.flot.stack",
@@ -10,6 +13,9 @@ define(
     "dashboard/views/timeInZonesChartSettings"
 ],
 function(
+    $,
+    _,
+    moment,
     TP,
     Chart,
     flotStack,

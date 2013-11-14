@@ -1,6 +1,7 @@
 define(
 [
     "underscore",
+    "moment",
     "TP",
     "shared/misc/selection",
     "shared/utilities/calendarUtility",
@@ -10,6 +11,7 @@ define(
 ],
 function(
     _,
+    moment,
     TP,
     Selection,
     CalendarUtility,

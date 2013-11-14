@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "jqueryui/draggable",
     "jqueryui/resizable",
@@ -7,6 +8,7 @@ define(
     "TP"
 ],
 function(
+    $,
     _,
     jqueryDraggable,
     jqueryResizable,

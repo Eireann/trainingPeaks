@@ -1,5 +1,7 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
     "setImmediate",
     "TP",
     "framework/filteredSubCollection",
@@ -12,6 +14,8 @@
     "expando/models/expandoStateModel"
 ],
 function(
+    $,
+    _,
     setImmediate,
     TP,
     FilteredSubCollection,

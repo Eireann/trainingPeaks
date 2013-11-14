@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "leaflet",
     "leafletGoogleTiles",
@@ -7,8 +8,9 @@
     "utilities/charting/chartColors"
 ],
 function(
+    _,
     TP,
-    Leaflet,
+    L,
     LeafletGoogleTiles,
     LeafletIcons,
     chartColors

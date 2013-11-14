@@ -1,11 +1,13 @@
 define(
 [
+    "setImmediate",
     "underscore",
     "TP",
     "shared/utilities/formUtility",
     "hbs!quickview/metric/templates/metricQVItemTemplate"
 ],
 function(
+    setImmediate,
     _,
     TP,
     FormUtility,

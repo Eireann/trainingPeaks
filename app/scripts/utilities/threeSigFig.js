@@ -1,5 +1,7 @@
-define([],
-function()
+define([
+    "underscore"
+],
+function(_)
 {
     var isNumeric = function(value)
     {

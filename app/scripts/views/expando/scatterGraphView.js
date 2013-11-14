@@ -1,6 +1,8 @@
 define(
 [
+    "jquery",
     "underscore",
+    "setImmediate",
     "TP",
     "models/workoutStatsForRange",
     "utilities/charting/flotOptions",
@@ -16,7 +18,9 @@ define(
     "hbs!templates/views/expando/scatterGraphTemplate"
 ],
 function(
+    $,
     _,
+    setImmediate,
     TP,
     WorkoutStatsForRange,
     defaultFlotOptions,

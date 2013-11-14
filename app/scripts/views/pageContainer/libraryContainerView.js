@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "framework/notYetImplemented"
 ],
-function(_, TP, notYetImplemented)
+function($, _, TP, notYetImplemented)
 {
     return TP.Layout.extend(
     {

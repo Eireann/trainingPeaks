@@ -1,12 +1,13 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "controllers/expandoController",
     "views/userConfirmationView",
     "hbs!templates/views/expando/closeExpandoWithoutSavingTemplate",
 ],
-function (_, TP, ExpandoController, UserConfirmationView, closeExpandoWithoutSavingTemplate)
+function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithoutSavingTemplate)
 {
     var workoutQVExpand =
     {

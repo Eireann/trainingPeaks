@@ -1,9 +1,10 @@
 define(
 [
+    "underscore",
     "TP",
     "models/library/exerciseLibrary"
 ],
-function(TP, ExerciseLibraryModel)
+function(_, TP, ExerciseLibraryModel)
 {
     return TP.Collection.extend(
     {

@@ -1,10 +1,12 @@
 define(
 [
+    "underscore",
     "TP",
     "shared/views/recurringPaymentsItemView",
     "hbs!shared/templates/recurringPaymentsTemplate"
 ],
 function(
+    _,
     TP,
     RecurringPaymentsItemView,
     recurringPaymentsTemplate

@@ -1,6 +1,8 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
+    "setImmediate",
     "TP",
     "jquerySelectBox",
     "shared/views/selectableLayout",
@@ -13,7 +15,9 @@
     "hbs!shared/templates/userSettings/zonesCalculatorLayout"
 ],
 function(
+    $,
     _,
+    setImmediate,
     TP,
     jquerySelectBox,
     SelectableLayout,

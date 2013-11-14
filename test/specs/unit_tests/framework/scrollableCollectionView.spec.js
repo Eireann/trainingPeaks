@@ -26,10 +26,10 @@ define(
 
         // pending
         xit("Should scroll to the correct model with scrollToModel (TODO: fix this test?)", null, function() {
-            var collection = new CalendarCollection([new TP.Model()], {
+            var collection = null, /*new CalendarCollection([new TP.Model()], {
                     startDate: moment().day(0),
                     endDate: moment().day(7).add("weeks", 2)
-                }),
+                }),*/
                 view = new ScrollableCollectionView({collection: collection});
             sinon.stub(collection, "requestWorkouts").returns(new $.Deferred());
             collection.prepareNext(3);

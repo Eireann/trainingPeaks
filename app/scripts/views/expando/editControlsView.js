@@ -1,11 +1,13 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "views/userConfirmationView",
     "hbs!templates/views/expando/unableToSaveEditsTemplate",
     "hbs!templates/views/expando/editControlsTemplate"
 ],
 function(
+    _,
     TP,
     UserConfirmationView,
     unableToSaveEditsTemplate,

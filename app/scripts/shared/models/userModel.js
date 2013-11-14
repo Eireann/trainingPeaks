@@ -1,5 +1,7 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
     "backbone",
     "TP",
     "utilities/localStorageUtils",
@@ -10,6 +12,8 @@
     "shared/models/paymentHistoryCollection"
 ],
 function(
+    $,
+    _,
     Backbone,
     TP,
     localStorageUtils,

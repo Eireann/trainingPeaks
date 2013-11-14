@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "jqueryui/datepicker",
     "jqueryui/spinner",
     "jquerySelectBox",
@@ -11,7 +12,7 @@
     "./dashboardHeaderDatePicker",
     "hbs!templates/views/dashboard/dashboardHeader"
 ],
-function (datepicker, spinner, jquerySelectBox, _, TP, notYetImplemented, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
+function ($, datepicker, spinner, jquerySelectBox, _, TP, notYetImplemented, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
 {
     var DashboardHeaderView = TP.ItemView.extend(
     {

@@ -1,5 +1,7 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
     "moment",
     "setImmediate",
     "TP",
@@ -7,7 +9,7 @@
     "views/weekSummary/weekSummaryView",
     "hbs!templates/views/calendar/calendarWeek"
 ],
-function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWeek)
+function($, _, moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWeek)
 {
     return TP.CompositeView.extend(
     {

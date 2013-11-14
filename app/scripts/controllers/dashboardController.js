@@ -1,5 +1,7 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "controllers/pageContainerController",
     "layouts/dashboardLayout",
@@ -9,6 +11,8 @@
     "framework/dataManager"
 ],
 function(
+    $,
+    _,
     TP,
     PageContainerController,
     DashboardLayout,

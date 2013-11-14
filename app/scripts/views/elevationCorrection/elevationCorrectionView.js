@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "models/elevationCorrection",
@@ -9,7 +10,7 @@
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conversion, flotElevationTooltip, elevationCorrectionTemplate)
+function ($, _, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conversion, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {

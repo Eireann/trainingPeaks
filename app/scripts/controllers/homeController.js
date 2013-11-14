@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "layouts/homeLayout",
     "views/home/defaultHome",
@@ -7,6 +8,7 @@
     "controllers/athleteHomeController"
 ],
 function(
+    _,
     TP,
     HomeLayout,
     DefaultHomeView,

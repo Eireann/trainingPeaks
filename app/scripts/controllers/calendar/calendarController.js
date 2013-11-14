@@ -3,6 +3,7 @@
 
 define(
 [
+    "jquery",
     "underscore",
     "moment",
     "setImmediate",
@@ -20,6 +21,7 @@ define(
     "views/calendar/library/libraryView"
 ],
 function(
+    $,
     _,
     moment,
     setImmediate,
@@ -169,27 +171,6 @@ function(
         },
 
         // **** LIBRARY ****
-
-        createNewWorkoutFromExerciseLibraryItem: function (exerciseLibraryId, exerciseLibraryItemId, workoutDate)
-        {
-            var exerciseLibraryItem = this.libraryCollections.exerciseLibraries.get(exerciseLibraryId).exercises.get(exerciseLibraryItemId);
-            var workout = new WorkoutModel(
-            {
-                athleteId: theMarsApp.user.get("userId"),
-                workoutDay: workoutDate,
-                title: exerciseLibraryItem.get("itemName"),
-                workoutTypeValueId: exerciseLibraryItem.get("workoutTypeId")
-            });
-
-            var attributesToCopy = ["caloriesPlanned", "description", "distancePlanned", "elevationGainPlanned", "energyPlanned", "ifPlanned", "totalTimePlanned", "tssPlanned", "velocityPlanned"];
-            workout.set(_.pick(exerciseLibraryItem, attributesToCopy));
-
-            // then update it with the full workout attributes from library
-            var addFromLibraryCommand = new AddWorkoutFromExerciseLibrary({}, { workout: workout, exerciseLibraryItem: exerciseLibraryItem });
-            addFromLibraryCommand.execute();
-
-            return workout;
-        },
 
         setupLibrary: function()
         {

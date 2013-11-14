@@ -21,7 +21,7 @@ function(
         if (speed <= minimumPace)
             return doFormat ? "99:59:59.99" : almostOneHundredHoursAsMinutes;
 
-        unitSystem = theMarsApp.user.get("units");
+        var unitSystem = theMarsApp.user.get("units");
 
         // paceInMinutes = 1 / (speed * conversionFactor)
         // speed = 1 / (paceInMinutes * conversionFactor)

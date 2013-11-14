@@ -1,7 +1,9 @@
 define(
 [
+    "jquery",
     "underscore",
     "moment",
+    "backbone",
     "TP",
     "shared/utilities/calendarUtility",
     "models/workoutsCollection",
@@ -10,8 +12,10 @@ define(
     "models/calendar/calendarDay",
 ],
 function(
+    $,
     _,
     moment,
+    Backbone,
     TP,
     CalendarUtility,
     WorkoutsCollection,

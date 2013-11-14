@@ -1,5 +1,8 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
+    "moment",
     "TP",
     "framework/notYetImplemented",
     "models/workoutModel",
@@ -13,6 +16,9 @@
     "hbs!templates/views/calendar/newItemView"
 ],
 function(
+    $,
+    _,
+    moment,
     TP,
     notYetImplemented,
     WorkoutModel,

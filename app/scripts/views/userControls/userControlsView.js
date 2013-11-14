@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "views/userControls/coachAndAffiliateCustomizations",
@@ -7,7 +8,7 @@
     "utilities/athlete/userTypes",
     "hbs!templates/views/userControls/userControls"
 ],
-function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, userControlsTemplate)
+function($, _, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, userControlsTemplate)
 {
     var userControlsViewBase =
     {

@@ -1,6 +1,8 @@
 ﻿define(
-[],
-function()
+[
+    "underscore"
+],
+function(_)
 {
     return {
         updatePosition: function($tooltipEl, flotChart, bottomLimit, rightLimit)

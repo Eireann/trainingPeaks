@@ -1,5 +1,8 @@
 define(
 [
+    "underscore",
+    "moment",
+    "setImmediate",
     "jqueryui/datepicker",
     "TP",
     "utilities/trainingPlan/trainingPlan",
@@ -7,6 +10,9 @@ define(
     "hbs!templates/views/calendar/library/trainingPlanDate"
 ],
 function(
+    _,
+    moment,
+    setImmediate,
     datepicker,
     TP,
     trainingPlanUtility,

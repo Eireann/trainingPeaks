@@ -1,13 +1,15 @@
 ﻿define(
 [
-    "setImmediate",
+    "jquery",
     "underscore",
+    "setImmediate",
     "TP",
     "hbs!templates/views/home/scrollableColumn"
 ],
 function(
-    setImmediate,
+    $,
     _,
+    setImmediate,
     TP,
     scrollableColumnTemplate
     )

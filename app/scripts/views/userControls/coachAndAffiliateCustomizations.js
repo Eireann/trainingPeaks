@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "utilities/color",
     "utilities/affiliates"
 ],
-function(_, colorUtils, affiliateUtils)
+function($, _, colorUtils, affiliateUtils)
 {
     var coachAndAffiliateCustomizations =
     {

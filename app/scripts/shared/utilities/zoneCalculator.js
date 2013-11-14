@@ -1,10 +1,12 @@
 define(
 [
+    "jquery",
     "underscore",
     "backbone",
     "TP"
 ],
 function(
+    $,
     _,
     Backbone,
     TP

@@ -1,11 +1,13 @@
 define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "./trainingPlanDetailsView",
     "jqueryui/draggable",
     "hbs!templates/views/calendar/library/trainingPlanItemView"
 ],
-function(TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
+function($, _, TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
 {
     return TP.ItemView.extend(
     {

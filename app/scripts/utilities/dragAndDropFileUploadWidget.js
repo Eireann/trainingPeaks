@@ -1,11 +1,13 @@
 define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "models/workoutMultiFileData",
     "models/workoutModel",
     "utilities/conversion/conversion"
 ],
-function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
+function($, _, TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
 {
     var initialized = false;
     var uploadInProgress = false;

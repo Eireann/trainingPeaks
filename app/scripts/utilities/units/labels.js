@@ -1,10 +1,11 @@
 define(
 [
+    "underscore",
     "utilities/units/constants",
     "utilities/workout/layoutFormatter",
     "utilities/workout/workoutTypes"
 ],
-function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
+function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
 {
 
     var unitsHash =
