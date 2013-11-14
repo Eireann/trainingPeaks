@@ -21,7 +21,6 @@ function (userTypeUtilities)
     
         if (window.ga !== "undefined" && typeof window.ga === "function")
         {
-            console.log("logging");            
             window.ga.apply(this, arguments); 
         }
     };
