@@ -28,4 +28,3 @@ node_modules/grunt-mocha/node_modules/grunt-lib-phantomjs/node_modules/phantomjs
 
 # ignore npm binaries
 node_modules/**/.bin
-*.cmd
