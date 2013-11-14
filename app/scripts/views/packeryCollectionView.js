@@ -115,7 +115,6 @@ function(
                 if(view && view.model)
                 {
                     view.model.set("index", index); // silent is not necessary anymore
-                    //view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
                 }
             });
             this.trigger("reorder");
