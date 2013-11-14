@@ -34,7 +34,7 @@ function(
 {
     return TP.ItemView.extend(
     {
-        className: "graphContainer expandoGraphPod",
+        className: "graphContainer expandoScatterGraphPod",
 
         template:
         {
@@ -120,6 +120,10 @@ function(
             }
 
             var self = this;
+            if (!this.allSeries)
+            {
+                this.allSeries = this._getGraphData().getSeries();
+            }
 
             this._getGraphData().workoutTypeValueId = this.model.get("workoutTypeValueId");
             this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
@@ -150,7 +154,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(rangesSeries, rangesSeries, flotItem.series.name, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(self.allSeries, rangesSeries, flotItem.series.name, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
