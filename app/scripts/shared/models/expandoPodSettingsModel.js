@@ -10,10 +10,10 @@ function(
 
         defaults: 
         {
-            cols: 1,
+            heightInRows: 1,
             index: 0,
             podType: 0,
-            rows: 1
+            widthInColumns: 1
         }
     });
 

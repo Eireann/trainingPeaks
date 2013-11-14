@@ -19,8 +19,8 @@ function(
         attributes: function()
         {
             return {
-                "data-rows": this.model.get("rows") || 1,
-                "data-cols": this.model.get("cols") || 1
+                "data-rows": this.model.get("heightInRows") || 1,
+                "data-cols": this.model.get("widthInColumns") || 1
             };
         },
 
@@ -75,8 +75,8 @@ function(
 
         _updateRowsAndCols: function()
         {
-            this.model.set("rows", parseInt(this.$el.data("rows"), 10));
-            this.model.set("cols", parseInt(this.$el.data("cols"), 10));
+            this.model.set("heightInRows", parseInt(this.$el.data("rows"), 10));
+            this.model.set("widthInColumns", parseInt(this.$el.data("cols"), 10));
         },
 
         _onChildRender: function()
