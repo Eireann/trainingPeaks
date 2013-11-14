@@ -55,6 +55,7 @@ function(
             timeZone: null,
             units: 2,
             userId: 0,
+            userIdentifierHash: null,
             userName: null,
             zipCode: null,
             zuoraAccountNumber: null,

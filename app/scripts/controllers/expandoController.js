@@ -209,7 +209,7 @@ function(
                 this.stopListening(this.expandoPodLayout.getPodsCollection());
             }
 
-            this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayout(this.model.get("workoutTypeValueId"));
+            this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayoutForWorkoutType(this.model.get("workoutTypeValueId"));
 
             var data =
             {
@@ -249,7 +249,7 @@ function(
         _savePodLayout: function()
         {
             this.expandoPodLayout.getPodsCollection().sort();
-            theMarsApp.user.getExpandoSettings().addOrUpdateLayout(this.expandoPodLayout);
+            theMarsApp.user.getExpandoSettings().addOrUpdateLayoutForWorkoutType(this.expandoPodLayout);
             theMarsApp.user.getExpandoSettings().save();
         }
 

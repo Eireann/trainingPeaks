@@ -16,7 +16,7 @@ function(
         var layout;
         beforeEach(function()
         {
-            layout = new ExpandoPodLayout({ layoutId: 8, pods: [{ index: 1, podType: 108 }, { index: 0, podType: 152 }] });
+            layout = new ExpandoPodLayout({ workoutTypeId: 8, pods: [{ index: 1, podType: 108 }, { index: 0, podType: 152 }] });
         });
 
         describe(".getPodsCollection", function()
@@ -36,7 +36,7 @@ function(
             it("Should behave like the default model.toJSON if a collection has not been created", function()
             {
                 var json = layout.toJSON();
-                expect(json.layoutId).to.equal(8);
+                expect(json.workoutTypeId).to.equal(8);
                 expect(json.pods.length).to.equal(2);
             });
 
@@ -45,7 +45,7 @@ function(
                 var collection = layout.getPodsCollection();
                 collection.add({ index: 2, podType: 150 });
                 var json = layout.toJSON();
-                expect(json.layoutId).to.equal(8);
+                expect(json.workoutTypeId).to.equal(8);
                 expect(json.pods.length).to.equal(3);
             });
         });

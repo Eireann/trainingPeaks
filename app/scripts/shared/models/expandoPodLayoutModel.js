@@ -14,7 +14,7 @@ function(
 
         defaults: 
         {
-            layoutId: 0,
+            workoutTypeId: 0,
             pods: []            
         },
 

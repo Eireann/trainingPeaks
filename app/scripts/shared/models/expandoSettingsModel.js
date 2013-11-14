@@ -29,42 +29,42 @@ function(
             return theMarsApp.apiRoot + "/" + expandoSettingsUrl;
         },
 
-        getLayout: function(layoutId)
+        getLayoutForWorkoutType: function(workoutTypeId)
         {
             var layout = _.find(this.get("layouts"), function(layout)
             {
-                return layout.layoutId === layoutId; 
+                return layout.workoutTypeId === workoutTypeId; 
             });
 
-            return layout ? new ExpandoPodLayoutModel(TP.utils.deepClone(layout)) : new ExpandoPodLayoutModel(this._getDefaultLayout(layoutId));
+            return layout ? new ExpandoPodLayoutModel(TP.utils.deepClone(layout)) : new ExpandoPodLayoutModel(this._getDefaultLayoutForWorkoutType(workoutTypeId));
         },
 
-        addOrUpdateLayout: function(layoutToUpdate)
+        addOrUpdateLayoutForWorkoutType: function(layoutToUpdate)
         {
             var layouts = _.filter(this.get("layouts"), function(layout)
             {
-                return layout.layoutId !== layoutToUpdate.get("layoutId");
+                return layout.workoutTypeId !== layoutToUpdate.get("workoutTypeId");
             });
 
             layouts.push(layoutToUpdate.toJSON());
             this.set("layouts", layouts);
         },
 
-        _getDefaultLayout: function(layoutId)
+        _getDefaultLayoutForWorkoutType: function(workoutTypeId)
         {
             var layout = _.find(this._defaultLayouts, function(layout)
             {
-                return layout.layoutId === layoutId; 
+                return layout.workoutTypeId === workoutTypeId; 
             });
 
             if(!layout)
             {
-                layout = this._getDefaultLayout(0);
+                layout = this._getDefaultLayoutForWorkoutType(0);
             }
 
             // return a clone, so we don't modify our default pods by reference
             var clonedLayout = TP.utils.deepClone(layout);
-            clonedLayout.layoutId = layoutId;
+            clonedLayout.workoutTypeId = workoutTypeId;
             return clonedLayout;
         },
 
@@ -72,7 +72,7 @@ function(
 
             // default for all sport types
             {
-                layoutId: 0,
+                workoutTypeId: 0,
                 pods: [
                     {
                         index: 0,
