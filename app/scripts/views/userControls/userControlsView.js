@@ -46,9 +46,7 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
 
         onUpgradeClicked: function ()
         {
-            var userType = this.model.getAccountSettings().get("userType");
-            var upgradeURL = userType === 5 ? theMarsApp.apiConfig.coachUpgradeURL : theMarsApp.apiConfig.upgradeURL;
-            window.open(upgradeURL.replace("http:","https:"), '_blank');
+            theMarsApp.featureAuthorizer.showUpgradeMessage();
         }
 
     };

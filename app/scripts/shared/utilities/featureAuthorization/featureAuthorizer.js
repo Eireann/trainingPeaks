@@ -27,14 +27,17 @@ function(
          )
 {
 
+    function Feature(options, callback) {
+        callback.options = options;
+        return callback;
+    }
+
     function FeatureAuthorizer(user, userAccessRights)
     {
         this.user = user;
         this.userAccessRights = userAccessRights;
     }
    
-    _.extend(FeatureAuthorizer.prototype, Backbone.Events);
-
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
@@ -43,7 +46,7 @@ function(
             attributes: { targetDate: date } // the date to try to save to
             options: none
             */
-            SaveWorkoutToDate: function(user, userAccess, attributes, options)
+            SaveWorkoutToDate: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.targetDate)
                 {
@@ -62,24 +65,24 @@ function(
                 {
                     return true;
                 }
-            },
+            }),
 
             /*
             attributes: none
             options: none
             */
-            ShiftWorkouts: function(user, userAccess, attributes, options)
+            ShiftWorkouts: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
                 var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
                 var currentAthleteType = user.getAthleteDetails().get("userType");
                 return _.contains(allowedUserTypes, currentAthleteType);
-            },
+            }),
 
             /*
             attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
             options: none 
             */
-            ViewPod: function(user, userAccess, attributes, options)
+            ViewPod: Feature({}, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.podTypeId)
                 {
@@ -90,13 +93,13 @@ function(
                 var viewablePods = userAccess.getStringList(accessRights.ids.CanViewPods);
 
                 return _.contains(viewablePods, podType.podAccessString) || podTypes.getDefaultValue(podType, "ViewPod");
-            },
+            }),
 
             /*
             attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
             options: none 
             */
-            UsePod: function(user, userAccess, attributes, options)
+            UsePod: Feature({ slideId: "enhanced-analysis" }, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.podTypeId)
                 {
@@ -105,45 +108,46 @@ function(
 
                 var podType = podTypes.findById(attributes.podTypeId);
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
+
                 return _.contains(useablePods, podType.podAccessString) || podTypes.getDefaultValue(podType, "UsePod");
-            },
+            }),
 
             /*
             attributes: none
             options: none 
             */
-            ExpandoDataEditing: function(user, userAccess, attributes, options)
+            ExpandoDataEditing: Feature({ slideId: "data-editing" }, function(user, userAccess, attributes, options)
             {   
                 var podType = podTypes.findByAccessName("expando_DataEditing");
                 return this.features.UsePod(user, userAccess, { podTypeId: podType.podId }, options);
-            },
+            }),
 
             /*
             attributes: none
             options: none 
             */
-            ElevationCorrection: function(user, userAccess, attributes, options)
+            ElevationCorrection: Feature({ slideId: "elevation-correction" }, function(user, userAccess, attributes, options)
             {   
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
                 return _.contains(useablePods, "journal_GroundControl");
-            },
+            }),
 
 
             /*
             attributes: none
             options: none 
             */
-            ViewGraphRanges: function(user, userAccess, attributes, options)
+            ViewGraphRanges: Feature({ slideId: "map-and-graph" }, function(user, userAccess, attributes, options)
             {   
                 var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
                 return _.contains(useablePods, "view_Ranges");
-            },
+            }),
 
             /*
             attributes: { collection: libraryExercisesCollection } // collection to add to
             options: none 
             */
-            AddWorkoutTemplateToLibrary: function(user, userAccess, attributes, options)
+            AddWorkoutTemplateToLibrary: Feature({}, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.collection)
                 {
@@ -156,7 +160,7 @@ function(
                 });
 
                 return _.result(filteredCollection, "length") < userAccess.getNumber(accessRights.ids.MaximumWorkoutTemplatesInOwnedLibrary);
-            }
+            })
 
         },
 
@@ -185,18 +189,20 @@ function(
             }
             else
             {
-                this.showUpgradeMessage(); 
+                this.showUpgradeMessage(_.extend({}, featureChecker.options, options));
             }
         },
 
-        showUpgradeMessage: function(onClose)
+        showUpgradeMessage: function(options)
         {
+            options = options || {};
+
             if(!this.upgradeView || this.upgradeView.isClosed)
             {
-                this.upgradeView = new UserUpgradeView();
+                this.upgradeView = new UserUpgradeView(options);
                 this.upgradeView.render();
 
-                this.upgradeView.once("close", onClose);
+                if(options.onClose) this.upgradeView.once("close", options.onClose);
             }
         }
 
