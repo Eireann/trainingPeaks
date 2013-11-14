@@ -83,60 +83,50 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             var toolTipSeries = [];
             var lowerCaseAxisName = xAxisType.toLowerCase();
 
-            if(hoveredSeriesName === "averageSeries")
+            if(xAxisType === "RightPower" && powerSeriesEnabled)
             {
-                toolTipData.title = "Average";
-                toolTipData.x.label = xAxisType;
-
-                toolTipData.y.label = hoveredSeries.label;
-
-                if(powerSeriesEnabled)
+                var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
+                if(!_.isEmpty(data))
                 {
-                    if(xAxisType === "RightPower")
-                    {
-                        toolTipData.x.value = hoveredSeries.data[0][0];
-                        toolTipData.x.units = "units";
-                    }
-                    else
-                    {
-                        toolTipData.y.value = hoveredSeries.data[0][1];
-                        toolTipData.y.units = "units";
-                    }
-                }
-                else
-                {
-                    toolTipData.x.value = hoveredSeries.data[0][0];
-                    toolTipData.x.units = "units";
-                    toolTipData.y.value = hoveredSeries.data[0][1];
-                    toolTipData.y.units = "units";
+                    toolTipData.x.label = data.label;
+                    toolTipData.x.value = data.value;
+                    toolTipData.x.units = data.units;
                 }
             }
             else
             {
-                if(xAxisType === "RightPower" && powerSeriesEnabled)
-                {
-                    var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
-                    if(!_.isEmpty(data))
-                    {
-                        toolTipData.x.label = data.label;
-                        toolTipData.x.value = data.value;
-                        toolTipData.x.units = data.units;
-                    }
-                }
-                else
-                {
-                    toolTipData.x.label = xAxisType;
-                    toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
-                    toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
-                }
-
-                toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
-
-                toolTipData.y.label = toolTipSeries[0].label;
-                toolTipData.y.value = toolTipSeries[0].value;
-                toolTipData.y.units = toolTipSeries[0].units;
+                toolTipData.x.label = xAxisType;
+                toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
+                toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
             }
 
+            toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
+
+            toolTipData.y.label = toolTipSeries[0].label;
+            toolTipData.y.value = toolTipSeries[0].value;
+            toolTipData.y.units = toolTipSeries[0].units;
+
+            if(hoveredSeriesName === "averageSeries")
+            {
+                toolTipData.title = "Average";
+                var rightPowerPercentage;
+                var leftPowerPercentage;
+
+                if(xAxisType === "RightPower" && powerSeriesEnabled)
+                {
+                    leftPowerPercentage = (100 - xAxisOffset).toFixed(1);
+                    rightPowerPercentage = xAxisOffset.toFixed(1);
+                    toolTipData.x.value = leftPowerPercentage + "% / " + rightPowerPercentage + "%";
+                    toolTipData.x.units = "";
+                }
+                if(hoveredSeries.label === "RightPower" && powerSeriesEnabled)
+                {
+                    leftPowerPercentage = (100 - hoveredSeries.data[hoveredIndex][1]).toFixed(1);
+                    rightPowerPercentage = hoveredSeries.data[hoveredIndex][1].toFixed(1);
+                    toolTipData.y.value = leftPowerPercentage + "% / " + rightPowerPercentage + "%";
+                    toolTipData.y.units = "";
+                }
+            }
 
             return flotScatterGraphToolTipTemplate(toolTipData);
         },

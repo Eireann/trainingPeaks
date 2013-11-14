@@ -297,34 +297,11 @@
         display:inline-block;
     }
 
-    .Cadence.current
-    {
-        label
-        {
-            color: $clrCadence;
-        }
-    }
-
-    .HeartRate.current
-    {
-        label
-        {
-            color: $clrHeartRate;
-        }
-    }
-
-    .Power.current
-    {
-        label
-        {
-            color: $clrPower;
-        }
-    }
 
     .withPower
     {
-       .RightPower
-       {
+        .RightPower
+        {
             .value
             {
                 width: auto;
@@ -335,46 +312,89 @@
             {
                 display: none;
             }
-       }
-   }
-
-    .RightPower.current
-    {
-        label
-        {
-            color: $clrRightPower;
         }
     }
 
-    .Speed.current, .Pace.current
+    .current
     {
-        label
+        &.Cadence
         {
-            color: $clrSpeed;
+            label
+            {
+                color: $clrCadence;
+            }
         }
-    }
 
-    .Elevation.current
-    {
-        label
+        &.HeartRate
         {
-            color: $clrElevation;
+            label
+            {
+                color: $clrHeartRate;
+            }
         }
-    }
 
-    .Temperature.current
-    {
-        label
+        &.Power
         {
-            color: $clrTemperature;
+            label
+            {
+                color: $clrPower;
+            }
         }
-    }
 
-    .Torque.current
-    {
-        label
+        &.RightPower
         {
-            color: $clrTorque;
+            label
+            {
+                color: $clrRightPower;
+            }
+        }
+
+        &.Speed, &.Pace
+        {
+            label
+            {
+                color: $clrSpeed;
+            }
+        }
+
+        &.Elevation
+        {
+            label
+            {
+                color: $clrElevation;
+            }
+        }
+
+        &.Temperature
+        {
+            label
+            {
+                color: $clrTemperature;
+            }
+        }
+
+        &.Torque
+        {
+            label
+            {
+                color: $clrTorque;
+            }
+        }
+
+        &.Distance
+        {
+            label
+            {
+                color: $clrDistance;
+            }
+        }
+
+        &.Time
+        {
+            label
+            {
+                color: $clrTime;
+            }
         }
     }
 }

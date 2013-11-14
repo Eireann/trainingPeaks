@@ -1,12 +1,13 @@
 {{#hoverBox this right}}
 <div class="details">
     <div class="row">
-        <label>{{x.label}}</label>
+        <label class="time">{{title}}</label>
+    </div>
+    <div class="row current {{x.label}}">
         <label class="value">{{x.value}}</label>
         <label class="units">{{x.units}}</label>
     </div>
-    <div class="row">
-        <label>{{y.label}}</label>
+    <div class="row current {{y.label}}">
         <label class="value">{{y.value}}</label>
         <label class="units">{{y.units}}</label>
     </div>
