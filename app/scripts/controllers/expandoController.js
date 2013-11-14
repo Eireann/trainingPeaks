@@ -241,7 +241,6 @@ function(
 
             // save on reorder, or when a pod is added or removed, or when cols or rows attribute changes
             this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(_.debounce(this._savePodLayout, 500), this));
-            //this.listenTo(this.views.packeryView, "reorder", _.bind(this._savePodLayout, this));
 
             this.layout.packeryRegion.show(this.views.packeryView);
         },
