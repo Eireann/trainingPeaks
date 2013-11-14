@@ -27,4 +27,4 @@ scratch.txt
 node_modules/grunt-mocha/node_modules/grunt-lib-phantomjs/node_modules/phantomjs/lib/phantom
 
 # ignore npm binaries
-node_modules/**/.bin
+*.cmd
