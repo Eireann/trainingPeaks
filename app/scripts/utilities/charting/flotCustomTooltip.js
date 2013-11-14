@@ -1,4 +1,4 @@
-﻿define(
+define(
 [
     "utilities/datetime/format",
     "utilities/conversion/conversion",
@@ -76,40 +76,67 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             var hoveredSeries = _.find(enabledDataSeries, function(s) { return s.name === hoveredSeriesName; });
             var toolTipData =
             {
+                title: "",
                 x: {},
                 y: {}
             };
             var toolTipSeries = [];
-            var lowerCaseAxisName = axisType.toLowerCase();
-            var avg = "";
+            var lowerCaseAxisName = xAxisType.toLowerCase();
 
             if(hoveredSeriesName === "averageSeries")
             {
-                avg = "Avg. ";
-            }
+                toolTipData.title = "Average";
+                toolTipData.x.label = xAxisType;
 
-            if(xAxisType === "RightPower" && powerSeriesEnabled)
-            {
-                var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
-                if(!_.isEmpty(data))
+                toolTipData.y.label = hoveredSeries.label;
+
+                if(powerSeriesEnabled)
                 {
-                    toolTipData.x.label = data.label;
-                    toolTipData.x.value = data.value;
-                    toolTipData.x.units = data.units;
+                    if(xAxisType === "RightPower")
+                    {
+                        toolTipData.x.value = hoveredSeries.data[0][0];
+                        toolTipData.x.units = "units";
+                    }
+                    else
+                    {
+                        toolTipData.y.value = hoveredSeries.data[0][1];
+                        toolTipData.y.units = "units";
+                    }
+                }
+                else
+                {
+                    toolTipData.x.value = hoveredSeries.data[0][0];
+                    toolTipData.x.units = "units";
+                    toolTipData.y.value = hoveredSeries.data[0][1];
+                    toolTipData.y.units = "units";
                 }
             }
             else
             {
-                toolTipData.x.label = xAxisType;
-                toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
-                toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
+                if(xAxisType === "RightPower" && powerSeriesEnabled)
+                {
+                    var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
+                    if(!_.isEmpty(data))
+                    {
+                        toolTipData.x.label = data.label;
+                        toolTipData.x.value = data.value;
+                        toolTipData.x.units = data.units;
+                    }
+                }
+                else
+                {
+                    toolTipData.x.label = xAxisType;
+                    toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
+                    toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
+                }
+
+                toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
+
+                toolTipData.y.label = toolTipSeries[0].label;
+                toolTipData.y.value = toolTipSeries[0].value;
+                toolTipData.y.units = toolTipSeries[0].units;
             }
 
-            toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
-
-            toolTipData.y.label = avg + toolTipSeries[0].label;
-            toolTipData.y.value = toolTipSeries[0].value;
-            toolTipData.y.units = toolTipSeries[0].units;
 
             return flotScatterGraphToolTipTemplate(toolTipData);
         },

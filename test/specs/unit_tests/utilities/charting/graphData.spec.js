@@ -89,7 +89,6 @@ function(DataParser, GraphData, testData)
             it("returns elevation info for a given range based on x1 and x2 milliseconds offset into the series", function()
             {
                 var minValue = graphData.getMinimumForAxis("Elevation", graphData.dataByAxisAndChannel["time"], graphData.elevationInfo, 0, 3600000);
-                console.log(minValue);
                 expect(minValue).to.equal(minElevationOnRange);
             });
 

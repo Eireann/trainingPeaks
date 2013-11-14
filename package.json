@@ -37,15 +37,14 @@
     "grunt-contrib-uglify": "git+https://github.com/TrainingPeaks/grunt-contrib-uglify.git#source-url",
     "grunt-istanbul": "git+https://github.com/taichi/grunt-istanbul.git",
     "grunt-mocha": "git+https://github.com/TrainingPeaks/grunt-mocha.git",
-    "grunt-lib-contrib": "~0.6.1",
     "grunt-webfont": "~0.1.9",
-    "grunt-lodash": "~0.3.0",
     "grunt-targethtml": "~0.2.6",
     "bower": "~1.2.7",
     "grunt-bower-requirejs": "~0.7.1",
     "mocha-teamcity-reporter": "git+https://github.com/travisjeffery/mocha-teamcity-reporter.git",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-compass": "~0.6.0",
-    "lodash": "~2.2.1"
+    "lodash": "~2.2.1",
+    "grunt-cli": "~0.1.11"
   }
 }

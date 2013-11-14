@@ -75,7 +75,9 @@ function(
 
             if(this.model.get("premium"))
             {
-                theMarsApp.featureAuthorizer.showUpgradeMessage();
+                theMarsApp.featureAuthorizer.showUpgradeMessage({
+                    slideId: this.model.get("chartType") === 32 ? "performance-manager" : "enhanced-analysis"
+                });
             }
         },
 

@@ -89,7 +89,7 @@ function(
 
             if(this.model.get("premium"))
             {
-                theMarsApp.featureAuthorizer.showUpgradeMessage();
+                theMarsApp.featureAuthorizer.showUpgradeMessage({ slideId: "enhanced-analysis" });
             }
         }
 

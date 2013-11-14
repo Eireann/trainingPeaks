@@ -9,7 +9,7 @@
     background-color: rgb(144, 153, 188);
 }
 
-#calendarContainer .thisWeek .dayHeader #calendarDate
+#calendarContainer .thisWeek .dayHeader .calendarDate
 {
     color: #FFFFFF;
 }
