@@ -45,10 +45,8 @@ function(
 
         addOrUpdateLayoutForWorkoutType: function(layoutToUpdate)
         {
-            var layouts = _.filter(this.get("layouts"), function(layout)
-            {
-                return layout.workoutTypeId !== layoutToUpdate.get("workoutTypeId");
-            });
+            var workoutTypeId = layoutToUpdate.get("workoutTypeId");
+            var layouts = _.reject(this.get("layouts"), { workoutTypeId: workoutTypeId });
 
             layouts.push(layoutToUpdate.toJSON());
             this.set("layouts", layouts);
@@ -56,10 +54,7 @@ function(
 
         _findLayoutSettingsByWorkoutType: function(workoutTypeId)
         {
-            return _.find(this.get("layouts"), function(layout)
-            {
-                return layout.workoutTypeId === workoutTypeId; 
-            });
+            return _.find(this.get("layouts"), { workoutTypeId: workoutTypeId });
         }
 
     });
