@@ -55,7 +55,7 @@ function(
             timeZone: null,
             units: 2,
             userId: 0,
-            userIdentifierHash: null,
+            userIdentifierHash: "",
             userName: null,
             zipCode: null,
             zuoraAccountNumber: null,
@@ -71,9 +71,11 @@ function(
 
         onUserFetchFail: function()
         {
-            theMarsApp.featureAuthorizer.showUpgradeMessage(function()
-            {
-                theMarsApp.session.logout();
+            theMarsApp.featureAuthorizer.showUpgradeMessage({
+                onClose: function()
+                {
+                    theMarsApp.session.logout();
+                }
             });
         },
 

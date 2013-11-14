@@ -228,7 +228,7 @@
 
     }
 
-    .expandoGraphPod
+    .expandoGraphPod, .expandoScatterGraphPod
     {
         padding-top: 15px;
         padding-left: 10px;
@@ -267,42 +267,6 @@
                 {
                     display: none;
                 }
-            }
-        }
-
-        #scatterGraphToolbar
-        {
-            height: 50px;
-            button
-            {
-                &.distance,
-                &.time {
-                    margin: 0;
-                    opacity: 1.0;
-                }
-                &.distance
-                {
-                    @include linearGradient(top, #aa2b58, #7b1f40);
-                }
-                &.time
-                {
-                    @include linearGradient(top, #a5b3b6, #84979c);
-                }
-                &.seriesDisabled
-                {
-                    @include linearGradient(top, #ffffff, #dfddde);
-                    color: $TPGrey10;
-                    opacity:.5;
-                    &:hover {
-                        color: $TPGrey4;
-                    };
-                }
-            }
-
-            label
-            {
-                float: left;
-                padding: 4px 5px 5px 0px;
             }
         }
 
@@ -519,9 +483,49 @@
                     }
                 }
             }
+        }
+    }
 
+    .expandoScatterGraphPod
+    {
+        padding-top: 10px;
+        padding-bottom: 14px;
+        overflow: hidden !important;
 
+        #scatterGraphToolbar
+        {
+            height: 56px;
+            button
+            {
+                &.distance,
+                &.time {
+                    margin: 0;
+                    opacity: 1.0;
+                }
+                &.distance
+                {
+                    @include linearGradient(top, #aa2b58, #7b1f40);
+                }
+                &.time
+                {
+                    @include linearGradient(top, #a5b3b6, #84979c);
+                }
+                &.seriesDisabled
+                {
+                    @include linearGradient(top, #ffffff, #dfddde);
+                    color: $TPGrey10;
+                    opacity:.5;
+                    &:hover {
+                        color: $TPGrey4;
+                    };
+                }
+            }
 
+            label
+            {
+                float: left;
+                padding: 4px 5px 5px 0px;
+            }
         }
     }
 

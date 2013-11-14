@@ -57,18 +57,65 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
               data = _.clone(this.dataByAxisAndChannel[channel]);
 
               // remove cut ranges
-              this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "Time", this.flatSamples.offsetsOfSamples);
+              this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "time", this.flatSamples.msOffsetsOfSamples);
 
               var seriesOptions = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
 
-              var newSeries = [];
-              _.each(data[xaxis], function(dataPoint, index)
-              {
-                  newSeries.push([data[xaxis][index][1], data[yaxis][index][1]]);
-              });
+              var newSeries = this.processData(data, xaxis, yaxis);
+
               seriesOptions.data = newSeries;
 
               return [seriesOptions];
+        },
+
+        processData: function(data, xaxis, yaxis)
+        {
+            var newSeries = [];
+            var ecks;
+            var why;
+            var totalPowerValue;
+            var rightPowerValue;
+            var leftPowerPercentage;
+            var rightPowerPercentage;
+
+            var balancedPowerAvailable = _.has(data, "RightPower");
+
+            _.each(data[xaxis], function(dataPoint, index)
+            {
+                ecks = data[xaxis][index][1];
+                why = data[yaxis][index][1];
+                if(xaxis === "RightPower")
+                {
+                    totalPowerValue = data["Power"][index][1];
+                    rightPowerValue = data["RightPower"][index][1];
+
+                    rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
+                    leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue);
+                    ecks = rightPowerPercentage;
+                }
+
+                if(yaxis === "RightPower")
+                {
+                    totalPowerValue = data["Power"][index][1];
+                    rightPowerValue = data["RightPower"][index][1];
+
+                    rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
+                    leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue);
+
+                    why = rightPowerPercentage;
+                }
+                // This is a hack to prevent errant data from skewing graphs.
+                if(balancedPowerAvailable && (xaxis === "RightPower" || yaxis === "RightPower"))
+                {
+                    if(totalPowerValue < rightPowerValue)
+                    {
+                        data["Power"][index][1] = data["RightPower"][index][1] = null;
+                        ecks = why = null;
+                    }
+                }
+                newSeries.push([ecks, why]);
+            });
+            return newSeries;
         },
 
         resetLatLonArray: function()

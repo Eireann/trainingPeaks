@@ -23,15 +23,11 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
             "click .upgradeButton": "onUpgradeClicked"
         },
 
-        modelEvents:
-        {
-            "change": "render"
-        },
+        modelEvents: {},
 
         initialize: function()
         {
             this.initializeCoachAndAffiliateCustomizations();
-            this.listenTo(this.model.getAccountSettings(), "change", _.bind(this.render, this));
         },
 
         onUsernameLabelClicked: function(e)
@@ -50,9 +46,7 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
 
         onUpgradeClicked: function ()
         {
-            var userType = this.model.getAccountSettings().get("userType");
-            var upgradeURL = userType === 5 ? theMarsApp.apiConfig.coachUpgradeURL : theMarsApp.apiConfig.upgradeURL;
-            window.open(upgradeURL.replace("http:","https:"), '_blank');
+            theMarsApp.featureAuthorizer.showUpgradeMessage();
         }
 
     };

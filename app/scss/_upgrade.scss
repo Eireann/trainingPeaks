@@ -1,0 +1,94 @@
+.userUpgradeView {
+    max-width: none;
+
+    .dialogContent {
+        overflow: hidden;
+        height: 320px;
+        
+        // to maintain a minimum of 40px between bottom of buttons and bottom of window
+        min-height: 311px;
+    }
+}
+
+.upgradeLeft {
+    float: left;
+    width: 240px;
+    margin-right: 20px;
+    text-align: left;
+
+    .upgradeSlidePosition {
+        font-family: $fontFamilyLight;
+        font-size: $fontSizeXXLarge;
+        color: $TPGrey3;
+        margin-bottom: 10px;
+        margin-top: -2px;
+    }
+
+    .upgradeButton {
+        @include linearGradient (top, #3c7fc4, #22618f);
+        color: $white;
+        width: 117px;
+        display: block;
+        text-align: center;
+        padding: 7px 0;
+        text-transform: uppercase;
+        font-size: $fontSizeSmall;
+        position: absolute;
+        bottom: 40px;
+        &:hover {
+            @include linearGradient (top, #3978b8, #1e547b); 
+        }
+    }
+}
+
+.upgradeRight {
+    float: right;
+
+    .upgradeSlideNav {
+        @include clearfix;
+        width: 74px;
+        margin: 11px auto 0 auto;
+
+        button {
+            border: 1px solid #b5b5b5;
+            position: relative;
+            margin-left: -1px;
+            float: left;
+            height: 22px;
+            width: 38px;
+            outline: none;
+        }
+
+        .upgradeSlidePrev {
+            @extend %spriteHeaderIconsBG;
+            background-position: 0 -20px;
+            background-repeat: no-repeat;
+            margin-right: 0;
+
+            &:hover {
+                background-position: -36px -20px;
+            }
+            &:active {
+                background-position: -72px -20px;
+            }
+        }
+
+        .upgradeSlideNext {
+            @extend %spriteHeaderIconsBG;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            &:hover {
+                background-position: -36px 0px;
+            }
+            &:active {
+                background-position: -72px 0;
+            }
+        }
+    }
+}
+
+.upgradeSlideImage {
+    width: 352px;
+    height: 352px * 9 / 16;
+    border: 1px solid $TPGrey11;
+}
