@@ -43,7 +43,13 @@ function (_, TP, flotFilter, chartColors, FlotUtils)
                             tickFormatter: function (value, axis)
                             {
                                 if (axisType && axisType === "distance")
-                                    return TP.utils.conversion.formatUnitsValue("distance", value, { defaultValue: null, workoutTypeId: workoutTypeId }) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
+                                {
+                                    if(!value)
+                                    {
+                                        return ""; // don't return null, as flot coerces it to a string ...
+                                    }
+                                    return TP.utils.conversion.formatUnitsValue("distance", value, { defaultValue: "", workoutTypeId: workoutTypeId }) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
+                                }
 
                                 var decimalHours = (value / (3600 * 1000));
                                 return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);

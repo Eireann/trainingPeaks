@@ -47,9 +47,7 @@ function(
             this.children = new Backbone.ChildViewContainer();
             this.on("close", function() { self.children.call("close"); });
 
-            this.heartRateZonesCollection = this._createCollection(this.model.get("heartRateZones"));
-            this.powerZonesCollection = this._createCollection(this.model.get("powerZones"));
-            this.speedPaceZonesCollection = this._createCollection(this.model.get("speedZones"));
+            this._createCollections();
         },
 
         render: function()
@@ -127,12 +125,34 @@ function(
             view.render();
         },
 
-        _createCollection: function(items)
+        _createCollections: function()
         {
-            var collection =  new TP.Collection(items,
-            {
-                comparator: "workoutTypeId"
+            var HeartRateZoneModel = TP.Model.extend({
+                defaults: {
+                    maximumHeartRate: 0,
+                    restingHeartRate: 0,
+                    threshold: 0,
+                    workoutTypeId: null,
+                    zones: []
+                }
             });
+            this.heartRateZonesCollection = this._createCollection(this.model.get("heartRateZones"), { model: HeartRateZoneModel });
+
+            var ZoneModel = TP.Model.extend({
+                defaults: {
+                    threshold: 0,
+                    workoutTypeId: null,
+                    zones: []
+                }
+            });
+            this.powerZonesCollection = this._createCollection(this.model.get("powerZones"), { model: ZoneModel });
+            this.speedPaceZonesCollection = this._createCollection(this.model.get("speedZones"), { model: ZoneModel });
+        },
+
+        _createCollection: function(items, options)
+        {
+            var collectionOptions = _.defaults(options, { comparator: "workoutTypeId" });
+            var collection =  new TP.Collection(items, collectionOptions);
 
             this.listenTo(collection, "add remove reset", _.bind(this._updateSelects, this));
 

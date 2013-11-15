@@ -25,7 +25,8 @@ function (_, TP, slides, userUpgradeTemplate)
         {
             "click .closeIcon": "close",
             "click .upgradeSlidePrev": "_prevSlide",
-            "click .upgradeSlideNext": "_nextSlide"
+            "click .upgradeSlideNext": "_nextSlide",
+            "click a.upgradeButton": "_onUpgradeClicked"
         },
 
         template:
@@ -43,6 +44,7 @@ function (_, TP, slides, userUpgradeTemplate)
 
         onRender: function()
         {
+            this._trackGAEvent("upgradeViewOpened", this.options.slideId);
             this.showSlide(this.options.slideId);
         },
 
@@ -66,6 +68,8 @@ function (_, TP, slides, userUpgradeTemplate)
         {
             this.index = (this.index + 1) % slides.length;
             this.updateSlide();
+
+            this._trackGAEvent("nextSlide");
         },
 
         _prevSlide: function()
@@ -76,7 +80,22 @@ function (_, TP, slides, userUpgradeTemplate)
                 this.index += slides.length;
             }
             this.updateSlide();
-        }
+            this._trackGAEvent("previousSlide");
+        },
 
+        _onUpgradeClicked: function()
+        {
+            this._trackGAEvent("upgradeButtonClicked");
+        },
+
+        _getSlideNameByIndex: function(index)
+        {
+            return slides[index] ? slides[index].id : "n/a";    
+        },
+
+        _trackGAEvent: function(action, label)
+        {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "upgradePrompt", "eventAction": action, "eventLabel": label ? label : this._getSlideNameByIndex(this.index) });
+        }
     });
 });

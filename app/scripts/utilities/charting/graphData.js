@@ -34,6 +34,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         this.elevationInfo = {};
         this.minTemperature = null;
         this.latLonArray = null;
+        this.averageStats = {};
     };
 
     _.extend(GraphData, {defaultChannelOrder: defaultChannelOrder});
@@ -52,21 +53,20 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getSeriesForAxes: function(xaxis, yaxis)
         {
-              var data = [];
-              var channel = "time";
+            var data = [];
+            var channel = "time";
 
-              data = _.clone(this.dataByAxisAndChannel[channel]);
+            data = _.clone(this.dataByAxisAndChannel[channel]);
 
-              // remove cut ranges
-              this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "time", this.flatSamples.msOffsetsOfSamples);
+            // remove cut ranges
+            this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "time", this.flatSamples.msOffsetsOfSamples);
 
-              var seriesOptions = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
+            var seriesData = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
 
-              var newSeries = this.processData(data, xaxis, yaxis);
+            var newSeries = this.processData(data, xaxis, yaxis);
+            seriesData.data = newSeries;
 
-              seriesOptions.data = newSeries;
-
-              return [seriesOptions];
+            return [seriesData];
         },
 
         processData: function(data, xaxis, yaxis)
@@ -78,8 +78,12 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             var rightPowerValue;
             var leftPowerPercentage;
             var rightPowerPercentage;
-
+            var averageStats = this.averageStats[xaxis + yaxis] = {};
             var balancedPowerAvailable = _.has(data, "RightPower");
+            var totalAvgCount = 0;
+
+            averageStats["xaxis"] = 0;
+            averageStats["yaxis"] = 0;
 
             _.each(data[xaxis], function(dataPoint, index)
             {
@@ -114,8 +118,18 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                         ecks = why = null;
                     }
                 }
+                if(_.isFinite(ecks) && _.isFinite(why))
+                {
+                    totalAvgCount++;
+                    averageStats["xaxis"] = averageStats["xaxis"] + ecks;
+                    averageStats["yaxis"] = averageStats["yaxis"] + why;
+                }
                 newSeries.push([ecks, why]);
             });
+
+            averageStats["xaxis"] = averageStats["xaxis"] / totalAvgCount;
+            averageStats["yaxis"] = averageStats["yaxis"] / totalAvgCount;
+
             return newSeries;
         },
 
@@ -154,8 +168,9 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         createCorrectedElevationChannel: function (elevations)
         {
+            // elevation correction view always uses distance, whether main graph is in distance or time
             var index = 0;
-            var corrected = _.map(this.dataByAxisAndChannel[this.xaxis]["Elevation"], function (elevationPoint)
+            var corrected = _.map(this.dataByAxisAndChannel["distance"]["Elevation"], function (elevationPoint)
             {
                 if (index >= (elevations.length - 1))
                     return [elevationPoint[0], null];

@@ -15,8 +15,8 @@ function()
                 "Elevation": "#6e96b9",
                 "Temperature": "#0A0AFF",
                 "Torque": "#BDBDBD",
-                "Distance": "#7b1f40",
-                "Time": "#84979c"
+                "Distance": "#7b1F40",
+                "Time": "#84979C"
             },
 
         pmcColors:

@@ -51,8 +51,9 @@ function (
             var self = this;
 
             this.watchForModelChanges();
-            this.watchForControllerEvents();
-            this.watchForControllerResize();
+            this._watchForStateModelChanges();
+            this._watchForPodResize();
+            this._watchForWindowResize();
             this.$el.addClass("waiting");
             this.$el.removeClass("hidden");
             setImmediate(function () { self.detailDataPromise.then(_.bind(self.onModelFetched, self)); });
@@ -136,7 +137,7 @@ function (
             this.hideHoverMarker();
         },
 
-        watchForControllerEvents: function ()
+        _watchForStateModelChanges: function ()
         {
             this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
             this.listenTo(this.stateModel.get("ranges"), "remove", _.bind(this._onRangeRemoved, this));
@@ -210,7 +211,7 @@ function (
             {
                 return null;
             }
-            var latLngs = this._getGraphData().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var latLngs = this._getGraphData().getLatLonBetweenMsOffsets(this._getGraphData().dataByAxisAndChannel['time'], workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
             var mapLayer = MapUtils.createHighlight(latLngs, options);
 
             var selection = {
@@ -310,16 +311,25 @@ function (
             }
         },
 
-        watchForControllerResize: function ()
+        _watchForPodResize: function ()
         {
-            this.on("controller:resize", this.setViewSize, this);
+            this.on("pod:resize", this._updateMapSize, this);
             this.on("close", function ()
             {
-                this.off("controller:resize", this.setViewSize, this);
+                this.off("pod:resize", this._updateMapSize, this);
             }, this);
         },
 
-        setViewSize: function()
+        _watchForWindowResize: function ()
+        {
+            $(window).on("resize.expandoMap", _.bind(this._updateMapSize, this));
+            this.on("close", function ()
+            {
+                $(window).off("resize.expandoMap");
+            }, this);
+        },
+
+        _updateMapSize: function()
         {
             if (this.map)
             {

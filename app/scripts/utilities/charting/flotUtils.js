@@ -134,13 +134,40 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
             {
                 seriesOptions.color = "#FFFFFF";
                 seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
-                _.each(data, function(dataPoint)
+
+                // This is a hack to only append a y axis offset for graphing once for negative elevation values.
+                if(data[0].length < 3)
                 {
-                    dataPoint.push(options.minElevation);
-                });
+                    _.each(data, function(dataPoint)
+                    {
+                        dataPoint.push(options.minElevation);
+                    });
+                }
             }
 
             return seriesOptions;
+        },
+
+        createBullseye: function(radius)
+        {
+            var bullseye =
+            {
+                points:
+                {
+                    show: true,
+                    fill: false,
+                    radius: radius,
+                    lineWidth: 0.50,
+                    symbol: function bullseye(ctx, x, y, radius, shadow)
+                    {
+                        ctx.arc(x, y, radius, 0, shadow ? Math.PI : Math.PI * 2, false);
+                        ctx.moveTo(x + 2 * radius, y);
+                        ctx.arc(x, y, 2 * radius, 0, shadow ? Math.PI : Math.PI * 2, false);
+                    }
+                }
+            };
+
+            return bullseye;
         },
 
         createTicksBasedOnAxis: function(axisName)
