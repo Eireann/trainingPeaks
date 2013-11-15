@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "TP",
@@ -9,6 +10,7 @@
     "hbs!templates/views/expando/mapTemplate"
 ],
 function (
+    $,
     _,
     setImmediate,
     TP,
