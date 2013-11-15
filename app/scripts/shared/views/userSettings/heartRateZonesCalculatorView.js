@@ -28,7 +28,7 @@ function(
 
     var HeartRateCalculatorTabView = ZoneCalculatorViews.TabContentView.extend({
 
-        fieldsToCopyFromThresholdSourceModel: ["threshold", "minimumHeartRate", "maximumHeartRate"],
+        fieldsToCopyFromThresholdSourceModel: ["threshold", "restingHeartRate", "maximumHeartRate"],
 
         zoneTypesById: ZoneCalculatorDefinitions.heartRatesById,
 
