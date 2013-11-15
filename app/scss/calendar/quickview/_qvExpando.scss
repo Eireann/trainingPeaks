@@ -948,30 +948,19 @@
     &, .packeryCollection
     {
         padding-top: 10px;
-
-        height: 100%;
-        max-height: 100%;
-    }
-}
-
-@for $i from 1 through 2
-{
-    .expandoPod[data-rows="#{$i}"]
-    {
-        height: calc(#{percentage($i / 2)} - 10px);
     }
 
-    .expandoPod[data-cols="#{$i}"]
-    {
-        width: calc(#{percentage($i / 2)} - 10px);
-    }
-
+    height: 100%;
+    max-height: 100%;
 }
 
 .sizer
 {
-    @extend .expandoPod[data-rows="1"];
-    @extend .expandoPod[data-cols="1"];
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -9999;
+    width: calc(50% - 20px);
+    height: calc(50% - 10px);
 }
 
 
