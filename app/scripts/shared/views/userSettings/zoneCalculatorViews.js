@@ -302,7 +302,7 @@ function(
 
         getZonesToApply: function()
         {
-            this._applyValuesTooriginalModelClone();
+            this._applyValuesToOriginalModelClone();
             return this.originalModelClone;
         },
 
@@ -329,7 +329,7 @@ function(
             };
         },
 
-        _applyValuesTooriginalModelClone: function()
+        _applyValuesToOriginalModelClone: function()
         {
             var attributesInCalculatorModel = _.keys(this.model.attributes);
             var attributesInoriginalModelClone = _.keys(this.originalModelClone.attributes);
