@@ -75,7 +75,7 @@ function (_, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, conv
 
         setOriginalElevation: function()
         {
-            this.originalElevation = this._getGraphData().getDataByChannel("distance", "Elevation");
+            this.originalElevation = this._getGraphData().getDataByAxisAndChannel("distance", "Elevation");
             var elevationMinimum = this.findMinimumElevation(this.originalElevation);
             this.addMinimumElevation(this.originalElevation, elevationMinimum);
         },

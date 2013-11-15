@@ -153,8 +153,9 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         createCorrectedElevationChannel: function (elevations)
         {
+            // elevation correction view always uses distance, whether main graph is in distance or time
             var index = 0;
-            var corrected = _.map(this.dataByAxisAndChannel[this.xaxis]["Elevation"], function (elevationPoint)
+            var corrected = _.map(this.dataByAxisAndChannel["distance"]["Elevation"], function (elevationPoint)
             {
                 if (index >= (elevations.length - 1))
                     return [elevationPoint[0], null];
