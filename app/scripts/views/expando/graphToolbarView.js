@@ -59,7 +59,7 @@ function($,
 
         ui:
         {
-            "zoomResetButton": "button.graphResetButton"
+            "zoomResetButton": ".reset"
         },
 
         serializeData: function()

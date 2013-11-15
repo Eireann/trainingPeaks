@@ -197,12 +197,12 @@ function(
         {
             this.graphToolbar = new GraphToolbarView({ dataParser: this._getGraphData(), model: this.model, stateModel: this.stateModel });
 
-            this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
+            this.listenTo(this.graphToolbar, "filterPeriodChanged", _.bind(this.applyFilter, this));
 
-            this.graphToolbar.on("zoom", this.onToolbarZoom, this);
-            this.graphToolbar.on("reset", this.resetZoom, this);
-            this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
-            this.graphToolbar.on("enableDistanceAxis", this.enableDistanceAxis, this);
+            this.listenTo(this.graphToolbar, "zoom", _.bind(this.onToolbarZoom, this));
+            this.listenTo(this.graphToolbar, "reset", _.bind(this.resetZoom, this));
+            this.listenTo(this.graphToolbar, "enableTimeAxis", _.bind(this.enableTimeAxis, this));
+            this.listenTo(this.graphToolbar, "enableDistanceAxis", _.bind(this.enableDistanceAxis, this));
 
             this.$("#graphToolbar").append(this.graphToolbar.render().$el);
         },
