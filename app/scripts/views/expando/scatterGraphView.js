@@ -8,6 +8,7 @@ define(
     "utilities/charting/jquery.flot.selection",
     "utilities/charting/flotCustomTooltip",
     "utilities/charting/flotToolTipPositioner",
+    "utilities/charting/flotUtils",
     "utilities/charting/jquery.flot.zoom",
     "utilities/charting/jquery.flot.multiselection",
     "utilities/charting/chartColors",
@@ -24,6 +25,7 @@ function(
     flotSelection,
     FlotCustomToolTip,
     toolTipPositioner,
+    FlotUtils,
     flotZoom,
     flotMultiSelection,
     chartColors,
@@ -151,10 +153,11 @@ function(
             var rangesSeries = this._createSeriesFromRanges(enabledSeries[0]);
 
             rangesSeries.push(enabledSeries[0]);
+            rangesSeries.push(this._createAverageSeries(enabledSeries[0], this.currentXAxis, this.currentYAxis));
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(self.allSeries, rangesSeries, flotItem.series.name, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(self.allSeries, rangesSeries, flotItem, self.model.get("workoutTypeValueId"), self.currentXAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
@@ -245,7 +248,7 @@ function(
             var ranges = this.stateModel.get("ranges");
             var seriesCount = 0;
 
-            if(primaryRange && primaryRange.get('isFocused'))
+            if(primaryRange && primaryRange.getState().get('isFocused'))
             {
                 this._createRange(enabledSeries, primaryRange, rangesSeries, seriesCount++, "#0000FF");
             }
@@ -282,6 +285,20 @@ function(
         _onRangeChange: function()
         {
             this._onSeriesChanged();
+        },
+
+        _createAverageSeries: function(enabledSeries, xaxis, yaxis)
+        {
+            var avgS = _.clone(enabledSeries);
+            var data = this._getGraphData().averageStats[xaxis + yaxis];
+            avgS.data = [ [ data["xaxis"], data["yaxis"] ] ];
+
+            avgS.color = "#FF0000";
+            avgS.name = "averageSeries";
+
+            _.extend(avgS, FlotUtils.createBullseye(4));
+
+            return avgS;
         },
 
         _getGraphData: function()

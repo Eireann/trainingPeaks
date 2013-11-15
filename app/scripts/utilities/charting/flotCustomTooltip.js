@@ -1,4 +1,4 @@
-﻿define(
+define(
 [
     "utilities/datetime/format",
     "utilities/conversion/conversion",
@@ -31,7 +31,6 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
         "Torque"
     ];
 
-
     var FlotToolTip =
     {
         shouldDisplayToolTipValue: function(seriesName, value)
@@ -42,22 +41,22 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             return true;
         },
 
-        buildGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, xAxisType)
+        buildGraphToolTip: function(allDataSeries, enabledDataSeries, flotItem, workoutType, xAxisType)
         {
-            var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
+            var xAxisValue = flotItem.datapoint[0];
+            var powerSeries = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
             var toolTipData =
             {
-                xAxisOffset: null,
-                series: [],
-                powerSeriesEnabled: powerSeriesEnabled
+                xAxisValue: null,
+                series: []
             };
 
             if (xAxisType === "time")
-                toolTipData.xAxisOffset = conversion.formatUnitsValue(xAxisType, xAxisOffset);
+                toolTipData.xAxisValue = conversion.formatUnitsValue(xAxisType, xAxisValue);
             else
-                toolTipData.xAxisOffset = conversion.formatUnitsValue(xAxisType, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType }) + " " + unitLabels(xAxisType, workoutType);
+                toolTipData.xAxisValue = conversion.formatUnitsValue(xAxisType, xAxisValue, { defaultValue: undefined, workoutTypeId: workoutType }) + " " + unitLabels(xAxisType, workoutType);
 
-            var toolTipSeries = this.formatYAxisData(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled);
+            var toolTipSeries = this.formatYAxisData(allDataSeries, enabledDataSeries, workoutType, powerSeries, false, flotItem, "graph");
 
             _.each(flexChannelOrder, function(orderedChannel)
             {
@@ -70,57 +69,84 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
 
             return flotToolTipTemplate(toolTipData);
         },
-        buildScatterGraphToolTip: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, xAxisType)
+        buildScatterGraphToolTip: function(allDataSeries, enabledDataSeries, flotItem, workoutType, xAxisType)
         {
-            var powerSeriesEnabled = _.find(allDataSeries, function(s) { return s.label === "Power"; });
+            var hoveredSeriesName = flotItem.series.name;
+            var hoveredIndex = flotItem.dataIndex;
+            var xAxisValue = flotItem.datapoint[0];
+
+            var powerSeries = _.find(allDataSeries, function(s) { return s.label === "Power"; });
             var hoveredSeries = _.find(enabledDataSeries, function(s) { return s.name === hoveredSeriesName; });
             var toolTipData =
             {
+                title: "",
                 x: {},
                 y: {}
             };
-
-            var lowerCaseAxisName = xAxisType.toLowerCase();
             var toolTipSeries = [];
+            var lowerCaseAxisName = xAxisType.toLowerCase();
 
-            if(xAxisType === "RightPower" && powerSeriesEnabled)
+            if(xAxisType === "RightPower" && powerSeries)
             {
-                var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
-                if(!_.isEmpty(data))
+                this.formatBalancedPower(allDataSeries, flotItem.series, powerSeries, toolTipSeries, flotItem, xAxisType, "scatter");
+                if(!_.isEmpty(toolTipSeries))
                 {
-                    toolTipData.x.label = data.label;
-                    toolTipData.x.value = data.value;
-                    toolTipData.x.units = data.units;
+                    toolTipData.x.label = toolTipSeries[0].label;
+                    toolTipData.x.value = toolTipSeries[0].value;
+                    toolTipData.x.units = toolTipSeries[0].units;
                 }
             }
             else
             {
                 toolTipData.x.label = xAxisType;
-                toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType });
+                toolTipData.x.value = conversion.formatUnitsValue(lowerCaseAxisName, xAxisValue, { defaultValue: undefined, workoutTypeId: workoutType });
                 toolTipData.x.units = unitLabels(lowerCaseAxisName, workoutType);
             }
 
-            toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, true);
+            toolTipSeries = this.formatYAxisData(allDataSeries, [hoveredSeries], workoutType, powerSeries, true, flotItem, "scatter");
 
+            toolTipData.y.label = toolTipSeries[0].label;
             toolTipData.y.value = toolTipSeries[0].value;
             toolTipData.y.units = toolTipSeries[0].units;
-            toolTipData.y.label = toolTipSeries[0].label;
+
+            if(hoveredSeriesName === "averageSeries")
+            {
+                toolTipData.title = "Average";
+                var rightPowerPercentage;
+                var leftPowerPercentage;
+
+                if(xAxisType === "RightPower" && powerSeries)
+                {
+                    leftPowerPercentage = (100 - xAxisValue).toFixed(1);
+                    rightPowerPercentage = xAxisValue.toFixed(1);
+                    toolTipData.x.value = leftPowerPercentage + "% / " + rightPowerPercentage + "%";
+                    toolTipData.x.units = "";
+                }
+                if(hoveredSeries.label === "RightPower" && powerSeries)
+                {
+                    leftPowerPercentage = (100 - hoveredSeries.data[hoveredIndex][1]).toFixed(1);
+                    rightPowerPercentage = hoveredSeries.data[hoveredIndex][1].toFixed(1);
+                    toolTipData.y.value = leftPowerPercentage + "% / " + rightPowerPercentage + "%";
+                    toolTipData.y.units = "";
+                }
+            }
 
             return flotScatterGraphToolTipTemplate(toolTipData);
         },
 
-        formatYAxisData: function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, workoutType, powerSeriesEnabled, alwaysDisplay)
+        formatYAxisData: function(allDataSeries, enabledDataSeries, workoutType, powerSeries, alwaysDisplay, flotItem, graphType)
         {
             var toolTipSeries = [];
 
             _.each(enabledDataSeries, function(s)
             {
-                var value = s.data[hoveredIndex][1];
+                var value = s.data[flotItem.dataIndex][1];
                 //TODO: probably should drop data points that meet the criteria below in !shouldDisplayToolTipValue
                 if (!alwaysDisplay && !this.shouldDisplayToolTipValue(s.label, value))
                     return;
 
-                this.formatBalancedPower(allDataSeries, s, powerSeriesEnabled, toolTipSeries, hoveredIndex, hoveredSeriesName);
+                if(powerSeries && s.label === "RightPower")
+                    this.formatBalancedPower(allDataSeries, s, powerSeries, toolTipSeries, flotItem, null, graphType);
 
                 //TODO Refactor: assuming the proper conversion field name is simply the lower-cased series name
                 //TODO is wrong. Should probably add a field to the series object in the data parser.
@@ -132,10 +158,10 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
                     units: unitLabels(dataType, workoutType)
                 };
 
-                if (s.label === hoveredSeriesName)
+                if (s.label === flotItem.series.label)
                     config.current = true;
 
-                if (s.label === "Power" && hoveredSeriesName === "RightPower")
+                if (s.label === "Power" && flotItem.series.label === "RightPower")
                     config.current = true;
 
                 toolTipSeries.push(config);
@@ -151,7 +177,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
 
                     // Swim workouts use "pace" as their speed axis, even though the channelName remains "Speed" from the dataParser/API
                     // Mark this pace label as 'current' and remove 'current' from the speed label
-                    if (s.label === hoveredSeriesName && _.contains([1,3,12,13], workoutType))
+                    if (s.label === flotItem.series.label && _.contains([1,3,12,13], workoutType))
                     {
                         config.current = true;
                         _.each(toolTipSeries, function(config)
@@ -170,37 +196,41 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
             return toolTipSeries;
         },
 
-        calculateBalancedPower: function(allDataSeries, hoveredIndex, hoveredSeriesName)
+        formatBalancedPower: function(allDataSeries, series, powerSeries, toolTipSeries, flotItem, xAxisType, graphType)
         {
-            var totalPower = _.find(allDataSeries, function (ps) { return ps.label === "Power"; });
-            var rightPower = _.find(allDataSeries, function (ps) { return ps.label === "RightPower"; });
-            if (!totalPower || !rightPower)
-                return null;
+            var rightPowerPercentage;
+            var leftPowerPercentage;
+            var rightPowerValue;
+            var leftPowerValue;
 
-            var totalPowerValue = totalPower.data[hoveredIndex][1];
-            var rightPowerValue = rightPower.data[hoveredIndex][1];
+            if(graphType === "scatter" && (flotItem.series.label === "RightPower" || xAxisType === "RightPower"))
+            {
+                var index = flotItem.series.label === "RightPower" ? 1 : 0;
+                rightPowerValue = flotItem.datapoint[index];
+                leftPowerValue = 100 - rightPowerValue;
 
-            if (!totalPowerValue || !rightPowerValue)
-                return null;
+                rightPowerPercentage = rightPowerValue.toFixed(1);
+                leftPowerPercentage = leftPowerValue.toFixed(1);
+            }
 
-            var rightPowerPercentage = (100 * rightPowerValue / totalPowerValue).toFixed(1);
-            var leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue).toFixed(1);
+            if(graphType === "graph" && series.label === "RightPower")
+            {
+                var totalPowerValue = powerSeries.data[flotItem.dataIndex][1];
+                rightPowerValue = series.data[flotItem.dataIndex][1];
 
-            return {
+                if (!totalPowerValue || !rightPowerValue)
+                    return null;
+
+                rightPowerPercentage = ((100 * rightPowerValue) / totalPowerValue).toFixed(1);
+                leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue).toFixed(1);
+            }
+
+            toolTipSeries.push({
                 label: "RightPower",
                 value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
                 units: "",
-                current: (hoveredSeriesName === "Power" || hoveredSeriesName === "RightPower")
-            };
-        },
-
-        formatBalancedPower: function(allDataSeries, series, powerSeriesEnabled, toolTipSeries, hoveredIndex, hoveredSeriesName)
-        {
-            if (series.label === "RightPower" && powerSeriesEnabled)
-            {
-                var data = this.calculateBalancedPower(allDataSeries, hoveredIndex, hoveredSeriesName);
-                if(!_.isEmpty(data)) toolTipSeries.push(data);
-            }
+                current: (flotItem.series.label === "Power" || flotItem.series.label === "RightPower")
+            });
         }
 
     };
