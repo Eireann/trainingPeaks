@@ -202,12 +202,11 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatte
         {
             var rightPowerPercentage;
             var leftPowerPercentage;
+            var rightPowerValue;
+            var leftPowerValue;
 
             if(graphType === "scatter" && (flotItem.series.label === "RightPower" || xAxisType === "RightPower"))
             {
-                var rightPowerValue;
-                var leftPowerValue;
-
                 var index = flotItem.series.label === "RightPower" ? 1 : 0;
                 rightPowerValue = flotItem.datapoint[index];
                 leftPowerValue = 100 - rightPowerValue;
