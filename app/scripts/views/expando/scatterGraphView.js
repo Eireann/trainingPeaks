@@ -157,7 +157,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(self.allSeries, rangesSeries, flotItem.series.name, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentXAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildScatterGraphToolTip(self.allSeries, rangesSeries, flotItem, self.model.get("workoutTypeValueId"), self.currentXAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 

@@ -144,7 +144,7 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(FlotCustomToolTip.buildGraphToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
+                $tooltipEl.html(FlotCustomToolTip.buildGraphToolTip(self.allSeries, enabledSeries, flotItem, self.model.get("workoutTypeValueId"), self.currentAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
 
@@ -283,7 +283,7 @@ function(
             }
             else
             {
-                this.plot.clearSelection(preventEvent);
+                // this.plot.clearSelection(preventEvent);
             }
         },
 
