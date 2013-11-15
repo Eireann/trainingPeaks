@@ -74,57 +74,6 @@ function(
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: this.stateModel });
 
-            var podsCollection = new TP.Collection(
-            [{
-                podType: 153, // Map
-                cols: 2
-            }, {
-                podType: 152, // Graph
-                cols: 2
-            }, {
-                podType: 108, // Laps & Splits,
-                cols: 2
-            }, {
-                podType: 102 // Heart Rate Time In Zones
-            }, {
-                podType: 118 // Heart Rate Peaks
-            }, {
-                podType: 101 // Power Time In Zones
-            }, {
-                podType: 111 // Power Peaks
-            }, {
-                podType: 122 // Speed Time In Zones
-            }, {
-                podType: 119 // Speed Peaks
-            }]);
-
-            var data =
-            {
-                workout: this.model,
-                detailDataPromise: this.prefetchConfig.detailDataPromise,
-                stateModel: this.stateModel
-            };
-
-            var $sizer = $("<div class='sizer'></div>");
-
-            this.filteredCollection = new FilteredSubCollection(null, {
-                sourceCollection: podsCollection,
-                filterFunction: userCanUsePod
-            });
-
-            this.views.packeryView = new PackeryCollectionView({
-                itemView: expandoPodBuilder.buildView,
-                collection: this.filteredCollection,
-                itemViewOptions: { data: data },
-                packery:
-                {
-                    columnWidth: $sizer[0],
-                    rowHeight: $sizer[0],
-                    gutter: 10
-                },
-                resizable: { enabled: true },
-                droppable: { enabled: true }
-            });
 
             this.layout.$el.addClass("waiting");
 
@@ -159,20 +108,8 @@ function(
 
             setImmediate(function()
             {
-                self.layout.packeryRegion.show(self.views.packeryView);
-                self.onViewResize();
+                self._createAndShowPackeryView();
             });
-        },
-
-        onSensorDataChange: function()
-        {
-
-            var self = this;
-            setImmediate(function()
-            {
-                self.onViewResize();
-            });
-
         },
 
         preFetchDetailData: function()
@@ -220,7 +157,7 @@ function(
         watchForModelChanges: function()
         {
             this.listenTo(this.model, "deviceFileUploaded", _.bind(this.reloadDetailData, this));
-            this.listenTo(this.model.get("detailData"), "changeSensorData", _.bind(this.onSensorDataChange, this));
+            this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this._createAndShowPackeryView, this));
         },
 
         reloadDetailData: function()
@@ -234,29 +171,85 @@ function(
 
         watchForWindowResize: function()
         {
-            _.bindAll(this, "onViewResize");
-            $(window).on("resize.expando", this.onViewResize);
+
+            // don't let any flot triggered resize events propagate to the window, but do pay attention to the actual resize
+            this.layout.$el.on("resize.expando", function(e){
+                if(!$(e.target).is(".ui-resizable-resizing"))
+                {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+
+            // window resize, and ui resize, trigger too many events
+            $(window).on("resize.expando", _.bind(_.debounce(this._onWindowResize, 500), this));
             this.on("close", this.stopWatchingWindowResize, this);
         },
 
         stopWatchingWindowResize: function()
         {
-            $(window).off("resize.expando", this.onViewResize);
+            $(window).off("resize.expando");
         },
 
-        onViewResize: function()
+        _onWindowResize: function(e)
         {
             if (this.disableViewsResize)
             {
                 return;
             }
 
-            _.each(this.views, function(view)
-            {
-                view.trigger("controller:resize");
-            }, this);
-
             this.views.packeryView.layout();
+        },
+
+        _createAndShowPackeryView: function()
+        {
+            if(this.views.packeryView)
+            {
+                this.views.packeryView.close();
+                this.stopListening(this.expandoPodLayout.getPodsCollection());
+            }
+
+            this.expandoPodLayout = theMarsApp.user.getExpandoSettings().getLayoutForWorkoutType(this.model.get("workoutTypeValueId"));
+
+            var data =
+            {
+                workout: this.model,
+                detailDataPromise: this.prefetchConfig.detailDataPromise,
+                stateModel: this.stateModel
+            };
+
+            var $sizer = $("<div class='sizer'></div>");
+
+            this.filteredCollection = new FilteredSubCollection(null, {
+                sourceCollection: this.expandoPodLayout.getPodsCollection(),
+                filterFunction: userCanUsePod
+            });
+
+            this.views.packeryView = new PackeryCollectionView({
+                itemView: expandoPodBuilder.buildView,
+                collection: this.filteredCollection,
+                itemViewOptions: { data: data },
+                packery:
+                {
+                    columnWidth: $sizer[0],
+                    rowHeight: $sizer[0],
+                    gutter: 10
+                },
+                resizable: { enabled: true },
+                droppable: { enabled: true }
+            });
+
+            // save on reorder, or when a pod is added or removed, or when cols or rows attribute changes
+            this.listenTo(this.expandoPodLayout.getPodsCollection(), "add remove change", _.bind(_.debounce(this._savePodLayout, 500), this));
+
+            this.layout.packeryRegion.show(this.views.packeryView);
+        },
+
+        _savePodLayout: function()
+        {
+            this.expandoPodLayout.getPodsCollection().sort();
+            theMarsApp.user.getExpandoSettings().addOrUpdateLayoutForWorkoutType(this.expandoPodLayout);
+            theMarsApp.user.getExpandoSettings().save();
         }
 
     });

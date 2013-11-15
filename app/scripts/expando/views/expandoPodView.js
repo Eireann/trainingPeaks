@@ -19,8 +19,8 @@ function(
         attributes: function()
         {
             return {
-                "data-rows": this.model.get("rows") || 1,
-                "data-cols": this.model.get("cols") || 1
+                "data-rows": this.model.get("heightInRows") || 1,
+                "data-cols": this.model.get("widthInColumns") || 1
             };
         },
 
@@ -35,10 +35,13 @@ function(
             "click .close": "_removePod",
         },
 
+        modelEvents: {},
+
         initialize: function(options)
         {
             this.childView = options.childView;
-            this.on("controller:resize", _.bind(this.childView.trigger, this.childView, "controller:resize"));
+            this.on("pod:resize:stop", _.bind(this._updateRowsAndCols, this));
+            this.on("pod:resize", _.bind(this.childView.trigger, this.childView, "pod:resize"));
             this.listenTo(this.childView, "close", _.bind(this.close, this));
             this.listenTo(this.childView, "item:rendered", _.bind(this._onChildRender, this));
             this.listenTo(this.childView, "noData", _.bind(this._onChildHasNoData, this));
@@ -68,6 +71,12 @@ function(
         onClose: function()
         {
             this.childView.close();
+        },
+
+        _updateRowsAndCols: function()
+        {
+            this.model.set("heightInRows", parseInt(this.$el.data("rows"), 10));
+            this.model.set("widthInColumns", parseInt(this.$el.data("cols"), 10));
         },
 
         _onChildRender: function()

@@ -114,7 +114,7 @@ function(
                 var view = $item.data("view"); // Can we get this without working the view on the el
                 if(view && view.model)
                 {
-                    view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
+                    view.model.set("index", index); // silent is not necessary anymore
                 }
             });
             this.trigger("reorder");
@@ -194,7 +194,7 @@ function(
                 resize: function(event, ui)
                 {
                     self.$el.packery('fit', ui.element[0]);
-                    ui.element.data("view").trigger("controller:resize");
+                    ui.element.data("view").trigger("pod:resize");
                 },
 
                 stop: function(event, ui)
@@ -220,7 +220,8 @@ function(
                     });
 
                     self.$el.packery('fit', ui.element[0]);
-                    ui.element.data("view").trigger("controller:resize");
+                    ui.element.data("view").trigger("pod:resize");
+                    ui.element.data("view").trigger("pod:resize:stop");
                 }
             });
         },

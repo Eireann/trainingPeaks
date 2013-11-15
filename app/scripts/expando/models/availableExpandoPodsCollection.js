@@ -27,22 +27,22 @@ function(
             {
                 podType: 153,
                 name: "Map",
-                cols: 2
+                widthInColumns: 2
             },
             {
                 podType: 152,
                 name: "Graph",
-                cols: 2
+                widthInColumns: 2
             },
             {
                 podType: 108,
                 name: "Laps & Splits",
-                cols: 2
+                widthInColumns: 2
             },
             {
                 podType: 156,
                 name: "Scatter Graph",
-                cols: 2
+                widthInColumns: 2
             },
             {
                 podType: 102, // Time In Zones
