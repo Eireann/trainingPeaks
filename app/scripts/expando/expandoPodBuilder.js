@@ -142,7 +142,7 @@ function(
         var ViewClass = viewsByType[options.model.get("podType")];
 
         var childView = new ViewClass(options);
-        var podView = new ExpandoPodView({ model: options.model, childView: childView });
+        var podView = new ExpandoPodView({ model: options.model, childView: childView, sizer: options.sizer });
 
         return podView;
     }

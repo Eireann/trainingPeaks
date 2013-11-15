@@ -55,7 +55,6 @@ function (
             this.watchForModelChanges();
             this._watchForStateModelChanges();
             this._watchForPodResize();
-            this._watchForWindowResize();
             this.$el.addClass("waiting");
             this.$el.removeClass("hidden");
             setImmediate(function () { self.detailDataPromise.then(_.bind(self.onModelFetched, self)); });
@@ -316,19 +315,6 @@ function (
         _watchForPodResize: function ()
         {
             this.on("pod:resize", this._updateMapSize, this);
-            this.on("close", function ()
-            {
-                this.off("pod:resize", this._updateMapSize, this);
-            }, this);
-        },
-
-        _watchForWindowResize: function ()
-        {
-            $(window).on("resize.expandoMap", _.bind(this._updateMapSize, this));
-            this.on("close", function ()
-            {
-                $(window).off("resize.expandoMap");
-            }, this);
         },
 
         _updateMapSize: function()

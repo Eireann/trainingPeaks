@@ -232,7 +232,7 @@ function(
             this.views.packeryView = new PackeryCollectionView({
                 itemView: expandoPodBuilder.buildView,
                 collection: this.filteredCollection,
-                itemViewOptions: { data: data },
+                itemViewOptions: { data: data, sizer: $sizer },
                 packery:
                 {
                     columnWidth: $sizer[0],

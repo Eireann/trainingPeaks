@@ -76,8 +76,6 @@ function(
 
         _setupPackery: function(options)
         {
-            this.packery = this.$el.packery(options.packery).data("packery");
-
             if(options.packery.rowHeight instanceof Element)
             {
                 this.$el.after(options.packery.rowHeight);
@@ -87,6 +85,9 @@ function(
             {
                 this.$el.after(options.packery.columnWidth);
             }
+
+            this.children.call("trigger", "pod:resize");
+            this.packery = this.$el.packery(options.packery).data("packery");
 
             this.packery.on("dragItemPositioned", _.bind(this._updatePackerySort, this));
             this.children.each(function(itemView)
@@ -127,6 +128,7 @@ function(
         {
             itemView.$el.data("view", itemView);
             collectionView.$el.append(itemView.el);
+            itemView.trigger("pod:resize");
 
             if (!this.packery) return;
 
@@ -176,7 +178,7 @@ function(
         {
             var self = this;
             view.$el.resizable({
-                start: function(event, ui)
+                resize: function(event, ui)
                 {
                     var x = self.options.packery.columnWidth;
                     var y = self.options.packery.rowHeight;
@@ -184,45 +186,21 @@ function(
                     var width = _.isNumber(x) ? x : $(x).width();
                     var height = _.isNumber(y) ? y : $(y).height();
 
-                    view.$el.resizable("option", {
-                        grid: [ width + self.options.packery.gutter, height + self.options.packery.gutter ],
-                        minWidth: width * 0.9,
-                        minHeight: height * 0.9,
-                        maxWidth: self.$el.width(),
-                        maxHeight: self.$el.height()
-                    });
-                },
+                    var cols = Math.round((ui.size.width + self.options.packery.gutter) / (width + self.options.packery.gutter));
+                    var rows = Math.round((ui.size.height + self.options.packery.gutter) / (height + self.options.packery.gutter));
 
-                resize: function(event, ui)
-                {
-                    self.$el.packery('fit', ui.element[0]);
+                    ui.element.data(
+                    {
+                        "rows": rows,
+                        "cols": cols
+                    });
+
                     ui.element.data("view").trigger("pod:resize");
+                    self.$el.packery('fit', ui.element[0]);
                 },
 
                 stop: function(event, ui)
                 {
-                    var x = self.options.packery.columnWidth;
-                    var y = self.options.packery.rowHeight;
-
-                    var width = _.isNumber(x) ? x : $(x).width();
-                    var height = _.isNumber(y) ? y : $(y).height();
-
-                    var cols = Math.round((ui.element.width() + self.options.packery.gutter) / (width + self.options.packery.gutter));
-                    var rows = Math.round((ui.element.height() + self.options.packery.gutter) / (height + self.options.packery.gutter));
-
-                    ui.element.css({
-                        width: "",
-                        height: ""
-                    });
-
-                    ui.element.attr(
-                    {
-                        "data-rows": rows,
-                        "data-cols": cols
-                    });
-
-                    self.$el.packery('fit', ui.element[0]);
-                    ui.element.data("view").trigger("pod:resize");
                     ui.element.data("view").trigger("pod:resize:stop");
                 }
             });
