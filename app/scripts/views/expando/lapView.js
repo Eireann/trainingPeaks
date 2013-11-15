@@ -74,13 +74,25 @@ function(
 
         _onCheckboxChange: function(e)
         {
-            if(this.$("input").is(":checked"))
+            var self = this;
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.ViewGraphRanges,
+                function()
+                {
+                    if(self.$("input").is(":checked"))
+                    {
+                        self.stateModel.addRange(self.model);
+                    }
+                    else
+                    {
+                        self.stateModel.removeRange(self.model);
+                    }
+                }
+            );
+
+            if(!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ViewGraphRanges))
             {
-                this.stateModel.addRange(this.model);
-            }
-            else
-            {
-                this.stateModel.removeRange(this.model);
+                self.$("input[type=checkbox]").attr("checked", false);
             }
         }
 
