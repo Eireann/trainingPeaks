@@ -300,7 +300,7 @@ function(
             {
                 formatLapData.calculateTotalAndMovingTime(lap);
                 var value = self.processCell(column, lap, { format: false });
-                return !!value || value >= 0;
+                return value || value === 0;
             });
             return isAvailable && hasData;
         });
