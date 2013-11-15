@@ -188,8 +188,6 @@ function(
 
                     var cols = Math.round((ui.size.width + self.options.packery.gutter) / (width + self.options.packery.gutter));
                     var rows = Math.round((ui.size.height + self.options.packery.gutter) / (height + self.options.packery.gutter));
-                    cols = Math.max(Math.min(cols, 2), 1);
-                    rows = Math.max(Math.min(rows, 2), 1);
 
                     ui.element.data(
                     {

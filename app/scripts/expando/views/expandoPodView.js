@@ -70,8 +70,15 @@ function(
 
         _onResize: function()
         {
-            this.$el.height(Math.floor(this.sizer.height() + 10) * this.$el.data("rows") - 10);
-            this.$el.width(Math.floor(this.sizer.width() + 10) * this.$el.data("cols") - 10);
+            var cols = this.$el.data("cols");
+            var rows = this.$el.data("rows");
+
+            // Max 2 rows/columns, Min 1 row/column
+            cols = Math.max(Math.min(cols, 2), 1);
+            rows = Math.max(Math.min(rows, 2), 1);
+
+            this.$el.height(Math.floor(this.sizer.height() + 10) * rows - 10);
+            this.$el.width(Math.floor(this.sizer.width() + 10) * cols - 10);
             this.childView.trigger("pod:resize");
         },
 
