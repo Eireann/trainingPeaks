@@ -10,6 +10,7 @@ function(
     var ChartingAxesBuilder =  {
         makeYaxes: function(series, options)
         {
+            options = _.extend({ useRight: true }, options);
             var axes = [];
             var axesIndexByUnits = {};
 
@@ -42,14 +43,14 @@ function(
                 }
             });
 
-            if(axes.length > 1)
+            if(options.useRight && axes.length > 1)
             {
                 axes[1].position = "right";
-                _.each(axes.slice(1), function(axes)
-                {
-                    axes.color = axes.color || "transparent";
-                });
             }
+            _.each(axes.slice(1), function(axes)
+            {
+                axes.color = axes.color || "transparent";
+            });
 
             return axes;
         },

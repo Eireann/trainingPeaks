@@ -90,6 +90,13 @@ function(
             units: "speed",
             channel: "Speed"
         },
+        minimumSpeed:
+        {
+            label: "Max Speed",
+            getter: "minimumSpeed",
+            units: "speed",
+            channel: "Speed"
+        },
         maximumSpeed:
         {
             label: "Max Speed",
@@ -108,6 +115,13 @@ function(
         {
             label: "Avg Power",
             getter: "averagePower",
+            units: "power",
+            channel: "Power"
+        },
+        minimumPower:
+        {
+            label: "Max Power",
+            getter: "minimumPower",
             units: "power",
             channel: "Power"
         },
@@ -191,7 +205,7 @@ function(
 
         this.tssType = TP.utils.units.getUnitsLabel("tss", this.workoutTypeId, this.model);
 
-        this.columnNames = this.getDefaultColumnNames();
+        this.columnNames = options.columns || this.getDefaultColumnNames();
         this.columns = this.getColumns();
     }
 
@@ -286,7 +300,7 @@ function(
             {
                 formatLapData.calculateTotalAndMovingTime(lap);
                 var value = self.processCell(column, lap, { format: false });
-                return value || value === 0;
+                return !!value || value >= 0;
             });
             return isAvailable && hasData;
         });
@@ -294,7 +308,7 @@ function(
         return columns;
     };
 
-    LapsStats.prototype.processRows = function getRows(options)
+    LapsStats.prototype.processRows = function(options)
     {
         var self = this;
         return _.map(this.laps, function(row) { return self.processRow(row, options); });
@@ -309,11 +323,32 @@ function(
         });
     };
 
+    LapsStats.prototype.processColumns = function(options)
+    {
+        var self = this;
+        return _.map(this.columns, function(column)
+        {
+            return { meta: column, data: self.processColumn(column, options) };
+        });
+    };
+
+    LapsStats.prototype.processColumn = function(column, options)
+    {
+        var self = this;
+        return _.map(this.laps, function(row) { return self.processCell(column, row, options); });
+    };
+
+
+
     LapsStats.prototype.processCell = function(column, row, options)
     {
         options = options || { format: true };
 
         var formatOptions = { defaultValue: "--", allowZero: true, workoutTypeId: this.workoutTypeId };
+        if(_.isObject(options.format))
+        {
+            _.extend(formatOptions, options.format);
+        }
         var value = _.result(row, column.getter);
 
         if(_.has(column, "defaultValue") && !value) value = column.defaultValue;
