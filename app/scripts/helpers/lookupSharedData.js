@@ -4,7 +4,7 @@ define(
     "handlebars",
     "TP"
 ],
-function(underscore, Handlebars, TP)
+function(_, Handlebars, TP)
 {
 
     var getSharedDataByKey = function(obj, key)

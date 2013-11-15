@@ -1,12 +1,15 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "views/expando/graphSeriesOptionsMenuView",
     "views/userConfirmationView",
     "hbs!templates/views/expando/deleteRangeConfirmationTemplate",
     "hbs!templates/views/expando/graphToolbar"
 ],
-function(
+function($,
+         _,
          TP,
          GraphSeriesOptionsMenuView,
          UserConfirmationView,

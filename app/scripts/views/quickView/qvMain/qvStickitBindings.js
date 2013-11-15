@@ -1,10 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "moment",
     "TP"
 ],
 function (
     _,
+    moment,
     TP
 )
 {

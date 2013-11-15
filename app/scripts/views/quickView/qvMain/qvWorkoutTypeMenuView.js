@@ -1,10 +1,11 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "hbs!templates/views/quickView/workoutTypeMenu"
 ],
-function(underscore, TP, workoutTypeMenuTemplate)
+function($, _, TP, workoutTypeMenuTemplate)
 {
     return TP.ItemView.extend(
     {

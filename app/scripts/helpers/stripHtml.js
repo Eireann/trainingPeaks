@@ -1,9 +1,10 @@
 define(
 [
+    "jquery",
     "handlebars",
     "scripts/helpers/multilineEllipsis"
 ],
-function (Handlebars, multilineEllipsis)
+function ($, Handlebars, multilineEllipsis)
 {
 
     var stripHtml = function(html, maxLength)

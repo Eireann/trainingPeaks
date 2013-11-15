@@ -1,8 +1,9 @@
 define(
 [
+    "underscore",
     "TP"
 ],
-function(TP)
+function(_, TP)
 {
     var channelIds = {
         Nothing: 0,

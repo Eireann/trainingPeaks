@@ -1,13 +1,17 @@
 define(
 [
+    "jquery",
     "underscore",
+    "moment",
     "TP",
     "models/workoutFileData",
     "views/userConfirmationView",
     "hbs!templates/views/quickView/fileUploadErrorView"
 ],
 function(
+    $,
     _,
+    moment,
     TP,
     WorkoutFileData,
     UserConfirmationView,

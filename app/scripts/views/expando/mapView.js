@@ -1,12 +1,18 @@
 ﻿define(
 [
+    "underscore",
+    "setImmediate",
     "TP",
+    "leaflet",
     "utilities/mapping/mapUtils",
     "utilities/charting/chartColors",
     "hbs!templates/views/expando/mapTemplate"
 ],
 function (
+    _,
+    setImmediate,
     TP,
+    L,
     MapUtils,
     chartColors,
     mapTemplate

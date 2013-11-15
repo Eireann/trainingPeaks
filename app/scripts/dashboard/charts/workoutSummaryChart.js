@@ -430,6 +430,7 @@ function(
                 }
             }, defaultFlotOptions.getBarOptions(null));
 
+            var series;
             if(this.subType.hasPlanned && this.get("showPlanned"))
             {
                 series = buildSeriesOptionsWithPlannedValues(data, this.subType, barWidth, this._getColorForWorkoutTypeWithPlanned());

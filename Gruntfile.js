@@ -8,13 +8,52 @@ module.exports = function(grunt)
     {
         jshint:
         {
-            all:
-            [
-                "Gruntfile.js",
-                "test/**/*.js",
-                "app/**/*.js",
-                "!test/utils/AppTestData/**/*.js"
-            ],
+            source:
+            {
+                src: [ "app/**/*.js" ]
+            },
+            build:
+            {
+                src: [ "Gruntfile.js" ],
+                options:
+                {
+                    node: true
+                }
+            },
+            tests:
+            {
+                src: [ "test/**/*.js", "!test/utils/AppTestData/**/*.js" ],
+                options:
+                {
+                    expr: true, // Allow chai syntax
+                    globals:
+                    {
+                        "describe": false,
+                        "it": false,
+                        "xdescribe": false,
+                        "xit": false,
+                        "before": false,
+                        "beforeEach": false,
+                        "after": false,
+                        "afterEach": false,
+
+
+                        "apiConfig": false,
+                        "theMarsApp": false,
+                        "requirejs": false,
+                        "define": false,
+                        "require": false,
+
+                        // Remove these when time allows
+                        "createSpyObj": false,
+                        "expect": false,
+                        "sinon": false,
+                        "Q": false,
+                        "$": false,
+                        "_": false
+                    }
+                }
+            },
             options:
             {
                 scripturl: true,
@@ -22,14 +61,16 @@ module.exports = function(grunt)
                 eqeqeq: true,
                 eqnull: true,
                 browser: true,
-                devel: true,
+                devel: true, // TODO: Remove so we don't end up with console.log everywhere
                 sub: true,
-                expr: true, // Allow  chai syntax. TODO: Move to test only jshint
+                undef: true,
                 globals:
                 {
-                    "apiConfig": true,
-                    "theMarsApp": true,
-                    "$": true
+                    "apiConfig": false,
+                    "theMarsApp": false,
+                    "requirejs": false,
+                    "define": false,
+                    "require": false
                 }
             }
         },
@@ -107,7 +148,6 @@ module.exports = function(grunt)
                     include: [
                         "../vendor/js/libs/almond"
                     ].concat(_.map(fs.readdirSync("app/scripts/affiliates"), function(code) { return "affiliates/" + code + "/settings"; })),
-                    path: { handlebars: "handlebars.runtime" },
                     stubModuels: ["hbs", "text"],
                     wrap: false,
                     optimize: "none",

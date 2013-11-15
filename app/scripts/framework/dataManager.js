@@ -1,12 +1,16 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "backbone",
+    "moment",
     "TP",
     "framework/identityMap"
 ], function(
+    $,
     _,
     Backbone,
+    moment,
     TP,
     IdentityMap
     )

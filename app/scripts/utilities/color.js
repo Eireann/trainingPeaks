@@ -1,6 +1,7 @@
 ﻿define(
 [
-], function()
+    "jquery"
+], function($)
 {
     var colorUtils = {
 
@@ -24,8 +25,8 @@
 
         getImageColorAtRightEdge: function(img)
         {
-            xOffset = img.width - 1;
-            yOffset = Math.round(img.height / 2);
+            var xOffset = img.width - 1;
+            var yOffset = Math.round(img.height / 2);
             return this.getImageColor(img, xOffset, yOffset);
         },
 

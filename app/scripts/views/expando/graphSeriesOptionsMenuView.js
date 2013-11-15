@@ -1,19 +1,20 @@
 define(
 [
+    "underscore",
     "TP",
     "shared/views/tomahawkView",
     "views/userConfirmationView",
     "hbs!templates/views/expando/deleteSeriesConfirmationTemplate",
     "hbs!templates/views/expando/graphSeriesOptionsMenuTemplate",
 ],
-function(
+function(_,
          TP,
          TomahawkView,
          UserConfirmationView,
          deleteConfirmationTemplate,
          optionsMenuTemplate)
 {
-    GraphSeriesOptionsMenuView = TP.ItemView.extend(
+    var GraphSeriesOptionsMenuView = TP.ItemView.extend(
     {
         showThrobbers: false,
         tagName: "div",

@@ -1,8 +1,9 @@
 ﻿define(
 [
+    "jquery",
     "TP"
 ],
-function (TP)
+function ($, TP)
 {
     return TP.ItemView.extend(
     {

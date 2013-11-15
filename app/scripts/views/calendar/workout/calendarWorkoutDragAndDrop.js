@@ -1,9 +1,11 @@
 define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "hbs!templates/views/calendar/workout/calendarWorkoutDragState"
 ],
-function(TP, CalendarWorkoutTemplateDragState)
+function($, _, TP, CalendarWorkoutTemplateDragState)
 {
     var calendarWorkoutDragAndDrop = {
 

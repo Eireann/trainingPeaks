@@ -20,7 +20,7 @@ function($, TP, moment, DataManager, CalendarContainerView, ScrollableCollection
                     endDate: moment().add("weeks", 2),
                     dataManager: new DataManager()
                 },
-                collection =  new CalendarCollection(null, collection_options);
+                collection = null; // new CalendarCollection(null, collection_options); // This can't work as it's not imported
 
             sinon.stub(collection, "getWeekModelForDay").returns(new TP.Model());
             

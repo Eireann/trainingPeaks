@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "moment",
     "TP",
     "hbs!templates/views/dayBarView"
 ],
-function (TP, dayBarViewTemplate)
+function (moment, TP, dayBarViewTemplate)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);

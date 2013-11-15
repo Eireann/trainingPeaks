@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "utilities/datetime/datetime",
     "utilities/units/units",
     "utilities/workout/workout",
@@ -11,6 +12,7 @@
     "utilities/collections",
     "utilities/metrics"
 ], function(
+    _,
     datetime,
     units,
     workout,

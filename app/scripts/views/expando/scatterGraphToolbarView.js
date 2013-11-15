@@ -1,9 +1,13 @@
 define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "hbs!templates/views/expando/scatterGraphToolbar"
 ],
 function(
+         $,
+         _,
          TP,
          scatterGraphToolbarTemplate)
 {

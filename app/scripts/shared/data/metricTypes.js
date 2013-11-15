@@ -3,7 +3,7 @@ define(
 ],
 function()
 {
-    metricTypes =
+    var metricTypes =
     [
         {
             id: 1,

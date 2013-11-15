@@ -1,6 +1,8 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
+    "moment",
     "jqueryui/datepicker",
     "jqueryTimepicker",
     "TP",
@@ -17,7 +19,9 @@
     "hbs!templates/views/userMessage/saveWorkoutBeforeAttachment"
 ],
 function (
+    $,
     _,
+    moment,
     datepicker,
     timepicker,
     TP,

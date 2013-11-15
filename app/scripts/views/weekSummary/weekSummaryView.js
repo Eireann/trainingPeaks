@@ -1,5 +1,7 @@
 define(
 [
+    "jquery",
+    "underscore",
     "TP",
     "models/workoutModel",
     "views/weekSummary/weekSummarySettings",
@@ -9,6 +11,8 @@ define(
     "hbs!templates/views/weekSummary/weekSummary"
 ],
 function(
+    $,
+    _,
     TP,
     WorkoutModel,
     WeekSummarySettings,

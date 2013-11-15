@@ -1,10 +1,11 @@
 define(
 [
+    "underscore",
     "TP",
     "views/elevationCorrection/elevationCorrectionView",
     "hbs!templates/views/quickView/qvOptionsMenuTemplate"
 ],
-function(TP, ElevationCorrectionView, optionsMenuTemplate)
+function(_, TP, ElevationCorrectionView, optionsMenuTemplate)
 {
     return TP.ItemView.extend(
     {

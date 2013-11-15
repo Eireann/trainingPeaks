@@ -34,7 +34,7 @@ function (
 
             it("Should have a calculate button", function()
             {
-                $calculate = view.$("button.calculate");
+                var $calculate = view.$("button.calculate");
                 expect($calculate.length).to.equal(1);
             });
 

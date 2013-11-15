@@ -1,5 +1,7 @@
 define(
 [
+    "underscore",
+    "moment",
     "TP",
     "setImmediate",
     "jqueryOutside",
@@ -8,7 +10,7 @@ define(
     "hbs!templates/views/calendar/day/calendarDaySettings",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
-function(TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, calendarDaySettingsTemplate, deleteConfirmationView)
+function(_, moment, TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, calendarDaySettingsTemplate, deleteConfirmationView)
 {
     return TP.ItemView.extend(
     {

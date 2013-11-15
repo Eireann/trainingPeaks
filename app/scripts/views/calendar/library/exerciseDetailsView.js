@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
 
     "TP",
@@ -10,6 +11,7 @@ define(
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
+    $,
     _,
 
     TP,

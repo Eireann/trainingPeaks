@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "polyfills/console",
     "utilities/rollbarManager",
     "shared/patches/wrapForRollbar",
@@ -7,7 +8,7 @@ define(
     "TP",
     "app"
 ],
-function(consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
+function($, consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
 {
     function boot()
     {

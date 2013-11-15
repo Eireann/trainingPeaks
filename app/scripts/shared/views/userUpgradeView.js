@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "shared/data/userUpgradeViewSlides",
     "hbs!templates/views/userUpgradeView"
 ],
-function (TP, slides, userUpgradeTemplate)
+function (_, TP, slides, userUpgradeTemplate)
 {
     return TP.ItemView.extend(
     {

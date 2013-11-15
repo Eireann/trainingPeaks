@@ -1,9 +1,10 @@
 ﻿define(
 [ 
+    "jquery",
     "underscore",
     "backbone"
 ],
-function(_, Backbone)
+function($, _, Backbone)
 {
     function WorkoutFileReader(file)
     {

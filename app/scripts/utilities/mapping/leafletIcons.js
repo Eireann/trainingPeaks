@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "TP",
     "leaflet",
     "hbs!templates/helpers/mapping/mileMarkerIcon",
@@ -7,8 +8,9 @@
     "hbs!templates/helpers/mapping/finishMarkerIcon"
 ],
 function(
+    $,
     TP,
-    Leaflet,
+    L,
     mileMarkerIconTemplate,
     startMarkerIconTemplate,
     finishMarkerIconTemplate

@@ -1,10 +1,11 @@
 define(
 [
+    "underscore",
     "TP",
     "views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView",
     "hbs!templates/views/quickView/workoutQuickViewMenu"
 ],
-function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
+function(_, TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 {
     return TP.ItemView.extend(
     {

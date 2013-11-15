@@ -1,16 +1,20 @@
 define(
 [
+    "jquery",
     "jquerySelectBox",
     "setImmediate",
     "underscore",
+    "backbone",
     "TP",
     "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/dashboardChartSettings"
 ],
 function(
+    $,
     jquerySelectBox,
     setImmediate,
     _,
+    Backbone,
     TP,
     chartUtils,
     dashboardChartSettingsTemplate

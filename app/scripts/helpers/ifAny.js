@@ -1,9 +1,10 @@
 ﻿define(
 [
     "handlebars",
+    "underscore",
     "TP"
 ],
-function (Handlebars, TP)
+function (Handlebars, _, TP)
 {
 
     var ifAny = function()

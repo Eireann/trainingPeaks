@@ -1,6 +1,9 @@
 define(
-[],
-function ()
+[
+    "jquery",
+    "underscore"
+],
+function ($, _)
 {
     var computeSumsOverPeriod = function(timeSeries, period)
     {

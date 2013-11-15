@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "moment",
     "underscore",
     "setImmediate",
@@ -13,6 +14,7 @@
     "hbs!templates/views/confirmationViews/closeChartsConfirmationView"
 ],
 function(
+    $,
     moment,
     _,
     setImmediate,

@@ -1,6 +1,8 @@
 define(
 [
+    "jquery",
     "underscore",
+    "setImmediate",
     "TP",
     "jquerySelectBox",
     "backbone",
@@ -9,7 +11,9 @@ define(
     "hbs!dashboard/templates/metricsChartSettings"
 ],
 function(
+    $,
     _,
+    setImmediate,
     TP,
     jquerySelectBox,
     Backbone,

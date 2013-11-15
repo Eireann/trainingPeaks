@@ -1,6 +1,8 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
+    "setImmediate",
     "TP",
     "models/workoutStatsForRange",
     "utilities/charting/flotOptions",
@@ -15,7 +17,9 @@
     "hbs!templates/views/expando/graphTemplate"
 ],
 function(
+    $,
     _,
+    setImmediate,
     TP,
     WorkoutStatsForRange,
     defaultFlotOptions,

@@ -23,7 +23,7 @@ function(
 
     var buildPmcModelData = function(howManyItems, future)
     {
-        modelData = [];
+        var modelData = [];
 
         var multiplier = future ? 1 : -1;
 

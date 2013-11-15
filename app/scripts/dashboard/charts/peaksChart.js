@@ -1,5 +1,6 @@
 define(
 [
+   "jquery",
     "underscore",
     "moment",
     "TP",
@@ -12,6 +13,7 @@ define(
     "views/quickView/workoutQuickView"
 ],
 function(
+   $,
    _,
    moment,
    TP,

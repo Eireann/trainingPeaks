@@ -1,9 +1,11 @@
 define(
 [
+    "jquery",
     "underscore",
     "originalSetImmediate"
 ],
 function(
+    $,
     _
 )
 {

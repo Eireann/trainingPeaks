@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "jqueryHtmlClean",
     "setImmediate",
@@ -15,6 +16,7 @@ define(
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
 function(
+    $,
     _,
     jqueryHtmlClean,
     setImmediate,

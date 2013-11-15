@@ -96,6 +96,9 @@ requirejs.config(
         jquerySelectBox: [
             "jquery"
         ],
+        jqueryTimepicker: [
+            "jquery"
+        ],
         "flot/jquery.flot": [
             "jquery"
         ],
@@ -110,6 +113,9 @@ requirejs.config(
         },
         sinon: {
             exports: "sinon"
+        },
+        leaflet: {
+            exports: "L"
         }
     }
 });

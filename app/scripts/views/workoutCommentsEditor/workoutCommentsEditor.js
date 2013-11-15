@@ -1,12 +1,13 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
     "TP",
     "./workoutCommentsCollectionView",
     "utilities/stickitMixin",
     "hbs!templates/views/workoutCommentsEditor/workoutCommentsEditor"
 ],
-function(_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEditorTemplate)
+function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEditorTemplate)
 {
     var workoutCommentsEditorView =
     {

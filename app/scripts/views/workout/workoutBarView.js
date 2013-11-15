@@ -1,12 +1,16 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
+    "moment",
     "TP",
     "views/quickView/qvMain/qvAttachmentUploadMenuView",
     "hbs!templates/views/workout/workoutBarView"
 ],
 function (
+    $,
     _,
+    moment,
     TP,
     QVAttachmentUploadMenuView,
     workoutBarViewTemplate

@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "jquery",
     "TP",
     "models/library/libraryExercisesCollection"
 ],
-function (TP, LibraryExercisesCollection)
+function ($, TP, LibraryExercisesCollection)
 {
     return TP.APIDeepModel.extend(
     {

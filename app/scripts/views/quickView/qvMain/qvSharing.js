@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "moment",
     "TP",
@@ -7,6 +8,7 @@
     "views/quickView/qvMain/qvShortUrlView"
 ],
 function (
+    $,
     _,
     moment,
     TP,
@@ -126,10 +128,10 @@ function (
             var text = this.getSharedText();
             text += " #trainingpeaks";
 
-            var twitterUrl = "https://twitter.com/intent/tweet?text=" + escape(text);
+            var twitterUrl = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
             if (url)
             {
-                twitterUrl = twitterUrl + "&url=" + escape(url);
+                twitterUrl = twitterUrl + "&url=" + encodeURIComponent(url);
             }
             window.open(twitterUrl, 'twitterWindow', 'width=500, height=530, top=0, left=0');
         },
@@ -150,12 +152,12 @@ function (
             var redirectURL = "https://www.facebook.com";
             var pictureURL = "https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png";
 
-            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=" + escape(pictureURL) + "&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(redirectURL);
+            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=" + encodeURIComponent(pictureURL) + "&name=" + encodeURIComponent(windowTitle) + "&description=" + encodeURIComponent(descriptionText) + "&redirect_uri=" + encodeURIComponent(redirectURL);
 
             if (!url)
                 url = urlOverride;
 
-            var escapedUrl = escape(url);
+            var escapedUrl = encodeURIComponent(url);
             facebookURL += "&link=" + escapedUrl + "&caption=" + escapedUrl;
 
                 window.open(facebookURL, 'facebookWindow', 'width=950, height=525, top=0, left=0');
@@ -193,7 +195,7 @@ function (
             if (activityUrl)
                 mailBody += "\n\n" + activityUrl;
             var mailSubject = this.getMailSubjectLine();
-            var mailtoUrl = "mailto:?subject=" + escape(mailSubject) + "&body=" + escape(mailBody);
+            var mailtoUrl = "mailto:?subject=" + encodeURIComponent(mailSubject) + "&body=" + encodeURIComponent(mailBody);
             emailLink.attr("href", mailtoUrl);
 
         },

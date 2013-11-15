@@ -1,5 +1,8 @@
 ﻿define(
 [
+    "jquery",
+    "underscore",
+    "setImmediate",
     "TP",
     "utilities/charting/dataParser",
     "utilities/charting/flotOptions",
@@ -10,6 +13,9 @@
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
 function(
+    $,
+    _,
+    setImmediate,
     TP,
     DataParser,
     defaultFlotOptions,

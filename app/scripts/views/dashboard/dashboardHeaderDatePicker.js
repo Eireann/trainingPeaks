@@ -1,16 +1,20 @@
 define(
 [
+    "jquery",
     "setImmediate",
     "jquerySelectBox",
     "underscore",
+    "backbone",
     "TP",
     "./dashboardDatePicker",
     "hbs!templates/views/dashboard/dashboardHeaderDatePicker"
 ],
 function(
+    $,
     setImmediate,    
     jquerySelectBox,
     _,
+    Backbone,
     TP,
     DashboardDatePicker,
     dashboardHeaderDatePickerTemplate

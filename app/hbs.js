@@ -71,7 +71,7 @@ define(function(require) {
                         onload(Handlebars.compile(processed.ast));
                     });
                 }, function(error) {
-                    throw Error("Could not load handlebars template");
+                    throw Error("Could not load handlebars template:" + error);
                 });
             }
         },

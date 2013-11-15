@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
@@ -16,6 +17,7 @@ define(
     "hbs!templates/views/calendar/day/calendarDay"
 ],
 function(
+    $,
     _,
     touchPunch,
     draggable,

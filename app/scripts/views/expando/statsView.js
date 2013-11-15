@@ -1,11 +1,13 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "utilities/workout/formatLapData",
     "hbs!templates/views/expando/statsTemplate"
 ],
 function(
+    $,
     _,
     TP,
     formatLapData,

@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "jqueryui/datepicker",
     "jquerySelectBox",
     "setImmediate",
@@ -10,6 +11,7 @@ define(
     "hbs!templates/views/dashboard/dashboardChartSettings"
 ],
 function(
+    $,
     datepicker,
     jquerySelectBox,
     setImmediate,

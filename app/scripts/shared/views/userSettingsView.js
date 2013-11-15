@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "TP",
     "backbone",
@@ -14,6 +15,7 @@
     "hbs!shared/templates/userSettings/userSettingsFooterTemplate"
 ],
 function(
+    $,
     _,
     TP,
     Backbone,

@@ -1,11 +1,12 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "shared/models/userModel",
     "shared/models/userAccessRightsModel"
 ],
-function (_, TP, UserModel, UserAccessRightsModel)
+function ($, _, TP, UserModel, UserAccessRightsModel)
 {
     // 4 hour interval in milliseconds
     var REFRESH_INTERVAL = 1000 * 60 * 60 * 4;
@@ -112,7 +113,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
         _redirectToLogin: function()
         {
             if(REDIRECT_URL)
-                window.location = REDIRECT_URL + "?ReturnUrl=" + escape(window.location);
+                window.location = REDIRECT_URL + "?ReturnUrl=" + encodeURIComponent(window.location);
         },
 
         authenticationComplete: function(callback)

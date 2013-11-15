@@ -1,5 +1,6 @@
 define(
 [
+    "underscore",
     "TP",
     "expando/views/expandoPodView",
     "views/charts/heartRateTimeInZonesChart",
@@ -14,6 +15,7 @@ define(
     "views/expando/scatterGraphView"
 ],
 function(
+    _,
     TP,
     ExpandoPodView,
     HRTimeInZonesChartView,

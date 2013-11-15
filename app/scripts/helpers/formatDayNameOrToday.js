@@ -1,9 +1,10 @@
 define(
 [
     "handlebars",
+    "moment",
     "TP"
 ],
-function(Handlebars, TP)
+function(Handlebars, moment, TP)
 {
     
     var today = moment().format(TP.utils.datetime.shortDateFormat);

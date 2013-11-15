@@ -1,10 +1,11 @@
 define(
 [
+    "underscore",
     "utilities/charting/dataParserUtils",
     "utilities/charting/findOrderedArrayIndexByValue",
     "utilities/charting/flotUtils"
 ],
-function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
+function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 {
     var defaultChannelOrder =
     [
@@ -219,7 +220,7 @@ function(DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getMsOffsetFromDistance: function (distance)
         {
-            var index = DataParserUtils.findIndexByChannelAndOffset(this.xAxisDistanceValues, this.xaxis, xAxisOffset, this.flatSamples.msOffsetsOfSamples);
+            var index = DataParserUtils.findIndexByChannelAndOffset(this.xAxisDistanceValues, "distance", distance, this.flatSamples.msOffsetsOfSamples);
 
             if(index !== null && index < this.flatSamples.msOffsetsOfSamples.length)
                 return this.flatSamples.msOffsetsOfSamples[index];

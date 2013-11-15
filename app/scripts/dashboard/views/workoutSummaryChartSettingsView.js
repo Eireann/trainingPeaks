@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "backbone",
@@ -9,6 +10,7 @@ define(
     "hbs!dashboard/templates/workoutSummaryChartSettings"
 ],
 function(
+    $,
     _,
     TP,
     Backbone,

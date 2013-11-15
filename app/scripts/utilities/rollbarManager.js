@@ -1,4 +1,5 @@
-﻿define(
+﻿/* global _rollbar: false */
+define(
 [
     "underscore"
 ],

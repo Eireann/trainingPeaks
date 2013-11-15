@@ -1,7 +1,9 @@
 define(
 [
+    "jquery"
 ],
 function(
+    $
     )
 {
 /* Flot plugin for stacking data sets rather than overlyaing them.

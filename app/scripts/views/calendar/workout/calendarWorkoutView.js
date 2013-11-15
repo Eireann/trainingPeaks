@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "moment",
     "TP",
@@ -10,6 +11,7 @@ define(
     "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
 function(
+    $,
     _,
     moment,
     TP,

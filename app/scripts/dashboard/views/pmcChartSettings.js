@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "jqueryui/spinner",
     "underscore",
     "TP",
@@ -9,6 +10,7 @@ define(
     "hbs!dashboard/templates/pmcChartSettings"
 ],
 function(
+    $,
     spinner,
     _,
     TP,

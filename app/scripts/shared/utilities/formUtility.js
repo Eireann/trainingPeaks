@@ -1,10 +1,14 @@
 define(
 [
+    "jquery",
     "underscore",
+    "moment",
     "TP"
 ],
 function(
+    $,
     _,
+    moment,
     TP
 )
 {

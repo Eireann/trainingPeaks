@@ -1,10 +1,12 @@
 define(
 [
+    "underscore",
     "TP",
     "backbone",
     "hbs!shared/templates/overlayBox"
 ],
 function(
+    _,
     TP,
     Backbone,
     overlayBoxTemplate

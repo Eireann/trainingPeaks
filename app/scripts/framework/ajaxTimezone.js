@@ -1,7 +1,8 @@
 ﻿define(
 [
+    "jquery"
 ],
-function()
+function($)
 {
     var cachedTimezone = new Date().getTimezoneOffset();
     

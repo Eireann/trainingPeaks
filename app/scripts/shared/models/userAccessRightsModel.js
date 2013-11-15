@@ -11,7 +11,7 @@ define(
     "TP"
 ],
 function(
-    underscore,
+    _,
     accessRights,
     TP
     )

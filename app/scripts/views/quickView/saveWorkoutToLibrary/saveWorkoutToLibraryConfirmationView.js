@@ -1,11 +1,12 @@
 ﻿define(
 [
+    "setImmediate",
     "TP",
     "models/commands/saveWorkoutToExerciseLibrary",
     "views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryAfterSaveMessageView",
     "hbs!templates/views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView"
 ],
-function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTemplate)
+function(setImmediate, TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTemplate)
 {
     return TP.ItemView.extend(
     {

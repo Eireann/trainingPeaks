@@ -1,8 +1,9 @@
 ﻿define(
 [
+    "moment",
     "utilities/datetime/format",
     "utilities/datetime/convert"
-], function(format, convert)
+], function(moment, format, convert)
 {
     return {
 

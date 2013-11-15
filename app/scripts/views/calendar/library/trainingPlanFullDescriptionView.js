@@ -1,10 +1,12 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "hbs!Templates/views/calendar/library/trainingPlanFullDescriptionView"
 ],
 function(
+    $,
     _,
     TP,
     trainingPlanFullDescriptionTemplate

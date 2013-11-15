@@ -1,10 +1,12 @@
 define(
 [
     "underscore",
+    "backbone",
     "TP"
 ],
 function(
     _,
+    Backbone,
     TP
 )
 {

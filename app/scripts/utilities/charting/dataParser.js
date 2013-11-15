@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "underscore",
     "utilities/charting/dataParserUtils",
     "utilities/charting/findOrderedArrayIndexByValue"
 ],
-function(DataParserUtils, findOrderedArrayIndexByValue)
+function(_, DataParserUtils, findOrderedArrayIndexByValue)
 {
     var DataParser = function(options) {
         if(!options.graphData)

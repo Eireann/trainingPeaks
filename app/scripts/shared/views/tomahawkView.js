@@ -1,10 +1,12 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "hbs!shared/templates/tomahawkTemplate"
 ],
 function(
+    $,
     _,
     TP,
     tomahawkTemplate

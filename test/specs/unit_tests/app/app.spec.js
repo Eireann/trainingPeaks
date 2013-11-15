@@ -23,8 +23,7 @@ function( _, testHelpers )
 
         it("Should exist globally", function()
         {
-            var globalNamespace = typeof window !== 'undefined' ? window : jasmine.getGlobal();
-            expect(_.keys(globalNamespace)).to.contain('theMarsApp');
+            expect(_.keys(window)).to.contain('theMarsApp');
         });
 
         describe("App Initializers", function()

@@ -1,10 +1,12 @@
 define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "TP"
 ],
 function(
+    $,
     _,
     setImmediate,
     TP)
@@ -323,7 +325,7 @@ function(
             }
 
             var self = this;
-            callback = function()
+            var callback = function()
             {
                 if(self.margin.bottom)
                 {

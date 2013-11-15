@@ -1,5 +1,6 @@
 define(
 [
+	"jquery",
 	"underscore",
 	"TP",
 	"views/quickView/workoutQuickView",
@@ -8,6 +9,7 @@ define(
 	"hbs!templates/views/dashboard/pmcWorkoutsList"
 ],
 function(
+	$,
 	_,
 	TP,
 	WorkoutQuickView,

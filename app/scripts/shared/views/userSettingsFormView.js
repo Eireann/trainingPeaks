@@ -1,9 +1,11 @@
 define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "jquerySelectBox",
     "jqueryui/datepicker",
+    "moment",
     "backbone",
     "TP",
     "shared/data/athleteTypes",
@@ -15,10 +17,12 @@ define(
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
 function(
+    $,
     _,
     setImmediate,
     jquerySelectBox,
     datepicker,
+    moment,
     Backbone,
     TP,
     athleteTypes,

@@ -1,10 +1,12 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "layouts/coachHomeLayout",
     "views/home/coach/coachHome"
 ],
 function(
+    _,
     TP,
     CoachHomeLayout,
     CoachHomeView

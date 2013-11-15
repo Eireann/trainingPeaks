@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquery",
     "underscore",
     "framework/chart",
     "moment",
@@ -15,6 +16,7 @@
     "hbs!dashboard/templates/pmcChart"
 ],
 function(
+    $,
     _,
     Chart,
     moment,

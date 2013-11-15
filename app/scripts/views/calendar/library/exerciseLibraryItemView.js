@@ -1,5 +1,7 @@
 define(
 [
+    "jquery",
+    "underscore",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
 
@@ -10,6 +12,8 @@ define(
     "hbs!templates/views/calendar/library/exerciseLibraryItemViewDragState"
 ],
 function(
+    $,
+    _,
     touchPunch,
     draggable,
 

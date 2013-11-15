@@ -99,7 +99,6 @@ function(
                     var error = new Error("Error: An attempt was made to add something to storage that exceeded the quota");
                     error.code = 22;
                     error.name = "QuotaExceededError";
-                    doThrow = false;
                     throw error;
                 });
 

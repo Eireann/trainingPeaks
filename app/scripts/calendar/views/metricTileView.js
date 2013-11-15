@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "TP",
     "calendar/views/metricTileSettingsView",
@@ -7,6 +8,7 @@ define(
     "hbs!calendar/templates/metricTileTemplate"
 ],
 function(
+    $,
     _,
     TP,
     MetricTileSettingsView,

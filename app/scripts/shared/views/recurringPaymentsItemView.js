@@ -1,9 +1,11 @@
 define(
 [
+    "underscore",
     "TP",
     "hbs!shared/templates/recurringPaymentsItemTemplate"
 ],
 function(
+    _,
     TP,
     recurringPaymentsItemTemplate
 )

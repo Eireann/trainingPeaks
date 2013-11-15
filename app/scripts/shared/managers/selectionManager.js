@@ -1,6 +1,8 @@
 define(
 [
+    "jquery",
     "underscore",
+    "backbone",
     "TP",
     "shared/misc/selection",
     "shared/misc/activitySelection",
@@ -9,7 +11,9 @@ define(
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
+    $,
     _,
+    Backbone,
     TP,
     Selection,
     // Ensure Selection Classes get loaded
@@ -147,7 +151,7 @@ function(
         {
             selection = selection || this.selection;
 
-            actionFunction = selection && selection[action + "Action"];
+            var actionFunction = selection && selection[action + "Action"];
             if(_.isFunction(actionFunction))
             {
                 return actionFunction.call(selection, options);
