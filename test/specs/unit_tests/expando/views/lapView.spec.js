@@ -33,6 +33,7 @@ function(
             stateModel: stateModel,
             featureAuthorizer: {
                 runCallbackOrShowUpgradeMessage: function(feature, callback){return callback();},
+                canAccessFeature: function(){return true;},
                 features: {
                     ViewGraphRanges: null
                 }
