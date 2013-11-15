@@ -283,7 +283,7 @@ function(
             }
             else
             {
-                // this.plot.clearSelection(preventEvent);
+                this.plot.clearSelection(preventEvent);
             }
         },
 
