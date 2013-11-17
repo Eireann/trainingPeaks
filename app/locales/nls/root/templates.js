@@ -432,7 +432,7 @@ define({
     "RemovePhoto": "Remove Photo",
     "UploadPhoto": "Upload Photo",
 
-    "SwitchToFlex": "Switch to Flex",
+    "SwitchToFlex": "Go To Classic App",
     "InvalidEmail": "Email address is invalid, please re-enter",
     "InvalidPassword": "Passwords do not match, please re-enter",
 
