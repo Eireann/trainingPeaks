@@ -3,14 +3,13 @@ define(
     "underscore",
     "setImmediate",
     "TP",
-    "framework/notYetImplemented",
     "moment",
     "jqueryui/datepicker",
     "views/applicationHeader/coachAndAffiliateCustomizations",
     "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/calendarHeader"
 ],
-function(_, setImmediate, TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizations, CalendarUtility, calendarHeaderTemplate)
+function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomizations, CalendarUtility, calendarHeaderTemplate)
 {
     var calendarHeaderViewBase = {
 
@@ -29,8 +28,7 @@ function(_, setImmediate, TP, notYetImplemented, moment, datepicker, coachAndAff
             "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
             "click button.refreshButton": "onRefreshButtonClicked",
             "change .datepicker": "onDateSelect",
-            "change #athleteCalendarSelect": "onAthleteSelectBoxChange",
-            "click .settingsButton": notYetImplemented
+            "change #athleteCalendarSelect": "onAthleteSelectBoxChange"
 
         },
 
