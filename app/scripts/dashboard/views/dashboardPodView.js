@@ -28,11 +28,12 @@ function(
     closeChartsConfirmationTemplate
     )
 {
-    var DashboardPodView = TP.ItemView.extend({
-
+    var DashboardPodView = TP.ItemView.extend(
+    {
         className: "dashboardChart",
 
-        template: {
+        template:
+        {
             type: "handlebars",
             template: podTemplate
         },
@@ -41,7 +42,6 @@ function(
 
         initialize: function(options)
         {
-
             if(!this.model)
             {
                 throw "Dashboard Chart requires a settings model";

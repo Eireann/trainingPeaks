@@ -12,8 +12,8 @@ function(
     chartWorkoutOptionsTemplate
 )
 {
-    var ChartWorkoutOptionsView = TP.ItemView.extend({
-
+    var ChartWorkoutOptionsView = TP.ItemView.extend(
+    {
         template:
         {
             type: "handlebars",
@@ -59,7 +59,8 @@ function(
                 };
             }, this);    
 
-            workoutTypes.push({
+            workoutTypes.push(
+            {
                 id: "0",
                 name: "All",
                 selected: allSelected || noneSelected // if none are selected, then "all" is really selected

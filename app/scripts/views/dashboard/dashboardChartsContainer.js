@@ -24,7 +24,7 @@ function(
     PrimaryContainerView,
     PackeryCollectionView,
     dashboardContainerTemplate
-    )
+)
 {
     function userCanUsePod(chartModel)
     {
@@ -46,7 +46,8 @@ function(
             template: dashboardContainerTemplate
         },
 
-        regions: {
+        regions:
+        {
             "chartsRegion": ".chartsRegion"
         },
 
@@ -61,24 +62,28 @@ function(
 
             this.dataManager = options.dataManager;
 
-            this.collection = new SettingsSubCollection(null, { 
+            this.collection = new SettingsSubCollection(null,
+            { 
                 sourceModel: this.model,
                 sourceKey: "pods",
                 comparator: "index",
                 model: dashboardChartBuilder.buildChartModel,
-                modelOptions: {
+                modelOptions: 
+                {
                     dataManager: this.dataManager
                 }
             });
 
             this.on("close", this.collection.releaseSourceModel, this.collection);
 
-            this.filteredCollection = new FilteredSubCollection(null, {
+            this.filteredCollection = new FilteredSubCollection(null,
+            {
                 sourceCollection: this.collection,
                 filterFunction: userCanUsePod
             });
 
-            this.packeryCollectionView = new PackeryCollectionView({
+            this.packeryCollectionView = new PackeryCollectionView(
+            {
                 itemView: dashboardChartBuilder.buildChartView,
                 collection: this.filteredCollection,
                 itemViewOptions: { dataManager: this.dataManager },
@@ -94,6 +99,8 @@ function(
 
         onDashboardDatesChange: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "setGlobalDate", "eventLabel": "" });
+
             this.collection.each(function(model)
             {
                 model.trigger("dashboardDatesChange");

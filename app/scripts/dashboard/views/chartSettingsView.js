@@ -20,14 +20,15 @@ function(
     dashboardChartSettingsTemplate
     )
 {
-    var ChartSettingsView = TP.ItemView.extend({
-
+    var ChartSettingsView = TP.ItemView.extend(
+    {
         modal: true,
         showThrobbers: false,
         tagName: "div",
         className: "dashboardChartSettings",
 
-        modelEvents: {
+        modelEvents: 
+        {
             "change": "_updateTitle"
         },
 
@@ -73,7 +74,6 @@ function(
 
         alignArrowTo: function(top)
         {
-
             // make sure we're fully on the screen
             var windowBottom = $(window).height() - 10;
             this.top(top - 25);
