@@ -21,6 +21,7 @@ function()
 
         seriesColorByUnit:
         {
+            "distance": "#7b1F40",
             "duration": "#990",
             "calories": "#00f"
         },

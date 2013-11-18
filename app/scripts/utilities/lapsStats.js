@@ -22,7 +22,7 @@ function(
             label: "Start",
             getter: "begin",
             converter: TP.utils.datetime.convert.millisecondsToDecimalHours,
-            formatter: TP.utils.datetime.format.decimalHoursAsTime
+            units: "duration"
         },
         end:
         {
@@ -48,8 +48,7 @@ function(
         {
             label: "Distance", // Is customized to distance units
             getter: "distance",
-            units: "distance",
-            channel: "Distance"
+            units: "distance"
         },
         trainingStressScore:
         {
@@ -287,7 +286,7 @@ function(
             {
                 formatLapData.calculateTotalAndMovingTime(lap);
                 var value = self.processCell(column, lap, { format: false });
-                return value || value === 0;
+                return value !== null && value !== undefined;
             });
             return isAvailable && hasData;
         });
@@ -331,7 +330,7 @@ function(
     {
         options = options || { format: true };
 
-        var formatOptions = { defaultValue: "--", allowZero: true, workoutTypeId: this.workoutTypeId };
+        var formatOptions = { defaultValue: "--", allowZero: true, workoutTypeId: this.workoutTypeId, seconds: false };
         if(_.isObject(options.format))
         {
             _.extend(formatOptions, options.format);
