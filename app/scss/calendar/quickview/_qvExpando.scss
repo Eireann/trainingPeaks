@@ -998,7 +998,12 @@
         }
     }
 
-
+    .plotContent
+    {
+        margin: 10px;
+        width: calc(100% - 20px);
+        height: calc(100% - 20px);
+    }
 
     &:hover, &.hover
     {

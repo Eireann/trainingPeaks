@@ -16,8 +16,14 @@ function()
                 "Temperature": "#0A0AFF",
                 "Torque": "#BDBDBD",
                 "Distance": "#7b1F40",
-                "Time": "#84979C"
+                "Time": "#84979C",
             },
+
+        seriesColorByUnit:
+        {
+            "duration": "#990",
+            "calories": "#00f"
+        },
 
         pmcColors:
             {

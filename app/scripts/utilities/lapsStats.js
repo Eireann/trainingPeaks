@@ -29,26 +29,27 @@ function(
             label: "End",
             getter: "end",
             converter: TP.utils.datetime.convert.millisecondsToDecimalHours,
-            formatter: TP.utils.datetime.format.decimalHoursAsTime
+            units: "duration"
         },
         duration:
         {
             label: "Duration",
             getter: "elapsedTime",
             converter: TP.utils.datetime.convert.millisecondsToDecimalHours,
-            formatter: TP.utils.datetime.format.decimalHoursAsTime
+            units: "duration"
         },
         movingTime:
         {
             label: "Moving Duration",
             getter: "movingTime",
-            formatter: TP.utils.datetime.format.decimalHoursAsTime
+            units: "duration"
         },
         distance:
         {
             label: "Distance", // Is customized to distance units
             getter: "distance",
-            units: "distance"
+            units: "distance",
+            channel: "Distance"
         },
         trainingStressScore:
         {
@@ -90,13 +91,6 @@ function(
             units: "speed",
             channel: "Speed"
         },
-        minimumSpeed:
-        {
-            label: "Max Speed",
-            getter: "minimumSpeed",
-            units: "speed",
-            channel: "Speed"
-        },
         maximumSpeed:
         {
             label: "Max Speed",
@@ -115,13 +109,6 @@ function(
         {
             label: "Avg Power",
             getter: "averagePower",
-            units: "power",
-            channel: "Power"
-        },
-        minimumPower:
-        {
-            label: "Max Power",
-            getter: "minimumPower",
             units: "power",
             channel: "Power"
         },
