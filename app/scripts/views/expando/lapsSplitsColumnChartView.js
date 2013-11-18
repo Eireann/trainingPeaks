@@ -8,6 +8,7 @@ define(
     "utilities/charting/flotOptions",
     "utilities/charting/flotToolTipPositioner",
     "hbs!templates/views/charts/chartTooltip",
+    "hbs!templates/views/expando/lapsSplitsColumnChart",
     "shared/utilities/chartingAxesBuilder",
     "utilities/charting/chartColors"
 ],
@@ -20,6 +21,7 @@ function(
     defaultFlotOptions,
     toolTipPositioner,
     tooltipTemplate,
+    lapsColumnChartTemplate,
     ChartingAxesBuilder,
     chartColors
 )
@@ -30,10 +32,12 @@ function(
         className: "expandoLapsSplitsColumnChartPod",
         events:
         {
-            "change input": "handleChange"
+            "change input": "handleChange",
+            "plotclick .chartContainer": "_onPlotClick",
+            "plothover .chartContainer": "_onPlotHover"
         },
 
-        template: _.template("<div class='plotContent'></div>"),
+        template: lapsColumnChartTemplate,
 
         initialize: function(options)
         {
@@ -60,6 +64,7 @@ function(
 
         _renderChart: function()
         {
+            var self = this;
             var columnNames = [
                 "lap",
                 "duration",
@@ -77,6 +82,12 @@ function(
                 "elevationLoss",
                 "calories"
             ];
+
+            var activeNames = [
+                "distance",
+                "averageSpeed"
+            ];
+
             this.lapsStats = new LapsStats({ model: this.model, columns: columnNames });
 
             var columns = this.columns = this.lapsStats.processColumns({ format: false });
@@ -85,16 +96,22 @@ function(
             var series = _.map(_.rest(columns, 1), function(column, i)
             {
                 var color = chartColors.seriesColorByChannel[column.meta.channel] || chartColors.seriesColorByUnit[column.meta.units];
-                return {
+
+                var series = {
+                    active: _.contains(activeNames, column.meta.id),
+                    activeColor: color,
                     bars: {
                         order: i,
                         fill: 1
                     },
                     units: column.meta.units,
-                    color: color,
                     data: _.map(column.data, function(item, i) { return [i, item]; }),
                     yaxisExtraInfo: { font: { color: color } }
                 };
+
+                self._updateSeries(series);
+
+                return series;
             });
 
             var flotOptions = _.defaults({
@@ -116,20 +133,32 @@ function(
 
             flotOptions.tooltipOpts.onHover = _.bind(this._onHoverToolTip, this);
 
-            this.plot = $.plot(this.$el.find(".plotContent"), series, flotOptions);
+            this.plot = $.plot(this.$el.find(".chartContainer"), series, flotOptions);
         },
 
         _buildTooltipData: function(flotItem)
         {
-            var data = _.zip(this.lapsStats.getHeaders(), this.rows[flotItem.dataIndex]);
+            var self = this;
 
-            return _.map(data, function(cell, i) {
-                return {
-                    label: cell[0],
-                    value: cell[1],
-                    color: i === flotItem.seriesIndex + 1 ? flotItem.series.color : null
+            var series = flotItem.series;
+            var data = _.zip(this.lapsStats.getHeaders(), this.rows[flotItem.dataIndex], [{}].concat(this.plot.getData()));
+
+            var entries = _.map(data, function(cell, i) {
+                cell = _.object(['header', 'value', 'series'], cell);
+
+                cell.series.hovered = i === flotItem.seriesIndex + 1;
+                self._updateSeries(cell.series);
+                var entry =
+                {
+                    label: cell.header,
+                    value: cell.value,
+                    color: cell.series.hovered ? flotItem.series.activeColor : null
                 };
+                return cell.series.hovered || cell.series.active ? entry : null;
             });
+
+            this.plot.draw();
+            return _.compact(entries);
         },
 
         _onHoverToolTip: function(flotItem, $tooltipEl)
@@ -138,6 +167,49 @@ function(
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
             this.$currentToolTip = $tooltipEl;
+        },
+
+        _onPlotHover: function(event, position, flotItem)
+        {
+            var self = this;
+
+            _.each(this.plot.getData(), function(series, index)
+            {
+                series.hovered = flotItem && flotItem.seriesIndex === index;
+                self._updateSeries(series);
+            });
+
+            this.plot.draw();
+        },
+
+        _onPlotClick: function(event, position, flotItem)
+        {
+            var series = flotItem.series;
+
+            series.active = !series.active;
+            this._updateSeries(series);
+
+            this.plot.draw();
+        },
+
+        _updateSeries: function(series)
+        {
+            if(series.active || series.hovered)
+            {
+                series.color = series.activeColor;
+
+            }
+            else
+            {
+                series.color = "#ccc";
+            }
+
+            if(series.bars)
+            {
+                var c = $.color.parse(series.color);
+                c.a = series.active ? 1 : 0.6;
+                series.bars.fillColor = c.toString();
+            }
         }
 
     });
