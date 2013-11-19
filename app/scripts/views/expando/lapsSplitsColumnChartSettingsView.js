@@ -3,6 +3,7 @@ define(
     "jquery",
     "underscore",
     "TP",
+    "shared/views/multiSelectView",
     "shared/views/tomahawkView",
     "utilities/lapsStats"
 ],
@@ -10,6 +11,7 @@ function(
     $,
     _,
     TP,
+    MultiSelectView,
     TomahawkView,
     LapsStats
 )
@@ -17,7 +19,7 @@ function(
 
     var LapsSplitsColumnChartSettingsView = TP.ItemView.extend(
     {
-        template: _.template(""),
+        template: _.template("<div class='columns'></div><button class='apply'>Apply</button>"),
 
         columnNames: [
             "duration",
@@ -36,28 +38,45 @@ function(
             "calories"
         ],
 
+        events:
+        {
+            "click .apply": "_apply"
+        },
+
+        initialize: function()
+        {
+            this.originalModel = this.model;
+            this.model = this.model.clone();
+        },
+
         onRender: function()
         {
-            var self = this;
-            _.each(this.columnNames, function(columnName)
+            var items = _.map(this.columnNames, function(name)
             {
-                var column = LapsStats.availableColumns[columnName];
-                var enabled = _.contains(self.model.get("columns"), column.id);
-                var $label = $("<label/>").text(column.label).appendTo(self.$el);
-                var $input = $("<input type='checkbox'>").attr("checked", enabled).prependTo($label);
-
-                $input.click(function(e)
-                {
-                    if($input.is(":checked"))
-                    {
-                        self.model.set("columns", _.uniq(self.model.get("columns").concat([column.id])));
-                    }
-                    else
-                    {
-                        self.model.set("columns", _.without(self.model.get("columns"), column.id));
-                    }
-                });
+                var column = LapsStats.availableColumns[name];
+                return { label: column.label, value: column.id };
             });
+
+            var multiSelectView = new MultiSelectView({
+                el: this.$(".columns"),
+                model: this.model,
+                attribute: "columns",
+                items: items
+            });
+
+            multiSelectView.render();
+
+            this.on("close", _.bind(multiSelectView.close, multiSelectView));
+        },
+
+        onClose: function()
+        {
+            this._apply();
+        },
+
+        _apply: function()
+        {
+            this.originalModel.set(this.model.attributes);
         }
     });
 
