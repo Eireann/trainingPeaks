@@ -172,8 +172,17 @@ function(
             {
                 var userTypeId = user.getAccountSettings().get("userType");
                 return userTypeId !== userTypes.getIdByName("Basic Athlete");
-            })
+            }),
 
+            /*
+            attributes: none
+            options: none
+            */
+            AutoApplyThresholdChanges: Feature({}, function(user, usrAccess, attributes, options)
+            {
+                var userTypeId = user.getAccountSettings().get("userType");
+                return userTypeId !== userTypes.getIdByName("Basic Athlete");
+            })
         },
 
         canAccessFeature: function(featureChecker, attributes, options)
