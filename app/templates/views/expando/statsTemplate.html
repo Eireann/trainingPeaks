@@ -33,24 +33,24 @@
         </div>
         {{/ifHasKey}}
 
-        {{#ifHasKey "energy" this }}
-        <div class="statsRow" id="energy">
-            <label>{{$ "Work" }}</label>
-            {{#if energy }}
-            <span class="value">{{ conversion "formatEnergy" energy this "--"}}</span>
-            <span class="units">{{ getUnitsLabel "energy" }}</span>
-            {{ else }}
-            <span class="value">--</span>
-            {{/if}}
-        </div>
-        {{/ifHasKey}}
-
         {{#ifHasKey "trainingStressScoreActual" this }}
         <div class="statsRow" id="tss">
             <label>{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
             {{#if trainingStressScoreActual }}
             <span class="value">{{ conversion "formatTSS" trainingStressScoreActual this "--"}}</span>
             <span class="units"></span>
+            {{ else }}
+            <span class="value">--</span>
+            {{/if}}
+        </div>
+        {{/ifHasKey}}
+
+        {{#ifHasKey "energy" this }}
+        <div class="statsRow" id="energy">
+            <label>{{$ "Work" }}</label>
+            {{#if energy }}
+            <span class="value">{{ conversion "formatEnergy" energy this "--"}}</span>
+            <span class="units">{{ getUnitsLabel "energy" }}</span>
             {{ else }}
             <span class="value">--</span>
             {{/if}}
