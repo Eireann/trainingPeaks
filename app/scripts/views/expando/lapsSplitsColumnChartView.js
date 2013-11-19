@@ -129,6 +129,7 @@ function(
                     meta: column.meta,
                     active: _.contains(self.active, column.meta.id),
                     activeColor: altColor,
+                    ghostColor: i % 2 === 0 ? "#ccc" : "#bbb",
                     bars: {
                         order: i,
                         fill: 1
@@ -243,9 +244,7 @@ function(
             }
             else
             {
-                c = $.color.parse(series.activeColor);
-                var intensity = c.r * 0.3 + c.g * 0.59 + c.b * 0.11;
-                series.color = $.color.make(intensity, intensity, intensity).toString();
+                series.color = series.ghostColor;
             }
 
             if(series.bars)
