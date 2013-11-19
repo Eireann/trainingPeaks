@@ -110,6 +110,7 @@ function(
             return new LapsSplitsColumnChartView(
             {
                 model: options.data.workout,
+                podModel: options.model,
                 detailDataPromise: options.data.detailDataPromise,
                 stateModel: options.data.stateModel
             });

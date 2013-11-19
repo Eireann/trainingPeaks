@@ -4,6 +4,7 @@ define(
     "underscore",
     "setImmediate",
     "TP",
+    "views/expando/lapsSplitsColumnChartSettingsView",
     "utilities/lapsStats",
     "utilities/charting/flotOptions",
     "utilities/charting/flotToolTipPositioner",
@@ -17,6 +18,7 @@ function(
     _,
     setImmediate,
     TP,
+    LapsSplitsColumnChartSettingsView,
     LapsStats,
     defaultFlotOptions,
     toolTipPositioner,
@@ -26,6 +28,7 @@ function(
     chartColors
 )
 {
+
 
     var LapsSplitsColumnChartView = TP.ItemView.extend(
     {
@@ -39,14 +42,43 @@ function(
 
         template: lapsColumnChartTemplate,
 
+        settingsView: LapsSplitsColumnChartSettingsView.Tomahawk,
+
         initialize: function(options)
         {
             if (!options.model)
             {
                 throw "Model is required for LapsSplitsView";
             }
+            if (!options.podModel)
+            {
+                throw "PodModel is required for LapsSplitsView";
+            }
+            this.podModel = options.podModel;
             this.detailDataPromise = options.detailDataPromise;
             this.stateModel = options.stateModel;
+
+            if(!this.podModel.has("columns"))
+            {
+                this.podModel.set("columns", LapsStats.getColumnIds([
+                    "duration",
+                    "movingTime",
+                    "distance",
+                    "averageCadence",
+                    "maximumSpeed",
+                    "averageSpeed",
+                    "maximumPower",
+                    "averagePower",
+                    "minimumHeartRate",
+                    "maximumHeartRate",
+                    "averageHeartRate",
+                    "elevationGain",
+                    "elevationLoss",
+                    "calories"
+                ]));
+            }
+
+            this.active = [4, 5, 6];
 
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             
@@ -54,6 +86,8 @@ function(
             this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
             this.listenTo(this.model, "reset change", _.bind(this.render, this));
             this.listenTo(this.model.get("detailData"), "reset change:availableDataChannels", _.bind(this.render, this));
+
+            this.listenTo(this.podModel, "change", _.bind(this._renderChart, this));
         },
 
         onRender: function()
@@ -65,41 +99,36 @@ function(
         _renderChart: function()
         {
             var self = this;
-            var columnNames = [
-                "lap",
-                "duration",
-                "movingTime",
-                "distance",
-                "averageCadence",
-                "maximumSpeed",
-                "averageSpeed",
-                "maximumPower",
-                "averagePower",
-                "minimumHeartRate",
-                "maximumHeartRate",
-                "averageHeartRate",
-                "elevationGain",
-                "elevationLoss",
-                "calories"
-            ];
+            var columnIds = [1].concat(_.sortBy(this.podModel.get("columns")));
 
-            var activeNames = [
-                "distance",
-                "averageSpeed"
-            ];
-
-            this.lapsStats = new LapsStats({ model: this.model, columns: columnNames });
+            this.lapsStats = new LapsStats({ model: this.model, columns: columnIds });
 
             var columns = this.columns = this.lapsStats.processColumns({ format: false });
             this.rows = this.lapsStats.processRows({ format: { withLabel: true } });
 
             var series = _.map(_.rest(columns, 1), function(column, i)
             {
-                var color = chartColors.seriesColorByChannel[column.meta.channel] || chartColors.seriesColorByUnit[column.meta.units];
+                var color = chartColors.seriesColorByChannel[column.meta.channel] ||
+                            chartColors.seriesColorByUnit[column.meta.units];
+
+                var altColor;
+
+                if(/minimum/i.test(column.meta.name))
+                {
+                    altColor = chartColors.seriesDarkColorByChannel[column.meta.channel];
+                }
+                else if(/maximum|moving|gain/i.test(column.meta.name))
+                {
+                    altColor = chartColors.seriesLightColorByChannel[column.meta.channel];
+                }
+
+                altColor = altColor || color;
+
 
                 var series = {
-                    active: _.contains(activeNames, column.meta.id),
-                    activeColor: color,
+                    meta: column.meta,
+                    active: _.contains(self.active, column.meta.id),
+                    activeColor: altColor,
                     bars: {
                         order: i,
                         fill: 1
@@ -184,9 +213,21 @@ function(
 
         _onPlotClick: function(event, position, flotItem)
         {
+            if(!flotItem || !flotItem.series) return;
+
             var series = flotItem.series;
 
             series.active = !series.active;
+
+            if(series.active)
+            {
+                this.active = _.uniq(this.active.concat([series.meta.id]));
+            }
+            else
+            {
+                this.active = _.without(this.active, series.meta.id);
+            }
+
             this._updateSeries(series);
 
             this.plot.draw();
@@ -194,6 +235,7 @@ function(
 
         _updateSeries: function(series)
         {
+            var c;
             if(series.active || series.hovered)
             {
                 series.color = series.activeColor;
@@ -201,13 +243,15 @@ function(
             }
             else
             {
-                series.color = "#ccc";
+                c = $.color.parse(series.activeColor);
+                var intensity = c.r * 0.3 + c.g * 0.59 + c.b * 0.11;
+                series.color = $.color.make(intensity, intensity, intensity).toString();
             }
 
             if(series.bars)
             {
-                var c = $.color.parse(series.color);
-                c.a = series.active ? 1 : 0.6;
+                c = $.color.parse(series.color);
+                c = c.scale('a', series.active ? 1 : 0.6);
                 series.bars.fillColor = c.toString();
             }
         }

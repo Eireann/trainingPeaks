@@ -14,56 +14,70 @@ function(
     {
         lap:
         {
+            id: 1,
             label: "Lap",
             getter: "name"
         },
         start:
         {
+            id: 2,
             label: "Start",
             getter: "begin",
             converter: TP.utils.datetime.convert.millisecondsToDecimalHours,
-            units: "duration"
+            units: "duration",
+            channel: "Time"
         },
         end:
         {
+            id: 3,
             label: "End",
             getter: "end",
             converter: TP.utils.datetime.convert.millisecondsToDecimalHours,
-            units: "duration"
+            units: "duration",
+            channel: "Time"
         },
         duration:
         {
+            id: 4,
             label: "Duration",
             getter: "elapsedTime",
             converter: TP.utils.datetime.convert.millisecondsToDecimalHours,
-            units: "duration"
+            units: "duration",
+            channel: "Time"
         },
         movingTime:
         {
+            id: 5,
             label: "Moving Duration",
             getter: "movingTime",
-            units: "duration"
+            units: "duration",
+            channel: "Time"
         },
         distance:
         {
+            id: 6,
             label: "Distance", // Is customized to distance units
             getter: "distance",
-            units: "distance"
+            units: "distance",
+            channel: "Distance"
         },
         trainingStressScore:
         {
+            id: 7,
             label: "TSS", // TODO: Custom Label based on TSS type
             getter: "trainingStressScoreActual",
             units: "tss"
         },
         intensityFactor:
         {
+            id: 8,
             label: "IF",
             getter: "intensityFactorActual",
             units: "if"
         },
         averageHeartRate:
         {
+            id: 9,
             label: "Avg Heart Rate",
             getter: "averageHeartRate",
             units: "heartrate",
@@ -71,6 +85,7 @@ function(
         },
         maximumHeartRate:
         {
+            id: 10,
             label: "Max Heart Rate",
             getter: "maximumHeartRate",
             units: "heartrate",
@@ -78,6 +93,7 @@ function(
         }, 
         minimumHeartRate:
         {
+            id: 11,
             label: "Min Heart Rate",
             getter: "mimimumHeartRate",
             units: "heartrate",
@@ -85,6 +101,7 @@ function(
         },
         averageSpeed:
         {
+            id: 12,
             label: "Avg Speed",
             getter: "averageSpeed",
             units: "speed",
@@ -92,6 +109,7 @@ function(
         },
         maximumSpeed:
         {
+            id: 13,
             label: "Max Speed",
             getter: "maximumSpeed",
             units: "speed",
@@ -99,6 +117,7 @@ function(
         },
         normalizedSpeed:
         {
+            id: 14,
             label: "NGP",
             getter: "normalizedSpeedActual",
             units: "speed",
@@ -106,6 +125,7 @@ function(
         },
         averagePower:
         {
+            id: 15,
             label: "Avg Power",
             getter: "averagePower",
             units: "power",
@@ -113,6 +133,7 @@ function(
         },
         maximumPower:
         {
+            id: 16,
             label: "Max Power",
             getter: "maximumPower",
             units: "power",
@@ -120,6 +141,7 @@ function(
         },
         normalizedPower:
         {
+            id: 17,
             label: "NP",
             getter: "normalizedPowerActual",
             units: "power",
@@ -128,6 +150,7 @@ function(
         },
         averageCadence:
         {
+            id: 18,
             label: "Cad",
             getter: "averageCadence",
             units: "cadence",
@@ -135,6 +158,7 @@ function(
         },
         elevationGain:
         {
+            id: 19,
             label: "Elev Gain",
             getter: "elevationGain",
             units: "elevation",
@@ -142,6 +166,7 @@ function(
         },
         elevationLoss:
         {
+            id: 20,
             label: "Elev Loss",
             getter: "elevationLoss",
             units: "elevation",
@@ -149,6 +174,7 @@ function(
         },
         averageTorque:
         {
+            id: 21,
             label: "Avg Torque",
             getter: "averageTorque",
             units: "torque",
@@ -156,6 +182,7 @@ function(
         },
         minimumTorque:
         {
+            id: 22,
             label: "Min Torque",
             getter: "minimumTorque",
             units: "torque",
@@ -163,6 +190,7 @@ function(
         },
         maximumTorque:
         {
+            id: 23,
             label: "Max Torque",
             getter: "maximumTorque",
             units: "torque",
@@ -170,17 +198,24 @@ function(
         },
         energy:
         {
+            id: 24,
             label: "Work",
             getter: "energy",
             units: "energy"
         },
         calories:
         {
+            id: 25,
             label: "Calories",
             getter: "calories",
             units: "calories"
         }
     };
+
+    var availableColumnsById = _.transform(availableColumns, function(result, column, name)
+    {
+        result[column.id] = name;
+    });
 
     function LapsStats(options)
     {
@@ -191,15 +226,17 @@ function(
 
         this.tssType = TP.utils.units.getUnitsLabel("tss", this.workoutTypeId, this.model);
 
-        this.columnNames = options.columns || this.getDefaultColumnNames();
+        this.columnNames = options.columns ? LapsStats.getColumnNames(options.columns) : this.getDefaultColumnNames();
         this.columns = this.getColumns();
     }
+
+    LapsStats.availableColumns = availableColumns;
 
     LapsStats.prototype.customizeColumns = function customizeColumns(columns)
     {
         var self = this;
         var usePace = _.contains([3, 13, 1, 12], this.workoutTypeId);
-        _.each(columns, function(column, id)
+        _.each(columns, function(column, name)
         {
             if(usePace && column.units === "speed")
             {
@@ -207,13 +244,13 @@ function(
                 column.label = column.label.replace("Speed", "Pace");
             }
 
-            if(column.id === "distance")
+            if(column.name === "distance")
             {
                 var label = TP.utils.units.getUnitsLabel("distance", self.workoutTypeId, null, {abbreviated: false});
                 column.label = label[0].toUpperCase() + label.substring(1);
             }
 
-            if(column.id === "trainingStressScore")
+            if(column.name === "trainingStressScore")
             {
                 column.label = self.tssType;
             }
@@ -225,7 +262,37 @@ function(
         return _.pluck(this.columns, "label");
     };
 
-    LapsStats.prototype.getDefaultColumnNames = function getDefaultColumnNames()
+    LapsStats.getColumnNames = function(columns)
+    {
+        return _.map(columns, function(column)
+        {
+            if(_.isString(column))
+            {
+                return column;
+            }
+            else
+            {
+                return availableColumnsById[column];
+            }
+        });
+    };
+
+    LapsStats.getColumnIds = function(columns)
+    {
+        return _.map(columns, function(column)
+        {
+            if(_.isString(column))
+            {
+                return availableColumns[column].id;
+            }
+            else
+            {
+                return column;
+            }
+        });
+    };
+
+    LapsStats.prototype.getDefaultColumnNames = function()
     {
         var columnNames = ["lap", "start", "end", "duration", "movingTime", "distance"];
         columnNames.push("trainingStressScore", "intensityFactor");
@@ -272,13 +339,15 @@ function(
 
         var columns = _.map(this.columnNames, function(name)
         {
-            return _.extend({ id: name }, availableColumns[name]);
+            return _.extend({ name: name }, availableColumns[name]);
         });
 
         // Customize labels, units, etc.
         this.customizeColumns(columns);
 
-        var availableChannels = this.detailData.get("availableDataChannels");
+        var availableChannels = _.clone(this.detailData.get("availableDataChannels"));
+        availableChannels.push("Time"); // Time is never in the available channels, as it isn't a "real" channel
+
         columns = _.select(columns, function(column)
         {
             var isAvailable = !column.channel || _.contains(availableChannels, column.channel);

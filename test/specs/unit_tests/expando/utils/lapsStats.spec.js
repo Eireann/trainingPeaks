@@ -12,7 +12,7 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
     describe("Laps Stats Utility", function()
     {
-        var allDataChannels = ["Power", "Elevation", "Speed", "HeartRate", "Torque", "Cadence"];
+        var allDataChannels = ["Power", "Distance", "Elevation", "Speed", "HeartRate", "Torque", "Cadence"];
 
         function buildWorkoutModel(availableDataChannels)
         {
