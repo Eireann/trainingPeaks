@@ -445,13 +445,15 @@ function(
                     user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
 
                     authorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.planFutureWorkouts]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();                   
                 });
 
                 it("Should not allow basic users to view iCalendarUrl", function()
                 {
-
-                    user.getAccountSettings().set("userType", 6);
                     expect(featureAuthorizer.features.ViewICalendarUrl(
                                 user,
                                 unauthorizedUserAccessRights
@@ -462,11 +464,9 @@ function(
 
                 it("Should allow premium users to view iCalendarUrl", function()
                 {
-
-                    user.getAccountSettings().set("userType", 4);
                     expect(featureAuthorizer.features.ViewICalendarUrl(
                                 user,
-                                unauthorizedUserAccessRights
+                                authorizedUserAccessRights
                             )
                     ).to.equal(true);
                    

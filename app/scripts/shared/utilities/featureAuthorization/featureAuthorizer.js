@@ -168,20 +168,25 @@ function(
             attributes: none
             options: none
             */
-            ViewICalendarUrl: Feature({}, function(user, usrAccess, attributes, options)
+            ViewICalendarUrl: Feature({}, function(user, userAccess, attributes, options)
             {
-                var userTypeId = user.getAccountSettings().get("userType");
-                return userTypeId !== userTypes.getIdByName("Basic Athlete");
+                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                var currentAthleteType = user.getAthleteDetails().get("userType");
+                return _.contains(allowedUserTypes, currentAthleteType);
             }),
 
             /*
             attributes: none
             options: none
             */
-            AutoApplyThresholdChanges: Feature({}, function(user, usrAccess, attributes, options)
+            AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
             {
-                var userTypeId = user.getAccountSettings().get("userType");
-                return userTypeId !== userTypes.getIdByName("Basic Athlete");
+                var currentAthleteType = user.getAccountSettings().get("userType");
+                var allowedUserTypes = [
+                    userTypes.getIdByName("Premium Athlete Paid By Coach"),
+                    userTypes.getIdByName("Premium Athlete")
+                ];
+                return _.contains(allowedUserTypes, currentAthleteType);
             })
         },
 
