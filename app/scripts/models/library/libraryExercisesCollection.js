@@ -16,10 +16,10 @@ function(TP, LibraryExerciseModel)
             
             if (this.exerciseLibraryId)
             {
-                libraryUrl += "/" + this.exerciseLibraryId + "/items";
+                libraryUrl += this.exerciseLibraryId + "/items";
             }
             else
-                libraryUrl += "/default/items";
+                libraryUrl += "default/items";
 
             return libraryUrl;
         },
