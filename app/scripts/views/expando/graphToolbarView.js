@@ -143,7 +143,7 @@ function($,
             var self = this;
 
             this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                this.featureAuthorizer.features.ExpandoDataEditing,
+                this.featureAuthorizer.features.ViewGraphRanges,
                 function()
                 {
                     var seriesButton = $(event.target);
@@ -275,7 +275,7 @@ function($,
 
         _onSelectionChange: function()
         {
-            if(this.stateModel.has("primaryRange"))
+            if(this.stateModel.has("primaryRange") && this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ExpandoDataEditing))
             {
                 this.$(".cut").removeClass("hidden");
             }
