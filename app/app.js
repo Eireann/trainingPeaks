@@ -29,6 +29,7 @@ define(
     "flot/jquery.flot",
     "flot/jquery.flot.crosshair",
     "flot/jquery.flot.resize",
+    "shared/views/initialProfileView"
 ],
 function(
     $,
@@ -59,7 +60,8 @@ function(
     fadeRegion,
     flot,
     flotCrosshair,
-    flotResize
+    flotResize,
+    InitialProfileView
 )
 {
 
@@ -304,6 +306,17 @@ function(
 
                 var deferred = $.Deferred();
                 this.addBootPromise(deferred.promise());
+
+                this.session.userPromise.done(function()
+                {
+                    var view = new InitialProfileView({ model: self.user });
+                    view.render();
+                });
+            });
+
+            this.addInitializer(function()
+            {
+                var self = this;
 
                 this.session.userPromise.done(function()
                 {
