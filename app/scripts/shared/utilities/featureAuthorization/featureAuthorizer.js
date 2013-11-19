@@ -187,7 +187,16 @@ function(
                     userTypes.getIdByName("Premium Athlete")
                 ];
                 return _.contains(allowedUserTypes, currentAthleteType);
-            })
+            }),
+
+            /*
+            attributes: none
+            options: none
+            */
+            ViewPlanStore: Feature({}, function(user, userAccess, attributes, options)
+            {
+                return userAccess.getBoolean(accessRights.ids.HidePlanStoreForCoachedByAthletes) ? false : true;
+            }),
         },
 
         canAccessFeature: function(featureChecker, attributes, options)

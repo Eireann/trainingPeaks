@@ -50,21 +50,11 @@ function(_,
             {
                 this.$(".showSeries").remove();
             }
-        },
-
-        serializeData: function()
-        {
-            var data = this.model.toJSON();
 
             if(this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ExpandoDataEditing))
             {
-                data.canDelete = true;
+                this.$(".deleteSeries").removeClass("hidden");
             }
-            else
-            {
-                data.canDelete = false;
-            }
-            return data;
         },
 
         _showSeries: function()
