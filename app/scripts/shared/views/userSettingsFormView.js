@@ -212,7 +212,10 @@ function(
         {
             var data = this.userModel.toJSON();
             this._addConstantsToSerializedData(data);
-            this._addICalKeysToSerializedData(data);
+            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewICalendarUrl))
+            {
+                this._addICalKeysToSerializedData(data);
+            }
             return data;
         },
 

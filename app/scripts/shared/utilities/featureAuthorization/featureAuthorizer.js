@@ -14,6 +14,7 @@ define(
     "TP",
     "shared/data/podTypes",
     "shared/utilities/featureAuthorization/accessRights",
+    "utilities/athlete/userTypes",
     "shared/views/userUpgradeView"
 ],
 function(
@@ -23,6 +24,7 @@ function(
     TP,
     podTypes,
     accessRights,
+    userTypes,
     UserUpgradeView
          )
 {
@@ -160,6 +162,16 @@ function(
                 });
 
                 return _.result(filteredCollection, "length") < userAccess.getNumber(accessRights.ids.MaximumWorkoutTemplatesInOwnedLibrary);
+            }),
+
+            /*
+            attributes: none
+            options: none
+            */
+            ViewICalendarUrl: Feature({}, function(user, usrAccess, attributes, options)
+            {
+                var userTypeId = user.getAccountSettings().get("userType");
+                return userTypeId !== userTypes.getIdByName("Basic Athlete");
             })
 
         },
