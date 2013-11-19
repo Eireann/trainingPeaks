@@ -127,12 +127,18 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
                     return;
                 }
 
-                this.moveItemsToDay(options.date);
-            }
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    _.bind(function(){
+                        this.moveItemsToDay(options.date);
 
-            if(options.target instanceof CalendarDay)
-            {
-                this.selectionManager.setSelection(options.target);
+                        if(options.target instanceof CalendarDay)
+                        {
+                            this.selectionManager.setSelection(options.target);
+                        }
+                    }, this),
+                    {targetDate: options.date}
+                );
             }
         },
 
