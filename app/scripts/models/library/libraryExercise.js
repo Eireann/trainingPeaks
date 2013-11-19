@@ -54,7 +54,8 @@ function(
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/exerciselibrary/v1/libraryitems/";
+            var library = this.get("exerciseLibraryId") ? this.get("exerciseLibraryId") : "default";
+            return theMarsApp.apiRoot + "/exerciselibrary/v1/libraries/" + library + "/items";
         },
 
         dropped: function(options)
