@@ -17,7 +17,13 @@ function($, TP, moment, GraphSeriesOptionsMenuView)
 
             return new GraphSeriesOptionsMenuView({ 
                 detailDataModel: detailDataSpy,
-                model: new TP.Model({ series: series, title: "My Series" })
+                model: new TP.Model({ series: series, title: "My Series" }),
+                featureAuthorizer: {
+                    canAccessFeature: function(){return true;},
+                    features: {
+                        ExpandoDataEditing: null
+                    }
+                }
             });
         }
 
