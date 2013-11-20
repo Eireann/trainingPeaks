@@ -2,6 +2,7 @@ define(
 [
     "jquery",
     "underscore",
+    "moment",
     "TP",
     "shared/utilities/formUtility",
     "shared/data/countriesAndStates",
@@ -10,6 +11,7 @@ define(
 function(
     $,
     _,
+    moment,
     TP,
     FormUtility,
     countriesAndStates,
@@ -19,6 +21,10 @@ function(
 
     var InitialProfileView = TP.ItemView.extend(
     {
+        modelEvents:
+        {
+            "change:unitPreference change:swimUnits change:runUnits": "_updateUnits",
+        },
 
         modal:
         {
@@ -42,15 +48,57 @@ function(
 
         initialize: function()
         {
-            this.model = new TP.Model();
+            this.model = new TP.Model({
+                language: theMarsApp.user.get("language") || "en-us",
+                unitPreference: theMarsApp.user.get("units") || 1,
+                country: theMarsApp.user.get("country") || "US",
+                swimUnits: "metric",
+                runUnits: "pace"
+            });
+        },
+
+        formUtilityOptions: function()
+        {
+            var self = this;
+            var formatters =
+            {
+                runPace: function(value)
+                {
+                    return TP.utils.conversion.formatUnitsValue(self.model.get("runUnits"), value);
+                },
+                swimPace: function(value)
+                {
+                    return TP.utils.conversion.formatUnitsValue("pace", value, { units: self.model.get("swimUnits") });
+                }
+            };
+
+            var parsers =
+            {
+                runPace: function(value)
+                {
+                    return TP.utils.conversion.parseUnitsValue(self.model.get("runUnits"), value);
+                },
+                swimPace: function(value)
+                {
+                    return TP.utils.conversion.parseUnitsValue("pace", value, { units: self.model.get("swimUnits") });
+                }
+            };
+
+            // Bind Form to "Model"
+            return {
+                filterSelector: ":not([type=submit])",
+                formatters: formatters,
+                parsers: parsers
+            };
         },
 
         onRender: function()
         {
-            this.$("select").selectBoxIt();
-
             // Bind Form to "Model"
-            FormUtility.bindFormToModel(this.$el, this.model, {});
+            FormUtility.bindFormToModel(this.$el, this.model, this.formUtilityOptions());
+            this._updateUnits();
+
+            this.$("select").selectBoxIt();
         },
 
         serializeData: function()
@@ -71,21 +119,26 @@ function(
 
             event.preventDefault();
 
-            var userPromise = this.model.save(
+            var userPromise = theMarsApp.user.save(
             {
+                language: this.model.get("language"),
+                units: this.model.get("unitPreference"),
+                birthday: moment("1900-01-01").year(this.model.get("birthdayYear") || 0).month(this.model.get("birthdayMonth") || 0).format("YYYY-MM-DD"),
+                timeZone: this.model.get("timeZone"),
+                country: this.model.get("country")
             });
 
             var profilePromise = $.ajax(
             {
                 method: "POST",
-                url: apiConfig.apiRoot + "/fitness/v1/athletes/" + this.model.getCurrentAthleteId() + "/profile",
+                url: apiConfig.apiRoot + "/fitness/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() + "/profile",
                 data:
                 {
-                    weightInKg: TP.utils.conversion.parseUnitsValue("kg", this.$("#weight").val()),
-                    heartRateThreshold: TP.utils.conversion.parseUnitsValue("heartrate", this.$("#thresholdHeartRate").val()),
-                    powerThreshold: TP.utils.conversion.parseUnitsValue("power", this.$("#thresholdPower").val()),
-                    swimPace: TP.utils.conversion.parseUnitsValue("pace", this.$("#swimPace").val()),
-                    runPace: TP.utils.conversion.parseUnitsValue("pace", this.$("#runPaceSpeed").val())
+                    weightInKg: this.model.get("weight"),
+                    heartRateThreshold: this.model.get("thresholdHeartRate"),
+                    powerThreshold: this.model.get("thresholdPower"),
+                    swimPace: this.model.get("swimPace"),
+                    runPace: this.model.get("runPaceSpeed")
                 }
             });
 
@@ -98,6 +151,15 @@ function(
             {
                 alert("Failed to save");
             });
+        },
+
+        _updateUnits: function(event)
+        {
+            theMarsApp.user.set("units", this.model.get("unitPreference"));
+            FormUtility.applyValuesToForm(this.$el, this.model, this.formUtilityOptions());
+            this.$(".weightUnits").text(TP.utils.units.getUnitsLabel("kg"));
+            this.$("label[for=runUnitsPace]").text(TP.utils.units.getUnitsLabel("pace", 3));
+            this.$("label[for=runUnitsSpeed]").text(TP.utils.units.getUnitsLabel("speed", 3));
         }
 
     });

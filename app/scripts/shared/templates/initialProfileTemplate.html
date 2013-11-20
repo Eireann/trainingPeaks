@@ -103,24 +103,24 @@
 
             </div><!-- End .labelContainer -->
 
-            <input id="thresholdPower" name="thresholdPower" type="text" placeholder="220 worth'a puddin">
+            <input id="thresholdPower" name="thresholdPower" type="text" placeholder="220 worth'a puddin" data-format="units:power">
 
             <input id="thresholdHeartRate" name="thresholdHeartRate" type="text" placeholder="177"><br />
 
             <label for="runPaceSpeed">Run Pace/Speed</label><br />
-            <input id="runPaceSpeed" name="runPaceSpeed" type="text" placeholder="10:00">
-            <input name="runPaceSpeedRadio" type="radio" id="runPaceSpeedRadio1" value="mph">
-            <label for="runPaceSpeedRadio1"><span></span>mph</label>
-            <input name="runPaceSpeedRadio" type="radio" id="runPaceSpeedRadio2" value="min/mile">
-            <label for="runPaceSpeedRadio2"><span></span>min/mile</label>
+            <input id="runPaceSpeed" name="runPaceSpeed" type="text" placeholder="10:00" data-format="runPace">
+            <input name="runUnits" type="radio" id="runUnitsSpeed" value="speed">
+            <label for="runUnitsSpeed"><span></span>mph</label>
+            <input name="runUnits" type="radio" id="runUnitsPace" value="pace" checked>
+            <label for="runUnitsPace"><span></span>min/mile</label>
 
             <br />
 
             <label for="swimPace">Swim Pace/Speed</label><br/>
-            <input id="swimPace" name="swimPace" type="text" placeholder="2:00">
-            <input name="swimPaceRadio" type="radio" id="swimPaceRadio1" value="/100m">
+            <input id="swimPace" name="swimPace" type="text" placeholder="2:00" data-format="swimPace">
+            <input name="swimUnits" type="radio" id="swimPaceRadio1" value="metric">
             <label for="swimPaceRadio1"><span></span>/100m</label>
-            <input name="swimPaceRadio" type="radio" id="swimPaceRadio2" value="/100y">
+            <input name="swimUnits" type="radio" id="swimPaceRadio2" value="imperial" checked>
             <label for="swimPaceRadio2"><span></span>/100y</label>
 
             <br />

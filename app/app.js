@@ -293,7 +293,7 @@ function(
             {
                 var self = this;
 
-                this.bootPromise.done(function()
+                this.bootPromise.then(function()
                 {
                     var view = new InitialProfileView({ model: self.user });
                     view.render();
@@ -309,27 +309,19 @@ function(
 
                 this.session.userPromise.done(function()
                 {
-                    var view = new InitialProfileView({ model: self.user });
-                    view.render();
-                });
-            });
-
-            this.addInitializer(function()
-            {
-                var self = this;
-
-                this.session.userPromise.done(function()
-                {
                     RollbarManager.setUser(self.user);
 
                     var athletePromise = self.user.getAthleteSettings().fetch();
-                    athletePromise.then(deferred.resolve, deferred.reject);
 
                     $.when(self.session.userAccessPromise, athletePromise).done(function()
                     {
                         if (!self.featureAllowedForUser("alpha1", self.user))
                         {
                             self.session.logout(notAllowedForAlphaTemplate);
+                        }
+                        else
+                        {
+                            deferred.resolve();
                         }
                     });
                 });
