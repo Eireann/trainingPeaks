@@ -6,6 +6,7 @@ define(
     "TP",
     "shared/utilities/formUtility",
     "shared/data/countriesAndStates",
+    "views/userConfirmationView",
     "hbs!shared/templates/initialProfileTemplate"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     TP,
     FormUtility,
     countriesAndStates,
+    UserConfirmationView,
     initialProfileTemplate
 )
 {
@@ -200,7 +202,8 @@ function(
 
         _showError: function(message)
         {
-            alert(message);
+            var view = new UserConfirmationView({ message: message });
+            view.render();
         }
 
     });
