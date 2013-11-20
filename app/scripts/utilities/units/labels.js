@@ -190,8 +190,8 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         },
         vam:
         {
-            English: "meters/hr",
-            Metric: "meters/hr"
+            English: "m/h",
+            Metric: "m/h"
         },
         cm:
         {

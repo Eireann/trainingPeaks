@@ -702,6 +702,86 @@
                     text-align: center;
                 }
             }
+
+            .statisticsSummary {
+                @include clearfix;
+
+                .mainStat {
+                    width: 33.3%;
+                    float: left;
+                    text-align: center;
+                    &#tss {
+                        width: 28%;
+                    }
+                    
+                    &#distance {
+                        width: 38%;
+                    }
+
+                    @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+                    .mainStatTitle {
+                        margin-bottom: 0;
+                    }
+
+                    .value {
+                        font-family: $fontFamilyLight;
+                        font-size: $fontSizeHeader;
+                    }
+                }
+
+                
+
+                .subStats {
+                    // width: 120px;
+                    width: 100%;
+
+                    div:nth-of-type(2n+0) {
+                        margin-left: 16px;
+                    }
+
+                    
+
+                    .statsRow {
+                        float: left;
+                        width: 135px;
+
+                        label {
+                            width: 67px;
+                            border-right: 1px solid $TPGrey2;
+                            padding: 5px 10px 5px 0;
+                            margin: 0 5px 0 0;
+                        }
+                    }
+
+                    float: left;
+                    margin-top: 18px;
+                    margin-left: 10px; 
+                }
+
+
+                @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+                .statsRow {
+
+                    label {
+                        display: inline-block;
+                        width: 127px;
+                        text-align: right;
+                        margin-right: 5px;
+                    }
+
+                    .value {
+                        line-height: 1.5;
+                        font-size: $fontSizeSmall;
+                        font-family: $fontFamilyHeavy;
+                    }
+
+                    .units
+                    {
+                        font-size: $fontSizeXSmall;
+                        font-family: $fontFamilyRegular;
+                    }
+                }
+            }
         }
 
         overflow-x: auto;
@@ -725,86 +805,91 @@
             height: 13px;
         }
 
-        .contents
-        {
-
+        .contents {
             padding: 10px;
             @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
 
-            .minMaxAvg
-            {
+            .minMaxAvg {
                 display: table;
-                margin-top: 20px;
+                float: left;
+                width: 100%;
+                margin-top: 19px;
+                padding-top: 20px;
+                border-top: 1px solid $TPGrey2;
 
-                .separator
-                {
+                .separator {
                     display: table-cell;
                     width: 2px;
                 }
 
-                .minMaxAvgRow
-                {
+                .minMaxAvgRow {
                     display: table-row;
 
-                    &.statsRow
-                    {
-                        .value
-                        {
-                            font-size: $fontSizeMedLarge;
-                            min-width: 60px;
+                    &.statsRow {
+
+                        .value {
+                            font-size: $fontSizeSmall;
+                            width: 50px;
                         }
+
+                        label {
+                            font-family: $fontFamilyRegular;
+                            border-right: 1px solid $TPGrey2;
+                            padding-top: 7px;
+                            padding-bottom: 7px;
+                        }
+
+                        span {
+                            font-family: $fontFamilyRegular;
+                        }
+
+                        &:last-of-type {
+                            label {
+                                padding-bottom:0;
+                            }
+                        }
+                       
                     }
 
-                    label
-                    {
+                    label {
                         display: table-cell;
                         padding-right: 10px;
                         white-space: nowrap;
                         text-align: right;
                         width: auto;
+                        color: $TPGrey3;
                     }
 
-                    &:not(.minMaxAvgHeaders)
-                    {
-                        label
-                        {
-                            min-width: 70px;
+                    &:not(.minMaxAvgHeaders) {
+                        label {
+                            width: 77px;
                         }
                     }
 
-                    span
-                    {
+                    span {
                         display: table-cell;
                         text-align: center;
-                        padding: 0px 8px;
 
-                        &.units
-                        {
+                        &.units {
                             text-align: left;
                             padding: 0px 0px 2px 8px;
-                            font-size: $fontSizeXSmall
+                            font-size: $fontSizeXSmall;
+                            color: $TPGrey3;
+                            border-left: 1px solid $TPGrey2;
+                            // width: 84px;
                         }
-
                     }
 
-                    .separator
-                    {
+                    .separator {
                         padding: 0px;
                     }
 
-                    .value
-                    {
-                        // background-color: #eaebec;
-                    }
-
-                    &.minMaxAvgHeaders
-                    {
-                        label
-                        {
+                    &.minMaxAvgHeaders {
+                        label {
                             text-transform: uppercase;
                             text-align: center;
                             padding: 0px;
-                            padding-bottom: 5px;
+                            padding-bottom: 7px;
                             font-family: $fontFamilyRegular;
                             color: $TPBlue;
                             font-size: $fontSizeSmall;
