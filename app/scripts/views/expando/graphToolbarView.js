@@ -143,7 +143,7 @@ function($,
             var self = this;
 
             this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                this.featureAuthorizer.features.ExpandoDataEditing,
+                this.featureAuthorizer.features.ViewGraphRanges,
                 function()
                 {
                     var seriesButton = $(event.target);
@@ -159,6 +159,7 @@ function($,
                     series: seriesButton.data("series"),
                     title: seriesButton.data("title")}),
                 detailDataModel: this.model.get("detailData"),
+                featureAuthorizer: this.featureAuthorizer,
                 target: seriesButton,
                 offset: "top"
             };
@@ -188,10 +189,10 @@ function($,
         _onResetClicked: function()
         {
             this.trigger("reset");
-            this._hideZoomButton();
+            this._hideZoomResetButton();
         },
 
-        _hideZoomButton: function ()
+        _hideZoomResetButton: function ()
         {
             this.ui.zoomResetButton.addClass("hidden");
         },
@@ -275,13 +276,15 @@ function($,
 
         _onSelectionChange: function()
         {
-            if(this.stateModel.has("primaryRange"))
+            if(this.stateModel.has("primaryRange") && this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ExpandoDataEditing))
             {
                 this.$(".cut").removeClass("hidden");
+                this.$(".zoom").removeClass("hidden");
             }
             else
             {
                 this.$(".cut").addClass("hidden");
+                this.$(".zoom").addClass("hidden");
             }
         }
     });

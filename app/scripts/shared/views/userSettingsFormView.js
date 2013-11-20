@@ -160,7 +160,8 @@ function(
             "click .photoContainer": "_selectProfilePhoto",
             "click .uploadPhoto": "_selectProfilePhoto",
             "click .removePhoto": "_removeProfilePhoto",
-            "change .fileUploadInput": "_onProfilePhotoSelected"
+            "change .fileUploadInput": "_onProfilePhotoSelected",
+            "click .upgrade": "_showUpgradePrompt"
         },
 
         initialize: function(options)
@@ -212,7 +213,10 @@ function(
         {
             var data = this.userModel.toJSON();
             this._addConstantsToSerializedData(data);
-            this._addICalKeysToSerializedData(data);
+            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewICalendarUrl))
+            {
+                this._addICalKeysToSerializedData(data);
+            }
             return data;
         },
 
@@ -392,6 +396,11 @@ function(
         _updateDatePickerFormat: function()
         {
             this.$(".datepicker").datepicker("option", "dateFormat", TP.utils.datetime.format.getFormatForDatepicker());
+        },
+
+        _showUpgradePrompt: function()
+        {
+            theMarsApp.featureAuthorizer.showUpgradeMessage();
         }
 
     });

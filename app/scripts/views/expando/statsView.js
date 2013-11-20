@@ -66,6 +66,7 @@ function(
             }
 
             var lapData = this.getLapData();
+            this.removePremiumFields(lapData);
             lapData = this.mapToMasterFieldSet(lapData);
             formatLapData.calculateTotalAndMovingTime(lapData);
             this.findAvailableMinMaxAvgFieldsInThisLap(lapData);
@@ -133,6 +134,9 @@ function(
 
                 // add minMaxAvg fields
                 this.findAvailableMinMaxAvgFieldsInAnyLap(allPossibleFields);
+
+                // remove premium fields
+                this.removePremiumFields(allPossibleFields);
 
                 this.allPossibleFields = allPossibleFields;
             }
@@ -240,6 +244,20 @@ function(
 
             if (this.hasAnyKey(lapData, ["minimumTorque", "averageTorque", "maximumTorque"]))
                 lapData.minMaxTorque = lapData.minMaxAvg = true;
+        },
+
+        removePremiumFields: function(lapData)
+        {
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewGraphRanges))
+            {
+                _.each(["efficiencyFactor", "speedPulseDecoupling", "powerPulseDecoupling"], function(key)
+                {
+                    if(lapData.hasOwnProperty(key))
+                    {
+                        delete lapData[key];
+                    }
+                });
+            }
         },
 
         hasAnyKey: function(context, keys)

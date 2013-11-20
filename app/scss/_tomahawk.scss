@@ -40,6 +40,10 @@
             &:hover {
                 color:$TPGrey4;
             }
+
+            &.hidden {
+                display: none;
+            }
         }
 
         ul

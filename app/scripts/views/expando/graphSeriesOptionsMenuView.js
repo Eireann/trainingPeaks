@@ -24,6 +24,7 @@ function(_,
         initialize: function(options)
         {
             this.detailDataModel = options.detailDataModel;
+            this.featureAuthorizer = options.featureAuthorizer ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
         },
 
         events:
@@ -48,6 +49,11 @@ function(_,
             else
             {
                 this.$(".showSeries").remove();
+            }
+
+            if(this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ExpandoDataEditing))
+            {
+                this.$(".deleteSeries").removeClass("hidden");
             }
         },
 
