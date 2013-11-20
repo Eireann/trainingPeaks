@@ -392,7 +392,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: ""
+                    output: "0.0"
                 },
                 {
                     input: "0.23",
@@ -400,7 +400,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "-1",
+                    output: "0.0"
+                },
+                {
+                    input: null,
                     output: ""
+                },
+                {
+                    input: "",
+                    output: ""
+                },
+                {
+                    input: 0,
+                    output: "0.0"
                 }
             ]);
         });
