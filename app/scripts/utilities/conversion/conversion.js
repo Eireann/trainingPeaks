@@ -574,7 +574,7 @@
 
             if(_.isUndefined(defaultValue))
             {
-                defaultValue = null
+                defaultValue = null;
             }
 
             return defaultValue;
