@@ -45,7 +45,7 @@ function(
 
             if(this._userCanUseTimeInZonesChart())
             {
-                this.$(".zonesChart").removeClass(".disabled");
+                this.$(".zonesChart").removeClass("disabled");
                 this.renderTimeInZonesChart();
             }
         },

@@ -47,7 +47,7 @@ function(
 
             if(this._userCanUsePeaksChart())
             {
-                this.$(".peaksChart").removeClass(".disabled");
+                this.$(".peaksChart").removeClass("disabled");
                 this.renderPeaksChart();
             }
 
