@@ -6,7 +6,7 @@
         {{#if _state.isLap}}
         <input class="lapName" value="{{ name }}" type="text"/>
         {{/if}}
-        <span class="">{{#if totalTime }} ({{ formatTimeToHundredths totalTime}}){{/if}}</span>
+        <span class="lapTime">{{#if totalTime }} {{ formatTimeToHundredths totalTime}}{{/if}}</span>
     </div>
 
     {{#if _state.isLap}}

@@ -166,6 +166,18 @@
             </div>
             {{/ifHasKey}}
 
+            {{#ifHasKey "grade" this }}
+            <div class="statsRow" id="grade">
+                <label>{{$ "Grade" }}</label>
+                {{#ifHasValueAfterFormatted "formatGrade" grade this }}
+                <span class="value">{{ conversion "formatGrade" grade }}%</span>
+                <span class="units"></span>
+                {{ else }}
+                <span class="value">--</span>
+                {{/ifHasValueAfterFormatted}}
+            </div>
+            {{/ifHasKey}}
+
             {{#ifHasKey "elevationLoss" this }}
             <div class="statsRow" id="elevationLoss">
                 <label>{{$ "ELoss" }}</label>
@@ -178,17 +190,7 @@
             </div>
             {{/ifHasKey}}
 
-            {{#ifHasKey "grade" this }}
-            <div class="statsRow" id="grade">
-                <label>{{$ "Grade" }}</label>
-                {{#ifHasValueAfterFormatted "formatGrade" grade this }}
-                <span class="value">{{ conversion "formatGrade" grade }}%</span>
-                <span class="units"></span>
-                {{ else }}
-                <span class="value">--</span>
-                {{/ifHasValueAfterFormatted}}
-            </div>
-            {{/ifHasKey}}
+            
 
             {{#ifHasKey "vam" this }}
             <div class="statsRow" id="vam">
