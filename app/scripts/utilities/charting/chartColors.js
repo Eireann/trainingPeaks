@@ -6,18 +6,40 @@ function()
     return {
 
         seriesColorByChannel:
-            {
-                "HeartRate": "#e61101",
-                "Cadence": "#FFA500",
-                "Power": "#FF00FF",
-                "RightPower": "#FF00FF",
-                "Speed": "#0b8200",
-                "Elevation": "#6e96b9",
-                "Temperature": "#0A0AFF",
-                "Torque": "#BDBDBD",
-                "Distance": "#7b1F40",
-                "Time": "#84979C"
-            },
+        {
+            "HeartRate": "#e61101",
+            "Cadence": "#FFA500",
+            "Power": "#FF00FF",
+            "RightPower": "#FF00FF",
+            "Speed": "#0b8200",
+            "Elevation": "#6e96b9",
+            "Temperature": "#0A0AFF",
+            "Torque": "#BDBDBD",
+            "Distance": "#7b1F40",
+            "Time": "#2ac8f4"
+        },
+
+        seriesDarkColorByChannel:
+        {
+            "HeartRate": "#7f0901",
+            "Power": "#909",
+        },
+
+        seriesLightColorByChannel:
+        {
+            "HeartRate": "#fe594d",
+            "Power": "#f6f",
+            "Elevation": "#7cb9ee",
+            "Speed": "#13e600",
+            "Time": "#8be1f9"
+        },
+
+        seriesColorByUnit:
+        {
+            "distance": "#7b1F40",
+            "duration": "#84979C",
+            "calories": "#00f"
+        },
 
         pmcColors:
             {

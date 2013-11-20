@@ -65,7 +65,7 @@
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(value, true);
+            return datetimeUtils.format.decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
         },
 
         formatMinutes: function(minutes, options)

@@ -998,8 +998,6 @@
         }
     }
 
-
-
     &:hover, &.hover
     {
         background-color: #e4e2e3;
@@ -1071,7 +1069,8 @@
         display: none;
     }
 
-    &:hover .expandoPodHeader
+    &:hover .expandoPodHeader,
+    &.hover .expandoPodHeader
     {
         display: block;
     }
@@ -1119,7 +1118,9 @@
         .settings
         {
             width: 11px;
-            right: 43px;
+            // Since we're not using the .expand button we need to shift settings to the right
+            // right: 43px;
+            right: 21px;
             background: transparent no-repeat 0 0;
             @extend %chartIconsSpriteBG;
             cursor:pointer;

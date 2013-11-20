@@ -35,6 +35,7 @@ function(
         events:
         {
             "click .close": "_removePod",
+            "click .settings": "_showSettings",
         },
 
         modelEvents: {},
@@ -85,6 +86,12 @@ function(
         onRender: function()
         {
             var self = this;
+
+            if(!this.childView.settingsView)
+            {
+                this.$(".settings").remove();
+            }
+
             var $child = this.$(".expandoPodContent");
             this.childView.setElement($child);
             $child.addClass(this.childView.className);
@@ -140,6 +147,24 @@ function(
         _removePod: function()
         {
             this.model.destroy();
+        },
+
+        _showSettings: function(e)
+        {
+            var settingsView = new this.childView.settingsView(
+            {
+                offset: "right",
+                target: $(e.target),
+                model: this.model
+            });
+            settingsView.render();
+
+            var self = this;
+            this.$el.addClass("hover");
+            this.listenTo(settingsView, "close", function()
+            {
+                self.$el.removeClass("hover");
+            });
         }
 
     });
