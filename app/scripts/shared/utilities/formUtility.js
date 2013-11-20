@@ -31,7 +31,7 @@ function(
             }
             else if(match = format.match(/^units:(.*)/))
             {
-                value = TP.utils.conversion.formatUnitsValue(value, match[1], options);
+                value = TP.utils.conversion.formatUnitsValue(match[1], value, options);
             }
             else if(format)
             {
@@ -59,7 +59,7 @@ function(
             }
             else if(match = format.match(/^units:(.*)/))
             {
-                value = TP.utils.conversion.parseUnitsValue(value, match[1], options);
+                value = TP.utils.conversion.parseUnitsValue(match[1], value, options);
             }
             else if(_.isString(value) && value.trim() === "")
             {
@@ -124,7 +124,7 @@ function(
         {
             var formValues = {};
 
-             FormUtility._processFields($form, function(key, $field, $fields)
+            FormUtility._processFields($form, function(key, $field, $fields)
             {
                 formValues[key] = FormUtility.extractValueFromField(key, $field, $fields, model, options);
             },
