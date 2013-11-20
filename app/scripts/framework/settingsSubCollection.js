@@ -3,14 +3,10 @@ define(
    "underscore",
     "TP"
 ],
-function(
-   _,
-   TP
-)
+function(_, TP)
 {
-
-    return TP.Collection.extend({
-
+    return TP.Collection.extend(
+    {
         initialize: function(models, options)
         {
             if(!options.sourceModel)
@@ -47,7 +43,8 @@ function(
             this.listenTo(this.sourceModel, "change:" + this.sourceKey + ".*", _.bind(this._onSourceModelChanged, this));
         },
 
-        releaseSourceModel: function() {
+        releaseSourceModel: function()
+        {
             this.stopListening(this.sourceModel, "change:" + this.sourceKey + ".*");
         },
 
@@ -70,10 +67,7 @@ function(
         _resetSourceModel: function()
         {
             var mappedAttributes = this.map(function(model){ return model.attributes; });
-            this.sourceModel.set(this.sourceKey, 
-                mappedAttributes,
-                { changedBy: this }
-            );
+            this.sourceModel.set(this.sourceKey, mappedAttributes, { changedBy: this });
         },
 
         _overrideSave: function(model)
@@ -93,7 +87,8 @@ function(
         {
             var mappedAttrs = {};
 
-            _.each(attrs, function(value, key) {
+            _.each(attrs, function(value, key)
+            {
                 mappedAttrs[this.sourceKey + "." + index + "." + key] = value;
             }, this);
 
