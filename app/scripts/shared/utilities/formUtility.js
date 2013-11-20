@@ -16,6 +16,7 @@ function(
 
         formatValue: function(value, format, options)
         {
+            var match;
             if(format === "date")
             {
                 value = value && moment(value).isValid() ? TP.utils.datetime.format(value) : "";
@@ -27,6 +28,10 @@ function(
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
                 value = options.formatters[format](value, options.formatterOptions);
+            }
+            else if(match = format.match(/^units:(.*)/))
+            {
+                value = TP.utils.conversion.formatUnitsValue(value, match[1], options);
             }
             else if(format)
             {
@@ -51,6 +56,10 @@ function(
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
                 value = options.parsers[format](value, options.parserOptions);
+            }
+            else if(match = format.match(/^units:(.*)/))
+            {
+                value = TP.utils.conversion.parseUnitsValue(value, match[1], options);
             }
             else if(_.isString(value) && value.trim() === "")
             {
