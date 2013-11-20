@@ -15,6 +15,7 @@
     </div>
     <div class="workoutStatsColumn ">
         <input type="text" id="totalTimePlannedField" class="numberInput" readonly
+            name="totalTimePlanned" data-format="units:duration"
         {{#if totalTimePlanned }}
             value={{ conversion "formatDuration" totalTimePlanned }}
         {{/if}}
@@ -31,9 +32,10 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="distancePlannedField" class="numberInput" readonly
-            {{#if distancePlanned}}
-                value='{{ conversion "formatDistance" distancePlanned this }}'
-            {{/if}}
+            name="distancePlanned" data-format="units:distance"
+        {{#if distancePlanned}}
+            value='{{ conversion "formatDistance" distancePlanned this }}'
+        {{/if}}
         />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
@@ -47,9 +49,10 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="pacePlannedField" class="numberInput" readonly
-            {{#if velocityPlanned}}
-                value='{{ conversion "formatPace" velocityPlanned this }}'
-            {{/if}}
+            name="velocityPlanned" data-format="units:pace"
+        {{#if velocityPlanned}}
+            value='{{ conversion "formatPace" velocityPlanned this }}'
+        {{/if}}
         />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
@@ -63,9 +66,10 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="velocityPlannedField" class="numberInput" readonly
-            {{#if velocityPlanned}}
-                value='{{ conversion "formatSpeed" velocityPlanned this }}'
-            {{/if}}
+            name="velocityPlanned" data-format="units:speed"
+        {{#if velocityPlanned}}
+            value='{{ conversion "formatSpeed" velocityPlanned this }}'
+        {{/if}}
         />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
@@ -79,6 +83,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="caloriesPlannedField" class="numberInput" readonly
+            name="caloriesPlanned" data-format="units:kcal"
         {{#if caloriesPlanned}}
             value='{{ conversion "formatCalories" caloriesPlanned }}'
         {{/if}}
@@ -95,6 +100,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="elevationGainPlannedField" class="numberInput" readonly
+            name="elevationGainPlanned" data-format="units:elevation"
         {{#if elevationGainPlanned}}
             value='{{ conversion "formatElevationGain" elevationGainPlanned }}'
         {{/if}}
@@ -111,6 +117,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="tssPlannedField" class="numberInput" readonly
+            name="tssPlanned" data-format="units:tss"
         {{#if tssPlanned}}
             value='{{ conversion "formatTSS" tssPlanned}}'
         {{/if}}
@@ -127,6 +134,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="ifPlannedField" class="numberInput" readonly
+            name="ifPlanned" data-format="units:if"
         {{#if ifPlanned}}
             value='{{ conversion "formatIF" ifPlanned }}'
         {{/if}}
@@ -143,6 +151,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="energyPlannedField" class="numberInput" readonly
+            name="energyPlanned" data-format="units:energy"
         {{#if energyPlanned}}
             value='{{ conversion "formatEnergy" energyPlanned }}'
         {{/if}}

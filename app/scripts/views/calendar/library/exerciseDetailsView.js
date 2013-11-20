@@ -5,6 +5,7 @@ define(
 
     "TP",
     "views/userConfirmationView",
+    "shared/utilities/formUtility",
     "utilities/conversion/conversion",
 
     "hbs!templates/views/calendar/library/exerciseDetailsView",
@@ -16,6 +17,7 @@ function(
 
     TP,
     UserConfirmationView,
+    FormUtility,
     conversion,
 
     exerciseDetailsViewTemplate,
@@ -79,7 +81,6 @@ function(
                     $pace.val(formattedPace);
                 }
             }
-
         },
 
         handleEdit: function(e)
@@ -93,12 +94,14 @@ function(
         handleUpdate: function(e)
         {
             e.preventDefault();
-            var updateWorkout = this.model;
 
             var self = this;
-            var new_attrs = {};
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+
+            FormUtility.applyValuesToModel(this.$el, this.model, options);
+
             self.waitingOn();
-            updateWorkout.save(new_attrs, {wait: true}).done(function()
+            this.model.save().done(function()
             {
                 self.close();
             }).fail(function()

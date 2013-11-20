@@ -29,7 +29,7 @@ function(
             {
                 value = options.formatters[format](value, options.formatterOptions);
             }
-            else if(match = format.match(/^units:(.*)/))
+            else if(format && (match = format.match(/^units:(.*)/)))
             {
                 value = TP.utils.conversion.formatUnitsValue(match[1], value, options);
             }
@@ -43,6 +43,7 @@ function(
 
         parseValue: function(value, format, options)
         {
+            var match;
             if(format === "number")
             {
                 value = Number(value);
@@ -57,7 +58,7 @@ function(
             {
                 value = options.parsers[format](value, options.parserOptions);
             }
-            else if(match = format.match(/^units:(.*)/))
+            else if(format && (match = format.match(/^units:(.*)/)))
             {
                 value = TP.utils.conversion.parseUnitsValue(match[1], value, options);
             }
