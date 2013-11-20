@@ -36,6 +36,8 @@ function(
             template: exerciseDetailsViewTemplate
         },
 
+        modelEvents: {},
+
         events:
         {
             "click #closeIcon": "close",
@@ -49,7 +51,9 @@ function(
         onRender: function()
         {
             var self = this;
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
 
+            FormUtility.bindFormToModel(this.$el, this.model, options);
             if(this.alignedTo)
             {
                 this.alignArrowTo(this.alignedTo);
@@ -65,21 +69,19 @@ function(
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
             if($changedField.attr("id") === $pace.attr("id"))
             {
+                var formattedSpeed;
                 var parsedPace = conversion.parsePace($changedField.val().trim(), options);
-                if(_.isFinite(parsedPace))
-                {
-                    var formattedSpeed = conversion.formatSpeed(parsedPace, options);
-                    $speed.val(formattedSpeed);
-                }
+
+                formattedSpeed = _.isFinite(parsedPace) ? conversion.formatSpeed(parsedPace, options) : "";
+                $speed.val(formattedSpeed);
             }
             else
             {
+                var formattedPace;
                 var parsedSpeed = conversion.parseSpeed($speed.val().trim(), options);
-                if(_.isFinite(parsedSpeed) && parsedSpeed)
-                {
-                    var formattedPace = conversion.formatPace(parsedSpeed, options);
-                    $pace.val(formattedPace);
-                }
+
+                formattedPace = (_.isFinite(parsedSpeed) && parsedSpeed) ? conversion.formatPace(parsedSpeed, options) : "";
+                $pace.val(formattedPace);
             }
         },
 
@@ -96,9 +98,6 @@ function(
             e.preventDefault();
 
             var self = this;
-            var options = { workoutTypeId: this.model.get("workoutTypeId") };
-
-            FormUtility.applyValuesToModel(this.$el, this.model, options);
 
             self.waitingOn();
             this.model.save().done(function()
