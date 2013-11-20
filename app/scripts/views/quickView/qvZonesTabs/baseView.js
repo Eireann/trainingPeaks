@@ -73,6 +73,13 @@ function(
             this.unstickit();
             this.stickitInitialized = false;
             this.render();
+        },
+
+        serializeData: function()
+        {
+            return {
+                graphClass: this.graphTitle.replace(/\s/g,"")
+            };
         }
 
     };
