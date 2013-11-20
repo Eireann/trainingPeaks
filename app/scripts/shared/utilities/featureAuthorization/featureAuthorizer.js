@@ -27,7 +27,8 @@ function(
          )
 {
 
-    function Feature(options, callback) {
+    function Feature(options, callback)
+    {
         callback.options = options;
         return callback;
     }
@@ -38,10 +39,10 @@ function(
         this.userAccessRights = userAccessRights;
     }
    
-    _.extend(FeatureAuthorizer.prototype, {
-
-        features: {
-
+    _.extend(FeatureAuthorizer.prototype,
+    {
+        features:
+        {
             /*
             attributes: { targetDate: date } // the date to try to save to
             options: none

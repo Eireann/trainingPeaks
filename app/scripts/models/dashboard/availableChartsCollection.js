@@ -114,6 +114,10 @@ function(
             {
                 chartType: 20,
                 name: "Longest Workout (Duration)"
+            },
+            {
+                chartType: 35,
+                name: "Fitness History"
             }
             ]);
         }

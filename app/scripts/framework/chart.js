@@ -18,8 +18,8 @@ function(
     DashboardChartUtils
 )
 {   
-    var Chart = TP.Model.extend({
-
+    var Chart = TP.Model.extend(
+    {
         constructor: function(attributes, options)
         {
             if(!options.dataManager)

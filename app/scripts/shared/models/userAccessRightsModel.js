@@ -18,8 +18,8 @@ function(
 {
     return TP.DeepModel.extend(
     {
-
-        defaults: {
+        defaults:
+        {
             rights: []
         },
 
