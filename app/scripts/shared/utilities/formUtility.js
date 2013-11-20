@@ -185,6 +185,26 @@ function(
             });
         },
 
+        validate: function($form, options)
+        {
+            var errors = [];
+
+            FormUtility._processFields($form, function(key, $field, $fields)
+            {
+                var $label = $('label[for="' + $field.attr("id") + '"]');
+                var value = FormUtility.extractValueFromField(key, $field, $fields, undefined, options);
+
+                var isRequired = $field.data("required") !== undefined;
+                if(isRequired && !value)
+                {
+                    errors.push(($field.data("label") || $label.text()) + " is required");
+                }
+            },
+            options);
+
+            return errors;
+        },
+
         _processFields: function($form, callback, options)
         {
             var $fields = FormUtility._findFormFields($form, options);

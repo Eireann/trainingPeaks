@@ -17,16 +17,16 @@
 
                 </div><!-- End .labelContainer -->
 
-                <select id="language" name="language">
+                <select id="language" name="language" data-required>
                     <option value="en-us">English</option>
                 </select><!-- End #language -->
 
-                <select id="unitPreference" name="unitPreference" data-format="number">
+                <select id="unitPreference" name="unitPreference" data-format="number" data-required>
                     <option value="1">Imperial</option>
                     <option value="2">Metric</option>
                 </select><!-- End #unitPreference -->
 
-                <input id="weight" name="weight" data-format="units:kg">
+                <input id="weight" name="weight" data-format="units:kg" data-required>
                 <span class="weightUnits"></span>
 
             </div><!-- End .selectArea -->
@@ -40,22 +40,19 @@
 
                 </div><!-- End .labelContainer -->
 
-                <select id="birthdayMonth" name="birthdayMonth" data-format="number">
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
+                <select id="birthdayMonth" name="birthdayMonth" data-required>
+                    <option value="" selected>{{$ "Month" }}</option>
+                    {{# forRange 1 12 }}
+                        <option value="{{ index }}">{{ formatMonth index "MMMM" }}</option>
+                    {{/forRange}}
                 </select><!-- End #birthdayMonth -->
 
-                <input id="birthdayYear" name="birthdayYear" data-format="number">
+                <select id="birthdayYear" name="birthdayYear" data-required>
+                    <option value="" selected>{{$ "Year" }}</option>
+                    {{#forRange 1900 2100 }}
+                        <option value="{{ index }}">{{ formatYear index "YYYY" }}</option>
+                    {{/forRange}}
+                </select>
 
             </div><!-- End .selectArea -->
 
@@ -68,14 +65,14 @@
 
                 </div><!-- End .labelContainer -->
 
-                <select id="timeZone" name="timeZone">
+                <select id="timeZone" name="timeZone" data-required>
                     <option value="" selected>{{$ "TimeZone" }}</option>
                 {{#each timeZones }}
                     <option value="{{ key }}">{{ value }}</option>
                 {{/each}}
                 </select><!-- End #timeZone -->
 
-                <select id="country" name="country">
+                <select id="country" name="country" data-required>
                     <option value="" selected>{{$ "Country" }}</option>
                 {{#each countries}}
                     <option value="{{ data }}">{{ label }}</option>
@@ -86,10 +83,12 @@
 
             <div class="group selectArea">
 
-                <select id="interestedIn" name="interestedIn">
-                    <option value="imMostInterestedIn">I'm most interested in...</option>
-                    <option value="running">Running</option>
-                    <option value="cycling">Cycling</option>
+                <select id="interestedIn" name="interestedIn" data-required data-label="Primary Interest">
+                    <option value="">I'm most interested in...</option>
+                    <option value="tracking">Tracking my training</option>
+                    <option value="planning">Planning my season</option>
+                    <option value="analyzing">Analyzing my data</option>
+                    <option value="instruction">Getting expert instruction</option>
                 </select><!-- End #interestedIn -->
 
             </div><!-- End .selectArea -->
@@ -103,24 +102,24 @@
 
             </div><!-- End .labelContainer -->
 
-            <input id="thresholdPower" name="thresholdPower" type="text" placeholder="220 worth'a puddin" data-format="units:power">
+            <input id="thresholdPower" name="thresholdPower" type="text" data-format="units:power" data-required>
 
-            <input id="thresholdHeartRate" name="thresholdHeartRate" type="text" placeholder="177"><br />
+            <input id="thresholdHeartRate" name="thresholdHeartRate" type="text" data-format="units:heartrate" data-required><br />
 
             <label for="runPaceSpeed">Run Pace/Speed</label><br />
-            <input id="runPaceSpeed" name="runPaceSpeed" type="text" placeholder="10:00" data-format="runPace">
+            <input id="runPaceSpeed" name="runPaceSpeed" type="text" placeholder="10:00" data-format="runPace" data-required>
             <input name="runUnits" type="radio" id="runUnitsSpeed" value="speed">
             <label for="runUnitsSpeed"><span></span>mph</label>
-            <input name="runUnits" type="radio" id="runUnitsPace" value="pace" checked>
+            <input name="runUnits" type="radio" id="runUnitsPace" value="pace">
             <label for="runUnitsPace"><span></span>min/mile</label>
 
             <br />
 
             <label for="swimPace">Swim Pace/Speed</label><br/>
-            <input id="swimPace" name="swimPace" type="text" placeholder="2:00" data-format="swimPace">
+            <input id="swimPace" name="swimPace" type="text" placeholder="2:00" data-format="swimPace" data-required>
             <input name="swimUnits" type="radio" id="swimPaceRadio1" value="2" data-format="number">
             <label for="swimPaceRadio1"><span></span>/100m</label>
-            <input name="swimUnits" type="radio" id="swimPaceRadio2" value="1" data-format="number" checked>
+            <input name="swimUnits" type="radio" id="swimPaceRadio2" value="1" data-format="number">
             <label for="swimPaceRadio2"><span></span>/100y</label>
 
             <br />
