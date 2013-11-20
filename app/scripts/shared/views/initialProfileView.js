@@ -52,7 +52,7 @@ function(
                 language: theMarsApp.user.get("language") || "en-us",
                 unitPreference: theMarsApp.user.get("units") || 1,
                 country: theMarsApp.user.get("country") || "US",
-                swimUnits: "metric",
+                swimUnits: theMarsApp.user.getUnitsBySportType(1),
                 runUnits: "pace"
             });
         },
@@ -64,11 +64,11 @@ function(
             {
                 runPace: function(value)
                 {
-                    return TP.utils.conversion.formatUnitsValue(self.model.get("runUnits"), value);
+                    return TP.utils.conversion.formatUnitsValue(self.model.get("runUnits"), value, { workoutTyoeId: 3 });
                 },
                 swimPace: function(value)
                 {
-                    return TP.utils.conversion.formatUnitsValue("pace", value, { units: self.model.get("swimUnits") });
+                    return TP.utils.conversion.formatUnitsValue("pace", value, { workoutTypeId: 1 });
                 }
             };
 
@@ -76,11 +76,11 @@ function(
             {
                 runPace: function(value)
                 {
-                    return TP.utils.conversion.parseUnitsValue(self.model.get("runUnits"), value);
+                    return TP.utils.conversion.parseUnitsValue(self.model.get("runUnits"), value, { workoutTypeId: 3 });
                 },
                 swimPace: function(value)
                 {
-                    return TP.utils.conversion.parseUnitsValue("pace", value, { units: self.model.get("swimUnits") });
+                    return TP.utils.conversion.parseUnitsValue("pace", value, { workoutTypeId: 1 });
                 }
             };
 
@@ -156,6 +156,7 @@ function(
         _updateUnits: function(event)
         {
             theMarsApp.user.set("units", this.model.get("unitPreference"));
+            theMarsApp.user.set("unitsBySportType.1", this.model.get("swimUnits"));
             FormUtility.applyValuesToForm(this.$el, this.model, this.formUtilityOptions());
             this.$(".weightUnits").text(TP.utils.units.getUnitsLabel("kg"));
             this.$("label[for=runUnitsPace]").text(TP.utils.units.getUnitsLabel("pace", 3));

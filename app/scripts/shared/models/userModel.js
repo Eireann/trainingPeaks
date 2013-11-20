@@ -58,6 +58,7 @@ function(
             story: null,
             timeZone: null,
             units: 2,
+            unitsBySportType: {},
             userId: 0,
             userIdentifierHash: "",
             userName: null,
@@ -153,6 +154,11 @@ function(
         {
             if(this.checkpointAttributes)
                 this.set(this.checkpointAttributes);
+        },
+
+        getUnitsBySportType: function(sportType)
+        {
+            return this.get("unitsBySportType")[parseInt(sportType, 10)] || this.get("units"); 
         },
 
         setCurrentAthleteId: function(athleteId)

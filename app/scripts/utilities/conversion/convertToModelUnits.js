@@ -57,7 +57,7 @@ function(
 
     var convertToModelUnits = function(value, fieldType, workoutTypeId)
     {
-        var userUnits = theMarsApp.user.get("units");
+        var userUnits = theMarsApp.user.getUnitsBySportType(workoutTypeId);
 
         if (fieldType === "pace" && !isTimeString(value))
         {
@@ -90,7 +90,7 @@ function(
     {
         if (!userUnits)
         {
-            userUnits = theMarsApp.user.get("units");
+            userUnits = theMarsApp.user.getUnitsBySportType();
         }
 
         return userUnits === unitsConstants.English ? 5 / 9 * (value - 32) : value;
