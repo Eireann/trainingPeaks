@@ -67,6 +67,11 @@ function(
             {
                 podType: 119, // Peaks
                 name: "Peaks - Speed"
+            },
+            {
+                podType: 1081,
+                name: "Laps & Splits Column Chart",
+                cols: 2
             }
             ]);
         }

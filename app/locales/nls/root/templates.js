@@ -461,5 +461,7 @@ define({
     "ApplyExpandoEdits": "Click apply to save edits and update stats.",
 
     "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
-    "ConfirmDeleteLap": "Are you sure you want to delete the lap?"
+    "ConfirmDeleteLap": "Are you sure you want to delete the lap?",
+
+    "LapsColumnChart": "Laps & Splits Column Chart"
 });
