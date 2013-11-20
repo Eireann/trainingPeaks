@@ -15,7 +15,7 @@ function (_, TP, RollbarManager)
             {
                 return callback.apply(this, args);
             };
-            theMarsApp.session.authenticationComplete(callbackWithArgs);
+            theMarsApp.bootPromise.then(callbackWithArgs);
         };
     };
 

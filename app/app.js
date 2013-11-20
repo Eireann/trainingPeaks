@@ -107,14 +107,31 @@ function(
 
         historyEnabled: true,
 
+        setupBootPromises: function()
+        {
+            var bootDeferred = $.Deferred();
+            this.bootPromise = bootDeferred.promise();
+
+            var bootPromises = []; 
+            this.addBootPromise = function(promise)
+            {
+                bootPromises.push(promise);
+            };
+
+            this.finalizeBootPromises = function()
+            {
+                $.when.apply($, bootPromises).then(bootDeferred.resolve, bootDeferred.reject);
+            };
+        },
 
         constructor: function(options)
         {
-
             if(!options || !options.$body)
             {
                 throw new Error("TheMarsApp constructor requires a body element");
             }
+
+            this.setupBootPromises();
 
             TP.Application.apply(this, arguments);
 
@@ -129,6 +146,9 @@ function(
             this.session = new Session();
             this.user = this.session.user;
             this.userAccessRights = this.session.userAccessRights;
+
+            this.addBootPromise(this.session.userPromise);
+            this.addBootPromise(this.session.userAccessPromise);
 
             this.addRegions(
             {
@@ -258,10 +278,12 @@ function(
             {
                 var self = this;
 
+                var deferred = $.Deferred();
+                this.addBootPromise(deferred.promise());
+
                 this.session.userPromise.done(function()
                 {
-                    self.buildInfo.fetch();
-                    self.timeZones.fetch();
+                    $.when(self.buildInfo.fetch(), self.timeZones.fetch()).then(deferred.resolve, deferred.reject);
                 });
             });
 
@@ -269,11 +291,26 @@ function(
             {
                 var self = this;
 
+                this.bootPromise.done(function()
+                {
+                    var view = new InitialProfileView({ model: self.user });
+                    view.render();
+                });
+            });
+
+            this.addInitializer(function()
+            {
+                var self = this;
+
+                var deferred = $.Deferred();
+                this.addBootPromise(deferred.promise());
+
                 this.session.userPromise.done(function()
                 {
                     RollbarManager.setUser(self.user);
 
                     var athletePromise = self.user.getAthleteSettings().fetch();
+                    athletePromise.then(deferred.resolve, deferred.reject);
 
                     $.when(self.session.userAccessPromise, athletePromise).done(function()
                     {
@@ -476,6 +513,12 @@ function(
                     }
                 }
                 );
+            });
+
+
+            this.addInitializer(function()
+            {
+                this.finalizeBootPromises();
             });
 
         },
