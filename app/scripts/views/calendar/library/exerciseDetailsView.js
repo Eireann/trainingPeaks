@@ -4,8 +4,8 @@ define(
     "underscore",
 
     "TP",
-    "framework/notYetImplemented",
     "views/userConfirmationView",
+    "utilities/conversion/conversion",
 
     "hbs!templates/views/calendar/library/exerciseDetailsView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
@@ -15,8 +15,8 @@ function(
     _,
 
     TP,
-    notYetImplemented,
     UserConfirmationView,
+    conversion,
 
     exerciseDetailsViewTemplate,
     deleteConfirmationTemplate
@@ -37,8 +37,11 @@ function(
         events:
         {
             "click #closeIcon": "close",
-            "click .edit": notYetImplemented,
-            "click .delete": "confirmDelete"
+            "click .delete": "confirmDelete",
+            "click .edit": "handleEdit",
+            "click .update": "handleUpdate",
+            "change #pacePlannedField": "reCalculateSpeedOrPace",
+            "change #velocityPlannedField": "reCalculateSpeedOrPace"
         },
 
         onRender: function()
@@ -51,11 +54,69 @@ function(
             }
         },
 
+        reCalculateSpeedOrPace: function(e)
+        {
+            var $changedField = this.$(e.currentTarget);
+            var $pace = this.$("#pacePlannedField");
+            var $speed = this.$("#velocityPlannedField");
+
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+            if($changedField.attr("id") === $pace.attr("id"))
+            {
+                var parsedPace = conversion.parsePace($changedField.val().trim(), options);
+                if(_.isFinite(parsedPace))
+                {
+                    var formattedSpeed = conversion.formatSpeed(parsedPace, options);
+                    $speed.val(formattedSpeed);
+                }
+            }
+            else
+            {
+                var parsedSpeed = conversion.parseSpeed($speed.val().trim(), options);
+                if(_.isFinite(parsedSpeed) && parsedSpeed)
+                {
+                    var formattedPace = conversion.formatPace(parsedSpeed, options);
+                    $pace.val(formattedPace);
+                }
+            }
+
+        },
+
+        handleEdit: function(e)
+        {
+            e.preventDefault();
+            this.$(".edit").hide();
+            this.$(".update").show();
+            this.$("input").removeAttr("readonly");
+        },
+
+        handleUpdate: function(e)
+        {
+            e.preventDefault();
+            var updateWorkout = this.model;
+
+            var self = this;
+            var new_attrs = {};
+            self.waitingOn();
+            updateWorkout.save(new_attrs, {wait: true}).done(function()
+            {
+                self.close();
+            }).fail(function()
+            {
+                // TODO: how should this be handled?
+                // var errorMessageView = new UserConfirmationView({ template: errorMessage });
+                // errorMessageView.render();
+            }).always(function()
+            {
+                self.waitingOff();
+            });
+        },
+
         confirmDelete: function(e)
         {
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.deleteWorkout, this);
+            this.listenToOnce(this.deleteConfirmationView, "userConfirmed", this.deleteWorkout);
         },
 
         deleteWorkout: function(options)
@@ -69,8 +130,9 @@ function(
                 self.close();
             }).fail(function()
             {
-                var errorMessageView = new UserConfirmationView();
-                errorMessageView.render();
+                // TODO: same as above
+                // var errorMessageView = new UserConfirmationView({ template: errorMessage });
+                // errorMessageView.render();
             }).always(function()
             {
                 self.waitingOff();
