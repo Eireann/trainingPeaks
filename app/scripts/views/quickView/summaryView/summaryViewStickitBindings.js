@@ -70,16 +70,14 @@ function(
                 observe: "tssPlanned",
                 onGet: "formatTSS",
                 onSet: "parseTSS",
-                updateModel: "updateModel",
-                defaultValue: ""
+                updateModel: "updateModel"
             },
             "#tssCompletedField":
             {
                 observe: "tssActual",
                 onGet: "formatTSS",
                 onSet: "parseTSS",
-                updateModel: "updateModel",
-                defaultValue: ""
+                updateModel: "updateModel"
             },
             "#normalizedPaceCompletedField":
             {
