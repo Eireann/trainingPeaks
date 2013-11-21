@@ -91,10 +91,10 @@ function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithout
 
         animateOneStepExpansion: function(windowHeight, windowWidth)
         {
-            var newHeight = windowHeight - 20;
+            var newHeight = windowHeight - 52;
             var newWidth = windowWidth - 40;
             var left = 20;
-            var top = 20;
+            var top = 26;
 
             var self = this;
             var afterExpanding = function()
@@ -228,7 +228,7 @@ function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithout
             {
                 var windowWidth = $(window).width();
                 var windowHeight = $(window).height();
-                var newHeight = windowHeight - 20;
+                var newHeight = windowHeight - 52;
                 var newWidth = windowWidth - 40;
 
                 this.$("#workOutQuickView").width(newWidth).height(newHeight);

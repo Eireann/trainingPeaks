@@ -86,9 +86,12 @@ function(
 
         serializeData: function()
         {
-            // Grab speed label based on model workout type
+            // Grab speed label based _on model workout type
             var speedLabel = this.model ? TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeValueId")) : "MPH";
-            var elevationlabel = this.model ? TP.utils.units.getUnitsLabel("elevation") : "FT";
+            var elevationLabel = this.model ? TP.utils.units.getUnitsLabel("elevation", this.model.get("workoutTypeValueId")) : "FT";
+            var cadenceLabel = this.model ? TP.utils.units.getUnitsLabel("cadence", this.model.get("workoutTypeValueId")) : "RPM";
+            var tempLabel = this.model ? TP.utils.units.getUnitsLabel("temperature", this.model.get("workoutTypeValueId")) : "F";
+            var torqueLabel = this.model ? TP.utils.units.getUnitsLabel("torque", this.model.get("workoutTypeValueId")) : "IN-LBS";
 
             // Some workout type speeds need to be shown as "pace" units
             if (this.model && _.contains([1,3,12,13], this.model.get("workoutTypeValueId")))
@@ -97,7 +100,10 @@ function(
             }
             return {
                 speedLabel: speedLabel,
-                elevationLabel: elevationlabel
+                elevationLabel: elevationLabel,
+                cadenceLabel: cadenceLabel,
+                torqueLabel: torqueLabel,
+                tempLabel: tempLabel
             };
         }
     });

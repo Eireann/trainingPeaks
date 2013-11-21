@@ -178,7 +178,11 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
         {
             if(options && options.date)
             {
-                this.moveToDay(options.date);
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    _.bind(function(){this.moveToDay(options.date);}, this),
+                    {targetDate: options.date}
+                );
             }
         },
 

@@ -40,12 +40,22 @@
             &:hover {
                 color:$TPGrey4;
             }
+
+            &.hidden {
+                display: none;
+            }
         }
 
         ul
         {
             margin: 0;
         }
+    }
+
+    .apply
+    {
+        width: 50px;
+        float: right;
     }
 
 }

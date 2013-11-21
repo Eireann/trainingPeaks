@@ -6,7 +6,7 @@
 
 
 	<div class="zoomButtons">
-		<button class="zoom">{{$ "Zoom"}}</button>
+		<button class="zoom hidden">{{$ "Zoom"}}</button>
 		<button class="reset hidden">{{$ "Unzoom"}}</button>
 	</div>
 
@@ -21,13 +21,13 @@
 
 <div class="graphButtonContain cf">
 	<div class="seriesButtons">
+		<button class="cadence" data-title="{{$ "Cadence" }}" data-series="Cadence">{{ cadenceLabel }}</button>
 		<button class="elevation" data-title="{{$ "Elevation" }}" data-series="Elevation">{{ elevationLabel }}</button>
-		<button class="speed" data-title="{{$ "Speed" }}" data-series="Speed">{{ speedLabel }}</button>
 		<button class="heartRate" data-title="{{$ "HeartRate" }}" data-series="HeartRate">BPM</button>
 		<button class="power" data-title="{{$ "Power" }}" data-series="Power">W</button>
 		<button class="rightPower" data-title="{{$ "RightPower" }}" data-series="RightPower">W</button>
-		<button class="torque" data-title="{{$ "Torque" }}" data-series="Torque">{{ torqueLabel }}</button>
-		<button class="cadence" data-title="{{$ "Cadence" }}" data-series="Cadence">{{ cadenceLabel }}</button>
+		<button class="speed" data-title="{{$ "Speed" }}" data-series="Speed">{{ speedLabel }}</button>
 		<button class="temperature" data-title="{{$ "Temperature" }}" data-series="Temperature">{{ tempLabel }}</button>
+		<button class="torque" data-title="{{$ "Torque" }}" data-series="Torque">{{ torqueLabel }}</button>
 	</div>
 </div>

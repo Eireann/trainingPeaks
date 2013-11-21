@@ -5,15 +5,15 @@
     "TP",
     "utilities/athlete/userTypes"
 ],
-function (_, Handlebars, TP, userType)
+function (_, Handlebars, TP, userTypes)
 {
     var editionTypeHelper = function (userType)
     {
-        if (userType === 1 || userType === 4)
+        if (userType === userTypes.getIdByName("Premium Athlete Paid By Coach") || userType === userTypes.getIdByName("Premium Athlete"))
         {
             return "Premium Edition";
         }
-        else if (userType === 2 || userType === 5)
+        else if (userType === userTypes.getIdByName("Paid Coach") || userType === userTypes.getIdByName("Demo Coach"))
         {
             return "Coach Edition";
         }
@@ -25,7 +25,7 @@ function (_, Handlebars, TP, userType)
 
     var upgradeButtonVisible = function (userType)
     {
-        if (userType === 5 || userType === 6)
+        if (userType === userTypes.getIdByName("Demo Coach") || userType === userTypes.getIdByName("Basic Athlete"))
         {
             return true;
         }
@@ -37,14 +37,14 @@ function (_, Handlebars, TP, userType)
 
     var upgradeButtonLink = function (userType)
     {
-        if (upgradeButtonVisible)
+        if (upgradeButtonVisible(userType))
         {
-            if (userType === 5)
+            if (userType === userTypes.getIdByName("Demo Coach"))
             {
                 return "https://home.trainingpeaks.com/account-professional-edition.aspx?s=859edf69-504e-443a-bd0a-b2c6d095b325";
             }
 
-            if (userType === 6)
+            if (userType === userTypes.getIdByName("Basic Athlete"))
             {
                 return "https://home.trainingpeaks.com/create-account-personal-edition.aspx?login=true&utm_source=tpflex&utm_medium=trigger&utm_content=premiumfeature&utm_campaign=put";
             }
