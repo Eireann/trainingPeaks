@@ -213,11 +213,18 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             if(options.date)
             {
-                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                if(theMarsApp.featureAuthorizer.canAccessFeature(
                     theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    _.bind(function(){this._applyPaste(options);}, this),
                     {targetDate: options.date}
-                );
+                ))
+                {
+                    return this._applyPaste(options);
+                }
+                else
+                {
+                    theMarsApp.featureAuthorizer.showUpgradeMessage({ slideId: "advanced-scheduling" });
+                    return false;
+                }
             }
             else
             {
