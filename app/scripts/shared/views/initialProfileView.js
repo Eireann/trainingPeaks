@@ -168,7 +168,14 @@ function(
                 }
             });
 
-            return $.when(profilePromise, userPromise).then(function()
+            var athleteDeferred = new $.Deferred();
+            profilePromise.then(function()
+            {
+                var xhr = theMarsApp.user.getAthleteSettings().fetch();
+                xhr.then(athleteDeferred.resolve, athleteDeferred.reject);
+            });
+
+            return $.when(profilePromise, userPromise, athleteDeferred.promise()).then(function()
             {
                 theMarsApp.calendarManager.reset();
                 self.close();
