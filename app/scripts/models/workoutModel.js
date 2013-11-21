@@ -213,21 +213,11 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             if(options.date)
             {
-                var date = options.date;
-
-                if(this.isNew())
-                {
-                    var workout = this.clone();
-                    workout.set("workoutDay", date).save();
-                    theMarsApp.calendarManager.addItem(workout);
-                    return workout;
-                }
-                else
-                {
-                    this.moveToDay(date);
-                    return this;
-                }
-
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    _.bind(function(){this._applyPaste(options);}, this),
+                    {targetDate: options.date}
+                );
             }
             else
             {
@@ -235,6 +225,23 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 return false;
             }
 
+        },
+
+        _applyPaste: function(options)
+        {
+            var date = options.date;
+            if(this.isNew())
+            {
+                var workout = this.clone();
+                workout.set("workoutDay", date).save();
+                theMarsApp.calendarManager.addItem(workout);
+                return workout;
+            }
+            else
+            {
+                this.moveToDay(date);
+                return this;
+            }
         },
 
         getPostActivityComments: function()
