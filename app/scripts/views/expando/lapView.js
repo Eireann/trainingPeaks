@@ -16,6 +16,22 @@ function(
 
         tagName: "li",
 
+        className: function()
+        {
+            if(this.model.getState().get("isLap") || this.model.getState().get("temporary"))
+            {
+                return "lap";
+            }
+            else if(this.model.getState().get("isTotal"))
+            {
+                return "lap total";
+            }
+            else
+            {
+                return "peak";
+            }
+        },
+
         template:
         {
             type: "handlebars",

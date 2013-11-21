@@ -151,7 +151,9 @@ function(
 
             if(detailData.get("totalStats"))
             {
-                ranges.push(this._asRangeModel(detailData.get("totalStats"), { hasLoaded: true, name: "Entire Workout" }));
+                var totalRange = this._asRangeModel(detailData.get("totalStats"), { hasLoaded: true, name: "Entire Workout" });
+                totalRange.getState().set("isTotal", true);
+                ranges.push(totalRange);
             }
 
             var peakType = this.$("select.peakType").val();
