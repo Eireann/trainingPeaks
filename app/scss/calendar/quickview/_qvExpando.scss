@@ -17,10 +17,20 @@
             color:$TPGrey4;
             font-family:$fontFamilyHeavy;
 
-            .actions
-            {
-                .delete
-                {
+            .lapName {
+                .add {
+                    color:$TPLinkBlue;
+                    font-family:$fontFamilyRegular;
+                    margin-left: 2px;
+
+                    &:hover {
+                        color: $TPLinkBlueHover;
+                    }
+                }
+            }
+
+            .actions {
+                .delete {
                     margin: 5px 0 0;
                     width: 13px;
                 }
@@ -42,15 +52,14 @@
                 display: none;
             }
 
-            @include inputs(120px, 22px, $fontSizeSmall, $fontFamilyRegular, "input[type=text]");
+            @include inputs(159px, 22px, $fontSizeSmall, $fontFamilyRegular, "input[type=text]");
             input.lapName {
                 display: inline-block;
                 text-align: left !important;
-                margin: 0 5px 0 0;
+                margin: 0 11px 0 0;
                 padding:0 5px;
-                position: relative;
+                // position: relative;
                 z-index: 2;
-                font-size: 1em;
             }
         }
 
@@ -631,19 +640,16 @@
     }
 }
 
-.expandoRightColumn
-{
+.expandoRightColumn {
     float: right;
     width: 335px;
-    overflow-y: scroll;
-    @include nice-scrollbar;
 
-    .expandoEditControlsRegion
-    {
+    .expandoEditControlsRegion {
         // so .waiting indicator has a home
         position: relative;
-        .expandoEditControls
-        {
+        border-bottom: 1px solid $TPGrey2;
+
+        .expandoEditControls {
             // min-height: 200px;
             text-align: center;
             padding:10px 10px 15px 10px;
@@ -668,9 +674,11 @@
         }
     }
 
-    .expandoStatsRegion
-    {
-
+    .expandoStatsRegion {
+        height: 60%;
+        overflow-y: auto;
+        @include nice-scrollbar;
+        
         .expandoStats
         {
 
@@ -706,15 +714,25 @@
                 @include clearfix;
 
                 .mainStat {
-                    width: 33.3%;
-                    float: left;
+                    // width: 33.3%;
+                    // float: left;
                     text-align: center;
+                    //width: auto;
+                    display: table-cell;
+                    width: 15%;
+
+                    #duration {
+                        // float:left;
+                    }
+                    
                     &#tss {
-                        width: 28%;
+                        // width: 28%;
+                        // float:right;
                     }
                     
                     &#distance {
-                        width: 38%;
+                        // width: 38%;
+                        //float:left;
                     }
 
                     @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
@@ -733,6 +751,8 @@
                         display: block;
                         margin-top: 1px;
                     }
+
+
                 }
 
                 
@@ -822,6 +842,7 @@
                 float: left;
                 width: 100%;
                 margin-top: 19px;
+                margin-bottom: 10px;
                 padding-top: 20px;
                 border-top: 1px solid $TPGrey2;
 
@@ -909,8 +930,11 @@
         }
     }
 
-    .expandoLapsRegion
-    {
+    .expandoLapsRegion {
+        border-top:1px solid $TPGrey2;
+        height: 40%;
+        overflow-y: auto;
+        @include nice-scrollbar;
 
         .expandoLaps
         {

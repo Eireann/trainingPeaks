@@ -8,42 +8,44 @@
 
     <div class="contents statisticsSummary">
 
-        {{#ifHasKey "totalTime" this}}
-        <div class="mainStat" id="duration">
-            <label class="mainStatTitle">{{$ "Duration" }}</label>
-            
-            {{#if movingTime}}
-                {{#if hasStoppedTime }}
-                <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
-                <span class="units totalTime">({{ formatTime totalTime }})</span>
+        <div class="mainStatContain">
+            {{#ifHasKey "totalTime" this}}
+            <div class="mainStat" id="duration">
+                <label class="mainStatTitle">{{$ "Duration" }}</label>
+                
+                {{#if movingTime}}
+                    {{#if hasStoppedTime }}
+                    <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
+                    <span class="units totalTime">({{ formatTime totalTime }})</span>
+                    {{ else }}
+                    <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
+                    {{/if}}
                 {{ else }}
-                <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
+                    <span class="value movingTime">--</span>
                 {{/if}}
-            {{ else }}
-                <span class="value movingTime">--</span>
-            {{/if}}
-        </div>
-        {{/ifHasKey}}
+            </div>
+            {{/ifHasKey}}
 
-        {{#ifHasKey "distance" this }}
-        <div class="mainStat" id="distance">
-            <label class="mainStatTitle">{{$ "Distance" }}</label>
-            <span class="value">{{ conversion "formatDistance" distance this "--" }}</span>
-            <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
-        </div>
-        {{/ifHasKey}}
+            {{#ifHasKey "distance" this }}
+            <div class="mainStat" id="distance">
+                <label class="mainStatTitle">{{$ "Distance" }}</label>
+                <span class="value">{{ conversion "formatDistance" distance this "--" }}</span>
+                <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
+            </div>
+            {{/ifHasKey}}
 
-        {{#ifHasKey "trainingStressScoreActual" this }}
-        <div class="mainStat" id="tss">
-            <label class="mainStatTitle">{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
-            {{#if trainingStressScoreActual }}
-            <span class="value">{{ conversion "formatTSS" trainingStressScoreActual this "--"}}</span>
-            <span class="units"></span>
-            {{ else }}
-            <span class="value">--</span>
-            {{/if}}
+            {{#ifHasKey "trainingStressScoreActual" this }}
+            <div class="mainStat" id="tss">
+                <label class="mainStatTitle">{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
+                {{#if trainingStressScoreActual }}
+                <span class="value">{{ conversion "formatTSS" trainingStressScoreActual this "--"}}</span>
+                <span class="units"></span>
+                {{ else }}
+                <span class="value">--</span>
+                {{/if}}
+            </div>
+            {{/ifHasKey}}
         </div>
-        {{/ifHasKey}}
 
 
 

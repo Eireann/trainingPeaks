@@ -2,10 +2,16 @@
     <input type="checkbox">
 
     <div class="lapDescription">
-        <span class="lapName"{{#if _state.isLap}} title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}</span>
+        <span class="lapName"{{#if _state.isLap}} title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}
+          {{#if _state.temporary}}
+            <span class="add">Add</span>
+          {{/if}}
+        </span>
+        
         {{#if _state.isLap}}
-        <input class="lapName" value="{{ name }}" type="text"/>
+          <input class="lapName" value="{{ name }}" type="text"/>
         {{/if}}
+
         <span class="lapTime">{{#if totalTime }} {{ formatTimeToHundredths totalTime}}{{/if}}</span>
     </div>
 
@@ -14,10 +20,5 @@
         <i class="delete closeIcon"></i>
       </span>
     {{/if}}
-    {{#if _state.temporary}}
-      <span class="actions">
-        <span class="add">Add</span>
-      </span>
-    {{/if}}
-
+    
 {{/ifNot}}
