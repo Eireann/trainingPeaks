@@ -110,6 +110,7 @@ function(
 
             beforeEach(function()
             {
+                theMarsApp.user.setCurrentAthleteId(67890);
                 metric = new MetricModel(metricAttributes);
             });
 

@@ -237,17 +237,30 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
         _applyPaste: function(options)
         {
             var date = options.date;
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
             if(this.isNew())
             {
                 var workout = this.clone();
-                workout.set("workoutDay", date).save();
+                workout.save(
+                {
+                    workoutDay: date,
+                    athleteId: athleteId
+                });
                 theMarsApp.calendarManager.addItem(workout);
                 return workout;
             }
             else
             {
-                this.moveToDay(date);
-                return this;
+                if(this.get("athleteId") === athleteId)
+                {
+                    this.moveToDay(date);
+                    return this;
+                }
+                else
+                {
+                    // Cut workout for different athlete should be ignored
+                    return false;
+                }
             }
         },
 

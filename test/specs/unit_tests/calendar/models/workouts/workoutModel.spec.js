@@ -129,6 +129,7 @@ function(
 
             beforeEach(function()
             {
+                theMarsApp.user.setCurrentAthleteId(67890);
                 workout = new WorkoutModel(workoutAttributes);
             });
 
