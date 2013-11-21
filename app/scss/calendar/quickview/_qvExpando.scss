@@ -712,54 +712,53 @@
 
             .statisticsSummary {
                 @include clearfix;
+                .mainStatContain {
+                    .mainStat {
+                        // width: 33.3%;
+                        // float: left;
+                        text-align: center;
+                        //width: auto;
+                        display: table-cell;
+                        width: 15%;
 
-                .mainStat {
-                    // width: 33.3%;
-                    // float: left;
-                    text-align: center;
-                    //width: auto;
-                    display: table-cell;
-                    width: 15%;
+                        #duration {
+                            // float:left;
+                        }
+                        
+                        &#tss {
+                            // width: 28%;
+                            // float:right;
+                        }
+                        
+                        &#distance {
+                            // width: 38%;
+                            //float:left;
+                        }
 
-                    #duration {
-                        // float:left;
+                        @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+                        .mainStatTitle {
+                            margin-bottom: 0;
+                        }
+
+                        .value {
+                            font-family: $fontFamilyLight;
+                            font-size: $fontSizeHeader;
+                        }
+
+                        .totalTime {
+                            font-size: $fontSizeXSmall;
+                            color: $TPGrey3;
+                            display: block;
+                            margin-top: 1px;
+                        }
                     }
-                    
-                    &#tss {
-                        // width: 28%;
-                        // float:right;
-                    }
-                    
-                    &#distance {
-                        // width: 38%;
-                        //float:left;
-                    }
-
-                    @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
-                    .mainStatTitle {
-                        margin-bottom: 0;
-                    }
-
-                    .value {
-                        font-family: $fontFamilyLight;
-                        font-size: $fontSizeHeader;
-                    }
-
-                    .totalTime {
-                        font-size: $fontSizeXSmall;
-                        color: $TPGrey3;
-                        display: block;
-                        margin-top: 1px;
-                    }
-
-
                 }
 
                 
 
                 .subStats {
                     // width: 120px;
-                    width: 100%;
+                    width: 303px;
 
                     div:nth-of-type(2n+0) {
                         // margin-left: 16px;
@@ -767,8 +766,7 @@
                         width: 140px;
                     }
 
-                    
-
+                
                     .statsRow {
                         float: left;
                         width: 160px;
@@ -779,6 +777,12 @@
                             padding: 5px 10px 5px 0;
                             margin: 0 5px 0 0;
                         }
+                        #powerPulseDecoupling {
+                            .units {
+                                display: none;
+                            }
+                        }
+
                     }
 
                     float: left;
