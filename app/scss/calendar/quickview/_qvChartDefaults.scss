@@ -55,10 +55,90 @@
         float: right;
     }
 
-    .disabled {
-        margin-top: 22px;
+    .chart {
+        &:not(.disabled)
+        {
+            .placeholder
+            {
+                display: none;
+            }
+        }
+    }
+
+    .zonesChart {
+        &.disabled
+        {
+
+            .chartImage {
+                width: 298px;
+                height: 182px;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+            &.HeartRate
+            {
+                .chartImage {
+                    @extend %hrZonesPremiumBG;
+                }
+            }
+            &.Power
+            {
+                .chartImage {
+                    @extend %powerZonesPremiumBG;
+                }
+            }
+            &.Speed
+            {
+                .chartImage {
+                    @extend %speedZonesPremiumBG;
+                }
+            }
+            &.Pace
+            {
+                .chartImage {
+                    @extend %speedZonesPremiumBG;
+                }
+            }
+        }
     }
     
+    .peaksChart {
+        &.disabled
+        {
+
+            .chartImage {
+                width: 298px;
+                height: 182px;
+                margin-left: 5px;
+                margin-top: 10px;
+            }
+            &.HeartRate
+            {
+                .chartImage {
+                    @extend %hrPeaksPremiumBG;
+                }
+            }
+            &.Power
+            {
+                .chartImage {
+                    @extend %powerPeaksPremiumBG;
+                }
+            }
+            &.Speed
+            {
+                .chartImage {
+                    @extend %speedPeaksPremiumBG;
+                }
+            }
+            &.Pace
+            {
+                .chartImage {
+                    @extend %speedPeaksPremiumBG;
+                }
+            }
+        }
+    }
+
     .zonesChart {
 
         @include noDataMessage;

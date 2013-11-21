@@ -1,12 +1,22 @@
 ﻿<div class="qvZonesTab">
 
     <div class="left">
-        <div class="zonesChart chart disabled {{ graphClass }}"></div>
+        <div class="zonesChart chart disabled {{ graphClass }}">
+            <div class="placeholder clickable"> 
+                <div class="chartTitle">{{ graphTitle }} {{$ "ByZones"}}</div>
+                <div class="chartImage"></div>
+            </div>
+        </div>
         <div class="zonesTable"></div>
     </div>
 
     <div class="right">
-        <div class="peaksChart chart disabled {{ graphClass }}"></div>
+        <div class="peaksChart chart disabled {{ graphClass }}">
+            <div class="placeholder clickable"> 
+                <div class="chartTitle">{{$ "Peak" }} {{ graphTitle }}</div>
+                <div class="chartImage"></div>
+            </div>
+        </div>
         <div class="peaksTable"></div>
     </div>
 

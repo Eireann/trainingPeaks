@@ -83,7 +83,8 @@ function(
         serializeData: function()
         {
             return {
-                graphClass: this.graphTitle.replace(/\s/g,"")
+                graphClass: this.graphTitle.replace(/\s/g,""),
+                graphTitle: this.graphTitle
             };
         },
 

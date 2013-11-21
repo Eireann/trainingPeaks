@@ -281,27 +281,27 @@ function(
             podAccessString: "expando_DataEditing"
         },
         {
-            podId: 102,
+            podId: 1020,
             podAccessString: "qv_TimeInHeartRateZones"          
         },
         {
-            podId: 101,
+            podId: 1010,
             podAccessString: "qv_TimeInPowerZones"
         },
         {
-            podId: 122,
+            podId: 1220,
             podAccessString: "qv_TimeInSpeedZones"
         },
         {
-            podId: 118,
+            podId: 1180,
             podAccessString: "qv_MeanMaxHeartRate"          
         },
         {
-            podId: 111,
+            podId: 1110,
             podAccessString: "qv_MeanMaxPower"
         },
         {
-            podId: 119,
+            podId: 1190,
             podAccessString: "qv_MeanMaxSpeed"
         }
     ];
