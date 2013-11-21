@@ -27,22 +27,23 @@
                         color: $TPLinkBlueHover;
                     }
                 }
-            }
+            } 
+        }
 
+        &:hover
+        {
             .actions {
+                display: inline;
                 .delete {
                     margin: 5px 0 0;
                     width: 13px;
                 }
             }
-
         }
 
-        &:not(.highlight) {
-            .actions
-            {
-                display: none;
-            }
+        .actions
+        {
+            display: none;
         }
 
         &.editing
@@ -569,11 +570,6 @@
             &.highlight
             {
                 background-color: #d8dde5;
-
-                span.lapName
-                {
-                    margin-top: 5px;
-                }
             }
 
             .name
@@ -588,6 +584,12 @@
                     width: 110px;
                 }
 
+            }
+
+            .delete
+            {
+                margin: 0px;
+                height: 10px;
             }
 
         }
