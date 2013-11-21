@@ -238,12 +238,16 @@ function(
                     var buildInfoView = new BuildInfoView({ model: this.buildInfo });
                     this.infoRegion.show(buildInfoView);
                 }
+                var xhr = this.buildInfo.fetch();
+                this.addBootPromise(xhr);
             });
 
             // setup time zones
             this.addInitializer(function()
             {
                 this.timeZones = new TimeZonesModel();
+                var xhr = this.timeZones.fetch();
+                this.addBootPromise(xhr);
             });
 
             // add data managers
@@ -274,19 +278,6 @@ function(
                 {
                     this.featureAuthorizer.showUpgradeMessage();
                 }, this);
-            });
-
-            this.addInitializer(function()
-            {
-                var self = this;
-
-                var deferred = $.Deferred();
-                this.addBootPromise(deferred.promise());
-
-                this.session.userPromise.done(function()
-                {
-                    $.when(self.buildInfo.fetch(), self.timeZones.fetch()).then(deferred.resolve, deferred.reject);
-                });
             });
 
             this.addInitializer(function()

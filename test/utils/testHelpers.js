@@ -25,15 +25,14 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         startTheApp: function()
         {
-            //console.log("Starting the app");
             var startTime = +new Date();
 
             this.stopTheApp();
 
-            this.theApp = window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
-
             // capture ajax calls
             this.setupFakeAjax();
+
+            this.theApp = window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
 
             // backbone history doesn't work well with our tests for some reason
             this.theApp.historyEnabled = false;
@@ -50,6 +49,9 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
             // flag as started so we know whether to shut it down
             this.theApp.started = true;
+
+            this.resolveRequest("GET", "sysinfo/v1/assemblyversion", {});
+            this.resolveRequest("GET", "sysinfo/v1/timezoneswithlabels", []);
         },
 
         stopTheApp: function()
@@ -136,7 +138,6 @@ function(_, Backbone, TP, xhrData, MarsApp)
             var pattern = new RegExp(urlPattern);
             return _.find(this.fakeAjaxRequests, function(req)
             {
-                //console.log(req);
                 if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
@@ -167,8 +168,6 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         setupFakeAjax: function()
         {
-            //console.log("SETUP FAKE AJAX");
-
             var self = this;
 
             if(this.xhr)
