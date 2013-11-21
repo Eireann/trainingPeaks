@@ -42,10 +42,10 @@ function(
         serializeData: function()
         {
             var data = this.constructor.__super__.serializeData.apply(this, arguments);
-            if(data.formattedValue)
+            /*if(data.formattedValue)
             {
                 data.name += " (" + data.formattedValue + ")";
-            }
+            }*/
             data._state = this.model.getState().toJSON();
             return data;
         },
