@@ -161,7 +161,7 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
 
             it("should return the unit label for power", function()
             {
-                expect(TP.utils.units.getUnitsLabel("power")).to.equal("watts");
+                expect(TP.utils.units.getUnitsLabel("power")).to.equal("W");
             });
 
             it("should throw an exception if an uknown value type is requested", function()
