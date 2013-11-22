@@ -212,8 +212,8 @@ function(
                 calendarManager.loadActivities("2013-10-21", "2013-10-21");
                 testHelpers.resolveRequests("GET", "2013-10-21", []);
 
-                workout = new WorkoutModel({ workoutId: 1, workoutDay: "2013-10-22" });
-                metric = new MetricModel({ id: 1, timeStamp: "2013-10-22T13:26:42" });
+                workout = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutDay: "2013-10-22" });
+                metric = new MetricModel({ id: 1, athleteId: 426489, timeStamp: "2013-10-22T13:26:42" });
 
                 calendarManager.addItem(workout);
                 calendarManager.addItem(metric);

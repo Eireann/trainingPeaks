@@ -6,7 +6,7 @@
     {
         #workOutQuickView
         {
-            min-width: 1150px;
+            min-width: 1005px;
         }
     }
 }
@@ -22,7 +22,7 @@
     z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
 
     .QVHeaderItemsContain {
-        min-width: 1150px;
+        min-width: 1005px;
     }
 
     .workoutBarViewHeader

@@ -114,6 +114,8 @@ function(
 
             beforeEach(function()
             {
+                sinon.spy(theMarsApp.calendarManager, "addItem");
+                theMarsApp.user.setCurrentAthleteId(67890);
                 workout = new WorkoutModel(workoutAttributes);
             });
 
@@ -147,7 +149,8 @@ function(
                 {
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
                     expect(pastedWorkout.getCalendarDay()).to.equal(dateToPasteTo);
                 });
 
@@ -155,7 +158,8 @@ function(
                 {
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
                     expect(copiedWorkout.getCalendarDay()).to.not.equal(dateToPasteTo);
                     expect(copiedWorkout.getCalendarDay()).to.equal(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
                 });
@@ -164,7 +168,8 @@ function(
                 {
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
 
                     _.each(attributesToCopy, function(attributeName)
                     {
