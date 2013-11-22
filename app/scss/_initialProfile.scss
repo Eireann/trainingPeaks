@@ -236,6 +236,7 @@
 
     .accountMiddle {
 		position: relative;
+		width: 660px;
 		padding: 38px 60px 10px 60px;;
 		@include clearfix;
 
@@ -491,6 +492,14 @@
 	   		color: #999;
 	   		font-size: $size * 1.2;
 	   	}
+    }
+
+    #timeZoneSelectBoxItOptions,
+    #countrySelectBoxItOptions,
+    #birthdayYearSelectBoxItOptions {
+    	@include nice-scrollbar;
+    	max-height: 400px;
+    	overflow-y: auto;
     }
 
     /* hides mvc valid validation spans */
