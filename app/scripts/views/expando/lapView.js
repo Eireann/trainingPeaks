@@ -18,7 +18,11 @@ function(
 
         className: function()
         {
-            if(this.model.getState().get("isLap") || this.model.getState().get("temporary"))
+            if(this.model.getState().get("temporary"))
+            {
+                return "lap selection";
+            }
+            else if(this.model.getState().get("isLap"))
             {
                 return "lap";
             }

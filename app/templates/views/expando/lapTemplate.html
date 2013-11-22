@@ -2,21 +2,25 @@
     <input type="checkbox">
 
     <div class="lapDescription">
-        <span class="lapName"{{#if _state.isLap}} title="{{$ 'ClickToEdit' }}"{{/if}}>{{ name }}
-          {{#if _state.temporary}}
-            <span class="add">Add</span>
-          {{/if}}
-        </span>
-        
+        {{#if _state.isLap}}
+          <span class="lapName"><span title="{{$ 'ClickToEdit' }}">{{ name }}</span></span>
+        {{else}}
+          <span class="lapName">{{ name }}
+            {{#if _state.temporary}}
+              <span class="add">Add</span>
+            {{/if}}
+          </span>
+        {{/if}}
+
         {{#if _state.isLap}}
           <input class="lapName" value="{{ name }}" type="text"/>
         {{/if}}
 
-        {{#if _state.isLap}}
+        {{#ifAny _state.isLap _state.temporary _state.isTotal}}
           <span class="lapTime">{{#if totalTime }} {{ formatTimeToHundredths totalTime}}{{/if}}</span>
         {{else}}
-          <span class="lapTime">{{#if formattedValue }} {{ formattedValue }}{{/if}}</span>
-        {{/if}}
+          <span class="lapTime">{{#if formattedValue }} {{ formattedValue }}{{/if}}{{#if formattedUnits}}<span class="units">{{ formattedUnits }}</span>{{/if}}</span>
+        {{/ifAny}}
     </div>
 
     {{#if _state.isLap}}

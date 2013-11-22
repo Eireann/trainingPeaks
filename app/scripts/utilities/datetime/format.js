@@ -224,25 +224,29 @@ function(_, moment)
             fullMinutes -= 60;
         }
 
-        var time;
+        var time = [];
 
-        time = "" + fullHours;
+        if(!showDecimalSeconds || fullHours > 0)
+        {
+            time.push(fullHours); 
+        }
+
 
         if (fullMinutes >= 10)
-            time += ":" + fullMinutes;
+            time.push(fullMinutes);
         else
-            time += ":0" + fullMinutes;
+            time.push("0" + fullMinutes);
             
         if (showSeconds)
         {
 
             if (fullSeconds >= 10)
-                time += ":" + fullSeconds;
+                time.push(fullSeconds);
             else
-                time += ":0" + fullSeconds;
+                time.push("0" + fullSeconds);
         }
 
-        return time;
+        return time.join(":");
     };
 
     format.decimalMinutesAsTime = function(minutes, showSeconds, defaultValueIfEmpty, showDecimalSeconds)
