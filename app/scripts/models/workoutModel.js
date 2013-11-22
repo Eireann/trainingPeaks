@@ -213,17 +213,11 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             if(options.date)
             {
-                if(theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
                     theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    {targetDate: options.date}
-                ))
-                {
-                    this._applyPaste(options);
-                }
-                else
-                {
-                    theMarsApp.featureAuthorizer.showUpgradeMessage({ slideId: "advanced-scheduling" });
-                }
+                    _.bind(this._applyPaste, this, options),
+                    { targetDate: options.date }
+                );
             }
             else
             {
@@ -246,16 +240,10 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 });
                 theMarsApp.calendarManager.addItem(workout);
             }
-            else
+            // Cut workout for different athlete should be ignored
+            else if(this.get("athleteId") === athleteId)
             {
-                if(this.get("athleteId") === athleteId)
-                {
-                    this.moveToDay(date);
-                }
-                else
-                {
-                    // Cut workout for different athlete should be ignored
-                }
+                this.moveToDay(date);
             }
         },
 
