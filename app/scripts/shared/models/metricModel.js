@@ -94,7 +94,6 @@ function(
                 if(this.isNew())
                 {
                     var metric = this.clone();
-                    metric.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
                     metric.save(
                     {
                         timeStamp: moment(date).format(TP.utils.datetime.longDateFormat),
