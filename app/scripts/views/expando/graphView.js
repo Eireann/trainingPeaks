@@ -94,7 +94,7 @@ function(
 
         watchForModelChanges: function()
         {
-            this.listenTo(this.model.get("detailData"), "change:flatSamples", _.bind(this.createFlotGraph, this));
+            this.listenTo(this.model.get("detailData"), "loaded:flatSamples", _.bind(this.createFlotGraph, this));
         },
 
         onFirstRender: function()
@@ -114,9 +114,7 @@ function(
 
         drawPlot: function()
         {
-
             this.$el.removeClass("noData");
-
 
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
             {
