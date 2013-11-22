@@ -188,6 +188,16 @@ function(
                     expect(cutWorkout.moveToDay).to.have.been.calledWith(dateToPasteTo);
                 });
 
+                it("Should not call moveToDay when pasting a workout from cut on different athlete", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var cutWorkout = workout;
+                    sinon.stub(cutWorkout, "moveToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    cutWorkout.pasted({ date: dateToPasteTo });
+                    expect(cutWorkout.moveToDay).to.not.have.been.called;
+                });
+
                 it("Should not call moveToDay when pasting a workout from copy", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
@@ -223,6 +233,25 @@ function(
                     expect(copiedWorkout.getCalendarDay()).to.equal(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
                 });
 
+                
+                it("Should set the correct athleteId on pasted workout", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var copiedWorkout = workout.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
+                    expect(pastedWorkout.get("athleteId")).to.equal(42);
+                });
+
+                it("Should not change the athleteId of the copied workout", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var copiedWorkout = workout.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
+                    expect(copiedWorkout.get("athleteId")).to.not.equal(42);
+                });
+
                 it("Should return a workout with all of the copied attributes", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
@@ -230,7 +259,6 @@ function(
                     var pastedWorkout = copiedWorkout.pasted({ date: dateToPasteTo });
 
                     var attributesToCopy = [
-                        "athleteId",
                         "title",
                         "workoutTypeValueId",
                         "workoutDay",

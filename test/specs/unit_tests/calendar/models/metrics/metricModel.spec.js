@@ -152,6 +152,16 @@ function(
                     cutMetric.pasted({ date: dateToPasteTo });
                     expect(cutMetric.moveToDay).to.have.been.calledWith(dateToPasteTo);
                 });
+                
+                it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var cutMetric = metric;
+                    sinon.stub(cutMetric, "moveToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    cutMetric.pasted({ date: dateToPasteTo });
+                    expect(cutMetric.moveToDay).to.not.have.been.called;
+                });
 
                 it("Should not call moveToDay when pasting a metric from copy", function()
                 {
@@ -187,6 +197,26 @@ function(
                     expect(copiedMetric.getCalendarDay()).to.not.equal(dateToPasteTo);
                     expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
                 });
+                
+                it("Should set the correct athletId on pasted metric", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
+                    expect(pastedMetric.get("athleteId")).to.equal(42);
+                });
+
+                it("Should not change the date of the copied metric", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
+                    expect(copiedMetric.get("athleteId")).to.not.equal(42);
+                });
+
+
 
             });
 
