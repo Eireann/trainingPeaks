@@ -65,6 +65,8 @@ function(
             this.firstRender = true;
 
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._onAvailableDataChannels, this));
+            this.drawPlot = _.debounce(this.drawPlot, 500);
+
         },
 
         onRender: function()
@@ -91,7 +93,7 @@ function(
 
         watchForModelChanges: function()
         {
-            this.listenTo(this.model.get("detailData"), "loaded:flatSamples", _.bind(this.createFlotGraph, this));
+            this.listenTo(this.model.get("detailData"), "loaded:flatSamples", _.bind(this.drawPlot, this));
         },
 
         onFirstRender: function()
@@ -290,7 +292,7 @@ function(
 
         _onRangeChange: function()
         {
-            _.debounce(this._onSeriesChanged, 200);
+            this._onSeriesChanged();
         },
 
         _createAverageSeries: function(enabledSeries, xaxis, yaxis)
