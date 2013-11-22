@@ -100,26 +100,17 @@ function(
                         athleteId: athleteId
                     });
                     theMarsApp.calendarManager.addItem(metric);
-                    return metric;
                 }
-                else
+                // Cut metric for different athlete should be ignored
+                else if(this.get("athleteId") === athleteId)
                 {
-                    if(this.get("athleteId") === athleteId)
-                    {
-                        this.moveToDay(date);
-                        return this;
-                    }
-                    else
-                    {
-                        // Cut metric for different athlete should be ignored
-                        return false;
-                    }
+                    this.moveToDay(date);
                 }
+
             }
             else
             {
                 console.warn("Can't paste metric on anything but calendar");
-                return false;
             }
         },
 

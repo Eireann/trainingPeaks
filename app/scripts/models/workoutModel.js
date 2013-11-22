@@ -218,18 +218,16 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                     {targetDate: options.date}
                 ))
                 {
-                    return this._applyPaste(options);
+                    this._applyPaste(options);
                 }
                 else
                 {
                     theMarsApp.featureAuthorizer.showUpgradeMessage({ slideId: "advanced-scheduling" });
-                    return false;
                 }
             }
             else
             {
                 console.warn("Don't know how to paste to target");
-                return false;
             }
 
         },
@@ -247,19 +245,16 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                     athleteId: athleteId
                 });
                 theMarsApp.calendarManager.addItem(workout);
-                return workout;
             }
             else
             {
                 if(this.get("athleteId") === athleteId)
                 {
                     this.moveToDay(date);
-                    return this;
                 }
                 else
                 {
                     // Cut workout for different athlete should be ignored
-                    return false;
                 }
             }
         },
