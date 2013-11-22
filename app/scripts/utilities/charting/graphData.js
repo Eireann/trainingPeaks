@@ -77,9 +77,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             var totalPowerValue;
             var rightPowerValue;
             var rightPowerPercentage;
-            var averageStats = this.averageStats[xaxis + yaxis] = { xaxis: 0, yaxis: 0 };
             var balancedPowerAvailable = _.has(data, "RightPower");
-            var totalAvgCount = 0;
 
             var powerPercentage = function(index)
             {
@@ -113,26 +111,19 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                         ecks = why = null;
                     }
                 }
-                if(_.isFinite(ecks) && _.isFinite(why))
-                {
-                    totalAvgCount++;
-                    averageStats["xaxis"] = averageStats["xaxis"] + ecks;
-                    averageStats["yaxis"] = averageStats["yaxis"] + why;
-                }
+
                 newSeries.push([ecks, why]);
             }, this);
 
-            averageStats["xaxis"] = averageStats["xaxis"] / totalAvgCount;
-            averageStats["yaxis"] = averageStats["yaxis"] / totalAvgCount;
-            this.setAverageStats(xaxis, yaxis);
+            this.setAverageStats(data, xaxis, yaxis);
 
             return newSeries;
         },
 
-        setAverageStats: function(xaxis, yaxis)
+        setAverageStats: function(data, xaxis, yaxis)
         {
             var totalStats = this.detailData.get("totalStats");
-            var average = function(axis)
+            var average = function(data, axis)
             {
                 switch(axis)
                 {
@@ -154,15 +145,35 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                         return totalStats.powerBalanceRight * 100;
                     case "Distance":
                     case "Time":
+                        var total = 0;
+                        var sum = _.reduce(data[axis], function(sum, num) {
+                            if(_.isFinite(num[1]))
+                            {
+                                total++;
+                                return sum + num[1];
+                            }
+                            return sum;
+                        }, 0);
+                        return sum / total;
                     default:
                         return null;
                 }
             }
 
-            var tmp = average(xaxis);
-            if(tmp) this.averageStats[xaxis + yaxis].xaxis = tmp;
-            tmp = average(yaxis);
-            if(tmp) this.averageStats[xaxis + yaxis].yaxis = tmp;
+            var avgData = average(data, xaxis);
+            this.averageStats[xaxis + yaxis] = {};
+
+            if(avgData) this.averageStats[xaxis + yaxis].xaxis = avgData;
+
+            if(xaxis === yaxis)
+            {
+                this.averageStats[xaxis + yaxis].yaxis = avgData;
+            }
+            else
+            {
+                avgData = average(data, yaxis);
+                if(avgData) this.averageStats[xaxis + yaxis].yaxis = avgData;
+            }
         },
 
         resetLatLonArray: function()
