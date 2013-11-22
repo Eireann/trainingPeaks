@@ -1055,6 +1055,10 @@
                         margin-right: 10px;
                         font-size: $fontSizeSmall;
                     }
+
+                    .units {
+                        font-size: $fontSizeXSmall;
+                    }
                 }
 
                 &.deleted
@@ -1067,12 +1071,15 @@
                 }
 
                 &.total {
-                    border-top: 1px solid $TPGrey2;
                     border-bottom: 1px solid $TPGrey2;
-                    padding-top: 2px;
                     padding-bottom: 2px;
                 }
 
+                &.lap + .peak {
+                    border-top: 1px solid $TPGrey2;
+                    padding-top: 2px;
+                }
+                
             }
         }
     }

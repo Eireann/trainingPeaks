@@ -19,7 +19,7 @@
         {{#ifAny _state.isLap _state.temporary _state.isTotal}}
           <span class="lapTime">{{#if totalTime }} {{ formatTimeToHundredths totalTime}}{{/if}}</span>
         {{else}}
-          <span class="lapTime">{{#if formattedValue }} {{ formattedValue }}{{/if}}{{#if formattedUnits}}<span class="units">{{ formattedUnits }}</span>{{/if}}</span>
+          <span class="lapTime">{{#if formattedValue }} {{ formattedValue }}{{/if}}{{#if formattedUnits}} <span class="units">{{ formattedUnits }}</span>{{/if}}</span>
         {{/ifAny}}
     </div>
 
