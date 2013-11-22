@@ -110,6 +110,8 @@ function(
 
             beforeEach(function()
             {
+                sinon.spy(theMarsApp.calendarManager, "addItem");
+                theMarsApp.user.setCurrentAthleteId(67890);
                 metric = new MetricModel(metricAttributes);
             });
 
@@ -151,6 +153,16 @@ function(
                     cutMetric.pasted({ date: dateToPasteTo });
                     expect(cutMetric.moveToDay).to.have.been.calledWith(dateToPasteTo);
                 });
+                
+                it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var cutMetric = metric;
+                    sinon.stub(cutMetric, "moveToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    cutMetric.pasted({ date: dateToPasteTo });
+                    expect(cutMetric.moveToDay).to.not.have.been.called;
+                });
 
                 it("Should not call moveToDay when pasting a metric from copy", function()
                 {
@@ -165,7 +177,8 @@ function(
                 {
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
                     expect(pastedMetric instanceof MetricModel).to.equal(true);
                     expect(pastedMetric).to.not.equal(copiedMetric);
                 });
@@ -174,7 +187,8 @@ function(
                 {
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
                     expect(pastedMetric.getCalendarDay()).to.equal(dateToPasteTo);
                 });
 
@@ -182,10 +196,33 @@ function(
                 {
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    var pastedMetric = copiedMetric.pasted({ date: dateToPasteTo });
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
                     expect(copiedMetric.getCalendarDay()).to.not.equal(dateToPasteTo);
                     expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
                 });
+                
+                it("Should set the correct athletId on pasted metric", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    expect(pastedMetric.get("athleteId")).to.equal(42);
+                });
+
+                it("Should not change the date of the copied metric", function()
+                {
+                    theMarsApp.user.setCurrentAthleteId(42);
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    expect(copiedMetric.get("athleteId")).to.not.equal(42);
+                });
+
+
 
             });
 
