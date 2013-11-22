@@ -48,6 +48,8 @@ function(
             template: graphTemplate
         },
 
+        modelEvents: {},
+
         initialize: function(options)
         {
             _.bindAll(this, "createFlotGraph", "onFirstRender");
@@ -89,7 +91,7 @@ function(
 
         watchForModelChanges: function()
         {
-            this.listenTo(this.model.get("detailData"), "change:flatSamples", _.bind(this.createFlotGraph, this));
+            this.listenTo(this.model.get("detailData"), "loaded:flatSamples", _.bind(this.createFlotGraph, this));
         },
 
         onFirstRender: function()
@@ -288,7 +290,7 @@ function(
 
         _onRangeChange: function()
         {
-            this._onSeriesChanged();
+            _.debounce(this._onSeriesChanged, 200);
         },
 
         _createAverageSeries: function(enabledSeries, xaxis, yaxis)

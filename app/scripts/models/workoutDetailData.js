@@ -410,6 +410,7 @@ function (
         {
             this.graphData.resetExcludedRanges();
             this._dataParser.loadData(this.get("flatSamples"));
+            this.trigger("loaded:flatSamples");
         },
 
         _setOriginalLapsStats: function()
