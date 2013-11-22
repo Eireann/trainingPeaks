@@ -41,6 +41,14 @@ function(
 
         shiftAction: function()
         {
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ShiftWorkouts, 
+                _.bind(this._applyShiftAction, this)
+            );
+        },
+
+        _applyShiftAction: function()
+        {
             var first = this.first().id;
             var last = this.last().id;
 

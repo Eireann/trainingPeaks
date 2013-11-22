@@ -213,21 +213,18 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             if(options.date)
             {
-                var date = options.date;
-
-                if(this.isNew())
+                if(theMarsApp.featureAuthorizer.canAccessFeature(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    {targetDate: options.date}
+                ))
                 {
-                    var workout = this.clone();
-                    workout.set("workoutDay", date).save();
-                    theMarsApp.calendarManager.addItem(workout);
-                    return workout;
+                    return this._applyPaste(options);
                 }
                 else
                 {
-                    this.moveToDay(date);
-                    return this;
+                    theMarsApp.featureAuthorizer.showUpgradeMessage({ slideId: "advanced-scheduling" });
+                    return false;
                 }
-
             }
             else
             {
@@ -235,6 +232,23 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 return false;
             }
 
+        },
+
+        _applyPaste: function(options)
+        {
+            var date = options.date;
+            if(this.isNew())
+            {
+                var workout = this.clone();
+                workout.set("workoutDay", date).save();
+                theMarsApp.calendarManager.addItem(workout);
+                return workout;
+            }
+            else
+            {
+                this.moveToDay(date);
+                return this;
+            }
         },
 
         getPostActivityComments: function()
