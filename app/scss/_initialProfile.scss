@@ -3,11 +3,11 @@
     font-size: $size * 1.4;
 
     select {
-	box-sizing: border-box;
+		box-sizing: border-box;
     }
 
     label {
-	display: inline;
+		display: inline;
     }
 
     // Select Box It
@@ -91,6 +91,7 @@
 
     .darkBlue2 {
 		color: #457296 !important;
+		margin: 5px 0;
     }
 
     hr.darkBlue2 {
@@ -244,7 +245,15 @@
 
     .accountMiddle {
 		position: relative;
-		padding: 38px 60px;
+		padding: 38px 60px 10px 60px;;
+
+		input[type="text"] {
+			height: 22px;
+		}
+
+		label {
+			color: #999;
+		}
 
 		#stepNumber {
 			position: absolute;
@@ -277,9 +286,10 @@
 				}
     		}
 
-    		&:last-child {
-    			position: absolute;
-				bottom: 9px;
+    		&.configure {
+    			// position: absolute;
+				// bottom: 9px;
+				margin-top: 25px;
 				margin-bottom: 0;
 				font-size: 1.3 * $size;
 				font-family:$fontFamilyRegularItalic;
@@ -292,9 +302,10 @@
 		    label[for="birthdayMonth"],
 		    label[for="birthdayYear"],
 		    label[for="timeZone"],
-		    label[for="country"] {
+		    label[for="country"],
+		    label[for="weight"] {
 				width: 160px;
-				margin-bottom: 2px;
+				margin-bottom: 3px;
 				margin-right: 4px;
 				cursor: default;
 		    }
@@ -311,14 +322,9 @@
 				display: inline-block;
 				width: 160px;
 				margin-right: 4px;
-				margin-bottom: 2px;
+				margin-bottom: 3px;
 				cursor: default;
 	    	}
-
-   			label[for="weight"] {
-				width: 94px;
-				margin-bottom: 2px;
-    		}
  		}
 
 	    label[for="runPaceSpeed"],
@@ -357,13 +363,10 @@
 	    input[name="thresholdPower"],
 	    input[name="thresholdHeartRate"],
 	    input[name="runPaceSpeed"],
-	    input[name="swimPace"] {
+	    input[name="swimPace"],
+	    input[name="weight"] {
 			width: 160px !important;
 	    }
-
-      	select[name="weight"] {
-			width: 94px !important;
-    	}
 
 		.checkBoxArea {
 			input {
@@ -377,6 +380,10 @@
 	    input[type="text"] {
 			display: inline-block;
 			margin-right: 4px;
+
+			&[name="weight"] {
+				margin-right: 0;
+			}
 	    }
 
 	    input[type="radio"] {
@@ -412,6 +419,8 @@
 	    input[type="submit"] {
 			margin-top: 14px;
 			margin-bottom: 0;
+			cursor: pointer;
+			outline: none;
 	    }
 
 	    section input[type="submit"],
@@ -429,6 +438,10 @@
 			padding-left: 7px;
 			display: block;
 	    }
+
+		.weightUnits {
+	   		color: #999;
+	   	}
     }
 
     /* hides mvc valid validation spans */
