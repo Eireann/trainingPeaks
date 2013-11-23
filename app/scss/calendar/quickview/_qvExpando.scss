@@ -4,11 +4,11 @@
 {
     min-width: 1005px;
 
-    .lap
-    {
+    .lap,
+    .peak {
+        color: $TPGrey4;
 
-        .lapName
-        {
+        .lapName {
             display: inline-block;
             white-space: nowrap;
         }
@@ -18,22 +18,33 @@
             color:$TPGrey4;
             font-family:$fontFamilyHeavy;
 
-            .actions
-            {
-                .delete
-                {
+            .lapName {
+                .add {
+                    color:$TPLinkBlue;
+                    font-family:$fontFamilyRegular;
+                    margin-left: 2px;
+
+                    &:hover {
+                        color: $TPLinkBlueHover;
+                    }
+                }
+            } 
+        }
+
+        &:hover
+        {
+            .actions {
+                display: inline;
+                .delete {
                     margin: 5px 0 0;
                     width: 13px;
                 }
             }
-
         }
 
-        &:not(.highlight) {
-            .actions
-            {
-                display: none;
-            }
+        .actions
+        {
+            display: none;
         }
 
         &.editing
@@ -43,15 +54,14 @@
                 display: none;
             }
 
-            @include inputs(120px, 22px, $fontSizeSmall, $fontFamilyRegular, "input[type=text]");
+            @include inputs(159px, 22px, $fontSizeSmall, $fontFamilyRegular, "input[type=text]");
             input.lapName {
                 display: inline-block;
                 text-align: left !important;
-                margin: 0 5px 0 0;
+                margin: 0 11px 0 0;
                 padding:0 5px;
-                position: relative;
+                // position: relative;
                 z-index: 2;
-                font-size: 1em;
             }
         }
 
@@ -561,11 +571,6 @@
             &.highlight
             {
                 background-color: #d8dde5;
-
-                span.lapName
-                {
-                    margin-top: 5px;
-                }
             }
 
             .name
@@ -580,6 +585,12 @@
                     width: 110px;
                 }
 
+            }
+
+            .delete
+            {
+                margin: 0px !important;
+                height: 11px;
             }
 
         }
@@ -633,19 +644,16 @@
     }
 }
 
-.expandoRightColumn
-{
+.expandoRightColumn {
     float: right;
     width: 335px;
-    overflow-y: scroll;
-    @include nice-scrollbar;
 
-    .expandoEditControlsRegion
-    {
+    .expandoEditControlsRegion {
         // so .waiting indicator has a home
         position: relative;
-        .expandoEditControls
-        {
+        border-bottom: 1px solid $TPGrey2;
+
+        .expandoEditControls {
             // min-height: 200px;
             text-align: center;
             padding:10px 10px 15px 10px;
@@ -670,9 +678,11 @@
         }
     }
 
-    .expandoStatsRegion
-    {
-
+    .expandoStatsRegion {
+        height: 60%;
+        overflow-y: auto;
+        @include nice-scrollbar;
+        
         .expandoStats
         {
 
@@ -703,6 +713,111 @@
                     text-align: center;
                 }
             }
+
+            .statisticsSummary {
+                @include clearfix;
+                .mainStatContain {
+                    .mainStat {
+                        // width: 33.3%;
+                        // float: left;
+                        text-align: center;
+                        //width: auto;
+                        display: table-cell;
+                        width: 15%;
+
+                        #duration {
+                            // float:left;
+                        }
+                        
+                        &#tss {
+                            // width: 28%;
+                            // float:right;
+                        }
+                        
+                        &#distance {
+                            // width: 38%;
+                            //float:left;
+                        }
+
+                        @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+                        .mainStatTitle {
+                            margin-bottom: 0;
+                        }
+
+                        .value {
+                            font-family: $fontFamilyLight;
+                            font-size: $fontSizeHeader;
+                        }
+
+                        .totalTime {
+                            font-size: $fontSizeXSmall;
+                            color: $TPGrey3;
+                            display: block;
+                            margin-top: 1px;
+                        }
+                    }
+                }
+
+                
+
+                .subStats {
+                    // width: 120px;
+                    width: 303px;
+
+                    div:nth-of-type(2n+0) {
+                        // margin-left: 16px;
+                        float: right;
+                        width: 140px;
+                    }
+
+                
+                    .statsRow {
+                        float: left;
+                        width: 160px;
+
+                        label {
+                            width: 70px;
+                            border-right: 1px solid $TPGrey2;
+                            padding: 5px 10px 5px 0;
+                            margin: 0 5px 0 0;
+                        }
+                        #powerPulseDecoupling {
+                            .units {
+                                display: none;
+                            }
+                        }
+
+                    }
+
+                    float: left;
+                    margin-top: 18px;
+                    // margin-left: 10px; 
+                }
+
+
+                @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+                .statsRow {
+
+                    label {
+                        display: inline-block;
+                        width: 127px;
+                        text-align: right;
+                        margin-right: 5px;
+                    }
+
+                    .value {
+                        line-height: 1.5;
+                        font-size: $fontSizeSmall;
+                        font-family: $fontFamilyHeavy;
+                    }
+
+                    .units
+                    {
+                        font-size: $fontSizeXSmall;
+                        font-family: $fontFamilyRegular;
+                    }
+                }
+            }
         }
 
         overflow-x: auto;
@@ -713,9 +828,11 @@
         .rangeTitle
         {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 7px;
             margin-top: 15px;
-            font-size: $fontSizeXLarge;
+            font-size: $fontSizeXXLarge;
+            font-family: $fontFamilyLight;
+            color: $TPBlue;
         }
 
         .shadow
@@ -724,87 +841,95 @@
             height: 13px;
         }
 
-        .contents
-        {
-
+        .contents {
             padding: 10px;
             @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
 
-            .minMaxAvg
-            {
+            .minMaxAvg {
                 display: table;
-                margin-top: 20px;
+                float: left;
+                width: 100%;
+                margin-top: 19px;
+                margin-bottom: 10px;
+                padding-top: 20px;
+                border-top: 1px solid $TPGrey2;
 
-                .separator
-                {
+                .separator {
                     display: table-cell;
                     width: 2px;
                 }
 
-                .minMaxAvgRow
-                {
+                .minMaxAvgRow {
                     display: table-row;
 
-                    &.statsRow
-                    {
-                        .value
-                        {
-                            font-size: $fontSizeMedLarge;
-                            min-width: 60px;
+                    &.statsRow {
+
+                        .value {
+                            font-size: $fontSizeSmall;
+                            width: 54px;
                         }
+
+                        label {
+                            font-family: $fontFamilyRegular;
+                            border-right: 1px solid $TPGrey2;
+                            padding-top: 7px;
+                            padding-bottom: 7px;
+                        }
+
+                        span {
+                            font-family: $fontFamilyRegular;
+                        }
+
+                        &:last-of-type {
+                            label {
+                                padding-bottom:0;
+                            }
+                        }
+                       
                     }
 
-                    label
-                    {
+                    label {
                         display: table-cell;
                         padding-right: 10px;
                         white-space: nowrap;
                         text-align: right;
                         width: auto;
+                        color: $TPGrey3;
                     }
 
-                    &:not(.minMaxAvgHeaders)
-                    {
-                        label
-                        {
-                            min-width: 70px;
+                    &:not(.minMaxAvgHeaders) {
+                        label {
+                            width: 70px;
                         }
                     }
 
-                    span
-                    {
+                    span {
                         display: table-cell;
                         text-align: center;
-                        padding: 0px 8px;
 
-                        &.units
-                        {
+                        &.units {
                             text-align: left;
                             padding: 0px 0px 2px 8px;
-                            font-size: $fontSizeXSmall
+                            font-size: $fontSizeXSmall;
+                            color: $TPGrey3;
+                            border-left: 1px solid $TPGrey2;
+                            // width: 84px;
                         }
-
                     }
 
-                    .separator
-                    {
+                    .separator {
                         padding: 0px;
                     }
 
-                    .value
-                    {
-                        background-color: #eaebec;
-                    }
-
-                    &.minMaxAvgHeaders
-                    {
-                        label
-                        {
+                    &.minMaxAvgHeaders {
+                        label {
                             text-transform: uppercase;
                             text-align: center;
                             padding: 0px;
-                            padding-bottom: 5px;
-                            font-family: $fontFamilyHeavy;
+                            padding-bottom: 7px;
+                            font-family: $fontFamilyRegular;
+                            color: $TPBlue;
+                            font-size: $fontSizeSmall;
                         }
                     }
                 }
@@ -813,8 +938,11 @@
         }
     }
 
-    .expandoLapsRegion
-    {
+    .expandoLapsRegion {
+        border-top:1px solid $TPGrey2;
+        height: 40%;
+        overflow-y: auto;
+        @include nice-scrollbar;
 
         .expandoLaps
         {
@@ -826,9 +954,9 @@
 
         .controls
         {
-            margin-left: 20px;
+            margin-left: 10px;
             margin-top: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
 
             select
             {
@@ -861,25 +989,51 @@
                 text-indent: 3px;
             }
 
-            @include buttons(0, 96px, $fontSizeSmall);
+            @include buttons(0, 108px, $fontSizeSmall);
             button {
                 // height: 20px;
+                vertical-align: top;
+            }
+
+            .peakTypeSelectContain {
+                position: relative;
+                float:left;
+                width:180px;
+
+                .selectBox {
+                    width:180px;
+                }
+
+                .selectboxit-container .selectboxit {
+                    width: 180px !important;
+                }
+            }
+
+            .peakUncheckAll {
+                float:left;
+                // width: 108px;
+                margin-left:15px;
+            }
+
+            /* SelectBoxIt container */
+            .peakTypeSelectboxIt-container {
+                position: relative;
+                display: inline-block;
                 vertical-align: top;
             }
         }
 
         .rangesList {
-            margin: 0 20px;
+            margin: 0 10px;
 
             ul {
                 list-style-type: none;
             }
 
             li {
-                color:$TPGrey3;
+                color:$TPGrey4;
                 font-family: $fontFamilyRegular;
                 margin: .25em 0;
-                padding: 0 5px;
                 text-align: left;
                 cursor: pointer;
 
@@ -894,6 +1048,17 @@
                     display: inline-block;
                     width: calc(100% - 40px);
                     vertical-align: top;
+
+                    .lapName {
+                        display: inline-block;
+                        width:160px;
+                        margin-right: 10px;
+                        font-size: $fontSizeSmall;
+                    }
+
+                    .units {
+                        font-size: $fontSizeXSmall;
+                    }
                 }
 
                 &.deleted
@@ -905,6 +1070,16 @@
                     }
                 }
 
+                &.total {
+                    border-bottom: 1px solid $TPGrey2;
+                    padding-bottom: 2px;
+                }
+
+                &.lap + .peak {
+                    border-top: 1px solid $TPGrey2;
+                    padding-top: 2px;
+                }
+                
             }
         }
     }

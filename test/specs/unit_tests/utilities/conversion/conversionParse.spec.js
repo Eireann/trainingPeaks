@@ -39,12 +39,12 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             it("Should format decimal seconds output if there is a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).to.eql("0:59:59.99");
+                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).to.eql("59:59.99");
             });
 
             it("Should not format decimal seconds output if there is not a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).to.eql("0:59:59");
+                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).to.eql("59:59");
             });
 
             it("Should not format decimal seconds output if there is a decimal value but hours >= 1", function()
