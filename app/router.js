@@ -10,12 +10,13 @@ function (_, TP, RollbarManager)
     {
         return function()
         {
+            var self = this;
             var args = Array.prototype.slice.call(arguments);
             var callbackWithArgs = function()
             {
-                return callback.apply(this, args);
+                callback.apply(self, args);
             };
-            theMarsApp.session.authenticationComplete(callbackWithArgs);
+            theMarsApp.bootPromise.then(callbackWithArgs);
         };
     };
 

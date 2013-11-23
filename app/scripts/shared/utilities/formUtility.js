@@ -16,6 +16,7 @@ function(
 
         formatValue: function(value, format, options)
         {
+            var match;
             if(format === "date")
             {
                 value = value && moment(value).isValid() ? TP.utils.datetime.format(value) : "";
@@ -28,6 +29,10 @@ function(
             {
                 value = options.formatters[format](value, options.formatterOptions);
             }
+            else if(format && (match = format.match(/^units:(.*)/)))
+            {
+                value = TP.utils.conversion.formatUnitsValue(match[1], value, options);
+            }
             else if(format)
             {
                 throw new Error("Unknown field format: " + format);
@@ -38,6 +43,7 @@ function(
 
         parseValue: function(value, format, options)
         {
+            var match;
             if(format === "number")
             {
                 value = Number(value);
@@ -51,6 +57,10 @@ function(
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
                 value = options.parsers[format](value, options.parserOptions);
+            }
+            else if(format && (match = format.match(/^units:(.*)/)))
+            {
+                value = TP.utils.conversion.parseUnitsValue(match[1], value, options);
             }
             else if(_.isString(value) && value.trim() === "")
             {
@@ -115,7 +125,7 @@ function(
         {
             var formValues = {};
 
-             FormUtility._processFields($form, function(key, $field, $fields)
+            FormUtility._processFields($form, function(key, $field, $fields)
             {
                 formValues[key] = FormUtility.extractValueFromField(key, $field, $fields, model, options);
             },
@@ -173,6 +183,26 @@ function(
                 model.set(key, FormUtility.extractValueFromField(key, $field, $fields, model, options));
                 FormUtility.applyValueToField(key, $field, $fields, model, options);
             });
+        },
+
+        validate: function($form, options)
+        {
+            var errors = [];
+
+            FormUtility._processFields($form, function(key, $field, $fields)
+            {
+                var $label = $('label[for="' + $field.attr("id") + '"]');
+                var value = FormUtility.extractValueFromField(key, $field, $fields, undefined, options);
+
+                var isRequired = $field.data("required") !== undefined;
+                if(isRequired && !value)
+                {
+                    errors.push(($field.data("label") || $label.text()) + " is required");
+                }
+            },
+            options);
+
+            return errors;
         },
 
         _processFields: function($form, callback, options)

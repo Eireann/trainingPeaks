@@ -1,0 +1,512 @@
+.initialProfile {
+    $size: 0.625 * 16px;
+    font-size: $size * 1.4;
+
+    select {
+		box-sizing: border-box;
+    }
+
+    label {
+		display: inline;
+    }
+
+    // Select Box It
+
+    .selectboxit-container {
+		position: relative;
+		display: inline-block;
+		vertical-align: top;
+
+		span[name="AthleteType"] {
+			width: 183px !important;
+			margin-bottom: 17px;
+			margin-right: 4px;
+	    }
+
+	    span[name="Gender"] {
+			width: 99px !important;
+			margin-bottom: 17px;
+	    }
+
+	    span[name="language"],
+	    span[name="unitPreference"],
+	    span[name="birthdayMonth"],
+	    span[name="birthdayYear"],
+	    span[name="timeZone"],
+	    span[name="country"] {
+			width: 160px !important;
+			// margin-bottom: 14px;
+			//margin-right: 4px;
+	    }
+	    
+	    span[name="timeZone"],
+	    span[name="country"] {
+			// margin-bottom: 17px;
+	    }
+
+	   	span[name="weight"] {
+			width: 94px !important;
+    	}
+
+    	span[name="interestedIn"],
+    	select[name="interestedIn"] {
+			width: 330px !important;
+			// margin-bottom: 17px;
+    	}
+    }
+
+    .selectboxit .selectboxit-option-icon-container {
+		margin-left: 0;
+    }
+
+    .account3 {
+    	label {
+			font-size: 1.3 * $size;
+    	}
+
+    	.labelContainer {
+    		label[for="language"],
+		    label[for="unitPreference"],
+		    label[for="birthdayMonth"],
+		    label[for="birthdayYear"],
+		    label[for="timeZone"],
+		    label[for="country"] {
+				width: 160px;
+				margin-bottom: 2px;
+				margin-right: 4px;
+				cursor: default;
+		    }
+		    
+		    label[for="weight"] {
+				width: 94px;
+				margin-bottom: 2px;
+    		}
+    	}
+    }
+
+    // Colors
+    .white83 {
+		background: rgba(255, 255, 255, 0.83);
+    }
+
+    .darkBlue2 {
+		color: #457296 !important;
+		margin: 5px 0 20px 0;
+    }
+
+    hr.darkBlue2 {
+		border-top-color: #457296 !important;
+    }
+
+    h1 {
+		margin-bottom: 1%;
+		margin-top: 0;
+		line-height:1;
+		color: #22618e;
+		font-family:"HelveticaNeueW01-45Ligh";
+		font-weight: normal;
+		font-size: $fontSizeQVHeader;
+    }
+
+    p {
+		font-size: 1.6 * $size;
+		margin-top: .7%;
+		line-height: 1.75;
+		margin-bottom: 16px;
+    }
+
+    .buttonBlue1 {
+		border: solid 1px #b5b5b5;
+		text-transform: uppercase;
+		text-align: center;
+		color: #fff !important;
+		font-size: 1.2 * $size;
+		font-family:"HelveticaNeueW01-75Bold";
+		padding: 5px 19px;
+		display: inline-block;
+		background-color: #1e547a;
+
+		/*  Chrome 1-9 and Safari 4-5.0  */
+		background-image: -webkit-gradient(linear, left top, left bottom,
+		color-stop( 0.0, rgb(60, 127, 196) ),
+		color-stop( 1.0, rgb(34, 97, 143) ));
+
+		/*  Chrome 10+ Safari 5.1+ Mobile Safari  */
+		background-image: -webkit-linear-gradient(top,
+		rgb(60, 127, 196), 
+		rgb(34, 97, 143) );
+
+		/*  Firefox 3.6+  */
+		background-image: -moz-linear-gradient(top,
+		rgb(60, 127, 196), 
+		rgb(34, 97, 143) );
+
+		/*  IE 10+  */
+		background-image: -ms-linear-gradient(top,
+		rgb(60, 127, 196), 
+		rgb(34, 97, 143) );
+
+		/*  Opera 11.10+  */
+		background-image: -o-linear-gradient(top,
+		rgb(60, 127, 196), 
+		rgb(34, 97, 143) );
+
+		/*  W3C  */
+		background-image: linear-gradient(top,
+		rgb(60, 127, 196), 
+		rgb(34, 97, 143) );
+    }
+
+
+    .buttonBlue1 {
+		text-decoration: none;
+		color: #fff !important;
+		border: solid 1px #858585;
+
+		/*  Chrome 1-9 and Safari 4-5.0  */
+		background-image: -webkit-gradient(linear, left top, left bottom,
+		color-stop( 0.0, rgb(57, 120, 184) ),
+		color-stop( 1.0, rgb(30, 84, 123) ));
+
+		/*  Chrome 10+ Safari 5.1+ Mobile Safari  */
+		background-image: -webkit-linear-gradient(top,
+		rgb(57, 120, 184), 
+		rgb(30, 84, 123) );
+
+		/*  Firefox 3.6+  */
+		background-image: -moz-linear-gradient(top,
+		rgb(57, 120, 184), 
+		rgb(30, 84, 123) );
+
+		/*  IE 10+  */
+		background-image: -ms-linear-gradient(top,
+		rgb(57, 120, 184), 
+		rgb(30, 84, 123) );
+
+		/*  Opera 11.10+  */
+		background-image: -o-linear-gradient(top,
+		rgb(57, 120, 184), 
+		rgb(30, 84, 123) );
+
+		/*  W3C  */
+		background-image: linear-gradient(top,
+		rgb(57, 120, 184), 
+		rgb(30, 84, 123) );
+    }
+
+    .buttonBlue1:active,
+    .buttonBlue1:focus {
+		background-image: none;
+    }
+    
+    input[type="submit"].buttonBlue1,
+    .accountMiddle section a.buttonBlue1 {
+		width: 126px;
+    }
+
+    input[type="submit"].buttonBlue1,
+    .accountMiddle section a.buttonBlue1 {
+		border: none;
+		font-family: $fontFamilyRegular;
+		padding: 10px 0;
+		line-height: .7
+    }
+
+    input[type="submit"].buttonBlue1:hover {
+		border: none;
+    }
+
+
+    label {
+		font-size: 1.3 * $size;
+    }
+
+    /* Account Creation */
+    .accountTop {
+		height: 70px;
+		padding: 31px 60px 0 60px;
+
+		p {
+			color: #fff;
+			font-size: 1.6 * $size;
+			line-height: .7;
+			margin: 0;
+	    }
+    }
+
+    .accountMiddle {
+		position: relative;
+		width: 660px;
+		padding: 38px 60px 10px 60px;;
+		@include clearfix;
+
+		input[type="text"] {
+			height: 22px;
+		}
+
+		label {
+			color: #999;
+			// margin-right: 10px;
+			font-size: $size * 1.2;
+			// display: inline-block;
+		}
+
+		#stepNumber {
+			position: absolute;
+			top: 13px;
+			right: 10px;
+
+			p {
+				font-family: $fontFamilyRegular;
+				font-size: 1.6 * $size;
+				line-height: .7;
+				color: #c3c3c3;
+			}
+	    }
+
+	    h1 {
+			line-height: .7;
+			margin-bottom: 11px;
+    	}
+    	
+    	p {
+			font-size: 1.6 * $size;
+			line-height: 1;
+			color: #999;
+			margin: 0 0 30px 0;
+
+			a {
+				color: #3c7fc4;
+				&:hover {
+					color: #000;	
+				}
+    		}
+
+    		&.configure {
+    			// position: absolute;
+				// bottom: 9px;
+				margin-top: 25px;
+				margin-bottom: 0;
+				font-size: 1.3 * $size;
+				font-family:$fontFamilyRegularItalic;
+    		}
+    	}
+    	
+ 		.labelContainer {
+ 			label[for="language"],
+		    label[for="unitPreference"],
+		    label[for="birthdayMonth"],
+		    label[for="birthdayYear"],
+		    label[for="timeZone"],
+		    label[for="country"],
+		    label[for="weight"] {
+				// width: 160px;
+				// margin-bottom: 3px;
+				// margin-right: 4px;
+				// cursor: default;
+		    }
+
+ 			label[for="thresholdPower"],
+		    label[for="thresholdHeartRate"] {
+				margin-top: 15px;
+		    }
+
+		    label[for="thresholdPower"],
+	     	label[for="thresholdHeartRate"],
+	    	label[for="runPaceSpeed"],
+	    	label[for="swimPace"] {
+				display: inline-block;
+				width: 160px;
+				margin-right: 4px;
+				margin-bottom: 3px;
+				cursor: default;
+	    	}
+ 		}
+
+	    label[for="runPaceSpeed"],
+	    label[for="swimPace"] {
+			display: inline-block;
+			width: 160px;
+			margin-right: 4px;
+			margin-bottom: 2px;
+			cursor: default;
+	    }
+
+	    .fieldContain {
+    		width: 160px;
+    		float: left;
+    		margin-right: 10px;
+    		margin-bottom: 15px;
+
+    		label {
+				&.fieldTitle {
+    				margin-bottom: 2px;
+    				display: block;
+    			}
+    		}
+
+    		input {
+    			margin-bottom: 0;
+    		}
+
+    		&.weight {
+    			width: 185px;
+    		}
+
+    		&.mostInterestedIn {
+    			width: 330px;
+    		}
+
+    		&.runPaceContain, {
+    			clear: left;
+    			width: 535px;
+    			label {
+    				// display: inline;
+    			}
+    		}
+
+    		&.swimPaceContain {
+    			clear: both;
+    			width: 535px;
+    			label {
+    				//display: inline;
+    			}
+    		}
+    	}
+
+    	.accountBottom {
+    		float: left;
+    		clear: left;
+    		margin-bottom: 10px;
+    	}
+
+    	.radioContain {
+    		margin-right: 10px;
+    	}
+
+	    .selectArea {
+	    	@include clearfix;
+
+	    	label {
+				// display: inline-block;
+    		}
+	    	
+	    	select {
+				display: inline-block;
+	    	}
+
+	      	select[name="AthleteType"] {
+				width: 183px !important;
+	    	}
+
+	      	select[name="Gender"] {
+				width: 101px !important;
+	    	}
+
+
+	    }
+
+	    select[name="language"],
+		select[name="unitPreference"],
+	    select[name="birthdayMonth"],
+	    select[name="birthdayYear"],
+	    select[name="timeZone"],
+	    select[name="country"],
+	    input[name="thresholdPower"],
+	    input[name="thresholdHeartRate"],
+	    input[name="runPaceSpeed"],
+	    input[name="swimPace"],
+	    input[name="weight"] {
+			width: 160px !important;
+	    }
+
+		.checkBoxArea {
+			input {
+				display: inline-block;
+				position: relative;
+				top: -1px;
+				margin-right: 4px;
+			}
+		}
+
+	    input[type="text"] {
+			display: inline-block;
+			margin-right: 7px;
+
+			&[name="weight"] {
+				margin-right: 0;
+			}
+	    }
+
+	    input[type="radio"] {
+			width: 13px;
+			height: 13px;
+			border-radius: 50%;
+	    }
+
+	    section {
+			margin-bottom: 36px;
+
+			h1 {
+				margin-bottom: 12px;
+	    	}
+	    	
+	    	p {
+				font-size: 1.6 * $size;
+				line-height: .7;
+				color: #999;
+				margin-bottom: 10px;
+	    	}
+	    }
+
+	    input[type="submit"],
+	    a.buttonBlue1 {
+			margin-top: 5px;
+			margin-bottom: 23px;
+	    }
+
+	    input[type="submit"] {
+			margin-top: 14px;
+			margin-bottom: 0;
+			cursor: pointer;
+			outline: none;
+	    }
+
+	    section input[type="submit"],
+	    section a.buttonBlue1 {
+			margin-top: 0;
+			margin-bottom: 0;
+	    }
+
+	    .ui-state-error-text,
+	    .field-validation-error	{
+			font-size: 1.15 * $size;
+			color: #f7000f;
+			margin-top: -17px;
+			margin-bottom: 13px;
+			padding-left: 7px;
+			display: block;
+	    }
+
+		.weightUnits {
+	   		color: #999;
+	   		font-size: $size * 1.2;
+	   	}
+    }
+
+    #timeZoneSelectBoxItOptions,
+    #countrySelectBoxItOptions,
+    #birthdayYearSelectBoxItOptions {
+    	@include nice-scrollbar;
+    	max-height: 200px;
+    	overflow-y: auto;
+    	margin-top: -1px !important;
+    	border-top: 1px solid #8d8d8d;
+    }
+
+    /* hides mvc valid validation spans */
+    .field-validation-valid {
+		display:none;
+    }
+
+}
