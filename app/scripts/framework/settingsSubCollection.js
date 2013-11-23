@@ -3,8 +3,11 @@ define(
    "underscore",
     "TP"
 ],
-function(_, TP)
-{
+function(
+    _,
+    TP
+)
+{   
     return TP.Collection.extend(
     {
         initialize: function(models, options)

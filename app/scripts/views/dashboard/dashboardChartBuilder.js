@@ -26,11 +26,6 @@ function(
     FitnessHistoryChart
 )
 {
-    // Defaults to DashboardPodView
-    var chartViewConstructors =
-    {
-    };
-
     // Defaults to TP.Model
     var chartModelConstructors =
     {
@@ -62,10 +57,7 @@ function(
     return {
         buildChartView: function(options)
         {
-            var chartTypeId = options.model.get("chartType");
-            console.log(chartViewConstructors.hasOwnProperty(chartTypeId));
-            var ChartView = chartViewConstructors.hasOwnProperty(chartTypeId) ? chartViewConstructors[chartTypeId] : DashboardPodView;
-            return new ChartView(options);
+            return new DashboardPodView(options);
         },
 
         buildChartModel: function(attributes, options)
