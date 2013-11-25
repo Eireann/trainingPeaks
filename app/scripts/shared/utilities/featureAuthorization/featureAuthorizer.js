@@ -28,6 +28,15 @@ function(
     UserUpgradeView
          )
 {
+    var premiumUserTYpes = [
+        userTypes.getIdByName("Premium Athlete Paid By Coach"),
+        userTypes.getIdByName("Premium Athlete")
+    ];
+
+    function userIsPremium(currentAthleteType)
+    {
+        return _.contains(premiumUserTYpes, currentAthleteType);
+    }
 
     function Feature(options, callback) {
         callback.options = options;
@@ -182,11 +191,7 @@ function(
             AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
             {
                 var currentAthleteType = user.getAccountSettings().get("userType");
-                var allowedUserTypes = [
-                    userTypes.getIdByName("Premium Athlete Paid By Coach"),
-                    userTypes.getIdByName("Premium Athlete")
-                ];
-                return _.contains(allowedUserTypes, currentAthleteType);
+                return userIsPremium(currentAthleteType);
             }),
 
             /*
@@ -197,6 +202,17 @@ function(
             {
                 return userAccess.getBoolean(accessRights.ids.HidePlanStoreForCoachedByAthletes) ? false : true;
             }),
+
+            /*
+            attributes: none
+            options: none
+            */
+            ReceivePostActivityNotification: Feature({}, function(user, userAccess, attributes, options)
+            {
+                var currentAthleteType = user.getAccountSettings().get("userType");
+                return userIsPremium(currentAthleteType);
+            })
+
         },
 
         canAccessFeature: function(featureChecker, attributes, options)
