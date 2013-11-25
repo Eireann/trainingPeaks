@@ -28,14 +28,14 @@ function(
     UserUpgradeView
          )
 {
-    var premiumUserTYpes = [
+    var premiumUserTypes = [
         userTypes.getIdByName("Premium Athlete Paid By Coach"),
         userTypes.getIdByName("Premium Athlete")
     ];
 
     function userIsPremium(currentAthleteType)
     {
-        return _.contains(premiumUserTYpes, currentAthleteType);
+        return _.contains(premiumUserTypes, currentAthleteType);
     }
 
     function Feature(options, callback) {
