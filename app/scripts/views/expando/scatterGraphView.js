@@ -155,7 +155,7 @@ function(
                 enabledSeries[0].lines.show = false;
                 delete enabledSeries[0].dashes;
             }
-            enabledSeries[0].color = "#D9DA0E";
+            enabledSeries[0].color = "#3c7fc4";
             enabledSeries[0].name = "primarySeries";
 
             var rangesSeries = this._createSeriesFromRanges(enabledSeries[0]);
