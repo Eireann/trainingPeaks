@@ -502,33 +502,33 @@
         padding-bottom: 14px;
         overflow: hidden !important;
 
-        #scatterGraphToolbar
-        {
+        #scatterGraphToolbar {
             height: 56px;
-            button
-            {
+            button {
+
+                // For shared button borders & rollover
+                position: relative;
+                margin-left: -1px;
+
                 &.distance,
                 &.time {
-                    margin: 0;
                     opacity: 1.0;
+                    margin-right: 0;
                 }
-                &.distance
-                {
+                &.distance {
                     @include linearGradient(top, #aa2b58, #7b1f40);
                 }
-                &.time
-                {
+                &.time {
 
                     @include linearGradient(top, #2ac8f4, #5497bc);
                 }
-                &.seriesDisabled
-                {
+                &.seriesDisabled {
                     @include linearGradient(top, #ffffff, #dfddde);
                     color: $TPGrey10;
                     opacity:.5;
                     &:hover {
                         color: $TPGrey4;
-                    };
+                    }
                 }
             }
 
