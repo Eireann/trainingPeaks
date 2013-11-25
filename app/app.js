@@ -29,6 +29,7 @@ define(
     "flot/jquery.flot",
     "flot/jquery.flot.crosshair",
     "flot/jquery.flot.resize",
+    "shared/views/initialProfileView"
 ],
 function(
     $,
@@ -59,7 +60,8 @@ function(
     fadeRegion,
     flot,
     flotCrosshair,
-    flotResize
+    flotResize,
+    InitialProfileView
 )
 {
 
@@ -107,14 +109,31 @@ function(
 
         historyEnabled: true,
 
+        setupBootPromises: function()
+        {
+            var bootDeferred = $.Deferred();
+            this.bootPromise = bootDeferred.promise();
+
+            var bootPromises = []; 
+            this.addBootPromise = function(promise)
+            {
+                bootPromises.push(promise);
+            };
+
+            this.finalizeBootPromises = function()
+            {
+                $.when.apply($, bootPromises).then(bootDeferred.resolve, bootDeferred.reject);
+            };
+        },
 
         constructor: function(options)
         {
-
             if(!options || !options.$body)
             {
                 throw new Error("TheMarsApp constructor requires a body element");
             }
+
+            this.setupBootPromises();
 
             TP.Application.apply(this, arguments);
 
@@ -129,6 +148,9 @@ function(
             this.session = new Session();
             this.user = this.session.user;
             this.userAccessRights = this.session.userAccessRights;
+
+            this.addBootPromise(this.session.userPromise);
+            this.addBootPromise(this.session.userAccessPromise);
 
             this.addRegions(
             {
@@ -216,12 +238,16 @@ function(
                     var buildInfoView = new BuildInfoView({ model: this.buildInfo });
                     this.infoRegion.show(buildInfoView);
                 }
+                var xhr = this.buildInfo.fetch();
+                this.addBootPromise(xhr);
             });
 
             // setup time zones
             this.addInitializer(function()
             {
                 this.timeZones = new TimeZonesModel();
+                var xhr = this.timeZones.fetch();
+                this.addBootPromise(xhr);
             });
 
             // add data managers
@@ -258,16 +284,19 @@ function(
             {
                 var self = this;
 
-                this.session.userPromise.done(function()
+                this.bootPromise.then(function()
                 {
-                    self.buildInfo.fetch();
-                    self.timeZones.fetch();
+                    var view = new InitialProfileView({ model: self.user });
+                    view.render();
                 });
             });
 
             this.addInitializer(function()
             {
                 var self = this;
+
+                var deferred = $.Deferred();
+                this.addBootPromise(deferred.promise());
 
                 this.session.userPromise.done(function()
                 {
@@ -280,6 +309,10 @@ function(
                         if (!self.featureAllowedForUser("alpha1", self.user))
                         {
                             self.session.logout(notAllowedForAlphaTemplate);
+                        }
+                        else
+                        {
+                            deferred.resolve();
                         }
                     });
                 });
@@ -476,6 +509,12 @@ function(
                     }
                 }
                 );
+            });
+
+
+            this.addInitializer(function()
+            {
+                this.finalizeBootPromises();
             });
 
         },

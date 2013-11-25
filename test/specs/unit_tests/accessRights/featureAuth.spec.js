@@ -432,6 +432,86 @@ function(
                 });
 
             });
+
+            describe("ViewICalendarUrl", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.planFutureWorkouts]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();                   
+                });
+
+                it("Should not allow basic users to view iCalendarUrl", function()
+                {
+                    expect(featureAuthorizer.features.ViewICalendarUrl(
+                                user,
+                                unauthorizedUserAccessRights
+                            )
+                    ).to.equal(false);
+                   
+                });
+
+                it("Should allow premium users to view iCalendarUrl", function()
+                {
+                    expect(featureAuthorizer.features.ViewICalendarUrl(
+                                user,
+                                authorizedUserAccessRights
+                            )
+                    ).to.equal(true);
+                   
+                });
+            });
+
+            describe("AutoApplyThresholdChanges", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    
+                });
+
+                it("Should not allow basic users to view iCalendarUrl", function()
+                {
+
+                    user.getAccountSettings().set("userType", 6);
+                    expect(featureAuthorizer.features.AutoApplyThresholdChanges(
+                                user,
+                                unauthorizedUserAccessRights
+                            )
+                    ).to.equal(false);
+                   
+                });
+
+                it("Should allow premium users to view iCalendarUrl", function()
+                {
+
+                    user.getAccountSettings().set("userType", 4);
+                    expect(featureAuthorizer.features.AutoApplyThresholdChanges(
+                                user,
+                                unauthorizedUserAccessRights
+                            )
+                    ).to.equal(true);
+                   
+                });
+            });
         });
 
 

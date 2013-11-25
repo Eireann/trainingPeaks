@@ -12,11 +12,15 @@ function(TP, LibraryExerciseModel)
 
         url: function()
         {
-            var libraryUrl = theMarsApp.apiRoot + "/exerciselibrary/v1/libraryitems";
+            var libraryUrl = theMarsApp.apiRoot + "/exerciselibrary/v1/libraries/";
+            
             if (this.exerciseLibraryId)
             {
-                libraryUrl += "/" + this.exerciseLibraryId;
+                libraryUrl += this.exerciseLibraryId + "/items";
             }
+            else
+                libraryUrl += "default/items";
+
             return libraryUrl;
         },
 

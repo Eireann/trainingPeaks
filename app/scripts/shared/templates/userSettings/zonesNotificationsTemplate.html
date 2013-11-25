@@ -4,8 +4,11 @@
     Notify me of suggested threshold changes via email.
 </label>
 
-<label class="clickable">
+<label class="clickable{{#ifNot canApplyThreshold}} upgrade{{/ifNot}}">
     <input type="checkbox" name="thresholdsAutoApply" class="auto"
-    data-scope="zonesNotifications">
+    data-scope="zonesNotifications" {{#ifNot canApplyThreshold}}disabled{{/ifNot}} >
     Automatically apply new threshold changes.
+    {{#ifNot canApplyThreshold}}
+        <p class="userSettingsHelpText"><a class="upgrade">{{$ "ApplyThresholdPremiumMessage" }}</a></p>
+    {{/ifNot}}
 </label>

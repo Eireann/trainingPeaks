@@ -12,7 +12,7 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
     describe("Laps Stats Utility", function()
     {
-        var allDataChannels = ["Power", "Elevation", "Speed", "HeartRate", "Torque", "Cadence"];
+        var allDataChannels = ["Power", "Distance", "Elevation", "Speed", "HeartRate", "Torque", "Cadence"];
 
         function buildWorkoutModel(availableDataChannels)
         {
@@ -34,30 +34,16 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
         function setTSSsource (model, tssSource)
         {
-            _.each(model.get('detailData').get('lapsStats'), function(lapStat, i)
-            {
-                lapStat.trainingStressScoreActualSource = tssSource;
-            });
+            model.set("trainingStressScoreActualSource", tssSource);
         }
 
         function serializeData(model)
         {
-            var workoutDefaults = LapsStats.getDefaults(model),
-            buildResults = LapsStats.buildLapObjects(workoutDefaults, model.get("detailData").get("availableDataChannels")),
-            lapObjects = buildResults[0],
-            emptyKeyCounts = buildResults[1],
-            compactedLapObjects = LapsStats.compactLapObjects(lapObjects, emptyKeyCounts);
-
-            var headerNames = LapsStats.buildHeaderNames(compactedLapObjects[0]);
-
-            var rowData = _.map(compactedLapObjects, function(row)
-            {
-                return _.values(row);
-            });
+            var lapsStats = new LapsStats({ model: model });
 
             return {
-                headerNames: headerNames,
-                rowData: rowData
+                headerNames: lapsStats.getHeaders(),
+                rowData: lapsStats.processRows({ format: true })
             };
         }
 

@@ -49,11 +49,9 @@ function(
             this.stateModel = options.stateModel;
 
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
-            
+
             this.collection = this.model.get('detailData').getRangeCollectionFor("laps");
-            this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
-            this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._rebuildTable, this)); // rebuild table, but preserve edits in progress
-            this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
+            this.listenTo(this.model.get("detailData"), "reset change:availableDataChannels", _.bind(this.render, this));
         },
 
         onRender: function()
@@ -70,40 +68,18 @@ function(
 
         renderItemView: function(view, index)
         {
-            view.keyNames = this.keyNames;
-            view.workoutDefaults = this.workoutDefaults;
+            view.lapsStats = this.lapsStats;
             view.render();
             this.appendHtml(this, view, index);
         },
 
         serializeData: function()
         {
-            var workoutDefaults = LapsStats.getDefaults(this.model),
-                buildResults = LapsStats.buildLapObjects(workoutDefaults, this.model.get("detailData").get("availableDataChannels")),
-                lapObjects = buildResults[0],
-                emptyKeyCounts = buildResults[1],
-                compactedLapObjects = LapsStats.compactLapObjects(lapObjects, emptyKeyCounts),
-                headerNames;
-
-            headerNames = LapsStats.buildHeaderNames(compactedLapObjects[0]);
-
-
-            this.workoutDefaults = workoutDefaults;
-            this.keyNames =
-                _.map(headerNames, function(headerName) {
-                    var headerNameArray = headerName.split(' ');
-                    return [headerNameArray[0].toLowerCase(), headerNameArray.slice(1).join('')].join('');
-                });
+            this.lapsStats = new LapsStats({ model: this.model });
 
             return {
-                headerNames: headerNames
+                headerNames: this.lapsStats.getHeaders()
             };
-        },
-
-        _rebuildTable: function()
-        {
-            this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
-            this.render();
         }
 
     });

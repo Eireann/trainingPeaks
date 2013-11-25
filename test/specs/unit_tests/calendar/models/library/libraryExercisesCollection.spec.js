@@ -16,7 +16,7 @@ function(testHelpers, LibraryExercisesCollection)
 
             var url = LibraryExercisesCollection.prototype.url();
             expect(url).to.contain(testHelpers.theApp.apiRoot);
-            expect(url).to.contain("/exerciselibrary/v1/libraryitems");
+            expect(url).to.contain("/exerciselibrary/v1/libraries");
 
         });
     });

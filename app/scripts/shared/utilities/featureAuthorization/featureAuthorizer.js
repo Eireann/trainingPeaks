@@ -14,6 +14,7 @@ define(
     "TP",
     "shared/data/podTypes",
     "shared/utilities/featureAuthorization/accessRights",
+    "utilities/athlete/userTypes",
     "shared/views/userUpgradeView"
 ],
 function(
@@ -23,6 +24,7 @@ function(
     TP,
     podTypes,
     accessRights,
+    userTypes,
     UserUpgradeView
          )
 {
@@ -160,8 +162,41 @@ function(
                 });
 
                 return _.result(filteredCollection, "length") < userAccess.getNumber(accessRights.ids.MaximumWorkoutTemplatesInOwnedLibrary);
-            })
+            }),
 
+            /*
+            attributes: none
+            options: none
+            */
+            ViewICalendarUrl: Feature({}, function(user, userAccess, attributes, options)
+            {
+                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                var currentAthleteType = user.getAthleteDetails().get("userType");
+                return _.contains(allowedUserTypes, currentAthleteType);
+            }),
+
+            /*
+            attributes: none
+            options: none
+            */
+            AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
+            {
+                var currentAthleteType = user.getAccountSettings().get("userType");
+                var allowedUserTypes = [
+                    userTypes.getIdByName("Premium Athlete Paid By Coach"),
+                    userTypes.getIdByName("Premium Athlete")
+                ];
+                return _.contains(allowedUserTypes, currentAthleteType);
+            }),
+
+            /*
+            attributes: none
+            options: none
+            */
+            ViewPlanStore: Feature({}, function(user, userAccess, attributes, options)
+            {
+                return userAccess.getBoolean(accessRights.ids.HidePlanStoreForCoachedByAthletes) ? false : true;
+            }),
         },
 
         canAccessFeature: function(featureChecker, attributes, options)

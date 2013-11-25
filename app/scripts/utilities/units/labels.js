@@ -175,13 +175,13 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         },
         power:
         {
-            English: "watts",
-            Metric: "watts"
+            English: "W",
+            Metric: "W"
         },
         rightpower:
         {
-            English: "watts",
-            Metric: "watts"
+            English: "W",
+            Metric: "W"
         },
         time:
         {
@@ -190,8 +190,8 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         },
         vam:
         {
-            English: "meters/hr",
-            Metric: "meters/hr"
+            English: "m/h",
+            Metric: "m/h"
         },
         cm:
         {

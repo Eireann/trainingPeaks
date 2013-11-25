@@ -108,8 +108,8 @@ function(
 
             var dateOptions = {
                 quickDateSelectOption: optionId,
-                startDate: TP.utils.datetime.parse(this.$("input.startDate").val()),
-                endDate: TP.utils.datetime.parse(this.$("input.endDate").val())
+                startDate: this.$("input.startDate").datepicker( "getDate" ),
+                endDate: this.$("input.endDate").datepicker( "getDate" )
             };
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);

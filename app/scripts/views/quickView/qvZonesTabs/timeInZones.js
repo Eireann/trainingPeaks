@@ -6,6 +6,7 @@
     "views/charts/heartRateTimeInZonesChart",
     "views/charts/powerTimeInZonesChart",
     "views/charts/speedTimeInZonesChart",
+    "shared/data/podTypes",
     "hbs!templates/views/quickView/zonesTab/zoneTableRow"
 ],
 function(
@@ -15,6 +16,7 @@ function(
          HeartRateTimeInZonesChartView,
          PowerTimeInZonesChartView,
          SpeedTimeInZonesChartView,
+         PodTypes,
          zoneRowTemplate)
 {
     var timeInZonesMixin =
@@ -40,7 +42,12 @@ function(
         renderTimeInZones: function()
         {
             this.renderTimeInZonesTable();
-            this.renderTimeInZonesChart();
+
+            if(this._userCanUseTimeInZonesChart())
+            {
+                this.$(".zonesChart").removeClass("disabled");
+                this.renderTimeInZonesChart();
+            }
         },
 
         onTimeInZonesChange: function()
@@ -64,6 +71,7 @@ function(
 
         renderTimeInZonesChart: function(timeInZones)
         {
+
             var view;
             if (this.metric === "HeartRate")
             {
@@ -80,6 +88,17 @@ function(
                 view = new SpeedTimeInZonesChartView({ model: this.workoutModel, el: this.$(".zonesChart"), workoutType: this.workoutModel.get("workoutTypeValueId"), zoneType: this.graphTitle });
                 view.render();
             }
+        },
+
+        _userCanUseTimeInZonesChart: function()
+        {
+            var featureAttributes = { 
+                podTypeId: PodTypes.findByAccessName("qv_TimeIn" + this.metric + "Zones").podId 
+            };
+            return theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.UsePod,
+                featureAttributes
+            );
         }
     };
 

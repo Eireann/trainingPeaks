@@ -6,6 +6,7 @@
     "views/charts/heartRatePeaksChart",
     "views/charts/powerPeaksChart",
     "views/charts/speedPeaksChart",
+    "shared/data/podTypes",
     "hbs!templates/views/quickView/zonesTab/peakTableRow"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     HRPeaksChartView,
     PowerPeaksChartView,
     SpeedPeaksChartView,
+    PodTypes,
     peakRowTemplate
 )
 {
@@ -42,7 +44,13 @@ function(
         renderPeaks: function()
         {
             this.renderPeaksTable();
-            this.renderPeaksChart();
+
+            if(this._userCanUsePeaksChart())
+            {
+                this.$(".peaksChart").removeClass("disabled");
+                this.renderPeaksChart();
+            }
+
         },
 
         onPeaksChange: function()
@@ -82,6 +90,17 @@ function(
                 view = new SpeedPeaksChartView({ model: this.workoutModel, el: this.$(".peaksChart"), workoutType: this.workoutModel.get("workoutTypeValueId"), peakType: this.graphTitle });
                 view.render();
             }
+        },
+
+        _userCanUsePeaksChart: function()
+        {
+            var featureAttributes = { 
+                podTypeId: PodTypes.findByAccessName("qv_MeanMax" + this.metric).podId 
+            };
+            return theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.UsePod,
+                featureAttributes
+            );
         }
     };
 

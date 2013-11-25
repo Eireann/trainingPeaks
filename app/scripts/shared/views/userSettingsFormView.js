@@ -37,28 +37,28 @@ function(
 
     var selectHours = [
         { data: 0, label: "12:00 AM - 12:59 AM"},
-        { data: 1, label: "1:00 AM - 1:59 AM"},       
-        { data: 2, label: "2:00 AM - 2:59 AM"},               
-        { data: 3, label: "3:00 AM - 3:59 AM"},       
-        { data: 4, label: "4:00 AM - 4:59 AM"},               
-        { data: 5, label: "5:00 AM - 5:59 AM"},       
-        { data: 6, label: "6:00 AM - 6:59 AM"},               
-        { data: 7, label: "7:00 AM - 7:59 AM"},               
-        { data: 8, label: "8:00 AM - 8:59 AM"},               
-        { data: 9, label: "9:00 AM - 9:59 AM"},               
-        { data: 10, label: "10:00 AM - 10:59 AM"},               
-        { data: 11, label: "11:00 AM - 11:59 AM"},               
+        { data: 1, label: "1:00 AM - 1:59 AM"},
+        { data: 2, label: "2:00 AM - 2:59 AM"},
+        { data: 3, label: "3:00 AM - 3:59 AM"},
+        { data: 4, label: "4:00 AM - 4:59 AM"},
+        { data: 5, label: "5:00 AM - 5:59 AM"},
+        { data: 6, label: "6:00 AM - 6:59 AM"},
+        { data: 7, label: "7:00 AM - 7:59 AM"},
+        { data: 8, label: "8:00 AM - 8:59 AM"},
+        { data: 9, label: "9:00 AM - 9:59 AM"},
+        { data: 10, label: "10:00 AM - 10:59 AM"},
+        { data: 11, label: "11:00 AM - 11:59 AM"},
         { data: 12, label: "12:00 PM - 12:59 PM"},
-        { data: 13, label: "1:00 PM - 1:59 PM"},       
-        { data: 14, label: "2:00 PM - 2:59 PM"},               
-        { data: 15, label: "3:00 PM - 3:59 PM"},       
-        { data: 16, label: "4:00 PM - 4:59 PM"},               
-        { data: 17, label: "5:00 PM - 5:59 PM"},       
-        { data: 18, label: "6:00 PM - 6:59 PM"},               
-        { data: 19, label: "7:00 PM - 7:59 PM"},               
-        { data: 20, label: "8:00 PM - 8:59 PM"},               
-        { data: 21, label: "9:00 PM - 9:59 PM"},               
-        { data: 22, label: "10:00 PM - 10:59 PM"},               
+        { data: 13, label: "1:00 PM - 1:59 PM"},
+        { data: 14, label: "2:00 PM - 2:59 PM"},
+        { data: 15, label: "3:00 PM - 3:59 PM"},
+        { data: 16, label: "4:00 PM - 4:59 PM"},
+        { data: 17, label: "5:00 PM - 5:59 PM"},
+        { data: 18, label: "6:00 PM - 6:59 PM"},
+        { data: 19, label: "7:00 PM - 7:59 PM"},
+        { data: 20, label: "8:00 PM - 8:59 PM"},
+        { data: 21, label: "9:00 PM - 9:59 PM"},
+        { data: 22, label: "10:00 PM - 10:59 PM"},
         { data: 23, label: "11:00 PM - 11:59 PM"}
     ];
 
@@ -160,7 +160,8 @@ function(
             "click .photoContainer": "_selectProfilePhoto",
             "click .uploadPhoto": "_selectProfilePhoto",
             "click .removePhoto": "_removeProfilePhoto",
-            "change .fileUploadInput": "_onProfilePhotoSelected"
+            "change .fileUploadInput": "_onProfilePhotoSelected",
+            "click .upgrade": "_showUpgradePrompt"
         },
 
         initialize: function(options)
@@ -191,13 +192,11 @@ function(
             this.passwordSettingsModel = options.passwordSettingsModel;
 
             this._createUserAdapterModels();
-            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._updateDatePickerFormat, this));
         },
 
         onRender: function()
         {
             this._applyModelValuesToForm();
-            this._setupDatePicker();
             this._updatePhotoUrl();
 
             var self = this;
@@ -212,7 +211,10 @@ function(
         {
             var data = this.userModel.toJSON();
             this._addConstantsToSerializedData(data);
-            this._addICalKeysToSerializedData(data);
+            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewICalendarUrl))
+            {
+                this._addICalKeysToSerializedData(data);
+            }
             return data;
         },
 
@@ -274,16 +276,6 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]" });
             FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
-        },
-
-        _setupDatePicker: function()
-        {
-            this.$(".datepicker").datepicker(
-            {
-                dateFormat: TP.utils.datetime.format.getFormatForDatepicker(),
-                changeYear: true,
-                changeMonth: true
-            });
         },
 
         _setupSelectBox: function()
@@ -389,9 +381,9 @@ function(
             }
         },
 
-        _updateDatePickerFormat: function()
+        _showUpgradePrompt: function()
         {
-            this.$(".datepicker").datepicker("option", "dateFormat", TP.utils.datetime.format.getFormatForDatepicker());
+            theMarsApp.featureAuthorizer.showUpgradeMessage();
         }
 
     });

@@ -41,7 +41,7 @@ function(
 
             if(accessRightDefinition.dataType !== accessRights.dataTypes.Numeric)
             {
-                throw new Error("Requested numeric list, but data type for access right id " + accessRightId + " is not numeric");
+                throw new Error("Requested number, but data type for access right id " + accessRightId + " is not numeric");
             }
 
             var accessRightForUser = this._findAccessRightValueById(accessRightId);
@@ -93,6 +93,28 @@ function(
             if(!accessRightForUser || !accessRightForUser.accessRightData)
             {
                 return [];
+            }
+            else
+            {
+                return accessRightForUser.accessRightData;
+            }
+
+        },
+
+        getBoolean: function(accessRightId)
+        {
+            var accessRightDefinition = accessRights.find(accessRightId);
+
+            if(accessRightDefinition.dataType !== accessRights.dataTypes.Boolean)
+            {
+                throw new Error("Requested boolean, but data type for access right id " + accessRightId + " is not boolean");
+            }
+
+            var accessRightForUser = this._findAccessRightValueById(accessRightId);
+
+            if(!accessRightForUser || !accessRightForUser.accessRightData)
+            {
+                return false;
             }
             else
             {
