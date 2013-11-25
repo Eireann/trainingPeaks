@@ -87,7 +87,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
 
                 return rightPowerPercentage;
-            }
+            };
 
             _.each(data[xaxis], function(dataPoint, index)
             {
@@ -158,7 +158,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                     default:
                         return null;
                 }
-            }
+            };
 
             var avgData = average(data, xaxis);
             this.averageStats[xaxis + yaxis] = {};
