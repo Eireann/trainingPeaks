@@ -154,11 +154,26 @@
             }, this);
         },
 
+        _rejectAllPendingRequests: function(requestSignature, response)
+        {
+            var requests = this._pendingRequests[requestSignature];
+            delete this._pendingRequests[requestSignature];
+            _.each(requests, function(request)
+            {
+                this._rejectRequest(requestSignature, request.deferred, response);
+            }, this);
+        },
+
         _resolveRequestOnModelWithExistingData: function(requestSignature, modelOrCollection, deferred)
         {
             modelOrCollection.set(_.clone(this._resolvedRequests[requestSignature]));
             deferred.resolve();
             return deferred;
+        },
+
+        _rejectRequest: function(requestSignature, deferred, response)
+        {
+            deferred.reject(response);
         },
 
         _requestDataOnModel: function(requestSignature, modelOrCollection, options)
@@ -189,6 +204,18 @@
                     }
 
                     self._resolveAllPendingRequests(requestSignature);
+                }; 
+
+                var originalErrorHandler = options.error ? options.error : null;
+
+                options.error = function(modelOrCollection, response, options)
+                {
+                    if(originalErrorHandler)
+                    {
+                        originalErrorHandler(modelOrCollection, response, options);
+                    }
+
+                    self._rejectAllPendingRequests(requestSignature, response);
                 }; 
 
                 modelOrCollection.fetch(options);
