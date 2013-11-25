@@ -286,8 +286,21 @@ function(
 
                 this.bootPromise.then(function()
                 {
-                    var view = new InitialProfileView({ model: self.user });
-                    view.render();
+                    if(self.user.get("settings.account.numberOfVisits") === 1)
+                    {
+                        if(typeof localStorage !== "undefined" && localStorage.getItem("completeYourProfileDone") === "true")
+                        {
+                            return;
+                        }
+
+                        var view = new InitialProfileView({ model: self.user });
+                        view.render();
+
+                        if(typeof localStorage !== "undefined")
+                        {
+                            localStorage.setItem("completeYourProfileDone", true);
+                        }
+                    }
                 });
             });
 
