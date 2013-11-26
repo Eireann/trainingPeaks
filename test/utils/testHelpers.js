@@ -160,9 +160,15 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         clearRequests: function()
         {
+            /* 
+            // should we really be responding to these with an error,
+            // or not at all?
+            // breaks one test now that data manager passes through failures,
+            // but also we haven't really defined the expected behavior for these error cases
             _.each(this.fakeAjaxRequests, function(xhr) {
                 xhr.respond(500, [], "");
             });
+            */
             this.fakeAjaxRequests = [];
         },
 
