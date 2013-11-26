@@ -21,12 +21,13 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
         {
             "#descriptionInput":
             {
-                events: [ "blur", "keyup", "change", "cut", "paste" ],
+                events: [ "blur", "keyup", "change", "cut", "paste"],
                 observe: "description",
                 onSet: "parseTextField",
                 onGet: "formatTextField",
                 updateModel: "updateModel",
-                ignoreOnSetForUpdateModel: true
+                ignoreOnSetForUpdateModel: true,
+                saveTimeout: 60000
             },
             "#postActivityCommentsInput":
             {
@@ -37,7 +38,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 updateModel: "updateModel",
                 saveTimeout: 60000
             },
-            "#preActivityCommentsInput": 
+            "#preActivityCommentsInput":
             {
                 observe: "coachComments",
                 onSet: "parseTextField",
@@ -55,7 +56,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 observe: "newComment",
                 onGet: "formatTextField"
             },
-            "#preActivityCommentsPrintable": 
+            "#preActivityCommentsPrintable":
             {
                 observe: "coachComments",
                 onGet: "formatTextField"
@@ -118,7 +119,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
 
             this.postActivityCommentsView.on("item:removed", this.saveComments, this);
             this.postActivityCommentsView.on("itemview:commentedited", this.saveComments, this);
-            
+
             if (!theMarsApp.user.get("settings.account.isAthlete") || this.model.get("coachComments"))
             {
                 this.$("#preActivityComments").css("display", "block");
