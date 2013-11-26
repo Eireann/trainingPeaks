@@ -68,9 +68,13 @@
     padding: 0;
     width: 16px;
     height: 16px;
-    @include transform(rotate(45deg));
     @include box-shadow(0 1px 3px 0 #ADADAD);
     background: inherit;
+
+    &.rotate
+    {
+        @include transform(rotate(45deg));
+    }
 }
 
 .tomahawkCover

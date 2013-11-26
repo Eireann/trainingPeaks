@@ -147,7 +147,10 @@ function(
 
                 var arrowOptions = _.clone(table[direction]);
                 arrowOptions.of = self.target;
+
+                self.ui.arrow.removeClass("rotate");
                 self.ui.arrow.position(arrowOptions);
+                self.ui.arrow.addClass("rotate");
             };
 
             this.$el.position(options);
