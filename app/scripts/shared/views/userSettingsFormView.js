@@ -216,15 +216,7 @@ function(
                 this._addICalKeysToSerializedData(data);
             }
 
-
-            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ReceivePostActivityNotification))
-            {
-                data.canReceivePostActivityNotification = true;
-            }
-            else
-            {
-                data.canReceivePostActivityNotification = false;
-            }
+            data.canReceivePostActivityNotification = theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ReceivePostActivityNotification);
 
             return data;
         },
