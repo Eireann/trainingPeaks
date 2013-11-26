@@ -1,14 +1,12 @@
 @import "globalCSS/mixIn";
 
-.tomahawk
-{
+.tomahawk {
     position: absolute;
     @include box-shadow(0 1px 3px 0 #ADADAD);
     background: #fff;
     padding: 21px 12px 15px;
 
-    .closeIcon
-    {
+    .closeIcon {
         position: absolute;
         top: 5px;
         right: 5px;
@@ -18,17 +16,14 @@
         padding: 0;
     }
     
-    &.tomahawkList
-    {
+    &.tomahawkList {
         padding: 12px;
 
-        .closeIcon
-        {
+        .closeIcon {
             display: none;
         }
 
-        label
-        {
+        label {
             color:$TPGrey10;
             cursor: pointer;
             font-size:$fontSizeSmall;
@@ -46,16 +41,18 @@
             }
         }
 
-        ul
-        {
+        ul {
             margin: 0;
         }
     }
 
-    .apply
-    {
-        width: 50px;
+    @include buttons(0, 65px, 12px);
+    .apply {
         float: right;
+    }
+
+    .columns {
+        padding: 0;
     }
 
 }
