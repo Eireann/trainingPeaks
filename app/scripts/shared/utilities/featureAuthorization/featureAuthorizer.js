@@ -54,6 +54,20 @@ function(
         features: {
 
             /*
+            attributes: { athlete: athlete } // current app athlete or other athlete object
+            options: none
+            */
+            PlanForAthlete: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athlete)
+                {
+                    throw new Error("PlanForAthlete requires an athlete attribute");
+                }
+                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                return _.contains(allowedUserTypes, attributes.athlete.get("userType"));
+            }),
+
+            /*
             attributes: { targetDate: date } // the date to try to save to
             options: none
             */
@@ -68,9 +82,7 @@ function(
 
                 if(newDate > today)
                 {
-                    var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                    var currentAthleteType = user.getAthleteDetails().get("userType");
-                    return _.contains(allowedUserTypes, currentAthleteType);
+                    return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
                 }
                 else
                 {
@@ -84,9 +96,7 @@ function(
             */
             ShiftWorkouts: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
-                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                var currentAthleteType = user.getAthleteDetails().get("userType");
-                return _.contains(allowedUserTypes, currentAthleteType);
+                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
             }),
 
             /*
@@ -179,9 +189,7 @@ function(
             */
             ViewICalendarUrl: Feature({}, function(user, userAccess, attributes, options)
             {
-                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                var currentAthleteType = user.getAthleteDetails().get("userType");
-                return _.contains(allowedUserTypes, currentAthleteType);
+                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
             }),
 
             /*
@@ -190,7 +198,7 @@ function(
             */
             AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
             {
-                var currentAthleteType = user.getAccountSettings().get("userType");
+                var currentAthleteType = user.getAthleteDetails().get("userType");
                 return userIsPremium(currentAthleteType);
             }),
 
@@ -209,7 +217,7 @@ function(
             */
             ReceivePostActivityNotification: Feature({}, function(user, userAccess, attributes, options)
             {
-                var currentAthleteType = user.getAccountSettings().get("userType");
+                var currentAthleteType = user.getAthleteDetails().get("userType");
                 return userIsPremium(currentAthleteType);
             })
 
