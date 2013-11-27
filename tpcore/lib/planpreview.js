@@ -1,0 +1,104 @@
+(function()
+{
+
+    var PreviewTemplate = _.template(
+    [
+        "<section>",
+        "<h3>Workout #<%= index + 1 %>: <%= TP.utils.lookupSportType(workout.workoutTypeValueId) %></h3>",
+        "<% if(workout.totalTimePlanned) { %><p>Planned Time: <%= TP.utils.format('h', 's', workout.totalTimePlanned) %></p><% } %>",
+        "<% if(workout.distancePlanned) { %><p>Planned Distance: <%= TP.utils.format('m', 'mi', workout.distancePlanned) %></p><% } %>",
+        "<p><%= workout.description %></p>",
+        "</section>"
+    ].join(""));
+
+    var PreviewModel = Backbone.Model.extend(
+    {
+        url: function()
+        {
+            return "//!API!/plans/v1/plans/" + this.id + "/preview";
+        }
+    });
+
+    var PreviewView = Backbone.View.extend(
+    {
+        initialize: function()
+        {
+            this.xhr = this.model.fetch();
+            this.xhr.always(_.bind(this.render, this));
+            this.render();
+        },
+
+        render: function()
+        {
+            switch(this.xhr.state())
+            {
+                case "resolved":
+                    this.display();
+                    this.plot();
+                    break;
+                case "rejected":
+                    this.$el.html("Error!");
+                    break;
+                case "pending":
+                    this.$el.html("Loading&hellip;");
+                    break;
+            }
+        },
+
+        display: function()
+        {
+            var markup =
+            [
+                "<div class='plot'></div>",
+                "<h2>Sample Workouts:</h2>",
+                _.map(this.model.get("workoutPreviews"), function(workout, index) { return PreviewTemplate({ workout: workout, index: index }); }).join(""),
+            ].join("");
+
+            this.$el.html(markup);
+        },
+
+        plot: function()
+        {
+            if(!this.$el.has(".plot")) return;
+
+            var series =
+            [
+            {
+                data: _.map(this.model.get("trainingDistanceByWeek"), function(distance, i)
+                {
+                    return [i + 1, TP.utils.convert('m', 'mi', distance)];
+                }),
+                yaxis: 1
+            },
+            {
+                data: _.map(this.model.get("trainingDurationByWeek"), function(duration, i)
+                {
+                    return [i + 1, TP.utils.convert('h', 'min', duration)];
+                }),
+                yaxis: 2
+            }
+            ];
+
+            series = _.select(series, function(serie) { return _.any(serie.data, function(datum) { return datum[1]; }); });
+
+            var options = 
+            {
+                yaxes: [
+                    { min: 0, tickFormatter: function(value) { return TP.utils.format('mi', 'mi', value); } },
+                    { min: 0, tickFormatter: function(value) { return TP.utils.format('min', 's', value); } }
+                ]
+            };
+
+
+            this.$(".plot").width("100%").height("300px").plot(series, options);
+        }
+
+    });
+
+    TP.components.planpreview = function(element, options)
+    {
+        var model = new PreviewModel({ id: $(element).data("plan-id") });
+        return new PreviewView({ model: model, el: element });
+    };
+
+})();

@@ -182,6 +182,11 @@ module.exports = function(grunt)
             {
                 dest: "build/release/single.min.js",
                 src: "build/release/single.js"
+            },
+            tpcore:
+            {
+                dest: "tpcore/tpcore.min.js",
+                src: "tpcore/lib/**.js"
             }
         },
 

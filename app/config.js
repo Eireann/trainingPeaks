@@ -55,6 +55,7 @@ requirejs.config(
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
         text: "../bower_components/requirejs-text/text",
         i18n: "../bower_components/requirejs-i18n/i18n",
+        tpcore: "../tpcore/tpcore.min"
     },
     shim: {
         handlebars: {
@@ -116,6 +117,15 @@ requirejs.config(
         },
         leaflet: {
             exports: "L"
+        },
+        tpcore: {
+            exports: "TP",
+            deps: [
+                "jquery",
+                "underscore",
+                "backbone",
+                "flot/jquery.flot"
+            ]
         }
     }
 });
