@@ -64,7 +64,8 @@ function(
                     throw new Error("PlanForAthlete requires an athlete attribute");
                 }
                 var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                return _.contains(allowedUserTypes, attributes.athlete.get("userType"));
+                var athleteUserType = _.isFunction(attributes.athlete.get) ? attributes.athlete.get("userType") : attributes.athlete.userType;
+                return _.contains(allowedUserTypes, athleteUserType);
             }),
 
             /*

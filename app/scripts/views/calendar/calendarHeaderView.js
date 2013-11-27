@@ -174,8 +174,7 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
         serializeData: function ()
         {
             var headerData = this.model.toJSON();
-            headerData.athletes = theMarsApp.user.get("athletes");
-
+            headerData.athletes = this._getFilteredAthletesForCoach();
             return headerData;
         },
 
@@ -208,6 +207,15 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
             theMarsApp.calendarManager.reset();
             // TODO: Reset libraries too?
+        },
+
+        _getFilteredAthletesForCoach: function()
+        {
+            var athletes = theMarsApp.user.get("athletes");
+            return _.filter(athletes, function(athlete)
+            {
+                return theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.PlanForAthlete, { athlete: athlete });
+            });
         }
     };
 

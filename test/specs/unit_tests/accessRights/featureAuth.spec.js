@@ -143,6 +143,14 @@ function(
                     expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(false);
                     expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(true);
                 });
+
+                it("Should accept a plain object or a backbone model", function()
+                {
+                    var attributes = { athlete: { userType: 4 } };
+
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(true);
+                });
             });
 
             describe("SaveWorkoutToDate", function()
