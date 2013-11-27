@@ -160,6 +160,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         clearRequests: function()
         {
+            // We need to reject each of these xhr requests or they never get garbage collected and contribute to memory leaks
             _.each(this.fakeAjaxRequests, function(xhr) {
                 xhr.respond(500, [], "");
             });
