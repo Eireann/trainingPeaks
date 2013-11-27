@@ -83,9 +83,10 @@
 
             var options = 
             {
+                xaxis: { tickSize: 1, tickDecimals: 0 },
                 yaxes: [
                     { min: 0, tickFormatter: function(value) { return TP.utils.format('mi', 'mi', value); } },
-                    { min: 0, tickFormatter: function(value) { return TP.utils.format('min', 's', value); } }
+                    { min: 0, tickFormatter: function(value) { return TP.utils.format('min', 'min', value); } }
                 ]
             };
 

@@ -10,7 +10,7 @@
 
         // Time
         "s":    { base: "s", factor: 1, format: _formatSeconds, label: "" },
-        "min":  { base: "s", factor: 60 },
+        "min":  { base: "s", factor: 60, format: _formatMinutes, label: "" },
         "h":    { base: "s", factor: 60 * 60 },
     };
 
@@ -56,7 +56,7 @@
         return str;
     }
 
-    function _formatSeconds(value, options)
+    function _formatDuration(value, options)
     {
         var hours = Math.floor(value / 3600);
         var minutes = Math.floor(value / 60) % 60;
@@ -72,6 +72,16 @@
         if(options && options.seconds) { str += ":" + pad(seconds); }
 
         return str;
+    }
+
+    function _formatSeconds(value, options)
+    {
+        return _formatDuration(value, _.extend({seconds: true}, options));
+    }
+
+    function _formatMinutes(value, options)
+    {
+        return _formatDuration(value * 60, _.extend({seconds: false}, options));
     }
 
     // Exports
