@@ -4,7 +4,6 @@ define(
     "underscore",
     "backbone",
     "TP",
-    "framework/ajaxTimezone",
     "framework/ajax402",
     "framework/tooltips",
     "framework/identityMap",
@@ -36,7 +35,6 @@ function(
     _,
     Backbone,
     TP,
-    initializeAjaxTimezone,
     initializeAjax402,
     ToolTips,
     IdentityMap,
@@ -216,12 +214,6 @@ function(
             this.addInitializer(function()
             {
                 this.session.initRefreshToken();
-            });
-
-            // setup ajax auth and caching and timezone handling
-            this.addInitializer(function()
-            {
-                initializeAjaxTimezone();
             });
 
             // display build info
