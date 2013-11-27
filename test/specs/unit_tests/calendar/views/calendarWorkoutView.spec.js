@@ -20,6 +20,33 @@ function(
 
         describe("Compliance Coloring", function()
         {
+            it("Should return ComplianceNone if there is no value for planned time", function()
+            {
+                var model = new WorkoutModel({ workoutDay: "2012-01-01" });
+                var view = new CalendarWorkoutView({ model: model });
+                expect(view.getComplianceCssClassName()).to.equal("ComplianceNone");
+            });
+
+            it("Should return ComplianceNone if there is a zero value for planned time and no value for completed time", function()
+            {
+                var model = new WorkoutModel({ totalTimePlanned: 0, workoutDay: "2012-01-01" });
+                var view = new CalendarWorkoutView({ model: model });
+                expect(view.getComplianceCssClassName()).to.equal("ComplianceNone");
+            });
+
+            it("Should return ComplianceNone if there is a zero value for planned time and zero value for completed time", function()
+            {
+                var model = new WorkoutModel({ totalTimePlanned: 0, totalTime: 0, workoutDay: "2012-01-01" });
+                var view = new CalendarWorkoutView({ model: model });
+                expect(view.getComplianceCssClassName()).to.equal("ComplianceNone");
+            });
+
+            it("Should return ComplianceRed if there is a zero value for planned time and non zero value for completed time", function()
+            {
+                var model = new WorkoutModel({ totalTimePlanned: 0, totalTime: 0.01, workoutDay: "2012-01-01" });
+                var view = new CalendarWorkoutView({ model: model });
+                expect(view.getComplianceCssClassName()).to.equal("ComplianceRed");
+            });
 
             it("Should return ComplianceGreen if completed time is 80-120% of planned time", function()
             {
