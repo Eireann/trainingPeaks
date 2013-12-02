@@ -87,10 +87,10 @@ function(
                 }
 
                 // athlete must be in athletes list
-                var athleteInUserAthletesList = _.find(user.get("athletes"), function(athlete) {
+                var athleteFromUserAthletesList = _.find(user.get("athletes"), function(athlete) {
                     return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
                 });
-                if(!athleteInUserAthletesList)
+                if(!athleteFromUserAthletesList)
                 {
                     return false;
                 }
@@ -102,7 +102,7 @@ function(
                 }
 
                 // non ubc coach can only view premium athletes
-                if(userIsPremium(getModelAttributeOrObjectProperty(attributes.athlete, "userType")))
+                if(userIsPremium(getModelAttributeOrObjectProperty(athleteFromUserAthletesList, "userType")))
                 {
                     return true;
                 }
