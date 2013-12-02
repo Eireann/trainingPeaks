@@ -136,7 +136,6 @@ function(_, Backbone, TP, xhrData, MarsApp)
             var pattern = new RegExp(urlPattern);
             return _.find(this.fakeAjaxRequests, function(req)
             {
-                //console.log(req);
                 if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
@@ -167,8 +166,6 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         setupFakeAjax: function()
         {
-            //console.log("SETUP FAKE AJAX");
-
             var self = this;
 
             if(this.xhr)

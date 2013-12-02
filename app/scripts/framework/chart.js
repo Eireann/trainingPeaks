@@ -6,7 +6,8 @@ define(
     "TP",
     "utilities/charting/jquery.flot.pie",
     "jquery.flot.orderBars",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "dashboard/views/dashboardChartPodView"
 ],
 function(
     $,
@@ -15,7 +16,8 @@ function(
     TP,
     flotPiePlugin,
     flotOrderBarsPlugin,
-    DashboardChartUtils
+    DashboardChartUtils,
+    DashboardChartPodView
 )
 {   
     var Chart = TP.Model.extend(
@@ -34,13 +36,18 @@ function(
             }, this));
         },
 
-        createChartSettingsView: function()
+        createSettingsView: function()
         {
             if(!this.settingsView)
             {
                 throw new Error("TP.Chart requires a settingsView class");
             }
             return new this.settingsView({ model: this });
+        },
+
+        createContentView: function(options)
+        {
+            return new DashboardChartPodView(_.extend({ model: this }, options));
         },
 
         /*

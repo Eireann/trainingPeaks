@@ -42,7 +42,7 @@ function(
 
         fetchData: function()
         {
-            this.dateOptions = DashboardChartUtils.buildChartParameters(thsi.get("dateOptions"));
+            this.dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData =
             {
                 workoutTypeIds: _.without(this.get("workoutTypeIds"), 0, "0", ""),
