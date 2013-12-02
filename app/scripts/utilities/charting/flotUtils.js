@@ -217,7 +217,7 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
                     }
                     else
                     {
-                        axis.tickSize = Math.round(axis.tickSize / 300000) * 300000;
+                        axis.tickSize = Math.ceil(axis.tickSize / 300000) * 300000;
                     }
                 }
 
