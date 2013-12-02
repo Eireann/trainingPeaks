@@ -42,22 +42,22 @@ function(
         shiftAction: function()
         {
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.ShiftWorkouts, 
+                theMarsApp.featureAuthorizer.features.ShiftWorkouts,
                 _.bind(this._applyShiftAction, this)
             );
         },
 
         _applyShiftAction: function()
         {
-            var first = this.first().id;
-            var last = this.last().id;
+            var first = this.min(function(m) { return moment(m.id); }).id;
+            var last = this.max(function(m) { return moment(m.id); }).id;
 
             var shiftWizzardView = new ShiftWizzardView(
             {
                 selectionStartDate: first,
                 selectionEndDate: last
             });
-            shiftWizzardView.render(); 
+            shiftWizzardView.render();
         },
 
         deleteAction: function()

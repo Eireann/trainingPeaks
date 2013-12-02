@@ -42,6 +42,11 @@ function(
             "click button.delete": "onDeleteClicked"
         },
 
+        modelEvents:
+        {
+            "state:change:waiting": "_onWaitingChange"
+        },
+
         attributes:
         {
             "id": "workoutFileUploadMenuDiv"
@@ -231,6 +236,18 @@ function(
         waitingOff: function()
         {
             this.$(".details").removeClass("waiting");
+        },
+
+        _onWaitingChange: function(stateModel, waiting, options)
+        {
+            if(waiting)
+            {
+                this.waitingOn();
+            }
+            else
+            {
+                this.waitingOff();
+            }
         }
 
     });

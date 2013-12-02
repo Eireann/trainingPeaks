@@ -119,12 +119,6 @@
                 color: $TPGrey4;               
             }
         }
-
-        .userSettingsHelpText {
-            .upgrade {
-                margin-left: 16px;
-            }
-        }
         
         .scrollTarget {
             padding-top: 28px;
@@ -494,6 +488,22 @@
                 font-size:$fontSizeSmall;
             }
         }
+
+        &.userSettingsZonesTemplate {
+
+            .userSettingsHelpText {
+                .upgrade {
+                    margin-left: 16px;
+                }
+            }
+        }
+
+        .enableWorkoutCommentNotification {
+            .userSettingsHelpText {
+                margin: 5px 0px 15px 24px;
+                font-size: 1em;
+            }
+        }
     }
 
     .overlayBoxBody {
@@ -536,7 +546,7 @@
 
         .fieldContain {
             width:100%;
-            height:29px;
+            min-height:29px;
             @include clearfix;
             float:left;
 
@@ -565,6 +575,10 @@
                     width: 197px !important;
                 }
             } 
+
+            input {
+                margin-bottom: 0px;
+            }
         }
 
         .personalLeftCol {

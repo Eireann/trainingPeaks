@@ -45,16 +45,9 @@ function(
 
         serializeData: function()
         {
-            var data = {};
-            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.AutoApplyThresholdChanges))
-            {
-                data.canApplyThreshold = true;
-            }
-            else
-            {
-                data.canApplyThreshold = false;
-            }
-            return data;
+            return {
+                canApplyThreshold: theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.AutoApplyThresholdChanges)
+            };
         },
 
         _showUpgradePrompt: function()

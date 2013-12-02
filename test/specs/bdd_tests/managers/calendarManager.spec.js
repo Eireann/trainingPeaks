@@ -90,7 +90,7 @@ function(
             });
 
             // Need to fix data manager to pass through failures
-            xit("should update flags (by week), with failure (TODO: fix data manager to handle request failures, then fix this test)", function()
+            it("should update flags (by week), with failure", function()
             {
 
                 testHelpers.rejectRequest("GET", "/workouts/2013-09-30");

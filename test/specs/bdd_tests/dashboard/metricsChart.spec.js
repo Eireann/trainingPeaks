@@ -123,7 +123,8 @@ function(
                 it("Should not request new data on settings close if parameters haven't changed", function()
                 {
                     var $body = testHelpers.theApp.getBodyElement();
-                    testHelpers.clearRequests();
+                    testHelpers.resolveRequest("GET", "/timedmetrics/", null); // resolve this so data manager keeps it in cache
+                    testHelpers.clearRequests(); // clear from test helpers so we can watch for new requests
                     $mainRegion.find(".dashboardChart.metricsChart .settings").trigger("mousedown");
                     expect(testHelpers.hasRequest("GET", "/timedmetrics/")).to.equal(false);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");

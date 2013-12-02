@@ -4,6 +4,7 @@
 // default is arrow at the bottom, see &.uparrow below for arrow at the top
 .hoverBox {
     position:relative;
+    min-height: 55px;
 
 	&.thisWeek
 	{
@@ -22,6 +23,7 @@
     {
         position:relative;
         z-index: 3;
+        min-height: 55px;
         margin-bottom: 3px; 
         padding: 7px 12px 6px 12px;
         //@include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 

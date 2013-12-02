@@ -70,7 +70,7 @@
                     var originalElevation = [100, 102, 110];
                     var correctedElevation = [103, 105, 114];
 
-                    var graphData = new GraphData();
+                    var graphData = new GraphData({detailData: {} });
                     sinon.stub(graphData, "createCorrectedElevationChannel").returns(correctedElevation);
 
                     var viewContext = {
