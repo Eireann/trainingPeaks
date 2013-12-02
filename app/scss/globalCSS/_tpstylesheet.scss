@@ -124,3 +124,8 @@ a {
 a:hover, a:focus {
 	color: $TPLinkBlueHover;
 }
+
+button {
+	// fix for chrome button halo
+	outline: none;
+}

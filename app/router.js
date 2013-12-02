@@ -47,9 +47,17 @@ function (_, TP, RollbarManager)
 
         calendar: ensureUser(function (athleteId)
         {
-            
-            if (athleteId)
-                theMarsApp.user.setCurrentAthleteId(athleteId);
+            if (athleteId) {
+                athleteId = Number(athleteId);
+                if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: { athleteId: athleteId }}))
+                {
+                    theMarsApp.user.setCurrentAthleteId(athleteId);
+                }
+                else
+                {
+                    theMarsApp.router.navigate("calendar", true);
+                }
+            }
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
                 theMarsApp.controllers.calendarController.trigger("refresh");

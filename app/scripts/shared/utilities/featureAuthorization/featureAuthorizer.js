@@ -15,6 +15,7 @@ define(
     "shared/data/podTypes",
     "shared/utilities/featureAuthorization/accessRights",
     "utilities/athlete/userTypes",
+    "utilities/athlete/coachTypes",
     "shared/views/userUpgradeView"
 ],
 function(
@@ -25,9 +26,19 @@ function(
     podTypes,
     accessRights,
     userTypes,
+    coachTypes,
     UserUpgradeView
          )
 {
+    var premiumUserTypes = [
+        userTypes.getIdByName("Premium Athlete Paid By Coach"),
+        userTypes.getIdByName("Premium Athlete")
+    ];
+
+    function userIsPremium(userType)
+    {
+        return _.contains(premiumUserTypes, userType);
+    }
 
     function Feature(options, callback) {
         callback.options = options;
@@ -39,10 +50,83 @@ function(
         this.user = user;
         this.userAccessRights = userAccessRights;
     }
+
+    function getModelAttributeOrObjectProperty(model, key)
+    {
+        return _.isFunction(model.get) ? model.get(key) : model[key];
+    }
    
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
+
+            /*
+            attributes: { athlete: athlete } // current app athlete or other athlete object
+            options: none
+            */
+            ViewAthleteCalendar: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athlete)
+                {
+                    throw new Error("ViewAthlete requires an athlete attribute");
+                }
+
+                var currentUserId = user.get("userId");
+                var athleteId = getModelAttributeOrObjectProperty(attributes.athlete, "athleteId");
+
+                // user can view their own account
+                if(currentUserId === athleteId)
+                {
+                    return true;
+                }
+
+                // if not a coach, user can only view their own account
+                if(user.getAccountSettings().get("isAthlete"))
+                {
+                    return false;
+                }
+
+                // athlete must be in athletes list
+                var athleteFromUserAthletesList = _.find(user.get("athletes"), function(athlete) {
+                    return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
+                });
+                if(!athleteFromUserAthletesList)
+                {
+                    return false;
+                }
+
+                // ubc coach can view any athlete type
+                if(user.getAccountSettings().get("coachType") === coachTypes.UBC)
+                {
+                    return true;
+                }
+
+                // non ubc coach can only view premium athletes
+                if(userIsPremium(getModelAttributeOrObjectProperty(athleteFromUserAthletesList, "userType")))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }),
+
+            /*
+            attributes: { athlete: athlete } // current app athlete or other athlete object
+            options: none
+            */
+            PlanForAthlete: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athlete)
+                {
+                    throw new Error("PlanForAthlete requires an athlete attribute");
+                }
+                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                var athleteUserType = getModelAttributeOrObjectProperty(attributes.athlete, "userType");
+                return _.contains(allowedUserTypes, athleteUserType);
+            }),
 
             /*
             attributes: { targetDate: date } // the date to try to save to
@@ -59,9 +143,7 @@ function(
 
                 if(newDate > today)
                 {
-                    var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                    var currentAthleteType = user.getAthleteDetails().get("userType");
-                    return _.contains(allowedUserTypes, currentAthleteType);
+                    return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
                 }
                 else
                 {
@@ -75,9 +157,7 @@ function(
             */
             ShiftWorkouts: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
-                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                var currentAthleteType = user.getAthleteDetails().get("userType");
-                return _.contains(allowedUserTypes, currentAthleteType);
+                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
             }),
 
             /*
@@ -170,9 +250,7 @@ function(
             */
             ViewICalendarUrl: Feature({}, function(user, userAccess, attributes, options)
             {
-                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                var currentAthleteType = user.getAthleteDetails().get("userType");
-                return _.contains(allowedUserTypes, currentAthleteType);
+                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
             }),
 
             /*
@@ -181,12 +259,8 @@ function(
             */
             AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
             {
-                var currentAthleteType = user.getAccountSettings().get("userType");
-                var allowedUserTypes = [
-                    userTypes.getIdByName("Premium Athlete Paid By Coach"),
-                    userTypes.getIdByName("Premium Athlete")
-                ];
-                return _.contains(allowedUserTypes, currentAthleteType);
+                var currentAthleteType = user.getAthleteDetails().get("userType");
+                return userIsPremium(currentAthleteType);
             }),
 
             /*
@@ -197,6 +271,17 @@ function(
             {
                 return userAccess.getBoolean(accessRights.ids.HidePlanStoreForCoachedByAthletes) ? false : true;
             }),
+
+            /*
+            attributes: none
+            options: none
+            */
+            ReceivePostActivityNotification: Feature({}, function(user, userAccess, attributes, options)
+            {
+                var currentAthleteType = user.getAthleteDetails().get("userType");
+                return userIsPremium(currentAthleteType);
+            })
+
         },
 
         canAccessFeature: function(featureChecker, attributes, options)

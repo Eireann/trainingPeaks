@@ -96,9 +96,7 @@ function (
 
         onFileSelected: function()
         {
-
-            if (this.fileUploadMenu)
-                this.fileUploadMenu.close();
+            this.model.getState().set("waiting", true);
 
             this.waitingOn();
             this.isNew = this.model.get("workoutId") ? false : true;
@@ -109,7 +107,12 @@ function (
             this.waitingOff();
 
             this.model.set(workoutModelJson);
-            this.model.get("details").fetch();
+
+            var self = this;
+            this.model.get("details").fetch().done(function()
+            {
+                self.model.getState().set("waiting", false);
+            });
             this.model.trigger("deviceFileUploaded");
 
             if (this.isNew)

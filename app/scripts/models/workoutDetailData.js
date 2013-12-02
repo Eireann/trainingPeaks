@@ -34,7 +34,7 @@ function (
 
         initialize: function()
         {
-            this.graphData = new GraphData();
+            this.graphData = new GraphData({ detailData: this });
             this._dataParser = new DataParser({graphData: this.graphData});
             this.rangeCollections = {};
             this.reset();

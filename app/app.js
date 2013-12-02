@@ -4,7 +4,6 @@ define(
     "underscore",
     "backbone",
     "TP",
-    "framework/ajaxTimezone",
     "framework/ajax402",
     "framework/tooltips",
     "framework/identityMap",
@@ -36,7 +35,6 @@ function(
     _,
     Backbone,
     TP,
-    initializeAjaxTimezone,
     initializeAjax402,
     ToolTips,
     IdentityMap,
@@ -179,16 +177,6 @@ function(
             this.addInitializer(function()
             {
                 var self = this;
-                /*
-                window.onerror = function(errorMessage, url, lineNumber)
-                {
-                    if (self.clientEvents)
-                    {
-                        self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
-                    }
-                    return self.isLive() ? true : false;
-                };
-                */
 
                 $(document).ajaxError(function(event, xhr)
                 {
@@ -216,12 +204,6 @@ function(
             this.addInitializer(function()
             {
                 this.session.initRefreshToken();
-            });
-
-            // setup ajax auth and caching and timezone handling
-            this.addInitializer(function()
-            {
-                initializeAjaxTimezone();
             });
 
             // display build info
@@ -286,20 +268,11 @@ function(
 
                 this.bootPromise.then(function()
                 {
-                    if(self.user.get("settings.account.numberOfVisits") === 1)
+                    // TODO: Once new API exists, use that
+                    if(/showprofile/.test(window.location.search))
                     {
-                        if(typeof localStorage !== "undefined" && localStorage.getItem("completeYourProfileDone") === "true")
-                        {
-                            return;
-                        }
-
                         var view = new InitialProfileView({ model: self.user });
                         view.render();
-
-                        if(typeof localStorage !== "undefined")
-                        {
-                            localStorage.setItem("completeYourProfileDone", true);
-                        }
                     }
                 });
             });

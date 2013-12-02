@@ -215,6 +215,9 @@ function(
             {
                 this._addICalKeysToSerializedData(data);
             }
+
+            data.canReceivePostActivityNotification = theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ReceivePostActivityNotification);
+
             return data;
         },
 

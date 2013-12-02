@@ -217,7 +217,12 @@
     </div>
 
     <div class="fieldContain">
-        <label class="checkBoxRow clickable"><input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> {{$ "postActivityNotificationSetting" }}</label>
+        <label class="checkBoxRow clickable{{#ifNot canReceivePostActivityNotification}} upgrade{{/ifNot}} enableWorkoutCommentNotification"><input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"{{#ifNot canReceivePostActivityNotification}} disabled{{/ifNot}}> {{$ "postActivityNotificationSetting" }}
+
+        {{#ifNot canReceivePostActivityNotification}}
+            <p class="userSettingsHelpText"><a class="upgrade">{{$ "PostWorkoutNotificationPremiumMessage" }}</a></p>
+        {{/ifNot}}
+        </label>
     </div>
 
     <div class="fieldContain">

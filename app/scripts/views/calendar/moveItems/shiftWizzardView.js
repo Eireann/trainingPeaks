@@ -41,8 +41,8 @@ function(
 
     function datepickerGetDate($el, event, options)
     {
-        var date = $el.datepicker("getDate").toString();
-        $el.val(formatGetDate(date));
+        var date = formatGetDate($el.datepicker("getDate"));
+        $el.val(date);
         return date;
     }
 
@@ -200,7 +200,7 @@ function(
                     this.model.set("fromDate", "");
                     this.model.set("toDate", "");
                     break;
-                   
+
                 case "ItemsWithinSpecifiedDateRange":
                     this.ui.fromDate.removeAttr("disabled");
                     this.ui.toDate.removeAttr("disabled");
@@ -288,7 +288,7 @@ function(
                     shiftCommand.set("startDate", this.model.get("selectionStartDate"));
                     shiftCommand.set("endDate", this.model.get("selectionEndDate"));
                     break;
-                   
+
                 case "ItemsWithinSpecifiedDateRange":
                     shiftCommand.set("startDate", this.model.get("fromDate"));
                     shiftCommand.set("endDate", this.model.get("toDate"));
@@ -329,7 +329,7 @@ function(
                 case "itemsOnAllSelectedDays":
                     // no date range inputs to validate
                     break;
-                   
+
                 case "ItemsWithinSpecifiedDateRange":
                     this.validateDate("fromDate", deferred);
                     this.validateDate("toDate", deferred);

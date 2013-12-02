@@ -28,6 +28,10 @@ function(
             resolve: function(data, options)
             {
                 this.fetchOptions.success(this, data, options);
+            },
+            reject: function(data, options)
+            {
+                this.fetchOptions.error(this, data, options);
             }
         });
 
@@ -51,6 +55,14 @@ function(
                 expect(deferred.state()).to.equal("resolved");
                 expect(fakeModel.get("valueOne")).to.equal("hello");
                 expect(fakeModel.get("valueTwo")).to.equal("world");
+            });
+
+            it("Should reject a request when the source request fails", function()
+            {
+                var deferred = dataManager.loadModel(FakeModel);
+                expect(deferred.state()).to.equal("pending");
+                deferred.model.reject();
+                expect(deferred.state()).to.equal("rejected");
             });
 
             it("Should return a common model instance", function()
