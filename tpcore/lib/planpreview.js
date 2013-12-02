@@ -50,6 +50,7 @@
             var markup =
             [
                 "<div class='plot'></div>",
+                "<div class='legend'></div>",
                 "<h2>Sample Workouts:</h2>",
                 _.map(this.model.get("workoutPreviews"), function(workout, index) { return PreviewTemplate({ workout: workout, index: index }); }).join(""),
             ].join("");
@@ -64,6 +65,8 @@
             var series =
             [
             {
+                label: "Distance",
+                color: "#600",
                 data: _.map(this.model.get("trainingDistanceByWeek"), function(distance, i)
                 {
                     return [i + 1, TP.utils.convert('m', 'mi', distance)];
@@ -71,6 +74,8 @@
                 yaxis: 1
             },
             {
+                label: "Time",
+                color: "#060",
                 data: _.map(this.model.get("trainingDurationByWeek"), function(duration, i)
                 {
                     return [i + 1, TP.utils.convert('h', 'min', duration)];
@@ -83,10 +88,11 @@
 
             var options = 
             {
+                legend: { show: true, container: this.$(".legend"), noColumns: 2 },
                 xaxis: { tickSize: 1, tickDecimals: 0 },
                 yaxes: [
-                    { min: 0, tickFormatter: function(value) { return TP.utils.format('mi', 'mi', value); } },
-                    { min: 0, tickFormatter: function(value) { return TP.utils.format('min', 'min', value); } }
+                    { min: 0, color: "#600", axisLabel: "Distance", tickFormatter: function(value) { return TP.utils.format('mi', 'mi', value); }, position: "right" },
+                    { min: 0, color: "#060", axisLabel: "Time", tickFormatter: function(value) { return TP.utils.format('min', 'min', value); } }
                 ]
             };
 

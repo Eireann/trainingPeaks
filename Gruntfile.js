@@ -186,7 +186,20 @@ module.exports = function(grunt)
             tpcore:
             {
                 dest: "tpcore/tpcore.min.js",
-                src: "tpcore/lib/**.js"
+                src: [
+                    "tpcore/lib/main.js",
+                    "tpcore/lib/units.js",
+                    "tpcore/lib/planpreview.js",
+                ]
+            },
+            "tpcore.deps":
+            {
+                dest: "tpcore/tpcore.deps.min.js",
+                src: [
+                    "bower_components/lodash/dist/lodash.underscore.js",
+                    "bower_components/backbone/backbone.js",
+                    "bower_components/flot/jquery.flot.js"
+                ]
             }
         },
 
@@ -255,7 +268,7 @@ module.exports = function(grunt)
             build_common:
             {
                 dest: "build/release/",
-                src: [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                src: [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js", "tpcore/*.min.js*"]
             },
 
             build_debug:
@@ -274,7 +287,7 @@ module.exports = function(grunt)
             pre_instrument:
             {
                 dest: "coverage/",
-                src: ["test/**", "app/**"]
+                src: ["test/**", "app/**", "tpcore/*.min.js*"]
             },
 
             // stuff that needs to be clean and not modified by test coverage instrumentation
@@ -379,13 +392,13 @@ module.exports = function(grunt)
 
     // grunt debug does only compass and copy
     grunt.registerTask("default", ["debug"]);
-    grunt.registerTask("debug", ["clean:debug", "compass:debug", "copy:debug"]);
+    grunt.registerTask("debug", ["clean:debug", "compass:debug", "copy:debug", "uglify:tpcore", "uglify:tpcore.deps"]);
 
     // grunt build builds a single minified js for dev/uat/live, at build/release
     // grunt build_debug does the same but doesn't minify, and points to local dev config
-    grunt.registerTask("build_common", ["clean", "jshint", "coverage", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
+    grunt.registerTask("build_common", ["clean", "jshint", "uglify:tpcore", "uglify:tpcore.deps", "coverage", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug"]);
-    grunt.registerTask("build_debug_fast", ["clean", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
+    grunt.registerTask("build_debug_fast", ["clean", "uglify:tpcore", "uglify:tpcore.deps", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify", "clean:post_build", "targethtml:build", "revision"]);
 };
