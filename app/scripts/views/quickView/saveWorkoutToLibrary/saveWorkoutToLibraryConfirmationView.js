@@ -7,6 +7,7 @@
     "views/userConfirmationView",
 
     "hbs!templates/views/errors/nameConflictTemplate",
+    "hbs!templates/views/expando/unableToSaveEditsTemplate",
     "hbs!templates/views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView"
 ],
 function(
@@ -16,6 +17,7 @@ function(
          AfterSaveView,
          UserConfirmationView,
          nameConflictTemplate,
+         unableToSaveEditsTemplate,
          saveWorkoutToLibraryTemplate
          )
 {
