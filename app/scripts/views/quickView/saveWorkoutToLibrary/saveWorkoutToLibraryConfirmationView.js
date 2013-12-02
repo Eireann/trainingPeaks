@@ -4,9 +4,20 @@
     "TP",
     "models/commands/saveWorkoutToExerciseLibrary",
     "views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryAfterSaveMessageView",
+    "views/userConfirmationView",
+
+    "hbs!templates/views/errors/nameConflictTemplate",
     "hbs!templates/views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView"
 ],
-function(setImmediate, TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTemplate)
+function(
+         setImmediate,
+         TP,
+         SaveWorkoutToLibraryCommand,
+         AfterSaveView,
+         UserConfirmationView,
+         nameConflictTemplate,
+         saveWorkoutToLibraryTemplate
+         )
 {
     return TP.ItemView.extend(
     {
@@ -106,10 +117,12 @@ function(setImmediate, TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorko
                 }
             });
 
-            deferred.fail(function()
+            deferred.fail(function(xhr)
             {
-                self.close();
+                self.waitingOff();
+                self._displayError(xhr);
             });
+
         },
 
         onCancel: function()
@@ -148,7 +161,13 @@ function(setImmediate, TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorko
         {
             var okView = new AfterSaveView();
             okView.render();
-        }
+        },
 
+        _displayError: function(xhr)
+        {
+            var errorTemplate = xhr.status === 409 ? nameConflictTemplate : unableToSaveEditsTemplate;
+            var errorMessageView = new UserConfirmationView({ template: errorTemplate });
+            errorMessageView.render();
+        },
     });
 });

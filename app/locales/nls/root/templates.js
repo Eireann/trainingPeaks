@@ -448,6 +448,7 @@ define({
     "EnterOptions": "Enter Calculator Options",
     "UnableToCalculateZones": "We could not calculate zones based on the information you provided.  Please try again with different values, or select a different calculation method",
     "UnableToSaveEdits": "We were unable to save your changes. Please try again.",
+    "NameConflict": "An item with this name already exists.  Please rename.",
 
     "Not Yet Implemented": "Not Yet Implemented",
 

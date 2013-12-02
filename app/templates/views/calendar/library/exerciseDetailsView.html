@@ -4,7 +4,7 @@
 <h3 class="subheadbold">Exercise & Intervals</h3>
 
 <div class="small">
-    <p>{{itemName}}</p>
+    <input type="text" id="itemNameField" class="title" readonly name="itemName" />
 </div>
 
 <h3 class="subheadbold">Stats</h3>
@@ -15,11 +15,7 @@
     </div>
     <div class="workoutStatsColumn ">
         <input type="text" id="totalTimePlannedField" class="numberInput" readonly
-            name="totalTimePlanned" data-format="units:duration"
-        {{#if totalTimePlanned }}
-            value={{ conversion "formatDuration" totalTimePlanned }}
-        {{/if}}
-        />
+            name="totalTimePlanned" data-format="units:duration" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="time ghosted">{{$ "hms"}}</label>
@@ -32,11 +28,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="distancePlannedField" class="numberInput" readonly
-            name="distancePlanned" data-format="units:distance"
-        {{#if distancePlanned}}
-            value='{{ conversion "formatDistance" distancePlanned this }}'
-        {{/if}}
-        />
+            name="distancePlanned" data-format="units:distance" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="distance ghosted">{{getUnitsLabel "distance" workoutTypeId }}</label>
@@ -49,11 +41,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="pacePlannedField" class="numberInput" readonly
-            name="velocityPlanned" data-format="units:pace"
-        {{#if velocityPlanned}}
-            value='{{ conversion "formatPace" velocityPlanned this }}'
-        {{/if}}
-        />
+            name="velocityPlanned" data-format="units:pace" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="pace ghosted">{{getUnitsLabel "pace" workoutTypeId}}</label>
@@ -66,11 +54,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="velocityPlannedField" class="numberInput" readonly
-            name="velocityPlanned" data-format="units:speed"
-        {{#if velocityPlanned}}
-            value='{{ conversion "formatSpeed" velocityPlanned this }}'
-        {{/if}}
-        />
+            name="velocityPlanned" data-format="units:speed" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="speed ghosted">{{getUnitsLabel "speed" workoutTypeId}}</label>
@@ -83,11 +67,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="caloriesPlannedField" class="numberInput" readonly
-            name="caloriesPlanned" data-format="units:kcal"
-        {{#if caloriesPlanned}}
-            value='{{ conversion "formatCalories" caloriesPlanned }}'
-        {{/if}}
-        />
+            name="caloriesPlanned" data-format="units:kcal" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="calories ghosted">{{getUnitsLabel "calories" workoutTypeId}}</label>
@@ -100,11 +80,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="elevationGainPlannedField" class="numberInput" readonly
-            name="elevationGainPlanned" data-format="units:elevation"
-        {{#if elevationGainPlanned}}
-            value='{{ conversion "formatElevationGain" elevationGainPlanned }}'
-        {{/if}}
-        />
+            name="elevationGainPlanned" data-format="units:elevation" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="elevationGain ghosted">{{getUnitsLabel "elevationGain" workoutTypeId}}</label>
@@ -117,11 +93,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="tssPlannedField" class="numberInput" readonly
-            name="tssPlanned" data-format="units:tss"
-        {{#if tssPlanned}}
-            value='{{ conversion "formatTSS" tssPlanned}}'
-        {{/if}}
-        />
+            name="tssPlanned" data-format="units:tss" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="tss ghosted">{{getUnitsLabel "tss" workoutTypeId this}}</label>
@@ -134,11 +106,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="ifPlannedField" class="numberInput" readonly
-            name="ifPlanned" data-format="units:if"
-        {{#if ifPlanned}}
-            value='{{ conversion "formatIF" ifPlanned }}'
-        {{/if}}
-        />
+            name="ifPlanned" data-format="units:if" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="ghosted">{{getUnitsLabel "if" workoutTypeId}}</label>
@@ -151,11 +119,7 @@
     </div>
     <div class="workoutStatsColumn">
         <input type="text" id="energyPlannedField" class="numberInput" readonly
-            name="energyPlanned" data-format="units:energy"
-        {{#if energyPlanned}}
-            value='{{ conversion "formatEnergy" energyPlanned }}'
-        {{/if}}
-        />
+            name="energyPlanned" data-format="units:energy" />
     </div>
     <div class="workoutStatsColumn workoutStatsUnitLabel">
         <label class="ghosted">{{getUnitsLabel "energy" workoutTypeId}}</label>

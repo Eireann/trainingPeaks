@@ -8,6 +8,8 @@ define(
     "shared/utilities/formUtility",
     "utilities/conversion/conversion",
 
+    "hbs!templates/views/errors/nameConflictTemplate",
+    "hbs!templates/views/expando/unableToSaveEditsTemplate",
     "hbs!templates/views/calendar/library/exerciseDetailsView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
@@ -20,6 +22,8 @@ function(
     FormUtility,
     conversion,
 
+    nameConflictTemplate,
+    unableToSaveEditsTemplate,
     exerciseDetailsViewTemplate,
     deleteConfirmationTemplate
     )
@@ -36,20 +40,32 @@ function(
             template: exerciseDetailsViewTemplate
         },
 
-        modelEvents: {},
+        modelEvents: {
+            "change:totalTimePlanned change:distancePlanned change:velocityPlanned": "reCalculate"
+        },
 
         events:
         {
             "click #closeIcon": "close",
             "click .delete": "confirmDelete",
             "click .edit": "handleEdit",
-            "click .update": "handleUpdate",
-            "change #pacePlannedField": "reCalculateSpeedOrPace",
-            "change #velocityPlannedField": "reCalculateSpeedOrPace"
+            "click .update": "handleUpdate"
+        },
+
+        initialize: function()
+        {
+            // get more details
+            this.originalModel = this.model;
+            this.model = this.originalModel.clone();
+            this.model.fetch();
         },
 
         onRender: function()
         {
+
+            this._enableOrDisableEditing();
+            this.listenTo(this.model, "change:isStructuredWorkout sync", this._enableOrDisableEditing);
+
             var self = this;
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
 
@@ -60,29 +76,80 @@ function(
             }
         },
 
-        reCalculateSpeedOrPace: function(e)
+        reCalculate: function(model, value, options)
         {
-            var $changedField = this.$(e.currentTarget);
-            var $pace = this.$("#pacePlannedField");
-            var $speed = this.$("#velocityPlannedField");
+            var whichFieldChanged = _.first(_.keys(model.changed));
 
-            var options = { workoutTypeId: this.model.get("workoutTypeId") };
-            if($changedField.attr("id") === $pace.attr("id"))
+            switch(whichFieldChanged)
             {
-                var formattedSpeed;
-                var parsedPace = conversion.parsePace($changedField.val().trim(), options);
+                case "totalTimePlanned":
+                    if(this.model.has("totalTimePlanned"))
+                    {
+                        if(this.model.has("distancePlanned") && this.model.get("distancePlanned") > 0)
+                        {
+                            this._setSpeedFromTimeAndDistance();
+                        }
+                        else if(this.model.has("velocityPlanned") && this.model.get("velocityPlanned") > 0)
+                        {
+                            this._setDistanceFromTimeAndSpeed();
+                        }
+                    }
+                    break;
 
-                formattedSpeed = _.isFinite(parsedPace) ? conversion.formatSpeed(parsedPace, options) : "";
-                $speed.val(formattedSpeed);
-            }
-            else
-            {
-                var formattedPace;
-                var parsedSpeed = conversion.parseSpeed($speed.val().trim(), options);
+                case "distancePlanned":
+                    if(this.model.has("distancePlanned"))
+                    {
+                        if(this.model.has("totalTimePlanned") && this.model.get("totalTimePlanned") > 0)
+                        {
+                            this._setSpeedFromTimeAndDistance();
+                        }
+                        else if(this.model.has("velocityPlanned") && this.model.get("velocityPlanned") > 0)
+                        {
+                            this._setTimeFromDistanceAndSpeed();
+                        }
+                    }
+                    break;
 
-                formattedPace = (_.isFinite(parsedSpeed) && parsedSpeed) ? conversion.formatPace(parsedSpeed, options) : "";
-                $pace.val(formattedPace);
+                case "velocityPlanned":
+                    if(this.model.has("velocityPlanned"))
+                    {
+                        if(this.model.has("totalTimePlanned") && this.model.get("totalTimePlanned") > 0)
+                        {
+                            this._setDistanceFromTimeAndSpeed();
+                        }
+                        else if(this.model.has("distancePlanned") && this.model.get("distancePlanned") > 0)
+                        {
+                            this._setTimeFromDistanceAndSpeed();
+                        }
+                    }
+                    break;
             }
+
+            FormUtility.applyValuesToForm(this.$el, this.model, options);
+        },
+
+        _setSpeedFromTimeAndDistance: function()
+        {
+            var seconds = this.model.get("totalTimePlanned") * 3600;
+            var meters = this.model.get("distancePlanned");
+            var metersPerSecond = seconds > 0 && meters > 0 ? meters / seconds : null;
+            this.model.set("velocityPlanned", metersPerSecond, { silent: true });
+        },
+
+        _setDistanceFromTimeAndSpeed: function()
+        {
+            var seconds = this.model.get("totalTimePlanned") * 3600;
+            var metersPerSecond = this.model.get("velocityPlanned");
+            var meters = seconds > 0 && metersPerSecond > 0 ? metersPerSecond * seconds : null;
+            this.model.set("distancePlanned", meters, { silent: true });
+        },
+
+        _setTimeFromDistanceAndSpeed: function()
+        {
+            var meters = this.model.get("distancePlanned");
+            var metersPerSecond = this.model.get("velocityPlanned");
+            var seconds = meters > 0 && metersPerSecond > 0 ? meters / metersPerSecond : null;
+            this.model.set("totalTimePlanned", seconds / 3600, { silent: true });
         },
 
         handleEdit: function(e)
@@ -102,12 +169,11 @@ function(
             self.waitingOn();
             this.model.save().done(function()
             {
+                self.originalModel.set(self.model.attributes); 
                 self.close();
-            }).fail(function()
+            }).fail(function(xhr)
             {
-                // TODO: how should this be handled?
-                // var errorMessageView = new UserConfirmationView({ template: errorMessage });
-                // errorMessageView.render();
+                self._displayError(xhr);
             }).always(function()
             {
                 self.waitingOff();
@@ -123,22 +189,27 @@ function(
 
         deleteWorkout: function(options)
         {
-            var deleteWorkout = this.model;
+            var deleteWorkout = this.originalModel;
 
             var self = this;
             self.waitingOn();
             deleteWorkout.destroy({wait: true}).done(function()
             {
                 self.close();
-            }).fail(function()
+            }).fail(function(xhr)
             {
-                // TODO: same as above
-                // var errorMessageView = new UserConfirmationView({ template: errorMessage });
-                // errorMessageView.render();
+                self._displayError(xhr);
             }).always(function()
             {
                 self.waitingOff();
             });
+        },
+
+        _displayError: function(xhr)
+        {
+            var errorTemplate = xhr.status === 409 ? nameConflictTemplate : unableToSaveEditsTemplate;
+            var errorMessageView = new UserConfirmationView({ template: errorTemplate });
+            errorMessageView.render();
         },
 
         alignArrowTo: function($element)
@@ -168,6 +239,18 @@ function(
             }
 
             this.$(".arrow").css("top", arrowTop + "px");
+        },
+
+        _enableOrDisableEditing: function()
+        {
+            if(!this.model.has("isStructuredWorkout") || this.model.get("isStructuredWorkout"))
+            {
+                this.$(".edit").prop("disabled", true);
+            }
+            else
+            {
+                this.$(".edit").prop("disabled", false);
+            }
         }
     });
 });
