@@ -7,6 +7,7 @@ define(
     "shared/models/userAccessRightsModel",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "models/library/libraryExercise",
+    "utilities/athlete/coachTypes",
     "testUtils/xhrDataStubs"
 ],
 function(
@@ -17,6 +18,7 @@ function(
     UserAccessRightsModel,
     FeatureAuthorizer,
     ExerciseLibraryItem,
+    coachTypes,
     xhrData
     )
 {
@@ -24,7 +26,7 @@ function(
     function BuildFeatureAuthorizer(userAccessRights) 
     {
         var user = new UserModel({ userId: 1 });
-        user.set("athletes", [{ athleteId: 1, userType: 4 }, { athleteId: 2, userType: 6 }]);
+        user.set("athletes", [{ athleteId: 1, userType: 4 }, { athleteId: 2, userType: 6 }, { athleteId: 3, userType: 4 }]);
         user.setCurrentAthleteId(1);
         return new FeatureAuthorizer(user, userAccessRights);
     }
@@ -395,6 +397,69 @@ function(
                 it("Should allow premium users to auto apply threshold changes", function()
                 {
                     expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.AutoApplyThresholdChanges)).to.equal(true);
+                });
+            });
+
+            describe("ViewAthleteCalendar", function()
+            {
+                var authorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
+                    // user.set("athletes", [{ athleteId: 1, userType: 4 }, { athleteId: 2, userType: 6 }, { athleteId: 3, userType: 4 }]);
+                });
+
+                it("Should allow a user to view themselves", function()
+                {
+                    var attributes = { athlete: new TP.Model({ athleteId: 1, userType: 4 }) };
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
+
+                it("Should not allow athletes to view other athletes", function()
+                {
+                    var attributes = { athlete: { userType: 4, athleteId: 2 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", true);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(false);
+                });
+
+                it("Should not allow coach to view athletes that are not in their athletes list", function()
+                {
+                    var attributes = { athlete: { userType: 4, athleteId: 7 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(false);
+                });
+
+                it("Should not allow standard coach to view basic athletes", function()
+                {
+                    var attributes = { athlete: { userType: 6, athleteId: 2 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.Standard);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(false);
+                });
+
+                it("Should allow standard coach to view premium athletes", function()
+                {
+                    var attributes = { athlete: { userType: 4, athleteId: 3 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.Standard);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
+
+                it("Should allow UBC coach to view basic athletes", function()
+                {
+                    var attributes = { athlete: { userType: 6, athleteId: 2 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.UBC);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
+
+                it("Should allow UBC coach to view premium athletes", function()
+                {
+                    var attributes = { athlete: { userType: 4, athleteId: 3 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.UBC);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
                 });
             });
         });

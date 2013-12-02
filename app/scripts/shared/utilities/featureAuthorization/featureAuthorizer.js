@@ -15,6 +15,7 @@ define(
     "shared/data/podTypes",
     "shared/utilities/featureAuthorization/accessRights",
     "utilities/athlete/userTypes",
+    "utilities/athlete/coachTypes",
     "shared/views/userUpgradeView"
 ],
 function(
@@ -25,6 +26,7 @@ function(
     podTypes,
     accessRights,
     userTypes,
+    coachTypes,
     UserUpgradeView
          )
 {
@@ -33,9 +35,9 @@ function(
         userTypes.getIdByName("Premium Athlete")
     ];
 
-    function userIsPremium(currentAthleteType)
+    function userIsPremium(userType)
     {
-        return _.contains(premiumUserTypes, currentAthleteType);
+        return _.contains(premiumUserTypes, userType);
     }
 
     function Feature(options, callback) {
@@ -48,10 +50,68 @@ function(
         this.user = user;
         this.userAccessRights = userAccessRights;
     }
+
+    function getModelAttributeOrObjectProperty(model, key)
+    {
+        return _.isFunction(model.get) ? model.get(key) : model[key];
+    }
    
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
+
+            /*
+            attributes: { athlete: athlete } // current app athlete or other athlete object
+            options: none
+            */
+            ViewAthleteCalendar: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athlete)
+                {
+                    throw new Error("ViewAthlete requires an athlete attribute");
+                }
+
+                var currentUserId = user.get("userId");
+                var athleteId = getModelAttributeOrObjectProperty(attributes.athlete, "athleteId");
+
+                // user can view their own account
+                if(currentUserId === athleteId)
+                {
+                    return true;
+                }
+
+                // if not a coach, user can only view their own account
+                if(user.getAccountSettings().get("isAthlete"))
+                {
+                    return false;
+                }
+
+                // athlete must be in athletes list
+                var athleteInUserAthletesList = _.find(user.get("athletes"), function(athlete) {
+                    return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
+                });
+                if(!athleteInUserAthletesList)
+                {
+                    return false;
+                }
+
+                // ubc coach can view any athlete type
+                if(user.getAccountSettings().get("coachType") === coachTypes.UBC)
+                {
+                    return true;
+                }
+
+                // non ubc coach can only view premium athletes
+                if(userIsPremium(getModelAttributeOrObjectProperty(attributes.athlete, "userType")))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }),
 
             /*
             attributes: { athlete: athlete } // current app athlete or other athlete object
@@ -64,7 +124,7 @@ function(
                     throw new Error("PlanForAthlete requires an athlete attribute");
                 }
                 var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                var athleteUserType = _.isFunction(attributes.athlete.get) ? attributes.athlete.get("userType") : attributes.athlete.userType;
+                var athleteUserType = getModelAttributeOrObjectProperty(attributes.athlete, "userType");
                 return _.contains(allowedUserTypes, athleteUserType);
             }),
 

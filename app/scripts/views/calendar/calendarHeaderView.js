@@ -214,7 +214,7 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
             var athletes = theMarsApp.user.get("athletes");
             return _.filter(athletes, function(athlete)
             {
-                return theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.PlanForAthlete, { athlete: athlete });
+                return theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: athlete });
             });
         }
     };
