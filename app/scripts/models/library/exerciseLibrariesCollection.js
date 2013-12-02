@@ -30,6 +30,11 @@ function(_, TP, ExerciseLibraryModel)
                     return true;
             });
 
+            if(!selectedLibrary && this.models.length > 0)
+                selectedLibrary = this.models[0];
+            else if(!selectedLibrary)
+                return null;
+
             return selectedLibrary.id;
         }
     });

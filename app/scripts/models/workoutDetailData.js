@@ -34,7 +34,7 @@ function (
 
         initialize: function()
         {
-            this.graphData = new GraphData();
+            this.graphData = new GraphData({ detailData: this });
             this._dataParser = new DataParser({graphData: this.graphData});
             this.rangeCollections = {};
             this.reset();
@@ -410,6 +410,7 @@ function (
         {
             this.graphData.resetExcludedRanges();
             this._dataParser.loadData(this.get("flatSamples"));
+            this.trigger("loaded:flatSamples");
         },
 
         _setOriginalLapsStats: function()

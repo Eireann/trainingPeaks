@@ -37,9 +37,14 @@ function(
             "click #workoutFileUploadMenuBrowse": "onBrowseClicked",
             "click .deviceAgentButton": "onDeviceAgentClicked",
             "click #closeIcon": "close",
-            "change .fileSelect": "selectFileCheckbox",
+            "change .fileSelect": "_onFileSelect",
             "click button.recalculate": "onRecalculateClicked",
             "click button.delete": "onDeleteClicked"
+        },
+
+        modelEvents:
+        {
+            "state:change:waiting": "_onWaitingChange"
         },
 
         attributes:
@@ -64,7 +69,13 @@ function(
 
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
-            this.on("render", this.preDownloadFiles, this);
+        },
+
+        onRender: function()
+        {
+            this._selectDefaultFile();
+            this.listenTo(this.model.get("detailData"), "change:uploadedFileId", _.bind(this._selectDefaultFile, this));
+            this.preDownloadFiles();
         },
 
         watchForFileChanges: function()
@@ -95,15 +106,31 @@ function(
             return data;
         },
 
-        selectFileCheckbox: function(e)
+        _selectDefaultFile: function()
+        {
+            this._selectFile(this.model.get("detailData").get("uploadedFileId"));
+        },
+
+        _onFileSelect: function(e)
         {
             var checkbox = $(e.target);
-            this.selectedFileId = checkbox.val();
+            this._selectFile(checkbox.val());
+        },
+
+        _selectFile: function(fileId)
+        {
+
+            this.selectedFileId = fileId;
 
             // select the file
-            var fileDiv = checkbox.closest(".file");
             this.$(".file.selected").removeClass("selected");
+            var checkbox = this.$("input[value=" + fileId + "]");
+            var fileDiv = checkbox.closest(".file");
             fileDiv.addClass("selected");
+            if(!checkbox.is(":checked"))
+            {
+                checkbox.prop("checked", true);
+            }
 
             // enable all buttons
             this.$(".fileButtons button").attr("disabled", null);
@@ -231,6 +258,18 @@ function(
         waitingOff: function()
         {
             this.$(".details").removeClass("waiting");
+        },
+
+        _onWaitingChange: function(stateModel, waiting, options)
+        {
+            if(waiting)
+            {
+                this.waitingOn();
+            }
+            else
+            {
+                this.waitingOff();
+            }
         }
 
     });

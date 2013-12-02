@@ -1,11 +1,13 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "models/commands/addWorkoutFromExerciseLibrary",
     "models/workoutModel",
     "models/calendar/calendarDay"
 ],
 function(
+    _,
     TP,
     AddWorkoutFromExerciseLibrary,
     WorkoutModel,
@@ -62,8 +64,14 @@ function(
         {
             if(options.target instanceof CalendarDay)
             {
-                var workout = this.createWorkout({ date: options.target.id });
-                this.selectionManager.setSelection(workout);
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    _.bind(function(){
+                        var workout = this.createWorkout({ date: options.target.id });
+                        this.selectionManager.setSelection(workout);
+                    }, this),
+                    {targetDate: options.target.id}
+                );
             }
         },
 

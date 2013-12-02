@@ -51,6 +51,10 @@
 
         parseDistance: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var sportType = conversion.getMySportType(options);
             var modelValue = adjustFieldRange(Number(value), "distance");
             modelValue = convertToModelUnits(modelValue, "distance", sportType);
@@ -61,7 +65,7 @@
         {
             if(conversion.valueIsEmpty(value))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
@@ -72,7 +76,7 @@
         {
             if(conversion.valueIsEmpty(minutes))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
@@ -92,6 +96,10 @@
 
         parseDuration: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var modelValue = datetimeUtils.convert.timeToDecimalHours(value);
             modelValue = adjustFieldRange(modelValue, "duration");
             return modelValue;
@@ -118,6 +126,10 @@
 
         parsePower: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var modelValue = conversion.parseInteger(value, options);
             modelValue = adjustFieldRange(modelValue, "power");
             return modelValue;
@@ -143,9 +155,11 @@
 
         parsePace: function(value, options)
         {
-            // utilize datetime smart parsing, but assume we're working with minutes
-            if (!value)
-                return conversion.formatEmptyNumber(value, options);
+
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
 
             var sportType = conversion.getMySportType(options);
             var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
@@ -167,6 +181,10 @@
 
         parseSpeed: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var sportType = conversion.getMySportType(options);
             var modelValue = adjustFieldRange(Number(value), "speed");
             modelValue = convertToModelUnits(modelValue, "speed", sportType);
@@ -177,7 +195,7 @@
         {
             if(conversion.valueIsEmpty(value))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
 
             var numValue = Number(value);
@@ -190,6 +208,10 @@
 
         parseElevation: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var limitedValue = adjustFieldRange(parseInt(value, 10), "elevation");
             return convertToModelUnits(limitedValue, "elevation");
         },
@@ -209,6 +231,10 @@
 
         parseElevationGain: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var limitedValue = adjustFieldRange(parseInt(value, 10), "elevationGain");
             return convertToModelUnits(limitedValue, "elevation");
         },
@@ -223,6 +249,10 @@
 
         parseElevationLoss: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var limitedValue = adjustFieldRange(parseInt(value, 10), "elevationLoss");
             return convertToModelUnits(limitedValue, "elevation");
         },
@@ -270,7 +300,7 @@
         {
             if(conversion.valueIsEmpty(value))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
             var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
@@ -281,6 +311,10 @@
 
         parseTemperature: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var limitedTemperature = adjustFieldRange(parseInt(value, 10), "temp");
             return convertToModelUnits(limitedTemperature, "temperature");
         },
@@ -299,6 +333,10 @@
 
         parseIF: function (value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             return adjustFieldRange(Number(value).toFixed(2), "IF");
         },
 
@@ -306,16 +344,20 @@
         {
             if(conversion.valueIsEmpty(value))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
 
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "TSS");
-            return conversion.formatEmptyNumber(limitedValue.toFixed(1), options);
+            return limitedValue.toFixed(1);
         },
 
         parseTSS: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             return adjustFieldRange(Number(value).toFixed(1), "TSS");
         },
 
@@ -335,6 +377,10 @@
 
         parseEnergy: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var limitedValue = adjustFieldRange(value, "energy");
             return conversion.parseInteger(limitedValue);
         },
@@ -355,6 +401,10 @@
 
         parseTorque: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var limitedTorque = adjustFieldRange(value, "torque");
             return convertToModelUnits(limitedTorque, "torque");
         },
@@ -424,7 +474,7 @@
         {
             if(conversion.valueIsEmpty(value))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "calories");
@@ -434,6 +484,10 @@
 
         parseCalories: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var intValue = conversion.parseInteger(value, options);
             intValue = adjustFieldRange(intValue, "calories");
             return intValue;
@@ -441,6 +495,10 @@
 
         parseHeartRate: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var modelValue = conversion.parseInteger(value, options);
             modelValue = adjustFieldRange(modelValue, "heartrate");
             return modelValue;
@@ -454,6 +512,10 @@
 
         parseCadence: function(value, options)
         {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
             var modelValue = conversion.parseInteger(value, options);
             modelValue = adjustFieldRange(modelValue, "cadence");
             return modelValue;
@@ -468,7 +530,7 @@
         formatEmptyNumber: function(value, options, defaultValue)
         {
 
-            defaultValue = conversion.getDefaultValue(options, defaultValue);
+            defaultValue = conversion.getDefaultValueForFormat(options, defaultValue);
 
             if(conversion.valueIsEmpty(value))
             {
@@ -488,7 +550,7 @@
             return value;
         },
 
-        getDefaultValue: function(options, defaultValue)
+        getDefaultValueForFormat: function(options, defaultValue)
         {
             if(options && options.hasOwnProperty("defaultValue"))
             {
@@ -498,6 +560,21 @@
             if(_.isUndefined(defaultValue))
             {
                 defaultValue = "";
+            }
+
+            return defaultValue;
+        },
+
+        getDefaultValueForParse: function(options, defaultValue)
+        {
+            if(options && options.hasOwnProperty("defaultValue"))
+            {
+                defaultValue = options.defaultValue;
+            }
+
+            if(_.isUndefined(defaultValue))
+            {
+                defaultValue = null;
             }
 
             return defaultValue;
@@ -653,7 +730,7 @@
 
             if(conversion.valueIsEmpty(value))
             {
-                return conversion.getDefaultValue(options);
+                return conversion.getDefaultValueForFormat(options);
             }
 
             switch(units)

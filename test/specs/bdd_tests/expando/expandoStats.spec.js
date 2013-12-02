@@ -157,7 +157,7 @@ function(
                     expect(expandoStatsText).to.not.contain("Lap #1");
                     expect(expandoStatsText).to.not.contain("TSS --");
 
-                    $body.find(".workoutQuickView .expandoLapsRegion .lap:first").trigger("click");
+                    $body.find(".workoutQuickView .expandoLapsRegion .lap:not(.total):first").trigger("click");
                     expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
 
                     expect(expandoStatsText).to.not.contain("Entire Workout");

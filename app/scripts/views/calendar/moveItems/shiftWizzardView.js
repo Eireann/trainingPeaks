@@ -39,6 +39,19 @@ function(
         return value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : value;
     }
 
+    function datepickerGetDate($el, event, options)
+    {
+        var date = formatGetDate($el.datepicker("getDate"));
+        $el.val(date);
+        return date;
+    }
+
+    function datepickerSetDate($el, val, model, options)
+    {
+        $el.val(val);
+        $el.datepicker("setDate", val);
+    }
+
     var ShiftWizardModel = TP.Model.extend(
     {
         defaults:
@@ -98,6 +111,9 @@ function(
             "#fromDate":
             {
                 observe: "fromDate",
+                events: ["change"],
+                getVal: datepickerGetDate,
+                update: datepickerSetDate,
                 onGet: formatGetDate,
                 onSet: formatSetDate
             },
@@ -105,6 +121,9 @@ function(
             "#toDate":
             {
                 observe: "toDate",
+                events: ["change"],
+                getVal: datepickerGetDate,
+                update: datepickerSetDate,
                 onGet: formatGetDate,
                 onSet: formatSetDate
             },
@@ -113,6 +132,8 @@ function(
             {
                 observe: "moveToStartDate",
                 events: ["change"],
+                getVal: datepickerGetDate,
+                update: datepickerSetDate,
                 onGet: formatGetDate,
                 onSet: formatSetDate
             },
@@ -143,7 +164,6 @@ function(
             this.model.set("fromDate", this.model.get("selectionStartDate"));
             this.model.set("toDate", this.model.get("selectionEndDate"));
             this.model.set("moveToStartDate", this.model.get("fromDate"));
-
         },
 
         onRender: function ()
@@ -180,7 +200,7 @@ function(
                     this.model.set("fromDate", "");
                     this.model.set("toDate", "");
                     break;
-                   
+
                 case "ItemsWithinSpecifiedDateRange":
                     this.ui.fromDate.removeAttr("disabled");
                     this.ui.toDate.removeAttr("disabled");
@@ -268,7 +288,7 @@ function(
                     shiftCommand.set("startDate", this.model.get("selectionStartDate"));
                     shiftCommand.set("endDate", this.model.get("selectionEndDate"));
                     break;
-                   
+
                 case "ItemsWithinSpecifiedDateRange":
                     shiftCommand.set("startDate", this.model.get("fromDate"));
                     shiftCommand.set("endDate", this.model.get("toDate"));
@@ -309,7 +329,7 @@ function(
                 case "itemsOnAllSelectedDays":
                     // no date range inputs to validate
                     break;
-                   
+
                 case "ItemsWithinSpecifiedDateRange":
                     this.validateDate("fromDate", deferred);
                     this.validateDate("toDate", deferred);

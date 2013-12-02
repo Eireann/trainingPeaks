@@ -917,21 +917,109 @@
     }
 }
 
-.chartTile, .podTile {
+.chartTile{
     @include libraryTile();
     margin:0 0 5px 0;
     padding:3px 3px 2px 3px;
 
-    .chartTileIcon, .podTileIcon {
+    .chartTileIcon {
         width: 25px;
         height: 25px;
         float: left;
-        background: $TPGrey1 no-repeat 0 -24px;
+        background: $TPGrey1 no-repeat 0 -25px;
         @extend %troughIconSpriteBG;
         background-color: $TPGrey2;
     }
 
-    .chartTileName, .podTileName {
+    .chartTileName {
+        font-size: $fontSizeSmaller;
+        font-family: $fontFamilyHeavy;
+        font-weight:normal;
+        color:$TPGrey4;
+        margin-left:3px;
+        float:left;
+        margin:7px 6px;
+    }
+    
+    &.ui-draggable-dragging {
+        border:1px solid #0043ff;
+        background-color:#bcd1eb;
+        opacity:0.5;
+    }
+}
+
+.podTile {
+    @include libraryTile();
+    margin:0 0 5px 0;
+    padding:3px 3px 2px 3px;
+
+    .podTileIcon {
+        width: 25px;
+        height: 25px;
+        float: left;
+    }
+
+    // graph
+    &.expandoPodType-152 {
+        .podTileIcon {
+            @extend %troughIconSpriteBG;
+            background: $TPGrey2 no-repeat 0 -200px;
+        }
+    }
+
+    // laps & splits
+    &.expandoPodType-108 {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -300px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
+    // laps & splits column
+    &.expandoPodType-1081 {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -275px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
+    // map
+    &.expandoPodType-153 {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -250px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
+    // peaks
+    &.expandoPodType-118,
+    &.expandoPodType-111,
+    &.expandoPodType-119  {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -100px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
+    // scatter
+    &.expandoPodType-156 {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -225px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
+    // time in zones
+    &.expandoPodType-102,
+    &.expandoPodType-101,
+    &.expandoPodType-122  {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -25px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
+    .podTileName {
         font-size: $fontSizeSmaller;
         font-family: $fontFamilyHeavy;
         font-weight:normal;

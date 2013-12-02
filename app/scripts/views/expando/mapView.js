@@ -95,19 +95,24 @@ function (
 
                 this.$el.removeClass("noData");
 
-                if (!this.map)
+                // without setImmediate after removing noData class, the map doesn't get the correct size
+                setImmediate(_.bind(function()
                 {
-                    this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
-                }
+                    if (!this.map)
+                    {
+                        this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
+                    }
 
-                MapUtils.removeItemsFromMap(this.map, this.baseLayers);
-                this.baseLayers = [];
+                    MapUtils.removeItemsFromMap(this.map, this.baseLayers);
+                    this.baseLayers = [];
 
-                //this.baseLayers.push(this.addMouseHoverBuffer(latLongArray));
-                this.baseLayers.push(MapUtils.setMapData(this.map, latLongArray));
-                this.baseLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getGraphData(), 10));
-                this.baseLayers.push(MapUtils.addStartMarker(this.map, latLongArray[0]));
-                this.baseLayers.push(MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]));
+                    //this.baseLayers.push(this.addMouseHoverBuffer(latLongArray));
+                    this.baseLayers.push(MapUtils.setMapData(this.map, latLongArray));
+                    this.baseLayers.push(MapUtils.calculateAndAddMileMarkers(this.map, this._getGraphData(), 10));
+                    this.baseLayers.push(MapUtils.addStartMarker(this.map, latLongArray[0]));
+                    this.baseLayers.push(MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]));
+                }, this));
+
             }
 
             if(this.$el.hasClass("noData"))

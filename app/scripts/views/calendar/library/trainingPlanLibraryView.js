@@ -61,6 +61,14 @@ function(
                 return TP.ItemView;
         },
 
+        onRender: function()
+        {
+            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewPlanStore))
+            {
+                this.$(".helpText").removeClass("hidden");
+            }
+        },
+
         onSelectItem: function(model)
         {
             if (this.selectedItem && this.selectedItem !== model)

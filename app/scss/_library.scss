@@ -276,6 +276,11 @@
         .helpText
         {
 
+            &.hidden
+            {
+                display: none;
+            }
+            
             color: $TPGrey3;
             cursor: default;
             font-size: $fontSizeSmall;

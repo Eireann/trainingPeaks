@@ -1,6 +1,6 @@
 {{#ifNot _state.isCut}}
     {{#each lapData}}
-        {{#ifEquals key "lap"}}
+        {{#ifEquals key 1}}
             <td class="name">
                 <span class="lapName" title="{{$ "ClickToEdit" }}">{{value}}</span>
                 <input class="lapName" value="{{ value }}" type="text"/>

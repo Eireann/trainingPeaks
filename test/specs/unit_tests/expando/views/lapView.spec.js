@@ -222,7 +222,7 @@ function(
                 view.model.set("name", "Old Name");
                 view.render();
                 view.model.set("name", "New Name");
-                expect(view.$("span.lapName").text()).to.eql("New Name");
+                expect(view.$("span.lapName").text()).to.contain("New Name");
             });
         });
 

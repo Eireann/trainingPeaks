@@ -178,7 +178,11 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
         {
             if(options && options.date)
             {
-                this.moveToDay(options.date);
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    _.bind(function(){this.moveToDay(options.date);}, this),
+                    {targetDate: options.date}
+                );
             }
         },
 
@@ -209,28 +213,38 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             if(options.date)
             {
-                var date = options.date;
-
-                if(this.isNew())
-                {
-                    var workout = this.clone();
-                    workout.set("workoutDay", date).save();
-                    theMarsApp.calendarManager.addItem(workout);
-                    return workout;
-                }
-                else
-                {
-                    this.moveToDay(date);
-                    return this;
-                }
-
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    _.bind(this._applyPaste, this, options),
+                    { targetDate: options.date }
+                );
             }
             else
             {
                 console.warn("Don't know how to paste to target");
-                return false;
             }
 
+        },
+
+        _applyPaste: function(options)
+        {
+            var date = options.date;
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
+            if(this.isNew())
+            {
+                var workout = this.clone();
+                workout.save(
+                {
+                    workoutDay: date,
+                    athleteId: athleteId
+                });
+                theMarsApp.calendarManager.addItem(workout);
+            }
+            // Cut workout for different athlete should be ignored
+            else if(this.get("athleteId") === athleteId)
+            {
+                this.moveToDay(date);
+            }
         },
 
         getPostActivityComments: function()

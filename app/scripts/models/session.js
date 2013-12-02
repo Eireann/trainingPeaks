@@ -10,6 +10,7 @@ function ($, _, TP, UserModel, UserAccessRightsModel)
 {
     // 4 hour interval in milliseconds
     var REFRESH_INTERVAL = 1000 * 60 * 60 * 4;
+
     var REDIRECT_URL = "";
 
     return TP.Model.extend(
@@ -96,7 +97,7 @@ function ($, _, TP, UserModel, UserAccessRightsModel)
                     if(data.redirect && data.redirect !== "")
                         REDIRECT_URL = data.redirect;
                     
-                    setTimeout(self._refreshToken, REFRESH_INTERVAL);
+                    setTimeout(_.bind(self._refreshToken, self), REFRESH_INTERVAL);
                 }
                 else
                 {

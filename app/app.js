@@ -4,7 +4,6 @@ define(
     "underscore",
     "backbone",
     "TP",
-    "framework/ajaxTimezone",
     "framework/ajax402",
     "framework/tooltips",
     "framework/identityMap",
@@ -29,13 +28,13 @@ define(
     "flot/jquery.flot",
     "flot/jquery.flot.crosshair",
     "flot/jquery.flot.resize",
+    "shared/views/initialProfileView"
 ],
 function(
     $,
     _,
     Backbone,
     TP,
-    initializeAjaxTimezone,
     initializeAjax402,
     ToolTips,
     IdentityMap,
@@ -59,7 +58,8 @@ function(
     fadeRegion,
     flot,
     flotCrosshair,
-    flotResize
+    flotResize,
+    InitialProfileView
 )
 {
 
@@ -107,14 +107,31 @@ function(
 
         historyEnabled: true,
 
+        setupBootPromises: function()
+        {
+            var bootDeferred = $.Deferred();
+            this.bootPromise = bootDeferred.promise();
+
+            var bootPromises = []; 
+            this.addBootPromise = function(promise)
+            {
+                bootPromises.push(promise);
+            };
+
+            this.finalizeBootPromises = function()
+            {
+                $.when.apply($, bootPromises).then(bootDeferred.resolve, bootDeferred.reject);
+            };
+        },
 
         constructor: function(options)
         {
-
             if(!options || !options.$body)
             {
                 throw new Error("TheMarsApp constructor requires a body element");
             }
+
+            this.setupBootPromises();
 
             TP.Application.apply(this, arguments);
 
@@ -129,6 +146,9 @@ function(
             this.session = new Session();
             this.user = this.session.user;
             this.userAccessRights = this.session.userAccessRights;
+
+            this.addBootPromise(this.session.userPromise);
+            this.addBootPromise(this.session.userAccessPromise);
 
             this.addRegions(
             {
@@ -157,16 +177,6 @@ function(
             this.addInitializer(function()
             {
                 var self = this;
-                /*
-                window.onerror = function(errorMessage, url, lineNumber)
-                {
-                    if (self.clientEvents)
-                    {
-                        self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
-                    }
-                    return self.isLive() ? true : false;
-                };
-                */
 
                 $(document).ajaxError(function(event, xhr)
                 {
@@ -196,12 +206,6 @@ function(
                 this.session.initRefreshToken();
             });
 
-            // setup ajax auth and caching and timezone handling
-            this.addInitializer(function()
-            {
-                initializeAjaxTimezone();
-            });
-
             // display build info
             this.addInitializer(function()
             {
@@ -216,12 +220,16 @@ function(
                     var buildInfoView = new BuildInfoView({ model: this.buildInfo });
                     this.infoRegion.show(buildInfoView);
                 }
+                var xhr = this.buildInfo.fetch();
+                this.addBootPromise(xhr);
             });
 
             // setup time zones
             this.addInitializer(function()
             {
                 this.timeZones = new TimeZonesModel();
+                var xhr = this.timeZones.fetch();
+                this.addBootPromise(xhr);
             });
 
             // add data managers
@@ -258,16 +266,23 @@ function(
             {
                 var self = this;
 
-                this.session.userPromise.done(function()
+                this.bootPromise.then(function()
                 {
-                    self.buildInfo.fetch();
-                    self.timeZones.fetch();
+                    // TODO: Once new API exists, use that
+                    if(/showprofile/.test(window.location.search))
+                    {
+                        var view = new InitialProfileView({ model: self.user });
+                        view.render();
+                    }
                 });
             });
 
             this.addInitializer(function()
             {
                 var self = this;
+
+                var deferred = $.Deferred();
+                this.addBootPromise(deferred.promise());
 
                 this.session.userPromise.done(function()
                 {
@@ -280,6 +295,10 @@ function(
                         if (!self.featureAllowedForUser("alpha1", self.user))
                         {
                             self.session.logout(notAllowedForAlphaTemplate);
+                        }
+                        else
+                        {
+                            deferred.resolve();
                         }
                     });
                 });
@@ -476,6 +495,12 @@ function(
                     }
                 }
                 );
+            });
+
+
+            this.addInitializer(function()
+            {
+                this.finalizeBootPromises();
             });
 
         },

@@ -13,7 +13,7 @@ function(DataParser, GraphData, testData)
             var dataParser, graphData, expectedLength, minTemperature, minElevation, minElevationOnRange, expectedLatLonLength;
             before(function()
             {
-                graphData = new GraphData();
+                graphData = new GraphData({ detailData: {} });
                 dataParser = new DataParser({graphData: graphData});
                 dataParser.loadData(testData);
 

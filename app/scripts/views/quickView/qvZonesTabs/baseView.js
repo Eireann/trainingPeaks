@@ -23,6 +23,11 @@ function(
             template: zonesTabTemplate
         },
 
+        events: 
+        {
+            "click .chart.disabled": "_showUpgradePrompt"
+        },
+
         initialEvents: function()
         {
             this.model.off("change", this.render);
@@ -73,6 +78,19 @@ function(
             this.unstickit();
             this.stickitInitialized = false;
             this.render();
+        },
+
+        serializeData: function()
+        {
+            return {
+                graphClass: this.graphTitle.replace(/\s/g,""),
+                graphTitle: this.graphTitle
+            };
+        },
+
+        _showUpgradePrompt: function()
+        {
+            theMarsApp.featureAuthorizer.showUpgradeMessage({ slideId: "enhanced-analysis" });
         }
 
     };

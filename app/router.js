@@ -10,12 +10,13 @@ function (_, TP, RollbarManager)
     {
         return function()
         {
+            var self = this;
             var args = Array.prototype.slice.call(arguments);
             var callbackWithArgs = function()
             {
-                return callback.apply(this, args);
+                callback.apply(self, args);
             };
-            theMarsApp.session.authenticationComplete(callbackWithArgs);
+            theMarsApp.bootPromise.then(callbackWithArgs);
         };
     };
 
@@ -46,9 +47,17 @@ function (_, TP, RollbarManager)
 
         calendar: ensureUser(function (athleteId)
         {
-            
-            if (athleteId)
-                theMarsApp.user.setCurrentAthleteId(athleteId);
+            if (athleteId) {
+                athleteId = Number(athleteId);
+                if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: { athleteId: athleteId }}))
+                {
+                    theMarsApp.user.setCurrentAthleteId(athleteId);
+                }
+                else
+                {
+                    theMarsApp.router.navigate("calendar", true);
+                }
+            }
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
                 theMarsApp.controllers.calendarController.trigger("refresh");

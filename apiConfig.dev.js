@@ -8,25 +8,25 @@
     var wwwRoots =
     {
         dev: "http://www.dev.trainingpeaks.com",
-        local: "http://app.local.trainingpeaks.com:8905"
+        local: "http://www.local.trainingpeaks.com"
     };
 
     var homeRoots =
     {
         dev: "http://home.dev.trainingpeaks.com",
-        local: "http://app.local.trainingpeaks.com:8905"
+        local: "http://home.local.trainingpeaks.com"
     };
 
     var apiRoots =
     {
         dev: "http://tpapi.dev.trainingpeaks.com",
-        local: "http://app.local.trainingpeaks.com:8901"
+        local: "http://tpapi.local.trainingpeaks.com"
     };
 
     var oAuthRoots =
     {
         dev: "http://oauth.dev.trainingpeaks.com",
-        local: "http://app.local.trainingpeaks.com:8900"
+        local: "http://oauth.local.trainingpeaks.com"
     };
 
     window.apiConfig =

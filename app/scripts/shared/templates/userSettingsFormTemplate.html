@@ -183,26 +183,30 @@
 <div class="userSettingsPersonalSection calendarSync scrollTarget" data-target="calendar">
     <h2 class="accountSettingsSectionTitle">Calendar</h2>
 
-    {{#with iCalendarKeys }}
-        <h3>{{$ "CalendarSync" }}</h3>
+    {{#if iCalendarKeys}}
+        {{#with iCalendarKeys }}
+            <h3>{{$ "CalendarSync" }}</h3>
 
-            <div class="fieldContain">
-                <label class="fieldTitle">{{$ "WorkoutsOnly" }}</label>
-                <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
-            </div>
-         
-            <div class="fieldContain">
-                <label class="fieldTitle">{{$ "MealsOnly" }}</label>
-                <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
-            </div>       
+                <div class="fieldContain">
+                    <label class="fieldTitle">{{$ "WorkoutsOnly" }}</label>
+                    <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
+                </div>
+             
+                <div class="fieldContain">
+                    <label class="fieldTitle">{{$ "MealsOnly" }}</label>
+                    <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
+                </div>       
 
-            <div class="fieldContain">
-                <label class="fieldTitle">{{$ "WorkoutsAndMeals" }}</label>
-                <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
-            </div>
+                <div class="fieldContain">
+                    <label class="fieldTitle">{{$ "WorkoutsAndMeals" }}</label>
+                    <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
+                </div>
 
-        <p class="userSettingsHelpText">{{$ "ICalHelpText" }}</p>
-    {{/with}}
+            <p class="userSettingsHelpText">{{$ "ICalHelpText" }}</p>
+        {{/with}}
+    {{else}}
+        <p class="userSettingsHelpText"><a class="upgrade">{{$ "ICalPremiumMessage" }}</a></p>
+    {{/if}}
 </div>
 
 <div class="userSettingsPersonalSection email scrollTarget" data-target="email">
@@ -213,7 +217,12 @@
     </div>
 
     <div class="fieldContain">
-        <label class="checkBoxRow clickable"><input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> {{$ "postActivityNotificationSetting" }}</label>
+        <label class="checkBoxRow clickable{{#ifNot canReceivePostActivityNotification}} upgrade{{/ifNot}} enableWorkoutCommentNotification"><input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"{{#ifNot canReceivePostActivityNotification}} disabled{{/ifNot}}> {{$ "postActivityNotificationSetting" }}
+
+        {{#ifNot canReceivePostActivityNotification}}
+            <p class="userSettingsHelpText"><a class="upgrade">{{$ "PostWorkoutNotificationPremiumMessage" }}</a></p>
+        {{/ifNot}}
+        </label>
     </div>
 
     <div class="fieldContain">
