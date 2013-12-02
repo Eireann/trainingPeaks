@@ -505,6 +505,22 @@
     input
     {
         text-align: center;
+
+        &.title
+        {
+            text-align: left; 
+            font-size: 1em;
+        }
+
+        &[readonly]
+        {
+            border-color: $TPGrey1;
+            &.title
+            {
+                border-color: transparent;
+                padding: 0px;
+            }
+        }
     }
 
     .actions
