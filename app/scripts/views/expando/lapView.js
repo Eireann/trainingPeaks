@@ -16,6 +16,26 @@ function(
 
         tagName: "li",
 
+        className: function()
+        {
+            if(this.model.getState().get("temporary"))
+            {
+                return "lap selection";
+            }
+            else if(this.model.getState().get("isLap"))
+            {
+                return "lap";
+            }
+            else if(this.model.getState().get("isTotal"))
+            {
+                return "lap total";
+            }
+            else
+            {
+                return "peak";
+            }
+        },
+
         template:
         {
             type: "handlebars",
@@ -42,10 +62,10 @@ function(
         serializeData: function()
         {
             var data = this.constructor.__super__.serializeData.apply(this, arguments);
-            if(data.formattedValue)
+            /*if(data.formattedValue)
             {
                 data.name += " (" + data.formattedValue + ")";
-            }
+            }*/
             data._state = this.model.getState().toJSON();
             return data;
         },

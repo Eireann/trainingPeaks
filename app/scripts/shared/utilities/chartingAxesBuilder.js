@@ -10,6 +10,7 @@ function(
     var ChartingAxesBuilder =  {
         makeYaxes: function(series, options)
         {
+            options = _.extend({ maxRight: 1 }, options);
             var axes = [];
             var axesIndexByUnits = {};
 
@@ -42,14 +43,18 @@ function(
                 }
             });
 
-            if(axes.length > 1)
+            _.each(axes, function(axis, index)
             {
-                axes[1].position = "right";
-                _.each(axes.slice(1), function(axes)
+                if(index % 2 === 1 && index / 2 < options.maxRight)
                 {
-                    axes.color = axes.color || "transparent";
-                });
-            }
+                    axis.position = "right";
+                }
+            });
+
+            _.each(axes.slice(1), function(axes)
+            {
+                axes.color = axes.color || "transparent";
+            });
 
             return axes;
         },

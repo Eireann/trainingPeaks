@@ -45,43 +45,149 @@
         top: 21px;
     }
 
+    .left {
+        width: 50%;
+        float: left;
+    }
+
+    .right {
+        width: 50%;
+        float: right;
+    }
+
+    .chart {
+        &:not(.disabled)
+        {
+            .placeholder
+            {
+                display: none;
+            }
+        }
+    }
+
+    .zonesChart {
+        &.disabled
+        {
+
+            .chartImage {
+                width: 298px;
+                height: 182px;
+                margin-left: 10px;
+                margin-top: 10px;
+            }
+            &.HeartRate
+            {
+                .chartImage {
+                    @extend %hrZonesPremiumBG;
+                }
+            }
+            &.Power
+            {
+                .chartImage {
+                    @extend %powerZonesPremiumBG;
+                }
+            }
+            &.Speed
+            {
+                .chartImage {
+                    @extend %speedZonesPremiumBG;
+                }
+            }
+            &.Pace
+            {
+                .chartImage {
+                    @extend %speedZonesPremiumBG;
+                }
+            }
+        }
+    }
+    
+    .peaksChart {
+        &.disabled
+        {
+
+            .chartImage {
+                width: 298px;
+                height: 182px;
+                margin-left: 5px;
+                margin-top: 10px;
+            }
+            &.HeartRate
+            {
+                .chartImage {
+                    @extend %hrPeaksPremiumBG;
+                }
+            }
+            &.Power
+            {
+                .chartImage {
+                    @extend %powerPeaksPremiumBG;
+                }
+            }
+            &.Speed
+            {
+                .chartImage {
+                    @extend %speedPeaksPremiumBG;
+                }
+            }
+            &.Pace
+            {
+                .chartImage {
+                    @extend %speedPeaksPremiumBG;
+                }
+            }
+        }
+    }
+
     .zonesChart {
 
         @include noDataMessage;
-
-        position: absolute;
-        left: 14px;
+        margin-left: 14px;
         width: 298px;
         height: 220px;
 
         .xaxisLabel {
-            @include calc("top","100% - 19px");
+            top: 179px;
         }
+
+        .yaxisLabel {
+            top: 98px;
+        }
+    }
+
+    .zonesTitle {
+        margin-bottom: 15px;
     }
 
     .peaksChart {
 
         @include noDataMessage;
 
-        position: absolute;
-        left: 328px;
+        margin-left: 7px;
         width: 298px;
         height: 220px;
+
+        .yaxisLabel {
+            top: 98px;
+        }
+
+    }
+
+    .peaksTitle {
+        margin-bottom: 15px;
     }
 
     .zonesTable {
-        position: absolute;
-        top: 250px;
-        left: 30px;
+        margin-left: 30px;
+        margin-top: 8px;
         width: 265px;
         height: auto;
         min-height: 200px;
     }
 
     .peaksTable {
-        position: absolute;
-        top: 250px;
-        left: 350px;
+        margin-left: 29px;
+        margin-top: 8px;
         width: 265px;
         height: auto;
         min-height: 200px;

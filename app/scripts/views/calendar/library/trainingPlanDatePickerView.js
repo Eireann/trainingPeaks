@@ -52,13 +52,16 @@ function(
         onRender: function()
         {
             var self = this;
-            setImmediate(function()
+
+            self.$(".datepicker").css("position", "relative").css("z-index", self.parentModal.$el.css("z-index"));
+            self.$(".datepicker").datepicker(
             {
-                self.$(".datepicker").css("position", "relative").css("z-index", self.parentModal.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek,
-                    beforeShowDay: self.checkWhetherDayIsSelectable, defaultDate: self.defaultDate || +0 });
-                self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
+                dateFormat: TP.utils.datetime.format.getFormatForDatepicker(),
+                firstDay: CalendarUtility.startOfWeek,
+                beforeShowDay: self.checkWhetherDayIsSelectable,
+                defaultDate: self.defaultDate ? moment(self.defaultDate).toDate() : +0
             });
+            self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
 
             this.updateDateInputOptions();
         },
@@ -92,9 +95,9 @@ function(
 
         updateDateInput: function()
         {
-            var inputDate = TP.utils.datetime.parse(this.ui.applyDate.val());
+            var inputDate = moment(this.ui.applyDate.datepicker("getDate"));
             var limitedDate =  this.restrictTargetDate(inputDate);
-            this.ui.applyDate.val(TP.utils.datetime.format(limitedDate));
+            this.ui.applyDate.datepicker("setDate", limitedDate.toDate());
         },
 
         restrictTargetDate: function(targetDate)

@@ -89,24 +89,28 @@ function(
             if(options.date)
             {
                 var date = options.date;
+                var athleteId = theMarsApp.user.getCurrentAthleteId();
+
                 if(this.isNew())
                 {
                     var metric = this.clone();
-                    metric.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
-                    metric.save();
+                    metric.save(
+                    {
+                        timeStamp: moment(date).format(TP.utils.datetime.longDateFormat),
+                        athleteId: athleteId
+                    });
                     theMarsApp.calendarManager.addItem(metric);
-                    return metric;
                 }
-                else
+                // Cut metric for different athlete should be ignored
+                else if(this.get("athleteId") === athleteId)
                 {
                     this.moveToDay(date);
-                    return this;
                 }
+
             }
             else
             {
                 console.warn("Can't paste metric on anything but calendar");
-                return false;
             }
         },
 

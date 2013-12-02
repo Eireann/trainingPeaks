@@ -39,12 +39,12 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             it("Should format decimal seconds output if there is a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).to.eql("0:59:59.99");
+                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).to.eql("59:59.99");
             });
 
             it("Should not format decimal seconds output if there is not a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).to.eql("0:59:59");
+                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).to.eql("59:59");
             });
 
             it("Should not format decimal seconds output if there is a decimal value but hours >= 1", function()
@@ -104,6 +104,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "::0.99",
                     output: (0.99 / 3600)
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -131,6 +135,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -161,6 +169,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -196,6 +208,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "100:00:00",
                     output: convertToModelUnits("99:59:59", "pace")
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -226,6 +242,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -256,6 +276,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -286,6 +310,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -320,6 +348,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-15001",
                     output: -15000
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -350,6 +382,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -388,6 +424,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -426,6 +466,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -456,6 +500,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -486,6 +534,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -516,6 +568,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: 0
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -550,6 +606,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "1.23",
                     output: 1.23
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });
@@ -588,6 +648,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1000",
                     output: -999
+                },
+                {
+                    input: "",
+                    output: null
                 }
             ]);
         });

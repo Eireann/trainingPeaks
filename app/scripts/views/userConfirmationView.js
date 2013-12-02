@@ -1,9 +1,11 @@
 ﻿define(
 [
     "jquery",
-    "TP"
+    "underscore",
+    "TP",
+    "hbs!shared/templates/errorMessageTemplate"
 ],
-function ($, TP)
+function ($, _, TP, errorMessageTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -28,12 +30,21 @@ function ($, TP)
 
         initialize: function(options)
         {
-            this.template.template = options.template;
+            if(options.hasOwnProperty("template"))
+            {
+                this.template = _.defaults({ template: options.template }, this.template);
+            }
             this.options = options;
+        },
+
+        serializeData: function()
+        {
+            return { message: this.options.message };
         },
 
         template:
         {
+            template: errorMessageTemplate,
             type: "handlebars"
         },
 

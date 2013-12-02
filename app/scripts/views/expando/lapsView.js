@@ -5,6 +5,7 @@
     "jquerySelectBox",
 
     "TP",
+    "utilities/units/labels",
     "models/workoutStatsForRange",
     "views/expando/lapView",
 
@@ -15,6 +16,7 @@ function(
     setImmediate,
     jquerySelectBox,
     TP,
+    getUnitsLabel,
     WorkoutStatsForRange,
     LapView,
     lapsTemplate
@@ -151,7 +153,9 @@ function(
 
             if(detailData.get("totalStats"))
             {
-                ranges.push(this._asRangeModel(detailData.get("totalStats"), { hasLoaded: true, name: "Entire Workout" }));
+                var totalRange = this._asRangeModel(detailData.get("totalStats"), { hasLoaded: true, name: "Entire Workout" });
+                totalRange.getState().set("isTotal", true);
+                ranges.unshift(totalRange);
             }
 
             var peakType = this.$("select.peakType").val();
@@ -261,7 +265,9 @@ function(
             _.each(ranges, function(range)
             {
                 var formattedValue = this._formatPeakValue(peakType, range.get("value"), this.model.get("workoutTypeValueId"));
+                var formattedUnits = this._formatPeakUnits(peakType, this.model.get("workoutTypeValueId"));
                 range.set("formattedValue", formattedValue);
+                range.set("formattedUnits", formattedUnits);
             }, this);
 
             return ranges;
@@ -270,7 +276,13 @@ function(
         _formatPeakValue: function(peakType, peakValue, workoutTypeId)
         {
             var formatType = peakType === "distance" ? "pace" : peakType;
-            return TP.utils.conversion.formatUnitsValue(formatType, peakValue, { workoutTypeId: workoutTypeId, withLabel: true });
+            return TP.utils.conversion.formatUnitsValue(formatType, peakValue, { workoutTypeId: workoutTypeId });
+        },
+
+        _formatPeakUnits: function(peakType, workoutTypeId)
+        {
+            var formatType = peakType === "distance" ? "pace" : peakType;
+            return getUnitsLabel(formatType, workoutTypeId);
         },
 
         _getEnabledPeaks: function(selectedPeakType)

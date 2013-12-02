@@ -21,10 +21,10 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
     ];
 
 
-    var GraphData = function()
+    var GraphData = function(options)
     {
+        this.detailData = options.detailData;
         this.xaxis = "time";
-        this.scatter = {};
         this.disabledSeries = [];
         this.excludedSeries = [];
         this.excludedRanges = [];
@@ -76,14 +76,18 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             var why;
             var totalPowerValue;
             var rightPowerValue;
-            var leftPowerPercentage;
             var rightPowerPercentage;
-            var averageStats = this.averageStats[xaxis + yaxis] = {};
             var balancedPowerAvailable = _.has(data, "RightPower");
-            var totalAvgCount = 0;
 
-            averageStats["xaxis"] = 0;
-            averageStats["yaxis"] = 0;
+            var powerPercentage = function(index)
+            {
+                totalPowerValue = data["Power"][index][1];
+                rightPowerValue = data["RightPower"][index][1];
+
+                rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
+
+                return rightPowerPercentage;
+            };
 
             _.each(data[xaxis], function(dataPoint, index)
             {
@@ -91,23 +95,12 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                 why = data[yaxis][index][1];
                 if(xaxis === "RightPower")
                 {
-                    totalPowerValue = data["Power"][index][1];
-                    rightPowerValue = data["RightPower"][index][1];
-
-                    rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
-                    leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue);
-                    ecks = rightPowerPercentage;
+                    ecks = powerPercentage(index);
                 }
 
                 if(yaxis === "RightPower")
                 {
-                    totalPowerValue = data["Power"][index][1];
-                    rightPowerValue = data["RightPower"][index][1];
-
-                    rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
-                    leftPowerPercentage = (100 * (totalPowerValue - rightPowerValue) / totalPowerValue);
-
-                    why = rightPowerPercentage;
+                    why = powerPercentage(index);
                 }
                 // This is a hack to prevent errant data from skewing graphs.
                 if(balancedPowerAvailable && (xaxis === "RightPower" || yaxis === "RightPower"))
@@ -118,19 +111,69 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                         ecks = why = null;
                     }
                 }
-                if(_.isFinite(ecks) && _.isFinite(why))
-                {
-                    totalAvgCount++;
-                    averageStats["xaxis"] = averageStats["xaxis"] + ecks;
-                    averageStats["yaxis"] = averageStats["yaxis"] + why;
-                }
-                newSeries.push([ecks, why]);
-            });
 
-            averageStats["xaxis"] = averageStats["xaxis"] / totalAvgCount;
-            averageStats["yaxis"] = averageStats["yaxis"] / totalAvgCount;
+                newSeries.push([ecks, why]);
+            }, this);
+
+            this.setAverageStats(data, xaxis, yaxis);
 
             return newSeries;
+        },
+
+        setAverageStats: function(data, xaxis, yaxis)
+        {
+            var totalStats = this.detailData.get("totalStats");
+            var average = function(data, axis)
+            {
+                switch(axis)
+                {
+                    case "Cadence":
+                        return totalStats.averageCadence;
+                    case "Elevation":
+                        return totalStats.averageElevation;
+                    case "HeartRate":
+                        return totalStats.averageHeartRate;
+                    case "Power":
+                        return totalStats.averagePower;
+                    case "Speed":
+                        return totalStats.averageSpeed;
+                    case "Temperature":
+                        return totalStats.averageTemp;
+                    case "Torque":
+                        return totalStats.averageTorque;
+                    case "RightPower":
+                        return totalStats.powerBalanceRight * 100;
+                    case "Distance":
+                    case "Time":
+                        var total = 0;
+                        var sum = _.reduce(data[axis], function(sum, num) {
+                            if(_.isFinite(num[1]))
+                            {
+                                total++;
+                                return sum + num[1];
+                            }
+                            return sum;
+                        }, 0);
+                        return sum / total;
+                    default:
+                        return null;
+                }
+            };
+
+            var avgData = average(data, xaxis);
+            this.averageStats[xaxis + yaxis] = {};
+
+            if(avgData) this.averageStats[xaxis + yaxis].xaxis = avgData;
+
+            if(xaxis === yaxis)
+            {
+                this.averageStats[xaxis + yaxis].yaxis = avgData;
+            }
+            else
+            {
+                avgData = average(data, yaxis);
+                if(avgData) this.averageStats[xaxis + yaxis].yaxis = avgData;
+            }
         },
 
         resetLatLonArray: function()

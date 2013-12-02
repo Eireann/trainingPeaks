@@ -10,12 +10,12 @@ function(DataParser, GraphData, testData)
     {
         it("has a loadData method", function()
         {
-            var gd = new GraphData();
-            var dp = new DataParser({graphData: gd});
+            var graphData = new GraphData({ detailData: {} });
+            var dataParser = new DataParser({ graphData: graphData });
             expect(DataParser.prototype.loadData).to.not.be.undefined;
             expect(function()
             {
-                dp.loadData(testData);
+                dataParser.loadData(testData);
             }).to.not.throw();
         });
     });

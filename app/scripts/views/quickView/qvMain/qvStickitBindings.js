@@ -73,6 +73,7 @@ function (
             "#startTimeInput":
             {
                 observe: "startTime",
+                events: ["change", "cut", "paste"],
                 onGet: "getStartTime",
                 onSet: "setStartTime"
             },

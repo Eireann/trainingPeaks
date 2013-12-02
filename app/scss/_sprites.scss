@@ -89,6 +89,15 @@ body[data-useragent*="MSIE"] .icon
 %shadowDividerBG { @include inlineBG("../../assets/images/calendarImages/shadow-divider.png"); }
 %dragIndicatorBG { @include inlineBG("../../assets/images/drag-indicator.png"); }
 
+
+// Premium placeholders
+%hrZonesPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-hr-zones.jpg"); }
+%hrPeaksPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-hr-peak.jpg"); }
+%powerZonesPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-power-zones.jpg"); }
+%powerPeaksPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-power-peak.jpg"); }
+%speedZonesPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-speed-zones.jpg"); }
+%speedPeaksPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-speed-peak.jpg"); }
+
 // Retina
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2)

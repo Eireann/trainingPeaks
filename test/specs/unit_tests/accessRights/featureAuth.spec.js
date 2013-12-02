@@ -7,6 +7,7 @@ define(
     "shared/models/userAccessRightsModel",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "models/library/libraryExercise",
+    "utilities/athlete/coachTypes",
     "testUtils/xhrDataStubs"
 ],
 function(
@@ -17,9 +18,18 @@ function(
     UserAccessRightsModel,
     FeatureAuthorizer,
     ExerciseLibraryItem,
+    coachTypes,
     xhrData
     )
 {
+
+    function BuildFeatureAuthorizer(userAccessRights) 
+    {
+        var user = new UserModel({ userId: 1 });
+        user.set("athletes", [{ athleteId: 1, userType: 4 }, { athleteId: 2, userType: 6 }, { athleteId: 3, userType: 4 }]);
+        user.setCurrentAthleteId(1);
+        return new FeatureAuthorizer(user, userAccessRights);
+    }
 
     describe("Feature Authorizer", function ()
     {
@@ -27,12 +37,7 @@ function(
 
         beforeEach(function()
         {
-            var userAccessRights = new UserAccessRightsModel();
-            var user = new UserModel({ userId: 1 });
-            var athlete = new TP.Model({ athleteId: 1 });
-            user.set("athletes", [athlete]);
-            user.setCurrentAthleteId(1);
-            featureAuthorizer = new FeatureAuthorizer(user, userAccessRights);
+            featureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());
         });
 
         it("Should have a list of features", function()
@@ -118,273 +123,199 @@ function(
     
         describe("features", function()
         {
-            describe("SaveWorkoutToDate", function()
+            describe("PlanForAthlete", function()
             {
-
-                var user;
-                var authorizedUserAccessRights;
-                var unauthorizedUserAccessRights;
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.planFutureWorkouts]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.planFutureWorkouts]
                     });
 
-                    unauthorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
+                });
+
+                it("Should allow only an authorized user to plan for the current athlete", function()
+                {
+                    var attributes = { athlete: new TP.Model({ userType: 4 }) };
+
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(true);
+                });
+
+                it("Should accept a plain object or a backbone model", function()
+                {
+                    var attributes = { athlete: { userType: 4 } };
+
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.PlanForAthlete, attributes)).to.equal(true);
+                });
+            });
+
+            describe("SaveWorkoutToDate", function()
+            {
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.planFutureWorkouts]
+                    });
+
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
                 });
 
                 it("Should allow any user to save workout to a past date", function()
                 {
                     var attributes = { targetDate: moment().subtract("days", 1)};
-                    expect(featureAuthorizer.features.SaveWorkoutToDate(
-                                user,
-                                unauthorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(true);
- 
-                     expect(featureAuthorizer.features.SaveWorkoutToDate(
-                                user,
-                                authorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(true);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(true);
                 });
 
                 it("Should allow only an authorized user to save workout to a future date", function()
                 {
-                    var attributes = { targetDate: moment().add("days", 1)};
-                    expect(featureAuthorizer.features.SaveWorkoutToDate(
-                                user,
-                                unauthorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(false);
+                    var attributes = { targetDate: moment().add("days", 7)};
 
-                     expect(featureAuthorizer.features.SaveWorkoutToDate(
-                                user,
-                                authorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(true);
                 });
             });
 
             describe("ShiftWorkouts", function()
             {
-                var user;
-                var authorizedUserAccessRights;
-                var unauthorizedUserAccessRights;
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.planFutureWorkouts]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.planFutureWorkouts]
                     });
 
-                    unauthorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
                 });
 
                 it("Should allow only an authorized user to shift workouts", function()
                 {
-                    var attributes = { targetDate: moment().add("days", 1)};
-                    expect(featureAuthorizer.features.ShiftWorkouts(
-                                user,
-                                unauthorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(false);
-                    
-                     expect(featureAuthorizer.features.ShiftWorkouts(
-                                user,
-                                authorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.ShiftWorkouts)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ShiftWorkouts)).to.equal(true);
                 });
             });
 
             describe("ViewPod", function()
             {
-                var user;
-                var authorizedUserAccessRights;
-                var unauthorizedUserAccessRights;
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.canViewPods]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.canViewPods]
                     });
 
-                    unauthorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
                 });
 
                 it("Should only allow authorized user to view chart", function()
                 {
                     var attributes = { podTypeId: 3 }; // fitness summary
-                    expect(featureAuthorizer.features.ViewPod(
-                                user,
-                                unauthorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(false);
-                    
-                     expect(featureAuthorizer.features.ViewPod(
-                                user,
-                                authorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.ViewPod, attributes)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewPod, attributes)).to.equal(true);
                 });
 
             });
 
             describe("UsePod", function()
             {
-                var user;
-                var authorizedUserAccessRights;
-                var unauthorizedUserAccessRights;
+
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.canUsePodsLimited]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.canUsePodsLimited]
                     });
 
-                    unauthorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
                 });
 
                 it("Should only allow authorized user to use chart", function()
                 {
                     var attributes = { podTypeId: 3 }; // fitness summary
-                    expect(featureAuthorizer.features.UsePod(
-                                user,
-                                unauthorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(false);
-                    
-                     expect(featureAuthorizer.features.UsePod(
-                                user,
-                                authorizedUserAccessRights,
-                                attributes
-                            )
-                    ).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.UsePod, attributes)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.UsePod, attributes)).to.equal(true);
                 });
 
             });
 
             describe("ElevationCorrection", function()
             {
-                var user;
-                var authorizedUserAccessRights;
-                var unauthorizedUserAccessRights;
+
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.canUsePodsFull]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.canUsePodsFull]
                     });
 
-                    unauthorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
                 });
 
                 it("Should only allow authorized user to use elevation correction", function()
                 {
-                    expect(featureAuthorizer.features.ElevationCorrection(
-                                user,
-                                unauthorizedUserAccessRights
-                            )
-                    ).to.equal(false);
-                    
-                     expect(featureAuthorizer.features.ElevationCorrection(
-                                user,
-                                authorizedUserAccessRights
-                            )
-                    ).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.ElevationCorrection)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ElevationCorrection)).to.equal(true);
                 });
 
             });
 
             describe("ViewGraphRanges", function()
             {
-                var user;
-                var authorizedUserAccessRights;
-                var unauthorizedUserAccessRights;
+
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.canUsePodsFull]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.canUsePodsFull]
                     });
 
-                    unauthorizedUserAccessRights = new UserAccessRightsModel();
-                    
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
                 });
 
                 it("Should only allow authorized user to use graph ranges", function()
                 {
-                    expect(featureAuthorizer.features.ViewGraphRanges(
-                                user,
-                                unauthorizedUserAccessRights
-                            )
-                    ).to.equal(false);
-                    
-                     expect(featureAuthorizer.features.ViewGraphRanges(
-                                user,
-                                authorizedUserAccessRights
-                            )
-                    ).to.equal(true);
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.ViewGraphRanges)).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewGraphRanges)).to.equal(true);
                 });
 
             });
 
             describe("AddWorkoutTemplateToLibrary", function()
             {
-                var user;
-                var authorizedUserAccessRights;
+                var authorizedFeatureAuthorizer;
 
                 beforeEach(function()
                 {
-                    user = new UserModel(xhrData.users.barbkprem);
-                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-
-                    authorizedUserAccessRights = new UserAccessRightsModel();
-                    authorizedUserAccessRights.set({
-                        "rights":[xhrData.accessRights.maximumWorkoutTemplatesInOwnedLibrary]
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.maximumWorkoutTemplatesInOwnedLibrary]
                     });
-                    authorizedUserAccessRights.set("rights.0.accessRightData", 5);
 
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
                 });
 
                 it("Should only allow users to add up to maximum exercises in library", function()
@@ -411,26 +342,124 @@ function(
                         { itemName: "workout template five", itemType: 2, exerciseLibraryItemId: 10 }
                     ], { model: ExerciseLibraryItem });
 
-                    expect(featureAuthorizer.features.AddWorkoutTemplateToLibrary(
-                                user,
-                                authorizedUserAccessRights,
-                                {
-                                    collection: collectionUnderLimit
-                                }
-                            )
-                    ).to.equal(true);
-
-                    expect(featureAuthorizer.features.AddWorkoutTemplateToLibrary(
-                                user,
-                                authorizedUserAccessRights,
-                                {
-                                    collection: collectionOverLimit
-                                }
-                            )
-                    ).to.equal(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.AddWorkoutTemplateToLibrary, { collection: collectionUnderLimit })).to.equal(true);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.AddWorkoutTemplateToLibrary, { collection: collectionOverLimit })).to.equal(false);
                    
                 });
 
+            });
+
+            describe("ViewICalendarUrl", function()
+            {
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    var authorizedUserAccessRights = new UserAccessRightsModel({
+                        rights: [xhrData.accessRights.planFutureWorkouts]
+                    });
+
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(authorizedUserAccessRights);
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
+                });
+                
+                it("Should not allow basic users to view iCalendarUrl", function()
+                {
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.ViewICalendarUrl)).to.equal(false);
+                });
+
+                it("Should allow premium users to view iCalendarUrl", function()
+                {
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewICalendarUrl)).to.equal(true);
+                });
+            });
+
+            describe("AutoApplyThresholdChanges", function()
+            {
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());
+                    authorizedFeatureAuthorizer.user.setCurrentAthleteId(1);
+                    
+                    unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
+                    unauthorizedFeatureAuthorizer.user.setCurrentAthleteId(2);
+                });
+
+                it("Should not allow basic users to auto apply threshold changes", function()
+                {
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.AutoApplyThresholdChanges)).to.equal(false);
+                });
+
+                it("Should allow premium users to auto apply threshold changes", function()
+                {
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.AutoApplyThresholdChanges)).to.equal(true);
+                });
+            });
+
+            describe("ViewAthleteCalendar", function()
+            {
+                var authorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
+                });
+
+                it("Should allow a user to view themselves", function()
+                {
+                    var attributes = { athlete: new TP.Model({ athleteId: 1 }) };
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
+
+                it("Should not allow athletes to view other athletes", function()
+                {
+                    var attributes = { athlete: { athleteId: 2 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", true);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(false);
+                });
+
+                it("Should not allow coach to view athletes that are not in their athletes list", function()
+                {
+                    var attributes = { athlete: { athleteId: 7 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(false);
+                });
+
+                it("Should not allow standard coach to view basic athletes", function()
+                {
+                    var attributes = { athlete: { athleteId: 2 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.Standard);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(false);
+                });
+
+                it("Should allow standard coach to view premium athletes", function()
+                {
+                    var attributes = { athlete: { athleteId: 3 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.Standard);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
+
+                it("Should allow UBC coach to view basic athletes", function()
+                {
+                    var attributes = { athlete: { athleteId: 2 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.UBC);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
+
+                it("Should allow UBC coach to view premium athletes", function()
+                {
+                    var attributes = { athlete: { athleteId: 3 } };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("coachType", coachTypes.UBC);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
+                });
             });
         });
 

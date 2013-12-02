@@ -426,6 +426,9 @@ define({
     "MealsOnly": "Meals Only",
     "WorkoutsAndMeals": "Workouts & Meals",
     "ICalHelpText": "This url provides a link so you can subscribe to your TrainingPeaks calendar via a 3rd party calendar application, such as Google Calendar, Microsoft Outlook, Apple's iCal.",
+    "ICalPremiumMessage": "The iCal url is only available for paid users",
+    "ApplyThresholdPremiumMessage": "This feature is only available for paid users",
+    "PostWorkoutNotificationPremiumMessage": "This feature is only available for paid users",
     "None": "None",
     "CurrentRatePlan": "Current rate plan",
     "NoPhoto": "No Photo Available",
@@ -461,5 +464,7 @@ define({
     "ApplyExpandoEdits": "Click apply to save edits and update stats.",
 
     "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
-    "ConfirmDeleteLap": "Are you sure you want to delete the lap?"
+    "ConfirmDeleteLap": "Are you sure you want to delete the lap?",
+
+    "LapsColumnChart": "Laps & Splits Column Chart"
 });

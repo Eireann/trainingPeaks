@@ -19,12 +19,6 @@ function(
     {
         beforeEach(function()
         {
-            // let's not make any remote server calls, just testing object interactions here
-            sinon.stub($, "ajax", function()
-            {
-                return $.Deferred();
-            });
-
             testHelpers.startTheApp();
         });
 

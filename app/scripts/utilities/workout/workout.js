@@ -41,11 +41,16 @@
         {
             if(workout.has("totalTimePlanned"))
             {
+
                 var plannedSeconds = workout.get("totalTimePlanned") * 3600;
                 var completedSeconds = workout.get("totalTime") * 3600;
                 var ratio = completedSeconds / plannedSeconds;
 
-                if(ratio >= 0.8 && ratio <= 1.2)
+                if(plannedSeconds === 0 && completedSeconds === 0)
+                {
+                    return "ComplianceNone";
+                }
+                else if(ratio >= 0.8 && ratio <= 1.2)
                 {
                     return "ComplianceGreen";
                 }
