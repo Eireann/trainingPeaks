@@ -12,6 +12,7 @@ define(
     "shared/utilities/calendarUtility",
     "views/dashboard/chartUtils",
     "dashboard/views/fitnessHistoryChartSettings",
+    "hbs!dashboard/templates/fitnessHistoryPodTemplate",
     "hbs!dashboard/templates/fitnessHistoryContentTemplate"
 ],
 function(
@@ -27,6 +28,7 @@ function(
     CalendarUtility,
     DashboardChartUtils,
     FitnessHistoryChartSettingsView,
+    fitnessHistoryPodTemplate,
     fitnessHistoryContentTemplate
 )
 {
@@ -41,20 +43,38 @@ function(
 
         render: function()
         {
+            var self = this;
+
             this.waitingOn();
-            this.model.buildChart().done(this._renderGrid).always(this.waitingOff); 
+
+            this.xhrs = this.model.fetchData();
+
+            _.each(this.xhrs, function(xhr, key)
+            {
+                xhr.done(function(data)
+                {
+                    self._renderGrid(self.model.parseData(key, data));
+                    self.waitingOff();
+                });
+            });
         },
 
         _renderGrid: function(data)
         {
-            this.$(".chartTitle").text(this.model.get("title") || this.model.defaultTitle());
-            this.$(".chartContainer").html(fitnessHistoryContentTemplate(data));
+            this.$(".podTitle").text(this.model.get("title") || this.model.defaultTitle());
+            this.$(".podContent").html(fitnessHistoryContentTemplate(data));
         }
     });
 
     var FitnessHistoryChart = Chart.extend(
     {
         settingsView: FitnessHistoryChartSettingsView,
+
+        template:
+        {
+            type: "handlebars",
+            template: fitnessHistoryPodTemplate
+        },
 
         defaults:
         {
@@ -69,6 +89,7 @@ function(
 
         initialize: function(attributes, options)
         {
+            this.data = { weeks: [], months: [] };
             this._validateWorkoutTypes();
         },
 
@@ -83,15 +104,16 @@ function(
 
             var start, end;
 
-            end = CalendarUtility.endMomentOfWeek(moment().subtract(1, "weeks")).format(CalendarUtility.idFormat);
-            start = CalendarUtility.startMomentOfWeek(moment().subtract(5, "weeks")).format(CalendarUtility.idFormat);
+            var week = CalendarUtility.weekMomentForDate();
+            end = CalendarUtility.endMomentOfWeek(moment(week).subtract(1, "weeks"));
+            start = CalendarUtility.startMomentOfWeek(moment(week).subtract(4, "weeks"));
             var weeklyReport = this.dataManager.fetchReport("fitnesshistory", start, end, _.extend({ group: 0 }, postData));
 
-            end = moment().startOf("month").subtract(1, "day").format(CalendarUtility.idFormat);
-            start = moment(end).subtract(11, "months").startOf("month").format(CalendarUtility.idFormat);
+            end = moment().startOf("month").subtract(1, "day");
+            start = moment(end).subtract(11, "months").startOf("month");
             var monthlyReport = this.dataManager.fetchReport("fitnesshistory", start, end, _.extend({ group: 1 }, postData));
 
-            return $.when(weeklyReport, monthlyReport);
+            return { weeks: weeklyReport, months: monthlyReport };
         },
 
         buildTooltipData: function(flotItem)
@@ -102,13 +124,18 @@ function(
         defaultTitle: function()
         {
             var title = TP.utils.translate("Fitness History: Peak ");
-            title += this._getPeakUnits() + " (" + TP.utils.units.getUnitsLabel(this._getPeakUnits(), this._getWorkoutType()) + ") ";
+            title += "Peak " + this._getPeakName();
+
+            var units = TP.utils.units.getUnitsLabel(this._getPeakUnits(), this._getWorkoutType());
+            title += " (" + units + ") - ";
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             return title;
         },
 
-        parseData: function(weekly, monthly)
+        parseData: function(period, data)
         {
+            this.data[period] = data;
+
             var workoutType = this._getWorkoutType();
             var peakUnits = this._getPeakUnits();
 
@@ -133,10 +160,11 @@ function(
             }
 
             return {
+                workoutType: workoutType,
                 peakUnits: this._getPeakUnits(),
                 byDistance: this.get("peakType") === 6,
-                weeks:_.map(weekly, process).reverse(),
-                months:_.map(monthly, process).reverse()
+                weeks: _.map(this.data.weeks, process).reverse(),
+                months: _.map(this.data.months, process).reverse()
             };
         },
 
@@ -164,6 +192,22 @@ function(
                 4: "power",
                 5: "cadence",
                 6: "speed"
+            };
+
+            return types[type];
+        },
+
+        _getPeakName: function()
+        {
+            var type = this.get("peakType");
+            var types =
+            {
+                1: "Heart Rate",
+                2: "Speed",
+                3: "Pace",
+                4: "Power",
+                5: "Cadence",
+                6: "Speed by Distance"
             };
 
             return types[type];

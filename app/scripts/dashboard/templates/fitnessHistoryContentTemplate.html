@@ -1,9 +1,9 @@
-<table>
+<table class="frameworkTable">
     <thead>
         <tr>
             <th>Week of</th>
             <th>Duration</th>
-            <th>Distance</th>
+            <th>Distance ({{ getUnitsLabel "distance" workoutType }})</th>
             <th>TSS</th>
             {{#if byDistance}}
             <th>400m</th>
@@ -33,6 +33,10 @@
             <td>{{ peak04 }}</td>
             <td>{{ peak05 }}</td>
         </tr>
+        {{else}}
+        <tr>
+            <td colspan="9"><center>Loading&hellip;</center></td>
+        </tr>
         {{/each }}
     </tbody>
     <thead>
@@ -44,7 +48,7 @@
     <tbody>
         {{#each months }}
         <tr>
-            <td>{{ formatDate startDate "MMMM" }}</td>
+            <td>{{ formatDate startDate "MMMM 'YY" }}</td>
             <td>{{ duration }}</td>
             <td>{{ distance }}</td>
             <td>{{ tss }}</td>
@@ -53,6 +57,10 @@
             <td>{{ peak03 }}</td>
             <td>{{ peak04 }}</td>
             <td>{{ peak05 }}</td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="9"><center>Loading&hellip;</center></td>
         </tr>
         {{/each }}
     </tbody>
