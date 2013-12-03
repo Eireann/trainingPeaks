@@ -212,30 +212,16 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
                 if (lowerCaseAxisName && lowerCaseAxisName === "time")
                 {
                     if (axis.tickSize <= 120000)
+                    {
                         axis.tickSize = 120000;
-                    else if (axis.tickSize <= 300000)
-                        axis.tickSize = 300000;
-                    else if (axis.tickSize <= 600000)
-                        axis.tickSize = 600000;
-                    else if (axis.tickSize <= 900000)
-                        axis.tickSize = 900000;
-                    else if (axis.tickSize <= 1200000)
-                        axis.tickSize = 1200000;
-                    else if (axis.tickSize <= 1500000)
-                        axis.tickSize = 1500000;
-                    else if (axis.tickSize <= 1800000)
-                        axis.tickSize = 1800000;
-                    else if (axis.tickSize <= 2100000)
-                        axis.tickSize = 2100000;
-                    else if (axis.tickSize <= 2400000)
-                        axis.tickSize = 2400000;
-                    else if (axis.tickSize <= 2700000)
-                        axis.tickSize = 2700000;
+                    }
                     else
-                        axis.tickSize -= (axis.tickSize % 3000000);
+                    {
+                        axis.tickSize = Math.ceil(axis.tickSize / 300000) * 300000;
+                    }
                 }
 
-                while (max > 0)
+                while (max > axis.min)
                 {
                     if (lowerCaseAxisName && lowerCaseAxisName === "distance")
                         max -= axis.tickSize;
