@@ -268,8 +268,7 @@ function(
 
                 this.bootPromise.then(function()
                 {
-                    // TODO: Once new API exists, use that
-                    if(/showprofile/.test(window.location.search))
+                    if(!self.user.getAthleteSettings().get("hasCompletedProfile"))
                     {
                         var view = new InitialProfileView({ model: self.user });
                         view.render();
