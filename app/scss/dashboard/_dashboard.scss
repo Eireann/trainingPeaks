@@ -366,6 +366,8 @@
         top: 62px;
         left: 29px;
 
+        overflow: auto;
+
         @include calc("width", "100% - 58px");
         @include calc("height", "100% - 91px");
         &.invisible
@@ -527,7 +529,7 @@
         width: 390px;
         height: 390px;
 
-        &.pmcChart {
+        &.pmcChart, &.fitnessHistory {
             width: 790px;
             .chartContainer {
             

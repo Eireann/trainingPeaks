@@ -9,8 +9,10 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "utilities/color",
+    "shared/utilities/calendarUtility",
     "views/dashboard/chartUtils",
-    "dashboard/views/fitnessHistoryChartSettings"
+    "dashboard/views/fitnessHistoryChartSettings",
+    "hbs!dashboard/templates/fitnessHistoryContentTemplate"
 ],
 function(
     $,
@@ -22,17 +24,47 @@ function(
     chartColors,
     defaultFlotOptions,
     colorUtils,
+    CalendarUtility,
     DashboardChartUtils,
-    FitnessHistoryChartSettingsView     
+    FitnessHistoryChartSettingsView,
+    fitnessHistoryContentTemplate
 )
 {
+    var FitnessHistoryView = TP.ItemView.extend(
+    {
+        modelEvents: {},
+
+        initialize: function()
+        {
+            _.bindAll(this, "_renderGrid", "waitingOff");
+        },
+
+        render: function()
+        {
+            this.waitingOn();
+            this.model.buildChart().done(this._renderGrid).always(this.waitingOff); 
+        },
+
+        _renderGrid: function(data)
+        {
+            this.$(".chartTitle").text(this.model.get("title") || this.model.defaultTitle());
+            this.$(".chartContainer").html(fitnessHistoryContentTemplate(data));
+        }
+    });
+
     var FitnessHistoryChart = Chart.extend(
     {
         settingsView: FitnessHistoryChartSettingsView,
 
         defaults:
         {
-            workoutTypeIds: []
+            workoutTypeIds: [],
+            peakType: 1
+        },
+
+        createContentView: function(options)
+        {
+            return new FitnessHistoryView(options);
         },
 
         initialize: function(attributes, options)
@@ -42,19 +74,22 @@ function(
 
         fetchData: function()
         {
-            this.dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData =
             {
                 workoutTypeIds: _.without(this.get("workoutTypeIds"), 0, "0", ""),
-                peakType: this.get("peakTypeOptions"),
-                group: 1 
+                peakType: this.get("peakType") || 1
             };
 
-            var weeklyReport = this.dataManager.fetchReport("fitnesshistory", this.dateOptions.startDate, this.dateOptions.endDate, postData);
 
-            postData.group = 2;
+            var start, end;
 
-            var monthlyReport = this.dataManager.fetchReport("fitnesshistory", this.dateOptions.startDate, this.dateOptions.endDate, postData);
+            end = CalendarUtility.endMomentOfWeek(moment().subtract(1, "weeks")).format(CalendarUtility.idFormat);
+            start = CalendarUtility.startMomentOfWeek(moment().subtract(5, "weeks")).format(CalendarUtility.idFormat);
+            var weeklyReport = this.dataManager.fetchReport("fitnesshistory", start, end, _.extend({ group: 0 }, postData));
+
+            end = moment().startOf("month").subtract(1, "day").format(CalendarUtility.idFormat);
+            start = moment(end).subtract(11, "months").startOf("month").format(CalendarUtility.idFormat);
+            var monthlyReport = this.dataManager.fetchReport("fitnesshistory", start, end, _.extend({ group: 1 }, postData));
 
             return $.when(weeklyReport, monthlyReport);
         },
@@ -66,16 +101,43 @@ function(
 
         defaultTitle: function()
         {
-            var title = TP.utils.translate("Fitness History ");
+            var title = TP.utils.translate("Fitness History: Peak ");
+            title += this._getPeakUnits() + " (" + TP.utils.units.getUnitsLabel(this._getPeakUnits(), this._getWorkoutType()) + ") ";
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             return title;
         },
 
-        parseData: function(data)
+        parseData: function(weekly, monthly)
         {
-            this._data = data;
+            var workoutType = this._getWorkoutType();
+            var peakUnits = this._getPeakUnits();
 
-            return null;
+            function format(units, value)
+            {
+                return TP.utils.conversion.formatUnitsValue(units, value, { workoutTypeId: workoutType });
+            }
+
+            function process(entry)
+            {
+                return {
+                    startDate: entry.startDate,
+                    duration: format("duration", entry.totalDuration),
+                    distance: format("distance", entry.totalDistance),
+                    tss: format("tss", entry.totalTSS),
+                    peak01: format(peakUnits, entry.peak01),
+                    peak02: format(peakUnits, entry.peak02),
+                    peak03: format(peakUnits, entry.peak03),
+                    peak04: format(peakUnits, entry.peak04),
+                    peak05: format(peakUnits, entry.peak05)
+                };
+            }
+
+            return {
+                peakUnits: this._getPeakUnits(),
+                byDistance: this.get("peakType") === 6,
+                weeks:_.map(weekly, process).reverse(),
+                months:_.map(monthly, process).reverse()
+            };
         },
 
         getChartName: function()
@@ -89,6 +151,29 @@ function(
             {
                 this.set("workoutTypeIds", []);
             }
+        },
+        
+        _getPeakUnits: function()
+        {
+            var type = this.get("peakType");
+            var types =
+            {
+                1: "heartrate",
+                2: "speed",
+                3: "pace",
+                4: "power",
+                5: "cadence",
+                6: "speed"
+            };
+
+            return types[type];
+        },
+
+        _getWorkoutType: function()
+        {
+            var types = this.get("workoutTypeIds");
+            if(types.length === 1) return _.first(types);
+            return 0;
         }
 
     });

@@ -3,8 +3,8 @@ define(
     "underscore",
     "backbone",
     "TP",
+    "shared/utilities/formUtility",
     "dashboard/views/chartSettingsView",
-    "views/dashboard/dashboardDatePicker",
     "dashboard/views/chartWorkoutOptionsView",
     "hbs!templates/views/dashboard/fitnessHistoryChartSettings"
 ],
@@ -12,8 +12,8 @@ function(
     _,
     Backbone,
     TP,
+    FormUtility,
     ChartSettingsView,
-    DashboardDatePicker,
     ChartWorkoutOptionsView,
     fitnessHistoryChartSettingsTemplate
     )
@@ -24,13 +24,7 @@ function(
 
         onRender: function()
         {
-            var self = this;
-
             this._addView(".customSettings", fitnessHistoryChartSettingsTemplate({}));
-            this._addView(".dateOptionsRegion", new DashboardDatePicker(
-            {
-                model: this.model
-            }));
 
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView(
             {
@@ -40,6 +34,9 @@ function(
 
             this.children.call("render");
 
+            this.$("select").selectBoxIt();
+
+            FormUtility.bindFormToModel(this.$el, this.model, { filterSelector: "[data-scope='customSettings']" });
         }
 
     });
