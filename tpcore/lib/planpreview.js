@@ -51,6 +51,7 @@
             var markup =
             [
                 "<div class='plot'></div>",
+                "<div class='axis-label' style='text-align:center;'>WEEKS</div>",
                 "<h2>Sample Workouts:</h2>",
                 _.map(this.model.get("workoutPreviews"), function(workout, index) { return PreviewTemplate({ workout: workout, index: index }); }).join(""),
             ].join("");
@@ -100,8 +101,12 @@
                 {
                     lines: { show: true, lineWidth: 1 }
                 },
-                legend: { show: false },
-                xaxis: { tickSize: 1, tickDecimals: 0 },
+                legend: {
+                    show: true,
+                    position: 'sw',
+                    noColumns: 2
+                },
+                xaxis: { tickColor: "transparent", tickSize: 1, tickDecimals: 0 },
                 yaxes: [
                     { min: 0, tickFormatter: function(value) { return TP.utils.format('mi', 'mi', value); }, position: "right" },
                     { min: 0, tickFormatter: function(value) { return TP.utils.format('min', 'min', value); } }
