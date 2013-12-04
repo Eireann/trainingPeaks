@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <parameters>
 	<setParameter name="DeployTarget" value="uat" />
- 	<setParameter name="WWWRoot" value="http://www.uat.trainingpeaks.com" />
-    <setParameter name="HomeRoot" value="http://cat6.uat.trainingpeaks.com" />
-    <setParameter name="CMSRoot" value="http://home.uat.trainingpeaks.com" />
- 	<setParameter name="ApiRoot" value="http://tpapi.uat.trainingpeaks.com" />
- 	<setParameter name="OauthRoot" value="http://oauth.uat.trainingpeaks.com" />
+ 	<setParameter name="WWWRoot" value="http://www.sandbox.trainingpeaks.com" />
+    <setParameter name="HomeRoot" value="http://cat6.sandbox.trainingpeaks.com" />
+    <setParameter name="CMSRoot" value="http://home.sandbox.trainingpeaks.com" />
+ 	<setParameter name="ApiRoot" value="http://tpapi.sandbox.trainingpeaks.com" />
+ 	<setParameter name="OauthRoot" value="http://oauth.sandbox.trainingpeaks.com" />
 	<setParameter name="GoogleAnalyticsAccount" value="UA-42726244-1" />
 </parameters>
