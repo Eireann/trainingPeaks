@@ -9,7 +9,8 @@
     "dashboard/charts/timeInZonesChart",
     "dashboard/charts/timeInZonesByWeekChart",
     "dashboard/charts/metricsChart",
-    "dashboard/charts/workoutSummaryChart"
+    "dashboard/charts/workoutSummaryChart",
+    "dashboard/charts/fitnessHistoryChart"
 ],
 function(
     TP,
@@ -21,16 +22,14 @@ function(
     TimeInZonesChart,
     TimeInZonesByWeekChart,
     MetricsChart,
-    WorkoutSummaryChart
+    WorkoutSummaryChart,
+    FitnessHistoryChart
 )
 {
-
-    // Defaults to DashboardPodView
-    var chartViewConstructors = {
-    };
-
     // Defaults to TP.Model
-    var chartModelConstructors = {
+    var chartModelConstructors =
+    {
+        35: FitnessHistoryChart,
         32: PmcChart,
         3: FitnessSummaryChart,
         8: PeaksChart,
@@ -58,9 +57,7 @@ function(
     return {
         buildChartView: function(options)
         {
-            var chartTypeId = options.model.get("chartType");
-            var ChartView = chartViewConstructors.hasOwnProperty(chartTypeId) ? chartViewConstructors[chartTypeId] : DashboardPodView;
-            return new ChartView(options);
+            return new DashboardPodView(options);
         },
 
         buildChartModel: function(attributes, options)

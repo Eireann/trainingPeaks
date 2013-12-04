@@ -47,7 +47,7 @@ function(
                     chart.set(fieldName, false);
 
                     // set to false, checkbox should be off
-                    chartSettingsView = chart.createChartSettingsView();
+                    chartSettingsView = chart.createSettingsView();
                     chartSettingsView.render();
                     expect(chartSettingsView.$el.has("input[type=checkbox]#" + fieldName)).to.be.ok;
                     expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).to.not.be.ok;
@@ -59,7 +59,7 @@ function(
                     expect(chart.get(fieldName)).to.equal(true);
 
                     // re-render should show new value
-                    chartSettingsView = chart.createChartSettingsView();
+                    chartSettingsView = chart.createSettingsView();
                     chartSettingsView.render();
                     expect(chartSettingsView.$el.find("input[type=checkbox]#" + fieldName).is(":checked")).to.be.ok;
 
@@ -74,7 +74,7 @@ function(
                 {
                     // initial value should show in the view
                     chart.set(fieldName, i);
-                    chartSettingsView = chart.createChartSettingsView();
+                    chartSettingsView = chart.createSettingsView();
                     chartSettingsView.render();
                     expect(chartSettingsView.$el.has("input[type=number]#" + fieldName)).to.be.ok;
                     expect(chartSettingsView.$el.find("input[type=number]#" + fieldName).val()).to.eql(Number(i).toString());
@@ -85,7 +85,7 @@ function(
                     expect(chart.get(fieldName)).to.equal(i + 10);
 
                     // updated value should show in the view
-                    chartSettingsView = chart.createChartSettingsView();
+                    chartSettingsView = chart.createSettingsView();
                     chartSettingsView.render();
                     expect(chartSettingsView.$el.find("input[type=number]#" + fieldName).val()).to.eql(Number(i + 10).toString());
                 });

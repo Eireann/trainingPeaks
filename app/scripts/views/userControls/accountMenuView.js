@@ -20,6 +20,7 @@ function (TP, UserSettingsView, accountMenuTemplate)
         events:
         {
             "click #accountMenuUserSettings": "onUserSettingsClicked",
+            "click #accountMenuHelp": "onHelpClicked",
             "click #accountMenuSwitchToFlex": "onSwitchToFlex",
             "click #accountMenuLogoff": "onLogoffClicked"
         },
@@ -40,6 +41,12 @@ function (TP, UserSettingsView, accountMenuTemplate)
         {
             var userSettingsView = new UserSettingsView({ model: this.model });
             userSettingsView.render();
+            this.close();
+        },
+
+        onHelpClicked: function()
+        {
+            window.open(window.apiConfig ? window.apiConfig.helpURL : "");
             this.close();
         },
 

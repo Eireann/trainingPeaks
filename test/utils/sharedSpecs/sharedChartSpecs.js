@@ -22,7 +22,7 @@ function(
                 beforeEach(function()
                 {
                     chart = dashboardChartBuilder.buildChartModel(chartAttrs, { dataManager: new DataManager() });
-                    chartSettingsView = chart.createChartSettingsView();
+                    chartSettingsView = chart.createSettingsView();
                 });
 
                 it("should render successfully", function()

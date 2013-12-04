@@ -5,12 +5,8 @@
     "underscore",
     "setImmediate",
     "TP",
-    "framework/dataManager",
-    "utilities/charting/flotToolTipPositioner",
     "views/userConfirmationView",
-    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/dashboardChart",
-    "hbs!templates/views/charts/chartTooltip",
     "hbs!templates/views/confirmationViews/closeChartsConfirmationView"
 ],
 function(
@@ -19,12 +15,8 @@ function(
     _,
     setImmediate,
     TP,
-    DataManager,
-    toolTipPositioner,
     UserConfirmationView,
-    ChartUtils,
     podTemplate,
-    tooltipTemplate,
     closeChartsConfirmationTemplate
     )
 {
@@ -52,17 +44,14 @@ function(
                 this.template = this.model.template;
             }
 
-            _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
-
             //trigger redraw instead of dashboardDatesChange
             this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardReset, this));
             this.listenTo(this.model, "dataManagerReset", _.bind(this._onDashboardReset, this));
-            this.on("render", this._renderChartAfterRender, this);
+            this.on("show", this._renderPod, this);
 
-            this.listenTo(theMarsApp.user, "change:units", _.bind(this._renderChart, this));
-            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._renderChart, this));
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this._renderPod, this));
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._renderPod, this));
 
-            this.once("render", this._bindPlotClick, this);
             this._setChartCssClass();
         },
 
@@ -81,132 +70,14 @@ function(
             "dblclick": "_onExpandClicked"
         },
 
-        serializeData: function()
+        onRender: function()
         {
-            var data = DashboardPodView.__super__.serializeData.apply(this, arguments);
-            data.title = this._podTitle();
-            return data;
+            this.contentView = this.model.createContentView({ model: this.model, el: this.el });
         },
 
-        _podTitle: function()
+        _renderPod: function()
         {
-            return this.model.get("title") || _.result(this.model, "defaultTitle");
-        },
-
-        _dateRangeText: function()
-        {
-            // show a subtitle in the pod view that displays the currently selected Date Range, 
-            // but only if not using the Dashboard Global setting
-            var dateOptions = this.model.get('dateOptions'),
-                quickDateSelectOption = dateOptions.quickDateSelectOption;
-
-            var chartDateOption = ChartUtils.findChartDateOption(quickDateSelectOption);
-
-            if (chartDateOption.customStartDate)
-            {
-                dateOptions = ChartUtils.buildChartParameters(dateOptions);
-                return TP.utils.datetime.format(moment(dateOptions.startDate).utc()) + " - " + TP.utils.datetime.format(moment(dateOptions.endDate).utc());
-            } else if (quickDateSelectOption && quickDateSelectOption !== 1)
-            {
-                return chartDateOption.label;
-            }
-            return "";
-        },
-
-        _bindPlotClick: function()
-        {
-            this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
-        },
-
-        _renderChartAfterRender: function()
-        {
-            var self = this;
-            setImmediate(function()
-            {
-                self._renderChart();
-            });
-        },
-
-        _renderChart: function()
-        {
-            this.waitingOn();
-            this.model.buildChart().done(this._renderFlotChart).always(this.waitingOff);
-        },
-
-        _onHoverToolTip: function(flotItem, $tooltipEl)
-        {
-            var tooltipHTML = tooltipTemplate({ tooltips: this.model.buildTooltipData(flotItem) });
-            $tooltipEl.html(tooltipHTML);
-            toolTipPositioner.updatePosition($tooltipEl, this.plot);
-            this.$currentToolTip = $tooltipEl;
-        },
-
-        _hideToolTip: function()
-        {
-            if(this.$currentToolTip)
-            {
-                this.$currentToolTip.remove();
-            } 
-        },
-
-        _renderFlotChart: function(chartOptions)
-        {
-
-            this.$(".chartTitle").text(this._podTitle());
-            this.$(".customDateRange").text(this._dateRangeText());
-            if(!chartOptions)
-            {
-                this.$el.addClass("noData");
-                this.$(".xaxisLabel").text("");
-                this.$(".yaxisLabel").text("");
-            }
-            else
-            {
-                this.$el.removeClass("noData");
-                if ($.plot)
-                {
-                    if(chartOptions.flotOptions && chartOptions.flotOptions.tooltipOpts)
-                    {
-                        chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
-                    }
-
-                    var lastYaxis = _.last(chartOptions.flotOptions.yaxes);
-                    if (lastYaxis)
-                    {
-                        lastYaxis.tickLength = 1;
-                    }
-
-                    this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
-
-                    var xaxisOpts = chartOptions.flotOptions.xaxis;
-                    this.$(".xaxisLabel").text(xaxisOpts && xaxisOpts.label || "");
-
-                    var yaxisOpts = chartOptions.flotOptions.yaxis;
-                    var yaxesOpts = chartOptions.flotOptions.yaxes;
-                    if (yaxisOpts)
-                    {
-                        this.$(".yaxisLabel.left").text(yaxisOpts && yaxisOpts.label || "");
-                    }
-                    else if (yaxesOpts)
-                    {
-                        this.$(".yaxisLabel.left")
-                        .text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "")
-                        .css("color", yaxesOpts && yaxesOpts[0] && yaxesOpts[0].font && yaxesOpts[0].font.color);
-                        this.$(".yaxisLabel.right")
-                        .text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "")
-                        .css("color", yaxesOpts && yaxesOpts[1] && yaxesOpts[1].font && yaxesOpts[1].font.color);
-                    }
-                }
-            }
-        },
-
-        _onPlotClick: function(event, position, item)
-        {
-            var onClickView = this.model.createItemDetailView(item, position);
-            if(onClickView)
-            {
-                onClickView.render();
-            }
+            if(this.contentView) this.contentView.render();
         },
 
         _onSettingsClicked: function(e)
@@ -227,7 +98,7 @@ function(
             var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".settings");
 
-            this.chartSettings = this.model.createChartSettingsView(); 
+            this.chartSettings = this.model.createSettingsView(); 
 
             this.chartSettings.setTomahawkDirection(direction);
 
@@ -243,14 +114,14 @@ function(
             this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
             this.listenTo(this.chartSettings, "close", _.bind(this._onChartSettingsClose, this));
-            this.listenTo(this.chartSettings, "apply", _.bind(this._renderChart, this));
+            this.listenTo(this.chartSettings, "apply", _.bind(this._renderPod, this));
         },
 
         _onChartSettingsClose: function()
         {
             this._allowSettingsButtonToHide();
             this._enableDrag();
-            this._renderChart();
+            this._renderPod();
         },
 
         _keepSettingsButtonVisible: function()
@@ -360,7 +231,7 @@ function(
 
         onClose: function()
         {
-            this._hideToolTip();
+            if(this.contentView) this.contentView.close();
         },
 
         _setChartCssClass: function()
@@ -372,7 +243,7 @@ function(
 
         _onDashboardReset: function()
         {
-            this._renderChart();
+            this._renderPod();
         }
 
     });
