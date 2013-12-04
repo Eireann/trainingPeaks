@@ -205,11 +205,7 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
         {
             var _func = function(axis)
             {
-                var lowerCaseAxisName = axisName;
-                var ticksArray = [];
-                var max = axis.datamax;
-
-                if (lowerCaseAxisName && lowerCaseAxisName === "time")
+                if (axisName && axisName === "time")
                 {
                     if (axis.tickSize <= 120000)
                     {
@@ -221,12 +217,14 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
                     }
                 }
 
-                while (max > axis.min)
+                // Align first tick to tickSize intervals
+                var start = Math.ceil(axis.min / axis.tickSize) * axis.tickSize;
+                var ticksArray = [];
+
+                // Generate list of ticks
+                for(var value = start; value < axis.max; value += axis.tickSize)
                 {
-                    if (lowerCaseAxisName && lowerCaseAxisName === "distance")
-                        max -= axis.tickSize;
-                    ticksArray.push(axis.datamax - max);
-                    max -= axis.tickSize;
+                    ticksArray.push(value);
                 }
 
                 return ticksArray;
