@@ -7,7 +7,7 @@
         "<h3>Workout #<%= index + 1 %>: <%= TP.utils.lookupSportType(workout.workoutTypeValueId) %></h3>",
         "<% if(workout.totalTimePlanned) { %><p>Planned Time: <%= TP.utils.format('h', 's', workout.totalTimePlanned) %></p><% } %>",
         "<% if(workout.distancePlanned) { %><p>Planned Distance: <%= TP.utils.format('m', 'mi', workout.distancePlanned) %></p><% } %>",
-        "<p><%= workout.description %></p>",
+        "<p><%- workout.description %></p>",
         "</section>"
     ].join(""));
 
