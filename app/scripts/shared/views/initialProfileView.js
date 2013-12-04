@@ -144,6 +144,7 @@ function(
 
         _saveAndClose: function()
         {
+            this.waitingOn();
             var self = this;
             var userPromise = theMarsApp.user.save(
             {
