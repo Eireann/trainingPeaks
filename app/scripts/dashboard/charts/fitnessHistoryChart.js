@@ -102,15 +102,15 @@ function(
             };
 
 
-            var start, end;
+            var week, start, end;
 
-            var week = CalendarUtility.weekMomentForDate();
-            end = CalendarUtility.endMomentOfWeek(moment(week).subtract(1, "weeks"));
-            start = CalendarUtility.startMomentOfWeek(moment(week).subtract(4, "weeks"));
+            week = CalendarUtility.weekForDate();
+            start = CalendarUtility.startMomentOfWeek(moment(week).subtract(3, "weeks"));
+            end = CalendarUtility.endMomentOfWeek(week);
             var weeklyReport = this.dataManager.fetchReport("fitnesshistory", start, end, _.extend({ group: 0 }, postData));
 
-            end = moment().startOf("month").subtract(1, "day");
-            start = moment(end).subtract(11, "months").startOf("month");
+            start = moment().subtract(12, "months").startOf("month");
+            end = moment().endOf("month");
             var monthlyReport = this.dataManager.fetchReport("fitnesshistory", start, end, _.extend({ group: 1 }, postData));
 
             return { weeks: weeklyReport, months: monthlyReport };
@@ -147,6 +147,7 @@ function(
             function process(entry)
             {
                 return {
+                    incomplete: moment(entry.endDate) > moment(),
                     startDate: entry.startDate,
                     duration: format("duration", entry.totalDuration),
                     distance: format("distance", entry.totalDistance),
@@ -191,7 +192,7 @@ function(
                 3: "pace",
                 4: "power",
                 5: "cadence",
-                6: "speed"
+                6: "pace"
             };
 
             return types[type];
@@ -207,7 +208,7 @@ function(
                 3: "Pace",
                 4: "Power",
                 5: "Cadence",
-                6: "Speed by Distance"
+                6: "Pace by Distance"
             };
 
             return types[type];
