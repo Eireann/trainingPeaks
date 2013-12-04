@@ -125,7 +125,7 @@ function(
 
                 beforeEach(function()
                 {
-                    var userData = xhrData.users.barbkprem;
+                    var userData = _.clone(xhrData.users.barbkprem, true);
                     userData.settings.dashboard.pods = [pmcPodSettings];
                     testHelpers.startTheAppAndLogin(userData);
                     $mainRegion = testHelpers.theApp.mainRegion.$el;
@@ -146,10 +146,8 @@ function(
 
                 it("Should request pmc data", function()
                 {
-                    /*
-                    reporting/performancedata
-                    var urlExtension = "/" + start + "/" + end + "/" + workoutTypes + "/" + this.ctlConstant + "/" + this.ctlStartValue + "/" + this.atlConstant + "/" + this.atlStartValue;
-                    */
+                    console.log(_.pluck(testHelpers.fakeAjaxRequests, "url"));
+                    console.log(_.pluck(testHelpers.fakeAjaxRequests, "status"));
                     expect(testHelpers.hasRequest("POST", "reporting/performancedata")).to.equal(true);
                 });
 

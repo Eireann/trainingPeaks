@@ -214,6 +214,7 @@
     cursor: pointer;
 
     .chartTitle, 
+    .podTitle,
     .customDateRange {
         display: block; /* Fallback for non-webkit */
         display: -webkit-box;
@@ -300,7 +301,8 @@
             border: 1px solid transparent;
          }
 
-         .chartTitle {
+         .chartTitle, .podTitle
+         {
             display: block; /* Fallback for non-webkit */
             display: -webkit-box;
             @include calc("max-width", "100% - 18px");;
@@ -322,7 +324,7 @@
             font-family:$fontFamilyRegular;
         }
 
-         .chartContainer {
+         .chartContainer, .podContent {
             top:83px;
             @include calc("height", "100% - 112px");
          }
@@ -359,7 +361,8 @@
         border: 1px solid $TPGrey11;
     }
 
-    .chartContainer
+
+    .chartContainer, .podContent
     {
         margin: 0px 0px 0px 0px;
         position: absolute;
@@ -386,7 +389,16 @@
         }
     }
 
+    &.fitnessHistory .podContent
+    {
+        overflow: auto;
+        @include nice-scrollbar();
 
+        table
+        {
+            margin: 0;
+        }
+    }
 
     .chartButtons
     {
@@ -482,7 +494,8 @@
         border:1px solid $white;
         color:$TPGrey12;
 
-        .chartContainer
+        .chartContainer,
+        .podContent
         {
             display: none;
         }
@@ -527,11 +540,8 @@
         width: 390px;
         height: 390px;
 
-        &.pmcChart {
+        &.pmcChart, &.fitnessHistory {
             width: 790px;
-            .chartContainer {
-            
-            }
         }
 
         &.workoutSummaryChart {

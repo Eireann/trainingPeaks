@@ -40,7 +40,8 @@ function(
         return _.contains(premiumUserTypes, userType);
     }
 
-    function Feature(options, callback) {
+    function Feature(options, callback)
+    {
         callback.options = options;
         return callback;
     }
@@ -56,10 +57,10 @@ function(
         return _.isFunction(model.get) ? model.get(key) : model[key];
     }
    
-    _.extend(FeatureAuthorizer.prototype, {
-
-        features: {
-
+    _.extend(FeatureAuthorizer.prototype,
+    {
+        features:
+        {
             /*
             attributes: { athlete: athlete } // current app athlete or other athlete object
             options: none
