@@ -310,14 +310,7 @@ function(
 
                     $.when(self.session.userAccessPromise, athletePromise).done(function()
                     {
-                        if (!self.featureAllowedForUser("alpha1", self.user))
-                        {
-                            self.session.logout(notAllowedForAlphaTemplate);
-                        }
-                        else
-                        {
-                            deferred.resolve();
-                        }
+                        deferred.resolve();
                     });
                 });
             });
