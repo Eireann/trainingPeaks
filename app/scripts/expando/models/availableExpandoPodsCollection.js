@@ -71,7 +71,7 @@ function(
             {
                 podType: 1081,
                 name: "Laps & Splits Column Chart",
-                cols: 2
+                widthInColumns: 2
             }
             ]);
         }
