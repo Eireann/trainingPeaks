@@ -1,70 +1,70 @@
-{{#hoverBox this "leftarrow"}}
-
-<div id="closeIcon" />
-<h3 class="subheadbold planTitle">{{ title }}</h3>
-{{# with details }}
-<div class="planInfo">
-    <div class="small authorInfo" >{{$ "By"}} {{ author }} | {{ weekcount }} weeks</div>
-    <div class="planId small">{{$ "ID"}} {{ planId }}</div>
-</div>
-
-<div class="planDescription small"><p>{{{descriptionText}}}</p> <p>{{$ "PeakswareLiabality"}}</p></div>
-
-
-{{#if plannedWorkoutTypeDurations }}
-<div class="planDetails">
-    <h3 class="subheadbold">{{$ "Averages" }}</h3>
-    <h3 class="subheadbold duration">{{$ "Duration"}}</h3>
-    <h3 class="subheadbold distance">{{$ "Distance"}}</h3>
-</div>
-<div class="durationDetails">
-    {{#each plannedWorkoutTypeDurations}}
-        {{#everyOther @index 2}}
-            <div class="plannedWorkoutTypes">
-                <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
-                <span class="small duration">{{#if duration}}{{ conversion "formatHours" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
-                <span class="small distance">{{#if distance}}{{ conversion "formatDistance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
-            </div>
-        {{else}}
-            <div class="plannedWorkoutTypes highlightRow">
-                <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
-                <span class="small duration">{{#if duration}}{{ conversion "formatHours" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
-                <span class="small distance">{{#if distance}}{{ conversion "formatDistance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
-            </div>
-        {{/everyOther}}
-    {{/each}}
-    <div class="planTotals">
-        <span class="small workoutType">{{$ "Total"}}</span>
-        <span class="small duration">{{#if totalDuration}}{{ conversion "formatHours" totalDuration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
-        <span class="small distance">{{#if totalDistance}}{{ conversion "formatDistance" totalDistance this "NA"}} {{ getUnitsLabel "distance"}}/wk{{ else }}NA{{/if}}</span>
+<div class="details">
+    <h3 class="subheadbold planTitle">{{ title }}</h3>
+    <a class="more">more &raquo;</a>
+    {{# with details }}
+    <div class="planInfo">
+        <div class="small authorInfo" >{{$ "By"}} {{ author }} | {{ weekcount }} weeks</div>
+        <div class="planId small">{{$ "ID"}} {{ planId }}</div>
     </div>
-</div>
-{{/if}}
-{{/with}}
 
-{{#if applyable }}
-<div class="applyPlan">
-    <h3 class="subheadbold">{{$ "ApplyPlan"}}</h3>
-</div>
-<div class="startEndPlan">
+    <div class="planDescription small"><p>{{{descriptionText}}}</p> <p>{{$ "PeakswareLiabality"}}</p></div>
 
-</div>
-<button class="apply">{{$ "Go" }}</button>
-{{/if}}
 
-{{#with details}}
-    {{#if planApplications }}
-        <div class="appliedPlans">
-            <h3 class="subheadbold">{{$ "AppliedPlans"}}</h3>
-            <div class="appliedPlansContainer">
-                {{# each planApplications }}
-                    <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                        <span class="appliedDates small">{{$ "OnCalendarFrom" }} {{ formatDate startDate }} {{$ "to" }} {{ formatDate endDate }}</span>
-                        <span class="removePlan small">{{$ "Remove" }}</span>
-                    </div>
-                {{/each}}
-            </div>
+    {{#if plannedWorkoutTypeDurations }}
+    <div class="planDetails">
+        <h3 class="subheadbold">{{$ "Averages" }}</h3>
+        <h3 class="subheadbold duration">{{$ "Duration"}}</h3>
+        <h3 class="subheadbold distance">{{$ "Distance"}}</h3>
+    </div>
+    <div class="durationDetails">
+        {{#each plannedWorkoutTypeDurations}}
+            {{#everyOther @index 2}}
+                <div class="plannedWorkoutTypes">
+                    <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
+                    <span class="small duration">{{#if duration}}{{ conversion "formatHours" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
+                    <span class="small distance">{{#if distance}}{{ conversion "formatDistance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
+                </div>
+            {{else}}
+                <div class="plannedWorkoutTypes highlightRow">
+                    <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
+                    <span class="small duration">{{#if duration}}{{ conversion "formatHours" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
+                    <span class="small distance">{{#if distance}}{{ conversion "formatDistance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
+                </div>
+            {{/everyOther}}
+        {{/each}}
+        <div class="planTotals">
+            <span class="small workoutType">{{$ "Total"}}</span>
+            <span class="small duration">{{#if totalDuration}}{{ conversion "formatHours" totalDuration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
+            <span class="small distance">{{#if totalDistance}}{{ conversion "formatDistance" totalDistance this "NA"}} {{ getUnitsLabel "distance"}}/wk{{ else }}NA{{/if}}</span>
         </div>
+    </div>
     {{/if}}
-{{/with}}
-{{/hoverBox}}
+    {{/with}}
+
+    {{#if applyable }}
+    <div class="applyPlan">
+        <h3 class="subheadbold">{{$ "ApplyPlan"}}</h3>
+    </div>
+    <div class="startEndPlan">
+
+    </div>
+    <button class="apply">{{$ "Go" }}</button>
+    {{/if}}
+
+    {{#with details}}
+        {{#if planApplications }}
+            <div class="appliedPlans">
+                <h3 class="subheadbold">{{$ "AppliedPlans"}}</h3>
+                <div class="appliedPlansContainer">
+                    {{# each planApplications }}
+                        <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
+                            <span class="appliedDates small">{{$ "OnCalendarFrom" }} {{ formatDate startDate }} {{$ "to" }} {{ formatDate endDate }}</span>
+                            <span class="removePlan small">{{$ "Remove" }}</span>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+    {{/with}}
+</div>
+<div class="preview" data-plan-id="{{ planId }}"></div>

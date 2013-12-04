@@ -55,7 +55,8 @@ requirejs.config(
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
         text: "../bower_components/requirejs-text/text",
         i18n: "../bower_components/requirejs-i18n/i18n",
-        tpcore: "../tpcore/tpcore.min"
+        tpcore: "../tpcore/tpcore.min",
+        "flot-axislabels": "../bower_components/flot-axislabels/jquery.flot.axislabels"
     },
     shim: {
         handlebars: {
@@ -124,7 +125,8 @@ requirejs.config(
                 "jquery",
                 "underscore",
                 "backbone",
-                "flot/jquery.flot"
+                "flot/jquery.flot",
+                "flot-axislabels"
             ]
         }
     }

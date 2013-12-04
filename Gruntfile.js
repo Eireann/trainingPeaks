@@ -198,7 +198,8 @@ module.exports = function(grunt)
                 src: [
                     "bower_components/lodash/dist/lodash.underscore.js",
                     "bower_components/backbone/backbone.js",
-                    "bower_components/flot/jquery.flot.js"
+                    "vendor/js/libs/flot/jquery.flot.js",
+                    "bower_components/flot-axislabels/jquery.flot.axislabels.js"
                 ]
             }
         },

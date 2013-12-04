@@ -5,9 +5,11 @@ define(
     "jqueryHtmlClean",
     "setImmediate",
     "TP",
+    "tpcore",
     "models/commands/applyTrainingPlan",
     "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
+    "shared/views/tomahawkView",
     "./trainingPlanFullDescriptionView",
     "scripts/helpers/multilineEllipsis",
     "views/calendar/library/trainingPlanDatePickerView",
@@ -21,9 +23,11 @@ function(
     jqueryHtmlClean,
     setImmediate,
     TP,
+    tpcore,
     ApplyTrainingPlanCommand,
     RemoveTrainingPlanCommand,
     UserConfirmationView,
+    TomahawkView,
     trainingPlanFullDescriptionView,
     multilineEllipsis,
     TrainingPlanDatePickerView,
@@ -32,12 +36,11 @@ function(
     trainingPlanDetailsViewTemplate
     )
 {
-    return TP.ItemView.extend(
+    var TrainingPlanDetailsView = TP.ItemView.extend(
     {
 
         tagName: "div",
         className: "trainingPlanDetails",
-        modal: true,
         dateFormat: "M/D/YYYY",
         applyStartType: TP.utils.trainingPlan.startTypeEnum.StartDate,
 
@@ -84,14 +87,9 @@ function(
         onRender: function()
         {
             var self = this;
-
-            if(this.alignedTo)
-            {
-                this.alignArrowTo(this.alignedTo);
-            }
-
             this.dateView.setElement(this.ui.dateSection);
-            self.dateView.render(); 
+            self.dateView.render();
+            this.trigger("reposition");
         },
 
         serializeData: function()
@@ -194,44 +192,29 @@ function(
             });
         },
 
-        alignArrowTo: function($element)
-        {
-            // align the top and left of this popup to the target library item
-            this.alignedTo = $element;
-            this.left($element.offset().left + $element.width() + 16);
-            var targetTop = $element.offset().top;
-            this.top(targetTop);
-
-            // offset the arrow to line up with middle of target element
-            var arrowOffset = Math.round($element.height() / 2) + 8;
-            var arrowTop = arrowOffset;
-            
-            // if we're too close to the bottom, move the window up 
-            var windowHeight = $(window).height();
-            if ((this.$el.offset().top + this.$el.height()) >= (windowHeight - 30))
-            {
-                this.top(windowHeight - this.$el.height() - 30);
-                var myTop = this.$el.offset().top;
-                arrowTop = Math.round((targetTop - myTop) + arrowOffset);
-            }
-
-            if(arrowTop > this.$el.height() - 10)
-            {
-                arrowTop = this.$el.height() - 10;
-            }
-                
-            this.$(".arrow").css("top", arrowTop + "px");
-        },
-
         moreClicked: function ()
         {
-            if (this.fullDescriptionView)
+            var $preview = this.$(".preview");
+
+            var toggleOptions =
             {
-                return;
+                effect: "bind",
+                direction: "right",
+                progress: _.bind(this.trigger, this, "reposition")
+            };
+
+            if(!$preview.is(":visible"))
+            {
+                $preview.height(this.$(".details").height());
+                $preview.show(toggleOptions);
+                this.$(".preview").tp("planpreview", { width: 550 - 20, height: 150 });
+                this.$(".more").text("less \u00ab");
             }
-            this.fullDescriptionView = new trainingPlanFullDescriptionView({ model: this.model });
-            this.fullDescriptionView.on("close", this.onDetailsClose, this);
-            this.fullDescriptionView.render().left(this.$el.offset().left + this.$el.width() + 10);
+            else
+            {
+                $preview.hide(toggleOptions);
+                this.$(".more").text("more \u00bb");
+            }
         },
 
         onDetailsClose: function ()
@@ -241,4 +224,8 @@ function(
         }
 
     });
+
+    TomahawkView.wrap(TrainingPlanDetailsView);
+
+    return TrainingPlanDetailsView;
 });
