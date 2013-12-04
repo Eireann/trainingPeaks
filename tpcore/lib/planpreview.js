@@ -15,7 +15,7 @@
     {
         url: function()
         {
-            return "//!API!/plans/v1/plans/" + this.id + "/preview";
+            return "//!API!/public/v1/plans/" + this.id + "/preview";
         }
     });
 
