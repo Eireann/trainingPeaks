@@ -212,6 +212,8 @@ function(
                 var self = this;
                 var deferred = $.Deferred();
 
+                // The endpoint requires authentication, even though there's no sensitive info...
+                // so we have to wait for that to be ready
                 this.session.userPromise.done(function()
                 {
                     self.buildInfo = new BuildInfoModel(
@@ -236,6 +238,9 @@ function(
             {
                 var self = this;
                 var deferred = $.Deferred();
+
+                // The endpoint requires authentication, even though there's no sensitive info...
+                // so we have to wait for that to be ready
                 this.session.userPromise.done(function()
                 {
                     self.timeZones = new TimeZonesModel();
