@@ -89,12 +89,12 @@ function(
 
         initialize: function(attributes, options)
         {
-            this.data = { weeks: [], months: [] };
             this._validateWorkoutTypes();
         },
 
         fetchData: function()
         {
+            this.data = { weeks: [], months: [] };
             var postData =
             {
                 workoutTypeIds: _.without(this.get("workoutTypeIds"), 0, "0", ""),
@@ -141,7 +141,7 @@ function(
 
             function format(units, value)
             {
-                return TP.utils.conversion.formatUnitsValue(units, value, { workoutTypeId: workoutType });
+                return TP.utils.conversion.formatUnitsValue(units, value, { workoutTypeId: workoutType, defaultValue: "--" });
             }
 
             function process(entry)
