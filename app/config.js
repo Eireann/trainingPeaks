@@ -125,7 +125,6 @@ requirejs.config(
                 "underscore",
                 "backbone",
                 "flot/jquery.flot",
-                "flot-axislabels"
             ]
         }
     }

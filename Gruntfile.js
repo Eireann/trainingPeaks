@@ -381,9 +381,10 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-bower-requirejs");
     grunt.loadNpmTasks("grunt-mocha");
 
+    grunt.registerTask("tpcore", ["uglify:tpcore", "uglify:tpcore.deps"]);
 
     // TESTING:
-    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "mocha:default"]);
+    grunt.registerTask("test", ["clean:coverage", "jshint", "tpcore", "setup-spec-list", "mocha:default"]);
 
     // REPORTING:
     // grunt coverage makes coverage reports available at localhost:8905/coverage/lcov-report/index.html,
@@ -401,5 +402,5 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_fast", ["clean", "uglify:tpcore", "uglify:tpcore.deps", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "clean:post_build", "targethtml:build", "revision"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 };
