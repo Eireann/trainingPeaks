@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <script>
+      window.apiConfig = { apiRoot: "//tpapi.dev.trainingpeaks.com" };
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="./tpcore.deps.min.js"></script>
+    <script type="text/javascript" src="./tpcore.min.js"></script>
+  </head>
+  <body>
+    <div class="preview" data-plan-id="4385"></div>
+    <hr>
+    <div class="preview" data-plan-id="5129"></div>
+    <script>
+      $(".preview").tp("planpreview");
+    </script>
+  </body>
+</html>

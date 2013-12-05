@@ -182,6 +182,25 @@ module.exports = function(grunt)
             {
                 dest: "build/release/single.min.js",
                 src: "build/release/single.js"
+            },
+            tpcore:
+            {
+                dest: "tpcore/tpcore.min.js",
+                src: [
+                    "tpcore/lib/main.js",
+                    "tpcore/lib/units.js",
+                    "tpcore/lib/planpreview.js",
+                ]
+            },
+            "tpcore.deps":
+            {
+                dest: "tpcore/tpcore.deps.min.js",
+                src: [
+                    "bower_components/lodash/dist/lodash.underscore.js",
+                    "bower_components/backbone/backbone.js",
+                    "vendor/js/libs/flot/jquery.flot.js",
+                    "bower_components/flot-axislabels/jquery.flot.axislabels.js"
+                ]
             }
         },
 
@@ -269,7 +288,7 @@ module.exports = function(grunt)
             pre_instrument:
             {
                 dest: "coverage/",
-                src: ["test/**", "app/**"]
+                src: ["test/**", "app/**", "tpcore/*.min.js*"]
             },
 
             // stuff that needs to be clean and not modified by test coverage instrumentation
@@ -362,9 +381,10 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-bower-requirejs");
     grunt.loadNpmTasks("grunt-mocha");
 
+    grunt.registerTask("tpcore", ["uglify:tpcore", "uglify:tpcore.deps"]);
 
     // TESTING:
-    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "mocha:default"]);
+    grunt.registerTask("test", ["clean:coverage", "jshint", "tpcore", "setup-spec-list", "mocha:default"]);
 
     // REPORTING:
     // grunt coverage makes coverage reports available at localhost:8905/coverage/lcov-report/index.html,
@@ -374,13 +394,13 @@ module.exports = function(grunt)
 
     // grunt debug does only compass and copy
     grunt.registerTask("default", ["debug"]);
-    grunt.registerTask("debug", ["clean:debug", "compass:debug", "copy:debug"]);
+    grunt.registerTask("debug", ["clean:debug", "compass:debug", "copy:debug", "uglify:tpcore", "uglify:tpcore.deps"]);
 
     // grunt build builds a single minified js for dev/uat/live, at build/release
     // grunt build_debug does the same but doesn't minify, and points to local dev config
-    grunt.registerTask("build_common", ["clean", "jshint", "coverage", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
+    grunt.registerTask("build_common", ["clean", "jshint", "uglify:tpcore", "uglify:tpcore.deps", "coverage", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug"]);
-    grunt.registerTask("build_debug_fast", ["clean", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
+    grunt.registerTask("build_debug_fast", ["clean", "uglify:tpcore", "uglify:tpcore.deps", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "clean:post_build", "targethtml:build", "revision"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 };

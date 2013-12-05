@@ -524,7 +524,7 @@ Licensed under the MIT license.
                     labelMargin: 5, // in pixels
                     axisMargin: 8, // in pixels
                     axisOffset: { top: 0, left: 0, bottom: 0, right: 0 }, // top/left/bottom/right object
-                    borderWidth: 2, // in pixels
+                    borderWidth: { top: 2, left: 2, bottom: 2, right: 2 }, // in pixels
                     borderOffset: { top: 0, left: 0, bottom: 0, right: 0 }, // top/left/bottom/right object
                     minBorderMargin: null, // in pixels, null means taken from points radius
                     markings: null, // array of ranges or fn: axes -> array of ranges

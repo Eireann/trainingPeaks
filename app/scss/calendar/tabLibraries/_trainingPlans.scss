@@ -2,10 +2,43 @@
 @import "globalCSS/mixIn";
 
 .trainingPlanDetails {
-    
-    .hoverBoxContents {
+
+    .details {
+        float: left;
         max-width: 330px;
         overflow:visible !important;
+    }
+
+    .preview {
+        @include nice-scrollbar;
+        display: none;
+        float: left;
+        margin-left: 20px;
+        width: 550px;
+        overflow: auto;
+
+        p
+        {
+            @extend .small; line-height: 1.6;
+        }
+        h2
+        {
+            font-family: $fontFamilyHeavy;
+            font-size: 14px;
+            line-height:$fontSizeXLarge;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+            font-weight:normal;
+        }
+        h3
+        {
+            @extend .subheadbold;
+        }
+
+        .axis-label
+        {
+            @extend .small;
+        }
     }
 
     .infoResults
@@ -15,7 +48,18 @@
 
     .planTitle
     {
+        float: left;
         margin-top: 12px;
+    }
+
+    .more
+    {
+        display: block;
+        float: right;
+        margin-top: 12px;
+        color: $TPBlue;
+        font-size: 11px;
+        cursor: pointer;
     }
 
     .small
@@ -30,6 +74,8 @@
 
     .planInfo
     {
+        clear: both;
+
         .authorInfo
         {
             float: left;
@@ -235,15 +281,6 @@
     {
         float: left;
         margin: 4px 5px 0 5px;
-    }  
-
-    .more
-    {
-        margin-top: -10px;
-        margin-left: 275px;
-        color: $TPBlue;
-        font-size: 11px;
-        cursor: pointer;
     }
 }
 

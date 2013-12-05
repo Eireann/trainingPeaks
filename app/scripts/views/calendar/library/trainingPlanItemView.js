@@ -86,9 +86,9 @@ function($, _, TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTempl
             {
                 return;
             }
-            this.detailsView = new TrainingPlanDetailsView({ model: this.model });
+            this.detailsView = new TrainingPlanDetailsView.Tomahawk({ model: this.model, target: this.$el, offset: "right" });
             this.detailsView.on("close", this.onDetailsClose, this);
-            this.detailsView.render().alignArrowTo(this.$el);
+            this.detailsView.render();
         },
 
         onDetailsClose: function()
