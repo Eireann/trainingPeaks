@@ -119,8 +119,8 @@ function ($, _, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             if(this._xhr && this._xhr.state() === "pending")
             {
-                var deferred = $.Deferred;
-                this._xhr.done(function() { self.save.apply(self, args).then(deferred.resolve, deferred.reject, deferred.progress); });
+                var deferred = $.Deferred();
+                this._xhr.always(function() { self.save.apply(self, args).then(deferred.resolve, deferred.reject, deferred.progress); });
                 return deferred.promise();
             }
 
@@ -128,7 +128,7 @@ function ($, _, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             if(this.isNew())
             {
                 this._xhr = xhr;
-                xhr.done(function() { self._xhr = undefined; });
+                xhr.always(function() { self._xhr = undefined; });
             }
             return xhr;
         },
