@@ -1,0 +1,67 @@
+<table class="frameworkTable">
+    <thead>
+        <tr>
+            <th>Week of</th>
+            <th>Duration</th>
+            <th>Distance ({{ getUnitsLabel "distance" workoutType }})</th>
+            <th>TSS</th>
+            {{#if byDistance}}
+            <th>400m</th>
+            <th>1km</th>
+            <th>1600m</th>
+            <th>5km</th>
+            <th>10km</th>
+            {{else}}
+            <th>5s</th>
+            <th>1m</th>
+            <th>5m</th>
+            <th>20m</th>
+            <th>60m</th>
+            {{/if}}
+        </tr>
+    </thead>
+    <tbody>
+        {{#each weeks }}
+        <tr {{#if incomplete}}class="incomplete"{{/if}}>
+            <td>{{ formatDate startDate }}</td>
+            <td>{{ duration }}</td>
+            <td>{{ distance }}</td>
+            <td>{{ tss }}</td>
+            <td>{{ peak01 }}</td>
+            <td>{{ peak02 }}</td>
+            <td>{{ peak03 }}</td>
+            <td>{{ peak04 }}</td>
+            <td>{{ peak05 }}</td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="9"><center>Loading&hellip;</center></td>
+        </tr>
+        {{/each }}
+    </tbody>
+    <thead>
+        <tr>
+            <th>Recent Months</th>
+            <th colspan="9"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each months }}
+        <tr {{#if incomplete}}class="incomplete"{{/if}}>
+            <td>{{ formatDate startDate "MMMM 'YY" }}</td>
+            <td>{{ duration }}</td>
+            <td>{{ distance }}</td>
+            <td>{{ tss }}</td>
+            <td>{{ peak01 }}</td>
+            <td>{{ peak02 }}</td>
+            <td>{{ peak03 }}</td>
+            <td>{{ peak04 }}</td>
+            <td>{{ peak05 }}</td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="9"><center>Loading&hellip;</center></td>
+        </tr>
+        {{/each }}
+    </tbody>
+</table>

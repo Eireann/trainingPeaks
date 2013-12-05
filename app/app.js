@@ -209,27 +209,45 @@ function(
             // display build info
             this.addInitializer(function()
             {
-                this.buildInfo = new BuildInfoModel(
-                    {
-                        marsVersion: this.apiConfig.buildNumber
-                    }
-                );
+                var self = this;
+                var deferred = $.Deferred();
 
-                if(!this.isLive())
+                // The endpoint requires authentication, even though there's no sensitive info...
+                // so we have to wait for that to be ready
+                this.session.userPromise.done(function()
                 {
-                    var buildInfoView = new BuildInfoView({ model: this.buildInfo });
-                    this.infoRegion.show(buildInfoView);
-                }
-                var xhr = this.buildInfo.fetch();
-                this.addBootPromise(xhr);
+                    self.buildInfo = new BuildInfoModel(
+                        {
+                            marsVersion: self.apiConfig.buildNumber
+                        }
+                    );
+
+                    if(!self.isLive())
+                    {
+                        var buildInfoView = new BuildInfoView({ model: self.buildInfo });
+                        self.infoRegion.show(buildInfoView);
+                    }
+                    var xhr = self.buildInfo.fetch();
+                    xhr.then(deferred.resolve, deferred.reject);
+                });
+                this.addBootPromise(deferred.promise());
             });
 
             // setup time zones
             this.addInitializer(function()
             {
-                this.timeZones = new TimeZonesModel();
-                var xhr = this.timeZones.fetch();
-                this.addBootPromise(xhr);
+                var self = this;
+                var deferred = $.Deferred();
+
+                // The endpoint requires authentication, even though there's no sensitive info...
+                // so we have to wait for that to be ready
+                this.session.userPromise.done(function()
+                {
+                    self.timeZones = new TimeZonesModel();
+                    var xhr = self.timeZones.fetch();
+                    xhr.then(deferred.resolve, deferred.reject);
+                });
+                this.addBootPromise(deferred.promise());
             });
 
             // add data managers
@@ -291,14 +309,7 @@ function(
 
                     $.when(self.session.userAccessPromise, athletePromise).done(function()
                     {
-                        if (!self.featureAllowedForUser("alpha1", self.user))
-                        {
-                            self.session.logout(notAllowedForAlphaTemplate);
-                        }
-                        else
-                        {
-                            deferred.resolve();
-                        }
+                        deferred.resolve();
                     });
                 });
             });

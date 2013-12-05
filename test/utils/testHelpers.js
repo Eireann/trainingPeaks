@@ -49,9 +49,6 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
             // flag as started so we know whether to shut it down
             this.theApp.started = true;
-
-            this.resolveRequest("GET", "sysinfo/v1/assemblyversion", {});
-            this.resolveRequest("GET", "sysinfo/v1/timezoneswithlabels", []);
         },
 
         stopTheApp: function()
@@ -204,6 +201,9 @@ function(_, Backbone, TP, xhrData, MarsApp)
             this.resolveRequest("GET", "users/v1/user$", userData);
             this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
             this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings);
+
+            this.resolveRequest("GET", "sysinfo/v1/assemblyversion", {});
+            this.resolveRequest("GET", "sysinfo/v1/timezoneswithlabels", []);
         },
 
         startTheAppAndLogin: function(userData, accessRights, athleteSettings)

@@ -13,6 +13,8 @@
     left:5%;
     content: ' ';
     display: block;
+
+    z-index: 999;
    
     @media print {
         display:none;

@@ -8,9 +8,8 @@ function(
    TP
 )
 {
-
-    var FilteredSubCollection = TP.Collection.extend({
-
+    var FilteredSubCollection = TP.Collection.extend(
+    {
         initialize: function(models, options)
         {
             if(!options.sourceCollection)
@@ -63,8 +62,6 @@ function(
         {
             this.remove(model);
         }
-
-
     });
 
     return FilteredSubCollection;
