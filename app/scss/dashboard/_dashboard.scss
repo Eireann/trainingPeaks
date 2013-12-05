@@ -1045,3 +1045,12 @@
         opacity:0.5;
     }
 }
+
+.fitnessHistory
+{
+    .incomplete td
+    {
+        font-style: italic;
+        color: $thisWeekBlue;
+    }
+}

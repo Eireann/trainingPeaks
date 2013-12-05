@@ -22,7 +22,7 @@
     </thead>
     <tbody>
         {{#each weeks }}
-        <tr>
+        <tr {{#if incomplete}}class="incomplete"{{/if}}>
             <td>{{ formatDate startDate }}</td>
             <td>{{ duration }}</td>
             <td>{{ distance }}</td>
@@ -47,7 +47,7 @@
     </thead>
     <tbody>
         {{#each months }}
-        <tr>
+        <tr {{#if incomplete}}class="incomplete"{{/if}}>
             <td>{{ formatDate startDate "MMMM 'YY" }}</td>
             <td>{{ duration }}</td>
             <td>{{ distance }}</td>
