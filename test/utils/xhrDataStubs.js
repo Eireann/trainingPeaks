@@ -34,6 +34,7 @@ function()
                 "units": 0,
                 "dateFormat": null,
                 "timeZone": null,
+                "hasCompletedProfile": true,
                 "heartRateZones": [{ "threshold": 110,
                     "maximumHeartRate": 160,
                     "restingHeartRate": 15,
