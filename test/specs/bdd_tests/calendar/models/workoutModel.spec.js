@@ -65,6 +65,42 @@ function(
             });
         });
 
+        describe("duplicate POST protection", function()
+        {
+            it("Should not save multiple copies", function()
+            {
+                var model = new WorkoutModel();
+                model.save();
+                model.save();
+
+                var requests = testHelpers.findAllRequests("POST", "/workouts");
+                expect(requests).to.have.length(1);
+
+                testHelpers.resolveRequest("POST", "/workouts", { workoutId: 42 });
+
+                requests = testHelpers.findAllRequests("POST", "/workouts");
+                expect(requests).to.have.length(1);
+
+                requests = testHelpers.findAllRequests("PUT", "/workouts/42");
+                expect(requests).to.have.length(1);
+            });
+            
+            it("Should start delayed saves on failures", function()
+            {
+                var model = new WorkoutModel();
+                model.save();
+                model.save();
+
+                var requests = testHelpers.findAllRequests("POST", "/workouts");
+                expect(requests).to.have.length(1);
+
+                testHelpers.rejectRequest("POST", "/workouts");
+
+                requests = testHelpers.findAllRequests("POST", "/workouts");
+                expect(requests).to.have.length(2);
+            });
+        });
+
         describe("Cut, Copy, Paste", function()
         {
             var workout;
