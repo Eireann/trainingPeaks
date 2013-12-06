@@ -286,7 +286,7 @@ function(
 
                 this.bootPromise.then(function()
                 {
-                    if(!self.user.getAthleteSettings().get("hasCompletedProfile"))
+                    if(self.user.getAccountSettings().get("shouldCompleteProfile"))
                     {
                         var view = new InitialProfileView({ model: self.user });
                         view.render();
