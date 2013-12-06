@@ -1,6 +1,6 @@
+<a class="more">more &raquo;</a>
 <div class="details">
     <h3 class="subheadbold planTitle">{{ title }}</h3>
-    <a class="more">more &raquo;</a>
     {{# with details }}
     <div class="planInfo">
         <div class="small authorInfo" >{{$ "By"}} {{ author }} | {{ weekcount }} weeks</div>
@@ -67,4 +67,6 @@
         {{/if}}
     {{/with}}
 </div>
-<div class="preview" data-plan-id="{{ planId }}"></div>
+<div class="preview">
+    <div class="planpreview" data-plan-id="{{ planId }}"></div>
+</div>
