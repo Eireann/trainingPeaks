@@ -44,8 +44,7 @@ function(TP)
             virtualCoachEmailHour: null,
             thresholdsAutoApply: false,
             thresholdsNotifyAthlete: false,
-            thresholdsNotifyCoach: false,
-            hasCompletedProfile: false
+            thresholdsNotifyCoach: false
         },
 
         url: function()
