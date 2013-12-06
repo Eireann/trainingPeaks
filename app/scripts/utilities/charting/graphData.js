@@ -271,6 +271,11 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             return null;
         },
 
+        getMsOffsetOfLastSample: function()
+        {
+            return this.flatSamples.msOffsetsOfSamples.slice(-1);
+        },
+
         getDistanceFromMsOffset: function (msOffset)
         {
             var index = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, msOffset);

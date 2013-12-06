@@ -352,12 +352,20 @@ function(
             if (this.currentAxis === "time")
             {
                 startOffsetMs = Math.round(plotSelectionFrom);
-                endOffsetMs = Math.round(plotSelectionTo);
+                endOffsetMs = Math.ceil(plotSelectionTo);
             }
             else
             {
                 startOffsetMs = this._getGraphData().getMsOffsetFromDistance(plotSelectionFrom);
                 endOffsetMs = this._getGraphData().getMsOffsetFromDistance(plotSelectionTo);
+            }
+
+            // snap to end if selection is within 1 pixel
+            var lastSampleOffset = this._getGraphData().getMsOffsetOfLastSample(); 
+            var widthOfOnePixelInMs = this.plot.getXAxes()[0].c2p(1);
+            if(lastSampleOffset - endOffsetMs <= widthOfOnePixelInMs)
+            {
+                endOffsetMs = lastSampleOffset;
             }
 
             var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
