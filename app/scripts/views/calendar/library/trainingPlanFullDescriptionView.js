@@ -3,14 +3,15 @@ define(
     "jquery",
     "underscore",
     "TP",
-    "hbs!Templates/views/calendar/library/trainingPlanFullDescriptionView"
+    "hbs!Templates/views/calendar/library/trainingPlanFullDescriptionView",
+    "tpcore"
 ],
 function(
     $,
     _,
     TP,
     trainingPlanFullDescriptionTemplate
-    )
+)
 {
     return TP.ItemView.extend(
     {
@@ -18,6 +19,7 @@ function(
         tagName: "div",
         className: "trainingPlanFullDescriptionView",
         modal: true,
+        closeOnResize: false,
 
         template:
         {
@@ -32,11 +34,7 @@ function(
         
         onRender: function()
         {
-            var windowWidth = window.innerWidth;
-            var windowHeight = window.innerHeight;
-
-            $(".fullDescription").css("width", windowWidth - 655);
-            $(".fullDescription").css("top", (windowHeight - this.$(".fullDescription").height())/2);
+            this.$(".preview").tp("planpreview");
         },
 
         onClose: function()

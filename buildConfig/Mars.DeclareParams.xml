@@ -21,4 +21,7 @@
   <parameter name="GoogleAnalyticsAccount" >
       <parameterEntry kind="TextFile" scope="index.html" match="{GA_ACCOUNT}" />
   </parameter>
+  <parameter name="HelpUrl">
+      <parameterEntry kind="TextFile" scope="index.html" match="{HELP_URL}" />
+  </parameter>
 </parameters>

@@ -2,10 +2,68 @@
 @import "globalCSS/mixIn";
 
 .trainingPlanDetails {
-    
-    .hoverBoxContents {
-        max-width: 330px;
+    @include display-flex;
+
+    .details
+    {
+        width: 330px;
         overflow:visible !important;
+    }
+
+    .preview
+    {
+        @include nice-scrollbar;
+        display: none;
+        margin-left: 20px;
+        width: 370px;
+        overflow: auto;
+        padding-right: 10px;
+
+        figure
+        {
+            margin: 5px 0;
+            padding: 0;
+        }
+
+        p
+        {
+            @extend .small; line-height: 1.6;
+        }
+
+        h2
+        {
+            font-family: $fontFamilyHeavy;
+            font-size: 12px;
+            line-height:$fontSizeXLarge;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+            font-weight:normal;
+            border-bottom: solid 1px $TPGrey2;
+        }
+
+        h3
+        {
+            @extend .subheadbold;
+        }
+
+        strong
+        {
+            font-family: $fontFamilyHeavy;
+        }
+
+        .totals
+        {
+            @extend .small;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .axis-label
+        {
+            margin-top: 5px;
+            @extend .small;
+        }
     }
 
     .infoResults
@@ -15,7 +73,19 @@
 
     .planTitle
     {
+        float: left;
         margin-top: 12px;
+    }
+
+    .more
+    {
+        position: absolute;
+        display: block;
+        top: 5px;
+        right: 24px;
+        color: $TPBlue;
+        font-size: 12px;
+        cursor: pointer;
     }
 
     .small
@@ -30,6 +100,8 @@
 
     .planInfo
     {
+        clear: both;
+
         .authorInfo
         {
             float: left;
@@ -235,15 +307,6 @@
     {
         float: left;
         margin: 4px 5px 0 5px;
-    }  
-
-    .more
-    {
-        margin-top: -10px;
-        margin-left: 275px;
-        color: $TPBlue;
-        font-size: 11px;
-        cursor: pointer;
     }
 }
 

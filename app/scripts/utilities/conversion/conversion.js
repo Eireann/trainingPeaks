@@ -909,6 +909,15 @@
                 case "date":
                     return conversion.parseDate(value, options);
 
+                case "tss":
+                    return conversion.parseTSS(value, options);
+
+                case "if":
+                    return conversion.parseIF(value, options);
+
+                case "energy":
+                    return conversion.parseEnergy(value, options);
+
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
             }

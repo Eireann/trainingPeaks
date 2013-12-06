@@ -50,7 +50,7 @@ function(
         {
             this.on("library:unselect", this.unSelect, this);
             this.sourceCollection = this.collection;
-            this.model = new TP.Model({homeRoot: theMarsApp.apiConfig.homeRoot });
+            this.model = new TP.Model({storeUrl: theMarsApp.apiConfig.trainingPlanStoreUrl });
         },
 
         getItemView: function(item)

@@ -205,42 +205,26 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
         {
             var _func = function(axis)
             {
-                var lowerCaseAxisName = axisName;
-                var ticksArray = [];
-                var max = axis.datamax;
-
-                if (lowerCaseAxisName && lowerCaseAxisName === "time")
+                if (axisName && axisName === "time")
                 {
                     if (axis.tickSize <= 120000)
+                    {
                         axis.tickSize = 120000;
-                    else if (axis.tickSize <= 300000)
-                        axis.tickSize = 300000;
-                    else if (axis.tickSize <= 600000)
-                        axis.tickSize = 600000;
-                    else if (axis.tickSize <= 900000)
-                        axis.tickSize = 900000;
-                    else if (axis.tickSize <= 1200000)
-                        axis.tickSize = 1200000;
-                    else if (axis.tickSize <= 1500000)
-                        axis.tickSize = 1500000;
-                    else if (axis.tickSize <= 1800000)
-                        axis.tickSize = 1800000;
-                    else if (axis.tickSize <= 2100000)
-                        axis.tickSize = 2100000;
-                    else if (axis.tickSize <= 2400000)
-                        axis.tickSize = 2400000;
-                    else if (axis.tickSize <= 2700000)
-                        axis.tickSize = 2700000;
+                    }
                     else
-                        axis.tickSize -= (axis.tickSize % 3000000);
+                    {
+                        axis.tickSize = Math.ceil(axis.tickSize / 300000) * 300000;
+                    }
                 }
 
-                while (max > 0)
+                // Align first tick to tickSize intervals
+                var start = Math.ceil(axis.min / axis.tickSize) * axis.tickSize;
+                var ticksArray = [];
+
+                // Generate list of ticks
+                for(var value = start; value < axis.max; value += axis.tickSize)
                 {
-                    if (lowerCaseAxisName && lowerCaseAxisName === "distance")
-                        max -= axis.tickSize;
-                    ticksArray.push(axis.datamax - max);
-                    max -= axis.tickSize;
+                    ticksArray.push(value);
                 }
 
                 return ticksArray;

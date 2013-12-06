@@ -40,7 +40,8 @@ function(
         return _.contains(premiumUserTypes, userType);
     }
 
-    function Feature(options, callback) {
+    function Feature(options, callback)
+    {
         callback.options = options;
         return callback;
     }
@@ -56,10 +57,10 @@ function(
         return _.isFunction(model.get) ? model.get(key) : model[key];
     }
    
-    _.extend(FeatureAuthorizer.prototype, {
-
-        features: {
-
+    _.extend(FeatureAuthorizer.prototype,
+    {
+        features:
+        {
             /*
             attributes: { athlete: athlete } // current app athlete or other athlete object
             options: none
@@ -269,7 +270,22 @@ function(
             */
             ViewPlanStore: Feature({}, function(user, userAccess, attributes, options)
             {
-                return userAccess.getBoolean(accessRights.ids.HidePlanStoreForCoachedByAthletes) ? false : true;
+
+                // runnersworld users can always see it
+                if("runnersworld" === user.getAffiliateSettings().get("code"))
+                {
+                    return true;
+                }
+
+                // coach-paid premium user, or basic user, with coach can't see it
+                if(user.getAccountSettings().get("isCoached"))
+                {
+                    return false;
+                }
+
+                // everybody else can see it
+                return true;
+
             }),
 
             /*

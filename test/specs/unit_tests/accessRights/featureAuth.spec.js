@@ -461,6 +461,28 @@ function(
                     expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.ViewAthleteCalendar, attributes)).to.equal(true);
                 });
             });
+
+            describe("ViewPlanStore", function()
+            {
+
+                it("Should allow runnersworld affiliates", function()
+                {
+                    featureAuthorizer.user.getAffiliateSettings().set("code", "runnersworld");
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.ViewPlanStore)).to.equal(true);
+                });
+
+                it("Should not allow coached athletes", function()
+                {
+                    featureAuthorizer.user.getAccountSettings().set("isCoached", true);
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.ViewPlanStore)).to.equal(false);
+                });
+
+                it("Should allow other athletes", function()
+                {
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.ViewPlanStore)).to.equal(true);
+                });
+
+            });
         });
 
 

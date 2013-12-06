@@ -17,6 +17,7 @@ function(
 
         className: "tomahawk",
         modal: true, 
+        closeOnResize: false,
 
         template:
         {
@@ -52,7 +53,7 @@ function(
             this.ui.content.addClass(_.result(this.view, "className"));
 
             this.listenTo(this.view, "close", _.bind(this.close, this));
-            this.listenTo(this.view, "render", _.bind(this.position, this));
+            this.listenTo(this.view, "render reposition", _.bind(this.position, this));
 
             if(this.$el.parent().length === 0)
             {
@@ -69,6 +70,11 @@ function(
             {
                 this.view.close();
             }
+        },
+
+        rePositionView: function()
+        {
+            this.position();
         },
 
         position: function()

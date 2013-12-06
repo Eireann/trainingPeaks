@@ -43,7 +43,13 @@ function(
             "energyPlanned": null,
             "elevationGainPlanned": null,
             "description": null,
-            "exerciseLibraryItemFilters": null
+            "exerciseLibraryItemFilters": null,
+
+            // only populated on details fetch
+            "iExerciseLibraryItemValue": null,
+            "referenceMediaValue": null,
+            "attachmentFiles": null,
+            "isStructuredWorkout": null
         },
 
         initialize: function(attrs, options)

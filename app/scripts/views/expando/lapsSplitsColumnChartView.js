@@ -92,7 +92,6 @@ function(
 
         onRender: function()
         {
-            this.$el.toggleClass("noData", !this.collection.length);
             setImmediate(_.bind(this._renderChart, this));
         },
 
@@ -105,6 +104,11 @@ function(
 
             var columns = this.columns = this.lapsStats.processColumns({ format: false });
             this.rows = this.lapsStats.processRows({ format: { withLabel: true } });
+
+            var noData = this.rows.length < 1 || this.columns.length < 1 || this.columns[0].meta.id !== 1;
+            this.$el.toggleClass("noData", noData);
+
+            if(noData) return;
 
             var series = _.map(_.rest(columns, 1), function(column, i)
             {

@@ -20,20 +20,22 @@ function(
     // because packery doesn't work with node
     if(!$.fn.packery)
     {
-        return TP.CollectionView.extend({
+        return TP.CollectionView.extend(
+        {
             layout: function() { return; },
             enablePackeryResize: function() { return; },
             disablePackeryResize: function() { return; }
         });
     }
 
-    var PackeryCollectionView = TP.CollectionView.extend({
+    var PackeryCollectionView = TP.CollectionView.extend(
+    {
         className: "packeryCollection",
 
         initialize: function(options)
         {
-
-            _.merge(options, {
+            _.merge(options,
+            {
                 packery:
                 {
                     rowHeight: 390,
@@ -177,7 +179,8 @@ function(
         _setupResizable: function(view)
         {
             var self = this;
-            view.$el.resizable({
+            view.$el.resizable(
+            {
                 resize: function(event, ui)
                 {
                     var x = self.options.packery.columnWidth;

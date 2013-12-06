@@ -286,8 +286,7 @@ function(
 
                 this.bootPromise.then(function()
                 {
-                    // TODO: Once new API exists, use that
-                    if(/showprofile/.test(window.location.search))
+                    if(self.user.getAccountSettings().get("shouldCompleteProfile"))
                     {
                         var view = new InitialProfileView({ model: self.user });
                         view.render();

@@ -7,4 +7,5 @@
  	<setParameter name="ApiRoot" value="https://tpapi.trainingpeaks.com" />
  	<setParameter name="OauthRoot" value="https://oauth.trainingpeaks.com" />
 	<setParameter name="GoogleAnalyticsAccount" value="UA-42726244-2" />
+    <setParameter name="HelpUrl" value="http://help.trainingpeaks.com" />
 </parameters>

@@ -53,7 +53,8 @@ function(
         initialize: function()
         {
             var birthday = moment(theMarsApp.user.get("birthday"));
-            this.model = new TP.Model({
+            this.model = new TP.Model(
+            {
                 language: theMarsApp.user.get("language") || "en-us",
                 unitPreference: theMarsApp.user.get("units") || 1,
                 country: theMarsApp.user.get("country") || "US",
@@ -134,6 +135,7 @@ function(
             if(this._validate())
             {
                 this.$("input[type=submit]").attr("disabled", true);
+
                 this._saveAndClose().fail(function()
                 {
                     self._showError("Failed to save profile");
@@ -144,6 +146,7 @@ function(
 
         _saveAndClose: function()
         {
+            this.waitingOn();
             var self = this;
             var userPromise = theMarsApp.user.save(
             {
@@ -177,6 +180,12 @@ function(
 
             return $.when(profilePromise, userPromise, athleteDeferred.promise()).then(function()
             {
+                if(self.$("#interestedIn"))
+                {
+                    var interestedIn = self.$("#interestedIn").val();
+                    TP.analytics("send", { "hitType": "event", "eventCategory": "persona", "eventAction": "submitProfile", "eventLabel": interestedIn });
+                }
+
                 theMarsApp.calendarManager.reset();
                 self.close();
             });
