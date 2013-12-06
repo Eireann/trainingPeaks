@@ -2,19 +2,18 @@
 @import "globalCSS/mixIn";
 
 .trainingPlanDetails {
+    @include display-flex;
 
     .details {
-        float: left;
-        max-width: 330px;
+        width: 330px;
         overflow:visible !important;
     }
 
     .preview {
         @include nice-scrollbar;
         display: none;
-        float: left;
         margin-left: 20px;
-        width: 550px;
+        width: 370px;
         overflow: auto;
 
         p
@@ -37,6 +36,7 @@
 
         .axis-label
         {
+            margin-top: 5px;
             @extend .small;
         }
     }

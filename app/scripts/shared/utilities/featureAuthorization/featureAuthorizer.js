@@ -270,7 +270,22 @@ function(
             */
             ViewPlanStore: Feature({}, function(user, userAccess, attributes, options)
             {
-                return userAccess.getBoolean(accessRights.ids.HidePlanStoreForCoachedByAthletes) ? false : true;
+
+                // runnersworld users can always see it
+                if("runnersworld" === user.getAffiliateSettings().get("code"))
+                {
+                    return true;
+                }
+
+                // coach-paid premium user, or basic user, with coach can't see it
+                if(user.getAccountSettings().get("isCoached"))
+                {
+                    return false;
+                }
+
+                // everybody else can see it
+                return true;
+
             }),
 
             /*

@@ -207,7 +207,7 @@ function(
             {
                 $preview.height(this.$(".details").height());
                 $preview.show(toggleOptions);
-                this.$(".preview").tp("planpreview", { width: 550 - 20, height: 150 });
+                this.$(".preview").tp("planpreview", { width: 370 - 20, height: 150 });
                 this.$(".more").text("less \u00ab");
             }
             else
