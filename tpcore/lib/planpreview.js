@@ -48,10 +48,20 @@
 
         display: function()
         {
+            function sum(a, b) { return a + b; }
+            var totalDistance = _.reduce(this.model.get("trainingDistanceByWeek"), sum);
+            var totalDuration = _.reduce(this.model.get("trainingDurationByWeek"), sum);
+
             var markup =
             [
+                "<figure>",
+                "<div class='totals'>",
+                totalDistance > 0 ? "Total Distance: <strong>" + TP.utils.format('m', 'mi', totalDistance) + "</strong><br>" : "",
+                totalDuration > 0 ? "Total Duration: <strong>" + TP.utils.format('h', 'min', totalDuration) + "</strong>" : "",
+                "</div>",
                 "<div class='plot'></div>",
                 "<div class='axis-label' style='text-align:center;'>WEEKS</div>",
+                "</figure>",
                 "<h2>Sample Workouts:</h2>",
                 _.map(this.model.get("workoutPreviews"), function(workout, index) { return PreviewTemplate({ workout: workout, index: index }); }).join(""),
             ].join("");
@@ -114,10 +124,12 @@
             };
 
 
+            var $figure = this.$("figure");
+            $figure.width(this.options.width);
+
             var $plot = this.$(".plot");
-            $plot.css({ position: "relative" });
+            $plot.css({ position: "relative", width: "auto" });
             $plot.height(this.options.height);
-            $plot.width(this.options.width);
             $plot.plot(series, options);
         }
 
