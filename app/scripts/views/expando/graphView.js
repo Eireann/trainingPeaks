@@ -351,7 +351,7 @@ function(
 
             if (this.currentAxis === "time")
             {
-                startOffsetMs = Math.round(plotSelectionFrom);
+                startOffsetMs = Math.floor(plotSelectionFrom);
                 endOffsetMs = Math.ceil(plotSelectionTo);
             }
             else
