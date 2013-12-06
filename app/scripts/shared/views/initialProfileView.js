@@ -53,6 +53,18 @@ function(
         initialize: function()
         {
             var birthday = moment(theMarsApp.user.get("birthday"));
+
+            var powerThreshold = theMarsApp.user.getAthleteSettings().get("powerZones.0.threshold") || 200;
+            var heartRateThreshold = theMarsApp.user.getAthleteSettings().get("heartRateZones.0.threshold") || 160;
+            var speedThreshold = theMarsApp.user.getAthleteSettings().get("speedZones.0.threshold") || 2.68224;
+            var swimThreshold = 0.762;
+
+            var swimZones = _.find(theMarsApp.user.getAthleteSettings().get("speedZones"), { workoutTypeId: 1 });
+            if(swimZones && swimZones.threshold)
+            {
+                swimThreshold = swimZones.threshold;
+            }
+
             this.model = new TP.Model(
             {
                 language: theMarsApp.user.get("language") || "en-us",
@@ -63,10 +75,10 @@ function(
                 birthdayYear: birthday && birthday.year(),
                 runUnits: "pace",
                 swimUnits: 1,
-                thresholdPower: 200,
-                thresholdHeartRate: 160,
-                runPaceSpeed: 2.68224,
-                swimPace: 0.762
+                thresholdPower: powerThreshold,
+                thresholdHeartRate: heartRateThreshold,
+                runPaceSpeed: speedThreshold,
+                swimPace: swimThreshold
             });
         },
 
