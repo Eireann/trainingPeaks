@@ -8,9 +8,7 @@
     "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel",
-    "shared/models/expandoSettingsModel",
-    "shared/models/recurringPaymentsCollection",
-    "shared/models/paymentHistoryCollection"
+    "shared/models/expandoSettingsModel"
 ],
 function(
     $,
@@ -21,9 +19,7 @@ function(
     AccountSettingsModel,
     AthleteSettingsModel, 
     DashboardSettingsModel,
-    ExpandoSettingsModel,
-    RecurringPaymentsCollection,
-    PaymentHistoryCollection
+    ExpandoSettingsModel
          )
 {
     return TP.APIDeepModel.extend(
@@ -275,24 +271,6 @@ function(
             return this.passwordSettings;
         },
 
-        getPaymentHistoryCollection: function()
-        {
-            if(!this.paymentHistoryCollection)
-            {
-                this.paymentHistoryCollection = new PaymentHistoryCollection();
-            }
-            return this.paymentHistoryCollection;
-        },
-
-        getRecurringPaymentsCollection: function()
-        {
-            if(!this.recurringPaymentsCollection)
-            {
-                this.recurringPaymentsCollection = new RecurringPaymentsCollection();
-            }
-            return this.recurringPaymentsCollection;
-        },
-
         populateUserModels: function(data)
         {
 
@@ -315,7 +293,8 @@ function(
         },
 
         // don't save settings or athletes, handle those separately
-        toJSON: function(options) {
+        toJSON: function(options)
+        {
             var attrs = _.clone(this.attributes);
             delete attrs.settings;
             delete attrs.pods;

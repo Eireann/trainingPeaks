@@ -72,7 +72,6 @@ function(
             this._copiesOfModels = [];
             this._initializeNavigation();
             this._initializeFooter();
-            this.on("render", this._fetchPaymentHistory, this);
             this.on("before:switchView", this._applyFormValuesToModels, this);
             this.on("render", this._listenForFormChanges, this);
         },
@@ -93,9 +92,7 @@ function(
                         userModel: this._copyModel(this.model, { changesToApplyImmediately: ["profilePhotoUrl"] }),
                         accountSettingsModel: this._copyModel(this.model.getAccountSettings()),
                         athleteSettingsModel: models.athleteSettings,
-                        passwordSettingsModel: this.model.getPasswordSettings(),
-                        recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
-                        paymentHistoryCollection: this.model.getPaymentHistoryCollection()
+                        passwordSettingsModel: this.model.getPasswordSettings()
                     }
                 },
                 {
@@ -165,12 +162,6 @@ function(
         {
             this.footerRegion.show(this.footerView);
             this.footerView.disableCancel(false);
-        },
-
-        _fetchPaymentHistory: function()
-        {
-            this.model.getRecurringPaymentsCollection().fetch();
-            this.model.getPaymentHistoryCollection().fetch();
         },
 
         _applyFormValuesToModels: function()
