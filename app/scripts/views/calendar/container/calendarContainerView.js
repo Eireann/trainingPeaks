@@ -110,7 +110,11 @@ function(
 
         _updateCurrentDate: function()
         {
-            this.stateModel.setDate(this.getCurrentWeek(), { source: "scroll" });
+            var week = this.getCurrentWeek();
+            if(week)
+            {
+                this.stateModel.setDate(week, { source: "scroll" });
+            }
         },
 
         setWorkoutColorization: function()
@@ -135,7 +139,8 @@ function(
 
         getCurrentWeek: function()
         {
-            return this.weeksCollectionView.getCurrentModel().id;
+            var model = this.weeksCollectionView.getCurrentModel();
+            return _.has(model, "id") ? model.id : null;
         },
 
         scrollToDate: function(targetDate, effectDuration, callback)
