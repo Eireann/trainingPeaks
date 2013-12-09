@@ -3008,10 +3008,21 @@ Licensed under the MIT license.
     // Add the plot function to the top level of the jQuery object
 
     $.plot = function(placeholder, data, options) {
-        //var t0 = new Date();
-        var plot = new Plot($(placeholder), data, options, $.plot.plugins);
-        //(window.console ? console.log : alert)("time used (msecs): " + ((new Date()).getTime() - t0.getTime()));
-        return plot;
+        var $placeholder = $(placeholder);
+
+        if($placeholder.length < 1)
+        {
+            console.warn("$.plot called without any matching elements, skipping to prevent crash");
+            return;
+        }
+
+        if($placeholder.length > 1)
+        {
+            console.warn("$.plot called with multiple matching elements... only using the first one");
+            $placeholdrs = $placeholder.first();
+        }
+
+        return new Plot($placeholder, data, options, $.plot.plugins);
     };
 
     $.plot.version = "0.8.0";
