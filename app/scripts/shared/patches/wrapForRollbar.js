@@ -14,6 +14,12 @@ function(
 
     function wrap(callback) {
         var self = this;
+        if(!_.isFunction(callback))
+        {
+            console.warn("Not wrapping non-function for rollbar", callback);
+            return callback;
+        }
+
         return function()
         {
             try
