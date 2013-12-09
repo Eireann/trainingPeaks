@@ -159,7 +159,7 @@ function(
         _popOut: function()
         {
             this._disableDrag();
-            var $chartContainer = this.ui.chartContainer;
+            var $chartContainer = this.$(this.ui.chartContainer);
             this._previousPosition = {
                 top: this.$el.css("top"),
                 left: this.$el.css("left"),
@@ -184,7 +184,7 @@ function(
 
         _popIn: function()
         {
-            var $chartContainer = this.ui.chartContainer;
+            var $chartContainer = this.$(this.ui.chartContainer);
             $chartContainer.toggleClass('invisible');
             this.$el.appendTo(this.chartsContainer).animate(this._previousPosition, 200, function(){ $chartContainer.toggleClass('invisible'); });
             this.closeModal();
@@ -198,7 +198,6 @@ function(
             
             this.createOverlay({ onOverlayClick: this._onExpandClicked, mask: true });
             this.$overlay.css("z-index", this.$el.css("z-index") - 1);
-            this.closeOnRouteChange(this._onExpandClicked);
         },
 
         _onCloseClicked: function()
