@@ -345,14 +345,22 @@ function(
 
             var plotSelectionFrom = this.plot.getSelection().xaxis.from;
             var plotSelectionTo = this.plot.getSelection().xaxis.to;
+            var msOffsets = this._findStartAndEndOffsetOfSelection(plotSelectionFrom, plotSelectionTo);
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: msOffsets.start, end: msOffsets.end, name: "Selection" });
+            range.getState().set("temporary", true);
+            this.stateModel.set("primaryRange", range);
+        },
+
+        _findStartAndEndOffsetOfSelection: function(plotSelectionFrom, plotSelectionTo)
+        {
 
             var startOffsetMs;
             var endOffsetMs;
 
             if (this.currentAxis === "time")
             {
-                startOffsetMs = Math.round(plotSelectionFrom);
-                endOffsetMs = Math.round(plotSelectionTo);
+                startOffsetMs = Math.floor(plotSelectionFrom);
+                endOffsetMs = Math.ceil(plotSelectionTo);
             }
             else
             {
@@ -360,9 +368,23 @@ function(
                 endOffsetMs = this._getGraphData().getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
-            range.getState().set("temporary", true);
-            this.stateModel.set("primaryRange", range);
+            // snap to end if selection is within 1 pixel
+            var lastSampleOffset = this._getGraphData().getMsOffsetOfLastSample(); 
+            var widthOfOnePixelInMs = this._getMSWidthOfOnePlotPixel();
+            if(lastSampleOffset - endOffsetMs <= widthOfOnePixelInMs)
+            {
+                endOffsetMs = lastSampleOffset;
+            }
+
+            return {
+                start: startOffsetMs,
+                end: endOffsetMs
+            };
+        },
+
+        _getMSWidthOfOnePlotPixel: function() 
+        {
+            return this.plot.getXAxes()[0].c2p(1);
         },
 
         onPlotUnSelected: function()

@@ -47,8 +47,13 @@ function($, _, colorUtils, affiliateUtils)
 
         loadCoachLogoImageData: function()
         {
-            this.$("#userControlsBackground").css({ visibility: "hidden" });
-            affiliateUtils.loadLogoImageData().done(_.bind(this.onLogoDataLoaded, this));
+            var $background = this.$("#userControlsBackground").css({ visibility: "hidden" });
+            affiliateUtils.loadLogoImageData()
+                .done(_.bind(this.onLogoDataLoaded, this))
+                .fail(function()
+                {
+                    $background.css({visibility: "visible"}).removeClass("coachBanner");
+                });
         },
 
         onLogoDataLoaded: function(imageData)

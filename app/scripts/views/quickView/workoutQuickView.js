@@ -229,24 +229,24 @@ function(
                 }
             }
 
-            if (this.model.get("details").get("timeInSpeedZones") !== null || this.model.get("details").get("meanMaxSpeeds") !== null)
+            if (this.model.get("details").get("meanMaxSpeeds") !== null)
             {
                 var meanMaxSpeedArray = this.model.get("details").get("meanMaxSpeeds").meanMaxes;
                 var hasSpeedValue = this.checkToSeeModelHasValue(meanMaxSpeedArray);
 
-                if (this.model.get("details").get("timeInSpeedZones") !== null)
-                {
-                    var speedZonesArray = this.model.get("details").get("timeInSpeedZones").timeInZones;
-                    var hasSpeedZonesValue = this.checkToSeeSpeedZoneHasSpeed(speedZonesArray);
-
-                    if (hasSpeedZonesValue)
-                    {
-                        this.$(".paceTab").removeClass("missingData");
-                        this.$(".speedTab").removeClass("missingData");
-                    }
-                }
-
                 if (hasSpeedValue)
+                {
+                    this.$(".paceTab").removeClass("missingData");
+                    this.$(".speedTab").removeClass("missingData");
+                }
+            }
+
+            if (this.model.get("details").get("timeInSpeedZones") !== null)
+            {
+                var speedZonesArray = this.model.get("details").get("timeInSpeedZones").timeInZones;
+                var hasSpeedZonesValue = this.checkToSeeSpeedZoneHasSpeed(speedZonesArray);
+
+                if (hasSpeedZonesValue)
                 {
                     this.$(".paceTab").removeClass("missingData");
                     this.$(".speedTab").removeClass("missingData");

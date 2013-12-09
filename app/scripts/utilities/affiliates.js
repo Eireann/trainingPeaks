@@ -85,6 +85,9 @@ function($, _, ImageData)
             imageData.getImageData().done(function()
             {
                 deferred.resolveWith(self, [imageData.get("data")]);
+            }).fail(function()
+            {
+                deferred.reject();
             });
             return deferred;
         },
