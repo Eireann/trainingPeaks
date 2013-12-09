@@ -345,6 +345,14 @@ function(
 
             var plotSelectionFrom = this.plot.getSelection().xaxis.from;
             var plotSelectionTo = this.plot.getSelection().xaxis.to;
+            var msOffsets = this._findStartAndEndOffsetOfSelection(plotSelectionFrom, plotSelectionTo);
+            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: msOffsets.start, end: msOffsets.end, name: "Selection" });
+            range.getState().set("temporary", true);
+            this.stateModel.set("primaryRange", range);
+        },
+
+        _findStartAndEndOffsetOfSelection: function(plotSelectionFrom, plotSelectionTo)
+        {
 
             var startOffsetMs;
             var endOffsetMs;
@@ -362,15 +370,21 @@ function(
 
             // snap to end if selection is within 1 pixel
             var lastSampleOffset = this._getGraphData().getMsOffsetOfLastSample(); 
-            var widthOfOnePixelInMs = this.plot.getXAxes()[0].c2p(1);
+            var widthOfOnePixelInMs = this._getMSWidthOfOnePlotPixel();
             if(lastSampleOffset - endOffsetMs <= widthOfOnePixelInMs)
             {
                 endOffsetMs = lastSampleOffset;
             }
 
-            var range = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
-            range.getState().set("temporary", true);
-            this.stateModel.set("primaryRange", range);
+            return {
+                start: startOffsetMs,
+                end: endOffsetMs
+            };
+        },
+
+        _getMSWidthOfOnePlotPixel: function() 
+        {
+            return this.plot.getXAxes()[0].c2p(1);
         },
 
         onPlotUnSelected: function()
