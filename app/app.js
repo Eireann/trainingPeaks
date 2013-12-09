@@ -27,8 +27,7 @@ define(
     "scripts/plugins/marionette.faderegion",
     "flot/jquery.flot",
     "flot/jquery.flot.crosshair",
-    "flot/jquery.flot.resize",
-    "shared/views/initialProfileView"
+    "flot/jquery.flot.resize"
 ],
 function(
     $,
@@ -58,8 +57,7 @@ function(
     fadeRegion,
     flot,
     flotCrosshair,
-    flotResize,
-    InitialProfileView
+    flotResize
 )
 {
 
@@ -278,20 +276,6 @@ function(
                 {
                     this.featureAuthorizer.showUpgradeMessage();
                 }, this);
-            });
-
-            this.addInitializer(function()
-            {
-                var self = this;
-
-                this.bootPromise.then(function()
-                {
-                    if(self.user.getAccountSettings().get("shouldCompleteProfile"))
-                    {
-                        var view = new InitialProfileView({ model: self.user });
-                        view.render();
-                    }
-                });
             });
 
             this.addInitializer(function()
