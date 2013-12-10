@@ -5,9 +5,18 @@
     "moment",
     "TP",
     "models/workoutDetails",
-    "models/workoutDetailData"
+    "models/workoutDetailData",
+    "shared/utilities/autosaveMergeUtility"
 ],
-function ($, _, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
+function (
+    $,
+    _,
+    moment,
+    TP,
+    WorkoutDetailsModel,
+    WorkoutDetailDataModel,
+    AutosaveMergeUtility
+)
 {
     var WorkoutModel = TP.APIBaseModel.extend(
     {
@@ -137,56 +146,9 @@ function ($, _, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
         parse: function(data, options)
         {
-            function join(base, local, server)
-            {
-                // Get IDs
-                var ids = [].concat(_.pluck(base, "id"), _.pluck(local, "id"), _.pluck(server, "id"));
-                ids = _.uniq(ids);
-
-                var merged = merge(_.indexBy(base, "id"), _.indexBy(local, "id"), _.indexBy(server, "id"));
-
-                return _.map(ids, function(id) { return merged[id]; });
-            }
-
-            function merge(base, local, server)
-            {
-                base = base || {};
-                local = local || {};
-                server = server || {};
-
-                var object = {};
-
-                _.each(server, function(value, key)
-                {
-                    if(_.isArray(value))
-                    {
-                        object[key] = join(base[key], local[key], value);
-                    }
-                    else if(_.isObject(value))
-                    {
-                        object[key] = merge(base[key], local[key], value);
-                    }
-                    else
-                    {
-                        if(base[key] !== local[key])
-                        {
-                            // If the local value changed, it takes priority
-                            object[key] = local[key];
-                        }
-                        else
-                        {
-                            // Otherwise use the server value, but default to the original value
-                            object[key] = value;
-                        }
-                    }
-                });
-
-                return object;
-            }
-
             if(options.diff)
             {
-                data = merge(options.diff, this.attributes, data);
+                data = AutosaveMergeUtility.merge(options.diff, this.attributes, data);
             }
 
             this.getPostActivityComments().set(data.workoutComments);
