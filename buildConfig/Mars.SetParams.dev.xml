@@ -2,8 +2,8 @@
 <parameters>
 	<setParameter name="DeployTarget" value="dev" />
  	<setParameter name="WWWRoot" value="https://www.dev.trainingpeaks.com" />
-    <setParameter name="HomeRoot" value="http://home.dev.trainingpeaks.com" />
-    <setParameter name="CMSRoot" value="https://cms.dev.trainingpeaks.com" />
+    <setParameter name="HomeRoot" value="http://cat6.dev.trainingpeaks.com" />
+    <setParameter name="CMSRoot" value="https://home.dev.trainingpeaks.com" />
  	<setParameter name="ApiRoot" value="https://tpapi.dev.trainingpeaks.com" />
  	<setParameter name="OauthRoot" value="https://oauth.dev.trainingpeaks.com" />
 	<setParameter name="GoogleAnalyticsAccount" value="UA-42726244-1" />
