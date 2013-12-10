@@ -28,7 +28,7 @@ function($, _, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, u
 
         initialize: function()
         {
-            //this.initializeCoachAndAffiliateCustomizations();
+            this.initializeCoachAndAffiliateCustomizations();
         },
 
         onUsernameLabelClicked: function(e)
