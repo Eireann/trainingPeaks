@@ -17,9 +17,19 @@ function($, _, colorUtils, affiliateUtils)
 
         initializeCoachAndAffiliateCustomizations: function()
         {
-            _.bindAll(this, "updateHeaderColorsFromImageData");
             _.extend(this.events, this.coachAndAffiliateEvents);
-            this.on("render", this.setupHeader, this);
+            this.on("render", this.setupBetaHeader);
+
+            //_.bindAll(this, "updateHeaderColorsFromImageData");
+            //this.on("render", this.setupHeader, this);
+        },
+
+        setupBetaHeader: function()
+        {
+            if(affiliateUtils.isCoachedAccount() || affiliateUtils.isAffiliate())
+            {
+                this.$(".personHeaderLogo").addClass("coached");
+            }
         },
 
         setupHeader: function()
