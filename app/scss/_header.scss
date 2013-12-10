@@ -137,6 +137,11 @@
             background-position-x: right;
             background-repeat: no-repeat;
             @extend %tpLogoBG;
+
+            &.coached
+            {
+                @extend %tpLogoBGWithoutText;
+            }
         }
 
         .rightNavigation
@@ -369,4 +374,14 @@
             }
         }
     }
+}
+
+#betaBanner
+{
+    position: absolute;
+    top: 35px;
+    right: 0px;
+    width: 64px;
+    height: 64px;
+    @extend %betaBanner;
 }
