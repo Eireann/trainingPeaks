@@ -107,30 +107,90 @@ function ($, _, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             }, this);
         },
 
-        // Override:
-        // If save has been called on a new object, delay any further calls
-        // until it fails or we have an id (otherwise multiple object will be
-        // created).
-        // WARNING: When a save is delayed only a jQuery Deferred is
-        // returned NOT a full jqXHR.
-        save: function()
+        autosave: function()
         {
-            var self = this, args = arguments;
+            var self = this;
 
-            if(this._xhr && this._xhr.state() === "pending")
+            if(!this._autosavePromise || this._autosavePromise.state() !== "pending")
             {
-                var deferred = $.Deferred();
-                this._xhr.always(function() { self.save.apply(self, args).then(deferred.resolve, deferred.reject, deferred.progress); });
-                return deferred.promise();
+                var deferred = new $.Deferred();
+                this._autosavePromise = deferred.promise();
+
+                var start = function()
+                {
+                    self._autosaveRequest = self.save(null, { diff: _.clone(self.attributes) });
+                    deferred.resolve(self._autosaveRequest);
+                };
+
+                if(!this._autosaveRequest || this._autosaveRequest.state() !== "pending")
+                {
+                    start();
+                }
+                else
+                {
+                    this._autosaveRequest.always(start);
+                }
             }
 
-            var xhr = TP.APIBaseModel.prototype.save.apply(this, args);
-            if(this.isNew())
+            return this._autosavePromise;
+        },
+
+        parse: function(data, options)
+        {
+            function join(base, local, server)
             {
-                this._xhr = xhr;
-                xhr.always(function() { self._xhr = undefined; });
+                // Get IDs
+                var ids = [].concat(_.pluck(base, "id"), _.pluck(local, "id"), _.pluck(server, "id"));
+                ids = _.uniq(ids);
+
+                var merged = merge(_.indexBy(base, "id"), _.indexBy(local, "id"), _.indexBy(server, "id"));
+
+                return _.map(ids, function(id) { return merged[id]; });
             }
-            return xhr;
+
+            function merge(base, local, server)
+            {
+                base = base || {};
+                local = local || {};
+                server = server || {};
+
+                var object = {};
+
+                _.each(server, function(value, key)
+                {
+                    if(_.isArray(value))
+                    {
+                        object[key] = join(base[key], local[key], value);
+                    }
+                    else if(_.isObject(value))
+                    {
+                        object[key] = merge(base[key], local[key], value);
+                    }
+                    else
+                    {
+                        if(base[key] !== local[key])
+                        {
+                            // If the local value changed, it takes priority
+                            object[key] = local[key];
+                        }
+                        else
+                        {
+                            // Otherwise use the server value, but default to the original value
+                            object[key] = value;
+                        }
+                    }
+                });
+
+                return object;
+            }
+
+            if(options.diff)
+            {
+                data = merge(options.diff, this.attributes, data);
+            }
+
+            this.getPostActivityComments().set(data.workoutComments);
+            return data;
         },
         
         checkpoint: function()
@@ -286,12 +346,6 @@ function ($, _, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
                 }
             }
             return this.postActivityComments;
-        },
-
-        parse: function(response)
-        {
-            this.getPostActivityComments().set(response.workoutComments);
-            return response;
         },
 
         toJSON: function(options)

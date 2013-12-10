@@ -199,7 +199,7 @@ function (
                 this.model.set("description", description);
             }
 
-            this.model.save();
+            this.model.autosave();
         },
 
         onTitleFocus: function()

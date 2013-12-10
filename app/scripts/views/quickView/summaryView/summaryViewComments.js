@@ -51,13 +51,13 @@ function (
         onWorkoutCommentRemoved: function()
         {
             this.model.set("workoutComments",  this.commentsToArray(this.model.getPostActivityComments()), { silent: true });
-            this.model.save();
+            this.model.autosave();
         },
         
         onWorkoutCommentEdited: function ()
         {
             this.model.set("workoutComments",  this.commentsToArray(this.model.getPostActivityComments()), { silent: true });
-            this.model.save();
+            this.model.autosave();
         },
 
         commentsToArray: function(commentsCollection)

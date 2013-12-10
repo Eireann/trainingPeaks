@@ -65,7 +65,7 @@ function (
             else
                 this.model.set("publicSettingValue", PRIVATE);
 
-            this.model.save();
+            this.model.autosave();
         },
 
         getSharedText: function()

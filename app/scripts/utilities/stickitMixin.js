@@ -127,7 +127,14 @@ function(
         // somewhat pointless, but it makes it easy to override for qv tabs ...
         saveModel: function()
         {
-            this.model.save();
+            if(this.model.autosave)
+            {
+                this.model.autosave();
+            }
+            else
+            {
+                this.model.save();
+            }
         }
 
     };
