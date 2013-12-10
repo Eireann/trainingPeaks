@@ -1,0 +1,5 @@
+<select class="athleteCalendarSelect">
+    {{#each athletes}}
+        <option value="{{ athleteId }}"{{#if selected}} selected{{/if}}>{{ firstName }} {{ lastName}}</option>
+    {{/each}}
+</select>

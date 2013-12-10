@@ -28,8 +28,8 @@ function(
 
         it("Should display a list of coached athletes in the calendar", function()
         {
-            expect($mainRegion.find("#athleteCalendarSelect").length).to.equal(1);
-            expect($mainRegion.find("#athleteCalendarSelect option").length).to.equal(2);
+            expect($mainRegion.find(".athleteCalendarSelect").length).to.equal(1);
+            expect($mainRegion.find(".athleteCalendarSelect option").length).to.equal(2);
         });
 
         describe("For default athlete", function()
@@ -98,7 +98,7 @@ function(
 
             xit("Should change the user id on selecting a new athlete (TODO: doesn't work, same router issue as above)", function()
             {
-                $mainRegion.find("#athleteCalendarSelect").val(23456).trigger("change");
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
             });
         });
