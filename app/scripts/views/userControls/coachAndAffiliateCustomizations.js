@@ -18,8 +18,11 @@ function($, _, colorUtils, affiliateUtils)
         initializeCoachAndAffiliateCustomizations: function()
         {
             _.extend(this.events, this.coachAndAffiliateEvents);
+
+            // temporary until we finish coach/affiliate customizations
             this.on("render", this.setupBetaHeader);
 
+            // old implementation, left this here until we decide direction of coach customizations 
             //_.bindAll(this, "updateHeaderColorsFromImageData");
             //this.on("render", this.setupHeader, this);
         },
