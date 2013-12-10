@@ -159,8 +159,13 @@ function(
 
         setCurrentAthleteId: function(athleteId)
         {
+            var oldAthleteId = this.currentAthleteId;
             this.currentAthleteId = athleteId;
-            this.trigger("athlete:change");
+
+            if(oldAthleteId !== athleteId)
+            {
+                this.trigger("athlete:change");
+            }
         },
 
         getCurrentAthleteId: function()

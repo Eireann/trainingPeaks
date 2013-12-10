@@ -20,6 +20,34 @@ function (_, TP, RollbarManager)
         };
     };
 
+    var athleteRoute = function(baseUrl, callback)
+    {
+        return ensureUser(function(athleteId)
+        {
+            // make sure current user can access requested athlete
+            if (athleteId && !this._userCanAccessAthlete(athleteId)) {
+                this.navigate(baseUrl, true);
+                return;
+            }
+
+            // if user is coach, put athlete id in url
+            if(this._userIsCoachWithAthletes() && !athleteId)
+            {
+                this.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
+                return;
+            }
+
+            // if there is an athlete id, set the current athlete
+            if(athleteId)
+            {
+                theMarsApp.user.setCurrentAthleteId(athleteId);
+            }
+
+            // call the route
+            callback.apply(this, Array.prototype.slice.call(arguments));
+        });
+    }; 
+
     return TP.Router.extend(
     {
         initialize: function ()
@@ -46,52 +74,35 @@ function (_, TP, RollbarManager)
             "": "calendar"
         },
 
-        calendar: ensureUser(function (athleteId)
+        calendar: athleteRoute("calendar", function (athleteId)
         {
-            if (athleteId) {
-                this._setAthleteId(athleteId, "calendar"); 
-            }
-
-            this._showOrRefreshController(theMarsApp.controllers.calendarController);
-
+            this._showController(theMarsApp.controllers.calendarController);
             TP.analytics("send", "pageview", { page: "calendar" });
         }),
 
-        dashboard: ensureUser(function(athleteId)
+        dashboard: athleteRoute("dashboard", function(athleteId)
         {
-
-            if (athleteId) {
-                this._setAthleteId(athleteId, "calendar"); 
-            }
-
-            this._showOrRefreshController(theMarsApp.controllers.dashboardController);
-
+            this._showController(theMarsApp.controllers.dashboardController);
             TP.analytics("send", "pageview", { page: "dashboard" });
         }),
 
-        _setAthleteId: function(athleteId, fallbackRoute)
+        _userCanAccessAthlete: function(athleteId, fallbackRoute)
         {
             athleteId = Number(athleteId);
-            if(theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: { athleteId: athleteId }}))
-            {
-                theMarsApp.user.setCurrentAthleteId(athleteId);
-            }
-            else
-            {
-                theMarsApp.router.navigate(fallbackRoute, true);
-            }
+            return theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: { athleteId: athleteId }});
         },
 
-        _showOrRefreshController: function(controller)
+        _showController: function(controller)
         {
-            if (theMarsApp.getCurrentController() === controller)
-            {
-                controller.trigger("refresh");
-            }
-            else
+            if (theMarsApp.getCurrentController() !== controller)
             {
                 theMarsApp.showController(controller);
             }
+        },
+
+        _userIsCoachWithAthletes: function()
+        {
+            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
         }
 
     });

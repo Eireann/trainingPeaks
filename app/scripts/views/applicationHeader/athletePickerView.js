@@ -36,11 +36,12 @@ function(
             {
                 throw new Error("AthletePickerView requires a base path");
             }
+
+            this.listenTo(theMarsApp.user, "change:athletes athlete:change", _.bind(this.render, this));
         },
 
         onRender: function()
         {
-            this._watchForAthletesChange();
             this._updateCoachAthleteList();
         },
 
@@ -50,12 +51,6 @@ function(
                 athletes: this._getFilteredAthletesForCoach()
             };
         },
-
-        _watchForAthletesChange: function ()
-        {
-            // in case the athletes haven't loaded yet, refresh
-            this.listenTo(theMarsApp.user, "change:athletes", _.bind(this.render, this));
-        }, 
 
         _updateCoachAthleteList: function()
         {

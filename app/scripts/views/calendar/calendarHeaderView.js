@@ -122,6 +122,7 @@ function(
             this.initializeCoachAndAffiliateCustomizations();
             this.initializeStickit();
             this.children = new Backbone.ChildViewContainer(); 
+            this.on("close", _.bind(this.children.call, this.children, "close"));
         },
 
         updateDatepicker: function()
