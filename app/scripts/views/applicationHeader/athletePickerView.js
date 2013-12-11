@@ -54,7 +54,7 @@ function(
 
         _updateCoachAthleteList: function()
         {
-            if (this._isCoachWithAthletes())
+            if (theMarsApp.user.isCoachWithAthletes())
             {
                 this._customizeAthleteSelectBox();
                 var currentUserId = theMarsApp.user.getCurrentAthleteId();
@@ -64,11 +64,6 @@ function(
             {
                 this.$(".athleteCalendarSelect").remove();
             }
-        },
-
-        _isCoachWithAthletes: function()
-        {
-            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
         },
 
         _customizeAthleteSelectBox: function()

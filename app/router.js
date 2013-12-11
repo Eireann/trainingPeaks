@@ -31,7 +31,7 @@ function (_, TP, RollbarManager)
             }
 
             // if user is coach, and no athleteId value was passed, put current athlete id in url
-            if(this._userIsCoachWithAthletes() && !athleteId)
+            if(!athleteId && theMarsApp.user.isCoachWithAthletes())
             {
                 this.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
                 return;
@@ -40,6 +40,7 @@ function (_, TP, RollbarManager)
             // if there is an athlete id, set the current athlete
             if(athleteId)
             {
+                athleteId = parseInt(athleteId, 10);
                 theMarsApp.user.setCurrentAthleteId(athleteId);
             }
 
@@ -98,11 +99,6 @@ function (_, TP, RollbarManager)
             {
                 theMarsApp.showController(controller);
             }
-        },
-
-        _userIsCoachWithAthletes: function()
-        {
-            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
         }
 
     });

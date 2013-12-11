@@ -159,14 +159,9 @@ function(
 
         setCurrentAthleteId: function(athleteId)
         {
-            // in case we get a string somehow, always treat it as a number
-            athleteId = parseInt(athleteId, 10);
-
-            var oldAthleteId = this.currentAthleteId;
-            this.currentAthleteId = athleteId;
-
-            if(oldAthleteId !== athleteId)
+            if(this.currentAthleteId !== athleteId)
             {
+                this.currentAthleteId = athleteId;
                 this.athleteSettings = null;
                 this.getAthleteSettings().fetch();
                 this.trigger("athlete:change");
@@ -281,6 +276,11 @@ function(
             return this.passwordSettings;
         },
 
+        isCoachWithAthletes: function()
+        {
+            return !this.getAccountSettings().get("isAthlete") && this.has("athletes") && this.get("athletes").length > 0;
+        },
+        
         populateUserModels: function(data)
         {
 
