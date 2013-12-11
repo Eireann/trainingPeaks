@@ -48,6 +48,14 @@ function($, _, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, u
         onUpgradeClicked: function ()
         {
             theMarsApp.featureAuthorizer.showUpgradeMessage();
+        },
+
+        serializeData: function()
+        {
+            var data = TP.ItemView.prototype.serializeData.apply(this, arguments);
+            var fullName = _.compact([this.model.get("firstName"), this.model.get("lastName")]).join(" ");
+            data.fullName = fullName || this.model.get("userName");
+            return data;
         }
 
     };
