@@ -11,11 +11,24 @@ function(
     {
         join: function join(base, local, server)
         {
-            // Get IDs
-            var ids = [].concat(_.pluck(base, "id"), _.pluck(local, "id"), _.pluck(server, "id"));
-            ids = _.uniq(ids);
+            var all = [].concat(base, local, server);
+            var ids, merged;
 
-            var merged = AutosaveMergeUtility.merge(_.indexBy(base, "id"), _.indexBy(local, "id"), _.indexBy(server, "id"), ids);
+            if(_.any(all, function(item) { return _.has(item, "id"); }))
+            {
+                // Get IDs
+                ids = _.pluck(all, "id");
+                ids = _.uniq(ids);
+
+                merged = AutosaveMergeUtility.merge(_.indexBy(base, "id"), _.indexBy(local, "id"), _.indexBy(server, "id"), ids);
+            }
+            else
+            {
+                var length = base.length === local.length ? server.length : local.length;
+                ids = _.range(length);
+
+                merged = AutosaveMergeUtility.merge(base, local, server, ids);
+            }
 
             ids = _.filter(ids, function(id) { return id in merged; });
             return _.map(ids, function(id) { return merged[id]; });

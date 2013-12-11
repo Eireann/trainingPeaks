@@ -72,7 +72,7 @@ function(
         });
 
 
-        describe("join", function()
+        describe("join (with ids)", function()
         {
             it("should use items added locally", function()
             {
@@ -106,7 +106,7 @@ function(
 
                 expect(joined).to.eql([{ id: 1 }]);
             });
-            
+
             it("should delete items removed locally", function()
             {
                 var base = [{ id: 1 }, { id: 2 }];
@@ -116,6 +116,53 @@ function(
                 var joined = AutosaveMergeUtility.join(base, local, server);
 
                 expect(joined).to.eql([{ id: 1 }]);
+            });
+        });
+
+        describe("join (without ids)", function()
+        {
+            it("should use items added locally", function()
+            {
+                var base = [{ value: 1 }, { value: 2 }];
+                var local = [{ value: 1 }, { value: 2 }, { value: 3 }];
+                var server = [{ value: 1 }, { value: 2 }];
+
+                var joined = AutosaveMergeUtility.join(base, local, server);
+
+                expect(joined).to.eql([{ value: 1 }, { value: 2 }, { value: 3 }]);
+            });
+
+            it("should use items added by the server", function()
+            {
+                var base = [{ value: 1 }, { value: 2 }];
+                var local = [{ value: 1 }, { value: 2 }];
+                var server = [{ value: 1 }, { value: 2 }, { value: 3 }];
+
+                var joined = AutosaveMergeUtility.join(base, local, server);
+
+                expect(joined).to.eql([{ value: 1 }, { value: 2 }, { value: 3 }]);
+            });
+
+            it("should delete items removed by the server", function()
+            {
+                var base = [{ value: 1 }, { value: 2 }];
+                var local = [{ value: 1 }, { value: 2 }];
+                var server = [{ value: 1 }];
+
+                var joined = AutosaveMergeUtility.join(base, local, server);
+
+                expect(joined).to.eql([{ value: 1 }]);
+            });
+
+            it("should delete items removed locally", function()
+            {
+                var base = [{ value: 1 }, { value: 2 }];
+                var local = [{ value: 1 }];
+                var server = [{ value: 1 }, { value: 2 }];
+
+                var joined = AutosaveMergeUtility.join(base, local, server);
+
+                expect(joined).to.eql([{ value: 1 }]);
             });
         });
 
