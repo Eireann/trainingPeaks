@@ -30,7 +30,7 @@ function (_, TP, RollbarManager)
                 return;
             }
 
-            // if user is coach, put athlete id in url
+            // if user is coach, and no athleteId value was passed, put current athlete id in url
             if(this._userIsCoachWithAthletes() && !athleteId)
             {
                 this.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
