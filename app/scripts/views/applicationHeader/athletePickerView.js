@@ -37,7 +37,7 @@ function(
                 throw new Error("AthletePickerView requires a base path");
             }
 
-            this.listenTo(theMarsApp.user, "change:athletes athlete:change", _.bind(this.render, this));
+            this.listenTo(theMarsApp.user, "change:athletes", _.bind(this.render, this));
         },
 
         onRender: function()
@@ -57,13 +57,17 @@ function(
             if (theMarsApp.user.isCoachWithAthletes())
             {
                 this._customizeAthleteSelectBox();
-                var currentUserId = theMarsApp.user.getCurrentAthleteId();
-                this.$(".athleteCalendarSelect").val(currentUserId);
             }
             else
             {
                 this.$(".athleteCalendarSelect").remove();
             }
+        },
+
+        _setCurrentUser: function()
+        {
+            var currentAthleteId = theMarsApp.user.getCurrentAthleteId();
+            this.$("select.athleteCalendarSelect").val(currentAthleteId).selectBoxIt("refresh");
         },
 
         _customizeAthleteSelectBox: function()
@@ -76,6 +80,9 @@ function(
                 });
 
                 self.$(".athleteCalendarSelectSelectBoxItContainer").css('display', "block");
+
+                self._setCurrentUser();
+                self.listenTo(theMarsApp.user, "athlete:change", _.bind(self._setCurrentUser, self));
             });
         },
 
@@ -83,7 +90,7 @@ function(
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "athleteChanged", "eventLabel": "" });
 
-            var athleteId = Number(this.$(".athleteCalendarSelect").val());
+            var athleteId = this.$(".athleteCalendarSelect").val();
 
             var athleteUrl = this.options.basePath + "/athletes/" + athleteId;
             theMarsApp.router.navigate(athleteUrl, true);
