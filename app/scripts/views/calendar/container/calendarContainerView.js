@@ -86,6 +86,11 @@ function(
 
             var visibleWeeks = this.weeksCollectionView.getVisibleModels();
 
+            _.each(visibleWeeks, function(model)
+            {
+                model.view.$el.addClass('inView');
+            });
+            
             var weeks = _.map(visibleWeeks, function(week) { return moment(week.id); });
             var start = _.min(weeks);
             var end = _.max(weeks);
