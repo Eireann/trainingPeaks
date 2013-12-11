@@ -50,12 +50,12 @@ function(
 
         beforeEach(function()
         {
-            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
+            testHelpers.theApp.user.currentAthleteId = 1234;
         });
 
         afterEach(function()
         {
-            testHelpers.theApp.user.setCurrentAthleteId(null, true);
+            testHelpers.theApp.user.currentAthleteId = null;
         });
 
         it("Should load successfully as a module", function()

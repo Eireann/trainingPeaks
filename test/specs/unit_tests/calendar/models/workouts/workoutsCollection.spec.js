@@ -15,6 +15,7 @@ function(
         // user needs an athlete id for some of these tests to run
         beforeEach(function()
         {
+            testHelpers.stubCurrentAthleteId();
             testHelpers.theApp.user.setCurrentAthleteId(1234, true);
         });
 

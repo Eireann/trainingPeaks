@@ -15,17 +15,6 @@ function(
     describe("Calendar Day Model", function()
     {
 
-        // user needs an athlete id for some of these tests to run
-        beforeEach(function()
-        {
-            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
-        });
-
-        afterEach(function()
-        {
-            testHelpers.theApp.user.setCurrentAthleteId(null, true);
-        });
-
         it("should load as a module", function()
         {
             expect(CalendarDay).to.not.be.undefined;
@@ -75,16 +64,6 @@ function(
 
             describe("cloneForCopy", function()
             {
-                // user needs an athlete id for some of these tests to run
-                beforeEach(function()
-                {
-                    testHelpers.theApp.user.setCurrentAthleteId(1234, true);
-                });
-
-                afterEach(function()
-                {
-                    testHelpers.theApp.user.setCurrentAthleteId(null, true);
-                });
 
                 it("Should return a new CalendarDay model", function()
                 {
@@ -117,17 +96,6 @@ function(
 
             describe("pasted", function()
             {
-
-                // user needs an athlete id for some of these tests to run
-                beforeEach(function()
-                {
-                    testHelpers.theApp.user.setCurrentAthleteId(1234, true);
-                });
-
-                afterEach(function()
-                {
-                    testHelpers.theApp.user.setCurrentAthleteId(null, true);
-                });
 
                 it("Should call pasted on each of the copied workouts", function()
                 {

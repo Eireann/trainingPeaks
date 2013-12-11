@@ -252,7 +252,14 @@ function(_, Backbone, TP, xhrData, MarsApp)
         deepClone: function(obj)
         {
             return TP.utils.deepClone(obj);
+        },
+
+        stubCurrentAthleteId: function()
+        {
+            sinon.stub(this.theApp.user, "setCurrentAthleteId", function(athleteId){ this.currentAthleteId = athleteId; });
+            sinon.stub(this.theApp.user, "getCurrentAthleteId", function(){ return this.currentAthleteId; });
         }
+
     };
 
     return testHelpers;
