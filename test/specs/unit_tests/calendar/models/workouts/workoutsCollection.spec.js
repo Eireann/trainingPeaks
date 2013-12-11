@@ -1,11 +1,13 @@
 define(
 [
     "moment",
+    "backbone",
     "testUtils/testHelpers",
     "models/workoutsCollection"
 ],
 function(
     moment,
+    Backbone,
     testHelpers,
     WorkoutsCollection
     )
@@ -15,13 +17,7 @@ function(
         // user needs an athlete id for some of these tests to run
         beforeEach(function()
         {
-            testHelpers.stubCurrentAthleteId();
-            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
-        });
-
-        afterEach(function()
-        {
-            testHelpers.theApp.user.setCurrentAthleteId(null, true);
+            testHelpers.theApp.user.setCurrentAthlete(1234, new Backbone.Model());
         });
 
         it("should load as a module", function()

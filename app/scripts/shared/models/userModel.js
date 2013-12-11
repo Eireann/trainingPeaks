@@ -157,22 +157,14 @@ function(
             return this.get("unitsBySportType")[parseInt(sportType, 10)] || this.get("units"); 
         },
 
-        setCurrentAthleteId: function(athleteId)
+        setCurrentAthlete: function(athleteId, athleteSettings)
         {
-            if(this.currentAthleteId !== athleteId)
+            var oldAthleteId = this.currentAthleteId;
+            this.currentAthleteId = athleteId;
+            this.athleteSettings = athleteSettings;
+            if(oldAthleteId !== this.currentAthleteId)
             {
-                this.currentAthleteId = athleteId;
-                this.athleteSettings = null;
-                var self = this;
-                return this.getAthleteSettings().fetch()
-                    .done(function()
-                    {
-                        self.trigger("athlete:change");
-                    });
-            }
-            else
-            {
-                return new $.Deferred().resolve();
+                this.trigger("athlete:change");
             }
         },
 
@@ -180,25 +172,16 @@ function(
         {
             if(!this.currentAthleteId)
             {
-                this.currentAthleteId = this.getDefaultAthleteId();
+                throw new Error("User has no current athlete id");
             }
             return this.currentAthleteId;
-        },
-
-        getDefaultAthleteId: function()
-        {
-            var athletes = this.get("athletes");
-            if (!athletes || !athletes.length)
-                throw new Error("User has no athletes");
-
-            return athletes[0].athleteId;
         },
 
         getAthleteSettings: function()
         {
             if(!this.athleteSettings)
             {
-                this.athleteSettings = new AthleteSettingsModel({ athleteId: this.getCurrentAthleteId() });
+                throw new Error("User has no athlete settings");
             }
             return this.athleteSettings;
         },

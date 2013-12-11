@@ -58,7 +58,7 @@ function(
 
         beforeEach(function()
         {
-            testHelpers.theApp.user.setCurrentAthleteId(1);
+            testHelpers.theApp.user.setCurrentAthlete(1, new TP.Model());
         });
         
         it("Should load successfully as a module", function()

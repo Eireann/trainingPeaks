@@ -43,7 +43,7 @@ function (_, TP, RollbarManager)
                 athleteId = parseInt(athleteId, 10);
                 var self = this;
                 var args = Array.prototype.slice.call(arguments);
-                theMarsApp.user.setCurrentAthleteId(athleteId).done(function()
+                theMarsApp.athleteManager.loadAthlete(athleteId).done(function()
                 {
                     callback.apply(self, args);
                 });

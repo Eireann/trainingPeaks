@@ -10,6 +10,7 @@ define(
     "framework/dataManager",
     "shared/managers/calendarManager",
     "shared/managers/selectionManager",
+    "shared/managers/athleteManager",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -40,6 +41,7 @@ function(
     DataManager,
     CalendarManager,
     SelectionManager,
+    AthleteManager,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -278,6 +280,12 @@ function(
                 }, this);
             });
 
+            // add current athlete manager
+            this.addInitializer(function()
+            {
+                this.athleteManager = new AthleteManager(this, this.user);
+            });
+
             this.addInitializer(function()
             {
                 var self = this;
@@ -289,7 +297,13 @@ function(
                 {
                     RollbarManager.setUser(self.user);
 
-                    var athletePromise = self.user.getAthleteSettings().fetch();
+                    var athletes = self.user.get("athletes");
+                    if(!athletes || !athletes.length)
+                    {
+                        throw new Error("No athletes loaded for user");
+                    }
+
+                    var athletePromise = self.athleteManager.loadAthlete(athletes[0].athleteId);
 
                     $.when(self.session.userAccessPromise, athletePromise).done(function()
                     {

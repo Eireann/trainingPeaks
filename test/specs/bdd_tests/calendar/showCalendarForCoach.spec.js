@@ -40,14 +40,14 @@ function(
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
             });
 
-            it("Should request data for the current athlete id", function()
+            it("Should request workout data for the current athlete id", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345")).to.equal(true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(true);
             });
 
-            it("Should not request data for other athlete ids", function()
+            it("Should not request workout data for other athlete ids", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(false);
             });
         });
 
@@ -59,6 +59,7 @@ function(
                 testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
                 $mainRegion = testHelpers.theApp.mainRegion.$el;
                 testHelpers.theApp.router.navigate("calendar/athletes/23456", true);
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
             });
             
             it("Should have the requested user set as the current athlete id", function()
@@ -73,13 +74,11 @@ function(
 
             it("Should request workout data for the current athlete id", function()
             {
-                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
             });
 
             it("Should not request workout data for other athlete ids", function()
             {
-                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(false);
             });
         });
@@ -102,12 +101,6 @@ function(
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(false);
             });
 
-            it("Should change the user id on selecting a new athlete", function()
-            {
-                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
-                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
-            });
-
             it("Should request athlete settings on selecting a new athlete", function()
             {
                 testHelpers.clearRequests();
@@ -115,14 +108,36 @@ function(
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/settings")).to.equal(true);
             });
 
-            it("Should request athlete workouts on selecting a new athlete", function()
+            it("Should not change the athlete id until athlete settings have loaded", function()
+            {
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
+            });
+
+            it("Should change the athlete id after athlete settings have loaded", function()
+            {
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
+            });
+
+            it("Should not request new athlete workouts until athlete settings have loaded", function()
+            {
+                testHelpers.clearRequests();
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(false);
+            });
+
+            it("Should request new athlete workouts after athlete settings have loaded", function()
             {
                 testHelpers.clearRequests();
                 $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
                 testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
             });
+
         });
+
     });
 
 

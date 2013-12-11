@@ -113,7 +113,7 @@ function(
             beforeEach(function()
             {
                 sinon.spy(testHelpers.theApp.calendarManager, "addItem");
-                testHelpers.theApp.user.setCurrentAthleteId(67890);
+                testHelpers.theApp.user.setCurrentAthlete(67890, new TP.Model());
                 metric = new MetricModel(metricAttributes);
             });
 
@@ -158,7 +158,7 @@ function(
                 
                 it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthleteId(42);
+                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
                     var cutMetric = metric;
                     sinon.stub(cutMetric, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
@@ -204,9 +204,9 @@ function(
                     expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
                 });
                 
-                it("Should set the correct athletId on pasted metric", function()
+                it("Should set the correct athleteId on pasted metric", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthleteId(42);
+                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
@@ -216,15 +216,13 @@ function(
 
                 it("Should not change the date of the copied metric", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthleteId(42);
+                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
                     var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
                     expect(copiedMetric.get("athleteId")).to.not.equal(42);
                 });
-
-
 
             });
 
