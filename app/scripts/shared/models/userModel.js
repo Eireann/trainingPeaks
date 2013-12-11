@@ -159,11 +159,15 @@ function(
 
         setCurrentAthleteId: function(athleteId)
         {
+            // in case we get a string somehow, always treat it as a number
+            athleteId = parseInt(athleteId, 10);
+
             var oldAthleteId = this.currentAthleteId;
             this.currentAthleteId = athleteId;
 
             if(oldAthleteId !== athleteId)
             {
+                this.getAthleteSettings().fetch();
                 this.trigger("athlete:change");
             }
         },
