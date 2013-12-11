@@ -378,7 +378,8 @@
 
 #betaBanner
 {
-    position: absolute;
+    position: fixed;
+    z-index: 1;
     top: 35px;
     right: 0px;
     width: 64px;
