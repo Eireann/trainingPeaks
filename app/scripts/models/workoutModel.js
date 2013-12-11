@@ -116,45 +116,14 @@ function (
             }, this);
         },
 
-        autosave: function()
+        autosave: AutosaveMergeUtility.mixin.autosave,
+        parse: function()
         {
-            var self = this;
-
-            if(!this._autosavePromise || this._autosavePromise.state() !== "pending")
-            {
-                var deferred = new $.Deferred();
-                this._autosavePromise = deferred.promise();
-
-                var start = function()
-                {
-                    self._autosaveRequest = self.save(null, { diff: _.clone(self.attributes) });
-                    deferred.resolve(self._autosaveRequest);
-                };
-
-                if(!this._autosaveRequest || this._autosaveRequest.state() !== "pending")
-                {
-                    start();
-                }
-                else
-                {
-                    this._autosaveRequest.always(start);
-                }
-            }
-
-            return this._autosavePromise;
-        },
-
-        parse: function(data, options)
-        {
-            if(options.diff)
-            {
-                data = AutosaveMergeUtility.merge(options.diff, this.attributes, data);
-            }
-
+            var data = AutosaveMergeUtility.mixin.parse.apply(this, arguments);
             this.getPostActivityComments().set(data.workoutComments);
             return data;
         },
-        
+
         checkpoint: function()
         {
             this.checkpointAttributes = _.clone(this.attributes);

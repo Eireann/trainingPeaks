@@ -124,12 +124,12 @@ function(
             it("should use items added locally", function()
             {
                 var base = [{ value: 1 }, { value: 2 }];
-                var local = [{ value: 1 }, { value: 2 }, { value: 3 }];
+                var local = [{ value: 1 }, { value: 42 }, { value: 3 }];
                 var server = [{ value: 1 }, { value: 2 }];
 
                 var joined = AutosaveMergeUtility.join(base, local, server);
 
-                expect(joined).to.eql([{ value: 1 }, { value: 2 }, { value: 3 }]);
+                expect(joined).to.eql([{ value: 1 }, { value: 42 }, { value: 3 }]);
             });
 
             it("should use items added by the server", function()

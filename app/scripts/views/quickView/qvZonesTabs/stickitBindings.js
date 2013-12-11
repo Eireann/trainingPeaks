@@ -89,18 +89,17 @@ function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
         saveModel: function()
         {
             // existing workout? just save as usual
-            if (this.model.get("workoutId"))
+            if (!this.model.isNew())
             {
-                this.model.save();
-
-                // new workout? save the workout first, then save the details
+                this.model.autosave();
             }
             else
             {
+                // new workout? save the workout first, then save the details
                 var self = this;
-                this.workoutModel.save().done(function()
+                this.workoutModel.autosave().done(function(xhr)
                 {
-                    self.model.save();
+                    xhr.done(function(){ self.model.autosave(); });
                 });
             }
         }
