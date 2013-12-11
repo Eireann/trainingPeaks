@@ -41,11 +41,19 @@ function (_, TP, RollbarManager)
             if(athleteId)
             {
                 athleteId = parseInt(athleteId, 10);
-                theMarsApp.user.setCurrentAthleteId(athleteId);
+                var self = this;
+                var args = Array.prototype.slice.call(arguments);
+                theMarsApp.user.setCurrentAthleteId(athleteId).done(function()
+                {
+                    callback.apply(self, args);
+                });
+            }
+            else
+            {
+                // call the route
+                callback.apply(this, arguments);
             }
 
-            // call the route
-            callback.apply(this, Array.prototype.slice.call(arguments));
         });
     }; 
 

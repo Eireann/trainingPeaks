@@ -163,14 +163,26 @@ function(
             {
                 this.currentAthleteId = athleteId;
                 this.athleteSettings = null;
-                this.getAthleteSettings().fetch();
-                this.trigger("athlete:change");
+                var self = this;
+                return this.getAthleteSettings().fetch()
+                    .done(function()
+                    {
+                        self.trigger("athlete:change");
+                    });
+            }
+            else
+            {
+                return new $.Deferred().resolve();
             }
         },
 
         getCurrentAthleteId: function()
         {
-            return this.currentAthleteId ? this.currentAthleteId : this.getDefaultAthleteId();
+            if(!this.currentAthleteId)
+            {
+                this.currentAthleteId = this.getDefaultAthleteId();
+            }
+            return this.currentAthleteId;
         },
 
         getDefaultAthleteId: function()

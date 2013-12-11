@@ -73,11 +73,13 @@ function(
 
             it("Should request workout data for the current athlete id", function()
             {
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
             });
 
             it("Should not request workout data for other athlete ids", function()
             {
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(false);
             });
         });
@@ -117,6 +119,7 @@ function(
             {
                 testHelpers.clearRequests();
                 $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
             });
         });
