@@ -350,23 +350,6 @@ function(
             this.addInitializer(function()
             {
                 this.router = new Router();
-
-                // history-less navigation for unit testing
-                if(!this.historyEnabled)
-                {
-                    this.router.navigate = function(routeName, trigger)
-                    {
-                        if (this.routes.hasOwnProperty(routeName))
-                        {
-                            var methodName = this.routes[routeName];
-                            this[methodName]();
-                        }
-                        if (trigger === true || (trigger && trigger.trigger))
-                        {
-                            this.trigger("route", routeName);
-                        }
-                    };
-                }
             });
 
             // show navigation
