@@ -167,6 +167,7 @@ function(
 
             if(oldAthleteId !== athleteId)
             {
+                this.athleteSettings = null;
                 this.getAthleteSettings().fetch();
                 this.trigger("athlete:change");
             }
