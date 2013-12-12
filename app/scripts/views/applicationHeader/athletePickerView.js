@@ -42,6 +42,8 @@ function(
 
         onRender: function()
         {
+            var currentAthleteId = theMarsApp.user.getCurrentAthleteId();
+            this.$("select.athleteCalendarSelect").val(currentAthleteId);
             this._updateCoachAthleteList();
         },
 
@@ -98,9 +100,14 @@ function(
 
         _getFilteredAthletesForCoach: function()
         {
-            var athletes = theMarsApp.user.get("athletes");
+            var currentAthleteId = theMarsApp.user.getCurrentAthleteId();
+            var athletes = _.clone(theMarsApp.user.get("athletes"));
             return _.filter(athletes, function(athlete)
             {
+                if(athlete.athleteId === currentAthleteId)
+                {
+                    athlete.selected = true;
+                }
                 return theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: athlete });
             });
         }

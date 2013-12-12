@@ -54,13 +54,12 @@ function (
             this.on("user:loaded", this.render, this);
             this.listenTo(this.model, "applyDates", _.bind(this.applyDates, this));
             this.setDefaultDateSettings();
-            this.children = new Backbone.ChildViewContainer(); 
-            this.on("close", _.bind(this.children.call, this.children, "close"));
         },
 
         onRender: function()
         {
-            this.children.call("close");
+            this.children = new Backbone.ChildViewContainer(); 
+            this.on("close", _.bind(this.children.call, this.children, "close"));
             this._addView(".athletePickerContainer", new AthletePickerView({ basePath: "dashboard" }));
             this.children.call("render");
         },

@@ -272,6 +272,14 @@ html, body
         .athletePickerContainer {
             margin: 0 0 0 7px;
             float: left;
+
+            .selectboxit-container .selectboxit {
+              width: 200px !important; /* Width of the dropdown button */            
+            }
+
+            select {
+                width: 200px;
+            }
         }
 
         .athleteCalendarSelectSelectBoxItContainer, .athleteCalendarSelect
