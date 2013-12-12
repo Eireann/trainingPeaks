@@ -15,6 +15,7 @@
     "requirejs-i18n": "~2.0.4",
     "lodash": "~2.2.1",
     "backbone": "~1.1.0",
-    "lazy.js": "~0.2.1"
+    "lazy.js": "~0.2.1",
+    "slickgrid": "~2.1.0"
   }
 }

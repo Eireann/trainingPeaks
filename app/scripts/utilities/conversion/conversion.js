@@ -140,6 +140,12 @@
             var adjustedPower = adjustFieldRange(Number(value), "power");
             return conversion.formatInteger(adjustedPower, options);
         },
+        
+        formatPowerBalance: function(value, options)
+        {
+            value = value * 100;
+            return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
+        },
 
         formatPace: function(value, options)
         {
@@ -151,6 +157,16 @@
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
             return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
+        },
+
+        formatLongitude: function(value, options)
+        {
+            return (value < 0 ? "W" : "E") + " " + Math.abs(value).toFixed(6);
+        },
+
+        formatLatitude: function(value, options)
+        {
+            return (value < 0 ? "S" : "N") + " " + Math.abs(value).toFixed(6);
         },
 
         parsePace: function(value, options)
@@ -449,19 +465,6 @@
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             else
                 return parsedValue.toFixed(1);
-        },
-
-        formatPowerBalance: function(value, options)
-        {
-            var parsedValue = (Number(value) * 100).toFixed(1);
-
-            if (isNaN(value) || isNaN(parsedValue) || value === null || value === 0 || Number(parsedValue) === 0)
-            {
-                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
-            } else
-            {
-                return parsedValue;
-            }
         },
 
         formatEfficiencyFactor: function(value, options)
@@ -769,6 +772,9 @@
                 case "duration":
                     return conversion.formatDuration(value, options);
 
+                case "milliseconds":
+                    return conversion.formatDuration(value / (1000 * 3600), options);
+
                 case "distance":
                     return conversion.formatDistance(value, options);
 
@@ -849,6 +855,12 @@
 
                 case "time":
                     return conversion.formatTime(value, options);
+
+                case "latitude":
+                    return conversion.formatLatitude(value, options);
+
+                case "longitude":
+                    return conversion.formatLongitude(value, options);
 
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);

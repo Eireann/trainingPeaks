@@ -208,7 +208,9 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             English: "oz",
             Metric: "ml"
         },
+        powerbalance: "",
         duration: "",
+        milliseconds: "",
         mmHg: "mmHg",
         hours: "hrs",
         kcal: "kcal",
@@ -216,7 +218,9 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         "mg/dL": "mg/dL",
         "%": "%",
         "units": "units",
-        none: ""
+        none: "",
+        longitude: "",
+        latitude: ""
     };
 
     var getTssLabel = function(context)

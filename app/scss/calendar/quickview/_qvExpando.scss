@@ -639,6 +639,82 @@
             position: relative;
         }
     }
+    
+    .dataGrid {
+        padding-top: 21px;
+        * { @include nice-scrollbar; }
+
+        // Slick Grid does not get allong with box-sizing border box...
+        *, *:before, *:after { box-sizing: content-box; }
+
+        @import "slick.grid";
+
+        font-family: $fontFamilyRegular;
+        font-size: 12px;
+        background:none;
+        border-collapse:collapse;
+        border-bottom: 1px solid $TPGrey5;
+
+        .slick-header, .slick-header-column
+        {
+            background: $TPGrey6;
+            font-family: $fontFamilyHeavy;
+            font-weight:normal;
+            color: $TPGrey3;
+            text-align:left;
+        }
+
+        .slick-header-column
+        {
+            border: 1px solid $TPGrey5;
+            border-width:1px 0;
+        }
+
+        .slick-cell
+        {
+            border-right:1px solid $TPGrey5;
+            color: $TPGrey8;
+        }
+
+        .slick-viewport
+        {
+            @extend %throbberBG;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            .slick-row
+            {
+                width: 100%;
+                line-height: 20px;
+                border-top:1px solid $TPGrey5;
+
+                &:last-child
+                {
+                    border-bottom:1px solid $TPGrey5;
+                }
+
+                &.even
+                {
+                    background: $TPGrey6;
+                }
+                &.odd
+                {
+                    background: #efefef;
+                }
+
+                &.sampleInRange
+                {
+                    background: #e5ddd8;
+                }
+
+                &.sampleInPrimaryRange
+                {
+                    background: #d8dde5;
+                }
+            }
+        }
+
+    }
 }
 
 .expandoRightColumn {

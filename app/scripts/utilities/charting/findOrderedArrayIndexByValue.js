@@ -1,6 +1,6 @@
 ﻿define(
-[],
-function()
+["underscore"],
+function(_)
 {
     return function(list, offset)
     {
