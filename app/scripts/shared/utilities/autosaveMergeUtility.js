@@ -134,8 +134,7 @@ function(
             parse: function(data, options)
             {
                 // NOTE: this refers to the model.
-
-                if(options.diff)
+                if(options && options.diff)
                 {
                     data = AutosaveMergeUtility.merge(options.diff, this.attributes, data, this.autosaveMergeOptions);
                 }

@@ -1,8 +1,12 @@
 define(
 [
+    "jquery",
+    "backbone",
     "shared/utilities/autosaveMergeUtility"
 ],
 function(
+    $,
+    Backbone,
     AutosaveMergeUtility
 )
 {
@@ -164,6 +168,44 @@ function(
 
                 expect(joined).to.eql([{ value: 1 }]);
             });
+        });
+
+        describe("mixin.autosave", function()
+        {
+
+            it("should seriealize save calls", function()
+            {
+                var model = new Backbone.Model();
+                var deferreds = [];
+                sinon.stub(model, "save", function()
+                {
+                    var deferred = new $.Deferred();
+                    deferreds.push(deferred);
+                    return deferred.promise();
+                });
+
+                AutosaveMergeUtility.mixin.autosave.call(model);
+                AutosaveMergeUtility.mixin.autosave.call(model);
+                expect(model.save).to.have.been.called.once;
+
+                deferreds.shift().resolve();
+
+                expect(model.save).to.have.been.called.twice;
+
+                deferreds.shift().resolve();
+            });
+
+        });
+
+        describe("mixin.parse", function()
+        {
+
+            it("should not fail without options", function()
+            {
+                var model = new Backbone.Model();
+                AutosaveMergeUtility.mixin.parse.call(model, {});
+            });
+
         });
 
     });
