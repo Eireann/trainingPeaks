@@ -128,6 +128,14 @@ function(
         _onClickDelete: function(e)
         {
             e.preventDefault();
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.ViewGraphRanges,
+                _.bind(this._confirmDelete, this)
+            );
+        },
+
+        _confirmDelete: function()
+        {
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteLapTemplate });
             this.deleteConfirmationView.render();
             this.listenTo(this.deleteConfirmationView, "userConfirmed", _.bind(this._deleteLap, this));
