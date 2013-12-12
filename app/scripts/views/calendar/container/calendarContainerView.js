@@ -105,8 +105,6 @@ function(
 
             // Show drop-shadow during scrolling.
             this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
-
-            this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
             this.weeksCollectionView.$el.on("scroll", _.bind(_.throttle(this._updateCurrentDate, 250), this));
             this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
         },
