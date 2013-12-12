@@ -1,8 +1,12 @@
 define(
 [
+    "jquery",
+    "backbone",
     "shared/utilities/autosaveMergeUtility"
 ],
 function(
+    $,
+    Backbone,
     AutosaveMergeUtility
 )
 {
@@ -68,6 +72,28 @@ function(
                 var merged = AutosaveMergeUtility.merge(base, local, server);
 
                 expect(merged.a).to.eql([{id: 1, value: 2}, {id: 2, value: 42}, {id: 3, value: 11}]);
+            });
+
+            it("should not attempt to merge objects with arrays", function()
+            {
+                var base = { a: [] };
+                var local = { a: [] };
+                var server = { a: {} };
+
+                var merged = AutosaveMergeUtility.merge(base, local, server);
+
+                expect(merged.a).to.eql({});
+            });
+
+            it("should not attempt to merge arrays with null", function()
+            {
+                var base = { a: [] };
+                var local = { a: null };
+                var server = { a: [] };
+
+                var merged = AutosaveMergeUtility.merge(base, local, server);
+
+                expect(merged.a).to.eql(null);
             });
         });
 
@@ -164,6 +190,44 @@ function(
 
                 expect(joined).to.eql([{ value: 1 }]);
             });
+        });
+
+        describe("mixin.autosave", function()
+        {
+
+            it("should seriealize save calls", function()
+            {
+                var model = new Backbone.Model();
+                var deferreds = [];
+                sinon.stub(model, "save", function()
+                {
+                    var deferred = new $.Deferred();
+                    deferreds.push(deferred);
+                    return deferred.promise();
+                });
+
+                AutosaveMergeUtility.mixin.autosave.call(model);
+                AutosaveMergeUtility.mixin.autosave.call(model);
+                expect(model.save).to.have.been.called.once;
+
+                deferreds.shift().resolve();
+
+                expect(model.save).to.have.been.called.twice;
+
+                deferreds.shift().resolve();
+            });
+
+        });
+
+        describe("mixin.parse", function()
+        {
+
+            it("should not fail without options", function()
+            {
+                var model = new Backbone.Model();
+                AutosaveMergeUtility.mixin.parse.call(model, {});
+            });
+
         });
 
     });

@@ -58,25 +58,17 @@ function(
                 var serverValue = server[key];
                 var resultValue;
 
-                if(typeof(baseValue) !== typeof(localValue))
-                {
-                    resultValue = localValue;
-                }
-                else if(typeof(baseValue) !== typeof(serverValue))
-                {
-                    resultValue = serverValue;
-                }
-                else if(_.isArray(baseValue))
+                if(_.all([baseValue, localValue, serverValue], _.isArray))
                 {
                     resultValue = AutosaveMergeUtility.join(baseValue, localValue, serverValue);
                 }
-                else if(_.isObject(baseValue))
+                else if(_.all([baseValue, localValue, serverValue], _.isObject))
                 {
                     resultValue = AutosaveMergeUtility.merge(baseValue, localValue, serverValue);
                 }
                 else
                 {
-                    if(baseValue !== localValue)
+                    if(!_.isEqual(baseValue, localValue))
                     {
                         // If the local value changed, it takes priority
                         resultValue = localValue;
@@ -134,8 +126,7 @@ function(
             parse: function(data, options)
             {
                 // NOTE: this refers to the model.
-
-                if(options.diff)
+                if(options && options.diff)
                 {
                     data = AutosaveMergeUtility.merge(options.diff, this.attributes, data, this.autosaveMergeOptions);
                 }
