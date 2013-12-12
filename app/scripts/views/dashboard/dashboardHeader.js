@@ -5,13 +5,28 @@
     "jqueryui/spinner",
     "jquerySelectBox",
     "underscore",
+    "backbone",
     "TP",
     "./dashboardDatePicker",
     "./chartUtils",
     "./dashboardHeaderDatePicker",
+    "views/applicationHeader/athletePickerView",
     "hbs!templates/views/dashboard/dashboardHeader"
 ],
-function ($, datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
+function (
+          $,
+          datepicker,
+          spinner,
+          jquerySelectBox,
+          _,
+          Backbone,
+          TP,
+          DashboardDatePicker,
+          chartUtils,
+          dashboardHeaderDatePicker,
+          AthletePickerView,
+          dashboardHeaderTemplate
+          )
 {
     var DashboardHeaderView = TP.ItemView.extend(
     {
@@ -36,8 +51,18 @@ function ($, datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, c
         {
             this.settingsKey = "dateOptions";
             this.on("user:loaded", this.setDefaultDateSettings, this);
+            this.on("user:loaded", this.render, this);
             this.listenTo(this.model, "applyDates", _.bind(this.applyDates, this));
             this.setDefaultDateSettings();
+            this.children = new Backbone.ChildViewContainer(); 
+            this.on("close", _.bind(this.children.call, this.children, "close"));
+        },
+
+        onRender: function()
+        {
+            this.children.call("close");
+            this._addView(".athletePickerContainer", new AthletePickerView({ basePath: "dashboard" }));
+            this.children.call("render");
         },
 
         setDefaultDateSettings: function()
@@ -52,7 +77,6 @@ function ($, datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, c
             this.model.set(this.settingsKey, mergedSettings, { silent: true });
 
             this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
-            this.render();
         },
 
         onClose: function()
@@ -115,6 +139,18 @@ function ($, datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, c
             var dateSettings = chartUtils.buildChartParameters(this.model.get(this.settingsKey));
             _.extend(data, dateSettings);
             return data;
+        },
+
+        _addView: function(selector, view)
+        {
+            if (_.isString(view))
+            {
+                this.$(selector).html(view);
+            } else
+            {
+                this.$(selector).append(view.$el);
+            }
+            this.children.add(view);
         }
     });
 

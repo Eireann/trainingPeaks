@@ -28,8 +28,8 @@ function(
 
         it("Should display a list of coached athletes in the calendar", function()
         {
-            expect($mainRegion.find("#athleteCalendarSelect").length).to.equal(1);
-            expect($mainRegion.find("#athleteCalendarSelect option").length).to.equal(2);
+            expect($mainRegion.find("select.athleteCalendarSelect").length).to.equal(1);
+            expect($mainRegion.find("select.athleteCalendarSelect option").length).to.equal(2);
         });
 
         describe("For default athlete", function()
@@ -40,19 +40,18 @@ function(
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
             });
 
-            it("Should request data for the current athlete id", function()
+            it("Should request workout data for the current athlete id", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345")).to.equal(true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(true);
             });
 
-            it("Should not request data for other athlete ids", function()
+            it("Should not request workout data for other athlete ids", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(false);
             });
         });
 
-        // routing doesn't work properly here?
-        xdescribe("For athlete id from url (TODO: Why doesn't router.navigate to a specific athlete id work? would be nice to be able to test this behavior)", function()
+        describe("For athlete id from url", function()
         {
 
             beforeEach(function()
@@ -60,6 +59,7 @@ function(
                 testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
                 $mainRegion = testHelpers.theApp.mainRegion.$el;
                 testHelpers.theApp.router.navigate("calendar/athletes/23456", true);
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
             });
             
             it("Should have the requested user set as the current athlete id", function()
@@ -67,14 +67,19 @@ function(
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
             });
 
-            it("Should request data for the current athlete id", function()
+            it("Should request settings data for the current athlete id", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456")).to.equal(true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/settings")).to.equal(true);
             });
 
-            it("Should not request data for other athlete ids", function()
+            it("Should request workout data for the current athlete id", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
+            });
+
+            it("Should not request workout data for other athlete ids", function()
+            {
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(false);
             });
         });
 
@@ -86,22 +91,81 @@ function(
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
             });
 
-            it("Should request data for the current athlete id", function()
+            it("Should request workout data for the current athlete id", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345")).to.equal(true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(true);
             });
 
-            it("Should not request data for other athlete ids", function()
+            it("Should not request workout data for other athlete ids", function()
             {
-                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456")).to.equal(false);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(false);
             });
 
-            xit("Should change the user id on selecting a new athlete (TODO: doesn't work, same router issue as above)", function()
+            it("Should request athlete settings on selecting a new athlete", function()
             {
-                $mainRegion.find("#athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.clearRequests();
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/settings")).to.equal(true);
+            });
+
+            it("Should not change the athlete id until athlete settings have loaded", function()
+            {
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
+            });
+
+            it("Should change the athlete id after athlete settings have loaded", function()
+            {
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
             });
+
+            it("Should not request new athlete workouts until athlete settings have loaded", function()
+            {
+                testHelpers.clearRequests();
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(false);
+            });
+
+            it("Should request new athlete workouts after athlete settings have loaded", function()
+            {
+                testHelpers.clearRequests();
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
+            });
+
         });
+
+        describe("Switch back to previously loaded athlete", function()
+        {
+
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("calendar", true);
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                $mainRegion.find(".athleteCalendarSelect").val(12345).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
+            });
+
+            it("Should change the athlete id immediately if athlete settings have already loaded", function()
+            {
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
+            });
+
+            it("Should not fetch settings again if athlete settings have already loaded", function()
+            {
+                testHelpers.clearRequests();
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/settings")).to.equal(false);
+            });
+        });
+
     });
 
 

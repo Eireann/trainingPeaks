@@ -35,6 +35,8 @@ function(
 
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
+
+            this.listenTo(theMarsApp.user, "athlete:change", _.bind(this.reset, this));
         },
 
         onLayoutClose: function()
@@ -97,6 +99,11 @@ function(
             {
                 view.trigger("user:loaded");
             }, self);
+        },
+
+        reset: function()
+        {
+            this.trigger("refresh");
         }
 
     });

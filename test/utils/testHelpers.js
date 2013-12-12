@@ -44,6 +44,27 @@ function(_, Backbone, TP, xhrData, MarsApp)
             // setup fake html regions, so it doesn't look for them on the html page and so we can reach them for testing
             this.theApp.on("initialize:before", this.setupRegionElements, this);
 
+            // setup router navigation that works for tests without backbone history
+            this.theApp.addInitializer(function()
+            {
+                this.router.navigate = function(fragment, trigger)
+                {
+                    var matchedRoute = _.any(this.routes, function(methodName, route) {
+                        var routeMatch = this._routeToRegExp(route).exec(fragment);
+                        if(routeMatch)
+                        {
+                            this[methodName].apply(this, routeMatch.slice(1)) ;
+                            return true;
+                        }
+                    }, this); 
+
+                    if (matchedRoute && (trigger === true || (trigger && trigger.trigger)))
+                    {
+                        this.trigger("route", fragment);
+                    }
+                };
+            });
+
             // start the app
             this.theApp.start();
 

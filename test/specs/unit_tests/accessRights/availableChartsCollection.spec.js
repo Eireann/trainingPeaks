@@ -1,5 +1,6 @@
 define(
 [
+    "backbone",
     "shared/models/userModel",
     "shared/models/userAccessRightsModel",
     "shared/utilities/featureAuthorization/featureAuthorizer",
@@ -7,6 +8,7 @@ define(
     "models/dashboard/availableChartsCollection"
 ],
 function(
+    Backbone,
     UserModel,
     UserAccessRightsModel,
     FeatureAuthorizer,
@@ -24,7 +26,7 @@ function(
         beforeEach(function()
         {
             var user = new UserModel(xhrData.users.barbkprem);
-            user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+            user.setCurrentAthlete(new Backbone.Model(xhrData.users.barbkprem.athletes[0]));
 
             var userAccessRights = new UserAccessRightsModel();
 

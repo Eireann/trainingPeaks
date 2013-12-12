@@ -4,12 +4,14 @@ define(
     "testUtils/xhrDataStubs",
     "moment",
     "jquery",
+    "backbone",
     "models/workoutModel"],
 function(
     testHelpers,
     xhrData,
     moment,
     $,
+    Backbone,
     WorkoutModel)
 {
     describe("Workout Model", function()
@@ -183,7 +185,7 @@ function(
             beforeEach(function()
             {
                 sinon.spy(theMarsApp.calendarManager, "addItem");
-                theMarsApp.user.setCurrentAthleteId(67890);
+                theMarsApp.user.setCurrentAthlete(new Backbone.Model({ athleteId: 67890 }));
                 workout = new WorkoutModel(workoutAttributes);
             });
 

@@ -2,15 +2,29 @@ define(
 [
     "underscore",
     "setImmediate",
+    "backbone",
     "TP",
     "moment",
     "jqueryui/datepicker",
+    "views/applicationHeader/athletePickerView",
     "views/applicationHeader/coachAndAffiliateCustomizations",
     "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/calendarHeader"
 ],
-function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomizations, CalendarUtility, calendarHeaderTemplate)
+function(
+         _,
+         setImmediate,
+         Backbone,
+         TP,
+         moment,
+         datepicker,
+         AthletePickerView,
+         coachAndAffiliateCustomizations,
+         CalendarUtility,
+         calendarHeaderTemplate
+         )
 {
+
     var calendarHeaderViewBase = {
 
         className: "calendarHeaderView frameworkHeaderView",
@@ -27,9 +41,7 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
             "click #goToNextWeekButton": "onGoToNextWeekButtonClicked",
             "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
             "click button.refreshButton": "onRefreshButtonClicked",
-            "change .datepicker": "onDateSelect",
-            "change #athleteCalendarSelect": "onAthleteSelectBoxChange"
-
+            "change .datepicker": "onDateSelect"
         },
 
         initializeStickit: function()
@@ -58,6 +70,9 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
                 changeMonth: true
             });
             this.updateDatepicker();
+
+            this._addView(".athletePickerContainer", new AthletePickerView({ basePath: "calendar" }));
+            this.children.call("render");
         },
 
         bindings:
@@ -99,7 +114,6 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
             "change:date": "updateDatepicker"
         },
 
-
         initialize: function()
         {
             if (!this.model)
@@ -107,75 +121,14 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
 
             this.initializeCoachAndAffiliateCustomizations();
             this.initializeStickit();
-
-            this.on("render", this.watchForAthletesChange, this);
-            this.on("render", this.updateCoachAthleteList, this);
+            this.children = new Backbone.ChildViewContainer(); 
+            this.on("close", _.bind(this.children.call, this.children, "close"));
         },
 
         updateDatepicker: function()
         {
             var date = moment(this.model.get("date")).toDate();
             this.$(".datepicker").datepicker("setDate", date);
-        },
-
-        watchForAthletesChange: function ()
-        {
-            // in case the athletes haven't loaded yet, refresh
-            theMarsApp.user.on("change:athletes", this.render, this);
-            this.on("close", function()
-            {
-                theMarsApp.user.off("change:athletes", this.render, this);
-            }, this);
-        }, 
-
-        updateCoachAthleteList: function()
-        {
-
-            if (this.isCoachWithAthletes())
-            {
-                this.customizeAthleteSelectBox();
-                var currentUserId = theMarsApp.user.getCurrentAthleteId();
-                this.$("#athleteCalendarSelect").val(currentUserId);
-            }
-            else
-            {
-                this.$("#athleteCalendarSelect").remove();
-            }
-        },
-
-        isCoachWithAthletes: function()
-        {
-            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
-        },
-
-        customizeAthleteSelectBox: function()
-        {
-            var self = this;
-            setImmediate(function ()
-            {
-                self.$("#athleteCalendarSelect").selectBoxIt({
-                    dynamicPositioning: false
-                });
-
-                self.$("#athleteCalendarSelectSelectBoxItContainer").css('display', "block");
-            });
-        },
-
-        onAthleteSelectBoxChange: function ()
-        {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "athleteChanged", "eventLabel": "" });
-
-            var athleteId = Number(this.$("#athleteCalendarSelect").val());
-
-            var athleteUrl = "calendar/athletes/" + athleteId;
-            theMarsApp.router.navigate(athleteUrl, true);
-        },
-
-        serializeData: function ()
-        {
-            var headerData = this.model.toJSON();
-            headerData.athletes = this._getFilteredAthletesForCoach();
-            return headerData;
         },
 
         onDateSelect: function()
@@ -209,13 +162,16 @@ function(_, setImmediate, TP, moment, datepicker, coachAndAffiliateCustomization
             // TODO: Reset libraries too?
         },
 
-        _getFilteredAthletesForCoach: function()
+        _addView: function(selector, view)
         {
-            var athletes = theMarsApp.user.get("athletes");
-            return _.filter(athletes, function(athlete)
+            if (_.isString(view))
             {
-                return theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewAthleteCalendar, { athlete: athlete });
-            });
+                this.$(selector).html(view);
+            } else
+            {
+                this.$(selector).append(view.$el);
+            }
+            this.children.add(view);
         }
     };
 
