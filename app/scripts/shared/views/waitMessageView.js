@@ -13,6 +13,8 @@ function ($, _, TP, waitMessageTemplate)
         {
             mask: true,
             shadow: false,
+
+            // no close on click
             onOverlayClick: function(){return false;}
         },
 
@@ -29,8 +31,14 @@ function ($, _, TP, waitMessageTemplate)
 
         onRender: function()
         {
-            //this.$overlay.hide().fadeIn();
-            //this.$el.hide().fadeIn();
+            this.$overlay.css({opacity: 0}).animate({opacity: 0.5}, 500);
+            this.$el.css({opacity: 0}).animate({opacity: 1}, 500);
+        },
+
+        // keep it open until closed
+        closeOnRouteChange: function()
+        {
+            return false;
         }
     });
 });

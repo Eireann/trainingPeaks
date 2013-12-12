@@ -138,6 +138,34 @@ function(
 
         });
 
+        describe("Switch back to previously loaded athlete", function()
+        {
+
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("calendar", true);
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                $mainRegion.find(".athleteCalendarSelect").val(12345).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
+            });
+
+            it("Should change the athlete id immediately if athlete settings have already loaded", function()
+            {
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
+            });
+
+            it("Should not fetch settings again if athlete settings have already loaded", function()
+            {
+                testHelpers.clearRequests();
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/settings")).to.equal(false);
+            });
+        });
+
     });
 
 

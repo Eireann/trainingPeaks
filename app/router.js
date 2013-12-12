@@ -48,8 +48,7 @@ function (_, TP, RollbarManager, WaitMessageView)
                 theMarsApp.athleteManager.loadAthlete(athleteId).done(function()
                 {
                     callback.apply(self, args);
-                    //waitMessage.close();
-                    debugger;
+                    waitMessage.close();
                 });
             }
             else
