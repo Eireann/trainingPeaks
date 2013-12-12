@@ -73,6 +73,28 @@ function(
 
                 expect(merged.a).to.eql([{id: 1, value: 2}, {id: 2, value: 42}, {id: 3, value: 11}]);
             });
+
+            it("should not attempt to merge objects with arrays", function()
+            {
+                var base = { a: [] };
+                var local = { a: [] };
+                var server = { a: {} };
+
+                var merged = AutosaveMergeUtility.merge(base, local, server);
+
+                expect(merged.a).to.eql({});
+            });
+
+            it("should not attempt to merge arrays with null", function()
+            {
+                var base = { a: [] };
+                var local = { a: null };
+                var server = { a: [] };
+
+                var merged = AutosaveMergeUtility.merge(base, local, server);
+
+                expect(merged.a).to.eql(null);
+            });
         });
 
 
