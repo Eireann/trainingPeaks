@@ -2,9 +2,10 @@ define(
 [
     "underscore",
     "TP",
-    "utilities/rollbarManager"
+    "utilities/rollbarManager",
+    "shared/views/waitMessageView"
 ],
-function (_, TP, RollbarManager)
+function (_, TP, RollbarManager, WaitMessageView)
 {
     var ensureUser = function(callback) 
     {
@@ -43,9 +44,12 @@ function (_, TP, RollbarManager)
                 athleteId = parseInt(athleteId, 10);
                 var self = this;
                 var args = Array.prototype.slice.call(arguments);
+                var waitMessage = new WaitMessageView({ model: new TP.Model({ message: TP.utils.translate("Loading athlete data")})}).render();
                 theMarsApp.athleteManager.loadAthlete(athleteId).done(function()
                 {
                     callback.apply(self, args);
+                    //waitMessage.close();
+                    debugger;
                 });
             }
             else

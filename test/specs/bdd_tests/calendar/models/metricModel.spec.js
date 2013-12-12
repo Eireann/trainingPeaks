@@ -113,7 +113,7 @@ function(
             beforeEach(function()
             {
                 sinon.spy(testHelpers.theApp.calendarManager, "addItem");
-                testHelpers.theApp.user.setCurrentAthlete(67890, new TP.Model());
+                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 67890 }));
                 metric = new MetricModel(metricAttributes);
             });
 
@@ -158,7 +158,7 @@ function(
                 
                 it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42}));
                     var cutMetric = metric;
                     sinon.stub(cutMetric, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
@@ -206,7 +206,7 @@ function(
                 
                 it("Should set the correct athleteId on pasted metric", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
@@ -216,7 +216,7 @@ function(
 
                 it("Should not change the date of the copied metric", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });

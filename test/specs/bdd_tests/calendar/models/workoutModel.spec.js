@@ -153,7 +153,7 @@ function(
             beforeEach(function()
             {
                 sinon.spy(theMarsApp.calendarManager, "addItem");
-                theMarsApp.user.setCurrentAthlete(67890, new Backbone.Model());
+                theMarsApp.user.setCurrentAthlete(new Backbone.Model({ athleteId: 67890 }));
                 workout = new WorkoutModel(workoutAttributes);
             });
 

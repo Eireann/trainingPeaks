@@ -27,7 +27,7 @@ function(
     {
         var user = new UserModel({ userId: 1 });
         user.set("athletes", [{ athleteId: 1, userType: 4 }, { athleteId: 2, userType: 6 }, { athleteId: 3, userType: 4 }]);
-        user.setCurrentAthlete(1, new TP.Model(user.get("athletes")[0]));
+        user.setCurrentAthlete(new TP.Model(user.get("athletes")[0]));
         return new FeatureAuthorizer(user, userAccessRights);
     }
 
@@ -383,10 +383,10 @@ function(
                 beforeEach(function()
                 {
                     authorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());
-                    authorizedFeatureAuthorizer.user.currentAthleteId = 1;
+                    authorizedFeatureAuthorizer.user.setCurrentAthlete(new TP.Model({ athleteId: 1, userType: 4 }));
                     
                     unauthorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
-                    unauthorizedFeatureAuthorizer.user.currentAthleteId = 2;
+                    unauthorizedFeatureAuthorizer.user.setCurrentAthlete(new TP.Model({ athleteId: 2, userType: 6 }));
                 });
 
                 it("Should not allow basic users to auto apply threshold changes", function()

@@ -157,12 +157,11 @@ function(
             return this.get("unitsBySportType")[parseInt(sportType, 10)] || this.get("units"); 
         },
 
-        setCurrentAthlete: function(athleteId, athleteSettings)
+        setCurrentAthlete: function(athleteSettings)
         {
-            var oldAthleteId = this.currentAthleteId;
-            this.currentAthleteId = athleteId;
+            var changed = !this.athleteSettings || this.athleteSettings.get("athleteId") !== athleteSettings.get("athleteId");
             this.athleteSettings = athleteSettings;
-            if(oldAthleteId !== this.currentAthleteId)
+            if(changed)
             {
                 this.trigger("athlete:change");
             }
@@ -170,11 +169,7 @@ function(
 
         getCurrentAthleteId: function()
         {
-            if(!this.currentAthleteId)
-            {
-                throw new Error("User has no current athlete id");
-            }
-            return this.currentAthleteId;
+            return this.getAthleteSettings().get("athleteId");
         },
 
         getAthleteSettings: function()

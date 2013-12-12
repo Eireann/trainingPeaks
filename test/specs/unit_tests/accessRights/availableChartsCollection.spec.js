@@ -26,7 +26,7 @@ function(
         beforeEach(function()
         {
             var user = new UserModel(xhrData.users.barbkprem);
-            user.setCurrentAthlete(xhrData.users.barbkprem.userId, new Backbone.Model(xhrData.users.barbkprem.athletes[0]));
+            user.setCurrentAthlete(new Backbone.Model(xhrData.users.barbkprem.athletes[0]));
 
             var userAccessRights = new UserAccessRightsModel();
 

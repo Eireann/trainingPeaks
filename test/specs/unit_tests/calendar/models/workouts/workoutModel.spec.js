@@ -48,7 +48,7 @@ function(
             {
                 testHelpers.setupFakeAjax();
                 workout = new WorkoutModel({ workoutId: "12345", workoutDay: originalDate });
-                testHelpers.theApp.user.setCurrentAthlete(1, new TP.Model());
+                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({athleteId: 1}));
             });
 
             afterEach(function()
@@ -121,7 +121,7 @@ function(
             beforeEach(function()
             {
                 sinon.spy(testHelpers.theApp.calendarManager, "addItem");
-                testHelpers.theApp.user.setCurrentAthlete(67890, new TP.Model());
+                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 67890 }));
                 workout = new WorkoutModel(workoutAttributes);
             });
 
@@ -182,7 +182,7 @@ function(
 
                 it("Should not call moveToDay when pasting a workout from cut on different athlete", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
                     var cutWorkout = workout;
                     sinon.stub(cutWorkout, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
@@ -231,7 +231,7 @@ function(
                 
                 it("Should set the correct athleteId on pasted workout", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedWorkout.pasted({ date: dateToPasteTo });
@@ -241,7 +241,7 @@ function(
 
                 it("Should not change the athleteId of the copied workout", function()
                 {
-                    testHelpers.theApp.user.setCurrentAthlete(42, new TP.Model());
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42}));
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedWorkout.pasted({ date: dateToPasteTo });

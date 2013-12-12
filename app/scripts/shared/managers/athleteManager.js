@@ -15,6 +15,7 @@ function(
     {
         this.app = app;
         this.user = user;
+        this.athletes = {};
     }
 
     _.extend(AthleteManager.prototype, {
@@ -22,30 +23,33 @@ function(
 
         loadAthlete: function(athleteId)
         {
-            if(this.user.currentAthleteId !== athleteId)
+            if(!this._userHasAthlete(athleteId))
             {
+                throw new Error("Athlete " + athleteId + " is not in user's athletes list");
+            }
 
-                if(!_.find(this.user.get("athletes"), function(athlete)
-                    {
-                        return athlete.athleteId === athleteId;
-                    })
-                )
+            var athlete = this._getOrCreateAthlete(athleteId); 
+            var user = this.user;
+            return athlete.getFetchPromise()
+                .done(function()
                 {
-                    throw new Error("Athlete " + athleteId + " is not in user's athletes list");
-                }
+                    user.setCurrentAthlete(athlete);
+                });
+        },
 
-                var self = this;
-                var athleteSettings = new AthleteSettingsModel({ athleteId: athleteId });
-                return athleteSettings.fetch()
-                    .done(function()
-                    {
-                        self.user.setCurrentAthlete(athleteId, athleteSettings);
-                    });
-            }
-            else
-            {
-                return new $.Deferred().resolve();
-            }
+        _getOrCreateAthlete: function(athleteId)
+        {
+            var athlete = _.has(this.athletes, athleteId) ? this.athletes[athleteId] : new AthleteSettingsModel({ athleteId: athleteId});
+            this.athletes[athleteId] = athlete;
+            return athlete;
+        },
+
+        _userHasAthlete: function(athleteId)
+        {
+            return _.find(this.user.get("athletes"), function(athlete)
+                {
+                    return athlete.athleteId === athleteId;
+                });
         }
 
 

@@ -50,12 +50,7 @@ function(
 
         beforeEach(function()
         {
-            testHelpers.theApp.user.currentAthleteId = 1234;
-        });
-
-        afterEach(function()
-        {
-            testHelpers.theApp.user.currentAthleteId = null;
+            theMarsApp.user.setCurrentAthlete(new TP.Model({ athleteId: 1234 }));
         });
 
         it("Should load successfully as a module", function()
@@ -84,6 +79,7 @@ function(
 
             beforeEach(function()
             {
+                theMarsApp.user.setCurrentAthlete(new TP.Model({ athleteId: 1234 }));
                 controller = buildController();
                 sinon.stub(controller, "showViewsInRegions");
                 sinon.stub(controller, "showDate");

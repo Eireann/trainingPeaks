@@ -17,7 +17,7 @@ function(
         // user needs an athlete id for some of these tests to run
         beforeEach(function()
         {
-            testHelpers.theApp.user.setCurrentAthlete(1234, new Backbone.Model());
+            testHelpers.theApp.user.setCurrentAthlete(new Backbone.Model({ athleteId: 1234 }));
         });
 
         it("should load as a module", function()
