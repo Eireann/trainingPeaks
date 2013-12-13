@@ -72,6 +72,24 @@ function (
             "originalLapsStats": null
         },
 
+        parse: function(data)
+        {
+            var original = data.flatSamples;
+            if(original)
+            {
+                var modified = {};
+                var channels = _.indexBy(original.channels, "name");
+
+                modified.msOffsetsOfSamples = channels.MillisecondsOffset.samples;
+
+                modified.channelMask = _.pluck(original.channels, "name");
+                modified.samples = _.zip.apply(_, _.pluck(original.channels, "samples"));
+                modified.samples = _.map(modified.samples, function(sample) { return { values: sample }; });
+
+                data.flatSamples = modified;
+            }
+        },
+
         reset: function()
         {
             this._batchChanges(function()
