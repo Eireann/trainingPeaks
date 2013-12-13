@@ -5,6 +5,7 @@
             <th>Duration</th>
             <th>Distance ({{ getUnitsLabel "distance" workoutType }})</th>
             <th>TSS</th>
+            <th data-peaktype="4">kj</th>
             {{#if byDistance}}
             <th>400m</th>
             <th>1km</th>
@@ -27,6 +28,7 @@
             <td>{{ duration }}</td>
             <td>{{ distance }}</td>
             <td>{{ tss }}</td>
+            <td data-peaktype="4">{{ kj }}</td>
             <td>{{ peak01 }}</td>
             <td>{{ peak02 }}</td>
             <td>{{ peak03 }}</td>
@@ -35,7 +37,7 @@
         </tr>
         {{else}}
         <tr>
-            <td colspan="9"><center>Loading&hellip;</center></td>
+            <td colspan="10"><center>Loading&hellip;</center></td>
         </tr>
         {{/each }}
     </tbody>
@@ -52,6 +54,7 @@
             <td>{{ duration }}</td>
             <td>{{ distance }}</td>
             <td>{{ tss }}</td>
+            <td data-peaktype="4">{{ kj }}</td>
             <td>{{ peak01 }}</td>
             <td>{{ peak02 }}</td>
             <td>{{ peak03 }}</td>
@@ -60,7 +63,7 @@
         </tr>
         {{else}}
         <tr>
-            <td colspan="9"><center>Loading&hellip;</center></td>
+            <td colspan="10"><center>Loading&hellip;</center></td>
         </tr>
         {{/each }}
     </tbody>
