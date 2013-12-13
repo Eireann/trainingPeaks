@@ -25,7 +25,7 @@ requirejs.config(
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
         flot: "../vendor/js/libs/flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
-        lodash: "../bower_components/lodash/dist/lodash",
+        lodash: "../bower_components/lodash/dist/lodash.compat",
         underscore: "../bower_components/lodash/dist/lodash",
         backbone: "../vendor/js/libs/backbone",
         "backbone.marionette": "../vendor/js/libs/backbone.marionette",
@@ -55,7 +55,8 @@ requirejs.config(
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
         text: "../bower_components/requirejs-text/text",
         i18n: "../bower_components/requirejs-i18n/i18n",
-        tpcore: "../tpcore/tpcore.min"
+        tpcore: "../tpcore/tpcore.min",
+        lazy: "../bower_components/lazy.js/lazy"
     },
     shim: {
         handlebars: {
@@ -118,13 +119,16 @@ requirejs.config(
         leaflet: {
             exports: "L"
         },
+        lazy: {
+            exports: "Lazy"
+        },
         tpcore: {
             exports: "TP",
             deps: [
                 "jquery",
                 "underscore",
                 "backbone",
-                "flot/jquery.flot",
+                "flot/jquery.flot"
             ]
         }
     }

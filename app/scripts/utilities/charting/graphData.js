@@ -3,9 +3,10 @@ define(
     "underscore",
     "utilities/charting/dataParserUtils",
     "utilities/charting/findOrderedArrayIndexByValue",
-    "utilities/charting/flotUtils"
+    "utilities/charting/flotUtils",
+    "utilities/sampleData"
 ],
-function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
+function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData)
 {
     var defaultChannelOrder =
     [
@@ -31,16 +32,27 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
         this.dataByAxisAndChannel = null;
-        this.elevationInfo = {};
-        this.minTemperature = null;
         this.latLonArray = null;
         this.averageStats = {};
+
+        this.sampleData = new SampleData([]);
     };
 
     _.extend(GraphData, {defaultChannelOrder: defaultChannelOrder});
 
     GraphData.prototype =
     {
+        loadData: function(flatSamples)
+        {
+            this.flatSamples = flatSamples;
+            this.reset();
+        },
+
+        reset: function()
+        {
+            this.sampleData = this.flatSamples && new SampleData(_.clone(this.flatSamples.channels, true) || []);
+        },
+
         setDisabledSeries: function(series)
         {
             this.disabledSeries = series;
@@ -48,82 +60,78 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getSeries: function(x1, x2)
         {
-            return this.generateSeriesFromData(this.flatSamples, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo.min, this.xaxis, this.xAxisDistanceValues, this.disabledSeries, this.excludedSeries, this.excludedRanges, x1, x2);
+            return this._generateSeriesFromData(this.xaxis);
         },
 
         getSeriesForAxes: function(xaxis, yaxis)
         {
             var data = [];
-            var channel = "time";
 
-            data = _.clone(this.dataByAxisAndChannel[channel]);
+            data = this.sampleData.getChannels(xaxis, yaxis).toArray();
 
-            // remove cut ranges
-            this.removeExcludedRangesFromData(data, this.excludedRanges, channel, "time", this.flatSamples.msOffsetsOfSamples);
+            var seriesData = FlotUtils.seriesOptions(data, yaxis, { minElevation: this.getMinimumForAxis("Elevation") });
 
-            var seriesData = FlotUtils.seriesOptions(data[yaxis], yaxis, { minElevation: this.elevationInfo.min });
-
-            var newSeries = this.processData(data, xaxis, yaxis);
-            seriesData.data = newSeries;
+            this._setAverageStats(xaxis, yaxis);
 
             return [seriesData];
         },
 
-        processData: function(data, xaxis, yaxis)
+        // _processData: function(data, xaxis, yaxis)
+        // {
+        //     var newSeries = [];
+        //     var ecks;
+        //     var why;
+        //     var totalPowerValue;
+        //     var rightPowerValue;
+        //     var rightPowerPercentage;
+        //     var balancedPowerAvailable = _.has(data, "RightPower");
+
+        //     var powerPercentage = function(index)
+        //     {
+        //         totalPowerValue = data["Power"][index][1];
+        //         rightPowerValue = data["RightPower"][index][1];
+
+        //         rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
+
+        //         return rightPowerPercentage;
+        //     };
+
+        //     _.each(data[xaxis], function(dataPoint, index)
+        //     {
+        //         ecks = data[xaxis][index][1];
+        //         why = data[yaxis][index][1];
+        //         if(xaxis === "RightPower")
+        //         {
+        //             ecks = powerPercentage(index);
+        //         }
+
+        //         if(yaxis === "RightPower")
+        //         {
+        //             why = powerPercentage(index);
+        //         }
+        //         // This is a hack to prevent errant data from skewing graphs.
+        //         if(balancedPowerAvailable && (xaxis === "RightPower" || yaxis === "RightPower"))
+        //         {
+        //             if(totalPowerValue < rightPowerValue)
+        //             {
+        //                 data["Power"][index][1] = data["RightPower"][index][1] = null;
+        //                 ecks = why = null;
+        //             }
+        //         }
+
+        //         newSeries.push([ecks, why]);
+        //     }, this);
+
+        //     this._setAverageStats(data, xaxis, yaxis);
+
+        //     return newSeries;
+        // },
+
+        _setAverageStats: function(xaxis, yaxis)
         {
-            var newSeries = [];
-            var ecks;
-            var why;
-            var totalPowerValue;
-            var rightPowerValue;
-            var rightPowerPercentage;
-            var balancedPowerAvailable = _.has(data, "RightPower");
-
-            var powerPercentage = function(index)
-            {
-                totalPowerValue = data["Power"][index][1];
-                rightPowerValue = data["RightPower"][index][1];
-
-                rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
-
-                return rightPowerPercentage;
-            };
-
-            _.each(data[xaxis], function(dataPoint, index)
-            {
-                ecks = data[xaxis][index][1];
-                why = data[yaxis][index][1];
-                if(xaxis === "RightPower")
-                {
-                    ecks = powerPercentage(index);
-                }
-
-                if(yaxis === "RightPower")
-                {
-                    why = powerPercentage(index);
-                }
-                // This is a hack to prevent errant data from skewing graphs.
-                if(balancedPowerAvailable && (xaxis === "RightPower" || yaxis === "RightPower"))
-                {
-                    if(totalPowerValue < rightPowerValue)
-                    {
-                        data["Power"][index][1] = data["RightPower"][index][1] = null;
-                        ecks = why = null;
-                    }
-                }
-
-                newSeries.push([ecks, why]);
-            }, this);
-
-            this.setAverageStats(data, xaxis, yaxis);
-
-            return newSeries;
-        },
-
-        setAverageStats: function(data, xaxis, yaxis)
-        {
+            var self = this;
             var totalStats = this.detailData.get("totalStats");
-            var average = function(data, axis)
+            var average = function(axis)
             {
                 switch(axis)
                 {
@@ -146,21 +154,23 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
                     case "Distance":
                     case "Time":
                         var total = 0;
-                        var sum = _.reduce(data[axis], function(sum, num) {
-                            if(_.isFinite(num[1]))
+                        var sum = 0;
+                        
+                        self.sampleData.getChannel(axis).each(function(value)
+                        {
+                            if(_.isFinite(value))
                             {
                                 total++;
-                                return sum + num[1];
+                                sum += value;
                             }
-                            return sum;
-                        }, 0);
+                        });
                         return sum / total;
                     default:
                         return null;
                 }
             };
 
-            var avgData = average(data, xaxis);
+            var avgData = average(xaxis);
             this.averageStats[xaxis + yaxis] = {};
 
             if(avgData) this.averageStats[xaxis + yaxis].xaxis = avgData;
@@ -171,7 +181,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             }
             else
             {
-                avgData = average(data, yaxis);
+                avgData = average(yaxis);
                 if(avgData) this.averageStats[xaxis + yaxis].yaxis = avgData;
             }
         },
@@ -183,61 +193,43 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getYAxes: function(series)
         {
-            return FlotUtils.generateYAxes(series, this.workoutTypeValueId, this.dataByAxisAndChannel[this.xaxis], this.elevationInfo, this);
+            return FlotUtils.generateYAxes(series, this.workoutTypeValueId, this);
         },
 
-        getMinimumForAxis: function(series, data, elevationInfo, x1, x2)
+        getMinimumForAxis: function(series, x1, x2)
         {
-            switch(series)
+            if(series.toLowerCase() === "elevation")
             {
-                case "Elevation":
-                    return DataParserUtils.getElevationInfo(data, elevationInfo, x1, x2, this.flatSamples.msOffsetsOfSamples).min;
-
-                case "Temperature":
-                    return DataParserUtils.getTemperatureMinimum(data, this.minTemperature, x1, x2, this.flatSamples.msOffsetsOfSamples);
-
-                default:
-                    return 0;
+                var channel = this.sampleData.sliceBy("time", x1 || 0, x2).getChannel(series);
+                return channel ? channel.select(_.isNumber).min() : null;
+            }
+            else
+            {
+                return 0;
             }
         },
 
         getLatLonArray: function()
         {
-            if (this.dataByAxisAndChannel[this.xaxis].Latitude && this.dataByAxisAndChannel[this.xaxis].Longitude && !this.latLonArray)
-                this.latLonArray = this.generateLatLonFromData(this.dataByAxisAndChannel[this.xaxis]);
-
+            this.latLonArray = this.latLonArray || this._generateLatLonFromData();
             return this.latLonArray;
         },
 
         createCorrectedElevationChannel: function (elevations)
         {
-            // elevation correction view always uses distance, whether main graph is in distance or time
-            var index = 0;
-            var corrected = _.map(this.dataByAxisAndChannel["distance"]["Elevation"], function (elevationPoint)
-            {
-                if (index >= (elevations.length - 1))
-                    return [elevationPoint[0], null];
-
-                return [elevationPoint[0], elevations[index++] / 100];
-            });
-            return corrected;
+            return this.sampleData.getChannel("distance").zip(elevations).toArray();
         },
 
         getLatLongFromOffset: function (xAxisOffset)
         {
-            // original call: findIndexByXAxisOffset
-            var index = DataParserUtils.findIndexByChannelAndOffset(this.xAxisDistanceValues, this.xaxis, xAxisOffset, this.flatSamples.msOffsetsOfSamples);
-
-            if (index === null)
-                return null;
-
+            var index = this.sampleData.indexOf(this.xaxis, xAxisOffset);
             return this.getLatLongByIndex(index);
         },
 
         getLatLongByIndex: function(index)
         {
-            var lat = this.dataByAxisAndChannel[this.xaxis].Latitude[index][1];
-            var lng = this.dataByAxisAndChannel[this.xaxis].Longitude[index][1];
+            var lat = this.sampleData.get("latitude", index);
+            var lng = this.sampleData.get("longitude", index);
 
             if (lat !== null && lng !== null && !_.isNaN(lat) && !_.isNaN(lng))
                 return { lat: lat, lng: lng };
@@ -247,10 +239,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getDataByAxisAndChannel: function (axis, channel)
         {
-            if (_.has(this.dataByAxisAndChannel[axis], channel))
-                return this.dataByAxisAndChannel[axis][channel];
-            else
-                return null;
+            return this.sampleData.getChannels(axis, channel).toArray();
         },
 
         setXAxis: function (xaxis)
@@ -263,161 +252,53 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
 
         getMsOffsetFromDistance: function (distance)
         {
-            var index = DataParserUtils.findIndexByChannelAndOffset(this.xAxisDistanceValues, "distance", distance, this.flatSamples.msOffsetsOfSamples);
-
-            if(index !== null && index < this.flatSamples.msOffsetsOfSamples.length)
-                return this.flatSamples.msOffsetsOfSamples[index];
-
-            return null;
+            var index = this.sampleData.indexOf("distance", distance);
+            return this.sampleData.get("time", index);
         },
 
         getMsOffsetOfLastSample: function()
         {
-            return this.flatSamples.msOffsetsOfSamples.slice(-1);
+            return this.sampleData.getChannel("time").last();
         },
 
         getDistanceFromMsOffset: function (msOffset)
         {
-            var index = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, msOffset);
-            if (index !== null && index < this.getDataByAxisAndChannel("distance", "Distance").length)
-                return this.getDataByAxisAndChannel("distance", "Distance")[index][1];
-            return null;
+            var index = this.sampleData.indexOf("time", msOffset);
+            return this.sampleData.get("distance", index);
         },
 
         excludeRange: function(channel, beginMsOffset, endMsOffset)
         {
-            var beginIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, beginMsOffset);
-            var endIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, endMsOffset);
-
-            this.excludedRanges.push({
-                channel: channel,
-                time: {
-                    begin: beginMsOffset,
-                    end: endMsOffset
-                },
-                distance: {
-                    begin: this.xAxisDistanceValues[beginIndex],
-                    end: this.xAxisDistanceValues[endIndex]
-                }
-
-            });
+            this.sampleData.sliceBy("time", beginMsOffset, endMsOffset).deleteValues(channel);
         },
 
         excludeChannel: function(channel)
         {
-            if(!_.contains(this.excludedSeries, channel))
-            {
-                this.excludedSeries.push(channel);
-            }
+            this.sampleData.deleteChannel(channel);
         },
 
         resetExcludedRanges: function()
         {
-            this.excludedSeries = [];
-            this.excludedRanges = [];
+            this.reset();
         },
 
         getAvailableChannels: function()
         {
-            return _.difference(this.flatSamples.channelMask, this.excludedSeries);
+            return _.difference(this.sampleData.listChannels(), this.excludedSeries);
         },
 
-        removeExcludedRangesFromData: function(data, excludedRanges, channel, offsetType, offsetsOfSamples)
-        {
-            if(!excludedRanges || !excludedRanges.length)
-            {
-                return;
-            }
-            _.each(excludedRanges, function(range)
-            {
-                if(range.channel === channel || range.channel === "AllChannels")
-                {
-
-                    // offset by one on each end seems to be closer to the result that is returned after applying cuts
-                    var rangeStartIndex = findOrderedArrayIndexByValue(offsetsOfSamples, range[offsetType].begin) + 1;
-                    var rangeEndIndex = findOrderedArrayIndexByValue(offsetsOfSamples, range[offsetType].end) - 1;
-
-                    if(rangeStartIndex >= 0 && rangeEndIndex >= 0)
-                    {
-                        var getPointValue = function() {return null;};
-
-
-                        // extrapolate values for distance view
-                        if(offsetType === "distance")
-                        {
-                            var beginValue = data[rangeStartIndex][1];
-                            var endValue = data[rangeEndIndex][1];
-                            var increment = (endValue - beginValue) / (rangeEndIndex - rangeStartIndex);
-                            var currentValue = beginValue;
-                            getPointValue = function()
-                            {
-                                currentValue += increment;
-                                return currentValue;
-                            };
-                        }
-                        else
-                        {
-                            // delete values for time view, except flatten elevation
-                            if(channel === "Elevation" && rangeStartIndex > 0)
-                            {
-                                var previousElevation = data[rangeStartIndex][1];
-                                getPointValue = function(){return previousElevation;};
-                            }
-                        }
-
-                        for(var i = rangeStartIndex;i<=rangeEndIndex && i < data.length;i++)
-                        {
-                            // if xaxis is distance, extrapolate, otherwise just cut
-
-                            // each data point is an array with index and value - remove the value but leave the index intact
-                            data[i][1] = getPointValue();
-                        }
-                    }
-                }
-            });
-        },
-
-        generateSeriesFromData: function(flatSamples, dataByChannel, minElevation, xaxis, xAxisDistanceValues, disabledSeries, excludedSeries, excludedRanges, x1, x2)
+        _generateSeriesFromData: function(xaxis)
         {
             var seriesArray = [];
 
-            var offsetsOfSamples = xaxis === "distance" ? xAxisDistanceValues : flatSamples.msOffsetsOfSamples;
-            var startIdx, endIdx;
-            if(!_.isUndefined(x1) && !_.isUndefined(x2))
+            _.each(this.sampleData.listChannels(), function(channel)
             {
-                startIdx = DataParserUtils.findIndexByChannelAndOffset(dataByChannel, xaxis, x1, flatSamples.msOffsetsOfSamples);
-                endIdx = DataParserUtils.findIndexByChannelAndOffset(dataByChannel, xaxis, x2, flatSamples.msOffsetsOfSamples);
-                offsetsOfSamples = offsetsOfSamples.slice(startIdx, endIdx + 1);
-            }
+                if(_.contains(this.disabledSeries, channel)) return;
+                if(_.include(["time", "distance", "longitude", "latitude"], channel)) return;
 
-            _.each(flatSamples.channelMask, function(channel)
-            {
-                if (_.contains(disabledSeries, channel))
-                    return;
+                var data = this.sampleData.getChannels(xaxis, channel).toArray();
 
-                if(_.contains(excludedSeries, channel))
-                    return;
-
-                if (channel === "Distance")
-                    return;
-
-                if (channel === "Latitude" || channel === "Longitude")
-                    return;
-
-                var data = [];
-                if(!_.isUndefined(x1) && !_.isUndefined(x2))
-                {
-                    data = dataByChannel[channel].slice(startIdx, endIdx + 1);
-                }
-                else
-                {
-                    data = _.clone(dataByChannel[channel]);
-                }
-
-                // remove cut ranges
-                this.removeExcludedRangesFromData(data, excludedRanges, channel, xaxis, offsetsOfSamples);
-
-                var seriesOptions = FlotUtils.seriesOptions(data, channel, { minElevation: minElevation });
+                var seriesOptions = FlotUtils.seriesOptions(data, this.sampleData.getChannelData(channel).name, { minElevation: this.getMinimumForAxis("Elevation") });
 
                 seriesArray.push(seriesOptions);
             }, this);
@@ -437,42 +318,25 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils)
             return orderedSeriesArray;
         },
 
-        generateLatLonFromData: function(dataByChannel)
+        _generateLatLonFromData: function()
         {
-            var startIndex = 0;
-            var endIndex = dataByChannel.Latitude.length;
-            return this.generateLatLonFromDataBetweenIndexes(dataByChannel, startIndex, endIndex);
+            return this._generateLatLonFromDataBetweenIndexes(0, undefined);
         },
 
-        generateLatLonFromDataBetweenIndexes: function(dataByChannel, startIndex, endIndex)
+        _generateLatLonFromDataBetweenIndexes: function(startIndex, endIndex)
         {
-            var latLon = [];
-
-            if (_.has(dataByChannel, "Latitude") && _.has(dataByChannel, "Longitude") && (dataByChannel.Latitude.length === dataByChannel.Longitude.length))
+            var data = this.sampleData.slice(startIndex, endIndex);
+            var array = data.getChannels("latitude", "longitude").reject(function(latLon)
             {
-                for (var i = startIndex; i < endIndex; i++)
-                {
-                    var lat = dataByChannel.Latitude[i][1];
-                    var lon = dataByChannel.Longitude[i][1];
+                return _.any(latLon, _.isNaN);
+            }).toArray();
 
-                    if (_.isNaN(lat) || _.isNaN(lon))
-                        continue;
-
-                    latLon.push([lat, lon]);
-                }
-            }
-
-            return latLon;
+            return array.length ? array : null;
         },
 
         getLatLonBetweenMsOffsets: function(dataByAxisAndChannel, startMsOffset, endMsOffset)
         {
-            if(!this.hasLatLongData) return [];
-
-            var sampleStartIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, startMsOffset);
-            var sampleEndIndex = findOrderedArrayIndexByValue(this.flatSamples.msOffsetsOfSamples, endMsOffset);
-
-            return this.generateLatLonFromDataBetweenIndexes(dataByAxisAndChannel, sampleStartIndex, sampleEndIndex);
+            return this._generateLatLonFromDataBetweenIndexes(this.sampleData.indexOf("time", startMsOffset), this.sampleData.indexOf("time", endMsOffset));
         }
 
     };

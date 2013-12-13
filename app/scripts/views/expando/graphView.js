@@ -134,7 +134,7 @@ function(
             this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
             var enabledSeries = this._getGraphData().getSeries();
-
+            
             if(!enabledSeries.length)
             {
                 this.$el.addClass("noData");

@@ -281,8 +281,8 @@ function(
         _createRange: function(enabledSeries, range, rangesSeries, seriesCount, color)
         {
             var copiedSeries = _.clone(enabledSeries);
-            var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
-            var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
+            var begin = this._getGraphData().sampleData.indexOf("time", range.get("begin"));
+            var end = this._getGraphData().sampleData.indexOf("time", range.get("end"));
 
             copiedSeries.data = [];
 
