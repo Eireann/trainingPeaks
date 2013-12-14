@@ -56,6 +56,33 @@ function(
     {
         return _.isFunction(model.get) ? model.get(key) : model[key];
     }
+
+    function userIsCurrentAthleteOrCoach(athleteId, user)
+    {
+        // user can view their own account
+        if(user.get("userId") === athleteId)
+        {
+            return true;
+        }
+
+        // if not a coach, user can only view their own account
+        if(user.getAccountSettings().get("isAthlete"))
+        {
+            return false;
+        }
+
+        // athlete must be in athletes list
+        var athleteFromUserAthletesList = getAthleteFromUserAthletesList(athleteId, user);
+
+        return athleteFromUserAthletesList ? true : false;
+    }
+
+    function getAthleteFromUserAthletesList(athleteId, user)
+    {
+        return _.find(user.get("athletes"), function(athlete) {
+            return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
+        });
+    }
    
     _.extend(FeatureAuthorizer.prototype,
     {
@@ -72,26 +99,10 @@ function(
                     throw new Error("ViewAthlete requires an athlete attribute");
                 }
 
-                var currentUserId = user.get("userId");
                 var athleteId = getModelAttributeOrObjectProperty(attributes.athlete, "athleteId");
 
-                // user can view their own account
-                if(currentUserId === athleteId)
-                {
-                    return true;
-                }
-
-                // if not a coach, user can only view their own account
-                if(user.getAccountSettings().get("isAthlete"))
-                {
-                    return false;
-                }
-
-                // athlete must be in athletes list
-                var athleteFromUserAthletesList = _.find(user.get("athletes"), function(athlete) {
-                    return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
-                });
-                if(!athleteFromUserAthletesList)
+                // if not the current user, or coach of this athlete, can't view
+                if(!userIsCurrentAthleteOrCoach(athleteId, user))
                 {
                     return false;
                 }
@@ -103,7 +114,7 @@ function(
                 }
 
                 // non ubc coach can only view premium athletes
-                if(userIsPremium(getModelAttributeOrObjectProperty(athleteFromUserAthletesList, "userType")))
+                if(userIsPremium(getModelAttributeOrObjectProperty(getAthleteFromUserAthletesList(athleteId, user), "userType")))
                 {
                     return true;
                 }
@@ -296,6 +307,21 @@ function(
             {
                 var currentAthleteType = user.getAthleteDetails().get("userType");
                 return userIsPremium(currentAthleteType);
+            }),
+
+            /*
+            attributes: athleteId
+            options: none
+            */
+            IsOwnerOrCoach: Feature({}, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athleteId)                
+                {
+                    throw new Error("IsOwnerOrCoach requires an athleteId attribute");
+                }
+
+                return userIsCurrentAthleteOrCoach(attributes.athleteId, user);
+
             })
 
         },

@@ -52,12 +52,14 @@ function(
             "click .update": "handleUpdate"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             // get more details
             this.originalModel = this.model;
             this.model = this.originalModel.clone();
             this.model.fetch();
+
+            this.featureAuthorizer = (options && options.featureAuthorizer) ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
         },
 
         onRender: function()
@@ -243,14 +245,23 @@ function(
 
         _enableOrDisableEditing: function()
         {
-            if(!this.model.has("isStructuredWorkout") || this.model.get("isStructuredWorkout"))
+            if(this.model.has("libraryOwnerId") && this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.IsOwnerOrCoach, { athleteId: this.model.get("libraryOwnerId")}))
             {
-                this.$(".edit").prop("disabled", true);
+                this.$(".actions").removeClass("hidden");
+                if(!this.model.has("isStructuredWorkout") || this.model.get("isStructuredWorkout"))
+                {
+                    this.$(".edit").prop("disabled", true);
+                }
+                else
+                {
+                    this.$(".edit").prop("disabled", false);
+                }
             }
             else
             {
-                this.$(".edit").prop("disabled", false);
+                this.$(".actions").addClass("hidden");
             }
+
         }
     });
 });
