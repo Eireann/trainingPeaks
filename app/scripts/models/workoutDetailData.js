@@ -75,7 +75,7 @@ function (
         parse: function(data)
         {
             var original = data.flatSamples;
-            if(original)
+            if(original && original.channels)
             {
                 var modified = {};
                 var channels = _.indexBy(original.channels, "name");
