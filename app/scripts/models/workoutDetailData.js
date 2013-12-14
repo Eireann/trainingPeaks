@@ -85,6 +85,7 @@ function (
                 modified.channelMask = _.pluck(original.channels, "name");
                 modified.samples = _.zip.apply(_, _.pluck(original.channels, "samples"));
                 modified.samples = _.map(modified.samples, function(sample) { return { values: sample }; });
+                modified.hasLatLngData = original.hasLatLngData;
 
                 data.flatSamples = modified;
             }
