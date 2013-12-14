@@ -80,7 +80,7 @@ function (
                 var modified = {};
                 var channels = _.indexBy(original.channels, "name");
 
-                modified.msOffsetsOfSamples = channels.MillisecondsOffset.samples;
+                modified.msOffsetsOfSamples = channels.MillisecondOffset.samples;
 
                 modified.channelMask = _.pluck(original.channels, "name");
                 modified.samples = _.zip.apply(_, _.pluck(original.channels, "samples"));
@@ -88,6 +88,8 @@ function (
 
                 data.flatSamples = modified;
             }
+
+            return data;
         },
 
         reset: function()
