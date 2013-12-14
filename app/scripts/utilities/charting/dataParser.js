@@ -67,22 +67,11 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue)
 
                     var value = sample.values[channelIdx];
 
-                    /*
-                    if (value != null)
-                    {
-                        if (channelName === "Latitude" || channelName === "Longitude")
-                            value = value / 100000;
-                        else if (!(channelName === "Power" || channelName === "Cadence" || channelName === "HeartRate" || channelName === "RightPower"))
-                            value = value / 100;
-                    }
-                    */
-
                     var xAxisTimeOffset = flatSamples.msOffsetsOfSamples[sampleIdx];
 
                     var xAxisDistanceOffset = null;
                     if (distanceChannelIdx !== -1)
                         xAxisDistanceOffset = sample.values[distanceChannelIdx];
-                        //xAxisDistanceOffset = sample.values[distanceChannelIdx] / 100;
 
                     if (channelName === "Elevation" && value === null)
                         value = previousElevation;
