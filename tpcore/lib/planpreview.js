@@ -49,6 +49,13 @@
         display: function()
         {
             function sum(a, b) { return a + b; }
+
+            if(_.all([ this.model.get("trainingDistanceByWeek"), this.model.get("trainingDurationByWeek"), this.model.get("workoutPreviews") ], _.isEmpty))
+            {
+                this.$el.html("");
+                return;
+            }
+
             var totalDistance = _.reduce(this.model.get("trainingDistanceByWeek"), sum);
             var totalDuration = _.reduce(this.model.get("trainingDurationByWeek"), sum);
 

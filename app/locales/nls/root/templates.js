@@ -436,7 +436,7 @@ define({
     "UploadPhoto": "Upload Photo",
 
     "Help": "Help",
-    "SwitchToFlex": "Go To Classic App",
+    "SwitchToFlex": "Switch To Classic",
     "InvalidEmail": "Email address is invalid, please re-enter",
     "InvalidPassword": "Passwords do not match, please re-enter",
 
