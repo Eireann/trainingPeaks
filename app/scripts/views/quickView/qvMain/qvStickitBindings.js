@@ -161,7 +161,7 @@ function (
                 {
                     var newModelValue = newViewValue;
                     self.model.set("title", newModelValue);
-                    self.model.save();
+                    self.model.autosave();
                 }
             };
 

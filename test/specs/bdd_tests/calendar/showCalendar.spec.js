@@ -29,7 +29,7 @@ function(
 
         it("Should not display a list of athletes in the calendar", function()
         {
-            expect($mainRegion.find("#athleteCalendarSelect").length).to.equal(0);
+            expect($mainRegion.find(".athleteCalendarSelect").length).to.equal(0);
         });
 
         it("Should display today in the calendar", function()

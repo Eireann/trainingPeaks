@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<parameters>
+	<setParameter name="DeployTarget" value="production" />
+ 	<setParameter name="WWWRoot" value="https://www.trainingpeaks.com" />
+    <setParameter name="HomeRoot" value="http://cat6.trainingpeaks.com" />
+    <setParameter name="CMSRoot" value="https://home.trainingpeaks.com" />
+ 	<setParameter name="ApiRoot" value="https://tpapi.trainingpeaks.com" />
+ 	<setParameter name="OauthRoot" value="https://oauth.trainingpeaks.com" />
+	<setParameter name="GoogleAnalyticsAccount" value="UA-42726244-2" />
+    <setParameter name="HelpUrl" value="http://help.trainingpeaks.com" />
+</parameters>

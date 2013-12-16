@@ -39,7 +39,7 @@ function(
                 subsetLapData.push(
                 {
                     key: column.id,
-                    value: this.lapsStats.processCell(column, row, {format: true})
+                    value: this.lapsStats.processCell(column, row, {format: { seconds: true }})
                 });
             }, this);
 

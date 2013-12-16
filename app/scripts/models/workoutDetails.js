@@ -2,9 +2,10 @@
 [
     "underscore",
     "moment",
-    "TP"
+    "TP",
+    "shared/utilities/autosaveMergeUtility"
 ],
-function (_, moment, TP)
+function (_, moment, TP, AutosaveMergeUtility)
 {
     var WorkoutDetails = TP.APIDeepModel.extend(
     {
@@ -35,7 +36,11 @@ function (_, moment, TP)
             "workoutDeviceFileInfos": null,
             "attachmentFileInfos": null,
             "workoutStructure": null
-        }
+        },
+
+        autosaveMergeOptions: { idKey: "label" },
+        autosave: AutosaveMergeUtility.mixin.autosave,
+        parse: AutosaveMergeUtility.mixin.parse
     });
 
     return WorkoutDetails;

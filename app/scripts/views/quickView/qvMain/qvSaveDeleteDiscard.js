@@ -98,7 +98,7 @@ function(
                    _.has(this.model.changed, "workoutTypeValueId") ||
                    _.has(this.model.changed, "startTime") || _.has(this.model.changed, "startTimePlanned"))
                 {
-                    this.model.save();
+                    this.model.autosave();
                 }
             }
         },

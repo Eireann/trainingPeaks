@@ -157,31 +157,26 @@ function(
             return this.get("unitsBySportType")[parseInt(sportType, 10)] || this.get("units"); 
         },
 
-        setCurrentAthleteId: function(athleteId)
+        setCurrentAthlete: function(athleteSettings)
         {
-            this.currentAthleteId = athleteId;
-            this.trigger("athlete:change");
+            var changed = !this.athleteSettings || this.athleteSettings.get("athleteId") !== athleteSettings.get("athleteId");
+            this.athleteSettings = athleteSettings;
+            if(changed)
+            {
+                this.trigger("athlete:change");
+            }
         },
 
         getCurrentAthleteId: function()
         {
-            return this.currentAthleteId ? this.currentAthleteId : this.getDefaultAthleteId();
-        },
-
-        getDefaultAthleteId: function()
-        {
-            var athletes = this.get("athletes");
-            if (!athletes || !athletes.length)
-                throw new Error("User has no athletes");
-
-            return athletes[0].athleteId;
+            return this.getAthleteSettings().get("athleteId");
         },
 
         getAthleteSettings: function()
         {
             if(!this.athleteSettings)
             {
-                this.athleteSettings = new AthleteSettingsModel({ athleteId: this.getCurrentAthleteId() });
+                throw new Error("User has no athlete settings");
             }
             return this.athleteSettings;
         },
@@ -271,6 +266,11 @@ function(
             return this.passwordSettings;
         },
 
+        isCoachWithAthletes: function()
+        {
+            return !this.getAccountSettings().get("isAthlete") && this.has("athletes") && this.get("athletes").length > 0;
+        },
+        
         populateUserModels: function(data)
         {
 

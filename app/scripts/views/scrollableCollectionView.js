@@ -227,11 +227,17 @@ function(
 
             this.on('render', function()
             {
+
+                // Because firefox...
+                // Without this firefox will for some reason jump to the wrong date when loading or when
+                // switching back to the calendar. Don't know why, or why this fixes it... but it does.
+                this.lockScrollPosition();
+                setImmediate(_.bind(this.unlockScrollPosition, this));
+
                 this.margin = { top: 0, bottom: 0 };
                 this.ui.$wrap.css({ "margin-bottom": this.margin.bottom });
                 this.$el.on('scroll', function(event)
                 {
-
                     if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
 
                     clearTimeout(self.scrollingTimeout);

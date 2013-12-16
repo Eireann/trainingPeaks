@@ -20,6 +20,7 @@ function(
         beforeEach(function()
         {
             testHelpers.startTheApp();
+            testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 1}));
         });
 
         afterEach(function()

@@ -15,11 +15,8 @@
         <button class="refreshButton" title="Refresh" tabindex="-1"></button>
     </div>
 
-    <select name="athleteCalendarSelect" id="athleteCalendarSelect">
-        {{#each athletes}}
-	        <option value="{{ athleteId }}"{{#if selected}} selected{{/if}}>{{ firstName }} {{ lastName}}</option>
-	    {{/each}}
-    </select>
+    <div class="athletePickerContainer"></div>
+
 </div>
 
 <div id="affiliateBanner"></div>

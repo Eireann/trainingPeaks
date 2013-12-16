@@ -305,15 +305,6 @@
     margin-right: 6px;
 }
 
-#loginHeader, #calendarHeader
-{
-    span
-    {
-        font-family: $fontFamilyRegular;
-        font-size: $fontSizeHeader;
-    }
-}
-
 .accountSettings
 {
     .hoverBox.uparrow
@@ -378,7 +369,8 @@
 
 #betaBanner
 {
-    position: absolute;
+    position: fixed;
+    z-index: 1;
     top: 35px;
     right: 0px;
     width: 64px;

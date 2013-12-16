@@ -27,3 +27,10 @@
 {
     @include throbber;
 }
+
+.throbber
+{
+    min-height: 100px;
+    min-width: 100px;
+    @include throbber;
+}

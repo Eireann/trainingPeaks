@@ -4,6 +4,7 @@ define(
     "jquery",
     "TP",
     "shared/models/metricModel",
+    "testUtils/xhrDataStubs",
     "testUtils/testHelpers"
 ],
 function(
@@ -11,20 +12,21 @@ function(
     $,
     TP,
     MetricModel,
+    xhrData,
     testHelpers
 )
 {
     describe("Metric Model", function()
     {
-        // user needs an athlete id for some of these tests to run
+
         beforeEach(function()
         {
-            testHelpers.theApp.user.setCurrentAthleteId(1234, true);
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
         });
 
         afterEach(function()
         {
-            testHelpers.theApp.user.setCurrentAthleteId(null, true);
+            testHelpers.stopTheApp();
         });
 
         it("Should load as a module", function()
@@ -110,8 +112,8 @@ function(
 
             beforeEach(function()
             {
-                sinon.spy(theMarsApp.calendarManager, "addItem");
-                theMarsApp.user.setCurrentAthleteId(67890);
+                sinon.spy(testHelpers.theApp.calendarManager, "addItem");
+                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 67890 }));
                 metric = new MetricModel(metricAttributes);
             });
 
@@ -156,7 +158,7 @@ function(
                 
                 it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
                 {
-                    theMarsApp.user.setCurrentAthleteId(42);
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42}));
                     var cutMetric = metric;
                     sinon.stub(cutMetric, "moveToDay");
                     var dateToPasteTo = "2012-10-10";
@@ -178,7 +180,7 @@ function(
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
                     expect(pastedMetric instanceof MetricModel).to.equal(true);
                     expect(pastedMetric).to.not.equal(copiedMetric);
                 });
@@ -188,7 +190,7 @@ function(
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
                     expect(pastedMetric.getCalendarDay()).to.equal(dateToPasteTo);
                 });
 
@@ -197,32 +199,30 @@ function(
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
                     expect(copiedMetric.getCalendarDay()).to.not.equal(dateToPasteTo);
                     expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
                 });
                 
-                it("Should set the correct athletId on pasted metric", function()
+                it("Should set the correct athleteId on pasted metric", function()
                 {
-                    theMarsApp.user.setCurrentAthleteId(42);
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
                     expect(pastedMetric.get("athleteId")).to.equal(42);
                 });
 
                 it("Should not change the date of the copied metric", function()
                 {
-                    theMarsApp.user.setCurrentAthleteId(42);
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
                     var copiedMetric = metric.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
                     copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
                     expect(copiedMetric.get("athleteId")).to.not.equal(42);
                 });
-
-
 
             });
 

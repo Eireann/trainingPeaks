@@ -43,9 +43,9 @@
         buildHash: "",
         devWwwRoot: wwwRoots.dev,
         coachUpgradeURL: "https://cat6.dev.trainingpeaks.com/account-professional-edition.aspx",
-        upgradeURL: "https://cat6.dev.trainingpeaks.com/create-account-personal-edition.aspx?login=true&utm_source=tpflex&utm_medium=trigger&utm_content=premiumfeature&utm_campaign=put",
+        upgradeURL: "https://home.dev.trainingpeaks.com/account-manager/athlete-upgrade",
         helpURL: "http://help.trainingpeaks.com",
-        trainingPlanStoreUrl: "https://cat6.dev.trainingpeaks.com/training-and-nutrition-plans.aspx"
+        trainingPlanStoreUrl: "https://home.dev.trainingpeaks.com/products/trainingplans"
     };
 
     if (typeof global !== "undefined")

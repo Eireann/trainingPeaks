@@ -103,7 +103,7 @@ function(
             this.lapsStats = new LapsStats({ model: this.model, columns: columnIds });
 
             var columns = this.columns = this.lapsStats.processColumns({ format: false });
-            this.rows = this.lapsStats.processRows({ format: { withLabel: true } });
+            this.rows = this.lapsStats.processRows({ format: { withLabel: true, seconds: true } });
 
             var noData = this.rows.length < 1 || this.columns.length < 1 || this.columns[0].meta.id !== 1;
             this.$el.toggleClass("noData", noData);
