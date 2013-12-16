@@ -469,5 +469,16 @@ define({
     "ConfirmDeleteLap": "Are you sure you want to delete the lap?",
 
     "LapsColumnChart": "Laps & Splits Column Chart",
-    "Name": "Name"
+
+    "Name": "Name",
+    "Brand": "Brand",
+    "Model": "Model",
+    "Date of Purchase": "Date of Purchase",
+    "Default": "Default",
+    "Retired": "Retired",
+    "Retired Date": "Retired Date",
+    "Start Distance": "Start Distance",
+    "Maximum Distance": "Maximum Distance",
+    "Total Distance": "Total Distance",
+    "Notes": "Notes"
 });

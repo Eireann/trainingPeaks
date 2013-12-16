@@ -746,12 +746,10 @@
             }
         }
 
-        &.calendarSync {
-            input[type="text"] {
-                width:632px;
-                height:20px;
-                float: left;
-            }
+        input[type="text"] {
+            width:632px;
+            height:20px;
+            float: left;
         }
     }
 
