@@ -9,6 +9,7 @@
     "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
     "shared/views/userSettings/userSettingsZonesView",
+    "shared/views/userSettings/userSettingsEquipmentView",
     "views/userConfirmationView",
     "hbs!templates/views/errors/passwordValidationErrorView",
     "hbs!templates/views/errors/emailValidationErrorView",
@@ -24,6 +25,7 @@ function(
     OverlayBoxView,
     UserSettingsAccountView,
     UserSettingsZonesView,
+    UserSettingsEquipmentView,
     UserConfirmationView,
     passwordValidationErrorTemplate,
     emailValidationErrorTemplate,
@@ -101,6 +103,14 @@ function(
                     options:
                     {
                         model: models.athleteSettings
+                    }
+                },
+                {
+                    title: "Equipment",
+                    view: UserSettingsEquipmentView,
+                    options:
+                    {
+                        collection: this.model.getAthleteSettings().getEquipment()
                     }
                 }
             ];

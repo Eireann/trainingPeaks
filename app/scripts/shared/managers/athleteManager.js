@@ -30,7 +30,10 @@ function(
 
             var athlete = this._getOrCreateAthlete(athleteId); 
             var user = this.user;
-            return athlete.getFetchPromise()
+
+            var equipmentPromise = athlete.getEquipment().fetch();
+
+            return $.when(equipmentPromise, athlete.getFetchPromise())
                 .done(function()
                 {
                     user.setCurrentAthlete(athlete);
