@@ -66,7 +66,13 @@ function(
         {
 
             this._enableOrDisableEditing();
-            this.listenTo(this.model, "change:isStructuredWorkout sync", this._enableOrDisableEditing);
+            this.listenTo(this.model, "change:isStructuredWorkout sync", _.bind(
+                function()
+                {
+                    this._enableOrDisableEditing();
+                    this.alignArrowTo(this.alignedTo);
+                }, this)
+            );
 
             var self = this;
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
@@ -247,19 +253,15 @@ function(
         {
             if(this.model.has("libraryOwnerId") && this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.IsOwnerOrCoach, { athleteId: this.model.get("libraryOwnerId")}))
             {
-                this.$(".actions").removeClass("hidden");
+                this.$(".actions button").prop("disabled", false);
                 if(!this.model.has("isStructuredWorkout") || this.model.get("isStructuredWorkout"))
                 {
                     this.$(".edit").prop("disabled", true);
                 }
-                else
-                {
-                    this.$(".edit").prop("disabled", false);
-                }
             }
             else
             {
-                this.$(".actions").addClass("hidden");
+                this.$(".actions button").prop("disabled", true);
             }
 
         }
