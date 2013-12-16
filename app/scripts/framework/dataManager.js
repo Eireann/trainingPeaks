@@ -21,6 +21,7 @@
         this.identityMap = options && options.identityMap || new IdentityMap();
         this.resetPatterns = options && options.resetPatterns ? options.resetPatterns : [];
         this.ignoreResetPatterns = options && options.ignoreResetPatterns ? options.ignoreResetPatterns : [];
+        this.user = options && options.user ? options.user : theMarsApp.user;
         this._resolvedRequests = {};
         this._pendingRequests = {};
     };
@@ -269,7 +270,7 @@
                 throw new Error("startDate & endDate needed for ReportFetcher");
             }
 
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
+            var athleteId = this.user.getCurrentAthleteId();
             var url = theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/reporting/" + reportName;
             url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
             url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
@@ -296,7 +297,7 @@
                 throw new Error("startDate & endDate needed for ReportFetcher");
             }
 
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
+            var athleteId = this.user.getCurrentAthleteId();
             var url = theMarsApp.apiRoot + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
             url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
             url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
