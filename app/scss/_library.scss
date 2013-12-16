@@ -276,11 +276,6 @@
         .helpText
         {
 
-            &.hidden
-            {
-                display: none;
-            }
-            
             color: $TPGrey3;
             cursor: default;
             font-size: $fontSizeSmall;
@@ -474,6 +469,14 @@
     width: 310px;
     max-width: 310px;
 
+    .hoverBox
+    {
+        .hoverBoxContents
+        {
+            padding-bottom: 12px;
+        }
+    }
+
     p, pre
     {
         font-family: inherit;
@@ -525,14 +528,9 @@
 
     .actions
     {
-        padding-bottom: 12px;
-    }
-
-    .description
-    {
-        border-bottom: solid 1px #cccccc;
-        margin-bottom: 16px;
-        padding-bottom: 10px;
+        padding-top: 16px;
+        border-top: solid 1px #cccccc;
+        margin-top: 10px;
     }
 
     .workoutStatsRow

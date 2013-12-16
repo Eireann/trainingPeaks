@@ -354,6 +354,8 @@
 
         &.hidden
         {
+            display: block;
+            
             .contents
             {
                 display: none;
