@@ -107,7 +107,7 @@ function(
 
         setInitialXYAxis: function()
         {
-            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+            var availableChannels = this._getAvailableDataChannels();
             this.currentXAxis = availableChannels[0];
             this.currentYAxis = availableChannels[1];
         },
@@ -223,7 +223,7 @@ function(
 
         _onAvailableDataChannels: function(model)
         {
-            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+            var availableChannels = this._getAvailableDataChannels();
 
             if(!_.contains(availableChannels, this.currentXAxis))
             {
@@ -239,6 +239,12 @@ function(
             this.graphToolbar.render();
 
             this._onSeriesChanged();
+        },
+
+        _getAvailableDataChannels: function()
+        {
+            var availableChannels = this.model.get("detailData").get("availableDataChannels");
+            return _.without(availableChannels, "MillisecondOffset");
         },
 
         watchForControllerEvents: function()
