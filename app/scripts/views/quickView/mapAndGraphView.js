@@ -205,9 +205,6 @@ function(
                 else
                     this.plot.setFilter(10);
 
-                this.$("#quickViewGraph").on("resize", function(){
-                    debugger;
-                });
             }
         },
 

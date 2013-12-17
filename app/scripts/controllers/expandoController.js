@@ -138,6 +138,14 @@ function(
             this.disableViewsResize = false;
         },
 
+        afterExpand: function()
+        {
+            if(this.views.packeryView)
+            {
+                this.views.packeryView.layout();
+            }
+        },
+
         closeViews: function()
         {
             _.each(this.views, function(view)

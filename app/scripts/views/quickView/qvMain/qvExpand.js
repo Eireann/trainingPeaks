@@ -106,6 +106,7 @@ function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithout
                 self.$("#quickViewExpandedContent").show();
 
                 self.centerViewInWindow();
+                self.expandoController.afterExpand();
             };
 
             var animateExpansion = function()
