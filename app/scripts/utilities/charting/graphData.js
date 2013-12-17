@@ -50,7 +50,8 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
 
         reset: function()
         {
-            this.sampleData = this.flatSamples && new SampleData(_.clone(this.flatSamples.channels, true) || []);
+            this.sampleData = new SampleData(this.flatSamples && _.clone(this.flatSamples.channels, true) || []);
+            this.hasLatLongData = this.flatSamples && this.flatSamples.hasLatLngData;
         },
 
         setDisabledSeries: function(series)
@@ -220,9 +221,9 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
             return this.sampleData.getChannel("distance").zip(elevations).toArray();
         },
 
-        getLatLongFromOffset: function (xAxisOffset)
+        getLatLonFromMsOffset: function (offset)
         {
-            var index = this.sampleData.indexOf(this.xaxis, xAxisOffset);
+            var index = this.sampleData.indexOf("time", offset);
             return this.getLatLongByIndex(index);
         },
 
@@ -328,13 +329,13 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
             var data = this.sampleData.slice(startIndex, endIndex);
             var array = data.getChannels("latitude", "longitude").reject(function(latLon)
             {
-                return _.any(latLon, _.isNaN);
+                return _.any(latLon, _.isNaN) || !_.all(latLon, _.isNumber);
             }).toArray();
 
             return array.length ? array : null;
         },
 
-        getLatLonBetweenMsOffsets: function(dataByAxisAndChannel, startMsOffset, endMsOffset)
+        getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
         {
             return this._generateLatLonFromDataBetweenIndexes(this.sampleData.indexOf("time", startMsOffset), this.sampleData.indexOf("time", endMsOffset));
         }

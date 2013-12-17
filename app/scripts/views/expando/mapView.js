@@ -260,7 +260,7 @@ function (
             }
             else
             {
-                var latLong = this._getGraphData().getLatLongFromOffset(offset);
+                var latLong = this._getGraphData().getLatLonFromMsOffset(offset);
 
                 if (latLong !== null)
                 {

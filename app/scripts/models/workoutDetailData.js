@@ -132,7 +132,8 @@ function (
 
         cutChannel: function(series)
         {
-            this.cutRange(series, _.first(this.get("flatSamples").msOffsetsOfSamples), _.last(this.get("flatSamples").msOffsetsOfSamples), true);
+            var sampleData = this.graphData.sampleData;
+            this.cutRange(series, sampleData.getChannel("time").first(), sampleData.getChannel("time").last(), true);
         },
 
         cutAllChannelsForRange: function(begin, end)
