@@ -6,7 +6,7 @@ define(
 ],
 function(DataParser, GraphData, testData)
 {
-    xdescribe("FlotUtils class TODO: fix dataParserTestData", function()
+    describe("FlotUtils class", function()
     {
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
         {
