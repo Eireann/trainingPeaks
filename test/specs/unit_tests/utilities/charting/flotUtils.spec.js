@@ -1,36 +1,35 @@
 define(
 [
     "utilities/charting/dataParser",
+    "utilities/charting/dataParserUtils",
     "utilities/charting/graphData",
     "./dataParserTestData"
 ],
-function(DataParser, GraphData, testData)
+function(
+         DataParser,
+         DataParserUtils,
+         GraphData,
+         testData
+         )
 {
     describe("FlotUtils class", function()
     {
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
         {
-            var dataParser, graphData, expectedLength, minTemperature, minElevation, minElevationOnRange, expectedLatLonLength;
+            var dataParser, graphData, minTemperature, minElevation;
             before(function()
             {
+
+                // convert to old format 
+                var flatSamples = DataParserUtils.convertFlatSamplesToOldFormat(testData.flatSamples);
+
                 graphData = new GraphData({ detailData: {} });
                 dataParser = new DataParser({graphData: graphData});
-                dataParser.loadData(testData);
-
-                // We do not save Lat, Lon, or Distance in the series object.
-                expectedLength = testData.channelMask.length;
-                _.each(testData.channelMask, function (channel)
-                {
-                    if (channel === "Latitude" || channel === "Longitude" || channel === "Distance")
-                        expectedLength--;
-                });
+                dataParser.loadData(flatSamples);
 
                 minTemperature = -20;
-                minElevation = 1617.39;
-                minElevationOnRange = 1675.39;
+                minElevation = 1512;
 
-                // Test data contains NaNs in the Lat Lon array. Those get thrown out, don't count towards total.
-                expectedLatLonLength = 8275;
             });
 
             after(function()
@@ -44,6 +43,7 @@ function(DataParser, GraphData, testData)
             {
                 var yaxes = graphData.getYAxes(graphData.getSeries());
                 expect(yaxes).to.not.equal(null);
+                expect(yaxes.length).to.be.greaterThan(0);
                 _.each(yaxes, function(yaxis)
                 {
                     expect(yaxis.show).to.equal(true);

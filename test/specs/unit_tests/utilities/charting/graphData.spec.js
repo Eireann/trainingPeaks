@@ -1,36 +1,39 @@
 define(
 [
     "utilities/charting/dataParser",
+    "utilities/charting/dataParserUtils",
     "utilities/charting/graphData",
     "./dataParserTestData"
 ],
-function(DataParser, GraphData, testData)
+function(
+         DataParser,
+         DataParserUtils,
+         GraphData,
+         testData
+         )
 {
     describe("GraphData class", function()
     {
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
         {
-            var dataParser, graphData, expectedLength, minTemperature, minElevation, minElevationOnRange, expectedLatLonLength;
+            var dataParser, graphData, flatSamples, expectedLength, minElevation, expectedLatLonLength;
             before(function()
             {
+
+                // convert to old format 
+                flatSamples = DataParserUtils.convertFlatSamplesToOldFormat(testData.flatSamples);
+
                 graphData = new GraphData({ detailData: {} });
                 dataParser = new DataParser({graphData: graphData});
-                dataParser.loadData(testData);
+                dataParser.loadData(flatSamples);
 
-                // We do not save Lat, Lon, or Distance in the series object.
-                expectedLength = testData.channelMask.length;
-                _.each(testData.channelMask, function (channel)
-                {
-                    if (channel === "Latitude" || channel === "Longitude" || channel === "Distance")
-                        expectedLength--;
-                });
+                // We do not save MillisecondOffset, Lat, Lon, or Distance in the series object.
+                expectedLength = flatSamples.channelMask.length - 4;
 
-                minTemperature = -20;
-                minElevation = 1617.39;
-                minElevationOnRange = 1675.39;
+                minElevation = 1512;
 
                 // Test data contains NaNs in the Lat Lon array. Those get thrown out, don't count towards total.
-                expectedLatLonLength = 8275;
+                expectedLatLonLength = 1220;
             });
 
             after(function()
@@ -46,7 +49,7 @@ function(DataParser, GraphData, testData)
                 expect(series.length).to.equal(expectedLength);
                 _.each(series, function(channel)
                 {
-                    expect(channel.data.length).to.equal(testData.samples.length);
+                    expect(channel.data.length).to.equal(flatSamples.samples.length);
                     expect(channel.color).to.not.be.undefined;
                     expect(channel.label).to.not.be.undefined;
                     expect(channel.lines).to.not.be.undefined;
@@ -89,7 +92,7 @@ function(DataParser, GraphData, testData)
             it("returns elevation info for a given range based on x1 and x2 milliseconds offset into the series", function()
             {
                 var minValue = graphData.getMinimumForAxis("Elevation", graphData.dataByAxisAndChannel["time"], graphData.elevationInfo, 0, 3600000);
-                expect(minValue).to.equal(minElevationOnRange);
+                expect(minValue).to.equal(minElevation);
             });
 
             it("returns a latLong array for the entire series", function()
