@@ -199,10 +199,16 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
 
         getMinimumForAxis: function(series, x1, x2)
         {
+            var channel = this.sampleData.sliceBy("time", x1 || 0, x2).getChannel(series);
+            var minimum = channel ? channel.select(_.isNumber).min() : null;
+
             if(series.toLowerCase() === "elevation")
             {
-                var channel = this.sampleData.sliceBy("time", x1 || 0, x2).getChannel(series);
-                return channel ? channel.select(_.isNumber).min() : null;
+                return minimum;
+            }
+            else if(series.toLowerCase() === "temperature")
+            {
+                return Math.min(minimum, 0);
             }
             else
             {
