@@ -7,6 +7,29 @@ function(_, findOrderedArrayIndexByValue)
 {
     var DataParserUtils = {
 
+        convertFlatSamplesToOldFormat: function(flatSamples)
+        {
+            if(flatSamples && flatSamples.channels)
+            {
+                var original = flatSamples;
+                var modified = {};
+                var channels = _.indexBy(original.channels, "name");
+
+                modified.msOffsetsOfSamples = channels.MillisecondOffset.samples;
+
+                modified.channelMask = _.pluck(original.channels, "name");
+                modified.samples = _.zip.apply(_, _.pluck(original.channels, "samples"));
+                modified.samples = _.map(modified.samples, function(sample) { return { values: sample }; });
+                modified.hasLatLngData = original.hasLatLngData;
+
+                return modified;
+            }
+            else
+            {
+                return flatSamples;
+            }
+        },
+
         findIndexByChannelAndOffset: function(data, channel, offset, msOffsetsOfSamples)
         {
             if (channel === "time")

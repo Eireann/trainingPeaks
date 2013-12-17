@@ -5,6 +5,7 @@
     "TP",
     "utilities/charting/graphData",
     "utilities/charting/dataParser",
+    "utilities/charting/dataParserUtils",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
@@ -16,6 +17,7 @@ function (
     TP,
     GraphData,
     DataParser,
+    DataParserUtils,
     WorkoutStatsForRange,
     formatPeakTime,
     formatPeakDistance,
@@ -74,22 +76,10 @@ function (
 
         parse: function(data)
         {
-            var original = data.flatSamples;
-            if(original && original.channels)
+            if(data && data.flatSamples)
             {
-                var modified = {};
-                var channels = _.indexBy(original.channels, "name");
-
-                modified.msOffsetsOfSamples = channels.MillisecondOffset.samples;
-
-                modified.channelMask = _.pluck(original.channels, "name");
-                modified.samples = _.zip.apply(_, _.pluck(original.channels, "samples"));
-                modified.samples = _.map(modified.samples, function(sample) { return { values: sample }; });
-                modified.hasLatLngData = original.hasLatLngData;
-
-                data.flatSamples = modified;
+                data.flatSamples = DataParserUtils.convertFlatSamplesToOldFormat(data.flatSamples);
             }
-
             return data;
         },
 
