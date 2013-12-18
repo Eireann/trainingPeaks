@@ -61,6 +61,7 @@ function(
         {
             if(this.packery && !this.isClosing)
             {
+                this.children.call("trigger", "pod:resize");
                 this.$el.packery("layout");
                 this._updatePackerySort();
             }
