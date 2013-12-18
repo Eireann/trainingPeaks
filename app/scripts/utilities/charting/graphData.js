@@ -77,57 +77,6 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
             return [seriesData];
         },
 
-        // _processData: function(data, xaxis, yaxis)
-        // {
-        //     var newSeries = [];
-        //     var ecks;
-        //     var why;
-        //     var totalPowerValue;
-        //     var rightPowerValue;
-        //     var rightPowerPercentage;
-        //     var balancedPowerAvailable = _.has(data, "RightPower");
-
-        //     var powerPercentage = function(index)
-        //     {
-        //         totalPowerValue = data["Power"][index][1];
-        //         rightPowerValue = data["RightPower"][index][1];
-
-        //         rightPowerPercentage = (100 * rightPowerValue / totalPowerValue);
-
-        //         return rightPowerPercentage;
-        //     };
-
-        //     _.each(data[xaxis], function(dataPoint, index)
-        //     {
-        //         ecks = data[xaxis][index][1];
-        //         why = data[yaxis][index][1];
-        //         if(xaxis === "RightPower")
-        //         {
-        //             ecks = powerPercentage(index);
-        //         }
-
-        //         if(yaxis === "RightPower")
-        //         {
-        //             why = powerPercentage(index);
-        //         }
-        //         // This is a hack to prevent errant data from skewing graphs.
-        //         if(balancedPowerAvailable && (xaxis === "RightPower" || yaxis === "RightPower"))
-        //         {
-        //             if(totalPowerValue < rightPowerValue)
-        //             {
-        //                 data["Power"][index][1] = data["RightPower"][index][1] = null;
-        //                 ecks = why = null;
-        //             }
-        //         }
-
-        //         newSeries.push([ecks, why]);
-        //     }, this);
-
-        //     this._setAverageStats(data, xaxis, yaxis);
-
-        //     return newSeries;
-        // },
-
         _setAverageStats: function(xaxis, yaxis)
         {
             var self = this;
@@ -150,8 +99,8 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
                         return totalStats.averageTemp;
                     case "Torque":
                         return totalStats.averageTorque;
-                    case "RightPower":
-                        return totalStats.powerBalanceRight * 100;
+                    case "PowerBalance":
+                        return totalStats.powerBalanceRight;
                     case "Distance":
                     case "Time":
                         var total = 0;
@@ -165,6 +114,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
                                 sum += value;
                             }
                         });
+
                         return sum / total;
                     default:
                         return null;
