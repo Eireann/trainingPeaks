@@ -107,14 +107,16 @@ function(
                     return false;
                 }
 
+                var coachType = user.getAccountSettings().get("coachType");
+                
                 // ubc coach can view any athlete type
-                if(user.getAccountSettings().get("coachType") === coachTypes.UBC)
+                if(coachType === coachTypes.UBC)
                 {
                     return true;
                 }
 
                 // non ubc coach can only view premium athletes
-                if(userIsPremium(getModelAttributeOrObjectProperty(getAthleteFromUserAthletesList(athleteId, user), "userType")))
+                if(coachType === coachTypes.Standard && userIsPremium(getModelAttributeOrObjectProperty(athleteFromUserAthletesList, "userType")))
                 {
                     return true;
                 }
