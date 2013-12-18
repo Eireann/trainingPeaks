@@ -1,9 +1,16 @@
 define(
 [
+    "underscore",
+    "backbone",
     "TP",
     "models/equipmentModel"
 ],
-function(TP, EquipmentModel)
+function(
+    _,
+    Backbone,
+    TP,
+    EquipmentModel
+)
 {
     return TP.Collection.extend(
     {
