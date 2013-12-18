@@ -37,6 +37,17 @@ function(
                 });
         },
 
+        loadDefaultAthlete: function()
+        {
+            var athletes = this.user.get("athletes");
+            if(!athletes || !athletes.length)
+            {
+                throw new Error("User has no athletes");
+            }
+
+            return this.loadAthlete(athletes[0].athleteId);
+        },
+
         _getOrCreateAthlete: function(athleteId)
         {
             var athlete = _.has(this.athletes, athleteId) ? this.athletes[athleteId] : new AthleteSettingsModel({ athleteId: athleteId});

@@ -1,13 +1,14 @@
 define(
 [
+    "TP",
     "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
-    "moment"
+    "testUtils/xhrDataStubs"
 ],
 function(
+    TP,
     testHelpers,
-    xhrData,
-    moment)
+    xhrData
+    )
 {
 
     describe("open the calendar for a coach", function()
@@ -81,6 +82,104 @@ function(
             {
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/workouts")).to.equal(false);
             });
+        });
+
+        describe("For athlete that has been removed from coach", function()
+        {
+          
+            describe("when the removed athlete is the currentAthlete", function()
+            {
+
+                describe("and the default calendar url is loaded", function()
+                {
+
+                    beforeEach(function()
+                    {
+                        testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                        testHelpers.theApp.user.setCurrentAthlete(new TP.Model({athleteId: 9999 }));
+                        testHelpers.theApp.router.navigate("calendar", true);
+                    });
+
+                    it("Should not request settings data for the removed athlete id", function()
+                    {
+                        expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/9999/settings")).to.equal(false);
+                    });
+
+                    it("Should request settings data for the default athlete id", function()
+                    {
+                        expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/settings")).to.equal(true);
+                    });
+
+                    it("Should set the currentAthleteId to the default athlete", function()
+                    {
+                        testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
+                        expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
+                    });
+
+                });
+
+                describe("and the calendar url for the removed athlete is loaded", function()
+                {
+
+                    beforeEach(function()
+                    {
+                        testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                        testHelpers.theApp.user.setCurrentAthlete(new TP.Model({athleteId: 9999 }));
+                        testHelpers.theApp.router.navigate("calendar/athletes/9999", true);
+                    });
+
+                    it("Should not request settings data for the removed athlete id", function()
+                    {
+                        expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/9999/settings")).to.equal(false);
+                    });
+
+                    it("Should request settings data for the default athlete id", function()
+                    {
+                        expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/settings")).to.equal(true);
+                    });
+
+                    it("Should set the currentAthleteId to the default athlete", function()
+                    {
+                        testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
+                        expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
+                    });
+
+                });
+
+            });
+
+            describe("when the removed athlete is not the currentAthlete", function()
+            {
+
+                describe("and the calendar url for the removed athlete is loaded", function()
+                {
+
+                    beforeEach(function()
+                    {
+                        testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                        testHelpers.theApp.router.navigate("calendar/athletes/9999", true);
+                    });
+
+                    it("Should not request settings data for the removed athlete id", function()
+                    {
+                        expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/9999/settings")).to.equal(false);
+                    });
+
+                    it("Should request settings data for the default athlete id", function()
+                    {
+                        expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/12345/settings")).to.equal(true);
+                    });
+
+                    it("Should set the currentAthleteId to the default athlete", function()
+                    {
+                        testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
+                        expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
+                    });
+
+                });
+
+            });
+
         });
 
         describe("Switch athlete from dropdown", function()
