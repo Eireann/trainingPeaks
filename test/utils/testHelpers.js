@@ -105,7 +105,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
             localStorage.clear();
         },
 
-        resolveRequest: function(httpVerb, urlPattern, data)
+        resolveRequest: function(httpVerb, urlPattern, data, options)
         {
             var request = this.findRequest(httpVerb, urlPattern);
 
@@ -113,7 +113,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
             {
                 request.respond(200, {}, _.isString(data) ? data : JSON.stringify(data));
             }
-            else
+            else if(!options || !options.silent)
             {
                 throw Error("Cannot find request to resolve: " + httpVerb + " " + urlPattern);
             }
@@ -221,7 +221,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
             this.resolveRequest("GET", "refresh$", {});
             this.resolveRequest("GET", "users/v1/user$", userData);
             this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
-            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings);
+            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings, { silent: true });
 
             this.resolveRequest("GET", "sysinfo/v1/assemblyversion", {});
             this.resolveRequest("GET", "sysinfo/v1/timezoneswithlabels", []);

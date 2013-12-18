@@ -283,7 +283,7 @@ function(
             // add current athlete manager
             this.addInitializer(function()
             {
-                this.athleteManager = new AthleteManager(this, this.user);
+                this.athleteManager = new AthleteManager(this, this.user, { featureAuthorizer: this.featureAuthorizer });
             });
 
             this.addInitializer(function()

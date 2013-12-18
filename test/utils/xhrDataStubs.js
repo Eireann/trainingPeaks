@@ -317,6 +317,7 @@ function()
                             "headerLink": "http://www.trainingpeaks.com",
                             "isAthlete": false,
                             "isCoach": true,
+                            "coachType": 1,
                             "isCoached":false,
                             "isEmailVerified":true,
                             "lastLogon":"2013-05-07T16:30:53",

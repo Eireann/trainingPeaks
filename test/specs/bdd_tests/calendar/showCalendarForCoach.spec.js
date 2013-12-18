@@ -1,10 +1,12 @@
 define(
 [
+    "underscore",
     "TP",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs"
 ],
 function(
+    _,
     TP,
     testHelpers,
     xhrData
@@ -178,6 +180,43 @@ function(
 
                 });
 
+            });
+
+        });
+
+        describe("For coach with no premium athletes", function()
+        {
+            beforeEach(function()
+            {
+                var supercoach = TP.utils.deepClone(xhrData.users.supercoach);
+                _.each(supercoach.athletes, function(athlete)
+                {
+                    athlete.userType = 6;
+                });
+                testHelpers.startTheAppAndLogin(supercoach);
+            });
+
+            it("Should not throw any exceptions", function()
+            {
+                var loadTheCalendar = function()
+                {
+                    testHelpers.theApp.router.navigate("calendar", true);
+                };
+                expect(loadTheCalendar).not.to.throw();
+            });
+
+            it("Should not request settings data for any athlete id", function()
+            {
+                testHelpers.theApp.router.navigate("calendar", true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/[0-9]+/settings")).to.equal(false);
+            });
+
+            xit("Should display an error message", function()
+            {
+                var $body = testHelpers.theApp.getBodyElement();
+                expect($body.find(".dialog").length).to.equal(0);
+                testHelpers.theApp.router.navigate("calendar", true);                   
+                expect($body.find(".dialog").length).to.equal(1);
             });
 
         });
