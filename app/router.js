@@ -25,6 +25,8 @@ function (_, TP, RollbarManager, WaitMessageView)
     {
         return ensureUser(function(athleteId)
         {
+            var self = this;
+
             // make sure current user can access requested athlete
             if (athleteId && !this._userCanAccessAthlete(athleteId)) {
                 this.navigate(baseUrl, true);
@@ -34,7 +36,10 @@ function (_, TP, RollbarManager, WaitMessageView)
             // if user is coach, and no athleteId value was passed, put current athlete id in url
             if(!athleteId && theMarsApp.user.isCoachWithAthletes())
             {
-                this.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
+                theMarsApp.athleteManager.loadDefaultAthlete().done(function()
+                {
+                    self.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
+                });
                 return;
             }
 
@@ -42,7 +47,6 @@ function (_, TP, RollbarManager, WaitMessageView)
             if(athleteId)
             {
                 athleteId = parseInt(athleteId, 10);
-                var self = this;
                 var args = Array.prototype.slice.call(arguments);
                 var waitMessage = new WaitMessageView({ model: new TP.Model({ message: TP.utils.translate("Loading athlete data")})}).render();
                 theMarsApp.athleteManager.loadAthlete(athleteId).done(function()
