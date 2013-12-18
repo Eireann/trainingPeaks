@@ -1,23 +1,33 @@
 define(
 [
-	"jquery",
-	"underscore",
-	"TP",
-	"shared/data/equipmentTypes",
-	"framework/filteredSubCollection",
-	"./equipmentItemView",
-	"hbs!shared/templates/userSettings/userSettingsEquipmentTemplate"
+    "jquery",
+    "underscore",
+    "backbone",
+    "TP",
+    "shared/data/equipmentTypes",
+    "framework/filteredSubCollection",
+    "./equipmentItemView",
+    "hbs!shared/templates/userSettings/userSettingsEquipmentTemplate"
 ],
 function(
-	$,
-	_,
-	TP,
-	EquipmentTypes,
-	FilteredSubCollection,
-	EquipmentItemView,
-	userSettingsEquipmentTemplate
+    $,
+    _,
+    Backbone,
+    TP,
+    EquipmentTypes,
+    FilteredSubCollection,
+    EquipmentItemView,
+    userSettingsEquipmentTemplate
 )
 {
+    var DelegatingView = TP.CollectionView.extend(
+    {
+        applyFormValuesToModel: function()
+        {
+            this.children.call("applyFormValuesToModel");
+        }
+    });
+
     var UserSettingsEquipmentView = TP.ItemView.extend({
 
         template:
@@ -48,37 +58,20 @@ function(
             }
         ],
 
-        _createCollections: function(options)
+        applyFormValuesToModels: function()
         {
-        	this.bikeCollection = new FilteredSubCollection(
-        		null,
-        		{
-        			sourceCollection: options.collection,
-        			filterFunction: function(model) {
-        				return model.get("type") === EquipmentTypes.Bike;
-        			}
-        		}
-        	);
-        	this.shoeCollection = new FilteredSubCollection(
-        		null,
-        		{
-        			sourceCollection: options.collection,
-        			filterFunction: function(model) {
-        				return model.get("type") === EquipmentTypes.Shoe;
-        			}
-        		}
-        	);
+            this.children.call("applyFormValuesToModel");
         },
 
         render: function()
         {
             UserSettingsEquipmentView.__super__.render.apply(this, arguments);
 
-            this._addView(".bikeList", new TP.CollectionView({
+            this._addView(".bikeList", new DelegatingView({
                 itemView: EquipmentItemView,
                 collection: this.bikeCollection
             }));
-            this._addView(".shoeList", new TP.CollectionView({
+            this._addView(".shoeList", new DelegatingView({
                 itemView: EquipmentItemView,
                 collection: this.shoeCollection
             }));
@@ -89,8 +82,31 @@ function(
             this.children.add(view);
             this.$(selector).append(view.el);
             view.render();
-        }
-	});
+        },
 
-	return UserSettingsEquipmentView;
+        _createCollections: function(options)
+        {
+            this.bikeCollection = new FilteredSubCollection(
+                null,
+                {
+                    sourceCollection: options.collection,
+                    filterFunction: function(model) {
+                        return model.get("type") === EquipmentTypes.Bike;
+                    }
+                }
+            );
+            this.shoeCollection = new FilteredSubCollection(
+                null,
+                {
+                    sourceCollection: options.collection,
+                    filterFunction: function(model) {
+                        return model.get("type") === EquipmentTypes.Shoe;
+                    }
+                }
+            );
+        }
+
+    });
+
+    return UserSettingsEquipmentView;
 });

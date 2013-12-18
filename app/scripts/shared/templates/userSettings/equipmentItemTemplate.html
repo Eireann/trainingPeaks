@@ -10,29 +10,45 @@
     <label class="fieldTitle">{{$ "Model" }}</label>
     <input type="text" name="model" />
 </div>
+{{#ifEquals type 1}}
+<div class="fieldContain">
+    <label class="fieldTitle"><em>{{$ "Wheels" }}</em></label>
+    <input type="text" name="wheels" />
+</div>
+<div class="fieldContain">
+    <label class="fieldTitle"><em>{{$ "Crank Length" }}</em></label>
+    <input type="text" name="crankLengthMillimeters" />
+</div>
+{{/ifEquals}}
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Purchase Date" }}</label>
-    <input type="text" name="dateOfPurchase" />
+    <input class="datepicker" type="text" name="dateOfPurchase" data-format="date" />
 </div>
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Default" }}</label>
-    <input type="text" name="isDefault" />
+    <input type="checkbox" name="isDefault" />
 </div>
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Retired" }}</label>
-    <input type="text" name="retired" />
+    <input class="retiredToggle" type="checkbox" name="retired" />
 </div>
-<div class="fieldContain">
+<div class="fieldContain retiredDate" {{#ifEquals retired false}}style="display:none"{{/ifEquals}}>
     <label class="fieldTitle">{{$ "Retired Date" }}</label>
-    <input type="text" name="retiredDate" />
+    <input class="datepicker" type="text" name="retiredDate" data-format="date" />
 </div>
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Start Distance" }}</label>
-    <input type="text" name="startingDistance" />
+    <input type="text" name="startingDistance" data-format="units:distance" />
 </div>
+{{#ifEquals type 2}}
+<div class="fieldContain">
+    <label class="fieldTitle"><em>{{$ "Maximum Distance" }}</em></label>
+    <input type="text" name="maxDistance" data-format="units:distance" />
+</div>
+{{/ifEquals}}
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Total Distance" }}</label>
-    <input type="text" name="actualDistance" />
+    <input type="text" name="actualDistance" data-format="units:distance" />
 </div>
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Notes" }}</label>

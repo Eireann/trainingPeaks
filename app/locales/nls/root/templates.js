@@ -473,12 +473,16 @@ define({
     "Name": "Name",
     "Brand": "Brand",
     "Model": "Model",
-    "Date of Purchase": "Date of Purchase",
+    "Purchase Date": "Purchase Date",
     "Default": "Default",
     "Retired": "Retired",
     "Retired Date": "Retired Date",
     "Start Distance": "Start Distance",
-    "Maximum Distance": "Maximum Distance",
     "Total Distance": "Total Distance",
-    "Notes": "Notes"
+    "Notes": "Notes",
+
+    "Wheels": "Wheels",
+    "Crank Length": "Crank Length",
+
+    "Maximum Distance": "Maximum Distance"
 });

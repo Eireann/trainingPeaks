@@ -23,9 +23,26 @@ function(TP, EquipmentModel)
             }
         },
 
+        save: function()
+        {
+            var ajaxOptions = {
+                url: this.url(),
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(this.toJSON())
+            };
+            
+            return Backbone.ajax(ajaxOptions).done(_.bind(this._handleSaveResponse, this));
+        },
+
         url: function()
         {
             return theMarsApp.apiRoot + "/fitness/v1/athletes/" + this.athleteId + "/equipment";
+        },
+
+        _handleSaveResponse: function(data)
+        {
+            this.set(data);
         }
 
     });

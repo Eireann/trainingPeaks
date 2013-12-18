@@ -72,6 +72,7 @@ function(
         initialize: function()
         {
             this._copiesOfModels = [];
+            this._copiesOfCollections = [];
             this._initializeNavigation();
             this._initializeFooter();
             this.on("before:switchView", this._applyFormValuesToModels, this);
@@ -110,7 +111,7 @@ function(
                     view: UserSettingsEquipmentView,
                     options:
                     {
-                        collection: this.model.getAthleteSettings().getEquipment()
+                        collection: this._copyCollection(this.model.getAthleteSettings().getEquipment())
                     }
                 }
             ];
@@ -134,6 +135,29 @@ function(
             }
 
             return copiedModel;
+        },
+
+        _copyCollection: function(originalCollection)
+        {
+            var copiedCollection = new TP.Collection();
+            copiedCollection.originalCollection = originalCollection;
+            this._copiesOfCollections.push(copiedCollection);
+
+            originalCollection.each(function(model) {
+                var copiedModel = new TP.Model(TP.utils.deepClone(model.attributes));
+
+                copiedCollection.push(copiedModel);
+            });
+
+            return copiedCollection;
+        },
+
+        _applyCopiedCollectionToRealCollection: function()
+        {
+            _.each(this._copiesOfCollections, function(collection)
+            {
+                collection.originalCollection.set(collection.toJSON());
+            });
         },
 
         _listenForFormChanges: function()
@@ -186,6 +210,7 @@ function(
         {
             this._applyFormValuesToModels();
             this._applyCopiedModelsToRealModels();
+            this._applyCopiedCollectionToRealCollection();
 
             if(this._validateForSave())
             {
@@ -193,7 +218,8 @@ function(
                 var self = this;
                 return $.when(
                     this._saveUser(),
-                    this._saveZones()
+                    this._saveZones(),
+                    this._saveEquipment()
                 ).done(
                     function()
                     {
@@ -230,6 +256,11 @@ function(
         _saveZones: function()
         {
             return UserDataSource.saveZones(this.model.getAthleteSettings());
+        },
+
+        _saveEquipment: function()
+        {
+            this.model.getAthleteSettings().getEquipment().save();
         },
 
         _cancel: function()
