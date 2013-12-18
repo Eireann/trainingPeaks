@@ -481,8 +481,12 @@ define({
     "Total Distance": "Total Distance",
     "Notes": "Notes",
 
+    "Bikes": "Bikes",
+    "Add a Bike": "Add a Bike",
     "Wheels": "Wheels",
     "Crank Length": "Crank Length",
 
+    "Shoes": "Shoes",
+    "Add a Shoe": "Add a Shoe",
     "Maximum Distance": "Maximum Distance"
 });

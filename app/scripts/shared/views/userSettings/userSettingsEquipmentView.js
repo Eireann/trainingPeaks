@@ -6,6 +6,7 @@ define(
     "TP",
     "shared/data/equipmentTypes",
     "framework/filteredSubCollection",
+    "models/equipmentModel",
     "./equipmentItemView",
     "hbs!shared/templates/userSettings/userSettingsEquipmentTemplate"
 ],
@@ -16,6 +17,7 @@ function(
     TP,
     EquipmentTypes,
     FilteredSubCollection,
+    EquipmentModel,
     EquipmentItemView,
     userSettingsEquipmentTemplate
 )
@@ -29,6 +31,11 @@ function(
     });
 
     var UserSettingsEquipmentView = TP.ItemView.extend({
+
+        events:
+        {
+            "click .addEquipment": "_addEquipment"
+        },
 
         template:
         {
@@ -86,6 +93,8 @@ function(
 
         _createCollections: function(options)
         {
+            this.sourceCollection = options.collection;
+
             this.bikeCollection = new FilteredSubCollection(
                 null,
                 {
@@ -104,6 +113,15 @@ function(
                     }
                 }
             );
+        },
+
+        _addEquipment: function(e)
+        {
+            var equipmentModel = new EquipmentModel();
+
+            equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
+
+            this.sourceCollection.push(equipmentModel);
         }
 
     });

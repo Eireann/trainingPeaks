@@ -1,12 +1,18 @@
 <div class="userSettingsContent userSettingsEquipmentTemplate userSettingsAccountContent">
 
     <div class="scrollTarget userSettingsPersonalSection" data-target="bikes">
-        <h2 class="accountSettingsSectionTitle">Bikes</h2>
+        <h2 class="accountSettingsSectionTitle">{{$ "Bikes"}}</h2>
         <div class="bikeList"></div>
+        <div class="action">
+            <button class="addEquipment" data-equipmenttype="bike">{{$ "Add a Bike"}}</button>
+        </div>
     </div>
     <div class="scrollTarget userSettingsPersonalSection" data-target="shoes">
-        <h2 class="accountSettingsSectionTitle">Shoes</h2>
+        <h2 class="accountSettingsSectionTitle">{{$ "Shoes"}}</h2>
         <div class="shoeList"></div>
+        <div class="action">
+            <button class="addEquipment clearfix" data-equipmenttype="shoe">{{$ "Add a Shoe"}}</button>
+        </div>
     </div>
 
 </div>

@@ -48,9 +48,12 @@
 {{/ifEquals}}
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Total Distance" }}</label>
-    <input type="text" name="actualDistance" data-format="units:distance" />
+    <input readonly type="text" name="actualDistance" data-format="units:distance" />
 </div>
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Notes" }}</label>
     <textarea type="text" name="notes" />
+</div>
+<div class="right">
+    <button class="removeEquipment">{{$ "Remove"}}</button>
 </div>

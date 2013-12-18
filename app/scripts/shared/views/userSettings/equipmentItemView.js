@@ -20,7 +20,8 @@ function(
     {
 
         events: {
-            "change .retiredToggle": "onRetiredToggleChange"
+            "change .retiredToggle": "_onRetiredToggleChange",
+            "click .removeEquipment": "_removeEquipment"
         },
 
         className: "equipmentItem",
@@ -46,14 +47,19 @@ function(
             FormUtility.applyValuesToModel(this.$el, this.model);
         },
 
-        onRetiredToggleChange: function()
+        _applyModelValuesToForm: function()
+        {
+            FormUtility.applyValuesToForm(this.$el, this.model);
+        },
+
+        _onRetiredToggleChange: function()
         {
             this.$(".retiredDate").toggle(this.$(".retiredToggle").is(':checked'));
         },
 
-        _applyModelValuesToForm: function()
+        _removeEquipment: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model);
+            this.model.trigger("destroy", this.model);
         }
 
     });
