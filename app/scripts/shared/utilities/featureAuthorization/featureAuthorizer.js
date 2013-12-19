@@ -99,10 +99,26 @@ function(
                     throw new Error("ViewAthlete requires an athlete attribute");
                 }
 
+                var currentUserId = user.get("userId");
                 var athleteId = getModelAttributeOrObjectProperty(attributes.athlete, "athleteId");
 
-                // if not the current user, or coach of this athlete, can't view
-                if(!userIsCurrentAthleteOrCoach(athleteId, user))
+                // user can view their own account
+                if(currentUserId === athleteId)
+                {
+                    return true;
+                }
+
+                // if not a coach, user can only view their own account
+                if(user.getAccountSettings().get("isAthlete"))
+                {
+                    return false;
+                }
+
+                // athlete must be in athletes list
+                var athleteFromUserAthletesList = _.find(user.get("athletes"), function(athlete) {
+                    return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
+                });
+                if(!athleteFromUserAthletesList)
                 {
                     return false;
                 }
