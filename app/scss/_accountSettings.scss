@@ -558,6 +558,14 @@
                 text-align: right;
             }
 
+            &.wheels,
+            &.crankLength,
+            &.maxDistance {
+                .fieldTitle {
+                    font-family: $fontFamilyRegularItalic;
+                }
+            }
+
             &.deliveryTime1 {
                 .selectBox {
                     width:197px;
@@ -751,6 +759,32 @@
             height:20px;
             float: left;
         }
+
+
+        // Equipment Tab
+        .equipmentItem {
+            float: left;
+            margin-bottom: 25px;
+
+            .fieldContain {
+                input[type="checkbox"] {
+                    margin-top: 5px;
+                }
+                textarea:last-of-type {
+                    margin-bottom: 12px;
+                }
+            }
+        }
+
+        .action {
+            float: left;
+        }
+
+        .removeEquipment {
+            margin-right: 0;
+        }
+
+
     }
 
     @include clearfix;

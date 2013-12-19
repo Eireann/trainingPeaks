@@ -11,12 +11,12 @@
     <input type="text" name="model" />
 </div>
 {{#ifEquals type 1}}
-<div class="fieldContain">
-    <label class="fieldTitle"><em>{{$ "Wheels" }}</em></label>
+<div class="fieldContain wheels">
+    <label class="fieldTitle">{{$ "Wheels" }}</label>
     <input type="text" name="wheels" />
 </div>
-<div class="fieldContain">
-    <label class="fieldTitle"><em>{{$ "Crank Length" }}</em></label>
+<div class="fieldContain crankLength">
+    <label class="fieldTitle">{{$ "Crank Length" }}</label>
     <input type="text" name="crankLengthMillimeters" />
 </div>
 {{/ifEquals}}
@@ -41,8 +41,8 @@
     <input type="text" name="startingDistance" data-format="units:distance" />
 </div>
 {{#ifEquals type 2}}
-<div class="fieldContain">
-    <label class="fieldTitle"><em>{{$ "Maximum Distance" }}</em></label>
+<div class="fieldContain maxDistance">
+    <label class="fieldTitle">{{$ "Maximum Distance" }}</label>
     <input type="text" name="maxDistance" data-format="units:distance" />
 </div>
 {{/ifEquals}}
