@@ -173,6 +173,7 @@ function(_, DataParserUtils, FlotUtils, SampleData)
 
         createCorrectedElevationChannel: function (elevations)
         {
+            elevations = _.map(elevations, function(v) { return v / 100; });
             return this.sampleData.getChannel("distance").zip(elevations).toArray();
         },
 

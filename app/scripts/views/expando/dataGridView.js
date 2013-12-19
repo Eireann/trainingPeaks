@@ -1,12 +1,14 @@
 define(
 [
     "underscore",
+    "setImmediate",
     "TP",
     "slick.core",
     "slick.grid"
 ],
 function(
     _,
+    setImmediate,
     TP,
     Slick,
     SlickGrid
@@ -143,7 +145,7 @@ function(
             this.listenTo(this.stateModel, "goto", _.bind(this._gotoDefault, this));
         },
 
-        onShow: function()
+        onRender: function()
         {
             var self = this;
             var availableChannels = this.model.get("detailData").get("availableDataChannels");
@@ -176,7 +178,11 @@ function(
             };
 
             var $grid = this.$(".dataGrid");
-            this.grid = new Slick.Grid($grid, new DataView(this.sampleData, columns, this.stateModel), columns, options);
+
+            setImmediate(function()
+            {
+                self.grid = new Slick.Grid($grid, new DataView(self.sampleData, columns, self.stateModel), columns, options);
+            });
 
             // Prevent slick grid from causing packery trouble
             function stopEvent(event) { event.stopPropagation(); event.preventDefault(); }
