@@ -4,8 +4,6 @@
     "moment",
     "TP",
     "utilities/charting/graphData",
-    "utilities/charting/dataParser",
-    "utilities/charting/dataParserUtils",
     "models/workoutStatsForRange",
     "utilities/workout/formatPeakTime",
     "utilities/workout/formatPeakDistance",
@@ -16,8 +14,6 @@ function (
     moment,
     TP,
     GraphData,
-    DataParser,
-    DataParserUtils,
     WorkoutStatsForRange,
     formatPeakTime,
     formatPeakDistance,
@@ -37,7 +33,6 @@ function (
         initialize: function()
         {
             this.graphData = new GraphData({ detailData: this });
-            this._dataParser = new DataParser({graphData: this.graphData});
             this.rangeCollections = {};
             this.reset();
             this.on("sync", this.reset, this);
@@ -72,15 +67,6 @@ function (
             "lapsStatsEdited": false,
             "lapDeleted": false,
             "originalLapsStats": null
-        },
-
-        parse: function(data)
-        {
-            if(data && data.flatSamples)
-            {
-                data.flatSamples = DataParserUtils.convertFlatSamplesToOldFormat(data.flatSamples);
-            }
-            return data;
         },
 
         reset: function()
@@ -135,8 +121,8 @@ function (
 
         hasSamples: function()
         {
-            // return this.has("flatSamples.samples") && this.get("flatSamples.samples").length > 0;
-            return this.has("flatSamples") && this.get("flatSamples").samples && this.get("flatSamples").samples.length > 0;
+            var flatSamples = this.get("flatSamples");
+            return flatSamples && flatSamples.channels && _.any(flatSamples.channels, function(channel) { return channel.samples && channel.samples.length > 0; });
         },
 
         hasLaps: function()
@@ -146,7 +132,8 @@ function (
 
         cutChannel: function(series)
         {
-            this.cutRange(series, _.first(this.get("flatSamples").msOffsetsOfSamples), _.last(this.get("flatSamples").msOffsetsOfSamples), true);
+            var sampleData = this.graphData.sampleData;
+            this.cutRange(series, sampleData.getChannel("time").first(), sampleData.getChannel("time").last(), true);
         },
 
         cutAllChannelsForRange: function(begin, end)
@@ -420,7 +407,7 @@ function (
         _resetDataParser: function()
         {
             this.graphData.resetExcludedRanges();
-            this._dataParser.loadData(this.get("flatSamples"));
+            this.graphData.loadData(this.get("flatSamples"));
             this.trigger("loaded:flatSamples");
         },
 
@@ -463,7 +450,7 @@ function (
         {
             this.set("channelCuts", null);
             this.set("disabledDataChannels", []);
-            this.set("availableDataChannels", this.has("flatSamples") ? this.get("flatSamples").channelMask : []);
+            this.set("availableDataChannels", this.has("flatSamples") ? this.graphData.sampleData.listChannels() : []);
         },
 
         _triggerSensorDataChange: function()

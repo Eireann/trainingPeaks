@@ -1,12 +1,10 @@
 define(
 [
-    "utilities/charting/dataParser",
     "utilities/charting/dataParserUtils",
     "utilities/charting/graphData",
-    "./dataParserTestData"
+    "testUtils/AppTestData/GET_DetailData_139251189"
 ],
 function(
-         DataParser,
          DataParserUtils,
          GraphData,
          testData
@@ -16,16 +14,11 @@ function(
     {
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
         {
-            var dataParser, graphData, minTemperature, minElevation;
+            var graphData, minTemperature, minElevation;
             before(function()
             {
-
-                // convert to old format 
-                var flatSamples = DataParserUtils.convertFlatSamplesToOldFormat(testData.flatSamples);
-
                 graphData = new GraphData({ detailData: {} });
-                dataParser = new DataParser({graphData: graphData});
-                dataParser.loadData(flatSamples);
+                graphData.loadData(testData.flatSamples);
 
                 minTemperature = -20;
                 minElevation = 1512;
@@ -34,7 +27,6 @@ function(
 
             after(function()
             {
-                dataParser = null;
                 graphData = null;
             });
 

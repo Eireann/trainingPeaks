@@ -149,12 +149,6 @@ function(
 
             var yaxes = this._getGraphData().getYAxes(enabledSeries);
 
-            // override default behavior of graphing for right power only.
-            if(enabledSeries[0].label === 'RightPower')
-            {
-                enabledSeries[0].lines.show = false;
-                delete enabledSeries[0].dashes;
-            }
             enabledSeries[0].color = "#3c7fc4";
             enabledSeries[0].name = "primarySeries";
 
@@ -171,8 +165,6 @@ function(
 
             this.flotOptions = defaultFlotOptions.getPointOptions(onHoverHandler, this.currentXAxis, this.model.get("workoutTypeValueId"));
 
-            this.flotOptions.selection.mode = "x";
-            this.flotOptions.selection.color = chartColors.chartPrimarySelection;
             this.flotOptions.highlightColor = "#000000";
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
@@ -281,8 +273,8 @@ function(
         _createRange: function(enabledSeries, range, rangesSeries, seriesCount, color)
         {
             var copiedSeries = _.clone(enabledSeries);
-            var begin = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('begin'));
-            var end = findOrderedArrayIndexByValue(this._getGraphData().flatSamples.msOffsetsOfSamples, range.get('end'));
+            var begin = this._getGraphData().sampleData.indexOf("time", range.get("begin"));
+            var end = this._getGraphData().sampleData.indexOf("time", range.get("end"));
 
             copiedSeries.data = [];
 

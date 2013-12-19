@@ -134,7 +134,7 @@ function(
             this._getGraphData().setDisabledSeries(this.model.get("detailData").get("disabledDataChannels"));
 
             var enabledSeries = this._getGraphData().getSeries();
-
+            
             if(!enabledSeries.length)
             {
                 this.$el.addClass("noData");
@@ -394,7 +394,10 @@ function(
 
         onPlotHover: function(event, pos, item)
         {
-            this.stateModel.set("hover", pos.x);
+            var graphData = this._getGraphData();
+            var index = graphData.sampleData.indexOf(graphData.xaxis, pos.x);
+            var offset = graphData.sampleData.get("time", index);
+            this.stateModel.set("hover", offset);
         },
 
         onMouseLeave: function(event)
