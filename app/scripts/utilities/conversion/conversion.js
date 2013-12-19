@@ -143,8 +143,16 @@
         
         formatPowerBalance: function(value, options)
         {
-            value = value * 100;
-            return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
+            options = _.extend({ allowZero: true }, options);
+            if(_.isFinite(value))
+            {
+                value = value * 100;
+                return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
+            }
+            else
+            {
+                return options.defaultValue;
+            }
         },
 
         formatPace: function(value, options)

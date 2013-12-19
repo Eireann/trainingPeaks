@@ -164,7 +164,7 @@ function(
                     column.name += label ? " (" + label + ")" : "";
                     column.formatter = function(row, cell, value)
                     {
-                        return TP.utils.conversion.formatUnitsValue(column.units, value, { workoutTypeId: workoutType });
+                        return TP.utils.conversion.formatUnitsValue(column.units, value, { defaultValue: "--", workoutTypeId: workoutType });
                     };
                 }
             });
