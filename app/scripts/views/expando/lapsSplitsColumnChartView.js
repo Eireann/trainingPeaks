@@ -40,6 +40,7 @@ function(
             "plothover .chartContainer": "_onPlotHover"
         },
 
+        podTitle: "Laps & Splits Column Chart",
         template: lapsColumnChartTemplate,
 
         settingsView: LapsSplitsColumnChartSettingsView.Tomahawk,

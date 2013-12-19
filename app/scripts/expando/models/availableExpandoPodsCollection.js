@@ -70,7 +70,8 @@ function(
             },
             {
                 podType: 157, // Data Grid
-                name: "Data"
+                name: "Data Grid",
+                widthInColumns: 2
             },
             {
                 podType: 1081,

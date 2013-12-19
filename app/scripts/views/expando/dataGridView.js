@@ -58,7 +58,8 @@ function(
 
     var DataGridView = TP.ItemView.extend({
 
-        template: _.template("<div class='chartTitle'>Data Grid</div><div class='dataGrid'></div>"),
+        podTitle: "Data Grid",
+        template: _.template("<div class='dataGrid'></div>"),
 
         channels: [
             {
