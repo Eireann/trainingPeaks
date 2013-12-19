@@ -266,9 +266,14 @@ function(
             return this.passwordSettings;
         },
 
+        isCoach: function()
+        {
+            return !this.getAccountSettings().get("isAthlete");
+        },
+
         isCoachWithAthletes: function()
         {
-            return !this.getAccountSettings().get("isAthlete") && this.has("athletes") && this.get("athletes").length > 0;
+            return this.isCoach() && this.has("athletes") && this.get("athletes").length > 0;
         },
         
         populateUserModels: function(data)

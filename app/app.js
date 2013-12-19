@@ -297,12 +297,6 @@ function(
                 {
                     RollbarManager.setUser(self.user);
 
-                    var athletes = self.user.get("athletes");
-                    if(!athletes || !athletes.length)
-                    {
-                        throw new Error("No athletes loaded for user");
-                    }
-
                     var promises = self.session.userAccessPromise;
 
                     if(self.athleteManager.getDefaultAthleteId())
