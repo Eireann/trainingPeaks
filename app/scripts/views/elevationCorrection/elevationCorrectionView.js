@@ -70,7 +70,7 @@ function ($, _, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, c
 
         validateWorkoutModel: function(options)
         {
-            if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
+            if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").graphData.sampleData.listChannels(), "Elevation"))
                 throw new Error("ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel");
         },
 

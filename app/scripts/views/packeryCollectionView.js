@@ -43,7 +43,8 @@ function(
                     gutter: 10
                 },
                 resizable: { enabled: false },
-                droppable: { enabled: false, scope: "packery" }
+                droppable: { enabled: false, scope: "packery" },
+                draggable: { scope: "packery-items" }
             }, _.defaults);
 
             PackeryCollectionView.__super__.initialize.apply(this, arguments);
@@ -214,7 +215,7 @@ function(
         {
             var self = this;
 
-            itemView.$el.draggable({ scope: "packery-items" });
+            itemView.$el.draggable(this.options.draggable);
             collectionView.packery.bindUIDraggableEvents(itemView.$el);
 
             if(this.options.resizable.enabled)

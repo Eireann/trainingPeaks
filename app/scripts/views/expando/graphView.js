@@ -313,12 +313,13 @@ function(
 
         bindToPlotEvents: function()
         {
-            _.bindAll(this, "onPlotSelected", "onPlotUnSelected", "onPlotHover");
+            _.bindAll(this, "onPlotSelected", "onPlotUnSelected", "onPlotHover", "onPlotClick");
             var plotPlaceHolder = this.plot.getPlaceholder();
 
             plotPlaceHolder.bind("plotselected", this.onPlotSelected);
             plotPlaceHolder.bind("plotunselected", this.onPlotUnSelected);
             plotPlaceHolder.bind("plothover", this.onPlotHover);
+            plotPlaceHolder.bind("plotclick", this.onPlotClick);
 
             this.on("close", this.unbindPlotEvents, this);
         },
@@ -398,6 +399,14 @@ function(
             var index = graphData.sampleData.indexOf(graphData.xaxis, pos.x);
             var offset = graphData.sampleData.get("time", index);
             this.stateModel.set("hover", offset);
+        },
+
+        onPlotClick: function(event, pos, item)
+        {
+            var graphData = this._getGraphData();
+            var index = graphData.sampleData.indexOf(graphData.xaxis, pos.x);
+            var offset = graphData.sampleData.get("time", index);
+            this.stateModel.trigger("goto", offset);
         },
 
         onMouseLeave: function(event)

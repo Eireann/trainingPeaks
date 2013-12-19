@@ -18,6 +18,7 @@ function(
 
     var LapsSplitsView = TP.CompositeView.extend(
     {
+        podTitle: "Laps & Splits",
         className: "expandoLapsSplitsPod",
         events:
         {

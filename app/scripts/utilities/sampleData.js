@@ -19,6 +19,8 @@ function(
 
         this.start = 0;
         this.end = this.channels && this.channels[0] && this.channels[0].samples ? this.channels[0].samples.length : 0;
+
+        this.length = this.end - this.start;
     }
 
     _.extend(SampleData.prototype,
@@ -73,9 +75,9 @@ function(
             return _.isObject(data) ? Lazy(data.samples).slice(this.start, this.end) : null;
         },
 
-        getChannels: function(/* channelNames... */)
+        getChannels: function(names /*, channelNames... */)
         {
-            var names = [].slice.apply(arguments);
+            names = _.isArray(names) ? names : [].slice.apply(arguments);
             var channels = _.map(names, function(name) { return this.getChannel(name); }, this);
             channels = _.reject(channels, _.isNull);
 
