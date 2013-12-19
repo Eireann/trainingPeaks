@@ -4,7 +4,6 @@ define(
     "underscore",
     "setImmediate",
     "TP",
-    "jquerySelectBox",
     "backbone",
     "dashboard/views/chartSettingsView",
     "views/dashboard/dashboardDatePicker",
@@ -15,7 +14,6 @@ function(
     _,
     setImmediate,
     TP,
-    jquerySelectBox,
     Backbone,
     ChartSettingsView,
     DashboardDatePicker,
@@ -46,13 +44,6 @@ function(
 
             this._updateInputsState();
             this._updateSeriesState();
-
-            setImmediate(_.bind(this._setupSelects, this));
-        },
-
-        _setupSelects: function()
-        {
-            this.$("select").selectBoxIt({dynamicPositioning: true});
         },
 
         _updateInputsState: function()

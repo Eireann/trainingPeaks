@@ -188,19 +188,7 @@ function(
                 var visible = workoutTypeIds.length > 0;
                 $el.toggle(visible);
                 self.$(".addWorkoutType[data-zone-type='" + type + "']").toggle(visible);
-                if($el.data("selectBox-selectBoxIt"))
-                {
-                    $el.selectBoxIt("destroy");
-                    $el.hide();
-                }
-                if(visible)
-                {
-                    $el.show();
-                    $el.selectBoxIt({
-                        viewport: function(){return $el.closest(".scrollable");}
-                    });
-                }
-            });
+             });
         },
 
         _addWorkoutType: function(e)

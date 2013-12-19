@@ -69,23 +69,13 @@ function(
         _setCurrentUser: function()
         {
             var currentAthleteId = theMarsApp.user.getCurrentAthleteId();
-            this.$("select.athleteCalendarSelect").val(currentAthleteId).selectBoxIt("refresh");
+            this.$("select.athleteCalendarSelect").val(currentAthleteId);
         },
 
         _customizeAthleteSelectBox: function()
         {
-            var self = this;
-            setImmediate(function ()
-            {
-                self.$(".athleteCalendarSelect").selectBoxIt({
-                    dynamicPositioning: false
-                });
-
-                self.$(".athleteCalendarSelectSelectBoxItContainer").css('display', "block");
-
-                self._setCurrentUser();
-                self.listenTo(theMarsApp.user, "athlete:change", _.bind(self._setCurrentUser, self));
-            });
+            this._setCurrentUser();
+            this.listenTo(theMarsApp.user, "athlete:change", _.bind(this._setCurrentUser, this));
         },
 
         _onAthleteSelectBoxChange: function ()

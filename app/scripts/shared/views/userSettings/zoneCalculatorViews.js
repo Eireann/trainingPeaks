@@ -4,7 +4,6 @@
     "underscore",
     "setImmediate",
     "TP",
-    "jquerySelectBox",
     "shared/views/selectableLayout",
     "shared/utilities/formUtility",
     "views/userConfirmationView",
@@ -19,7 +18,6 @@ function(
     _,
     setImmediate,
     TP,
-    jquerySelectBox,
     SelectableLayout,
     FormUtility,
     UserConfirmationView,
@@ -112,6 +110,8 @@ function(
 
         units: "number",
 
+        formUtilsFilterSelector: "input",
+        
         fieldsToCopyFromThresholdSourceModel: ["threshold"],
 
         zoneItemView: TP.ItemView,
@@ -161,16 +161,6 @@ function(
             this._showInputs();
             this._enableCalculate();
             //this._calculateIfAllInputsAreValid();
-            var self = this;
-            setImmediate(function()
-            {
-                self._setupSelectBox();
-            });
-        },
-
-        _setupSelectBox: function()
-        {
-            this.$("select").selectBoxIt({ viewport: $(".tabbedLayoutBody.scrollable") });
         },
 
         events: {
