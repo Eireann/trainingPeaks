@@ -252,7 +252,7 @@
 
         #plot, #scatterPlot
         {
-            height: calc(100% - 62px);
+            height: calc(100% - 50px);
             min-height: 1;
             min-width: 1;
         }
@@ -501,7 +501,6 @@
         overflow: hidden !important;
 
         #scatterGraphToolbar {
-            margin-top: 12px;
             height: 56px;
             button {
 
