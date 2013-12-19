@@ -174,11 +174,16 @@ function(
 
         getAthleteSettings: function()
         {
-            if(!this.athleteSettings)
+            if(!this.hasAthleteSettings())
             {
                 throw new Error("User has no athlete settings");
             }
             return this.athleteSettings;
+        },
+
+        hasAthleteSettings: function()
+        {
+            return !!this.athleteSettings;
         },
 
         getAthleteDetails: function()

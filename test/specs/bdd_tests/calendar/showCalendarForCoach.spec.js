@@ -302,6 +302,35 @@ function(
 
         });
 
+        describe("Navigate between dashboard and calendar", function()
+        {
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                $mainRegion = testHelpers.theApp.mainRegion.$el;
+                testHelpers.theApp.router.navigate("calendar", true);
+                $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                testHelpers.clearRequests();
+                testHelpers.theApp.user.getDashboardSettings().set("pods", []);
+            });
+
+            it("Should retain the currently selected athlete when switching to the dashboard", function()
+            { 
+                testHelpers.theApp.router.navigate("dashboard", true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/[0-9]/settings")).to.equal(false);
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.eql(23456);
+            });
+
+            it("Should retain the currently selected athlete when switching back to the dashboard", function()
+            { 
+                testHelpers.theApp.router.navigate("dashboard", true);
+                testHelpers.theApp.router.navigate("calendar", true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/[0-9]/settings")).to.equal(false);
+                expect(testHelpers.theApp.user.getCurrentAthleteId()).to.eql(23456);
+            });
+        });
+
         describe("Switch back to previously loaded athlete", function()
         {
 
