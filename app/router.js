@@ -41,7 +41,7 @@ function (
             }
 
             // if user is coach, and no athleteId value was passed, put current athlete id in url
-            if(!athleteId && theMarsApp.user.isCoachWithAthletes())
+            if(!athleteId && theMarsApp.user.isCoach())
             {
                 var defaultAthleteId = theMarsApp.athleteManager.getDefaultAthleteId();
 
@@ -54,7 +54,7 @@ function (
                 }
                 else
                 {
-                    new UserConfirmationView({ message: "Coach account does not have any viewable athletes" }).render();
+                    new UserConfirmationView({ message: "This coach account does not have any clients" }).render();
                 }
                 return;
             }

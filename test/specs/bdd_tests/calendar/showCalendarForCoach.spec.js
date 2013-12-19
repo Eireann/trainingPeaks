@@ -184,6 +184,32 @@ function(
 
         });
 
+        describe("For coach with no athletes", function()
+        {
+            beforeEach(function()
+            {
+                var supercoach = TP.utils.deepClone(xhrData.users.supercoach);
+                supercoach.athletes = [];
+                testHelpers.startTheAppAndLogin(supercoach);
+            });
+
+            it("Should not throw any exceptions", function()
+            {
+                var loadTheCalendar = function()
+                {
+                    testHelpers.theApp.router.navigate("calendar", true);
+                };
+                expect(loadTheCalendar).not.to.throw();
+            });
+
+            it("Should not request settings data for any athlete id", function()
+            {
+                testHelpers.theApp.router.navigate("calendar", true);
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/[0-9]+/settings")).to.equal(false);
+            });
+
+        });
+        
         describe("For coach with no premium athletes", function()
         {
             beforeEach(function()
