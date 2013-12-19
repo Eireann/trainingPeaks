@@ -303,9 +303,14 @@ function(
                         throw new Error("No athletes loaded for user");
                     }
 
-                    var athletePromise = self.athleteManager.loadAthlete(athletes[0].athleteId);
+                    var promises = self.session.userAccessPromise;
 
-                    $.when(self.session.userAccessPromise, athletePromise).done(function()
+                    if(self.athleteManager.getDefaultAthleteId())
+                    {
+                        promises = $.when(self.session.userAccessPromise, self.athleteManager.loadAthlete(self.athleteManager.getDefaultAthleteId()));
+                    }
+
+                    promises.done(function()
                     {
                         deferred.resolve();
                     });
