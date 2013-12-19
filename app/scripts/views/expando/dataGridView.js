@@ -141,7 +141,7 @@ function(
             this.listenTo(this.stateModel.get("ranges"), "add remove", _.bind(this._invalidate, this));
 
             this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._gotoPrimaryRange, this));
-            this.listenTo(this.stateModel, "goto", _.bind(this._gotoOffset, this));
+            this.listenTo(this.stateModel, "goto", _.bind(this._gotoDefault, this));
         },
 
         onShow: function()
@@ -186,12 +186,22 @@ function(
             this.$el.on("dragend", stopEvent);
         },
 
+
         _gotoPrimaryRange: function()
+        {
+            this._gotoDefault();
+        },
+
+        _gotoDefault: function(offset)
         {
             var primaryRange = this.stateModel.get("primaryRange");
             if(primaryRange)
             {
                 this._gotoOffset(primaryRange.get("begin"));
+            }
+            else
+            {
+                this._gotoOffset(offset);
             }
         },
 
