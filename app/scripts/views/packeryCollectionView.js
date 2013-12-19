@@ -44,7 +44,7 @@ function(
                 },
                 resizable: { enabled: false },
                 droppable: { enabled: false, scope: "packery" },
-                draggable: { scope: "packery" }
+                draggable: { scope: "packery-items" }
             }, _.defaults);
 
             PackeryCollectionView.__super__.initialize.apply(this, arguments);

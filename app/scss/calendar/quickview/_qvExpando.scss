@@ -246,6 +246,7 @@
         overflow:hidden;
         #graphToolbar
         {
+            margin-top: 5px;
             height: 35px;
         }
 
@@ -537,6 +538,13 @@
         }
     }
 
+    .chartTitle {
+        position: relative;
+        z-index: 600;
+        margin: 0;
+        line-height: 22px;
+    }
+
     .expandoPodContent.expandoLapsSplitsPod {
         float: left;
         padding: 0 10px;
@@ -548,11 +556,14 @@
         }
 
         .lapsSplitsTitle {
+            position: relative;
+            z-index: 600;
+
             font-family: $fontFamilyHeavy;
             font-size: $fontSizeSmall;
             color: $TPGrey4;
             text-align: center;
-            margin: 22px 0;
+            line-height: 22px;
         }
 
         input[type=text]
@@ -614,9 +625,8 @@
 
         .chartContainer {
             @include calc("width","100% - 58px");
-            @include calc("height","100% - 85px");
-            position: absolute;
-            top: 21px;
+            @include calc("height","100% - 65px");
+            top: 10px;
             margin: 0 auto;
             position: relative;
 
@@ -641,7 +651,7 @@
     }
     
     .dataGrid {
-        padding-top: 21px;
+        @include calc("height", "100% - 21px");
         * { @include nice-scrollbar; }
 
         // Slick Grid does not get allong with box-sizing border box...
@@ -1316,6 +1326,11 @@
         z-index: 500;
 
         display: none;
+        background: rgba(255,255,255,0.4);
+
+        &:hover {
+            background: rgba(255,255,255,0.5);
+        }
     }
 
     &:hover .expandoPodHeader,

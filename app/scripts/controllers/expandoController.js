@@ -249,7 +249,7 @@ function(
                 },
                 resizable: { enabled: true },
                 droppable: { enabled: true },
-                draggable: { handle: ".expandoPodHeader" }
+                draggable: { handle: ".expandoPodHeader, .chartTitle, .lapsSplitsTitle" }
             });
 
             // save on reorder, or when a pod is added or removed, or when cols or rows attribute changes

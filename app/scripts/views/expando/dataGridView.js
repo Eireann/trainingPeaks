@@ -58,9 +58,7 @@ function(
 
     var DataGridView = TP.ItemView.extend({
 
-        className: "dataGrid",
-
-        render: function() {},
+        template: _.template("<div class='chartTitle'>Data Grid</div><div class='dataGrid'></div>"),
 
         channels: [
             {
@@ -176,14 +174,15 @@ function(
                 syncColumnCellResize: true
             };
 
-            this.grid = new Slick.Grid(this.$el, new DataView(this.sampleData, columns, this.stateModel), columns, options);
+            var $grid = this.$(".dataGrid");
+            this.grid = new Slick.Grid($grid, new DataView(this.sampleData, columns, this.stateModel), columns, options);
 
             // Prevent slick grid from causing packery trouble
             function stopEvent(event) { event.stopPropagation(); event.preventDefault(); }
-            this.$el.on("draginit", stopEvent);
-            this.$el.on("dragstart", stopEvent);
-            this.$el.on("drag", stopEvent);
-            this.$el.on("dragend", stopEvent);
+            $grid.on("draginit", stopEvent);
+            $grid.on("dragstart", stopEvent);
+            $grid.on("drag", stopEvent);
+            $grid.on("dragend", stopEvent);
         },
 
 
