@@ -119,14 +119,14 @@ function(
                 units: "torque"
             },
             {
-                id: "Longitude",
-                name: "Longitude",
-                units: "longitude"
-            },
-            {
                 id: "Latitude",
                 name: "Latitude",
                 units: "latitude"
+            },
+            {
+                id: "Longitude",
+                name: "Longitude",
+                units: "longitude"
             }
         ],
 
@@ -134,14 +134,19 @@ function(
         {
             this.stateModel = options.stateModel;
             this.on("pod:resize", _.bind(this._resize, this));
+
+            this.sampleData = this.model.get("detailData").graphData.sampleData;
+
             this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._invalidate, this));
             this.listenTo(this.stateModel.get("ranges"), "add remove", _.bind(this._invalidate, this));
+
+            this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._gotoPrimaryRange, this));
+            this.listenTo(this.stateModel, "goto", _.bind(this._gotoOffset, this));
         },
 
         onShow: function()
         {
             var self = this;
-            var graphData = this.model.get("detailData").graphData;
             var availableChannels = this.model.get("detailData").get("availableDataChannels");
 
             var columns = _.chain(this.channels)
@@ -168,11 +173,35 @@ function(
             var options =
             {
                 fullWidthRows: true,
-                syncColumnCellResize: true,
-                enableColumnReorder: false
+                syncColumnCellResize: true
             };
 
-            this.grid = new Slick.Grid(this.$el, new DataView(graphData.sampleData, columns, this.stateModel), columns, options);
+            this.grid = new Slick.Grid(this.$el, new DataView(this.sampleData, columns, this.stateModel), columns, options);
+
+            // Prevent slick grid from causing packery trouble
+            function stopEvent(event) { event.stopPropagation(); event.preventDefault(); }
+            this.$el.on("draginit", stopEvent);
+            this.$el.on("dragstart", stopEvent);
+            this.$el.on("drag", stopEvent);
+            this.$el.on("dragend", stopEvent);
+        },
+
+        _gotoPrimaryRange: function()
+        {
+            var primaryRange = this.stateModel.get("primaryRange");
+            if(primaryRange)
+            {
+                this._gotoOffset(primaryRange.get("begin"));
+            }
+        },
+
+        _gotoOffset: function(offset)
+        {
+            if(_.isFinite(offset))
+            {
+                var index = this.sampleData.indexOf("time", offset);
+                this.grid.scrollRowToTop(index);
+            }
         },
 
         _invalidate: function()
