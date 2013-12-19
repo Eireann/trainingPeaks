@@ -2,11 +2,10 @@ define(
 [
     "underscore",
     "utilities/charting/dataParserUtils",
-    "utilities/charting/findOrderedArrayIndexByValue",
     "utilities/charting/flotUtils",
     "utilities/sampleData"
 ],
-function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData)
+function(_, DataParserUtils, FlotUtils, SampleData)
 {
     var defaultChannelOrder =
     [
