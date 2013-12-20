@@ -16,18 +16,15 @@ function(
 {
     describe("User Settings View", function()
     {
-        var selectBoxIt = $.fn.selectBoxIt;
         beforeEach(function()
         {
             var userData = xhrData.users.barbkprem;
             testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
-            sinon.stub($.fn, 'selectBoxIt'); // selectBoxIt freezes...
         });
 
         afterEach(function()
         {
             testHelpers.stopTheApp();
-            $.fn.selectBoxIt = selectBoxIt;
         });
 
         it("Should load successfully as a module", function()
