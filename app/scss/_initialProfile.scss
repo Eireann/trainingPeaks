@@ -10,51 +10,6 @@
 		display: inline;
     }
 
-    // Select Box It
-
-    .selectboxit-container {
-		position: relative;
-		display: inline-block;
-		vertical-align: top;
-
-		span[name="AthleteType"] {
-			width: 183px !important;
-			margin-bottom: 17px;
-			margin-right: 4px;
-	    }
-
-	    span[name="Gender"] {
-			width: 99px !important;
-			margin-bottom: 17px;
-	    }
-
-	    span[name="language"],
-	    span[name="unitPreference"],
-	    span[name="birthdayMonth"],
-	    span[name="birthdayYear"],
-	    span[name="timeZone"],
-	    span[name="country"] {
-			width: 160px !important;
-			// margin-bottom: 14px;
-			//margin-right: 4px;
-	    }
-	    
-	    span[name="timeZone"],
-	    span[name="country"] {
-			// margin-bottom: 17px;
-	    }
-
-	   	span[name="weight"] {
-			width: 94px !important;
-    	}
-
-    	span[name="interestedIn"],
-    	select[name="interestedIn"] {
-			width: 330px !important;
-			// margin-bottom: 17px;
-    	}
-    }
-
     .account3 {
     	label {
 			font-size: 1.3 * $size;
@@ -86,12 +41,12 @@
     }
 
     .darkBlue2 {
-		color: #457296 !important;
+		color: #457296;
 		margin: 5px 0 20px 0;
     }
 
     hr.darkBlue2 {
-		border-top-color: #457296 !important;
+		border-top-color: #457296;
     }
 
     h1 {
@@ -115,7 +70,7 @@
 		border: solid 1px #b5b5b5;
 		text-transform: uppercase;
 		text-align: center;
-		color: #fff !important;
+		color: #fff;
 		font-size: 1.2 * $size;
 		font-family:"HelveticaNeueW01-75Bold";
 		padding: 5px 19px;
@@ -156,7 +111,7 @@
 
     .buttonBlue1 {
 		text-decoration: none;
-		color: #fff !important;
+		color: #fff;
 		border: solid 1px #858585;
 
 		/*  Chrome 1-9 and Safari 4-5.0  */
@@ -392,11 +347,14 @@
 	    	}
 
 	      	select[name="AthleteType"] {
-				width: 183px !important;
+				width: 183px;
+                margin-bottom: 17px;
+                margin-right: 4px;
 	    	}
 
 	      	select[name="Gender"] {
-				width: 101px !important;
+                width: 99px;
+                margin-bottom: 17px;
 	    	}
 
 
@@ -413,8 +371,12 @@
 	    input[name="runPaceSpeed"],
 	    input[name="swimPace"],
 	    input[name="weight"] {
-			width: 160px !important;
+			width: 160px;
 	    }
+
+        select[name="interestedIn"] {
+            width: 330px;
+        }
 
 		.checkBoxArea {
 			input {

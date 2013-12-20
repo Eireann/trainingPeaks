@@ -18,7 +18,7 @@
     padding-top: 2px;
     padding-bottom: 1px;
     background: no-repeat right 0;
-    @extend %spriteSelectBoxItBG;
+    @extend %spriteSelectBoxBG;
 
     // make sure there is always room for the dropdown arrow
     // we need to turn this off for IE
@@ -33,12 +33,12 @@
         color: $TPGrey4;
         border: 1px solid #8d8d8d;
         background: no-repeat right -22px;
-        @extend %spriteSelectBoxItBG;
+        @extend %spriteSelectBoxBG;
     }
 
     &:active {
         background: no-repeat right -44px;
-        @extend %spriteSelectBoxItBG;
+        @extend %spriteSelectBoxBG;
         color:#ffffff;
     }
 
