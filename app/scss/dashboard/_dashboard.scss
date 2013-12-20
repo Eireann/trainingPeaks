@@ -5,35 +5,10 @@
 
 .dashboardDatePicker
 {
-    .selectboxit-container
+    select
     {
-        width: 220px !important;
-
-        .selectboxit
-        {
-            width: 220px !important;
-            height: 22px;
-        }
+        width: 220px;
     }
-
-    .selectboxit-options
-    {
-        height: 300px;
-        overflow-y: scroll;
-        @include nice-scrollbar; 
-    }
-
-    /*
-    .selectboxit-option
-    {
-        font-size: 12px;
-    }
-    */
-    select.dateOptions
-    {
-        width: 220px !important;
-    }
-
 
     .dateRanges
     {
@@ -116,9 +91,9 @@
 {
     width: 303px;
 
-    .dashboardDatePicker .selectboxit-container .selectboxit 
+    .dashboardDatePicker select 
     {
-        width: 278px !important;
+        width: 278px;
     }
 }
 
@@ -826,11 +801,8 @@
         margin-bottom: 10px;
     }
 
-    .selectboxit-options {
+    select {
         width: 301px;
-    }
-    .selectboxit-container .selectboxit {
-        width: 301px !important; /* Width of the dropdown button */
     }
 }
 
@@ -843,11 +815,8 @@
         margin-bottom: 10px;
     }
 
-    .selectboxit-options {
+    select {
         width: 278px;
-    }
-    .selectboxit-container .selectboxit {
-        width: 278px !important; /* Width of the dropdown button */
     }
 }
 
@@ -868,22 +837,16 @@
         }
     }
 
-    .selectboxit-options {
+    select {
         width: 301px;
-    }
-    .selectboxit-container .selectboxit {
-        width: 301px !important; /* Width of the dropdown button */
     }
 }
 
 .metricsChartSettings {
     width:302px;
 
-    .selectboxit-options {
+    select {
         width: 278px;
-    }
-    .selectboxit-container .selectboxit {
-        width: 278px !important; /* Width of the dropdown button */
     }
 
     .metricSelection {
@@ -903,11 +866,8 @@
         margin-bottom: 10px;
     }
 
-    .selectboxit-options {
+    select {
         width: 301px;
-    }
-    .selectboxit-container .selectboxit {
-        width: 301px !important; /* Width of the dropdown button */
     }
 
     .weekDaySelect label {

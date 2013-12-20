@@ -264,13 +264,6 @@
                 margin-left: 2px;
             }
 
-            select
-            {
-                margin-top: -5px;
-                font-family: $fontFamilyRegular;
-                font-size: $fontSizeMedium;
-
-            }
         }
 
         .helpText
@@ -287,27 +280,12 @@
         }
     }
 
-    .selectboxit-options
+    select 
     {
         width: 238px;
         margin-left: 2px;
     }
 
-    .selectboxit-container .selectboxit
-    {
-        width: 238px !important; /* Width of the dropdown button */
-        margin-left: 2px;
-    }
-
-    .selectboxit-option
-    {
-        text-indent: 3px;
-    }
-
-    .selectboxit-option-icon-container
-    {
-        margin-left: 0px;
-    }
 }
 
 

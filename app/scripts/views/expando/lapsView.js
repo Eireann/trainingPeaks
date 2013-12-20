@@ -2,7 +2,6 @@
 [
     "underscore",
     "setImmediate",
-    "jquerySelectBox",
 
     "TP",
     "utilities/units/labels",
@@ -14,7 +13,6 @@
 function(
     _,
     setImmediate,
-    jquerySelectBox,
     TP,
     getUnitsLabel,
     WorkoutStatsForRange,
@@ -110,11 +108,6 @@ function(
 
         onRender: function()
         {
-            setImmediate(function()
-            {
-                this.$("select").selectBoxIt();
-            });
-
             this._enableOrDisable();
         },
 

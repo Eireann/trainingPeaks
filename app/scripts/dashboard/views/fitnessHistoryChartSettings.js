@@ -35,7 +35,6 @@ function(
             this.children.call("render");
 
             FormUtility.bindFormToModel(this.$el, this.model, { filterSelector: "[data-scope='customSettings']" });
-            this.$("select").selectBoxIt();
         }
 
     });

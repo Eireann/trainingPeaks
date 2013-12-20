@@ -225,16 +225,8 @@ input[disabled='disabled']
         font-family: $fontFamilyHeavy;
     }
 
-    .selectboxit-options {
+    select {
         width: 200px;
-    }
-
-    #selectLibrarySelectBoxItOptions {
-
-    }
-
-    .selectboxit-container .selectboxit {
-        width: 200px !important; /* Width of the dropdown button */
     }
 
     input

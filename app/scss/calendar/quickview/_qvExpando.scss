@@ -1025,37 +1025,6 @@
             margin-top: 20px;
             margin-bottom: 15px;
 
-            select
-            {
-                width: 120px;
-                margin-right: 10px;
-
-                font-family: $fontFamilyRegular;
-                font-size: $fontSizeSmall;
-                color: $TPGrey3;
-                border-width: 1px;
-                border-style: solid;
-                border-color: $TPGrey9;
-
-                cursor: pointer;
-
-                background: repeat-x 0 0;
-                @extend %backgroundGradientButtonBG;
-
-                visibility: hidden;
-
-            }
-
-            .selectboxit-option-icon-container
-            {
-                margin-left: 0px;
-            }
-
-            .selectboxit-option
-            {
-                text-indent: 3px;
-            }
-
             @include buttons(0, 108px, $fontSizeSmall);
             button {
                 // height: 20px;
@@ -1067,12 +1036,8 @@
                 float:left;
                 width:180px;
 
-                .selectBox {
-                    width:180px;
-                }
-
-                .selectboxit-container .selectboxit {
-                    width: 180px !important;
+                select {
+                    width: 180px;
                 }
             }
 
@@ -1082,12 +1047,6 @@
                 margin-left:15px;
             }
 
-            /* SelectBoxIt container */
-            .peakTypeSelectboxIt-container {
-                position: relative;
-                display: inline-block;
-                vertical-align: top;
-            }
         }
 
         .rangesList {

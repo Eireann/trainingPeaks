@@ -39,7 +39,14 @@ function ($, _, TP, errorMessageTemplate)
 
         serializeData: function()
         {
-            return { message: this.options.message };
+            var data = { message: this.options.message };
+
+            if(this.model)
+            {
+                _.extend(data, this.model.toJSON());
+            }
+
+            return data;
         },
 
         template:
