@@ -4,7 +4,6 @@
     "underscore",
     "setImmediate",
     "jqueryui/widget",
-    "jquerySelectBox",
     "backbone.marionette",
     "jqueryui/droppable",
     "TP",
@@ -22,7 +21,6 @@ function(
     _,
     setImmediate,
     jqueryUiWidget,
-    jquerySelectBox,
     Marionette,
     droppable,
     TP,
@@ -113,19 +111,8 @@ function(
 
         onRender: function()
         {
-            var self = this;
-
-            setImmediate(function()
-            {
-                self.$("#librarySelect").val(self.model.get("selected"));
-
-                self.$("#librarySelect").selectBoxIt(
-                {
-                    dynamicPositioning: false
-                });
-            });
+            this.$("#librarySelect").val(this.model.get("selected"));
             this.$el.droppable({drop: _.bind(this.onWorkoutDropped, this), hoverClass: 'myHoverClass'});
-
         },
 
         addToLibrary: function()

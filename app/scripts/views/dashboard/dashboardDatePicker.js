@@ -1,7 +1,6 @@
 define(
 [
     "jqueryui/datepicker",
-    "jquerySelectBox",
     "setImmediate",
     "underscore",
     "moment",
@@ -12,7 +11,6 @@ define(
 ],
 function(
     datepicker,
-    jquerySelectBox,
     setImmediate,
     _,
     moment,
@@ -64,20 +62,15 @@ function(
         {
             this.model.off("change", this.render);
 
-            var self = this;
-            setImmediate(function()
+            var zIndex = this.$el.css("z-index");
+            if(this.$el.closest(".dashboardChartSettings").length)
             {
-                var zIndex = self.$el.css("z-index");
-                if(self.$el.closest(".dashboardChartSettings").length)
-                {
-                    zIndex = self.$el.closest(".dashboardChartSettings").css("z-index");
-                }
-                self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
-                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
-                self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
-                self.$("input.startDate").datepicker("option", "maxDate", self.$("input.endDate").val());
-                self.$("input.endDate").datepicker("option", "minDate", self.$("input.startDate").val());
-            });
+                zIndex = this.$el.closest(".dashboardChartSettings").css("z-index");
+            }
+            this.$(".datepicker").css("position", "relative").css("z-index", zIndex);
+            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
+            this.$("input.startDate").datepicker("option", "maxDate", this.$("input.endDate").val());
+            this.$("input.endDate").datepicker("option", "minDate", this.$("input.startDate").val());
         },
 
         serializeData: function()
@@ -156,22 +149,12 @@ function(
 
         enable: function()
         {
-            var self = this;
-            setImmediate(function()
-            {
-                self.$("select.dateOptions").selectBoxIt("enable");
-                self.$("input").attr("disabled", false);
-            });
+            this.$("input").attr("disabled", false);
         },
 
         disable: function()
         {
-            var self = this;
-            setImmediate(function()
-            {
-                self.$("select.dateOptions").selectBoxIt("disable");
-                self.$("input").attr("disabled", true);
-            });
+            this.$("input").attr("disabled", true);
         }
 
     });

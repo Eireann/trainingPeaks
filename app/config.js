@@ -21,7 +21,6 @@ requirejs.config(
         jqueryOutside: "../vendor/js/libs/jquery/jquery.ba-outside-events",
         jqueryTimepicker: "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
         jqueryTextAreaResize: "../vendor/js/libs/jquery/jquery.autosize",
-        jquerySelectBox: "../vendor/js/libs/jquery/jquery.selectBoxIt.TP",
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
         flot: "../vendor/js/libs/flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
@@ -93,9 +92,6 @@ requirejs.config(
 
         ],
         jqueryTextAreaResize: [
-            "jquery"
-        ],
-        jquerySelectBox: [
             "jquery"
         ],
         jqueryTimepicker: [

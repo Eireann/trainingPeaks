@@ -51,17 +51,14 @@ function(
 
         onRender: function()
         {
-            var self = this;
-
-            self.$(".datepicker").css("position", "relative").css("z-index", self.parentModal.$el.css("z-index"));
-            self.$(".datepicker").datepicker(
+            this.$(".datepicker").css("position", "relative").css("z-index", this.parentModal.$el.css("z-index"));
+            this.$(".datepicker").datepicker(
             {
                 dateFormat: TP.utils.datetime.format.getFormatForDatepicker(),
                 firstDay: CalendarUtility.startOfWeek,
-                beforeShowDay: self.checkWhetherDayIsSelectable,
-                defaultDate: self.defaultDate ? moment(self.defaultDate).toDate() : +0
+                beforeShowDay: this.checkWhetherDayIsSelectable,
+                defaultDate: this.defaultDate ? moment(this.defaultDate).toDate() : +0
             });
-            self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
 
             this.updateDateInputOptions();
         },
