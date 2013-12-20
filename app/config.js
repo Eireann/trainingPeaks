@@ -23,7 +23,7 @@ requirejs.config(
         jqueryTextAreaResize: "../vendor/js/libs/jquery/jquery.autosize",
         jquerySelectBox: "../vendor/js/libs/jquery/jquery.selectBoxIt.TP",
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
-        flot: "../bower_components/flot",
+        flot: "../bower_components/Flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
         lodash: "../bower_components/lodash/dist/lodash.compat",
         underscore: "../bower_components/lodash/dist/lodash",
