@@ -75,24 +75,6 @@ module.exports = function(grunt)
             }
         },
 
-        plato:
-        {
-            dummy:
-            {
-                files:
-                {
-                    'plato': ['app/**/!(Handlebars).js']
-                }
-            },
-            build:
-            {
-                files:
-                {
-                    'build/debug/plato': ['app/**/!(Handlebars).js']
-                }
-            }
-        },
-
         webfont:
         {
             icons:
@@ -146,9 +128,9 @@ module.exports = function(grunt)
                     baseUrl: "app",
                     name: "main",
                     include: [
-                        "../vendor/js/libs/almond"
+                        "../bower_components/almond/almond"
                     ].concat(_.map(fs.readdirSync("app/scripts/affiliates"), function(code) { return "affiliates/" + code + "/settings"; })),
-                    stubModuels: ["hbs", "text"],
+                    stubModules: ["text"],
                     wrap: false,
                     optimize: "none",
                     useSourceUrl: true
@@ -263,13 +245,13 @@ module.exports = function(grunt)
             debug:
             {
                 dest: "build/debug/",
-                src: [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                src: [ "favicon.ico", "vendor/leaflet/*.css", "vendor/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
             },
 
             build_common:
             {
                 dest: "build/release/",
-                src: [ "favicon.ico", "vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                src: [ "favicon.ico", "vendor/leaflet/*.css", "vendor/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
             },
 
             build_debug:

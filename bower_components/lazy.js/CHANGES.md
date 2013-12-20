@@ -3,6 +3,24 @@ Lazy.js Changelog
 
 This file includes at least a partial list of the major changes in each version.
 
+v0.3.0
+------
+
+- now these methods on `AsyncSequence` return a promise-like `AsyncHandle`, allowing you to do something w/ the result once iteration is complete (using `onComplete`, which is aliased as `then`):
+  - `reduce`
+  - `min`
+  - `max`
+  - `sum`
+  - `find`
+  - `indexOf`
+  - `contains`
+  - `toArray`
+  - `toObject`
+  - `join`/`toString`
+- added `Lazy(object).watch` to monitor changes to a property as a sequence (see #49)
+- added `Sequence#chunk`, `Sequence#tap`, and `Sequence#ofType`
+- deprecated `Lazy.events` in favor of `NodeSequence#on` (note: I should probably rename `NodeSequence` to `DOMSequence`)
+
 v0.2.1
 ------
 

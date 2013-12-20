@@ -32,6 +32,7 @@ function(
 
         initialize: function(options)
         {
+            this.options = options;
             if(!options || !options.basePath)
             {
                 throw new Error("AthletePickerView requires a base path");

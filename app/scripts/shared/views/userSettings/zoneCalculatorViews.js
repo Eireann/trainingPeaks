@@ -436,6 +436,8 @@ function(
 
         initialize: function(options)
         {
+            // Compatibility for speedZonesCalculatorView
+            this.options = options;
             this._initializeNavigation(options);
             this._initializeFooter();
         },

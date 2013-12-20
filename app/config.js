@@ -22,25 +22,20 @@ requirejs.config(
         jqueryTimepicker: "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
         jqueryTextAreaResize: "../vendor/js/libs/jquery/jquery.autosize",
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
-        flot: "../vendor/js/libs/flot",
+        flot: "../bower_components/Flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
         lodash: "../bower_components/lodash/dist/lodash.compat",
         underscore: "../bower_components/lodash/dist/lodash",
-        backbone: "../vendor/js/libs/backbone",
-        "backbone.marionette": "../vendor/js/libs/backbone.marionette",
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
         "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
         "marionette.faderegion": "scripts/plugins/marionette.faderegion",
-        i18nprecompile: "../vendor/js/libs/i18nprecompile",
-        json2: "../vendor/js/libs/json2",
-        moment: "../vendor/js/libs/moment/moment",
+        moment: "../bower_components/moment/moment",
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
         affiliates: "scripts/affiliates",
-        leaflet: "../vendor/js/libs/leaflet/leaflet-src",
+        leaflet: "../vendor/leaflet/leaflet",
         leafletGoogleTiles: "../vendor/js/libs/leaflet/Google",
-        packery: "../vendor/js/libs/packery/packery.pkgd.tp",
-        gridster: "../vendor/js/libs/jquery.gridster.TP",
+        packery: "../vendor/packery",
         testUtils: "../test/utils",
         chai: "../bower_components/chai/chai",
         mocha: "../bower_components/mocha/mocha",
@@ -58,7 +53,9 @@ requirejs.config(
         "slick.grid": "../bower_components/slickgrid/slick.grid",
         lazy: "../bower_components/lazy.js/lazy",
         tpcore: "../tpcore/tpcore.min",
-        "jquery.event.drag": "../bower_components/slickgrid/lib/jquery.event.drag-2.2"
+        "jquery.event.drag": "../bower_components/slickgrid/lib/jquery.event.drag-2.2",
+        backbone: "../bower_components/backbone/backbone",
+        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette"
     },
     shim: {
         handlebars: {
@@ -137,6 +134,12 @@ requirejs.config(
                 "jquery.event.drag"
             ]
         },
-        "slick.grid": ["slick.core"]
+        "slick.grid": [
+            "slick.core"
+        ],
+        packery: {
+            exports: "Packery",
+            deps: ['jquery']
+        }
     }
 });
