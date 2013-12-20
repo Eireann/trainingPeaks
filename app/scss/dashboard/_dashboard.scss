@@ -945,6 +945,14 @@
         }
     }
 
+    // data grid
+    &.expandoPodType-157 {
+        .podTileIcon {
+            background: $TPGrey2 no-repeat 0 -300px;
+            @extend %troughIconSpriteBG;
+        }
+    }
+
     // laps & splits column
     &.expandoPodType-1081 {
         .podTileIcon {
