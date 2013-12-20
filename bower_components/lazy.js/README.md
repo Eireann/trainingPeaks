@@ -16,10 +16,10 @@ You can see that the performance difference becomes much more significant for me
 Intrigued? Great! Lazy.js has no external dependencies, so you can get started right away with:
 
 ```html
-<script type="text/javascript" src="lazy.min.js"></script>
+<script type="text/javascript" src="lazy.js"></script>
 
-<!-- optional: if you want support for lazy DOM event sequences: -->
-<script type="text/javascript" src="lazy.dom.js"></script>
+<!-- optional: if you want support for DOM event and AJAX-based sequences: -->
+<script type="text/javascript" src="lazy.browser.js"></script>
 ```
 
 Or, if you're using Node.js:
@@ -162,13 +162,13 @@ All right... what else?
 
 With indefinite sequences, we saw that unlike Underscore and Lo-Dash, Lazy.js doesn't actually need an in-memory collection to iterate over. And asynchronous sequences demonstrate that it also doesn't need to do all its iteration at once.
 
-Now here's a really cool combination of these two features: with a small extension to Lazy.js (lazy.dom.js, a separate file to include in browser-based environments), you can apply all of the power of Lazy.js to **handling DOM events**. In other words, Lazy.js lets you think of DOM events as a *sequence*&mdash;just like any other&mdash;and apply the usual `map`, `filter`, etc. functions on that sequence.
+Now here's a really cool combination of these two features: with a small extension to Lazy.js (lazy.browser.js, a separate file to include in browser-based environments), you can apply all of the power of Lazy.js to **handling DOM events**. In other words, Lazy.js lets you think of DOM events as a *sequence*&mdash;just like any other&mdash;and apply the usual `map`, `filter`, etc. functions on that sequence.
 
 Here's an example. Let's say we want to handle all `mousemove` events on a given DOM element, and show their coordinates in one of two other DOM elements depending on location.
 
 ```javascript
 // First we define our "sequence" of events.
-var mouseEvents = Lazy.events(sourceElement, "mousemove");
+var mouseEvents = Lazy(sourceElement).on("mousemove");
 
 // Map the Event objects to their coordinates, relative to the element.
 var coordinates = mouseEvents.map(function(e) {

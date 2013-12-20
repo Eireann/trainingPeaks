@@ -2,7 +2,7 @@
   "name": "Mars",
   "private": true,
   "dependencies": {
-    "mocha": "~1.12.0",
+    "mocha": "~1.16.1",
     "chai": "~1.8.1",
     "sinon": "http://sinonjs.org/releases/sinon-1.7.3.js",
     "sinon-chai": "https://raw.github.com/domenic/sinon-chai/2.4.0/lib/sinon-chai.js",
@@ -10,12 +10,16 @@
     "jquery": "~2.0.3",
     "q": "~0.9.7",
     "backbone.marionette.handlebars": "~0.2.0",
-    "handlebars": "1.0.0",
+    "handlebars": "1.1.2",
     "requirejs-text": "~2.0.10",
     "requirejs-i18n": "~2.0.4",
-    "lodash": "~2.2.1",
+    "lodash": "~2.4.1",
     "backbone": "~1.1.0",
-    "lazy.js": "~0.2.1",
-    "slickgrid": "~2.1.0"
+    "lazy.js": "~0.3.0",
+    "slickgrid": "~2.1.0",
+    "backbone.marionette": "~1.4.1",
+    "moment": "~2.4.0",
+    "flot": "TrainingPeaks/flot#master",
+    "almond": "~0.2.7"
   }
 }

@@ -17,24 +17,13 @@ function(
     )
 {
 
-    // because packery doesn't work with node
-    if(!$.fn.packery)
-    {
-        return TP.CollectionView.extend(
-        {
-            layout: function() { return; },
-            enablePackeryResize: function() { return; },
-            disablePackeryResize: function() { return; }
-        });
-    }
-
     var PackeryCollectionView = TP.CollectionView.extend(
     {
         className: "packeryCollection",
 
         initialize: function(options)
         {
-            _.merge(options,
+            this.options = _.merge(options,
             {
                 packery:
                 {

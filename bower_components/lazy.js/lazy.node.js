@@ -15,7 +15,7 @@ function StreamedSequence(stream) {
   this.stream = stream;
 }
 
-StreamedSequence.prototype = new Lazy.Sequence();
+StreamedSequence.prototype = new Lazy.StreamLikeSequence();
 
 StreamedSequence.prototype.openStream = function(callback) {
   this.stream.resume();
@@ -39,43 +39,11 @@ StreamedSequence.prototype.each = function(fn) {
       }
     };
 
-    stream.setEncoding(encoding);
-    stream.on("data", listener);
-  });
-};
-
-function StreamedLineSequence(parent) {
-  this.parent = parent;
-}
-
-StreamedLineSequence.prototype = new Lazy.Sequence();
-
-/**
- * Handles every line of data in the underlying file.
- *
- * @param {function(string):*} fn The function to call on each line of data as
- *     it's read from the file. Return false from the function to stop reading
- *     the file.
- */
-StreamedLineSequence.prototype.each = function(fn) {
-  var i = 0;
-
-  this.parent.each(function(data) {
-    var finished = false;
-
-    // TODO: I'm pretty sure there's a bug here: if/when the buffer ends in the
-    // middle of a line, this will artificially split that line in two. I'll
-    // come back to this later.
-    Lazy(data).split(os.EOL || "\n").each(function(line) {
-      if (fn(line, i++) === false) {
-        finished = true;
-        return false;
-      }
-    });
-
-    if (finished) {
-      return false;
+    if (stream.setEncoding) {
+      stream.setEncoding(encoding);
     }
+
+    stream.on("data", listener);
   });
 };
 
@@ -86,7 +54,7 @@ StreamedLineSequence.prototype.each = function(fn) {
  *     they are read.
  */
 StreamedSequence.prototype.lines = function() {
-  return new StreamedLineSequence(this);
+  return this.split(os.EOL || "\n");
 };
 
 function FileStreamSequence(path, encoding) {
@@ -140,36 +108,16 @@ Lazy.makeHttpRequest = function(url) {
 };
 
 /*
- * Assuming someone does:
- * var Lazy = require("lazy.js");
- *
- * Then they should be able to write:
- * Lazy(source)
- *
- * Where `source` can be a:
- * - Array
- * - Object
- * - String
- * - Stream
- *
- * This function provides the last one, and then falls back to the original
- * 'Lazy' which provides the first three.
+ * Add support for `Lazy(Stream)`.
  */
-module.exports = function(source) {
+if (!Lazy.extensions) {
+  Lazy.extensions = [];
+}
+
+Lazy.extensions.push(function(source) {
   if (source instanceof Stream) {
     return new StreamedSequence(source);
-  } else {
-    return Lazy(source);
   }
-};
+});
 
-/*
- * Attach all of the same properties that Lazy already had.
- *
- * TODO: Think of a better approach here. This is really hacky.
- */
-for (var prop in Lazy) {
-  if (Lazy.hasOwnProperty(prop)) {
-    module.exports[prop] = Lazy[prop];
-  }
-}
+module.exports = Lazy;

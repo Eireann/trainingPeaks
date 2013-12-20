@@ -57,6 +57,11 @@ function(
             }
         },
 
+        initialize: function(options)
+        {
+            this.options = options;
+        },
+
         serializeData: function()
         {
             var data = this.model.toJSON();
