@@ -115,7 +115,7 @@
 
             select, 
             .selectBox {
-                width: 175px;
+                width: 170px;
                 margin: 0;
                 display: inline-block;
                 vertical-align: top;
@@ -128,19 +128,6 @@
                 margin: 0;
                 vertical-align: top;
             }
-
-            .selectBox {
-                position: relative;
-
-                .selectboxit-container {
-                    width: 175px !important;
-
-                    .selectboxit-options {
-                        width: 170px;
-                    }
-                }
-            }
-
 
         }
 

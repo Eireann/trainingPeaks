@@ -1,0 +1,48 @@
+﻿select 
+{
+
+    // webkit
+    -webkit-appearance: none;
+
+    // mozilla hack, see stackoverflow.com/questions/6787667/what-is-the-correct-moz-appearance-value-to-hide-dropdown-arrow-of-a-select
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+
+    font-size: $fontSizeSmall;
+    font-family: $fontFamilyRegular;
+    color:$TPGrey10;
+
+    min-height: 22px;
+    padding-left: 1px;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    background: no-repeat right 0;
+    @extend %spriteSelectBoxItBG;
+
+    // make sure there is always room for the dropdown arrow
+    // we need to turn this off for IE
+    padding-right: 30px;
+    margin: 0px;
+
+    outline: none;
+    border: 1px solid $TPGrey9;
+    &:focus, &:hover
+    {
+        outline: none;
+        color: $TPGrey4;
+        border: 1px solid #8d8d8d;
+        background: no-repeat right -22px;
+        @extend %spriteSelectBoxItBG;
+    }
+
+    &:active {
+        background: no-repeat right -44px;
+        @extend %spriteSelectBoxItBG;
+        color:#ffffff;
+    }
+
+    cursor: pointer;
+}
+
+  
