@@ -119,6 +119,8 @@ function(
         {
             var equipmentModel = new EquipmentModel();
 
+            equipmentModel.set("athleteId", theMarsApp.user.getCurrentAthleteId());
+            equipmentModel.set("retired", false);
             equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
 
             this.sourceCollection.push(equipmentModel);

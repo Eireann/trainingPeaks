@@ -1,10 +1,12 @@
 define(
 [
     "underscore",
+    "backbone",
     "TP"
 ],
 function (
     _,
+    Backbone,
     TP
 )
 {
@@ -12,6 +14,22 @@ function (
     {
         webAPIModelName: "EquipmentBase",
         idAttribute: "equipmentId",
+
+        CrankLengths: [
+            170,
+            172.5,
+            175,
+            177.5,
+            180,
+            185,
+            190,
+            195,
+            200,
+            205,
+            210,
+            215,
+            220
+        ],
 
         urlRoot: function()
         {
@@ -37,6 +55,23 @@ function (
             wheels: null,
             maxDistance: null,
             type: null        
+        },
+
+        getActualDistance: function()
+        {
+            var ajaxOptions = {
+                url: this.urlRoot() + "/" + this.get("equipmentId") + "/" + this.get("type") + "/actualdistance",
+                type: "GET",
+                contentType: "application/json"
+            };
+            
+            return Backbone.ajax(ajaxOptions).done(_.bind(this._handleActualDistance, this));
+
+        },
+
+        _handleActualDistance: function(data)
+        {
+            this.set("actualDistance", data.actualDistance);
         }
     });
 

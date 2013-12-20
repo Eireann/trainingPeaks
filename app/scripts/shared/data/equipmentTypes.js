@@ -13,13 +13,16 @@ function(
         {
             var type = 0;
 
-            if (label === "bike")
+            switch (label)
             {
-                type = this.Bike;
-            }
-            else if (label === "shoe")
-            {
-                type = this.Shoe;
+                case "bike":
+                    type = this.Bike;
+
+                    break;
+                case "shoe":
+                    type = this.shoe;
+
+                    break;
             }
 
             return type;
@@ -29,13 +32,16 @@ function(
         {
             var label = "?";
 
-            if (type === this.Bike)
+            switch (type)
             {
-                label = "bike";
-            }
-            else if (type === this.Shoe)
-            {
-                label = "shoe";
+                case this.Bike:
+                    label = "bike";
+
+                    break;
+                case this.Shoe:
+                    label = "shoe";
+
+                    break;
             }
 
             return label;

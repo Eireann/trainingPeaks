@@ -566,6 +566,12 @@
                 }
             }
 
+            &.crankLength {
+                select {
+                    width:175px
+                }
+            }
+
             &.deliveryTime1 {
                 .selectBox {
                     width:197px;
@@ -758,6 +764,10 @@
             width:632px;
             height:20px;
             float: left;
+        }
+
+        textarea {
+            height:100px
         }
 
 

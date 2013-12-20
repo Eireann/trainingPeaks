@@ -39,7 +39,24 @@ function(
                 firstDay: CalendarUtility.startOfWeek
             });
 
+            if (!this.model.has("actualDistance"))
+            {
+                this.model.getActualDistance();
+            }
+
             this._applyModelValuesToForm();
+        },
+
+        serializeData: function()
+        {
+            var serializedData = this.model.toJSON();
+
+            if (this.model.get("type") === 1)
+            {
+                serializedData.CrankLengths = this.model.CrankLengths;
+            }
+
+            return serializedData;
         },
 
         applyFormValuesToModel: function()

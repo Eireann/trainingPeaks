@@ -139,15 +139,17 @@ function(
 
         _copyCollection: function(originalCollection)
         {
-            var copiedCollection = new TP.Collection();
+            var copiedCollection = new TP.Collection(null, { model: originalCollection.model });
             copiedCollection.originalCollection = originalCollection;
             this._copiesOfCollections.push(copiedCollection);
 
             originalCollection.each(function(model) {
-                var copiedModel = new TP.Model(TP.utils.deepClone(model.attributes));
+                var copiedModel = new originalCollection.model(TP.utils.deepClone(model.attributes));
 
                 copiedCollection.push(copiedModel);
             });
+
+            this.listenTo(copiedCollection, "add remove", _.bind(this._onChange, this));
 
             return copiedCollection;
         },
