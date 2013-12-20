@@ -54,8 +54,11 @@ requirejs.config(
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
         text: "../bower_components/requirejs-text/text",
         i18n: "../bower_components/requirejs-i18n/i18n",
+        "slick.core": "../bower_components/slickgrid/slick.core",
+        "slick.grid": "../bower_components/slickgrid/slick.grid",
+        lazy: "../bower_components/lazy.js/lazy",
         tpcore: "../tpcore/tpcore.min",
-        lazy: "../bower_components/lazy.js/lazy"
+        "jquery.event.drag": "../bower_components/slickgrid/lib/jquery.event.drag-2.2"
     },
     shim: {
         handlebars: {
@@ -126,6 +129,14 @@ requirejs.config(
                 "backbone",
                 "flot/jquery.flot"
             ]
-        }
+        },
+        "slick.core": {
+            exports: "Slick",
+            deps: [
+                "jquery",
+                "jquery.event.drag"
+            ]
+        },
+        "slick.grid": ["slick.core"]
     }
 });

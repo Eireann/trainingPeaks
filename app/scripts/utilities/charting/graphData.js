@@ -2,11 +2,10 @@ define(
 [
     "underscore",
     "utilities/charting/dataParserUtils",
-    "utilities/charting/findOrderedArrayIndexByValue",
     "utilities/charting/flotUtils",
     "utilities/sampleData"
 ],
-function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData)
+function(_, DataParserUtils, FlotUtils, SampleData)
 {
     var defaultChannelOrder =
     [
@@ -174,6 +173,7 @@ function(_, DataParserUtils, findOrderedArrayIndexByValue, FlotUtils, SampleData
 
         createCorrectedElevationChannel: function (elevations)
         {
+            elevations = _.map(elevations, function(v) { return v / 100; });
             return this.sampleData.getChannel("distance").zip(elevations).toArray();
         },
 

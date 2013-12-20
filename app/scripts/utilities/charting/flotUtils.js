@@ -3,10 +3,9 @@ define(
     "underscore",
     "utilities/charting/chartColors",
     "utilities/charting/dataParserUtils",
-    "utilities/conversion/conversion",
-    "utilities/charting/findOrderedArrayIndexByValue"
+    "utilities/conversion/conversion"
 ],
-function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
+function(_, chartColors, DataParserUtils, conversion)
 {
     var FlotUtils =
     {

@@ -14,7 +14,6 @@ define(
     "utilities/charting/jquery.flot.zoom",
     "utilities/charting/jquery.flot.multiselection",
     "utilities/charting/chartColors",
-    "utilities/charting/findOrderedArrayIndexByValue",
     "views/expando/scatterGraphToolbarView",
     "hbs!templates/views/expando/scatterGraphTemplate"
 ],
@@ -33,7 +32,6 @@ function(
     flotZoom,
     flotMultiSelection,
     chartColors,
-    findOrderedArrayIndexByValue,
     ScatterGraphToolbarView,
     graphTemplate
     )

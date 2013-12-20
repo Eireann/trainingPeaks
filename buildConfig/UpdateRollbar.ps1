@@ -64,7 +64,8 @@ $rollbarDeployEndpoint = "https://api.rollbar.com/api/1/deploy/"
 $version = Get-Content (join-path $artifactPath "mars-build-commit.txt")
 $minifiedBaseUrl = switch ($environment) {
    "dev" { "http://app.dev.trainingpeaks.com/" }
-   "uat" { "http://app.uat.trainingpeaks.com/" }
+   #"uat" { "http://app.uat.trainingpeaks.com/" }
+   "uat" { "http://app.sandbox.trainingpeaks.com/" }
    "production" { "http://app.trainingpeaks.com/" }
     default { throw "Invalid enviroment $environment" }
 }
