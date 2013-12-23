@@ -1,13 +1,13 @@
 define(
 [
-    "underscore",
     "backbone",
+    "underscore",
     "TP",
     "models/equipmentModel"
 ],
 function(
-    _,
     Backbone,
+    _,
     TP,
     EquipmentModel
 )

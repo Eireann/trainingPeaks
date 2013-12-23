@@ -48,6 +48,8 @@ function(
             var self = this;
 
             this.children = new Backbone.ChildViewContainer();
+            this.user = options && options.user ? options.user : theMarsApp.user;
+
             this.on("close", function() { self.children.call("close"); });
 
             this._createCollections(options);
@@ -87,7 +89,9 @@ function(
         _addView: function(selector, view)
         {
             this.children.add(view);
+
             this.$(selector).append(view.el);
+
             view.render();
         },
 
@@ -119,7 +123,7 @@ function(
         {
             var equipmentModel = new EquipmentModel();
 
-            equipmentModel.set("athleteId", theMarsApp.user.getCurrentAthleteId());
+            equipmentModel.set("athleteId", this.user.getCurrentAthleteId());
             equipmentModel.set("retired", false);
             equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
 

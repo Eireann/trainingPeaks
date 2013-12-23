@@ -51,7 +51,7 @@ function(
         {
             var serializedData = this.model.toJSON();
 
-            if (this.model.get("type") === 1)
+            if (this.model && this.model.get("type") === 1)
             {
                 serializedData.CrankLengths = this.model.CrankLengths;
             }

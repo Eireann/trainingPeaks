@@ -20,7 +20,7 @@ function(
 
                     break;
                 case "shoe":
-                    type = this.shoe;
+                    type = this.Shoe;
 
                     break;
             }
@@ -48,5 +48,4 @@ function(
         }
 
     };
-
 });

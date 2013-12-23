@@ -31,12 +31,6 @@ function (
             220
         ],
 
-        urlRoot: function()
-        {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/equipment";
-        },
-
         defaults:
         {
             equipmentId: null,
@@ -55,6 +49,13 @@ function (
             wheels: null,
             maxDistance: null,
             type: null        
+        },
+
+        urlRoot: function()
+        {
+            var athleteId = this.get("athleteId") ? this.get("athleteId") : theMarsApp.user.getCurrentAthleteId();
+
+            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/equipment";
         },
 
         getActualDistance: function()
