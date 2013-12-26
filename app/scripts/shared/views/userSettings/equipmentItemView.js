@@ -16,6 +16,7 @@ function(
     equipmentItemTemplate
 )
 {
+
     return TP.ItemView.extend(
     {
 
@@ -80,4 +81,5 @@ function(
         }
 
     });
+
 });

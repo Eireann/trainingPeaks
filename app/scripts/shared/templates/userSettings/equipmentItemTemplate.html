@@ -10,6 +10,7 @@
     <label class="fieldTitle">{{$ "Model" }}</label>
     <input type="text" name="model" />
 </div>
+{{! type 1 == Bike }}
 {{#ifEquals type 1}}
 <div class="fieldContain wheels">
     <label class="fieldTitle">{{$ "Wheels" }}</label>
@@ -45,6 +46,7 @@
     <label class="fieldTitle">{{$ "Start Distance" }}</label>
     <input type="text" name="startingDistance" data-format="units:distance" />
 </div>
+{{! type 2 == Shoe }}
 {{#ifEquals type 2}}
 <div class="fieldContain maxDistance">
     <label class="fieldTitle">{{$ "Maximum Distance" }}</label>

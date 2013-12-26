@@ -22,6 +22,7 @@ function(
     userSettingsEquipmentTemplate
 )
 {
+
     var DelegatingView = TP.CollectionView.extend(
     {
         applyFormValuesToModel: function()
@@ -36,6 +37,18 @@ function(
         {
             "click .addEquipment": "_addEquipment"
         },
+
+        subNavigation:
+        [
+            {
+                title: "Bikes",
+                target: "bikes"
+            },
+            {
+                title: "Shoes",
+                target: "shoes"
+            }
+        ],
 
         template:
         {
@@ -55,18 +68,6 @@ function(
             this._createCollections(options);
         },
 
-        subNavigation:
-        [
-            {
-                title: "Bikes",
-                target: "bikes"
-            },
-            {
-                title: "Shoes",
-                target: "shoes"
-            }
-        ],
-
         applyFormValuesToModels: function()
         {
             this.children.call("applyFormValuesToModel");
@@ -84,6 +85,17 @@ function(
                 itemView: EquipmentItemView,
                 collection: this.shoeCollection
             }));
+        },
+
+        _addEquipment: function(e)
+        {
+            var equipmentModel = new EquipmentModel();
+
+            equipmentModel.set("athleteId", this.user.getCurrentAthleteId());
+            equipmentModel.set("retired", false);
+            equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
+
+            this.sourceCollection.push(equipmentModel);
         },
 
         _addView: function(selector, view)
@@ -117,20 +129,10 @@ function(
                     }
                 }
             );
-        },
-
-        _addEquipment: function(e)
-        {
-            var equipmentModel = new EquipmentModel();
-
-            equipmentModel.set("athleteId", this.user.getCurrentAthleteId());
-            equipmentModel.set("retired", false);
-            equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
-
-            this.sourceCollection.push(equipmentModel);
         }
 
     });
 
     return UserSettingsEquipmentView;
+
 });

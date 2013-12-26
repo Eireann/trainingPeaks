@@ -12,6 +12,7 @@ function(
     EquipmentModel
 )
 {
+
     return TP.Collection.extend(
     {
         model: EquipmentModel,
@@ -53,4 +54,5 @@ function(
         }
 
     });
+
 });

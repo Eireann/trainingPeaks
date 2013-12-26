@@ -89,6 +89,16 @@ function(
             expect(render).not.to.throw();
         });
 
+        it("Should not throw any exception while closing.", function()
+        {
+            var closeIt = function()
+            {
+                userSettingsEquipmentView.close();
+            };
+
+            expect(closeIt).not.to.throw();
+        });
+
         it("Should populate the view with the collection data.", function()
         {
             userSettingsEquipmentView.render();
