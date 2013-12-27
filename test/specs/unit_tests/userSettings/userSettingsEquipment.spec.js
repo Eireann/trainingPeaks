@@ -99,6 +99,24 @@ function(
             expect(closeIt).not.to.throw();
         });
 
+        it("Should have a Add Bike button.", function()
+        {
+            userSettingsEquipmentView.render();
+
+            var $buttons = userSettingsEquipmentView.$("div[data-target=bikes] .action button.addEquipment");
+
+            expect($buttons.length).to.equal(1);
+        });
+
+        it("Should have a Add Shoe button.", function()
+        {
+            userSettingsEquipmentView.render();
+
+            var $buttons = userSettingsEquipmentView.$("div[data-target=shoes] .action button.addEquipment");
+
+            expect($buttons.length).to.equal(1);
+        });
+
         it("Should populate the view with the collection data.", function()
         {
             userSettingsEquipmentView.render();
