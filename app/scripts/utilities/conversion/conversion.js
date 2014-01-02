@@ -14,6 +14,273 @@
 {
     var conversion = {
 
+        /*
+            options:
+                defaultValue
+                workoutTypeId
+                withLabel
+        */
+        formatUnitsValue: function(units, value, options)
+        {
+
+            var string;
+            switch(units)
+            {
+                case "distance":
+                case "duration":
+                    string = conversion._formatUnitsValueNew(units, value, options);
+                    break;
+
+                default:
+                    string = conversion._formatUnitsValueOld(units, value, options);
+                    break;
+            }
+
+            if(options && options.withLabel)
+            {
+                string += " " + getUnitsLabel(units, conversion._getMySportType(options));
+            }
+
+            return string;
+
+        },
+
+        /*
+            options:
+                defaultValue
+                workoutTypeId
+        */
+        parseUnitsValue: function(units, value, options)
+        {
+            return conversion._parseUnitsValue(units, value, options);
+        },
+
+
+        _parseUnitsValue: function(units, value, options)
+        {
+            switch(units)
+            {
+                case "elevation":
+                    return conversion.parseElevation(value, options);
+
+                case "speed":
+                    return conversion.parseSpeed(value, options);
+
+                case "pace":
+                    return conversion.parsePace(value, options);
+
+                case "duration":
+                    return conversion.parseDuration(value, options);
+
+                case "distance":
+                    return conversion.parseDistance(value, options);
+
+                case "number":
+                    return conversion.parseNumber(value, options);
+
+                case "heartrate":
+                    return conversion.parseHeartRate(value, options);
+
+                case "power":
+                    return conversion.parsePower(value, options);
+
+                case "cm":
+                    return conversion.parseCm(value, options);
+
+                case "kg":
+                    return conversion.parseKg(value, options);
+
+                case "ml":
+                    return conversion.parseMl(value, options);
+
+                case "%":
+                    return conversion.parsePercent(value, options);
+
+                case "units":
+                case "none":
+                case "mmHg":
+                    return conversion.parseInteger(value, options);
+
+                case "hours":
+                case "kcal":
+                case "mg/dL":
+                case "mm":
+                    return conversion.parseNumber(value, options);
+
+                case "date":
+                    return conversion.parseDate(value, options);
+
+                case "tss":
+                    return conversion.parseTSS(value, options);
+
+                case "if":
+                    return conversion.parseIF(value, options);
+
+                case "energy":
+                    return conversion.parseEnergy(value, options);
+
+                default:
+                     throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
+            }
+        }
+
+        _formatUnitsValueNew: function(units, value, options)
+        {
+
+            // if the input is null or empty string, return empty string or other default value
+            if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value))
+            {
+                return conversion.getDefaultValueForFormat(options);
+            }           
+
+            // make sure we're working with a number
+            value = Number(value);
+
+            // convert to view units if necessary
+            var sportType = conversion._getMySportType(options);
+            var convertedValue = conversion._convertToViewUnits(units, value, sportType);
+
+            // limit if necessary
+            var limitedValue = adjustFieldRange(convertedValue, units);
+
+            // round output
+            return conversion._roundOrFormat(units, limitedValue);
+        },
+
+
+        _formatUnitsValueOld: function(units, value, options)
+        {
+
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForFormat(options);
+            }
+
+            switch(units)
+            {
+                case "elevation":
+                    return conversion.formatElevation(value, options);
+
+                case "groundControl":
+                    return conversion.formatGroundControl(value, options);
+
+                case "elevationGain":
+                    return conversion.formatElevationGain(value, options);
+
+                case "elevationLoss":
+                    return conversion.formatElevationLoss(value, options);
+
+                case "speed":
+                    return conversion.formatSpeed(value, options);
+
+                case "pace":
+                    return conversion.formatPace(value, options);
+
+                case "power":
+                case "rightpower":
+                    return conversion.formatPower(value, options);
+
+                case "torque":
+                    return conversion.formatTorque(value, options);
+
+                case "energy":
+                    return conversion.formatEnergy(value, options);
+
+                case "heartrate":
+                    return conversion.formatHeartRate(value, options);
+
+                case "milliseconds":
+                    return conversion.formatDuration(value / (1000 * 3600), options);
+
+                case "number":
+                    return conversion.formatNumber(value, options);
+
+                case "temperature":
+                    return conversion.formatTemperature(value, options);
+
+                case "if":
+                    return conversion.formatIF(value, options);
+
+                case "tss":
+                    return conversion.formatTSS(value, options);
+
+                case "tsb":
+                    return conversion.formatTSB(value, options);
+
+                case "cm":
+                    return conversion.formatCm(value, options);
+
+                case "kg":
+                    return conversion.formatKg(value, options);
+
+                case "ml":
+                    return conversion.formatMl(value, options);
+
+                case "grade":
+                    return conversion.formatGrade(value, options);
+
+                case "efficiencyfactor":
+                    return conversion.formatEfficiencyFactor(value, options);
+
+                case "powerbalance":
+                    return conversion.formatPowerBalance(value, options);
+
+                case "calories":
+                    return conversion.formatCalories(value, options);
+
+                case "mmHg":
+                    if(_.isArray(value))
+                    {
+                        return _.map(value, function(val) { return conversion.formatInteger(val, options); }, this).join("/");
+                    }
+                    else
+                    {
+                        return conversion.formatInteger(value, options);
+                    }
+                    break;
+
+                case "hours":
+                case "kcal":
+                case "mg/dL":
+                case "mm":
+                    return conversion.formatNumber(value, options);
+
+                case "units":
+                    var str = "";
+                    if(_.isArray(value))
+                    {
+                        str += value[1] + " ";
+                        value = value[0];
+                    }
+                    str += conversion.formatInteger(value, options);
+                    return str;
+
+                case "%":
+                    return conversion.formatPercent(value, options);
+
+                case "none":
+                    return conversion.formatInteger(value, options);
+
+                case "cadence":
+                    return conversion.formatCadence(value, options);
+
+                case "date":
+                    return conversion.formatDate(value, options);
+
+                case "time":
+                    return conversion.formatTime(value, options);
+
+                case "latitude":
+                    return conversion.formatLatitude(value, options);
+
+                case "longitude":
+                    return conversion.formatLongitude(value, options);
+
+                default:
+                    throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
+            }
+        },
+
         // works if we have extended these conversion functions onto a view like in quickview, otherwise useless ...
         _getMySportType: function(options)
         {
@@ -46,24 +313,36 @@
             }
         },
 
-        _roundUnits: function(units, value)
+        _roundOrFormat: function(units, value)
         {
             switch(units)
             {
                 case "distance":
                     return threeSigFig(value);
 
+                case "duration":
+                    return datetimeUtils.format.decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
+
+                case "minutes":
+                    return datetimeUtils.format.decimalHoursAsTime(value, false);
+
                 default:
                     return value;
             }
         },
 
-        // deprecate these:
+        // DEPRECATE THESE:
         formatDistance: function(value, options)
         {
             return conversion.formatUnitsValue("distance", value, options);
         },
 
+        formatDuration: function(value, options)
+        {
+            return conversion.formatUnitsValue("duration", value, options); 
+        },
+
+        // REFACTOR THESE:
         parseDistance: function(value, options)
         {
             if(conversion.valueIsEmpty(value))
@@ -74,17 +353,6 @@
             var modelValue = adjustFieldRange(Number(value), "distance");
             modelValue = convertToModelUnits(modelValue, "distance", sportType);
             return modelValue;
-        },
-
-        formatDuration: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }
-            var numValue = Number(value);
-            value = adjustFieldRange(numValue, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
         },
 
         formatMinutes: function(minutes, options)
@@ -727,268 +995,6 @@
         formatTime: function(value, options)
         {
             return formatDateTime.decimalSecondsAsTime(value / 1000);
-        },
-
-        /*
-            options:
-                defaultValue
-                workoutTypeId
-                withLabel
-        */
-        formatUnitsValue: function(units, value, options)
-        {
-
-            var string;
-            switch(units)
-            {
-                case "distance":
-                    string = conversion._formatUnitsValueNew(units, value, options);
-                    break;
-
-                default:
-                    string = conversion._formatUnitsValue(units, value, options);
-                    break;
-            }
-
-            if(options && options.withLabel)
-            {
-                string += " " + getUnitsLabel(units, conversion._getMySportType(options));
-            }
-
-            return string;
-
-        },
-
-
-        _formatUnitsValueNew: function(units, value, options)
-        {
-
-            // if the input is null or empty string, return empty string or other default value
-            if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }           
-
-            // make sure we're working with a number
-            value = Number(value);
-
-            // convert to view units if necessary
-            var sportType = conversion._getMySportType(options);
-            var convertedValue = conversion._convertToViewUnits(units, value, sportType);
-
-            // limit if necessary
-            var limitedValue = adjustFieldRange(convertedValue, units);
-
-            // round output
-            return conversion._roundUnits(units, limitedValue);
-        },
-
-
-        _formatUnitsValue: function(units, value, options)
-        {
-
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }
-
-            switch(units)
-            {
-                case "elevation":
-                    return conversion.formatElevation(value, options);
-
-                case "groundControl":
-                    return conversion.formatGroundControl(value, options);
-
-                case "elevationGain":
-                    return conversion.formatElevationGain(value, options);
-
-                case "elevationLoss":
-                    return conversion.formatElevationLoss(value, options);
-
-                case "speed":
-                    return conversion.formatSpeed(value, options);
-
-                case "pace":
-                    return conversion.formatPace(value, options);
-
-                case "power":
-                case "rightpower":
-                    return conversion.formatPower(value, options);
-
-                case "torque":
-                    return conversion.formatTorque(value, options);
-
-                case "energy":
-                    return conversion.formatEnergy(value, options);
-
-                case "heartrate":
-                    return conversion.formatHeartRate(value, options);
-
-                case "duration":
-                    return conversion.formatDuration(value, options);
-
-                case "milliseconds":
-                    return conversion.formatDuration(value / (1000 * 3600), options);
-
-                case "distance":
-                    return conversion.formatDistance(value, options);
-
-                case "number":
-                    return conversion.formatNumber(value, options);
-
-                case "temperature":
-                    return conversion.formatTemperature(value, options);
-
-                case "if":
-                    return conversion.formatIF(value, options);
-
-                case "tss":
-                    return conversion.formatTSS(value, options);
-
-                case "tsb":
-                    return conversion.formatTSB(value, options);
-
-                case "cm":
-                    return conversion.formatCm(value, options);
-
-                case "kg":
-                    return conversion.formatKg(value, options);
-
-                case "ml":
-                    return conversion.formatMl(value, options);
-
-                case "grade":
-                    return conversion.formatGrade(value, options);
-
-                case "efficiencyfactor":
-                    return conversion.formatEfficiencyFactor(value, options);
-
-                case "powerbalance":
-                    return conversion.formatPowerBalance(value, options);
-
-                case "calories":
-                    return conversion.formatCalories(value, options);
-
-                case "mmHg":
-                    if(_.isArray(value))
-                    {
-                        return _.map(value, function(val) { return conversion.formatInteger(val, options); }, this).join("/");
-                    }
-                    else
-                    {
-                        return conversion.formatInteger(value, options);
-                    }
-                    break;
-
-                case "hours":
-                case "kcal":
-                case "mg/dL":
-                case "mm":
-                    return conversion.formatNumber(value, options);
-
-                case "units":
-                    var str = "";
-                    if(_.isArray(value))
-                    {
-                        str += value[1] + " ";
-                        value = value[0];
-                    }
-                    str += conversion.formatInteger(value, options);
-                    return str;
-
-                case "%":
-                    return conversion.formatPercent(value, options);
-
-                case "none":
-                    return conversion.formatInteger(value, options);
-
-                case "cadence":
-                    return conversion.formatCadence(value, options);
-
-                case "date":
-                    return conversion.formatDate(value, options);
-
-                case "time":
-                    return conversion.formatTime(value, options);
-
-                case "latitude":
-                    return conversion.formatLatitude(value, options);
-
-                case "longitude":
-                    return conversion.formatLongitude(value, options);
-
-                default:
-                    throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
-            }
-        },
-
-        parseUnitsValue: function(units, value, options)
-        {
-            switch(units)
-            {
-                case "elevation":
-                    return conversion.parseElevation(value, options);
-
-                case "speed":
-                    return conversion.parseSpeed(value, options);
-
-                case "pace":
-                    return conversion.parsePace(value, options);
-
-                case "duration":
-                    return conversion.parseDuration(value, options);
-
-                case "distance":
-                    return conversion.parseDistance(value, options);
-
-                case "number":
-                    return conversion.parseNumber(value, options);
-
-                case "heartrate":
-                    return conversion.parseHeartRate(value, options);
-
-                case "power":
-                    return conversion.parsePower(value, options);
-
-                case "cm":
-                    return conversion.parseCm(value, options);
-
-                case "kg":
-                    return conversion.parseKg(value, options);
-
-                case "ml":
-                    return conversion.parseMl(value, options);
-
-                case "%":
-                    return conversion.parsePercent(value, options);
-
-                case "units":
-                case "none":
-                case "mmHg":
-                    return conversion.parseInteger(value, options);
-
-                case "hours":
-                case "kcal":
-                case "mg/dL":
-                case "mm":
-                    return conversion.parseNumber(value, options);
-
-                case "date":
-                    return conversion.parseDate(value, options);
-
-                case "tss":
-                    return conversion.parseTSS(value, options);
-
-                case "if":
-                    return conversion.parseIF(value, options);
-
-                case "energy":
-                    return conversion.parseEnergy(value, options);
-
-                default:
-                     throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
-            }
         }
 
     };
