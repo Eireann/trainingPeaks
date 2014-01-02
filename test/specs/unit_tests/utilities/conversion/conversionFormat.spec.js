@@ -56,6 +56,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "0:00:01",
                     input: (0.99 / 3600)
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -84,11 +92,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: convertToModelUnits(1, "distance")
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: 0
                 },
                 {
+                    input: null,
                     output: "",
+                },
+                {
+                    input: "",
+                    output: ""
+                },
+                {
+                    output: "0",
                     input: -1
                 },
                 {
@@ -130,10 +146,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     output: "",
-                    input: 0
+                    input: null 
                 },
                 {
-                    output: "",
+                    input: "",
+                    output: ""
+                },
+                {
+                    output: "0",
                     input: 0
                 },
                 {
@@ -188,6 +208,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "99:59:59",
                     input: conversion.parsePace("100:00:00")
+                },
+                {
+                    output: "",
+                    input: null
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -214,11 +242,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "12.4",
@@ -252,11 +288,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "1.23",
@@ -286,11 +330,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: "",
+                },
+                {
+                    input: "",
                     output: ""
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "23.45",
@@ -333,6 +385,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: null,
                     output: ""
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -358,10 +414,18 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "-1",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -442,7 +506,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "0.234",
@@ -450,6 +514,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "-1",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -475,11 +547,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: "1"
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: "0"
                 },
                 {
                     input: "-1",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -509,11 +589,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: "1"
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: "0"
                 },
                 {
                     input: "-1",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -539,12 +627,20 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: 1
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: 0
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: -1
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -577,11 +673,11 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "1.234",
@@ -590,6 +686,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: 12.36,
                     output: "12.4"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -642,6 +746,10 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
