@@ -2,7 +2,7 @@
 [
     "underscore",
     "moment",
-    "utilities/datetime/datetime",
+    "utilities/datetime/convert",
     "utilities/datetime/format",
     "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
@@ -10,7 +10,7 @@
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
     "utilities/units/labels"
-], function(_, moment, datetimeUtils, formatDateTime, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
+], function(_, moment, dateTimeConversion, DateTimeFormatter, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
 {
     var conversion = {
 
@@ -122,7 +122,7 @@
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
             }
-        }
+        },
 
         _formatUnitsValueNew: function(units, value, options)
         {
@@ -144,7 +144,7 @@
             var limitedValue = adjustFieldRange(convertedValue, units);
 
             // round output
-            return conversion._roundOrFormat(units, limitedValue);
+            return conversion._roundOrFormat(units, limitedValue, options);
         },
 
 
@@ -313,7 +313,7 @@
             }
         },
 
-        _roundOrFormat: function(units, value)
+        _roundOrFormat: function(units, value, options)
         {
             switch(units)
             {
@@ -321,10 +321,10 @@
                     return threeSigFig(value);
 
                 case "duration":
-                    return datetimeUtils.format.decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
+                    return new DateTimeFormatter().decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
 
                 case "minutes":
-                    return datetimeUtils.format.decimalHoursAsTime(value, false);
+                    return new DateTimeFormatter().decimalHoursAsTime(value, false);
 
                 default:
                     return value;
@@ -363,7 +363,7 @@
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(hours, false);
+            return new DateTimeFormatter().decimalHoursAsTime(hours, false);
         },
 
         formatHours: function(value, options)
@@ -383,7 +383,7 @@
             {
                 return conversion.getDefaultValueForParse(options);
             }
-            var modelValue = datetimeUtils.convert.timeToDecimalHours(value);
+            var modelValue = dateTimeConversion.timeToDecimalHours(value);
             modelValue = adjustFieldRange(modelValue, "duration");
             return modelValue;
         },
@@ -446,7 +446,7 @@
             var sportType = conversion._getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
-            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
+            return new DateTimeFormatter().decimalMinutesAsTime(limitedPaceAsHours * 60, true);
         },
 
         formatLongitude: function(value, options)
@@ -469,9 +469,9 @@
 
             var sportType = conversion._getMySportType(options);
             var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
-            var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
+            var rawTime = dateTimeConversion.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
             var limitedTime = adjustFieldRange(rawTime, "pace");
-            var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
+            var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
             return convertedPace;
         },
@@ -980,7 +980,7 @@
             {
                 return conversion.formatEmptyNumber(value);
             }
-            return datetimeUtils.format(value, options.dateFormat);
+            return new DateTimeFormatter().format(value, options.dateFormat);
         },
 
         parseDate: function(value, options)
@@ -989,12 +989,12 @@
             {
                 return null;
             }
-            return datetimeUtils.parse(value, options.dateFormat);
+            return new DateTimeFormatter().parse(value, options.dateFormat);
         },
 
         formatTime: function(value, options)
         {
-            return formatDateTime.decimalSecondsAsTime(value / 1000);
+            return new DateTimeFormatter().decimalSecondsAsTime(value / 1000);
         }
 
     };

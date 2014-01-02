@@ -525,7 +525,7 @@
         .labelbold {
             margin-left:5px;
             font-family:$fontFamilyHeavy;
-            padding:4px 5px 0 0;
+            padding:5px 5px 0 0;
             display: inline-block;
         }
 
@@ -568,9 +568,10 @@
             input[type="email"], 
             input[type="password"],
             input[type="tel"] {
-                width:340px;
-                height:22px;
+                width: 340px;
+                height: 22px;
                 float: left;
+                padding: 0 0.5em;
             }
 
             .fieldContain {
