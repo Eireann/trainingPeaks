@@ -568,9 +568,10 @@
             input[type="email"], 
             input[type="password"],
             input[type="tel"] {
-                width:340px;
-                height:22px;
+                width: 340px;
+                height: 22px;
                 float: left;
+                padding: 0 0.5em;
             }
 
             .fieldContain {
