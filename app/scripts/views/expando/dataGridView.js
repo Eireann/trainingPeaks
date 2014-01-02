@@ -77,20 +77,20 @@ function(
                 units: "distance"
             },
             {
-                id: "Elevation",
-                name: "Elevation",
-                units: "elevation"
-            },
-            {
-                id: "Cadence",
-                name: "Cadence",
-                units: "cadence"
+                id: "Speed",
+                name: "Speed",
+                units: "speed"
             },
             {
                 id: "HeartRate",
                 name: "Heart Rate",
                 units: "heartrate"
             },
+            {
+                id: "Cadence",
+                name: "Cadence",
+                units: "cadence"
+            }, 
             {
                 id: "Power",
                 name: "Power",
@@ -105,11 +105,11 @@ function(
                 id: "PowerBalance",
                 name: "Power Balance",
                 units: "powerbalance"
-            },
+            }, 
             {
-                id: "Speed",
-                name: "Speed",
-                units: "speed"
+                id: "Elevation",
+                name: "Elevation",
+                units: "elevation"
             },
             {
                 id: "Temperature",
