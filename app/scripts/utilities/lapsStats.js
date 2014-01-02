@@ -399,7 +399,7 @@ function(
     {
         options = options || { format: true };
 
-        var formatOptions = { defaultValue: "--", allowZero: true, workoutTypeId: this.workoutTypeId, seconds: false };
+        var formatOptions = { defaultValue: "--", workoutTypeId: this.workoutTypeId, seconds: false };
         if(_.isObject(options.format))
         {
             _.extend(formatOptions, options.format);

@@ -36,6 +36,7 @@
 
         formatDistance: function(value, options)
         {
+            // handle empty or zero input values
             var parameters = {
                 value: Number(value),
                 fieldType: "distance",
@@ -46,6 +47,8 @@
             var convertedDistance = Number(convertToViewUnits(parameters));
             var limitedDistance = adjustFieldRange(convertedDistance, "distance");
             var formattedDistance = threeSigFig(limitedDistance);
+
+            // handle empty or zero output values
             return conversion.formatEmptyNumber(formattedDistance, options);
         },
 
@@ -143,7 +146,6 @@
         
         formatPowerBalance: function(value, options)
         {
-            options = _.extend({ allowZero: true }, options);
             if(_.isFinite(value))
             {
                 value = value * 100;
@@ -226,7 +228,6 @@
             var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
             var limitedValue = adjustFieldRange(convertedValue, "elevation");
 
-            options = _.defaults({ allowZero: true}, options);
             return conversion.formatInteger(limitedValue, options);
         },
 
@@ -329,7 +330,6 @@
             var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
 
-            options = _.defaults({ allowZero: true}, options);
             return conversion.formatInteger(adjustedValue, options);
         },
 
@@ -553,7 +553,7 @@
                 return defaultValue;
             }
 
-            if (conversion.valueIsZero(value) && (!options || !options.allowZero))
+            if (conversion.valueIsZero(value))
             {
                 return defaultValue;
             }
