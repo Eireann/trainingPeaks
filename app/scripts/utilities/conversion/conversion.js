@@ -28,6 +28,12 @@
             {
                 case "distance":
                 case "duration":
+                case "minutes":
+                case "seconds":
+                case "milliseconds":
+                case "hours":
+                case "timeofday":
+                case "power":
                     string = conversion._formatUnitsValueNew(units, value, options);
                     break;
 
@@ -133,20 +139,31 @@
                 return conversion.getDefaultValueForFormat(options);
             }           
 
-            // make sure we're working with a number
-            value = Number(value);
-
             // convert to view units if necessary
             var sportType = conversion._getMySportType(options);
             var convertedValue = conversion._convertToViewUnits(units, value, sportType);
 
             // limit if necessary
-            var limitedValue = adjustFieldRange(convertedValue, units);
+            var limitedValue = conversion._adjustFieldRange(units, convertedValue);
 
             // round output
             return conversion._roundOrFormat(units, limitedValue, options);
         },
 
+        _adjustFieldRange: function(units, value)
+        {
+            switch(units)
+            {
+                case "milliseconds":
+                case "seconds":
+                case "minutes":
+                case "hours":
+                    return adjustFieldRange(value, "duration");
+
+                default:
+                    return adjustFieldRange(value, units);
+            }
+        },
 
         _formatUnitsValueOld: function(units, value, options)
         {
@@ -176,7 +193,6 @@
                 case "pace":
                     return conversion.formatPace(value, options);
 
-                case "power":
                 case "rightpower":
                     return conversion.formatPower(value, options);
 
@@ -239,7 +255,6 @@
                     }
                     break;
 
-                case "hours":
                 case "kcal":
                 case "mg/dL":
                 case "mm":
@@ -266,9 +281,6 @@
 
                 case "date":
                     return conversion.formatDate(value, options);
-
-                case "time":
-                    return conversion.formatTime(value, options);
 
                 case "latitude":
                     return conversion.formatLatitude(value, options);
@@ -306,10 +318,16 @@
             switch(units)
             {
                 case "distance":
-                    return convertToViewUnits(value, units, undefined, sportType);
+                    return convertToViewUnits(Number(value), units, undefined, sportType);
+
+                case "milliseconds":
+                    return (Number(value) / 1000) / 3600;
+
+                case "seconds":
+                    return Number(value) / 3600;
 
                 default:
-                    return value;
+                    return Number(value);
             }
         },
 
@@ -323,8 +341,22 @@
                 case "duration":
                     return new DateTimeFormatter().decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
 
+                case "hours":
+                    return Math.round(value);
+
+
                 case "minutes":
                     return new DateTimeFormatter().decimalHoursAsTime(value, false);
+
+                case "seconds":
+                case "milliseconds":
+                    return new DateTimeFormatter().decimalHoursAsTime(value, true);
+
+                case "timeofday":
+                    return moment(value).format("hh:mm A");
+
+                case "power":
+                    return Number(value).toFixed(0);
 
                 default:
                     return value;
@@ -342,6 +374,36 @@
             return conversion.formatUnitsValue("duration", value, options); 
         },
 
+        formatMinutes: function(value, options)
+        {
+            return conversion.formatUnitsValue("minutes", value, options);
+        },
+
+        formatHours: function(value, options)
+        {
+            return conversion.formatUnitsValue("hours", value, options);
+        },
+
+        formatDurationFromSeconds: function(seconds, options)
+        {
+            return conversion.formatUnitsValue("seconds", seconds, options);
+        },
+
+        formatTimeOfDay: function(value, options)
+        {
+            return conversion.formatUnitsValue("timeofday", value, options);
+        },
+
+        formatTime: function(value, options)
+        {
+            return conversion.formatUnitsValue("milliseconds", value, options);
+        },
+
+        formatPower: function(value, options)
+        {
+            return conversion.formatUnitsValue("power", value, options);
+        },
+
         // REFACTOR THESE:
         parseDistance: function(value, options)
         {
@@ -353,29 +415,7 @@
             var modelValue = adjustFieldRange(Number(value), "distance");
             modelValue = convertToModelUnits(modelValue, "distance", sportType);
             return modelValue;
-        },
-
-        formatMinutes: function(minutes, options)
-        {
-            if(conversion.valueIsEmpty(minutes))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }
-            var hours = Number(minutes) / 60;
-            hours = adjustFieldRange(hours, "duration");
-            return new DateTimeFormatter().decimalHoursAsTime(hours, false);
-        },
-
-        formatHours: function(value, options)
-        {
-            if (value <= 0 || value === "0")
-            {
-                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
-            }
-            var numValue = Number(value);
-            var adjustedValue = adjustFieldRange(numValue, "duration");
-            return Math.round(adjustedValue);
-        },
+        }, 
 
         parseDuration: function(value, options)
         {
@@ -388,23 +428,11 @@
             return modelValue;
         },
 
-        formatDurationFromSeconds: function(seconds, options)
-        {
-            var hours = seconds ? Number(seconds) / 3600 : 0;
-            return conversion.formatDuration(hours, options);
-        },
-
         parseDurationAsSeconds: function(value, options)
         {
             var hours = conversion.parseDuration(value, options);
             var seconds = hours * 3600;
             return seconds;
-        },
-
-        formatTimeOfDay: function(value, options)
-        {
-            var timeOfDay = moment(value);
-            return timeOfDay.format("hh:mm A");
         },
 
         parsePower: function(value, options)
@@ -416,12 +444,6 @@
             var modelValue = conversion.parseInteger(value, options);
             modelValue = adjustFieldRange(modelValue, "power");
             return modelValue;
-        },
-
-        formatPower: function(value, options)
-        {
-            var adjustedPower = adjustFieldRange(Number(value), "power");
-            return conversion.formatInteger(adjustedPower, options);
         },
         
         formatPowerBalance: function(value, options)
@@ -990,11 +1012,6 @@
                 return null;
             }
             return new DateTimeFormatter().parse(value, options.dateFormat);
-        },
-
-        formatTime: function(value, options)
-        {
-            return new DateTimeFormatter().decimalSecondsAsTime(value / 1000);
         }
 
     };
