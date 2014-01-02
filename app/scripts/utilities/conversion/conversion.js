@@ -15,7 +15,7 @@
     var conversion = {
 
         // works if we have extended these conversion functions onto a view like in quickview, otherwise useless ...
-        getMySportType: function(options)
+        _getMySportType: function(options)
         {
             var sportType = null;
             if (options && options.hasOwnProperty("workoutTypeValueId"))
@@ -34,22 +34,34 @@
             return sportType;
         },
 
+        _convertToViewUnits: function(units, value, sportType)
+        {
+            switch(units)
+            {
+                case "distance":
+                    return convertToViewUnits(value, units, undefined, sportType);
+
+                default:
+                    return value;
+            }
+        },
+
+        _roundUnits: function(units, value)
+        {
+            switch(units)
+            {
+                case "distance":
+                    return threeSigFig(value);
+
+                default:
+                    return value;
+            }
+        },
+
+        // deprecate these:
         formatDistance: function(value, options)
         {
-            // handle empty or zero input values
-            var parameters = {
-                value: Number(value),
-                fieldType: "distance",
-                defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
-                sportType: conversion.getMySportType(options)
-            };
-
-            var convertedDistance = Number(convertToViewUnits(parameters));
-            var limitedDistance = adjustFieldRange(convertedDistance, "distance");
-            var formattedDistance = threeSigFig(limitedDistance);
-
-            // handle empty or zero output values
-            return conversion.formatEmptyNumber(formattedDistance, options);
+            return conversion.formatUnitsValue("distance", value, options);
         },
 
         parseDistance: function(value, options)
@@ -58,7 +70,7 @@
             {
                 return conversion.getDefaultValueForParse(options);
             }
-            var sportType = conversion.getMySportType(options);
+            var sportType = conversion._getMySportType(options);
             var modelValue = adjustFieldRange(Number(value), "distance");
             modelValue = convertToModelUnits(modelValue, "distance", sportType);
             return modelValue;
@@ -163,7 +175,7 @@
                 return conversion.formatEmptyNumber(value, options);
 
             value = Number(value);
-            var sportType = conversion.getMySportType(options);
+            var sportType = conversion._getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
             return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
@@ -187,7 +199,7 @@
                 return conversion.getDefaultValueForParse(options);
             }
 
-            var sportType = conversion.getMySportType(options);
+            var sportType = conversion._getMySportType(options);
             var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
             var limitedTime = adjustFieldRange(rawTime, "pace");
@@ -198,7 +210,7 @@
 
         formatSpeed: function(value, options)
         {
-            var sportType = conversion.getMySportType(options);
+            var sportType = conversion._getMySportType(options);
             var convertedSpeed = convertToViewUnits(Number(value), "speed", undefined, sportType);
             var limitedSpeed = adjustFieldRange(convertedSpeed, "speed");
             var formattedSpeed = threeSigFig(limitedSpeed);
@@ -211,7 +223,7 @@
             {
                 return conversion.getDefaultValueForParse(options);
             }
-            var sportType = conversion.getMySportType(options);
+            var sportType = conversion._getMySportType(options);
             var modelValue = adjustFieldRange(Number(value), "speed");
             modelValue = convertToModelUnits(modelValue, "speed", sportType);
             return modelValue;
@@ -415,7 +427,7 @@
                 value: Number(value),
                 fieldType: "torque",
                 defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
-                sportType: conversion.getMySportType()
+                sportType: conversion._getMySportType()
             };
 
             var convertedValue = convertToViewUnits(parameters);
@@ -477,7 +489,7 @@
 
         formatEfficiencyFactor: function(value, options)
         {
-            var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, conversion.getMySportType(options));
+            var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, conversion._getMySportType(options));
             return convertedValue.toFixed(2);
         },
 
@@ -725,16 +737,52 @@
         */
         formatUnitsValue: function(units, value, options)
         {
-            var string = conversion._formatUnitsValue(units, value, options);
+
+            var string;
+            switch(units)
+            {
+                case "distance":
+                    string = conversion._formatUnitsValueNew(units, value, options);
+                    break;
+
+                default:
+                    string = conversion._formatUnitsValue(units, value, options);
+                    break;
+            }
 
             if(options && options.withLabel)
             {
-                string += " " + getUnitsLabel(units, conversion.getMySportType(options));
+                string += " " + getUnitsLabel(units, conversion._getMySportType(options));
             }
 
             return string;
 
         },
+
+
+        _formatUnitsValueNew: function(units, value, options)
+        {
+
+            // if the input is null or empty string, return empty string or other default value
+            if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value))
+            {
+                return conversion.getDefaultValueForFormat(options);
+            }           
+
+            // make sure we're working with a number
+            value = Number(value);
+
+            // convert to view units if necessary
+            var sportType = conversion._getMySportType(options);
+            var convertedValue = conversion._convertToViewUnits(units, value, sportType);
+
+            // limit if necessary
+            var limitedValue = adjustFieldRange(convertedValue, units);
+
+            // round output
+            return conversion._roundUnits(units, limitedValue);
+        },
+
 
         _formatUnitsValue: function(units, value, options)
         {

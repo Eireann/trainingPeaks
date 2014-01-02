@@ -92,7 +92,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: convertToModelUnits(1, "distance")
                 },
                 {
-                    output: "0",
+                    output: "0.00",
                     input: 0
                 },
                 {
@@ -104,7 +104,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: ""
                 },
                 {
-                    output: "0",
+                    output: "0.00",
                     input: -1
                 },
                 {
