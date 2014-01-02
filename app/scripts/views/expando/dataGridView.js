@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "TP",
@@ -7,6 +8,7 @@ define(
     "slick.grid"
 ],
 function(
+    $,
     _,
     setImmediate,
     TP,
@@ -162,6 +164,12 @@ function(
             {
                 if(column.units)
                 {
+                    if(column.units === "speed" && _.contains([1,3,13,12], workoutType))
+                    {
+                        column.units = "pace";
+                        column.name = "Pace";
+                    }
+
                     var label = TP.utils.units.getUnitsLabel(column.units, workoutType);
                     column.name += label ? " (" + label + ")" : "";
                     column.formatter = function(row, cell, value)
@@ -174,7 +182,8 @@ function(
             var options =
             {
                 fullWidthRows: true,
-                syncColumnCellResize: true
+                syncColumnCellResize: true,
+                explicitInitialization: true
             };
 
             var $grid = this.$(".dataGrid");
@@ -182,6 +191,12 @@ function(
             setImmediate(function()
             {
                 self.grid = new Slick.Grid($grid, new DataView(self.sampleData, columns, self.stateModel), columns, options);
+                self.grid.onHeaderCellRendered.subscribe(function(e, args)
+                {
+                    var $header = $(args.node).find(".slick-column-name");
+                    $header.attr("title", $header.text());
+                });
+                self.grid.init();
             });
 
             // Prevent slick grid from causing packery trouble
