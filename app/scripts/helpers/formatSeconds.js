@@ -5,6 +5,6 @@ define(
 ],
 function(Handlebars, TP)
 {
-    Handlebars.registerHelper("formatSeconds", TP.utils.datetime.format.decimalSecondsAsTime);
-    return TP.utils.datetime.format.decimalSecondsAsTime;
+    Handlebars.registerHelper("formatSeconds", TP.utils.datetime.formatter.decimalSecondsAsTime);
+    return TP.utils.datetime.formatter.decimalSecondsAsTime;
 });

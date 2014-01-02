@@ -39,33 +39,33 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             it("Should format decimal seconds output if there is a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).to.eql("59:59.99");
+                expect(dateTimeUtils.formatter.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).to.eql("59:59.99");
             });
 
             it("Should not format decimal seconds output if there is not a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).to.eql("59:59");
+                expect(dateTimeUtils.formatter.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).to.eql("59:59");
             });
 
             it("Should not format decimal seconds output if there is a decimal value but hours >= 1", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime(1 + (59 / 60) + (59 / 3600), true, undefined, true)).to.eql("1:59:59");
+                expect(dateTimeUtils.formatter.decimalHoursAsTime(1 + (59 / 60) + (59 / 3600), true, undefined, true)).to.eql("1:59:59");
             });
 
             it("Should not format decimal seconds output if the showDecimalSeconds parameter is false", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime(98 + (59 / 60) + (59.99 / 3600), true, "00:00:00", false)).to.eql("99:00:00");
-                expect(dateTimeUtils.format.decimalHoursAsTime(98 + (59 / 60) + (59.33 / 3600), true, "00:00:00", false)).to.eql("98:59:59");
+                expect(dateTimeUtils.formatter.decimalHoursAsTime(98 + (59 / 60) + (59.99 / 3600), true, "00:00:00", false)).to.eql("99:00:00");
+                expect(dateTimeUtils.formatter.decimalHoursAsTime(98 + (59 / 60) + (59.33 / 3600), true, "00:00:00", false)).to.eql("98:59:59");
             });
 
             it("Should round to the hundredth second, not truncate", function()
             {
                 var decimalHours = dateTimeUtils.convert.millisecondsToDecimalHours(179510);
-                var timeHours = dateTimeUtils.format.decimalHoursAsTime(decimalHours);
+                var timeHours = dateTimeUtils.formatter.decimalHoursAsTime(decimalHours);
                 expect(timeHours).to.eql("0:03:00");
 
                 decimalHours = dateTimeUtils.convert.millisecondsToDecimalHours(179490);
-                timeHours = dateTimeUtils.format.decimalHoursAsTime(decimalHours);
+                timeHours = dateTimeUtils.formatter.decimalHoursAsTime(decimalHours);
                 expect(timeHours).to.eql("0:02:59");
             });
 

@@ -28,7 +28,7 @@ function(
         var conversionFactor = modelToViewConversionFactors("pace", unitSystem, sportTypeId);
         var paceInMinutes = 1 / (speed * conversionFactor);
 
-        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(paceInMinutes, true) : paceInMinutes;
+        return doFormat ? dateTimeUtils.formatter.decimalMinutesAsTime(paceInMinutes, true) : paceInMinutes;
     };
 
     var isNumeric = function(value)

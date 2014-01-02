@@ -54,7 +54,7 @@ function(
             this.$(".datepicker").css("position", "relative").css("z-index", this.parentModal.$el.css("z-index"));
             this.$(".datepicker").datepicker(
             {
-                dateFormat: TP.utils.datetime.format.getFormatForDatepicker(),
+                dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(),
                 firstDay: CalendarUtility.startOfWeek,
                 beforeShowDay: this.checkWhetherDayIsSelectable,
                 defaultDate: this.defaultDate ? moment(this.defaultDate).toDate() : +0
