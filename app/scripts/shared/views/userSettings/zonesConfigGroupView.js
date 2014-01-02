@@ -60,7 +60,7 @@ function(
             this.listenTo(this.collection, "add remove reset change", function()
             {
                 self._refreshView();
-                self.model.set("zones", this.collection.toJSON());
+                self._setZonesOnModel();
             });
 
             FormUtility.bindFormToModel(this.$el, this.model, {
@@ -119,7 +119,7 @@ function(
 
         _makeSortable: function()
         {
-            this.$(".zones").sortable({
+            this.$(".zones.zonesConfigGroupView").sortable({
                 axis: "y",
                 stop: _.bind(this._updateSort, this),
                 scope: "zonesSettingsList"
@@ -128,9 +128,10 @@ function(
 
         _updateSort: function()
         {
-            var cids = this.$(".zones").sortable("toArray", { attribute: "data-mcid" });
+            var cids = this.$(".zones.zonesConfigGroupView").sortable("toArray", { attribute: "data-mcid" });
             var models = _.map(cids, function(cid) { return this.collection.get(cid); }, this);
             this.collection.reset(models, { silent: true });
+            this._setZonesOnModel();
         },
 
         _addZone: function()
@@ -152,6 +153,11 @@ function(
         {
             view.setFormatter(_.bind(this.formatValue, this));
             view.setParser(_.bind(this.parseValue, this));
+        },
+
+        _setZonesOnModel: function()
+        {
+            this.model.set("zones", this.collection.toJSON());
         }
 
     });

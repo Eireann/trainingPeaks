@@ -462,6 +462,44 @@ function(
                 });
             });
 
+            describe("IsOwnerOrCoach", function()
+            {
+                var authorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    authorizedFeatureAuthorizer = BuildFeatureAuthorizer(new UserAccessRightsModel());  
+                });
+
+                it("Should return true for current user", function()
+                {
+                    var attributes = { athleteId: 1 };
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.IsOwnerOrCoach, attributes)).to.equal(true);
+                });
+
+                it("Should return false for other athletes", function()
+                {
+                    var attributes = { athleteId: 2 };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", true);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.IsOwnerOrCoach, attributes)).to.equal(false);
+                });
+
+                it("Should return false for coach if athlete is not in their athletes list", function()
+                {
+                    var attributes = { athleteId: 7 };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.IsOwnerOrCoach, attributes)).to.equal(false);
+                });
+
+                it("Should return true for coach if athlete is in their athletes list", function()
+                {
+                    var attributes = { athleteId: 2 };
+                    authorizedFeatureAuthorizer.user.getAccountSettings().set("isAthlete", false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.IsOwnerOrCoach, attributes)).to.equal(true);
+                });
+
+            });
+
             describe("ViewPlanStore", function()
             {
 

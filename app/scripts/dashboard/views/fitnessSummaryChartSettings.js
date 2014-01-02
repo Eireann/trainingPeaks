@@ -1,7 +1,6 @@
 define(
 [
     "setImmediate",
-    "jquerySelectBox",
     "underscore",
     "TP",
     "dashboard/views/chartSettingsView",
@@ -10,7 +9,6 @@ define(
 ],
 function(
     setImmediate,    
-    jquerySelectBox,
     _,
     TP,
     ChartSettingsView,
@@ -40,22 +38,12 @@ function(
 
         onRender: function()
         {
-            this.selectBoxIt();
             this._addView(".customSettings", fitnessSummaryChartSettingsTemplate(this.serializeData()));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
 
             this.children.call("render");
-        },
-
-        selectBoxIt: function()
-        {
-            var self = this;
-            setImmediate(function()
-            {
-                self.$("select.summaryType").selectBoxIt();
-            });
         },
 
         serializeData: function()

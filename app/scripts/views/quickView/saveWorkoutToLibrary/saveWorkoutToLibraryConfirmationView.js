@@ -60,10 +60,6 @@ function(
 
                 self.$("#selectLibrary").val(self.selectedLibraryId);
 
-                self.$("#selectLibrary").selectBoxIt(
-                {
-                    dynamicPositioning: false
-                });
             });
         },
 

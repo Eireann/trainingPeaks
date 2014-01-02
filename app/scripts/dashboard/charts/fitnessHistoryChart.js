@@ -62,7 +62,11 @@ function(
         _renderGrid: function(data)
         {
             this.$(".podTitle").text(this.model.get("title") || this.model.defaultTitle());
-            this.$(".podContent").html(fitnessHistoryContentTemplate(data));
+
+            // build the table, then remove any cells/headers that are specific to a given peak type unless it is our current peak type
+            var $table = $(fitnessHistoryContentTemplate(data));
+            $table.find("[data-peaktype]:not([data-peaktype=" + this.model.get("peakType") + "])").remove();
+            this.$(".podContent").html($table);
         }
     });
 
@@ -152,6 +156,7 @@ function(
                     duration: format("duration", entry.totalDuration),
                     distance: format("distance", entry.totalDistance),
                     tss: format("tss", entry.totalTSS),
+                    kj: format("energy", entry.totalKJ),
                     peak01: format(peakUnits, entry.peak01),
                     peak02: format(peakUnits, entry.peak02),
                     peak03: format(peakUnits, entry.peak03),

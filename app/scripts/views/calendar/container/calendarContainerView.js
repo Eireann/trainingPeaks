@@ -195,7 +195,7 @@ function(
 
         onDragItem: function(e, ui)
         {
-            if(!ui || !this.ui || !this.ui.weeksContainer)
+            if(!ui || !ui.helper || !this.ui || !this.ui.weeksContainer)
                 return;
 
             var scope = $(e.target).draggable("option", "scope");

@@ -283,7 +283,7 @@ function(
             // add current athlete manager
             this.addInitializer(function()
             {
-                this.athleteManager = new AthleteManager(this, this.user);
+                this.athleteManager = new AthleteManager(this, this.user, { featureAuthorizer: this.featureAuthorizer });
             });
 
             this.addInitializer(function()
@@ -297,15 +297,14 @@ function(
                 {
                     RollbarManager.setUser(self.user);
 
-                    var athletes = self.user.get("athletes");
-                    if(!athletes || !athletes.length)
+                    var promises = self.session.userAccessPromise;
+
+                    if(self.athleteManager.getDefaultAthleteId())
                     {
-                        throw new Error("No athletes loaded for user");
+                        promises = $.when(self.session.userAccessPromise, self.athleteManager.loadAthlete(self.athleteManager.getDefaultAthleteId()));
                     }
 
-                    var athletePromise = self.athleteManager.loadAthlete(athletes[0].athleteId);
-
-                    $.when(self.session.userAccessPromise, athletePromise).done(function()
+                    promises.done(function()
                     {
                         deferred.resolve();
                     });

@@ -217,7 +217,7 @@ function (
             {
                 return null;
             }
-            var latLngs = this._getGraphData().getLatLonBetweenMsOffsets(this._getGraphData().dataByAxisAndChannel['time'], workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var latLngs = this._getGraphData().getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
             var mapLayer = MapUtils.createHighlight(latLngs, options);
 
             var selection = {
@@ -260,7 +260,7 @@ function (
             }
             else
             {
-                var latLong = this._getGraphData().getLatLongFromOffset(offset);
+                var latLong = this._getGraphData().getLatLonFromMsOffset(offset);
 
                 if (latLong !== null)
                 {

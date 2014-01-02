@@ -4,16 +4,18 @@
     "jquery",
     "TP",
     "views/elevationCorrection/elevationCorrectionView",
-    "utilities/charting/graphData"
+    "utilities/charting/graphData",
+    "models/workoutDetailData",
+    "testUtils/AppTestData/GET_DetailData_139251189"
 ],
-    function (_, $, TP, ElevationCorrectionView, GraphData)
+    function (_, $, TP, ElevationCorrectionView, GraphData, WorkoutDetailData, DetailData)
     {
         function buildWorkoutModel()
         {
             return new TP.Model(
                 {
                     details: new TP.Model(),
-                    detailData: new TP.Model({ flatSamples: { hasLatLngData: true, channelMask: ["Elevation"]} })
+                    detailData: new WorkoutDetailData(DetailData)
                 }
             );
         }

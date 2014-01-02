@@ -87,6 +87,8 @@ function(
         {
             var self = this;
 
+            this.$(".expandoPodTitle").text(this.childView.podTitle);
+
             if(!this.childView.settingsView)
             {
                 this.$(".settings").remove();
@@ -101,6 +103,16 @@ function(
             }
 
             this.childView.render();
+
+            // We need titles to be in the expando pod header Rather than
+            // change the templates for all charts, we are checking if the
+            // template created a title element and copy the text from it into
+            // our header title. This is terrible... but for now it works.
+            var chartTitle = this.childView.$(".chartTitle").text();
+            if(chartTitle)
+            {
+                this.$(".expandoPodTitle").text(chartTitle);
+            }
         },
 
         onShow: function()

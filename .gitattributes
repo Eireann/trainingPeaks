@@ -21,3 +21,4 @@ web.config text eol=crlf
 # Don't worry about line endings in bower_components
 bower_components/** binary
 node_modules/** binary
+vendor/** binary

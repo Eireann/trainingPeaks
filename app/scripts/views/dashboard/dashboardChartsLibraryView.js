@@ -48,8 +48,9 @@ function(
             "unselect": "unSelect"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.options = options;
             this.on("library:unselect", this.unSelect, this);
             this.sourceCollection = this.collection;
         },

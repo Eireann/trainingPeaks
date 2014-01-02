@@ -3,9 +3,16 @@ define(
     "underscore",
     "TP",
     "utilities/rollbarManager",
-    "shared/views/waitMessageView"
+    "shared/views/waitMessageView",
+    "views/userConfirmationView"
 ],
-function (_, TP, RollbarManager, WaitMessageView)
+function (
+          _,
+          TP,
+          RollbarManager,
+          WaitMessageView,
+          UserConfirmationView
+          )
 {
     var ensureUser = function(callback) 
     {
@@ -25,6 +32,8 @@ function (_, TP, RollbarManager, WaitMessageView)
     {
         return ensureUser(function(athleteId)
         {
+            var self = this;
+
             // make sure current user can access requested athlete
             if (athleteId && !this._userCanAccessAthlete(athleteId)) {
                 this.navigate(baseUrl, true);
@@ -32,9 +41,22 @@ function (_, TP, RollbarManager, WaitMessageView)
             }
 
             // if user is coach, and no athleteId value was passed, put current athlete id in url
-            if(!athleteId && theMarsApp.user.isCoachWithAthletes())
+            if(!athleteId && theMarsApp.user.isCoach())
             {
-                this.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
+
+                var currentOrDefaultAthleteId = theMarsApp.athleteManager.getCurrentOrDefaultAthleteId();
+
+                if(currentOrDefaultAthleteId)
+                {
+                    loadAthlete(currentOrDefaultAthleteId).done(function()
+                    {
+                        self.navigate(baseUrl + "/athletes/" + currentOrDefaultAthleteId, {trigger: true, replace: true});
+                    });
+                }
+                else
+                {
+                    new UserConfirmationView({ message: "This coach account does not have any clients" }).render();
+                }
                 return;
             }
 
@@ -42,13 +64,13 @@ function (_, TP, RollbarManager, WaitMessageView)
             if(athleteId)
             {
                 athleteId = parseInt(athleteId, 10);
-                var self = this;
                 var args = Array.prototype.slice.call(arguments);
-                var waitMessage = new WaitMessageView({ model: new TP.Model({ message: TP.utils.translate("Loading athlete data")})}).render();
-                theMarsApp.athleteManager.loadAthlete(athleteId).done(function()
+                loadAthlete(athleteId).done(function()
                 {
                     callback.apply(self, args);
-                    waitMessage.close();
+                }).fail(function()
+                {
+                    // TODO: how to handle api failures
                 });
             }
             else
@@ -58,7 +80,16 @@ function (_, TP, RollbarManager, WaitMessageView)
             }
 
         });
-    }; 
+    };  
+
+    var loadAthlete = function(athleteId)
+    {
+        var waitMessage = new WaitMessageView({ model: new TP.Model({ message: TP.utils.translate("Loading athlete data")})}).render();
+        return theMarsApp.athleteManager.loadAthlete(athleteId).done(function()
+        {
+            waitMessage.close();
+        });
+    };
 
     return TP.Router.extend(
     {

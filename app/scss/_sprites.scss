@@ -66,7 +66,7 @@ body[data-useragent*="MSIE"] .icon
 
 // Misc Icons
 
-%spriteSelectBoxItBG { @include inlineBG("../../assets/images/QVImages/sprite-selectboxit.png"); }
+%spriteSelectBoxBG { @include inlineBG("../../assets/images/sprite-dropdown.png"); }
 
 %calendarPlusBG { @include inlineBG("../../assets/images/calendarImages/sprite-calendar-plus.png"); }
 
@@ -133,7 +133,7 @@ body[data-useragent*="MSIE"] .icon
 
     // Misc Retina Icons
 
-    %spriteSelectBoxItBG { @include inlineRetinaBG("../../assets/images/QVImages/sprite-selectboxit@2x.png"); }
+    %spriteSelectBoxBG { @include inlineRetinaBG("../../assets/images/sprite-dropdown@2x.png"); }
 
     %calendarPlusBG { @include inlineRetinaBG( "../../assets/images/calendarImages/sprite-calendar-plus@2x.png"); }
     %tpLogoBG { @include inlineRetinaBG( "../../assets/images/tpLogo@2x.png"); }

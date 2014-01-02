@@ -57,6 +57,11 @@ function(
             }
         },
 
+        initialize: function(options)
+        {
+            this.options = options;
+        },
+
         serializeData: function()
         {
             var data = this.model.toJSON();
@@ -266,12 +271,7 @@ function(
                 this.$("." + inputClass).removeClass("disabled");
             }, this);
 
-            var self = this;
-            setImmediate(function ()
-            {
-                self.$("select[name=testDistance]").selectBoxIt();
-                self._setDistanceOptions();
-            });
+            this._setDistanceOptions();
 
             this._enableSpeedOrDuration();
         },
@@ -294,8 +294,6 @@ function(
                     var $option = $("<option>").val(distance.id).text(distance.label);
                     $select.append($option);
                 });
-
-                $select.selectBoxIt("refresh");
 
                 this._applyModelValuesToForm();
             }

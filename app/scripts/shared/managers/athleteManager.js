@@ -11,11 +11,13 @@ function(
          )
 {
 
-    function AthleteManager(app, user)
+    function AthleteManager(app, user, options)
     {
         this.app = app;
         this.user = user;
         this.athletes = {};
+
+        this.featureAuthorizer = options.featureAuthorizer;
     }
 
     _.extend(AthleteManager.prototype, {
@@ -23,19 +25,42 @@ function(
 
         loadAthlete: function(athleteId)
         {
-            if(!this._userHasAthlete(athleteId))
+            var athlete = this._getOrCreateAthlete(athleteId); 
+
+            if(this._userCanAccessAthlete(athlete))
             {
-                throw new Error("Athlete " + athleteId + " is not in user's athletes list");
+                var user = this.user;
+                return $.when(athlete.getFetchPromise(), athlete.getEquipment().fetch())
+                    .done(function()
+                    {
+                        user.setCurrentAthlete(athlete);
+                    });
+            }
+            else
+            {
+                return new $.Deferred().reject();
+            }
+        },
+
+        getCurrentOrDefaultAthleteId: function()
+        {
+            if(this.user.hasAthleteSettings())
+            {
+                var athlete = this.user.getAthleteSettings();
+                if(this._userCanAccessAthlete(athlete))
+                {
+                    return athlete.get("athleteId");
+                }
             }
 
-            var athlete = this._getOrCreateAthlete(athleteId); 
-            var user = this.user;
+            return this.getDefaultAthleteId();
+        },
 
-            return $.when(athlete.getFetchPromise(), athlete.getEquipment().fetch())
-                .done(function()
-                {
-                    user.setCurrentAthlete(athlete);
-                });
+        getDefaultAthleteId: function()
+        {
+            var athletes = this._getUserAthletes();
+
+            return athletes && athletes.length ? athletes[0].athleteId : null;
         },
 
         _getOrCreateAthlete: function(athleteId)
@@ -45,12 +70,17 @@ function(
             return athlete;
         },
 
-        _userHasAthlete: function(athleteId)
+        _getUserAthletes: function()
         {
-            return _.find(this.user.get("athletes"), function(athlete)
-                {
-                    return athlete.athleteId === athleteId;
-                });
+            return _.filter(this.user.get("athletes"), function(athlete)
+            {
+                return this._userCanAccessAthlete(athlete);
+            }, this);
+        },
+
+        _userCanAccessAthlete: function(athlete)
+        {
+            return this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ViewAthleteCalendar, { athlete: athlete });
         }
 
 

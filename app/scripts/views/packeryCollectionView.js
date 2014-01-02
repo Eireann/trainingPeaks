@@ -17,24 +17,13 @@ function(
     )
 {
 
-    // because packery doesn't work with node
-    if(!$.fn.packery)
-    {
-        return TP.CollectionView.extend(
-        {
-            layout: function() { return; },
-            enablePackeryResize: function() { return; },
-            disablePackeryResize: function() { return; }
-        });
-    }
-
     var PackeryCollectionView = TP.CollectionView.extend(
     {
         className: "packeryCollection",
 
         initialize: function(options)
         {
-            _.merge(options,
+            this.options = _.merge(options,
             {
                 packery:
                 {
@@ -43,7 +32,8 @@ function(
                     gutter: 10
                 },
                 resizable: { enabled: false },
-                droppable: { enabled: false, scope: "packery" }
+                droppable: { enabled: false, scope: "packery" },
+                draggable: { scope: "packery-items" }
             }, _.defaults);
 
             PackeryCollectionView.__super__.initialize.apply(this, arguments);
@@ -61,6 +51,7 @@ function(
         {
             if(this.packery && !this.isClosing)
             {
+                this.children.call("trigger", "pod:resize");
                 this.$el.packery("layout");
                 this._updatePackerySort();
             }
@@ -213,7 +204,7 @@ function(
         {
             var self = this;
 
-            itemView.$el.draggable({ scope: "packery-items" });
+            itemView.$el.draggable(this.options.draggable);
             collectionView.packery.bindUIDraggableEvents(itemView.$el);
 
             if(this.options.resizable.enabled)

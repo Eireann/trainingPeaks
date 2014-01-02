@@ -38,6 +38,7 @@ function(
 
         initialize: function(options)
         {
+            this.options = options;
             this.offset = options.offset;
             this.target = options.target;
 

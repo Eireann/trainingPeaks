@@ -147,35 +147,37 @@
 	}
 }
 
-@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey6)
+@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey6) {}
+
+@mixin nice-scrollbar-real($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey6)
 {
-    &::-webkit-scrollbar 
+    ::-webkit-scrollbar 
     {
         width: $size;
         height: $size;
     }
 
-    &::-webkit-scrollbar-track
+    ::-webkit-scrollbar-track
     {
         border-radius: 0;
         background: $track-background;
         box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 -1px 1px 1px inset;
     }
 
-    &::-webkit-scrollbar-thumb
+    ::-webkit-scrollbar-thumb
     {
         border-radius: 0;
         background: $thumb-color;
         box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(48, 48, 48, 0.5) 0px 0px 7px 0px inset;
     }
 
-    &::-webkit-scrollbar-thumb:window-inactive
+    ::-webkit-scrollbar-thumb:window-inactive
     {
         border-radius: 0;
         background: $inactive-thumb-color;
     }
 
-    &::-webkit-scrollbar-thumb:hover
+    ::-webkit-scrollbar-thumb:hover
     {
         border-radius: 0;
         background: $thumb-color;
