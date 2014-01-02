@@ -31,14 +31,7 @@ function(
             var athlete = this._getOrCreateAthlete(athleteId); 
             var user = this.user;
 
-            // TODO: remove this forced resolution once api is up on app.dev
-            var equipmentPromise = new $.Deferred();
-            var equipmentFetchPromise = athlete.getEquipment().fetch().always(function()
-            {
-                equipmentPromise.resolve();
-            });
-
-            return $.when(equipmentPromise, athlete.getFetchPromise())
+            return $.when(athlete.getFetchPromise(), athlete.getEquipment().fetch())
                 .done(function()
                 {
                     user.setCurrentAthlete(athlete);
