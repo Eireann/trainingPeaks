@@ -3,9 +3,18 @@ define(
     "TP",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/convertToModelUnits",
+    "utilities/units/unitsStrategyFactory",
+    "utilities/units/constants",
     "testUtils/testHelpers"
 ],
-function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
+function(
+         TP,
+         convertToViewUnits,
+         convertToModelUnits,
+         UnitsStrategyFactory,
+         unitConstants,
+         testHelpers
+         )
 {
     describe("units related utilities, english units", function()
     {
@@ -32,24 +41,36 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should return the unit label for distance", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("distance")).to.equal("mi");
-            });
 
-            it("should return the non-abbreviated unit label for distance", function()
+            describe("distance", function()
             {
-                expect(TP.utils.units.getUnitsLabel("distance", null, null, {abbreviated: false})).to.equal("miles");
-            });
 
-            it("should return the metric unit label for rowing distance (special case for rowing)", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("distance", 12)).to.equal("m");
-            });
+                it("should return the unit label for distance", function()
+                {
+                    var unitsStrategy = UnitsStrategyFactory.buildStrategyForUnits("distance", { userUnits: unitConstants.English });
+                    expect(unitsStrategy.getLabel()).to.equal("mi");
+                    expect(unitsStrategy.getLabelShort()).to.equal("mi");
+                });
 
-            it("should return the non-abbreviated unit label for distance for swimming", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("distance", 1, null, {abbreviated: false})).to.equal("yards");
+
+                it("should return the non-abbreviated unit label for distance", function()
+                {
+                    var unitsStrategy = UnitsStrategyFactory.buildStrategyForUnits("distance", { userUnits: unitConstants.Metric });
+                    expect(unitsStrategy.getLabelLong()).to.equal("kilometers");
+                });
+
+                it("should return the metric unit label for rowing distance (special case for rowing)", function()
+                {
+                    var unitsStrategy = UnitsStrategyFactory.buildStrategyForUnits("distance", { userUnits: unitConstants.English, workoutTypeId: 12 });
+                    expect(unitsStrategy.getLabel()).to.equal("m");
+                });
+
+                it("should return the non-abbreviated unit label for distance for swimming", function()
+                {
+                    var unitsStrategy = UnitsStrategyFactory.buildStrategyForUnits("distance", { userUnits: unitConstants.English, workoutTypeId: 1 });
+                    expect(unitsStrategy.getLabelLong()).to.equal("yards");
+                });
+
             });
 
             it("should return the unit label for normalized pace", function()
@@ -188,20 +209,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 expect(function() { convertToViewUnits(1234, "unknownType"); }).to.throw();
             });
 
-            it("should convert a distance in meters to miles", function()
-            {
-                expect(convertToViewUnits(0, "distance")).to.equal(0);
-                expect(convertToViewUnits(1609, "distance")).to.be.closeTo(1, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(3218, "distance")).to.be.closeTo(2, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(1234567890, "distance")).to.be.closeTo(767125, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits("notANumber", "distance")).to.equal(0);
-                expect(convertToViewUnits(-1609, "distance")).to.be.closeTo(-1, Math.pow(10, -0) / 2);
-            });
-
-            it("should keep distance units in meters for rowing for all users", function()
-            {
-                expect(convertToViewUnits(1, "distance", null, 12)).to.equal(1);
-            });
 
             it("should convert an elevation in meters to ft", function()
             {
@@ -218,13 +225,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 expect(convertToViewUnits("notAnumber", "pace")).to.equal(0);
                 expect(convertToViewUnits(0.0005, "pace")).to.equal("99:59:59.99");
                 expect(convertToViewUnits(-1, "pace")).to.equal("99:59:59.99");
-            });
-
-
-            it("should return zero for non numeric values", function()
-            {
-                expect(convertToViewUnits("", "distance")).to.equal(0);
-                expect(convertToViewUnits("some string", "distance")).to.equal(0);
             });
 
             it("Should convert temperatures", function()
@@ -262,14 +262,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 expect(function () { convertToModelUnits(1234, "unknownType"); }).to.throw();
             });
 
-            it("should convert a distance in miles to meters", function ()
-            {
-                expect(convertToModelUnits(0, "distance")).to.equal(0);
-                expect(convertToModelUnits(1, "distance")).to.be.closeTo(1609, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(2, "distance")).to.be.closeTo(3218.689, Math.pow(10, -4) / 2);
-                expect(convertToModelUnits(767124.68, "distance")).to.be.closeTo(1234567883, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(-1, "distance")).to.be.closeTo(-1609, Math.pow(10, -0) / 2);
-            });
 
             it("should convert an elevation in ft to meters", function ()
             {
@@ -284,15 +276,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 expect(convertToModelUnits("26:49", "pace")).to.be.closeTo(1, Math.pow(10, -2) / 2);
                 expect(convertToModelUnits("08:56", "pace")).to.be.closeTo(3, Math.pow(10, -0) / 2);
                 expect(convertToModelUnits("99:99", "pace")).to.be.closeTo(0.266, Math.pow(10, -3) / 2);
-            });
-
-            it("should return null for non numeric values and empty strings", function()
-            {
-                expect(convertToModelUnits("", "elevation")).to.equal(null);
-                expect(convertToModelUnits("", "temperature")).to.equal(null);
-                expect(convertToModelUnits("", "pace")).to.equal(null);
-                expect(convertToModelUnits("", "distance")).to.equal(null);
-                expect(convertToModelUnits("some string", "distance")).to.equal(null);
             });
 
             it("Should convert temperatures", function()
@@ -317,10 +300,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should return the unit label for distance", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("distance", swimTypeId)).to.equal("yds");
-            });
 
             it("should return the unit label for normalized pace", function()
             {
@@ -359,10 +338,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-           it("should return the unit label for distance", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("distance", swimTypeId)).to.equal("m");
-            });
 
             it("should return the unit label for normalized pace", function()
             {
@@ -405,16 +380,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should convert a distance in meters to yards", function()
-            {
-                expect(convertToViewUnits(0, "distance", undefined, swimTypeId)).to.equal(0);
-                expect(convertToViewUnits(1, "distance", undefined, swimTypeId)).to.be.closeTo(1.09, Math.pow(10, -2) / 2);
-                expect(convertToViewUnits(10, "distance", undefined, swimTypeId)).to.be.closeTo(10.9, Math.pow(10, -1) / 2);
-                expect(convertToViewUnits(100, "distance", undefined, swimTypeId)).to.be.closeTo(109, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(1000, "distance", undefined, swimTypeId)).to.be.closeTo(1094, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(1125, "distance", undefined, swimTypeId)).to.be.closeTo(1230, Math.pow(10, -0) / 2);
-            });
-
             it("should convert a pace value in meters per second to sec/100y, properly formated", function()
             {
                 expect(convertToViewUnits(1, "pace", undefined, swimTypeId)).to.equal("01:31");
@@ -437,16 +402,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
             beforeEach(function()
             {
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            it("should leave distance units as meters", function()
-            {
-                expect(convertToViewUnits(0, "distance", undefined, swimTypeId)).to.be.closeTo(0, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(1, "distance", undefined, swimTypeId)).to.be.closeTo(1, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(10, "distance", undefined, swimTypeId)).to.be.closeTo(10, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(100, "distance", undefined, swimTypeId)).to.be.closeTo(100, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(1000, "distance", undefined, swimTypeId)).to.be.closeTo(1000, Math.pow(10, -0) / 2);
-                expect(convertToViewUnits(1125, "distance", undefined, swimTypeId)).to.be.closeTo(1125, Math.pow(10, -0) / 2);
             });
 
             it("should convert a pace value in meters per second to sec/100m, properly formated", function()
@@ -492,16 +447,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should convert a distance in yards to meters", function()
-            {
-                expect(convertToModelUnits("", "distance", swimTypeId)).to.be.null;
-                expect(convertToModelUnits('1.09', "distance", swimTypeId)).to.be.closeTo(1, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits("10.9", "distance", swimTypeId)).to.be.closeTo(10, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(109, "distance", swimTypeId)).to.be.closeTo(100, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(1094, "distance", swimTypeId)).to.be.closeTo(1000, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(1230, "distance", swimTypeId)).to.be.closeTo(1125, Math.pow(10, -0) / 2);
-            });
-
             it("should convert a pace value in sec/100y to meters per second", function()
             {
                 expect(convertToModelUnits("01:31", "pace", swimTypeId)).to.be.closeTo(1, Math.pow(10, -0) / 2);
@@ -530,15 +475,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should keep distance in meters", function()
-            {
-                expect(convertToModelUnits("", "distance", 12)).to.be.null;
-                expect(convertToModelUnits('1.09', "distance", 12)).to.equal(1.09);
-                expect(convertToModelUnits("10.9", "distance", 12)).to.equal(10.9);
-                expect(convertToModelUnits(109, "distance", 12)).to.equal(109);
-                expect(convertToModelUnits(1094, "distance", 12)).to.equal(1094);
-            });
-
             it("should convert a pace value in sec/100m to m/s, properly formated", function()
             {
                 expect(convertToModelUnits("01:40", "pace", 12)).to.be.closeTo(1, Math.pow(10, -0) / 2);
@@ -561,16 +497,6 @@ function(TP, convertToViewUnits, convertToModelUnits, testHelpers)
             beforeEach(function()
             {
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            it("should leave distance units as meters", function()
-            {
-                expect(convertToModelUnits(0, "distance", swimTypeId)).to.equal(0);
-                expect(convertToModelUnits(1, "distance", swimTypeId)).to.be.closeTo(1, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(10, "distance", swimTypeId)).to.be.closeTo(10, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(100, "distance", swimTypeId)).to.be.closeTo(100, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(1000, "distance", swimTypeId)).to.be.closeTo(1000, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits(1125, "distance", swimTypeId)).to.be.closeTo(1125, Math.pow(10, -0) / 2);
             });
 
             it("should convert a pace value in meters per second to sec/100m, properly formated", function()

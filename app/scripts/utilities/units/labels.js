@@ -277,7 +277,7 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
 
     var getUnitsLabel = function(fieldName, sportTypeId, context, options)
     {
-        var userUnits = theMarsApp.user.get("units");
+        var userUnits = options && options.userUnits ? options.userUnits : theMarsApp.user.get("units");
         var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
         var unitsVal;
 

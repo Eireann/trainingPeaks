@@ -83,6 +83,21 @@ define(
             return convertedValue;
         },
 
+        getLabel: function()
+        {
+            return this._labeler(this.options);
+        },
+
+        getLabelShort: function()
+        {
+            return this._labeler(_.defaults({abbreviated: true}, this.options))
+        },
+
+        getLabelLong: function()
+        {
+            return this._labeler(_.defaults({abbreviated: false}, this.options));
+        },
+
         _hasValue: function(value)
         {
             return !(this._valueIsEmpty(value) || this._valueIsNotANumber(value) || !_.isFinite(value));

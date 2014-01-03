@@ -12,7 +12,7 @@ define(
     */
     return function(options)
     {
-        return getUnitsLabel(options.unitsName, options.workoutTypeId);
+        return getUnitsLabel(options.unitsName, options.workoutTypeId, null, options);
     };
 
 });

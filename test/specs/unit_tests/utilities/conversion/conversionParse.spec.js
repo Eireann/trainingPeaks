@@ -21,6 +21,18 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
     };
 
+    var describeParseUnits = function(units, testValues)
+    {
+        _.each(testValues, function(testValue)
+        {
+            it("conversion.parseUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
+            {
+                expect(conversion.parseUnitsValue(units, testValue.input, testValue.options)).to.eql(testValue.output);
+            });
+        });
+
+    };
+
     describe("Conversion Input Parsing", function()
     {
         describe("DateTime seconds", function()
@@ -115,7 +127,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Distance", function()
         {
 
-            describeParse("parseDistance", [
+            describeParseUnits("distance", [
                 {
                     input: "999999",
                     output: 999999000 

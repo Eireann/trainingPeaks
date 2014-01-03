@@ -64,7 +64,10 @@ define(
                 var strategyOptions = {};
                 _.defaults(strategyOptions, options, defaultUnitOptions[units], defaultUnitOptions.defaults);
 
-                strategyOptions.userUnits = theMarsApp.user.getUnitsBySportType(strategyOptions.workoutTypeId);
+                if(!strategyOptions.userUnits)
+                {
+                    strategyOptions.userUnits = theMarsApp.user.getUnitsBySportType(strategyOptions.workoutTypeId);
+                }
 
                 return new DefaultUnitsStrategy(strategyOptions);
             }

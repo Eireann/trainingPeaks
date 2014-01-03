@@ -10,7 +10,7 @@
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
     "utilities/units/labels",
-    "utilities/units/unitsStrategyBuilder"
+    "utilities/units/unitsStrategyFactory"
 ], function(
             _,
             moment,
@@ -22,7 +22,7 @@
             adjustFieldRange,
             threeSigFig,
             getUnitsLabel,
-            UnitsStrategyBuilder
+            UnitsStrategyFactory
             )
 {
     var conversion = {
@@ -40,8 +40,7 @@
             switch(units)
             {
                 case "distance":
-
-                    var unitsStrategy = UnitsStrategyBuilder.buildStrategyForUnits("distance", options);
+                    var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
 
@@ -91,6 +90,12 @@
 
         },
 
+        _buildStrategyForUnits: function(units, options)
+        {
+            var strategyOptions = _.defaults({}, options, {workoutTypeId: conversion._getMySportType(options)});
+            return UnitsStrategyFactory.buildStrategyForUnits(units, strategyOptions);
+        },
+
         /*
             options:
                 defaultValue
@@ -102,7 +107,7 @@
             {
 
                 case "distance":
-                    var unitsStrategy = UnitsStrategyBuilder.buildStrategyForUnits("distance", options);
+                    var unitsStrategy = UnitsStrategyFactory.buildStrategyForUnits("distance", options);
                     return unitsStrategy.parseValue(value);
 
                 default: 
