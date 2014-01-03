@@ -9,8 +9,21 @@
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
-    "utilities/units/labels"
-], function(_, moment, dateTimeConversion, DateTimeFormatter, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
+    "utilities/units/labels",
+    "utilities/units/unitsStrategyBuilder"
+], function(
+            _,
+            moment,
+            dateTimeConversion,
+            DateTimeFormatter,
+            workoutTypes,
+            convertToModelUnits,
+            convertToViewUnits,
+            adjustFieldRange,
+            threeSigFig,
+            getUnitsLabel,
+            UnitsStrategyBuilder
+            )
 {
     var conversion = {
 
@@ -27,6 +40,11 @@
             switch(units)
             {
                 case "distance":
+
+                    var unitsStrategy = UnitsStrategyBuilder.buildStrategyForUnits("distance", options);
+                    return unitsStrategy.formatValue(value);
+
+
                 case "duration":
                 case "minutes":
                 case "seconds":
@@ -40,7 +58,22 @@
                 case "pace":
                 case "speed":
                 case "elevation":
-                    string = conversion._formatUnitsValueNew(units, value, options);
+
+                    // if the input is null or empty string, return empty string or other default value
+                    if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value) || !_.isFinite(value))
+                    {
+                        return conversion.getDefaultValueForFormat(options);
+                    }           
+
+                    // convert to view units if necessary
+                    var sportType = conversion._getMySportType(options);
+                    var convertedValue = conversion._convertToViewUnits(units, value, sportType);
+
+                    // limit if necessary
+                    var limitedValue = conversion._adjustFieldRange(units, convertedValue);
+
+                    // format it
+                    string = conversion._formatNumberForView(units, limitedValue, options);
                     break;
 
                 default:
@@ -48,6 +81,7 @@
                     break;
             }
 
+            // add a units label
             if(options && options.withLabel)
             {
                 string += " " + getUnitsLabel(units, conversion._getMySportType(options));
@@ -64,7 +98,16 @@
         */
         parseUnitsValue: function(units, value, options)
         {
-            return conversion._parseUnitsValue(units, value, options);
+            switch(units)
+            {
+
+                case "distance":
+                    var unitsStrategy = UnitsStrategyBuilder.buildStrategyForUnits("distance", options);
+                    return unitsStrategy.parseValue(value);
+
+                default: 
+                    return conversion._parseUnitsValue(units, value, options);
+            }
         },
 
 
@@ -83,9 +126,6 @@
 
                 case "duration":
                     return conversion.parseDuration(value, options);
-
-                case "distance":
-                    return conversion.parseDistance(value, options);
 
                 case "number":
                     return conversion.parseNumber(value, options);
@@ -134,26 +174,6 @@
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
             }
-        },
-
-        _formatUnitsValueNew: function(units, value, options)
-        {
-
-            // if the input is null or empty string, return empty string or other default value
-            if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value) || !_.isFinite(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }           
-
-            // convert to view units if necessary
-            var sportType = conversion._getMySportType(options);
-            var convertedValue = conversion._convertToViewUnits(units, value, sportType);
-
-            // limit if necessary
-            var limitedValue = conversion._adjustFieldRange(units, convertedValue);
-
-            // format it
-            return conversion._formatNumberForView(units, limitedValue, options);
         },
 
         _convertToViewUnits: function(units, value, sportType)
@@ -459,19 +479,12 @@
             return conversion.formatUnitsValue("elevation", value, options);
         },
 
-        // REFACTOR THESE:
         parseDistance: function(value, options)
         {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var sportType = conversion._getMySportType(options);
-            var modelValue = adjustFieldRange(Number(value), "distance");
-            modelValue = convertToModelUnits(modelValue, "distance", sportType);
-            return modelValue;
+            return conversion.parseUnitsValue("distance", value, options);
         }, 
 
+        // REFACTOR THESE:
         parseDuration: function(value, options)
         {
             if(conversion.valueIsEmpty(value))

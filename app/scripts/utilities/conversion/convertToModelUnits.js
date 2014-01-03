@@ -23,7 +23,7 @@ function(
             return convertToSpeedFromPace("00:99:59", unitSystem, sportTypeId);
         }
 
-        var conversionFactor = modelToViewConversionFactors("pace", unitSystem, sportTypeId);
+        var conversionFactor = modelToViewConversionFactors.lookupUserUnitsFactor("pace", unitSystem, sportTypeId);
 
         // paceInMinutes = 1 / (speed * conversionFactor)
         // speed = 1 / (paceInMinutes * conversionFactor)
@@ -75,12 +75,11 @@ function(
                 return convertTemperature(value, userUnits);
             case "elevation":
             case "speed":
-            case "distance":
             case "torque":
             case "cm":
             case "kg":
             case "ml":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
+                return (+value / modelToViewConversionFactors.lookupUserUnitsFactor(fieldType, userUnits, workoutTypeId));
             default:
                 throw new Error("Unknown field type for unit conversion: " + fieldType);
         }

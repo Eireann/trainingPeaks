@@ -25,7 +25,7 @@ function(
 
         // paceInMinutes = 1 / (speed * conversionFactor)
         // speed = 1 / (paceInMinutes * conversionFactor)
-        var conversionFactor = modelToViewConversionFactors("pace", unitSystem, sportTypeId);
+        var conversionFactor = modelToViewConversionFactors.lookupUserUnitsFactor("pace", unitSystem, sportTypeId);
         var paceInMinutes = 1 / (speed * conversionFactor);
 
         return doFormat ? dateTimeUtils.formatter.decimalMinutesAsTime(paceInMinutes, true) : paceInMinutes;
@@ -51,7 +51,7 @@ function(
     {
         var currentUnits = theMarsApp.user.getUnitsBySportType();
         var numValue = Number(value);
-        var returnValue = numValue * modelToViewConversionFactors("elevation", currentUnits);
+        var returnValue = numValue * modelToViewConversionFactors.lookupUserUnitsFactor("elevation", currentUnits);
         return returnValue;
     };
 
@@ -63,7 +63,7 @@ function(
 
         if (workoutType && (workoutType === runType || workoutType === walkType))
         {
-            return value * modelToViewConversionFactors("efficiencyfactor", currentUnits);
+            return value * modelToViewConversionFactors.lookupUserUnitsFactor("efficiencyfactor", currentUnits);
         }
 		else
         {
@@ -77,21 +77,14 @@ function(
         return currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value;
     };
 
-    var convertDistanceToViewUnits = function(value, sportTypeId)
-    {
-        var conversionFactor = modelToViewConversionFactors("distance", theMarsApp.user.getUnitsBySportType(sportTypeId), sportTypeId);
-        var convertedValue = value * conversionFactor;
-        return convertedValue;
-    };
-    
     var convertTorqueToViewUnits = function (value)
     {
-        return value * modelToViewConversionFactors("torque", theMarsApp.user.getUnitsBySportType());
+        return value * modelToViewConversionFactors.lookupUserUnitsFactor("torque", theMarsApp.user.getUnitsBySportType());
     };
 
     var convertSpeedToViewUnits = function(value, sportTypeId)
     {
-        var conversionFactor = modelToViewConversionFactors("speed", theMarsApp.user.getUnitsBySportType(sportTypeId), sportTypeId);
+        var conversionFactor = modelToViewConversionFactors.lookupUserUnitsFactor("speed", theMarsApp.user.getUnitsBySportType(sportTypeId), sportTypeId);
         var convertedValue = value * conversionFactor;
         return convertedValue;
     };
@@ -127,8 +120,6 @@ function(
                 return convertElevation(value);
             case "speed":
                 return convertSpeedToViewUnits(value, sportType);
-            case "distance":
-                return convertDistanceToViewUnits(value, sportType);
             case "pace":
                 return convertToPaceFromSpeed(value, true, sportType);
             case "paceUnFormatted":
@@ -150,11 +141,11 @@ function(
             case "efficiencyfactor":
                 return convertEfficiencyFactor(value, sportType);
             case "cm":
-                return value * modelToViewConversionFactors("cm", theMarsApp.user.getUnitsBySportType(sportType));
+                return value * modelToViewConversionFactors.lookupUserUnitsFactor("cm", theMarsApp.user.getUnitsBySportType(sportType));
             case "kg":
-                return value * modelToViewConversionFactors("kg", theMarsApp.user.getUnitsBySportType(sportType));
+                return value * modelToViewConversionFactors.lookupUserUnitsFactor("kg", theMarsApp.user.getUnitsBySportType(sportType));
             case "ml":
-                return value * modelToViewConversionFactors("ml", theMarsApp.user.getUnitsBySportType(sportType));
+                return value * modelToViewConversionFactors.lookupUserUnitsFactor("ml", theMarsApp.user.getUnitsBySportType(sportType));
             default:
                 throw new Error(fieldType + ": Unknown field type for unit conversion");
         }

@@ -1,31 +1,22 @@
 ﻿define(
 [
+    "underscore",
     "utilities/units/constants",
     "utilities/workout/workoutTypes"
 ],
-function(unitsConstants, workoutTypeUtils)
+function(_, unitsConstants, workoutTypeUtils)
 {
     // Conversion factors from Model units (metric) to view units.
     // Use inverse (1/*) for View to Model conversion.
-    var conversionFactors =
-    {
-        "distance":
+    var conversionFactors = {
+
+        meters:
         {
-            English: 0.000621371,
-            Metric: 0.001,
-
-            Swim:
-            {
-                English: 1.0936133,
-                Metric: 1
-            },
-
-            Rowing:
-            {
-                English: 1,
-                Metric: 1
-            }
+            miles: 0.000621371,
+            kilometers: 0.001,
+            yards: 1.0936133
         },
+
         "pace":
         {
             // yards per second
@@ -101,7 +92,25 @@ function(unitsConstants, workoutTypeUtils)
         }
     };
 
-    var lookupConversion = function(unitsType, userUnits, sportTypeId)
+    var getUnitsFactorBySportTypeOrDefault = function(unitsType, sportTypeName, userUnitsKey)
+    {
+        var conversionFactorsForUnits = conversionFactors[unitsType];
+        var conversionFactor = conversionFactorsForUnits[userUnitsKey];
+
+        if (sportTypeName && conversionFactorsForUnits.hasOwnProperty(sportTypeName) && conversionFactorsForUnits[sportTypeName].hasOwnProperty(userUnitsKey))
+        {
+            conversionFactor = conversionFactorsForUnits[sportTypeName][userUnitsKey];
+        }
+
+        if(_.isString(conversionFactor))
+        {
+            conversionFactor = lookupUnitsConversionFactor(conversionFactorsForUnits.baseUnits, conversionFactor);
+        }
+
+        return conversionFactor;
+    };
+
+    var lookupUserUnitsFactor = function(unitsType, userUnits, sportTypeId)
     {
         var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
 
@@ -114,11 +123,29 @@ function(unitsConstants, workoutTypeUtils)
         if (!conversionFactors.hasOwnProperty(unitsType))
             throw new Error("Unknown units type (" + unitsType + ") for unit conversion");
 
-        if (sportTypeName && conversionFactors[unitsType].hasOwnProperty(sportTypeName) && conversionFactors[unitsType][sportTypeName].hasOwnProperty(userUnitsKey))
-            return conversionFactors[unitsType][sportTypeName][userUnitsKey];
+        return getUnitsFactorBySportTypeOrDefault(unitsType, sportTypeName, userUnitsKey);
 
-        return conversionFactors[unitsType][userUnitsKey];
     };
 
-    return lookupConversion;
+    var lookupUnitsConversionFactor = function(baseUnits, conversionUnits)
+    {
+        if(baseUnits === conversionUnits)
+        {
+            return 1;
+        }
+        else
+        {
+            if(!_.has(conversionFactors, baseUnits) || !_.has(conversionFactors[baseUnits], conversionUnits))
+            {
+                throw new Error("Invalid conversion factors (" + baseUnits + ", " + conversionUnits + ")");
+            }
+            return conversionFactors[baseUnits][conversionUnits];
+        }
+    };
+
+    return {
+        lookupUserUnitsFactor: lookupUserUnitsFactor,
+        lookupUnitsConversionFactor: lookupUnitsConversionFactor,
+        conversionFactors: conversionFactors
+    };
 });

@@ -21,6 +21,18 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
     };
 
+    var describeFormatUnits = function(units, testValues)
+    {
+        _.each(testValues, function(testValue)
+        {
+            it("conversion.formatUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
+            {
+                expect(conversion.formatUnitsValue(units, testValue.input, testValue.options)).to.eql(testValue.output);
+            });
+        });
+
+    };
+
     describe("Conversion Output Formatting", function()
     {
         describe("Duration", function()
@@ -78,18 +90,18 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            describeFormat("formatDistance", [
+            describeFormatUnits("distance", [
                 {
                     output: "999999",
-                    input: convertToModelUnits(999999, "distance")
+                    input: 999999000 
                 },
                 {
                     output: "999999",
-                    input: convertToModelUnits(10000000, "distance")
+                    input: 10000000000
                 },
                 {
                     output: "1.00",
-                    input: convertToModelUnits(1, "distance")
+                    input: 1000 
                 },
                 {
                     output: "0.00",
@@ -109,11 +121,11 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     output: "99.9",
-                    input: convertToModelUnits(99.88888, "distance")
+                    input: 99888.88
                 },
                 {
                     output: "9.99",
-                    input: convertToModelUnits(9.988888, "distance")
+                    input: 9988.89
                 }
             ]);
         });

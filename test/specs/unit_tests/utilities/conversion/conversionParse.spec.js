@@ -118,15 +118,15 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeParse("parseDistance", [
                 {
                     input: "999999",
-                    output: convertToModelUnits(999999, "distance")
+                    output: 999999000 
                 },
                 {
                     input: "1000000",
-                    output: convertToModelUnits(999999, "distance")
+                    output: 999999000 
                 },
                 {
                     input: "1",
-                    output: convertToModelUnits(1, "distance")
+                    output: 1000 
                 },
                 {
                     input: "0",
