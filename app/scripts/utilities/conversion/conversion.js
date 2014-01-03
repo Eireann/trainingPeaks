@@ -10,7 +10,7 @@
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
     "utilities/units/labels"
-], function(_, moment, datetimeUtils, formatDateTime, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
+], function(_, moment, datetimeUtils, DateTimeFormatter, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
 {
     var conversion = {
 
@@ -69,7 +69,7 @@
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
+            return new DateTimeFormatter().decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
         },
 
         formatMinutes: function(minutes, options)
@@ -80,7 +80,7 @@
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(hours, false);
+            return new DateTimeFormatter().decimalHoursAsTime(hours, false);
         },
 
         formatHours: function(value, options)
@@ -164,7 +164,7 @@
             var sportType = conversion.getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
-            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
+            return new DateTimeFormatter().decimalMinutesAsTime(limitedPaceAsHours * 60, true);
         },
 
         formatLongitude: function(value, options)
@@ -189,7 +189,7 @@
             var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
             var limitedTime = adjustFieldRange(rawTime, "pace");
-            var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
+            var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
             return convertedPace;
         },
@@ -714,7 +714,7 @@
 
         formatTime: function(value, options)
         {
-            return formatDateTime.decimalSecondsAsTime(value / 1000);
+            return new DateTimeFormatter().decimalSecondsAsTime(value / 1000);
         },
 
         /*

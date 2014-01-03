@@ -1,13 +1,12 @@
 define(
 [
     "underscore",
-    "utilities/datetime/format",
     "utilities/conversion/conversion",
     "utilities/units/labels",
     "hbs!templates/views/expando/flotToolTip",
     "hbs!templates/views/expando/flotScatterGraphToolTip"
 ],
-function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatterGraphToolTipTemplate)
+function(_, conversion, unitLabels, flotToolTipTemplate, flotScatterGraphToolTipTemplate)
 {
     var flexChannelOrder =
     [

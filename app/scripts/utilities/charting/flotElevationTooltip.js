@@ -1,11 +1,10 @@
 ﻿define(
 [
-    "utilities/datetime/format",
     "utilities/conversion/conversion",
     "utilities/units/labels",
     "hbs!templates/views/elevationCorrection/flotToolTip"
     ],
-function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
+function(conversion, unitLabels, flotToolTipTemplate)
 {
     return function(series, hoveredSeries, hoveredIndex)
     {
