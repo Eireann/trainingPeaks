@@ -95,5 +95,19 @@ function(
 
     });
 
+    OverlayBoxView.wrap = function(viewClass, options)
+    {
+        var viewClassDefinition = {
+            itemView: viewClass
+        };
+ 
+        if(options && options.className)
+        {
+            viewClassDefinition.className = options.className;
+        }
+
+        viewClass.OverlayBox = OverlayBoxView.extend(viewClassDefinition);
+    };
+
     return OverlayBoxView;
 });

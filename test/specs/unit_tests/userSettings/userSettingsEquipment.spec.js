@@ -158,6 +158,19 @@ function(
 
             expect(userSettingsEquipmentView.$(".shoeList equipmentItem").length).to.equal(0);
         });
+
+        it("Should save updates when updates are made.", function()
+        {
+            userSettingsEquipmentView.render();
+
+            userSettingsEquipmentView.$(".bikeList input[name=name]").val("Updated Speed 007");
+            userSettingsEquipmentView.$(".shoeList input[name=name]").val("Updated Awesome Shoe 9000");
+
+            userSettingsEquipmentView.applyFormValuesToModels();
+
+            expect(userSettingsEquipmentView.collection.at(0).get("name")).to.equal("Updated Speed 007");
+            expect(userSettingsEquipmentView.collection.at(1).get("name")).to.equal("Updated Awesome Shoe 9000");
+        });
     });
 
 });

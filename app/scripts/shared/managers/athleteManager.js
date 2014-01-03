@@ -30,11 +30,29 @@ function(
             if(this._userCanAccessAthlete(athlete))
             {
                 var user = this.user;
+
+                // TODO: remove this forced resolution once api is up on app.dev
+                var equipmentPromise = new $.Deferred();
+                var equipmentFetchPromise = athlete.getEquipment().fetch().always(function()
+                {
+                    equipmentPromise.resolve();
+                });
+
+                return $.when(athlete.getFetchPromise(), equipmentPromise)
+                    .done(function()
+                    {
+                        user.setCurrentAthlete(athlete);
+                    });
+
+/* The future starts here...
+
                 return $.when(athlete.getFetchPromise(), athlete.getEquipment().fetch())
                     .done(function()
                     {
                         user.setCurrentAthlete(athlete);
                     });
+*/
+
             }
             else
             {

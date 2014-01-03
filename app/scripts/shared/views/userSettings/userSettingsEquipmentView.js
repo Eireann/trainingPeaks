@@ -23,19 +23,13 @@ function(
 )
 {
 
-    var DelegatingView = TP.CollectionView.extend(
-    {
-        applyFormValuesToModel: function()
-        {
-            this.children.call("applyFormValuesToModel");
-        }
-    });
+    var UserSettingsEquipmentView = TP.CompositeView.extend({
+        tagName: "div",
+        className: "userSettingsContent userSettingsEquipmentTemplate userSettingsAccountContent",
 
-    var UserSettingsEquipmentView = TP.ItemView.extend({
-
-        events:
-        {
-            "click .addEquipment": "_addEquipment"
+        template:{
+            type: "handlebars",
+            template: userSettingsEquipmentTemplate
         },
 
         subNavigation:
@@ -50,41 +44,40 @@ function(
             }
         ],
 
-        template:
+        itemView: EquipmentItemView,
+
+        events:
         {
-            type: "handlebars",
-            template: userSettingsEquipmentTemplate
+            "click .addEquipment": "_addEquipment"
+        },
+
+        appendHtml: function(collectionView, itemView, index)
+        {
+            var bikeList = this.$(".bikeList");
+            var shoeList = this.$(".shoeList");
+
+            switch (itemView.model.get("type"))
+            {
+                case EquipmentTypes.Bike:
+                    bikeList.append(itemView.el);
+                    break;
+
+                case EquipmentTypes.Shoe:
+                    shoeList.append(itemView.el);
+                    break;
+            }
         },
 
         initialize: function(options)
         {
-            var self = this;
-
-            this.children = new Backbone.ChildViewContainer();
             this.user = options && options.user ? options.user : theMarsApp.user;
 
-            this.on("close", function() { self.children.call("close"); });
-
-            this._createCollections(options);
+            this.collection = options.collection;
         },
 
         applyFormValuesToModels: function()
         {
             this.children.call("applyFormValuesToModel");
-        },
-
-        render: function()
-        {
-            UserSettingsEquipmentView.__super__.render.apply(this, arguments);
-
-            this._addView(".bikeList", new DelegatingView({
-                itemView: EquipmentItemView,
-                collection: this.bikeCollection
-            }));
-            this._addView(".shoeList", new DelegatingView({
-                itemView: EquipmentItemView,
-                collection: this.shoeCollection
-            }));
         },
 
         _addEquipment: function(e)
@@ -95,40 +88,7 @@ function(
             equipmentModel.set("retired", false);
             equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
 
-            this.sourceCollection.push(equipmentModel);
-        },
-
-        _addView: function(selector, view)
-        {
-            this.children.add(view);
-
-            this.$(selector).append(view.el);
-
-            view.render();
-        },
-
-        _createCollections: function(options)
-        {
-            this.sourceCollection = options.collection;
-
-            this.bikeCollection = new FilteredSubCollection(
-                null,
-                {
-                    sourceCollection: options.collection,
-                    filterFunction: function(model) {
-                        return model.get("type") === EquipmentTypes.Bike;
-                    }
-                }
-            );
-            this.shoeCollection = new FilteredSubCollection(
-                null,
-                {
-                    sourceCollection: options.collection,
-                    filterFunction: function(model) {
-                        return model.get("type") === EquipmentTypes.Shoe;
-                    }
-                }
-            );
+            this.collection.push(equipmentModel);
         }
 
     });

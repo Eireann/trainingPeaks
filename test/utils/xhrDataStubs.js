@@ -129,6 +129,48 @@ function()
 
         },
 
+        equipment:
+        {
+            barbkprem: [
+                {
+                    equipmentId: 124,
+                    name: "Speed 007",
+                    notes: "It's great!",
+                    brand: "Cyclery",
+                    model: "Speed",
+                    dateOfPurchase: "12/20/2013",
+                    athleteId: 426489,
+                    retired: false,
+                    retiredDate: null,
+                    isDefault: true,
+                    startingDistance: 0,
+                    actualDistance: 1609.344,
+                    crankLengthMillimeters: "172.5",
+                    wheels: "2 or more",
+                    maxDistance: null,
+                    type: 1        
+                },
+                {
+                    equipmentId: 123,
+                    name: "Awesome Shoe 9000",
+                    notes: "It's great!",
+                    brand: "Shoe Factory",
+                    model: "9000",
+                    dateOfPurchase: "12/20/2013",
+                    athleteId: 426489,
+                    retired: false,
+                    retiredDate: null,
+                    isDefault: true,
+                    startingDistance: 0,
+                    actualDistance: 1609.344,
+                    crankLengthMillimeters: null,
+                    wheels: null,
+                    maxDistance: 500,
+                    type: 2        
+                }
+            ]
+        },
+
         users:
         {
             barbkprem:

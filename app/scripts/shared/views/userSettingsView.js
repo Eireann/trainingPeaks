@@ -313,10 +313,7 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
+    OverlayBoxView.wrap(UserSettingsContentView, { className: "userSettings" });
 
-        className: "userSettings",
-        itemView: UserSettingsContentView
-    });
-
+    return UserSettingsContentView;
 });
