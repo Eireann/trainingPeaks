@@ -1,12 +1,13 @@
 define(
 [
+    "underscore",
     "testUtils/testHelpers",
     "TP",
     "utilities/conversion/conversion",
     "utilities/conversion/convertToModelUnits",
     "utilities/datetime/datetime"
 ],
-function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
+function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 {
 
     var describeParse = function(methodName, testValues)
@@ -21,13 +22,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
     };
 
-    var describeParseUnits = function(units, testValues)
+    var describeParseUnits = function(units, testValues, options)
     {
         _.each(testValues, function(testValue)
         {
             it("conversion.parseUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
             {
-                expect(conversion.parseUnitsValue(units, testValue.input, testValue.options)).to.eql(testValue.output);
+                var parseOptions =  _.defaults({}, testValue.options, options);
+                expect(conversion.parseUnitsValue(units, testValue.input, parseOptions)).to.be.closeTo(testValue.output, 0.5);
             });
         });
 
@@ -127,32 +129,93 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Distance", function()
         {
 
-            describeParseUnits("distance", [
+            describe("Metric", function()
+            {
+                describeParseUnits("distance", [
+                    {
+                        input: "999999",
+                        output: 999999000 
+                    },
+                    {
+                        input: "1000000",
+                        output: 999999000 
+                    },
+                    {
+                        input: "1",
+                        output: 1000 
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+
+                describeParseUnits("distance", [
+                    {
+                        input: "1",
+                        output: 1609
+                    },
+                    {
+                        input: "2",
+                        output: 3219
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ],
                 {
-                    input: "999999",
-                    output: 999999000 
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English Swim", function()
+            {
+                describeParseUnits("distance", [
+                    {
+                        input: "1000",
+                        output: 914.4
+                    }
+                ],
                 {
-                    input: "1000000",
-                    output: 999999000 
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
+            describe("English Rowing", function()
+            {
+                describeParseUnits("distance", [
+                    {
+                        input: "1000",
+                        output: 1000 
+                    }
+                ],
                 {
-                    input: "1",
-                    output: 1000 
-                },
-                {
-                    input: "0",
-                    output: 0
-                },
-                {
-                    input: "-1",
-                    output: 0
-                },
-                {
-                    input: "",
-                    output: null
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 12
+                });
+            });
         });
 
         describe("Speed", function()

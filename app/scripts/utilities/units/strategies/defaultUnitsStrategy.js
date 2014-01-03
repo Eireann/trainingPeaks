@@ -90,7 +90,7 @@ define(
 
         getLabelShort: function()
         {
-            return this._labeler(_.defaults({abbreviated: true}, this.options))
+            return this._labeler(_.defaults({abbreviated: true}, this.options));
         },
 
         getLabelLong: function()

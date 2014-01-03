@@ -83,6 +83,7 @@
             // add a units label
             if(options && options.withLabel)
             {
+                // TODO: use the unitsStrategy methods
                 string += " " + getUnitsLabel(units, conversion._getMySportType(options));
             }
 
@@ -107,7 +108,7 @@
             {
 
                 case "distance":
-                    var unitsStrategy = UnitsStrategyFactory.buildStrategyForUnits("distance", options);
+                    var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
                 default: 

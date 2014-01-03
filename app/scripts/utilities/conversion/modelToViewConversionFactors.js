@@ -8,13 +8,46 @@ function(_, unitsConstants, workoutTypeUtils)
 {
     // Conversion factors from Model units (metric) to view units.
     // Use inverse (1/*) for View to Model conversion.
-    var conversionFactors = {
+    var unitDefinitions = {
+
+        miles:
+        {
+            labels: {
+                abbreviated: "mi",
+                unabbreviated: "miles"
+            }
+        },
+
+        kilometers:
+        {
+            labels: {
+                abbreviated: "km",
+                unabbreviated: "kilometers"
+            }
+        },
+
+        yards:
+        {
+            labels: {
+                abbreviated: "yds",
+                unabbreviated: "yards"
+            }
+        },
 
         meters:
         {
-            miles: 0.000621371,
-            kilometers: 0.001,
-            yards: 1.0936133
+            conversions:
+            {
+                miles: 0.000621371,
+                kilometers: 0.001,
+                yards: 1.0936133
+            },
+
+            labels:
+            {
+                abbreviated: "m",
+                unabbreviated: "meters"  
+            }
         },
 
         "pace":
@@ -94,17 +127,17 @@ function(_, unitsConstants, workoutTypeUtils)
 
     var getUnitsFactorBySportTypeOrDefault = function(unitsType, sportTypeName, userUnitsKey)
     {
-        var conversionFactorsForUnits = conversionFactors[unitsType];
-        var conversionFactor = conversionFactorsForUnits[userUnitsKey];
+        var definitionsForUnits = unitDefinitions[unitsType];
+        var conversionFactor = definitionsForUnits[userUnitsKey];
 
-        if (sportTypeName && conversionFactorsForUnits.hasOwnProperty(sportTypeName) && conversionFactorsForUnits[sportTypeName].hasOwnProperty(userUnitsKey))
+        if (sportTypeName && definitionsForUnits.hasOwnProperty(sportTypeName) && definitionsForUnits[sportTypeName].hasOwnProperty(userUnitsKey))
         {
-            conversionFactor = conversionFactorsForUnits[sportTypeName][userUnitsKey];
+            conversionFactor = definitionsForUnits[sportTypeName][userUnitsKey];
         }
 
         if(_.isString(conversionFactor))
         {
-            conversionFactor = lookupUnitsConversionFactor(conversionFactorsForUnits.baseUnits, conversionFactor);
+            conversionFactor = lookupUnitsConversionFactor(definitionsForUnits.baseUnits, conversionFactor);
         }
 
         return conversionFactor;
@@ -120,7 +153,7 @@ function(_, unitsConstants, workoutTypeUtils)
             sportTypeName = workoutTypeUtils.getNameById(sportTypeId);
         }
 
-        if (!conversionFactors.hasOwnProperty(unitsType))
+        if (!unitDefinitions.hasOwnProperty(unitsType))
             throw new Error("Unknown units type (" + unitsType + ") for unit conversion");
 
         return getUnitsFactorBySportTypeOrDefault(unitsType, sportTypeName, userUnitsKey);
@@ -135,17 +168,27 @@ function(_, unitsConstants, workoutTypeUtils)
         }
         else
         {
-            if(!_.has(conversionFactors, baseUnits) || !_.has(conversionFactors[baseUnits], conversionUnits))
+            if(!_.has(unitDefinitions, baseUnits) || !_.has(unitDefinitions[baseUnits], "conversions") || !_.has(unitDefinitions[baseUnits].conversions, conversionUnits))
             {
                 throw new Error("Invalid conversion factors (" + baseUnits + ", " + conversionUnits + ")");
             }
-            return conversionFactors[baseUnits][conversionUnits];
+            return unitDefinitions[baseUnits].conversions[conversionUnits];
         }
+    };
+
+    var lookupUnitsLabels = function(baseUnits)
+    {
+        if(!_.has(unitDefinitions, baseUnits) || !_.has(unitDefinitions[baseUnits], "labels"))
+        {
+            throw new Error("Invalid units for labels " + baseUnits);
+        }
+        return unitDefinitions[baseUnits].labels;
     };
 
     return {
         lookupUserUnitsFactor: lookupUserUnitsFactor,
         lookupUnitsConversionFactor: lookupUnitsConversionFactor,
-        conversionFactors: conversionFactors
+        lookupUnitsLabels: lookupUnitsLabels,
+        unitDefinitions: unitDefinitions
     };
 });
