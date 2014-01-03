@@ -74,7 +74,6 @@ function(
             case "temperature":
                 return convertTemperature(value, userUnits);
             case "elevation":
-            case "speed":
             case "torque":
             case "cm":
             case "kg":

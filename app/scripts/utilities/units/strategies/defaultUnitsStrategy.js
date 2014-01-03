@@ -20,8 +20,7 @@ define(
             labeler = function that returns a label
 
             workoutTypeId,
-            userUnits,
-            unitsName
+            userUnits
     */
     function DefaultUnitsStrategy(options) {
         this._validateOptions(options);
@@ -130,7 +129,7 @@ define(
 
         _validateOptions: function(options)
         {
-            _.each(["limiter", "converter", "formatter", "labeler", "workoutTypeId", "userUnits", "unitsName"], function(param)
+            _.each(["limiter", "converter", "formatter", "labeler", "workoutTypeId", "userUnits"], function(param)
             {
                 if(!_.has(options, param))
                 {

@@ -220,36 +220,116 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Speed", function()
         {
-            describeParse("parseSpeed", [
+            describe("Metric", function()
+            {
+                describeParseUnits("speed", [
+                    {
+                        input: "999",
+                        output: 277.5
+                    },
+                    {
+                        input: "999.1",
+                        output: 277.5
+                    },
+                    {
+                        input: "1000",
+                        output: 277.5
+                    },
+                    {
+                        input: "10",
+                        output: 2.77
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+
+                describeParseUnits("speed", [
+                    {
+                        input: "999",
+                        output: 446.5
+                    },
+                    {
+                        input: "999.1",
+                        output: 446.5
+                    },
+                    {
+                        input: "1000",
+                        output: 446.5
+                    },
+                    {
+                        input: "10",
+                        output: 4.47 
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ],
                 {
-                    input: "999",
-                    output: convertToModelUnits("999", "speed")
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English swim", function()
+            {
+                describeParseUnits("speed", [
+                    {
+                        input: "999",
+                        output: 15.22 
+                    },
+                    {
+                        input: "999.1",
+                        output: 15.22
+                    },
+                    {
+                        input: "1000",
+                        output: 15.22
+                    },
+                    {
+                        input: "10",
+                        output: 0.15
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ],
                 {
-                    input: "999.1",
-                    output: convertToModelUnits("999", "speed")
-                },
-                {
-                    input: "1000",
-                    output: convertToModelUnits("999", "speed")
-                },
-                {
-                    input: "1",
-                    output: convertToModelUnits("1", "speed")
-                },
-                {
-                    input: "0",
-                    output: 0
-                },
-                {
-                    input: "-1",
-                    output: 0
-                },
-                {
-                    input: "",
-                    output: null
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
         });
 
         describe("Pace", function()

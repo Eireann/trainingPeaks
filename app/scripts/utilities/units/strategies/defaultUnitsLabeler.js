@@ -1,9 +1,11 @@
 define(
 [
+    "underscore",
     "utilities/workout/workoutTypes",
     "utilities/units/constants",
     "utilities/conversion/modelToViewConversionFactors"
 ], function(
+    _,
     workoutTypeUtils,
     unitsConstants,
     modelToViewConversionFactors
@@ -25,38 +27,11 @@ define(
         return unitsName;
     }
 
-    function _lookupLabelsFromOptions(options)
-    {
-        if(!options || !options.labels)
-        {
-            return null;
-        }
-
-        var labels = options.labels;
-        var userUnitsKey = options.userUnits === unitsConstants.English ? "English" : "Metric";
-        var unitsLabels = labels[userUnitsKey];
-
-        var sportTypeName = options.workoutTypeId ? workoutTypeUtils.getNameById(options.workoutTypeId) : null;
-        if (sportTypeName && labels.hasOwnProperty(sportTypeName) && labels[sportTypeName].hasOwnProperty(userUnitsKey))
-        {
-            unitsLabels = labels[sportTypeName][userUnitsKey];
-        }
-
-        return unitsLabels;
-    }
-
     function _lookupLabels(options)
     {
 
-        var unitsLabels = _lookupLabelsFromOptions(options);
-
-        if(!unitsLabels)
-        {
-            var unitsName = _lookupUserUnitName(options);
-            unitsLabels = modelToViewConversionFactors.lookupUnitsLabels(unitsName);
-        }
-
-        return unitsLabels;
+        var unitsName = _lookupUserUnitName(options);
+        return modelToViewConversionFactors.lookupUnitsLabels(unitsName);
     }
 
     /*
@@ -66,16 +41,24 @@ define(
     */
     return function(options)
     {
-        var labels = _lookupLabels(options);
+        var label = _lookupLabels(options);
 
-        if (options && options.abbreviated === false)
+        if(_.has(label, "abbreviated"))
         {
-            return labels.unabbreviated;
+            if (options && options.abbreviated === false)
+            {
+                return label.unabbreviated;
+            }
+            else
+            {
+                return label.abbreviated;
+            }
         }
         else
         {
-            return labels.abbreviated;
+            return label;
         }
+
     };
 
 });

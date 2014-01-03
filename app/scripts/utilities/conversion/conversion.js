@@ -40,6 +40,7 @@
             switch(units)
             {
                 case "distance":
+                case "speed":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -55,7 +56,6 @@
                 case "latitude":
                 case "longitude":
                 case "pace":
-                case "speed":
                 case "elevation":
 
                     // if the input is null or empty string, return empty string or other default value
@@ -108,6 +108,7 @@
             {
 
                 case "distance":
+                case "speed":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -123,9 +124,6 @@
             {
                 case "elevation":
                     return conversion.parseElevation(value, options);
-
-                case "speed":
-                    return conversion.parseSpeed(value, options);
 
                 case "pace":
                     return conversion.parsePace(value, options);
@@ -490,6 +488,11 @@
             return conversion.parseUnitsValue("distance", value, options);
         }, 
 
+        parseSpeed: function(value, options)
+        {
+            return conversion.parseUnitsValue("speed", value, options);
+        }, 
+
         // REFACTOR THESE:
         parseDuration: function(value, options)
         {
@@ -535,18 +538,6 @@
             var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
             return convertedPace;
-        },
-
-        parseSpeed: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var sportType = conversion._getMySportType(options);
-            var modelValue = adjustFieldRange(Number(value), "speed");
-            modelValue = convertToModelUnits(modelValue, "speed", sportType);
-            return modelValue;
         },
 
         parseElevation: function(value, options)

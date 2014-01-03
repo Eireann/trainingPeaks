@@ -82,13 +82,6 @@ function(
         return value * modelToViewConversionFactors.lookupUserUnitsFactor("torque", theMarsApp.user.getUnitsBySportType());
     };
 
-    var convertSpeedToViewUnits = function(value, sportTypeId)
-    {
-        var conversionFactor = modelToViewConversionFactors.lookupUserUnitsFactor("speed", theMarsApp.user.getUnitsBySportType(sportTypeId), sportTypeId);
-        var convertedValue = value * conversionFactor;
-        return convertedValue;
-    };
-
     return function(value, fieldType, defaultValueIfEmpty, sportType)
     {
         if (_.isObject(value))
@@ -118,8 +111,6 @@ function(
                 return convertElevation(value);
             case "elevation":
                 return convertElevation(value);
-            case "speed":
-                return convertSpeedToViewUnits(value, sportType);
             case "pace":
                 return convertToPaceFromSpeed(value, true, sportType);
             case "paceUnFormatted":

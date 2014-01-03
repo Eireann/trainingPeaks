@@ -12,7 +12,8 @@ function(_, unitsConstants, workoutTypeUtils)
 
         miles:
         {
-            labels: {
+            label:
+            {
                 abbreviated: "mi",
                 unabbreviated: "miles"
             }
@@ -20,7 +21,8 @@ function(_, unitsConstants, workoutTypeUtils)
 
         kilometers:
         {
-            labels: {
+            label:
+            {
                 abbreviated: "km",
                 unabbreviated: "kilometers"
             }
@@ -28,7 +30,8 @@ function(_, unitsConstants, workoutTypeUtils)
 
         yards:
         {
-            labels: {
+            label:
+            {
                 abbreviated: "yds",
                 unabbreviated: "yards"
             }
@@ -43,11 +46,44 @@ function(_, unitsConstants, workoutTypeUtils)
                 yards: 1.0936133
             },
 
-            labels:
+            label:
             {
                 abbreviated: "m",
                 unabbreviated: "meters"  
             }
+        },
+
+        metersPerSecond:
+        {
+            conversions:
+            {
+                mph: 2.236936,
+                kph: 3.6,
+                metersPerMinute: 60,
+                yardsPerMinute: 1.0936133 * 60
+            },
+
+            label: "mps"
+        },
+
+        mph:
+        {
+            label: "mph"
+        },
+
+        kph:
+        {
+            label: "kph"
+        },
+
+        metersPerMinute:
+        {
+            label: "m/min"
+        },
+
+        yardsPerMinute:
+        {
+            label: "yds/min"
         },
 
         "pace":
@@ -72,26 +108,6 @@ function(_, unitsConstants, workoutTypeUtils)
                 English: (1 / 100) * 60,
                 Metric: (1 / 100) * 60
             }
-        },
-        "speed":
-        {
-            English: 2.236936,
-            Metric: 3.6,
-
-            Swim:
-            {
-                // convert meters per second to yards per / minute
-                English: 1.0936133 * 60,
-
-                // meters per second to meters per minute
-                Metric: 60
-            },
-            Rowing:
-            {
-                English:60,
-                Metric:60
-            }
-
         },
         "elevation":
         {
@@ -178,17 +194,17 @@ function(_, unitsConstants, workoutTypeUtils)
 
     var lookupUnitsLabels = function(baseUnits)
     {
-        if(!_.has(unitDefinitions, baseUnits) || !_.has(unitDefinitions[baseUnits], "labels"))
+        if(!_.has(unitDefinitions, baseUnits) || !_.has(unitDefinitions[baseUnits], "label"))
         {
             throw new Error("Invalid units for labels " + baseUnits);
         }
-        return unitDefinitions[baseUnits].labels;
+        return unitDefinitions[baseUnits].label;
     };
 
     return {
         lookupUserUnitsFactor: lookupUserUnitsFactor,
         lookupUnitsConversionFactor: lookupUnitsConversionFactor,
-        lookupUnitsLabels: lookupUnitsLabels,
+        lookupUnitslabel: lookupUnitsLabels,
         unitDefinitions: unitDefinitions
     };
 });

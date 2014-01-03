@@ -50,7 +50,31 @@ define(
                     Metric: "meters" 
                 }
             }
+        },
 
+        speed: {
+            unitsName: "speed",
+            min: 0,
+            max: 999,
+
+            units:
+            {
+                baseUnits: "metersPerSecond",
+                English: "mph",
+                Metric: "kph",
+
+                Swim:
+                {
+                    English: "yardsPerMinute",
+                    Metric: "metersPerMinute" 
+                },
+
+                Rowing:
+                {
+                    English: "metersPerMinute",
+                    Metric: "metersPerMinute" 
+                }
+            }
         }
     };
 

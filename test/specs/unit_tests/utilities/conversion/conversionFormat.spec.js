@@ -21,13 +21,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
     };
 
-    var describeFormatUnits = function(units, testValues)
+    var describeFormatUnits = function(units, testValues, options)
     {
         _.each(testValues, function(testValue)
         {
             it("conversion.formatUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
             {
-                expect(conversion.formatUnitsValue(units, testValue.input, testValue.options)).to.eql(testValue.output);
+                var formatOptions =  _.defaults({}, testValue.options, options);
+                expect(conversion.formatUnitsValue(units, testValue.input, formatOptions)).to.be.eql(testValue.output);
             });
         });
 
@@ -84,99 +85,215 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Distance", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("distance", [
+                    {
+                        output: "999999",
+                        input: 999999000 
+                    },
+                    {
+                        output: "999999",
+                        input: 10000000000
+                    },
+                    {
+                        output: "1.00",
+                        input: 1000 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        input: null,
+                        output: "",
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "99.9",
+                        input: 99888.88
+                    },
+                    {
+                        output: "9.99",
+                        input: 9988.89
+                    }
+                ]);
             });
 
-            describeFormatUnits("distance", [
+            describe("English", function()
+            {
+
+                describeFormatUnits("distance", [
+                    {
+                        output: "1",
+                        input: 1609
+                    },
+                    {
+                        output: "2",
+                        input: 3219
+                    },
+                    {
+                        output: "0",
+                        input: 0
+                    },
+                    {
+                        output: "0",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ],
                 {
-                    output: "999999",
-                    input: 999999000 
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English Swim", function()
+            {
+                describeFormatUnits("distance", [
+                    {
+                        output: "1000",
+                        input: 914.4
+                    }
+                ],
                 {
-                    output: "999999",
-                    input: 10000000000
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
+            describe("English Rowing", function()
+            {
+                describeFormatUnits("distance", [
+                    {
+                        output: "1000",
+                        input: 1000 
+                    }
+                ],
                 {
-                    output: "1.00",
-                    input: 1000 
-                },
-                {
-                    output: "0.00",
-                    input: 0
-                },
-                {
-                    input: null,
-                    output: "",
-                },
-                {
-                    input: "",
-                    output: ""
-                },
-                {
-                    output: "0.00",
-                    input: -1
-                },
-                {
-                    output: "99.9",
-                    input: 99888.88
-                },
-                {
-                    output: "9.99",
-                    input: 9988.89
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 12
+                });
+            });
         });
 
         describe("Speed", function()
         {
-
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("speed", [
+                    {
+                        output: "999",
+                        input: 277.5
+                    },
+                    {
+                        output: "999",
+                        input: 1000
+                    },
+                    {
+                        output: "9.97",
+                        input: 2.77
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ]);
             });
 
-            describeFormat("formatSpeed", [
+            describe("English", function()
+            {
+
+                describeFormatUnits("speed", [
+                    {
+                        output: "999",
+                        input: 446.5
+                    },
+                    {
+                        output: "999",
+                        input: 600
+                    },
+                    {
+                        output: "999",
+                        input: 446.5
+                    },
+                    {
+                        output: "10.0",
+                        input: 4.47 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ],
                 {
-                    output: "999",
-                    input: convertToModelUnits("999", "speed")
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English swim", function()
+            {
+                describeFormatUnits("speed", [
+                    {
+                        output: "999",
+                        input: 913.4 
+                    },
+                    {
+                        output: "999",
+                        input: 999
+                    },
+                    {
+                        output: "999",
+                        input: 1000
+                    },
+                    {
+                        output: "9.97",
+                        input: 0.152 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ],
                 {
-                    output: "999",
-                    input: convertToModelUnits("999.1", "speed")
-                },
-                {
-                    output: "999",
-                    input: convertToModelUnits("1000", "speed")
-                },
-                {
-                    output: "1.00",
-                    input: convertToModelUnits("1", "speed")
-                },
-                {
-                    output: "",
-                    input: null 
-                },
-                {
-                    input: "",
-                    output: ""
-                },
-                {
-                    output: "0.00",
-                    input: 0
-                },
-                {
-                    output: "99.9",
-                    input: convertToModelUnits(99.88888, "speed")
-                },
-                {
-                    output: "9.99",
-                    input: convertToModelUnits(9.988888, "speed")
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+            
         });
 
         describe("Pace, as metric user", function()
