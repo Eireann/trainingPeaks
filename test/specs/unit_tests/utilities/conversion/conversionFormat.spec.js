@@ -153,7 +153,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: ""
                 },
                 {
-                    output: "0",
+                    output: "0.00",
                     input: 0
                 },
                 {
