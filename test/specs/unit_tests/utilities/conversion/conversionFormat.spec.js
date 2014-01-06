@@ -438,7 +438,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Calories", function()
         {
 
-            describeFormat("formatCalories", [
+            describeFormatUnits("calories", [
                 {
                     input: "99999",
                     output: "99999"

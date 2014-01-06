@@ -448,7 +448,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Calories", function()
         {
-            describeParse("parseCalories", [
+            describeParseUnits("calories", [
                 {
                     input: "99999",
                     output: 99999 

@@ -29,6 +29,12 @@ define(
 
         _lookupConversionFactor: function(options)
         {
+
+            if(!options || !options.units)
+            {
+                return 1;
+            }
+
             var baseUnits = options.units.baseUnits;
             var userUnits = this._lookupUserUnitName(options);
             return modelToViewConversionFactors.lookupUnitsConversionFactor(baseUnits, userUnits);

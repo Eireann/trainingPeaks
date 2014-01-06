@@ -9,6 +9,9 @@ define(
     "./strategies/defaultUnitsFormatter",
     "./strategies/defaultUnitsLabeler",
 
+    "./strategies/integerParser",
+    "./strategies/integerFormatter",
+
     "./strategies/duration/durationUnitsParser",
     "./strategies/duration/durationUnitsFormatter",
     "./strategies/duration/durationUnitsEmptyValidator",
@@ -26,6 +29,9 @@ define(
     defaultUnitsLimiter,
     defaultUnitsFormatter,
     defaultUnitsLabeler,
+
+    integerParser,
+    integerFormatter,
 
     durationUnitsParser,
     durationUnitsFormatter,
@@ -141,6 +147,13 @@ define(
                     Metric: "secondsPerHundredMeters" 
                 }
             }
+        },
+
+        calories: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 99999
         }
 
     };

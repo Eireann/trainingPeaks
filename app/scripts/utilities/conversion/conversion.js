@@ -43,6 +43,7 @@
                 case "speed":
                 case "duration":
                 case "pace":
+                case "calories":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -112,6 +113,7 @@
                 case "speed":
                 case "duration":
                 case "pace":
+                case "calories":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -350,9 +352,6 @@
                 case "efficiencyfactor":
                     return conversion.formatEfficiencyFactor(value, options);
 
-                case "calories":
-                    return conversion.formatCalories(value, options);
-
                 case "mmHg":
                     if(_.isArray(value))
                     {
@@ -470,20 +469,6 @@
         parsePace: function(value, options)
         {
             return conversion.parseUnitsValue("pace", value, options);
-            /*
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-
-            var sportType = conversion._getMySportType(options);
-            var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
-            var rawTime = dateTimeConversion.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
-            var limitedTime = adjustFieldRange(rawTime, "pace");
-            var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
-            var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
-            return convertedPace;
-            */
         },
 
         formatSpeed: function(value, options)
@@ -509,6 +494,16 @@
         parseDuration: function(value, options)
         {
             return conversion.parseUnitsValue("duration", value, options);
+        },
+
+        formatCalories: function(value, options)
+        {
+            return conversion.formatUnitsValue("calories", value, options);
+        },
+
+        parseCalories: function(value, options)
+        {
+            return conversion.parseUnitsValue("calories", value, options);
         },
 
         // REFACTOR THESE:
@@ -778,29 +773,6 @@
         {
             var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, conversion._getMySportType(options));
             return convertedValue.toFixed(2);
-        },
-
-        formatCalories: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }
-            var numValue = Number(value);
-            var limitedValue = adjustFieldRange(numValue, "calories");
-            var formattedValue = conversion.formatInteger(limitedValue, options, 0);
-            return conversion.formatEmptyNumber(formattedValue, options);
-        },
-
-        parseCalories: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var intValue = conversion.parseInteger(value, options);
-            intValue = adjustFieldRange(intValue, "calories");
-            return intValue;
         },
 
         parseHeartRate: function(value, options)
