@@ -52,7 +52,14 @@ define(
             formatter: defaultUnitsFormatter,
             labeler: defaultUnitsLabeler
         },
-
+ 
+        calories: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 99999
+        },
+        
         distance: {
             min: 0,
             max: 999999,
@@ -93,30 +100,57 @@ define(
                 Metric: "hours"
             }
         },
+        
+        elevation: {
+            formatter: integerFormatter,
+            parser: integerParser,
 
-        speed: {
-            min: 0,
-            max: 999,
+            min: -15000,
+            max: 99999,
 
             units:
             {
-                baseUnits: "metersPerSecond",
-                English: "mph",
-                Metric: "kph",
-
-                Swim:
-                {
-                    English: "yardsPerMinute",
-                    Metric: "metersPerMinute" 
-                },
-
-                Rowing:
-                {
-                    English: "metersPerMinute",
-                    Metric: "metersPerMinute" 
-                }
+                baseUnits: "meters",
+                English: "feet",
+                Metric: "meters"
             }
+        },
 
+        elevationGain: {
+            formatter: integerFormatter,
+            parser: integerParser,
+
+            min: 0,
+            max: 99999,
+
+            units:
+            {
+                baseUnits: "meters",
+                English: "feet",
+                Metric: "meters"
+            }
+        },
+
+        elevationLoss: {
+            formatter: integerFormatter,
+            parser: integerParser,
+
+            min: 0,
+            max: 99999,
+
+            units:
+            {
+                baseUnits: "meters",
+                English: "feet",
+                Metric: "meters"
+            }
+        },
+
+        energy: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 99999
         },
 
         pace: {
@@ -149,65 +183,32 @@ define(
             }
         },
 
-        calories: {
-            formatter: integerFormatter,
-            parser: integerParser,
+        speed: {
             min: 0,
-            max: 99999
-        },
-
-        elevationGain: {
-            formatter: integerFormatter,
-            parser: integerParser,
-
-            min: 0,
-            max: 99999,
+            max: 999,
 
             units:
             {
-                baseUnits: "meters",
-                English: "feet",
-                Metric: "meters"
+                baseUnits: "metersPerSecond",
+                English: "mph",
+                Metric: "kph",
+
+                Swim:
+                {
+                    English: "yardsPerMinute",
+                    Metric: "metersPerMinute" 
+                },
+
+                Rowing:
+                {
+                    English: "metersPerMinute",
+                    Metric: "metersPerMinute" 
+                }
             }
-        },
 
-        elevationLoss: {
-            formatter: integerFormatter,
-            parser: integerParser,
-
-            min: 0,
-            max: 99999,
-
-            units:
-            {
-                baseUnits: "meters",
-                English: "feet",
-                Metric: "meters"
-            }
-        },
-        
-        elevation: {
-            formatter: integerFormatter,
-            parser: integerParser,
-
-            min: -15000,
-            max: 99999,
-
-            units:
-            {
-                baseUnits: "meters",
-                English: "feet",
-                Metric: "meters"
-            }
-        },
-
-        energy: {
-            formatter: integerFormatter,
-            parser: integerParser,
-            min: 0,
-            max: 99999
         }
-        
+
+
     };
 
     return {
