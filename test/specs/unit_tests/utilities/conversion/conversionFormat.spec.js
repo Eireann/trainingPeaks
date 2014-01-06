@@ -39,13 +39,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Duration", function()
         {
 
-            beforeEach(function()
-            {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            describeFormat("formatDuration", [
+            describeFormatUnits("duration", [
                 {
                     input: -1,
                     output: "0:00:00"
@@ -132,19 +126,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
                 describeFormatUnits("distance", [
                     {
-                        output: "1",
+                        output: "1.00",
                         input: 1609
                     },
                     {
-                        output: "2",
+                        output: "2.00",
                         input: 3219
                     },
                     {
-                        output: "0",
+                        output: "0.00",
                         input: 0
                     },
                     {
-                        output: "0",
+                        output: "0.00",
                         input: -1
                     },
                     {
@@ -299,44 +293,34 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Pace, as metric user", function()
         {
 
-            beforeEach(function()
-            {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            describeFormat("formatPace", [
+            describeFormatUnits("pace", [
                 {
                     output: "1:39:59",
-                    input: conversion.parsePace("00:99:59")
+                    input: 0.16669444907484582 // 00:99:59
                 },
                 {
                     output: "00:01",
-                    input: conversion.parsePace("00:00:01")
+                    input: 1000 // 00:00:01
+                },
+                {
+                    output: "00:01",
+                    input: 2000 // < 00:00:01
                 },
                 {
                     output: "99:59:59",
-                    input: conversion.parsePace("99:59:59")
+                    input: 0.0027777854938485945 // 99:59:59
                 },
                 {
                     output: "99:59:58",
-                    input: conversion.parsePace("99:59:58")
-                },
-                {
-                    output: "99:59:59",
-                    input: conversion.parsePace("99:59:59.99")
+                    input: 0.0027777932099622774 // 99:59:58
                 },
                 {
                     output: "01:00",
-                    input: conversion.parsePace("::59.99")
-                },
-                {
-                    output: "00:01",
-                    input: conversion.parsePace("::0.99")
+                    input: 16.666666666666664 // ::59.99
                 },
                 {
                     output: "99:59:59",
-                    input: conversion.parsePace("100:00:00")
+                    input: 0.002 // > 99:59:59 
                 },
                 {
                     output: "",

@@ -41,11 +41,12 @@
             {
                 case "distance":
                 case "speed":
+                case "duration":
+                case "pace":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
 
-                case "duration":
                 case "minutes":
                 case "seconds":
                 case "milliseconds":
@@ -55,7 +56,6 @@
                 case "powerbalance":
                 case "latitude":
                 case "longitude":
-                case "pace":
                 case "elevation":
 
                     // if the input is null or empty string, return empty string or other default value
@@ -72,10 +72,11 @@
                     var limitedValue = conversion._adjustFieldRange(units, convertedValue);
 
                     // format it
-                    string = conversion._formatNumberForView(units, limitedValue, options);
+                    string = conversion.formatEmptyNumber(conversion._formatNumberForView(units, limitedValue, options), options);
                     break;
 
                 default:
+
                     string = conversion._formatUnitsValueOld(units, value, options);
                     break;
             }
@@ -109,6 +110,8 @@
 
                 case "distance":
                 case "speed":
+                case "duration":
+                case "pace":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -124,12 +127,6 @@
             {
                 case "elevation":
                     return conversion.parseElevation(value, options);
-
-                case "pace":
-                    return conversion.parsePace(value, options);
-
-                case "duration":
-                    return conversion.parseDuration(value, options);
 
                 case "number":
                     return conversion.parseNumber(value, options);
@@ -187,7 +184,6 @@
                 "elevation",
                 "speed",
                 "distance",
-                "pace",
                 "paceUnFormatted",
                 "temperature",
                 "torque",
@@ -199,8 +195,6 @@
 
             switch(units)
             {
-                case "pace":
-                    return convertToViewUnits(value, "paceUnFormatted", undefined, sportType) / 60;
 
                 case "milliseconds":
                     return (Number(value) / 1000) / 3600;
@@ -473,6 +467,25 @@
             return conversion.formatUnitsValue("pace", value, options);
         },        
 
+        parsePace: function(value, options)
+        {
+            return conversion.parseUnitsValue("pace", value, options);
+            /*
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.getDefaultValueForParse(options);
+            }
+
+            var sportType = conversion._getMySportType(options);
+            var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
+            var rawTime = dateTimeConversion.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
+            var limitedTime = adjustFieldRange(rawTime, "pace");
+            var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
+            var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
+            return convertedPace;
+            */
+        },
+
         formatSpeed: function(value, options)
         {
             return conversion.formatUnitsValue("speed", value, options);
@@ -493,18 +506,12 @@
             return conversion.parseUnitsValue("speed", value, options);
         }, 
 
-        // REFACTOR THESE:
         parseDuration: function(value, options)
         {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var modelValue = dateTimeConversion.timeToDecimalHours(value);
-            modelValue = adjustFieldRange(modelValue, "duration");
-            return modelValue;
+            return conversion.parseUnitsValue("duration", value, options);
         },
 
+        // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
             var hours = conversion.parseDuration(value, options);
@@ -521,23 +528,6 @@
             var modelValue = conversion.parseInteger(value, options);
             modelValue = adjustFieldRange(modelValue, "power");
             return modelValue;
-        },
-
-        parsePace: function(value, options)
-        {
-
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-
-            var sportType = conversion._getMySportType(options);
-            var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
-            var rawTime = dateTimeConversion.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
-            var limitedTime = adjustFieldRange(rawTime, "pace");
-            var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
-            var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
-            return convertedPace;
         },
 
         parseElevation: function(value, options)

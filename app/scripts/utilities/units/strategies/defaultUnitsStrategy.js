@@ -17,6 +17,7 @@ define(
             limiter = function that limits a number to a min/max value
             converter = function that converts a value from one unit to another
             formatter = function that formats a value for display
+            parser = function that parses string input to number
             labeler = function that returns a label
 
             workoutTypeId,
@@ -26,75 +27,83 @@ define(
         this._validateOptions(options);
         this.options = options;
 
-        this._limiter = options.limiter;
-        this._converter = options.converter;
-        this._formatter = options.formatter;
-        this._labeler = options.labeler;
+        this.limiter = options.limiter;
+        this.converter = options.converter;
+        this.formatter = options.formatter;
+        this.labeler = options.labeler;
+
+        this.parser = options.parser || null;
+        this.emptyValidator = options.emptyValidator || this._hasValue;
     }
 
-    _.extend(DefaultUnitsStrategy.prototype, {
+    DefaultUnitsStrategy.extend = Backbone.Marionette.extend;
 
-        extend: Backbone.Marionette.extend,
+    _.extend(DefaultUnitsStrategy.prototype, {
 
         formatValue: function(value)
         {
 
             // if the input is null or empty string, return empty string or other default value
-            if(!this._hasValue(value))
+            if(!this.emptyValidator(value))
             {
                 return this._getDefaultValueForFormat();
             }           
 
             // convert to user/view units
-            var convertedValue = this._converter.convertToViewUnits(value, this.options);
+            var convertedValue = this.converter.convertToViewUnits(value, this.options);
 
             // limit if necessary
-            var limitedValue = this._limiter(convertedValue, this.options);
+            var limitedValue = this.limiter(convertedValue, this.options);
 
             // format it
-            var output = this._formatter(limitedValue, this.options);
+            var output = this.formatter(limitedValue, this.options);
 
             // add a units label
             if(this.options.withLabel)
             {
-                output += " " + this._labeler(this.options);
+                output += " " + this.labeler(this.options);
             }
 
             return output;
         },
 
-
         parseValue: function(value)
         {
 
             // if the input is null or empty string, return empty string or other default value
-            if(!this._hasValue(value))
+            if(!this.emptyValidator(value))
             {
                 return this._getDefaultValueForParse();
             }
 
+            // parse if necessary - i.e. for duration/pace or other formatted strings
+            if(this.parser)
+            {
+                value = this.parser(value, this.options);
+            }
+
             // limit if necessary
-            var limitedValue = this._limiter(value, this.options);
+            var limitedValue = this.limiter(value, this.options);
 
             // convert to model units
-            var convertedValue = this._converter.convertToModelUnits(limitedValue, this.options);
+            var convertedValue = this.converter.convertToModelUnits(limitedValue, this.options);
 
             return convertedValue;
         },
 
         getLabel: function()
         {
-            return this._labeler(this.options);
+            return this.labeler(this.options);
         },
 
         getLabelShort: function()
         {
-            return this._labeler(_.defaults({abbreviated: true}, this.options));
+            return this.labeler(_.defaults({abbreviated: true}, this.options));
         },
 
         getLabelLong: function()
         {
-            return this._labeler(_.defaults({abbreviated: false}, this.options));
+            return this.labeler(_.defaults({abbreviated: false}, this.options));
         },
 
         _hasValue: function(value)

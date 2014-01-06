@@ -29,7 +29,8 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
             it("conversion.parseUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
             {
                 var parseOptions =  _.defaults({}, testValue.options, options);
-                expect(conversion.parseUnitsValue(units, testValue.input, parseOptions)).to.be.closeTo(testValue.output, 0.5);
+                var marginOfError = testValue.marginOfError || 0.5;
+                expect(conversion.parseUnitsValue(units, testValue.input, parseOptions)).to.be.closeTo(testValue.output, marginOfError);
             });
         });
 
@@ -88,13 +89,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Duration", function()
         {
 
-            beforeEach(function()
-            {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            describeParse("parseDuration", [
+            describeParseUnits("duration", [
                 {
                     input: "-1:00:00",
                     output: 0
@@ -335,34 +330,35 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Pace", function()
         {
 
-            describeParse("parsePace", [
+            describeParseUnits("pace", [
                 {
                     input: "00:00:00",
-                    output: convertToModelUnits("00:00:01", "pace")
+                    output: 1000 
                 },
                 {
                     input: "00:00:01",
-                    output: convertToModelUnits("00:00:01", "pace")
+                    output: 1000 
                 },
                 {
                     input: "99:59",
-                    output: convertToModelUnits("00:99:59", "pace")
+                    output: 0.1666944,
+                    marginOfError: 0.001
                 },
                 {
                     input: "99:59:59",
-                    output: convertToModelUnits("99:59:59", "pace")
+                    output: 0.00276
                 },
                 {
                     input: "99:59:59.99",
-                    output: convertToModelUnits("99:59:59", "pace")
+                    output: 0.00276
                 },
                 {
                     input: "::0.99",
-                    output: convertToModelUnits("0:0:01", "pace")
+                    output: 1000
                 },
                 {
                     input: "100:00:00",
-                    output: convertToModelUnits("99:59:59", "pace")
+                    output: 0.00276
                 },
                 {
                     input: "",

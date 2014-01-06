@@ -7,20 +7,40 @@ define(
     "./strategies/defaultUnitsConverter",
     "./strategies/defaultUnitsLimiter",
     "./strategies/defaultUnitsFormatter",
-    "./strategies/defaultUnitsLabeler"
+    "./strategies/defaultUnitsLabeler",
+
+    "./strategies/duration/durationUnitsParser",
+    "./strategies/duration/durationUnitsFormatter",
+    "./strategies/duration/durationUnitsEmptyValidator",
+
+    "./strategies/pace/paceUnitsParser",
+    "./strategies/pace/paceUnitsConverter",
+    "./strategies/pace/paceUnitsFormatter"
+
 ], function(
     _,
+
     DefaultUnitsStrategy,
+
     defaultUnitsConverter,
     defaultUnitsLimiter,
     defaultUnitsFormatter,
-    defaultUnitsLabeler
+    defaultUnitsLabeler,
+
+    durationUnitsParser,
+    durationUnitsFormatter,
+    durationUnitsEmptyValidator,
+
+    paceUnitsParser,
+    paceUnitsConverter,
+    paceUnitsFormatter
 ) {
 
     var defaultUnitOptions = {
 
         defaults: {
             workoutTypeId: 0,
+            strategy: DefaultUnitsStrategy,
             converter: defaultUnitsConverter,
             limiter: defaultUnitsLimiter,
             formatter: defaultUnitsFormatter,
@@ -28,7 +48,6 @@ define(
         },
 
         distance: {
-            unitsName: "distance",
             min: 0,
             max: 999999,
 
@@ -52,8 +71,24 @@ define(
             }
         },
 
+        duration: {
+
+            formatter: durationUnitsFormatter,
+            parser: durationUnitsParser,
+            emptyValidator: durationUnitsEmptyValidator,
+
+            max: 99 + (59 / 60) + (59 / 3600), // 99:59:59
+            min: 0,
+
+            units:
+            {
+                baseUnits: "hours",
+                English: "hours",
+                Metric: "hours"
+            }
+        },
+
         speed: {
-            unitsName: "speed",
             min: 0,
             max: 999,
 
@@ -75,7 +110,39 @@ define(
                     Metric: "metersPerMinute" 
                 }
             }
+
+        },
+
+        pace: {
+
+            converter: paceUnitsConverter,
+            formatter: paceUnitsFormatter,
+            parser: paceUnitsParser,
+            emptyValidator: durationUnitsEmptyValidator,
+
+            min: 1 / (60 * 60), // 00:00:01
+            max: 99 + (59 / 60) + (59 / 3600), // 99:59:59
+
+            units:
+            {
+                baseUnits: "metersPerSecond",
+                English: "mph", // formatted as minutes per mile
+                Metric: "kph", // formatted as minutes per km
+
+                Swim:
+                {
+                    English: "secondsPerHundredYards",
+                    Metric: "secondsPerHundredMeters" 
+                },
+
+                Rowing:
+                {
+                    English: "secondsPerHundredMeters",
+                    Metric: "secondsPerHundredMeters" 
+                }
+            }
         }
+
     };
 
     return {
@@ -93,11 +160,11 @@ define(
                     strategyOptions.userUnits = theMarsApp.user.getUnitsBySportType(strategyOptions.workoutTypeId);
                 }
 
-                return new DefaultUnitsStrategy(strategyOptions);
+                return new strategyOptions.strategy(strategyOptions);
             }
             else
             {
-                throw new Error("Unknown units for unitsStrategyBuilder: " + units);
+                throw new Error("Unknown units for unitsStrategyFactory: " + units);
             }
         }
 

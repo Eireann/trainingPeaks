@@ -155,16 +155,6 @@ function(
                 expect(TP.utils.units.getUnitsLabel("pace", 12)).to.equal("sec/100m");
             });
 
-            it("should return the unit label for speed", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("speed")).to.equal("mph");
-            });
-
-            it("should return the unit label for speed for rowing", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("speed", 12)).to.equal("m/min");
-            });
-
             it("should return the unit label for cadence", function()
             {
                 expect(TP.utils.units.getUnitsLabel("cadence")).to.equal("rpm");
@@ -321,11 +311,6 @@ function(
                 expect(TP.utils.units.getUnitsLabel("pace", swimTypeId)).to.equal("sec/100y");
             });
 
-            it("should return the unit label for speed", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("speed", swimTypeId)).to.equal("yds/min");
-            });
-
         });
 
         describe("TP.utils.units.getUnitsLabel, for swim workouts in metric units", function()
@@ -359,11 +344,6 @@ function(
                 expect(TP.utils.units.getUnitsLabel("pace", swimTypeId)).to.equal("sec/100m");
             });
 
-            it("should return the unit label for speed", function()
-            {
-                expect(TP.utils.units.getUnitsLabel("speed", swimTypeId)).to.equal("m/min");
-            });
-
         });
 
         describe("convertToViewUnits template helper, for swim workouts in english units", function()
@@ -386,12 +366,6 @@ function(
                 expect(convertToViewUnits(5, "pace", undefined, swimTypeId)).to.equal("00:18");
 
             });
-
-            it("Should convert a speed in meters per second to yards per minute, properly formatted", function()
-            {
-                expect(convertToViewUnits(1, "speed", undefined, swimTypeId)).to.be.closeTo(65.6, Math.pow(10, -1) / 2);
-                expect(convertToViewUnits(5, "speed", undefined, swimTypeId)).to.be.closeTo(328, Math.pow(10, -0) / 2);
-            });
             
         });
 
@@ -410,12 +384,6 @@ function(
                 expect(convertToViewUnits(5, "pace", undefined, swimTypeId)).to.equal("00:20");
 
             });
-
-            it("Should convert a speed in meters per second to meters per minute", function()
-            {
-                expect(convertToViewUnits(1, "speed", undefined, swimTypeId)).to.equal(60);
-                expect(convertToViewUnits(5, "speed", undefined, swimTypeId)).to.equal(300);
-            });
             
         });
 
@@ -425,11 +393,6 @@ function(
             {
                 expect(convertToViewUnits(1, "pace", undefined, 12)).to.equal("01:40");
                 expect(convertToViewUnits(5, "pace", undefined, 12)).to.equal("00:20");
-            });
-            it("Should convert a speed in meters per second to meters per minute", function()
-            {
-                expect(convertToViewUnits(1, "speed", undefined, 12)).to.equal(60);
-                expect(convertToViewUnits(5, "speed", undefined, 12)).to.equal(300);
             });
         });
 
@@ -453,12 +416,6 @@ function(
                 expect(convertToModelUnits("00:18", "pace", swimTypeId)).to.be.closeTo(5, Math.pow(10, -0) / 2);
 
             });
-
-            it("Should convert a speed in yards per minute to meters per second", function()
-            {
-                expect(convertToModelUnits("65.6", "speed", swimTypeId)).to.be.closeTo(1, Math.pow(10, -0) / 2);
-                expect(convertToModelUnits("328", "speed", swimTypeId)).to.be.closeTo(5, Math.pow(10, -0) / 2);
-            });
  
         });
 
@@ -480,12 +437,6 @@ function(
                 expect(convertToModelUnits("01:40", "pace", 12)).to.be.closeTo(1, Math.pow(10, -0) / 2);
                 expect(convertToModelUnits("00:20", "pace", 12)).to.be.closeTo(5, Math.pow(10, -0) / 2);
             });
-
-            it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
-            {
-                expect(convertToModelUnits(60, "speed", 12)).to.equal(1);
-                expect(convertToModelUnits(300, "speed", 12)).to.equal(5);
-            });
  
         });
 
@@ -504,12 +455,6 @@ function(
                 expect(convertToModelUnits("01:40", "pace", swimTypeId)).to.be.closeTo(1, Math.pow(10, -0) / 2);
                 expect(convertToModelUnits("00:20", "pace", swimTypeId)).to.be.closeTo(5, Math.pow(10, -0) / 2);
 
-            });
-
-            it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
-            {
-                expect(convertToModelUnits(60, "speed", swimTypeId)).to.equal(1);
-                expect(convertToModelUnits(300, "speed", swimTypeId)).to.equal(5);
             });
             
         });

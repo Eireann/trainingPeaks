@@ -60,7 +60,9 @@ function(_, unitsConstants, workoutTypeUtils)
                 mph: 2.236936,
                 kph: 3.6,
                 metersPerMinute: 60,
-                yardsPerMinute: 1.0936133 * 60
+                yardsPerMinute: 1.0936133 * 60,
+                secondsPerHundredYards: (1.0936133 / 100) * 60,
+                secondsPerHundredMeters: (1 / 100) * 60
             },
 
             label: "mps"
@@ -86,29 +88,17 @@ function(_, unitsConstants, workoutTypeUtils)
             label: "yds/min"
         },
 
-        "pace":
+        hours:
         {
-            // yards per second
-            English: 2.236936 / 60,
+            label: "hms",
 
-            // meters per second
-            Metric: 3.6 / 60,
-
-            Swim:
+            conversion:
             {
-                // convert meters per second to yards per 100 seconds, as a minute value
-                English: (1.0936133 / 100) * 60,
-
-                // meters per second to meters per 100 seconds, as a minute value
-                Metric: (1 / 100) * 60
-            },
-
-            Rowing:
-            {
-                English: (1 / 100) * 60,
-                Metric: (1 / 100) * 60
+                minutes: 60,
+                seconds: 3600
             }
         },
+
         "elevation":
         {
             English: 3.28084,

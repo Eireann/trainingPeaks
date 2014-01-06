@@ -9,6 +9,8 @@ define(
         options:
             min
             max
+
+        note: in most cases, what we're limiting is the View value, not the Model value
     */
     return function(value, options)
     {
