@@ -290,47 +290,149 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
             
         });
 
-        describe("Pace, as metric user", function()
+        describe("Pace", function()
         {
 
-            describeFormatUnits("pace", [
+            describe("Metric", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "1:39:59",
+                        input: 0.16669444907484582 // 00:99:59
+                    },
+                    {
+                        output: "00:01",
+                        input: 1000 // 00:00:01
+                    },
+                    {
+                        output: "00:01",
+                        input: 2000 // < 00:00:01
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.0027777854938485945 // 99:59:59
+                    },
+                    {
+                        output: "99:59:58",
+                        input: 0.0027777932099622774 // 99:59:58
+                    },
+                    {
+                        output: "01:00",
+                        input: 16.666666666666664 // ::59.99
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.002 // > 99:59:59 
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "1:39:59",
+                        input: 0.2682687464770762 // 00:99:59
+                    },
+                    {
+                        output: "00:01",
+                        input: 1609.34421011598 // 00:00:01
+                    },
+                    {
+                        output: "00:01",
+                        input: 2000 // < 00:00:01
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.0044704130014693935 // 99:59:59
+                    },
+                    {
+                        output: "99:59:58",
+                        input: 0.0044704254193522735 // 99:59:58
+                    },
+                    {
+                        output: "01:00",
+                        input: 26.822403501933 // ::59.99
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.0001 // > 99:59:59 
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    output: "1:39:59",
-                    input: 0.16669444907484582 // 00:99:59
-                },
+                    userUnits: TP.utils.units.constants.English,
+                });
+            });
+
+            describe("English Swim", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "01:31",
+                        input: 1 
+                    },
+                    {
+                        output: "00:18",
+                        input: 5 
+                    }
+                ],
                 {
-                    output: "00:01",
-                    input: 1000 // 00:00:01
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
+            describe("English Row, should remain in meters", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "01:40",
+                        input: 1 
+                    },
+                    {
+                        output: "00:20",
+                        input: 5 
+                    }
+                ],
                 {
-                    output: "00:01",
-                    input: 2000 // < 00:00:01
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 12
+                });
+            });
+
+            describe("Metric Swim", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "01:40",
+                        input: 1 
+                    },
+                    {
+                        output: "00:20",
+                        input: 5 
+                    }
+                ],
                 {
-                    output: "99:59:59",
-                    input: 0.0027777854938485945 // 99:59:59
-                },
-                {
-                    output: "99:59:58",
-                    input: 0.0027777932099622774 // 99:59:58
-                },
-                {
-                    output: "01:00",
-                    input: 16.666666666666664 // ::59.99
-                },
-                {
-                    output: "99:59:59",
-                    input: 0.002 // > 99:59:59 
-                },
-                {
-                    output: "",
-                    input: null
-                },
-                {
-                    input: "",
-                    output: ""
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.Metric,
+                    workoutTypeId: 1
+                });
+            });
         });
 
         describe("Calories", function()

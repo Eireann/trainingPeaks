@@ -61,8 +61,8 @@ function(_, unitsConstants, workoutTypeUtils)
                 kph: 3.6,
                 metersPerMinute: 60,
                 yardsPerMinute: 1.0936133 * 60,
-                secondsPerHundredYards: (1.0936133 / 100) * 60,
-                secondsPerHundredMeters: (1 / 100) * 60
+                secondsPerHundredYards: (1.0936133 / 100) * 60 * 60,
+                secondsPerHundredMeters: (1 / 100) * 60 * 60
             },
 
             label: "mps"

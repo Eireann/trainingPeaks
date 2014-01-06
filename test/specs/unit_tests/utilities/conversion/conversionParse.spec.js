@@ -330,41 +330,120 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Pace", function()
         {
 
-            describeParseUnits("pace", [
+            describe("Metric", function()
+            {
+                describeParseUnits("pace", [
+                    {
+                        input: "00:00:00",
+                        output: 1000 
+                    },
+                    {
+                        input: "00:00:01",
+                        output: 1000 
+                    },
+                    {
+                        input: "99:59",
+                        output: 0.1666944,
+                        marginOfError: 0.001
+                    },
+                    {
+                        input: "99:59:59",
+                        output: 0.00276
+                    },
+                    {
+                        input: "99:59:59.99",
+                        output: 0.00276
+                    },
+                    {
+                        input: "::0.99",
+                        output: 1000
+                    },
+                    {
+                        input: "100:00:00",
+                        output: 0.00276
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeParseUnits("pace", [
+                    {
+                        input: "00:00:00",
+                        output: 1609 
+                    },
+                    {
+                        input: "00:00:01",
+                        output: 1609
+                    },
+                    {
+                        input: "35:20",
+                        output: 0.759,
+                        marginOfError: 0.01
+                    }
+                ],
                 {
-                    input: "00:00:00",
-                    output: 1000 
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English Swim", function()
+            {
+                describeParseUnits("pace", [
+                    {
+                        input: "01:31",
+                        output: 1 
+                    },
+                    {
+                        input: "00:18",
+                        output: 5 
+                    }
+                ],
                 {
-                    input: "00:00:01",
-                    output: 1000 
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
+            describe("English Row, should remain in meters", function()
+            {
+                describeParseUnits("pace", [
+                    {
+                        input: "01:40",
+                        output: 1 
+                    },
+                    {
+                        input: "00:20",
+                        output: 5 
+                    }
+                ],
                 {
-                    input: "99:59",
-                    output: 0.1666944,
-                    marginOfError: 0.001
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 12
+                });
+            });
+
+            describe("Metric Swim", function()
+            {
+                describeParseUnits("pace", [
+                    {
+                        input: "01:40",
+                        output: 1 
+                    },
+                    {
+                        input: "00:20",
+                        output: 5 
+                    }
+                ],
                 {
-                    input: "99:59:59",
-                    output: 0.00276
-                },
-                {
-                    input: "99:59:59.99",
-                    output: 0.00276
-                },
-                {
-                    input: "::0.99",
-                    output: 1000
-                },
-                {
-                    input: "100:00:00",
-                    output: 0.00276
-                },
-                {
-                    input: "",
-                    output: null
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.Metric,
+                    workoutTypeId: 1
+                });
+            });
         });
 
         describe("Calories", function()
