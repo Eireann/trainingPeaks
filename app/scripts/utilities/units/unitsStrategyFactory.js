@@ -157,6 +157,15 @@ define(
             max: 99999
         },
 
+        "if": {
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 2,
+
+            min: 0,
+            max: 99
+        },
+
         pace: {
 
             converter: paceUnitsConverter,

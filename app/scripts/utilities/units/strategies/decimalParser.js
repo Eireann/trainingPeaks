@@ -9,7 +9,7 @@ define(
 
     return function(value, options)
     {
-        return parseFloat(value);
+        return Number(parseFloat(value).toFixed(options.precision ? options.precision : 2));
     };
 
 });

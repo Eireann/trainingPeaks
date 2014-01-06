@@ -742,7 +742,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("IF", function()
         {
-            describeFormat("formatIF", [
+            describeFormatUnits("if", [
                 {
                     input: "99",
                     output: "99.00"
@@ -765,7 +765,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: "0"
+                    output: "0.00"
                 },
                 {
                     input: "0.234",
@@ -773,7 +773,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "-1",
-                    output: "0"
+                    output: "0.00"
                 },
                 {
                     input: null,

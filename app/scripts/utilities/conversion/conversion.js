@@ -49,6 +49,7 @@
                 case "elevationLoss":
                 case "energy":
                 case "tss":
+                case "if":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -123,6 +124,7 @@
                 case "elevationLoss":
                 case "energy":
                 case "tss":
+                case "if":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -171,9 +173,6 @@
 
                 case "date":
                     return conversion.parseDate(value, options);
-
-                case "if":
-                    return conversion.parseIF(value, options);
 
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
@@ -305,9 +304,6 @@
 
                 case "temperature":
                     return conversion.formatTemperature(value, options);
-
-                case "if":
-                    return conversion.formatIF(value, options);
 
                 case "tsb":
                     return conversion.formatTSB(value, options);
@@ -531,6 +527,16 @@
             return conversion.parseUnitsValue("tss", value, options);
         },
 
+        formatIF: function(value, options)
+        {
+            return conversion.formatUnitsValue("if", value, options);
+        },
+
+        parseIF: function (value, options)
+        {
+            return conversion.parseUnitsValue("if", value, options);
+        },
+
         // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
@@ -614,22 +620,6 @@
         formatWorkoutType: function(value, options)
         {
             return workoutTypes.getNameById(value);
-        },
-
-        formatIF: function(value, options)
-        {
-            var numValue = Number(value);
-            var limitedValue = adjustFieldRange(numValue, "IF");
-            return conversion.formatEmptyNumber(limitedValue.toFixed(2), options);
-        },
-
-        parseIF: function (value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            return adjustFieldRange(Number(value).toFixed(2), "IF");
         },
 
         formatTSB: function(value, options)

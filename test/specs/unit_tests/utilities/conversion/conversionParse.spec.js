@@ -710,7 +710,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("IF", function()
         {
-            describeParse("parseIF", [
+            describeParseUnits("if", [
                 {
                     input: "99",
                     output: 99
