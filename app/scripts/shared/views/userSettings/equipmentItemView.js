@@ -36,7 +36,7 @@ function(
         onRender: function() {
             this.$(".datepicker").datepicker(
             {
-                dateFormat: TP.utils.datetime.format.getFormatForDatepicker(),
+                dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(),
                 firstDay: CalendarUtility.startOfWeek
             });
 
