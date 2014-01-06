@@ -547,7 +547,7 @@
             &.crankLength,
             &.maxDistance {
                 .fieldTitle {
-                    font-family: $fontFamilyRegularItalic;
+                   // font-family: $fontFamilyRegularItalic;
                 }
             }
 
@@ -609,7 +609,7 @@
                         }
                     }
                 }
-
+                
                 &.athleteTypeGender {
                     .selectBox {
                         &.athleteType {
@@ -743,8 +743,8 @@
         }
 
         input[type="text"], textarea {
-            width:632px;
-            height:20px;
+            width: 632px;
+            height: 22px;
             float: left;
         }
 
@@ -757,6 +757,29 @@
         .equipmentItem {
             float: left;
             margin-bottom: 25px;
+
+            .equipLeftCol {
+                float: left;
+                width: 436px;
+
+                input[type="text"] {
+                    width: 311px;
+                }
+            }
+
+            .equipRightCol {
+                float: left;
+                width: 311px;
+                margin-left: 10px;
+
+                textarea {
+                    width: 100%;
+                }
+            }
+
+            .removeButton {
+                clear: left;       
+            }
 
             .fieldContain {
                 input[type="checkbox"] {
