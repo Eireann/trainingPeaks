@@ -55,7 +55,7 @@
 {{/ifEquals}}
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Total Distance" }}</label>
-    <input readonly type="text" name="actualDistance" data-format="units:distance" />
+    <span class="actualDistance value">{{#ifNot actualDistance}}0{{else}}{{formatUnitsValue "distance" actualDistance}}{{/ifNot}}</span>&nbsp;<span class="actualDistanceUnit units">{{ getUnitsLabel "distance" }}</span>
 </div>
 <div class="fieldContain">
     <label class="fieldTitle">{{$ "Notes" }}</label>
