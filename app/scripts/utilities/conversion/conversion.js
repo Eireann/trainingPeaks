@@ -48,6 +48,7 @@
                 case "elevationGain":
                 case "elevationLoss":
                 case "energy":
+                case "tss":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -121,6 +122,7 @@
                 case "elevationGain":
                 case "elevationLoss":
                 case "energy":
+                case "tss":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -169,9 +171,6 @@
 
                 case "date":
                     return conversion.parseDate(value, options);
-
-                case "tss":
-                    return conversion.parseTSS(value, options);
 
                 case "if":
                     return conversion.parseIF(value, options);
@@ -237,15 +236,6 @@
         {
             switch(units)
             {
-                case "distance":
-                case "speed":
-                    return threeSigFig(value);
-
-                case "duration":
-                    return new DateTimeFormatter().decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
-
-                case "pace":
-                    return new DateTimeFormatter().decimalMinutesAsTime(value * 60, true);
 
                 case "hours":
                     return Math.round(value);
@@ -318,9 +308,6 @@
 
                 case "if":
                     return conversion.formatIF(value, options);
-
-                case "tss":
-                    return conversion.formatTSS(value, options);
 
                 case "tsb":
                     return conversion.formatTSB(value, options);
@@ -533,7 +520,17 @@
         {
             return conversion.parseUnitsValue("energy");
         },
-        
+
+        formatTSS: function(value, options)
+        {
+            return conversion.formatUnitsValue("tss", value, options);
+        },
+
+        parseTSS: function(value, options)
+        {
+            return conversion.parseUnitsValue("tss", value, options);
+        },
+
         // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
@@ -633,27 +630,6 @@
                 return conversion.getDefaultValueForParse(options);
             }
             return adjustFieldRange(Number(value).toFixed(2), "IF");
-        },
-
-        formatTSS: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }
-
-            var numValue = Number(value);
-            var limitedValue = adjustFieldRange(numValue, "TSS");
-            return limitedValue.toFixed(1);
-        },
-
-        parseTSS: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            return adjustFieldRange(Number(value).toFixed(1), "TSS");
         },
 
         formatTSB: function(value, options)

@@ -692,7 +692,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("TSS", function()
         {
-            describeFormat("formatTSS", [
+            describeFormatUnits("tss", [
                 {
                     input: "9999",
                     output: "9999.0"

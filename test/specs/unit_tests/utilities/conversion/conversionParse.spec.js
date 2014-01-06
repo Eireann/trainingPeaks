@@ -668,7 +668,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("TSS", function()
         {
-            describeParse("parseTSS", [
+            describeParseUnits("tss", [
                 {
                     input: "9999",
                     output: 9999

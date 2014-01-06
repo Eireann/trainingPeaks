@@ -6,11 +6,13 @@ define(
 
     "./strategies/defaultUnitsConverter",
     "./strategies/defaultUnitsLimiter",
-    "./strategies/defaultUnitsFormatter",
     "./strategies/defaultUnitsLabeler",
 
     "./strategies/integerParser",
     "./strategies/integerFormatter",
+    "./strategies/decimalParser",
+    "./strategies/decimalFormatter",
+    "./strategies/threeFiguresFormatter",
 
     "./strategies/duration/durationUnitsParser",
     "./strategies/duration/durationUnitsFormatter",
@@ -27,11 +29,13 @@ define(
 
     defaultUnitsConverter,
     defaultUnitsLimiter,
-    defaultUnitsFormatter,
     defaultUnitsLabeler,
 
     integerParser,
     integerFormatter,
+    decimalParser,
+    decimalFormatter,
+    threeFiguresFormatter,
 
     durationUnitsParser,
     durationUnitsFormatter,
@@ -49,7 +53,7 @@ define(
             strategy: DefaultUnitsStrategy,
             converter: defaultUnitsConverter,
             limiter: defaultUnitsLimiter,
-            formatter: defaultUnitsFormatter,
+            formatter: threeFiguresFormatter,
             labeler: defaultUnitsLabeler
         },
  
@@ -100,7 +104,7 @@ define(
                 Metric: "hours"
             }
         },
-        
+
         elevation: {
             formatter: integerFormatter,
             parser: integerParser,
@@ -206,8 +210,16 @@ define(
                 }
             }
 
-        }
+        },
 
+        tss: {
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 1,
+
+            min: 0,
+            max: 9999
+        }
 
     };
 
