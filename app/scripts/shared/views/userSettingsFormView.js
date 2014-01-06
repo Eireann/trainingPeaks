@@ -3,7 +3,6 @@ define(
     "jquery",
     "underscore",
     "setImmediate",
-    "jquerySelectBox",
     "jqueryui/datepicker",
     "moment",
     "backbone",
@@ -20,7 +19,6 @@ function(
     $,
     _,
     setImmediate,
-    jquerySelectBox,
     datepicker,
     moment,
     Backbone,
@@ -202,7 +200,6 @@ function(
             var self = this;
             setImmediate(function()
             {
-                self._setupSelectBox();
                 self._enableOrDisableVirtualCoachHour();
             });
         },
@@ -279,11 +276,6 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]" });
             FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
-        },
-
-        _setupSelectBox: function()
-        {
-            this.$("select").selectBoxIt({ viewport: $(".tabbedLayoutBody.scrollable") });
         },
 
         _onICalFocus: function(e)
@@ -375,12 +367,10 @@ function(
             if(enable)
             {
                 hourSelect.prop("disabled", false);
-                hourSelect.selectBoxIt("enable");
             }
             else
             {
                 hourSelect.prop("disabled", true);
-                hourSelect.selectBoxIt("disable");
             }
         },
 

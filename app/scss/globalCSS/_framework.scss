@@ -273,27 +273,10 @@ html, body
             margin: 0 0 0 7px;
             float: left;
 
-            .selectboxit-container .selectboxit {
-              width: 200px !important; /* Width of the dropdown button */            
-            }
-
             select {
                 width: 200px;
             }
         }
-
-        .athleteCalendarSelectSelectBoxItContainer, .athleteCalendarSelect
-        {
-            height: 22px;
-            font-size: 12px;
-            span
-            {
-                height: 22px;
-                font-size: 12px;
-            }
-        }
-
-
 
     }
 
@@ -301,18 +284,6 @@ html, body
     {
         height: 20px;
         min-width: 200px;
-    }
-
-    .athleteCalendarSelectSelectBoxIt
-    {
-        width: 200px !important;
-    }
-
-    .athleteCalendarSelectSelectBoxItOptions
-    {
-        @include nice-scrollbar;
-        max-height: 400px;
-        overflow-y: auto;
     }
 
     #affiliateBanner

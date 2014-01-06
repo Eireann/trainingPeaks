@@ -157,9 +157,9 @@ function (
             var self = this;
             var updateModel = function ()
             {
-                if (self.model.get("title") !== newViewValue)
+                var newModelValue = self.parseTextField(newViewValue);
+                if (self.model.get("title") !== newModelValue)
                 {
-                    var newModelValue = newViewValue;
                     self.model.set("title", newModelValue);
                     self.model.autosave();
                 }

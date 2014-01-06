@@ -56,6 +56,33 @@ function(
     {
         return _.isFunction(model.get) ? model.get(key) : model[key];
     }
+
+    function userIsCurrentAthleteOrCoach(athleteId, user)
+    {
+        // user can view their own account
+        if(user.get("userId") === athleteId)
+        {
+            return true;
+        }
+
+        // if not a coach, user can only view their own account
+        if(user.getAccountSettings().get("isAthlete"))
+        {
+            return false;
+        }
+
+        // athlete must be in athletes list
+        var athleteFromUserAthletesList = getAthleteFromUserAthletesList(athleteId, user);
+
+        return athleteFromUserAthletesList ? true : false;
+    }
+
+    function getAthleteFromUserAthletesList(athleteId, user)
+    {
+        return _.find(user.get("athletes"), function(athlete) {
+            return getModelAttributeOrObjectProperty(athlete, "athleteId") === athleteId;
+        });
+    }
    
     _.extend(FeatureAuthorizer.prototype,
     {
@@ -298,6 +325,21 @@ function(
             {
                 var currentAthleteType = user.getAthleteDetails().get("userType");
                 return userIsPremium(currentAthleteType);
+            }),
+
+            /*
+            attributes: athleteId
+            options: none
+            */
+            IsOwnerOrCoach: Feature({}, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athleteId)                
+                {
+                    throw new Error("IsOwnerOrCoach requires an athleteId attribute");
+                }
+
+                return userIsCurrentAthleteOrCoach(attributes.athleteId, user);
+
             })
 
         },

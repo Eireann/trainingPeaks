@@ -1,0 +1,47 @@
+﻿select 
+{
+
+    font-size: $fontSizeSmall;
+    font-family: $fontFamilyRegular;
+    color:$TPGrey10;
+
+    background: no-repeat right 0;
+    @extend %spriteSelectBoxBG;
+
+    min-height: 22px;
+    padding-left: 5px;
+    padding-bottom: 1px;
+    // make sure there is always room for the dropdown arrow
+    padding-right: 30px;
+    margin: 0px;
+
+    outline: none;
+    border: 1px solid $TPGrey9;
+    border-radius: 0px;
+
+    cursor: pointer;
+
+    &:focus, &:hover
+    {
+        outline: none;
+        color: $TPGrey4;
+        border: 1px solid #8d8d8d;
+        background: no-repeat right -22px;
+        @extend %spriteSelectBoxBG;
+    }
+
+    // webkit
+    -webkit-appearance: none;
+
+    // mozilla hack, see stackoverflow.com/questions/6787667/what-is-the-correct-moz-appear
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+
+    &::-ms-expand { display: none; }
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}

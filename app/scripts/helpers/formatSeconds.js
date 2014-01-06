@@ -1,10 +1,12 @@
 define(
 [
+    "underscore",
     "handlebars",
     "TP"
 ],
-function(Handlebars, TP)
+function(_, Handlebars, TP)
 {
-    Handlebars.registerHelper("formatSeconds", TP.utils.datetime.format.decimalSecondsAsTime);
-    return TP.utils.datetime.format.decimalSecondsAsTime;
+    var bound = _.bind(TP.utils.datetime.formatter.decimalSecondsAsTime, TP.utils.datetime.formatter);
+    Handlebars.registerHelper("formatSeconds", bound);
+    return bound;
 });

@@ -42,6 +42,20 @@ function(
             }
         },
 
+        getCurrentOrDefaultAthleteId: function()
+        {
+            if(this.user.hasAthleteSettings())
+            {
+                var athlete = this.user.getAthleteSettings();
+                if(this._userCanAccessAthlete(athlete))
+                {
+                    return athlete.get("athleteId");
+                }
+            }
+
+            return this.getDefaultAthleteId();
+        },
+
         getDefaultAthleteId: function()
         {
             var athletes = this._getUserAthletes();
@@ -68,8 +82,6 @@ function(
         {
             return this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ViewAthleteCalendar, { athlete: athlete });
         }
-
-
     });
 
     return AthleteManager;

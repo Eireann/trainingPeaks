@@ -3,7 +3,7 @@ define(
     "moment",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
-    "testUtils/AppTestData/GET_DetailData_134283074"
+    "testUtils/AppTestData/GET_DetailData_139251189"
 ],
 function(
     moment,
@@ -47,7 +47,6 @@ function(
 
             it("Should display the expando", function(done)
             {
-
                 Q()
                 .then(function()
                 {
@@ -112,7 +111,7 @@ function(
                 {
                     expect($body.find(".workoutQuickView .expandoLapsRegion").length).to.equal(1);
                     expect($body.find(".workoutQuickView .expandoLapsRegion").text()).to.contain("Entire Workout");
-                    expect($body.find(".workoutQuickView .expandoLapsRegion").text()).to.contain("Lap #1");
+                    expect($body.find(".workoutQuickView .expandoLapsRegion").text()).to.contain("Lap 1");
                 })
                 .nodeify(done);
 
@@ -151,20 +150,20 @@ function(
                     var expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
                     expect($body.find(".workoutQuickView .expandoStatsRegion").length).to.equal(1);
                     expect(expandoStatsText).to.contain("Entire Workout");
-                    expect(expandoStatsText).to.contain("TSS 473");
+                    expect(expandoStatsText).to.contain("TSS 74.4");
                     expect(expandoStatsText).to.not.contain("Work --");
 
-                    expect(expandoStatsText).to.not.contain("Lap #1");
+                    expect(expandoStatsText).to.not.contain("Lap 1");
                     expect(expandoStatsText).to.not.contain("TSS --");
 
                     $body.find(".workoutQuickView .expandoLapsRegion .lap:not(.total):first").trigger("click");
                     expandoStatsText = $body.find(".workoutQuickView .expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
 
                     expect(expandoStatsText).to.not.contain("Entire Workout");
-                    expect(expandoStatsText).to.not.contain("TSS 473");
+                    expect(expandoStatsText).to.not.contain("TSS 74.4");
                     expect(expandoStatsText).to.not.contain("Work --");
 
-                    expect(expandoStatsText).to.contain("Lap #1");
+                    expect(expandoStatsText).to.contain("Lap 1");
                     expect(expandoStatsText).to.contain("TSS --");
                 })
                 .nodeify(done);

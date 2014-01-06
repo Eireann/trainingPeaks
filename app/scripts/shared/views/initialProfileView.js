@@ -122,8 +122,6 @@ function(
             // Bind Form to "Model"
             FormUtility.bindFormToModel(this.$el, this.model, this.formUtilityOptions());
             this._updateUnits();
-
-            this.$("select").selectBoxIt();
         },
 
         serializeData: function()

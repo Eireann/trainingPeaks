@@ -10,7 +10,7 @@
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
     "utilities/units/labels"
-], function(_, moment, datetimeUtils, formatDateTime, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
+], function(_, moment, datetimeUtils, DateTimeFormatter, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig, getUnitsLabel)
 {
     var conversion = {
 
@@ -69,7 +69,7 @@
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
+            return new DateTimeFormatter().decimalHoursAsTime(value, _.has(options, "seconds") ? options.seconds : true);
         },
 
         formatMinutes: function(minutes, options)
@@ -80,7 +80,7 @@
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(hours, false);
+            return new DateTimeFormatter().decimalHoursAsTime(hours, false);
         },
 
         formatHours: function(value, options)
@@ -140,6 +140,20 @@
             var adjustedPower = adjustFieldRange(Number(value), "power");
             return conversion.formatInteger(adjustedPower, options);
         },
+        
+        formatPowerBalance: function(value, options)
+        {
+            options = _.extend({ allowZero: true }, options);
+            if(_.isFinite(value))
+            {
+                value = value * 100;
+                return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
+            }
+            else
+            {
+                return options.defaultValue;
+            }
+        },
 
         formatPace: function(value, options)
         {
@@ -150,7 +164,17 @@
             var sportType = conversion.getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
-            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
+            return new DateTimeFormatter().decimalMinutesAsTime(limitedPaceAsHours * 60, true);
+        },
+
+        formatLongitude: function(value, options)
+        {
+            return (value < 0 ? "W" : "E") + " " + Math.abs(value).toFixed(6);
+        },
+
+        formatLatitude: function(value, options)
+        {
+            return (value < 0 ? "S" : "N") + " " + Math.abs(value).toFixed(6);
         },
 
         parsePace: function(value, options)
@@ -165,7 +189,7 @@
             var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
             var limitedTime = adjustFieldRange(rawTime, "pace");
-            var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
+            var formattedLimitedTime = new DateTimeFormatter().decimalHoursAsTime(limitedTime, true);
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
             return convertedPace;
         },
@@ -451,19 +475,6 @@
                 return parsedValue.toFixed(1);
         },
 
-        formatPowerBalance: function(value, options)
-        {
-            var parsedValue = (Number(value) * 100).toFixed(1);
-
-            if (isNaN(value) || isNaN(parsedValue) || value === null || value === 0 || Number(parsedValue) === 0)
-            {
-                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
-            } else
-            {
-                return parsedValue;
-            }
-        },
-
         formatEfficiencyFactor: function(value, options)
         {
             var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, conversion.getMySportType(options));
@@ -703,7 +714,7 @@
 
         formatTime: function(value, options)
         {
-            return formatDateTime.decimalSecondsAsTime(value / 1000);
+            return new DateTimeFormatter().decimalSecondsAsTime(value / 1000);
         },
 
         /*
@@ -768,6 +779,9 @@
 
                 case "duration":
                     return conversion.formatDuration(value, options);
+
+                case "milliseconds":
+                    return conversion.formatDuration(value / (1000 * 3600), options);
 
                 case "distance":
                     return conversion.formatDistance(value, options);
@@ -849,6 +863,12 @@
 
                 case "time":
                     return conversion.formatTime(value, options);
+
+                case "latitude":
+                    return conversion.formatLatitude(value, options);
+
+                case "longitude":
+                    return conversion.formatLongitude(value, options);
 
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);

@@ -264,23 +264,11 @@
                 margin-left: 2px;
             }
 
-            select
-            {
-                margin-top: -5px;
-                font-family: $fontFamilyRegular;
-                font-size: $fontSizeMedium;
-
-            }
         }
 
         .helpText
         {
 
-            &.hidden
-            {
-                display: none;
-            }
-            
             color: $TPGrey3;
             cursor: default;
             font-size: $fontSizeSmall;
@@ -292,27 +280,12 @@
         }
     }
 
-    .selectboxit-options
+    select 
     {
         width: 238px;
         margin-left: 2px;
     }
 
-    .selectboxit-container .selectboxit
-    {
-        width: 238px !important; /* Width of the dropdown button */
-        margin-left: 2px;
-    }
-
-    .selectboxit-option
-    {
-        text-indent: 3px;
-    }
-
-    .selectboxit-option-icon-container
-    {
-        margin-left: 0px;
-    }
 }
 
 
@@ -474,6 +447,14 @@
     width: 310px;
     max-width: 310px;
 
+    .hoverBox
+    {
+        .hoverBoxContents
+        {
+            padding-bottom: 12px;
+        }
+    }
+
     p, pre
     {
         font-family: inherit;
@@ -525,14 +506,9 @@
 
     .actions
     {
-        padding-bottom: 12px;
-    }
-
-    .description
-    {
-        border-bottom: solid 1px #cccccc;
-        margin-bottom: 16px;
-        padding-bottom: 10px;
+        padding-top: 16px;
+        border-top: solid 1px #cccccc;
+        margin-top: 10px;
     }
 
     .workoutStatsRow

@@ -182,7 +182,7 @@ function(
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
             // date picker
-            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
+            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
 
             // number picker, and make sure it fires a change event
             this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });

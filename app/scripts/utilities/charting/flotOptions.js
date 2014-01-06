@@ -52,7 +52,7 @@ function (_, TP, flotFilter, chartColors, FlotUtils)
                                 }
 
                                 var decimalHours = (value / (3600 * 1000));
-                                return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
+                                return TP.utils.datetime.formatter.decimalHoursAsTime(decimalHours, true, null);
                             },
                             ticks: FlotUtils.createTicksBasedOnAxis(axisType)
                         }

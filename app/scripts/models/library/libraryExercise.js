@@ -49,7 +49,8 @@ function(
             "iExerciseLibraryItemValue": null,
             "referenceMediaValue": null,
             "attachmentFiles": null,
-            "isStructuredWorkout": null
+            "isStructuredWorkout": null,
+            "libraryOwnerId": null
         },
 
         initialize: function(attrs, options)

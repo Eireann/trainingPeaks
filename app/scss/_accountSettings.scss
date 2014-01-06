@@ -149,6 +149,11 @@
                 margin:0 0 0 10px;
             }
 
+            select
+            {
+                width: 170px;
+            }
+
         }
 
         .zonesConfigGroup {
@@ -203,14 +208,6 @@
                 }
                 
                 .zoneCalculatorLayoutBody {
-                    .selectBox {
-                        // width:195px;
-                        // margin-left:7px;
-                    }
-
-                    .selectboxit-container .selectboxit {
-                        // width: 195px !important;
-                    }
 
                     .calculatorType,
                     .calculatorDefinition {
@@ -245,21 +242,9 @@
                                 float: left;
                                 
 
-                                .selectBox {
+                                select {
                                     width: 119px;
-                                }
-                                .selectboxit-container .selectboxit {
-                                    width: 119px !important;
-                                    
-                                    .selectboxit-text,
-                                    .selectboxit-options {
-                                        font-size: 12px;
-                                    }
-                                }
-                                .selectboxit-container {
-                                   .selectboxit-options {
-                                        font-size: 12px;
-                                    } 
+                                    font-size: 1em;
                                 }
                             }
                             .zoneSetTitle {
@@ -540,7 +525,7 @@
         .labelbold {
             margin-left:5px;
             font-family:$fontFamilyHeavy;
-            padding:4px 5px 0 0;
+            padding:5px 5px 0 0;
             display: inline-block;
         }
 
@@ -559,20 +544,14 @@
             }
 
             &.deliveryTime1 {
-                .selectBox {
+                select {
                     width:197px;
-                }
-                .selectboxit-container .selectboxit {
-                    width: 197px !important;
                 }
             }
             &.units,
             &.dateFormat {
-                .selectBox {
+                select {
                     width:197px;
-                }
-                .selectboxit-container .selectboxit {
-                    width: 197px !important;
                 }
             } 
 
@@ -589,9 +568,10 @@
             input[type="email"], 
             input[type="password"],
             input[type="tel"] {
-                width:340px;
-                height:22px;
+                width: 340px;
+                height: 22px;
                 float: left;
+                padding: 0 0.5em;
             }
 
             .fieldContain {
@@ -601,6 +581,7 @@
                 }
 
                 &.citystate {
+
                     input[type="text"] {
                         width:197px;
                     }
@@ -608,28 +589,29 @@
                     .selectBox {
                         width:135px;
                         margin-left:7px;
-                    }
 
-                    .selectboxit-container .selectboxit {
-                        width: 135px !important;
+                        select {
+                            width:135px;
+                        }
                     }
                 }
 
                 &.athleteTypeGender {
                     .selectBox {
                         &.athleteType {
-                            width:197px;
-
-                            .selectboxit-container .selectboxit {
-                                width: 197px !important;
+                            
+                            select
+                            {
+                                width:197px;
                             }
                         }
                         &.gender {
-                            width:135px;
-                            margin-left:7px;
+                            margin-left:4px;
+                            width: 135px;
 
-                            .selectboxit-container .selectboxit {
-                                 width: 135px !important;
+                            select
+                            {
+                                width: 135px;
                             }
                         }
                     }
@@ -639,15 +621,15 @@
                     .selectBox {
                         &.birthdayMonth {
                             width:197px;
-                            .selectboxit-container .selectboxit {
-                                width: 197px !important;
+                            select {
+                                width: 197px;
                             }
                         }
                         &.birthdayYear {
                             width:135px;
                             margin-left:7px;
-                            .selectboxit-container .selectboxit {
-                                width: 135px !important;
+                            select {
+                                width: 135px;
                             }
                         }
                     }
@@ -665,8 +647,8 @@
                         margin-left:7px;
                     }
 
-                    .selectboxit-container .selectboxit {
-                        width: 135px !important;
+                    select {
+                        width: 135px;
                     }
                 }
             }
@@ -895,19 +877,14 @@
     }
 
 
-    .selectboxit-container .selectboxit {
-        width: 340px !important;
+    select {
+        width: 340px;
     }
 
     .selectBox {
         position: relative;
         float: left;
         width: 200px;
-    }
-
-    .selectboxit-list {
-        max-height: 350px;
-        @include nice-scrollbar;
     }
 
 }
@@ -946,6 +923,10 @@
                     padding-bottom: 5px;
                 }
             }
+        }
+
+        select {
+            width: 170px;
         }
     }
     .zoneCalculatorLayoutFooter {
@@ -1142,6 +1123,7 @@
             display: none;
         }
     }
+
 }
 
 
@@ -1150,8 +1132,8 @@
         .selectBox {
             width: 195px;
         }
-        .selectboxit-container .selectboxit {
-            width: 195px !important;
+        select {
+            width: 195px;
         }
     } 
 
@@ -1159,8 +1141,8 @@
         .selectBox {
             width:210px;
         }
-        .selectboxit-container .selectboxit {
-            width: 210px !important;
+        select {
+            width: 210px;
         }
     }
 }
@@ -1170,8 +1152,8 @@
         .selectBox {
             width:135px;
         }
-        .selectboxit-container .selectboxit {
-            width: 135px !important;
+        select {
+            width: 135px;
         }
     } 
 
@@ -1179,8 +1161,8 @@
         .selectBox {
             width:185px;
         }
-        .selectboxit-container .selectboxit {
-            width: 185px !important;
+        select {
+            width: 185px;
         }
     }
 }

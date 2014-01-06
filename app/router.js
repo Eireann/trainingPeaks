@@ -43,13 +43,13 @@ function (
             // if user is coach, and no athleteId value was passed, put current athlete id in url
             if(!athleteId && theMarsApp.user.isCoach())
             {
-                var defaultAthleteId = theMarsApp.athleteManager.getDefaultAthleteId();
+                var currentOrDefaultAthleteId = theMarsApp.athleteManager.getCurrentOrDefaultAthleteId();
 
-                if(defaultAthleteId)
+                if(currentOrDefaultAthleteId)
                 {
-                    loadAthlete(defaultAthleteId).done(function()
+                    loadAthlete(currentOrDefaultAthleteId).done(function()
                     {
-                        self.navigate(baseUrl + "/athletes/" + theMarsApp.user.getCurrentAthleteId(), {trigger: true, replace: true});
+                        self.navigate(baseUrl + "/athletes/" + currentOrDefaultAthleteId, {trigger: true, replace: true});
                     });
                 }
                 else

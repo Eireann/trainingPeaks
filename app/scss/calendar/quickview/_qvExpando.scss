@@ -246,6 +246,7 @@
         overflow:hidden;
         #graphToolbar
         {
+            margin-top: 5px;
             height: 35px;
         }
 
@@ -319,9 +320,6 @@
                 }
 
                 button {
-                    &.hidden {
-                        display: none;
-                    }
 
                     font-size: $fontSizeSmall;
                     font-weight: normal;
@@ -393,7 +391,7 @@
                         @include linearGradient(top, #F8C7FF, #FF00FF);
                     }
 
-                    &.rightPower
+                    &.rightPower, &.powerBalance
                     {
                         @include linearGradient(top, #F8C7FF, #FF00FF);
                     }
@@ -540,22 +538,16 @@
         }
     }
 
+    .chartTitle {
+        display: none;
+    }
+
     .expandoPodContent.expandoLapsSplitsPod {
-        float: left;
-        padding: 0 10px;
         overflow: auto;
 
         table {
             border-left:none;
             border-right:none;
-        }
-
-        .lapsSplitsTitle {
-            font-family: $fontFamilyHeavy;
-            font-size: $fontSizeSmall;
-            color: $TPGrey4;
-            text-align: center;
-            margin: 22px 0;
         }
 
         input[type=text]
@@ -617,9 +609,8 @@
 
         .chartContainer {
             @include calc("width","100% - 58px");
-            @include calc("height","100% - 85px");
-            position: absolute;
-            top: 21px;
+            @include calc("height","100% - 45px");
+            top: 10px;
             margin: 0 auto;
             position: relative;
 
@@ -641,6 +632,82 @@
             float: right;
             position: relative;
         }
+    }
+    
+    .dataGrid {
+        height: 100%;
+        * { @include nice-scrollbar; }
+
+        // Slick Grid does not get allong with box-sizing border box...
+        *, *:before, *:after { box-sizing: content-box; }
+
+        @import "slick.grid";
+
+        font-family: $fontFamilyRegular;
+        font-size: 12px;
+        background:none;
+        border-collapse:collapse;
+        border-bottom: 1px solid $TPGrey5;
+
+        .slick-header, .slick-header-column
+        {
+            background: $TPGrey6;
+            font-family: $fontFamilyHeavy;
+            font-weight:normal;
+            color: $TPGrey3;
+            text-align:left;
+        }
+
+        .slick-header-column
+        {
+            border: 1px solid $TPGrey5;
+            border-width:1px 0;
+        }
+
+        .slick-cell
+        {
+            border-right:1px solid $TPGrey5;
+            color: $TPGrey8;
+        }
+
+        .slick-viewport
+        {
+            @extend %throbberBG;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            .slick-row
+            {
+                width: 100%;
+                line-height: 20px;
+                border-top:1px solid $TPGrey5;
+
+                &:last-child
+                {
+                    border-bottom:1px solid $TPGrey5;
+                }
+
+                &.even
+                {
+                    background: $TPGrey6;
+                }
+                &.odd
+                {
+                    background: #efefef;
+                }
+
+                &.sampleInRange
+                {
+                    background: #e5ddd8;
+                }
+
+                &.sampleInPrimaryRange
+                {
+                    background: #d8dde5;
+                }
+            }
+        }
+
     }
 }
 
@@ -958,37 +1025,6 @@
             margin-top: 20px;
             margin-bottom: 15px;
 
-            select
-            {
-                width: 120px;
-                margin-right: 10px;
-
-                font-family: $fontFamilyRegular;
-                font-size: $fontSizeSmall;
-                color: $TPGrey3;
-                border-width: 1px;
-                border-style: solid;
-                border-color: $TPGrey9;
-
-                cursor: pointer;
-
-                background: repeat-x 0 0;
-                @extend %backgroundGradientButtonBG;
-
-                visibility: hidden;
-
-            }
-
-            .selectboxit-option-icon-container
-            {
-                margin-left: 0px;
-            }
-
-            .selectboxit-option
-            {
-                text-indent: 3px;
-            }
-
             @include buttons(0, 108px, $fontSizeSmall);
             button {
                 // height: 20px;
@@ -1000,12 +1036,8 @@
                 float:left;
                 width:180px;
 
-                .selectBox {
-                    width:180px;
-                }
-
-                .selectboxit-container .selectboxit {
-                    width: 180px !important;
+                select {
+                    width: 180px;
                 }
             }
 
@@ -1015,12 +1047,6 @@
                 margin-left:15px;
             }
 
-            /* SelectBoxIt container */
-            .peakTypeSelectboxIt-container {
-                position: relative;
-                display: inline-block;
-                vertical-align: top;
-            }
         }
 
         .rangesList {
@@ -1143,6 +1169,7 @@
 
     position: absolute;
     padding: 0;
+    z-index: 1;
 
     border: 1px solid transparent;
     cursor: pointer;
@@ -1165,7 +1192,6 @@
         .expandoPodButtons
         {
             display: block;
-            z-index:2;
         }
 
         &:hover, &.hover {
@@ -1182,7 +1208,6 @@
         .expandoPodButtons
         {
             display: block;
-            z-index:2;
         }
 
         .leaflet-control-container
@@ -1233,6 +1258,15 @@
         border: 1px solid $TPGrey11;
     }
 
+    .expandoPodTitle
+    {
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        color: $TPGrey4;
+        text-align: center;
+        line-height: 22px;
+    }
+
     .expandoPodHeader
     {
         position: absolute;
@@ -1242,13 +1276,15 @@
         height: 22px;
         z-index: 500;
 
-        display: none;
+        &:hover, &.hover {
+            background: rgba(255,255,255,0.5);
+        }
     }
 
-    &:hover .expandoPodHeader,
-    &.hover .expandoPodHeader
-    {
-        display: block;
+    &:hover, &.hover {
+        .expandoPodHeader {
+            background: rgba(255,255,255,0.4);
+        }
     }
 
     &.expandoMapPod .expandoPodHeader {
@@ -1257,9 +1293,14 @@
         &:hover {
             background: rgba(0,0,0,0.5);
         }
+
     }
 
+    &.expandoMapPod .expandoPodContent { padding-top: 0; }
+
     .expandoPodContent {
+        padding-top: 22px;
+
         width: 100%;
         height: 100%;
 

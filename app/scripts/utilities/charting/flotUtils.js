@@ -3,14 +3,13 @@ define(
     "underscore",
     "utilities/charting/chartColors",
     "utilities/charting/dataParserUtils",
-    "utilities/conversion/conversion",
-    "utilities/charting/findOrderedArrayIndexByValue"
+    "utilities/conversion/conversion"
 ],
-function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByValue)
+function(_, chartColors, DataParserUtils, conversion)
 {
     var FlotUtils =
     {
-        generateYAxes: function(series, workoutTypeValueId, data, elevationInfo, graphData)
+        generateYAxes: function(series, workoutTypeValueId, graphData)
         {
             var yaxes = [];
             var axisIndex = 1;
@@ -47,7 +46,7 @@ function(_, chartColors, DataParserUtils, conversion, findOrderedArrayIndexByVal
                 {
                     show: true,
                     label: s.label,
-                    min: graphData.getMinimumForAxis(s.label, data, elevationInfo),
+                    min: graphData.getMinimumForAxis(s.label),
                     color: "transparent",
                     tickColor: "transparent",
                     font:

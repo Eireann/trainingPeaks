@@ -1,13 +1,12 @@
 define(
 [
     "underscore",
-    "utilities/datetime/format",
     "utilities/conversion/conversion",
     "utilities/units/labels",
     "hbs!templates/views/expando/flotToolTip",
     "hbs!templates/views/expando/flotScatterGraphToolTip"
 ],
-function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotScatterGraphToolTipTemplate)
+function(_, conversion, unitLabels, flotToolTipTemplate, flotScatterGraphToolTipTemplate)
 {
     var flexChannelOrder =
     [
@@ -87,7 +86,7 @@ function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotSca
             var toolTipSeries = [];
             var lowerCaseAxisName = xAxisType.toLowerCase();
 
-            if(xAxisType === "RightPower" && powerSeries)
+            if(xAxisType === "PowerBalance" && powerSeries)
             {
                 this.formatBalancedPower(allDataSeries, flotItem.series, powerSeries, toolTipSeries, flotItem, xAxisType, "scatter");
                 if(!_.isEmpty(toolTipSeries))
@@ -116,17 +115,17 @@ function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotSca
                 var rightPowerPercentage;
                 var leftPowerPercentage;
 
-                if(xAxisType === "RightPower" && powerSeries)
+                if(xAxisType === "PowerBalance" && powerSeries)
                 {
-                    leftPowerPercentage = (100 - xAxisValue).toFixed(1);
-                    rightPowerPercentage = xAxisValue.toFixed(1);
+                    leftPowerPercentage = (100 - xAxisValue * 100).toFixed(1);
+                    rightPowerPercentage = (xAxisValue * 100).toFixed(1);
                     toolTipData.x.value = leftPowerPercentage + "% / " + rightPowerPercentage + "%";
                     toolTipData.x.units = "";
                 }
-                if(hoveredSeries.label === "RightPower" && powerSeries)
+                if(hoveredSeries.label === "PowerBalance" && powerSeries)
                 {
-                    leftPowerPercentage = (100 - hoveredSeries.data[hoveredIndex][1]).toFixed(1);
-                    rightPowerPercentage = hoveredSeries.data[hoveredIndex][1].toFixed(1);
+                    leftPowerPercentage = (100 - hoveredSeries.data[hoveredIndex][1] * 100).toFixed(1);
+                    rightPowerPercentage = (hoveredSeries.data[hoveredIndex][1] * 100).toFixed(1);
                     toolTipData.y.value = leftPowerPercentage + "% / " + rightPowerPercentage + "%";
                     toolTipData.y.units = "";
                 }
@@ -146,7 +145,7 @@ function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotSca
                 if (!alwaysDisplay && !this.shouldDisplayToolTipValue(s.label, value))
                     return;
 
-                if(powerSeries && s.label === "RightPower")
+                if(powerSeries && (s.label === "RightPower" || s.label === "PowerBalance"))
                     this.formatBalancedPower(allDataSeries, s, powerSeries, toolTipSeries, flotItem, null, graphType);
 
                 //TODO Refactor: assuming the proper conversion field name is simply the lower-cased series name
@@ -156,7 +155,7 @@ function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotSca
                 {
                     label: s.label,
                     value: conversion.formatUnitsValue(dataType, value, { defaultValue: undefined, workoutTypeId: workoutType }),
-                    units: unitLabels(dataType, workoutType)
+                    units: s.label === "PowerBalance" ? "" : unitLabels(dataType, workoutType)
                 };
 
                 if (s.label === flotItem.series.label)
@@ -204,9 +203,21 @@ function(_, formatDateTime, conversion, unitLabels, flotToolTipTemplate, flotSca
             var rightPowerValue;
             var leftPowerValue;
 
+            var index;
+
+            if(series.label === "PowerBalance")
+            {
+                index = flotItem.series.label === "PowerBalance" ? 1 : 0;
+                rightPowerValue = flotItem.datapoint[index] * 100;
+                leftPowerValue = 100 - rightPowerValue;
+
+                rightPowerPercentage = rightPowerValue.toFixed(1);
+                leftPowerPercentage = leftPowerValue.toFixed(1);
+            }
+
             if(graphType === "scatter" && (flotItem.series.label === "RightPower" || xAxisType === "RightPower"))
             {
-                var index = flotItem.series.label === "RightPower" ? 1 : 0;
+                index = flotItem.series.label === "RightPower" ? 1 : 0;
                 rightPowerValue = flotItem.datapoint[index];
                 leftPowerValue = 100 - rightPowerValue;
 

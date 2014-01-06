@@ -1,7 +1,6 @@
 define(
 [
     "jquery",
-    "jquerySelectBox",
     "setImmediate",
     "underscore",
     "backbone",
@@ -11,7 +10,6 @@ define(
 ],
 function(
     $,
-    jquerySelectBox,
     setImmediate,
     _,
     Backbone,

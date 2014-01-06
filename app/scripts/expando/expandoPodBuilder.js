@@ -13,7 +13,8 @@ define(
     "views/expando/mapView",
     "views/expando/lapsSplitsView",
     "views/expando/lapsSplitsColumnChartView",
-    "views/expando/scatterGraphView"
+    "views/expando/scatterGraphView",
+    "views/expando/dataGridView"
 ],
 function(
     _,
@@ -29,7 +30,8 @@ function(
     MapView,
     LapsSplitsView,
     LapsSplitsColumnChartView,
-    ScatterGraphView
+    ScatterGraphView,
+    DataGridView
 )
 {
 
@@ -98,6 +100,16 @@ function(
         156: function(options)
         {
             return new ScatterGraphView(
+            {
+                model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise,
+                stateModel: options.data.stateModel
+            });
+        },
+
+        157: function(options)
+        {
+            return new DataGridView(
             {
                 model: options.data.workout,
                 detailDataPromise: options.data.detailDataPromise,
