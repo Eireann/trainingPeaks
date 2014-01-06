@@ -208,7 +208,7 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
         describe("ordering data", function()
         {
             var model = buildWorkoutModel(allDataChannels);
-            var serializedData = serializeData(model)
+            var serializedData = serializeData(model);
             var checkOrder = function(attr, i, tssType, serializedData) {
                     it("Should include the " + attr + " field in location " + i + " for " + tssType + " layout", function()
                     {
