@@ -482,7 +482,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation Gain", function()
         {
-            describeParse("parseElevationGain", [
+            describeParseUnits("elevationGain", [
                 {
                     input: "99999",
                     output: 99999 
@@ -516,7 +516,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation Loss", function()
         {
-            describeParse("parseElevationLoss", [
+            describeParseUnits("elevationLoss", [
                 {
                     input: "99999",
                     output: 99999 
@@ -550,40 +550,86 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation", function()
         {
-            describeParse("parseElevation", [
+            describe("Metric", function()
+            {
+                describeParseUnits("elevation", [
+                    {
+                        input: "99999",
+                        output: 99999 
+                    },
+                    {
+                        input: "99999.1",
+                        output: 99999
+                    },
+                    {
+                        input: "100000",
+                        output: 99999
+                    },
+                    {
+                        input: "1",
+                        output: 1
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: -1 
+                    },
+                    {
+                        input: "-15001",
+                        output: -15000
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeParseUnits("elevation", [
+                    {
+                        input: "99999",
+                        output: 30479.7
+                    },
+                    {
+                        input: "99999.1",
+                        output: 30479.7
+                    },
+                    {
+                        input: "100000",
+                        output: 30479.7
+                    },
+                    {
+                        input: "1",
+                        output: 0.3047,
+                        marginOfError: 0.0001
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: -0.3047,
+                        marginOfError: 0.0001
+                    },
+                    {
+                        input: "-15001",
+                        output: -4572
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ],
                 {
-                    input: "99999",
-                    output: 99999 
-                },
-                {
-                    input: "99999.1",
-                    output: 99999
-                },
-                {
-                    input: "100000",
-                    output: 99999
-                },
-                {
-                    input: "1",
-                    output: 1
-                },
-                {
-                    input: "0",
-                    output: 0
-                },
-                {
-                    input: "-1",
-                    output: -1 
-                },
-                {
-                    input: "-15001",
-                    output: -15000
-                },
-                {
-                    input: "",
-                    output: null
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
         describe("Energy", function()

@@ -43,7 +43,8 @@ function(_, unitsConstants, workoutTypeUtils)
             {
                 miles: 0.000621371,
                 kilometers: 0.001,
-                yards: 1.0936133
+                yards: 1.0936133,
+                feet: 3.28084
             },
 
             label:
@@ -99,16 +100,17 @@ function(_, unitsConstants, workoutTypeUtils)
             }
         },
 
-        "elevation":
+        feet:
         {
-            English: 3.28084,
-            Metric: 1
+            label: "ft"
         },
+
         "efficiencyfactor":
         {
             English: 60 * 1.09361,
             Metric: 60
         },
+        
         "torque":
         {
             English: 8.850745793490558,

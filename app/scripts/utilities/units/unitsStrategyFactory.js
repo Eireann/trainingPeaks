@@ -154,8 +154,52 @@ define(
             parser: integerParser,
             min: 0,
             max: 99999
-        }
+        },
 
+        elevationGain: {
+            formatter: integerFormatter,
+            parser: integerParser,
+
+            min: 0,
+            max: 99999,
+
+            units:
+            {
+                baseUnits: "meters",
+                English: "feet",
+                Metric: "meters"
+            }
+        },
+
+        elevationLoss: {
+            formatter: integerFormatter,
+            parser: integerParser,
+
+            min: 0,
+            max: 99999,
+
+            units:
+            {
+                baseUnits: "meters",
+                English: "feet",
+                Metric: "meters"
+            }
+        },
+        
+        elevation: {
+            formatter: integerFormatter,
+            parser: integerParser,
+
+            min: -15000,
+            max: 99999,
+
+            units:
+            {
+                baseUnits: "meters",
+                English: "feet",
+                Metric: "meters"
+            }
+        }
     };
 
     return {

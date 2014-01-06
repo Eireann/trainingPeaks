@@ -484,7 +484,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation Gain", function()
         {
-            describeFormat("formatElevationGain", [
+            describeFormatUnits("elevationGain", [
                 {
                     input: "99999",
                     output: "99999"
@@ -526,7 +526,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation Loss", function()
         {
-            describeFormat("formatElevationLoss", [
+            describeFormatUnits("elevationLoss", [
                 {
                     input: "99999",
                     output: "99999"
@@ -568,44 +568,88 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation", function()
         {
-            describeFormat("formatElevation", [
+            describe("Metric", function()
+            {
+
+                describeFormatUnits("elevation", [
+                    {
+                        input: "99999",
+                        output: "99999"
+                    },
+                    {
+                        input: "99999.1",
+                        output: "99999"
+                    },
+                    {
+                        input: "100000",
+                        output: "99999"
+                    },
+                    {
+                        input: "1",
+                        output: "1"
+                    },
+                    {
+                        input: "0",
+                        output: "0"
+                    },
+                    {
+                        input: "-1",
+                        output: "-1"
+                    },
+                    {
+                        input: "-15001",
+                        output: "-15000"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+
+                describeFormatUnits("elevation", [
+                    {
+                        input: 35000,
+                        output: "99999"
+                    },
+                    {
+                        input: "10",
+                        output: "33"
+                    },
+                    {
+                        input: "0",
+                        output: "0"
+                    },
+                    {
+                        input: "-1",
+                        output: "-3"
+                    },
+                    {
+                        input: "-10000",
+                        output: "-15000"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    input: "99999",
-                    output: "99999"
-                },
-                {
-                    input: "99999.1",
-                    output: "99999"
-                },
-                {
-                    input: "100000",
-                    output: "99999"
-                },
-                {
-                    input: "1",
-                    output: "1"
-                },
-                {
-                    input: "0",
-                    output: "0"
-                },
-                {
-                    input: "-1",
-                    output: "-1"
-                },
-                {
-                    input: "-15001",
-                    output: "-15000"
-                },
-                {
-                    input: null,
-                    output: ""
-                },
-                {
-                    input: "",
-                    output: ""
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+
+            });
+
         });
 
         describe("Energy", function()

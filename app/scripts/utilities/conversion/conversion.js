@@ -44,6 +44,9 @@
                 case "duration":
                 case "pace":
                 case "calories":
+                case "elevation":
+                case "elevationGain":
+                case "elevationLoss":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -57,7 +60,6 @@
                 case "powerbalance":
                 case "latitude":
                 case "longitude":
-                case "elevation":
 
                     // if the input is null or empty string, return empty string or other default value
                     if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value) || !_.isFinite(value))
@@ -114,6 +116,9 @@
                 case "duration":
                 case "pace":
                 case "calories":
+                case "elevation":
+                case "elevationGain":
+                case "elevationLoss":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -127,8 +132,6 @@
         {
             switch(units)
             {
-                case "elevation":
-                    return conversion.parseElevation(value, options);
 
                 case "number":
                     return conversion.parseNumber(value, options);
@@ -183,7 +186,6 @@
         {
             var convertibleUnitTypes = [
                 "groundControl",
-                "elevation",
                 "speed",
                 "distance",
                 "paceUnFormatted",
@@ -260,7 +262,6 @@
                     return moment(value).format("hh:mm A");
 
                 case "power":
-                case "elevation":
                     return Number(value).toFixed(0);
 
                 case "powerbalance":
@@ -289,17 +290,8 @@
 
             switch(units)
             {
-                case "elevation":
-                    return conversion.formatElevation(value, options);
-
                 case "groundControl":
                     return conversion.formatGroundControl(value, options);
-
-                case "elevationGain":
-                    return conversion.formatElevationGain(value, options);
-
-                case "elevationLoss":
-                    return conversion.formatElevationLoss(value, options);
 
                 case "speed":
                     return conversion.formatSpeed(value, options);
@@ -506,6 +498,36 @@
             return conversion.parseUnitsValue("calories", value, options);
         },
 
+        formatElevationGain: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevationGain", value, options);
+        },
+
+        parseElevationGain: function(value, options)
+        {
+            return conversion.parseUnitsValue("elevationGain", value, options);
+        },
+
+        parseElevation: function(value, options)
+        {
+            return conversion.parseUnitsValue("elevation", value, options);
+        },
+
+        formatGroundControl: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevation", value, options);
+        },
+
+        formatElevationLoss: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevationLoss", value, options);
+        },
+
+        parseElevationLoss: function(value, options)
+        {
+            return conversion.parseUnitsValue("elevation", value, options);
+        },
+
         // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
@@ -523,57 +545,6 @@
             var modelValue = conversion.parseInteger(value, options);
             modelValue = adjustFieldRange(modelValue, "power");
             return modelValue;
-        },
-
-        parseElevation: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var limitedValue = adjustFieldRange(parseInt(value, 10), "elevation");
-            return convertToModelUnits(limitedValue, "elevation");
-        },
-
-        formatGroundControl: function(value, options)
-        {
-            return conversion.formatElevation(value, options);
-        },
-
-        formatElevationGain: function(value, options)
-        {
-            var numValue = Number(value);
-            var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
-            var limitedValue = adjustFieldRange(convertedValue, "elevationGain");
-            return conversion.formatInteger(limitedValue, options);
-        },
-
-        parseElevationGain: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var limitedValue = adjustFieldRange(parseInt(value, 10), "elevationGain");
-            return convertToModelUnits(limitedValue, "elevation");
-        },
-
-        formatElevationLoss: function(value, options)
-        {
-            var numValue = Number(value);
-            var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
-            var limitedValue = adjustFieldRange(convertedValue, "elevationLoss");
-            return conversion.formatInteger(limitedValue, options);
-        },
-
-        parseElevationLoss: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var limitedValue = adjustFieldRange(parseInt(value, 10), "elevationLoss");
-            return convertToModelUnits(limitedValue, "elevation");
         },
 
         formatPaHr: function(value, options)
