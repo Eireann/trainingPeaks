@@ -199,7 +199,15 @@ define(
                 English: "feet",
                 Metric: "meters"
             }
+        },
+
+        energy: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 99999
         }
+        
     };
 
     return {

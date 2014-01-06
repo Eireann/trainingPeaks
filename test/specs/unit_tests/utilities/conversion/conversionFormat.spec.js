@@ -654,7 +654,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Energy", function()
         {
-            describeFormat("formatEnergy", [
+            describeFormatUnits("energy", [
                 {
                     input: "99999",
                     output: "99999"

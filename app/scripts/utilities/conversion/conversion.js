@@ -47,6 +47,7 @@
                 case "elevation":
                 case "elevationGain":
                 case "elevationLoss":
+                case "energy":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -119,6 +120,7 @@
                 case "elevation":
                 case "elevationGain":
                 case "elevationLoss":
+                case "energy":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -173,9 +175,6 @@
 
                 case "if":
                     return conversion.parseIF(value, options);
-
-                case "energy":
-                    return conversion.parseEnergy(value, options);
 
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
@@ -304,9 +303,6 @@
 
                 case "torque":
                     return conversion.formatTorque(value, options);
-
-                case "energy":
-                    return conversion.formatEnergy(value, options);
 
                 case "heartrate":
                     return conversion.formatHeartRate(value, options);
@@ -528,6 +524,16 @@
             return conversion.parseUnitsValue("elevation", value, options);
         },
 
+        formatEnergy: function(value, options)
+        {
+            return conversion.formatUnitsValue("energy");
+        },
+
+        parseEnergy: function(value, options)
+        {
+            return conversion.parseUnitsValue("energy");
+        },
+        
         // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
@@ -655,23 +661,6 @@
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "TSB");
             return conversion.formatEmptyNumber(limitedValue.toFixed(1), options);
-        },
-
-        formatEnergy: function(value, options)
-        {
-            var limitedValue = adjustFieldRange(Number(value), "energy");
-            var formattedValue = conversion.formatInteger(limitedValue);
-            return conversion.formatEmptyNumber(formattedValue, options);
-        },
-
-        parseEnergy: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var limitedValue = adjustFieldRange(value, "energy");
-            return conversion.parseInteger(limitedValue);
         },
 
         formatTorque: function(value, options)
