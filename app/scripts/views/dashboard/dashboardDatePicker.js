@@ -68,7 +68,7 @@ function(
                 zIndex = this.$el.closest(".dashboardChartSettings").css("z-index");
             }
             this.$(".datepicker").css("position", "relative").css("z-index", zIndex);
-            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
+            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });
             this.$("input.startDate").datepicker("option", "maxDate", this.$("input.endDate").val());
             this.$("input.endDate").datepicker("option", "minDate", this.$("input.startDate").val());
         },

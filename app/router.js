@@ -43,7 +43,6 @@ function (
             // if user is coach, and no athleteId value was passed, put current athlete id in url
             if(!athleteId && theMarsApp.user.isCoach())
             {
-
                 var currentOrDefaultAthleteId = theMarsApp.athleteManager.getCurrentOrDefaultAthleteId();
 
                 if(currentOrDefaultAthleteId)

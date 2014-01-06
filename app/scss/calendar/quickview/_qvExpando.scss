@@ -548,6 +548,10 @@
         table {
             border-left:none;
             border-right:none;
+
+            th {
+                font-size: $fontSizeSmaller;
+            }
         }
 
         input[type=text]
@@ -644,66 +648,81 @@
         @import "slick.grid";
 
         font-family: $fontFamilyRegular;
-        font-size: 12px;
-        background:none;
-        border-collapse:collapse;
+
+        font-size: 14px;
+        background: none;
+        border-collapse: collapse;
         border-bottom: 1px solid $TPGrey5;
 
-        .slick-header, .slick-header-column
-        {
+        .slick-header, 
+        .slick-header-column {
             background: $TPGrey6;
-            font-family: $fontFamilyHeavy;
-            font-weight:normal;
-            color: $TPGrey3;
-            text-align:left;
+            text-align: left;
         }
 
-        .slick-header-column
-        {
+        .slick-header-column {
             border: 1px solid $TPGrey5;
-            border-width:1px 0;
+
+            .slick-column-name {
+                font-size: $fontSizeSmaller;
+                font-family: $fontFamilyHeavy;
+                font-weight: normal;
+                color: $TPGrey3;
+            }
+
+            &.ui-state-default {
+               border-right: 1px solid $TPGrey5;
+               line-height: 1em;
+            }
         }
 
-        .slick-cell
-        {
-            border-right:1px solid $TPGrey5;
+        .expandoLeftColumn .dataGrid .slick-cell, 
+        .expandoLeftColumn .dataGrid .slick-headerrow-column {
+            border: none;
+        }
+
+        .slick-cell {
+            font-size: $fontSizeSmaller;
             color: $TPGrey8;
+            border-right: 1px solid $TPGrey5;
+            border-bottom: 1px solid $TPGrey5;
+            border-top: none;
+            border-left: none;
+            padding: 0.5625em 0.625em;
+            line-height: 1.2;
         }
 
-        .slick-viewport
-        {
+        .slick-viewport{
             @extend %throbberBG;
             background-repeat: no-repeat;
             background-position: center;
 
-            .slick-row
-            {
+            .slick-row{
                 width: 100%;
-                line-height: 20px;
-                border-top:1px solid $TPGrey5;
 
-                &:last-child
-                {
-                    border-bottom:1px solid $TPGrey5;
+                &:last-child {
+                    // border-bottom:1px solid $TPGrey5;
                 }
 
-                &.even
-                {
-                    background: $TPGrey6;
-                }
-                &.odd
-                {
+                &.even {
                     background: #efefef;
                 }
+                &.odd {
+                    background: $TPGrey6;
+                }
 
-                &.sampleInRange
-                {
+                &.sampleInRange {
                     background: #e5ddd8;
                 }
 
-                &.sampleInPrimaryRange
-                {
+                &.sampleInPrimaryRange {
                     background: #d8dde5;
+                }
+
+                &.stopped {
+                    .slick-cell {
+                        font-family: $fontFamilyHeavy
+                    }
                 }
             }
         }

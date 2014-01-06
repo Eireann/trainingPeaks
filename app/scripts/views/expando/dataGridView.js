@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "underscore",
     "setImmediate",
     "TP",
@@ -7,6 +8,7 @@ define(
     "slick.grid"
 ],
 function(
+    $,
     _,
     setImmediate,
     TP,
@@ -32,7 +34,12 @@ function(
 
         getItem: function(index)
         {
-            return this.channels.get(index);
+            var item = this.channels.get(index);
+
+            // item is a stop if all values are null, except for the first column which is time
+            item.isStopped = ! _.any(item.slice(1), function(value) { return value !== null; });
+
+            return item;
         },
 
         getItemMetadata: function(index)
@@ -51,6 +58,9 @@ function(
 
             if(inRange) { classes.push('sampleInRange'); }
             if(inPrimaryRange) { classes.push('sampleInPrimaryRange'); }
+
+            var item = this.getItem(index);
+            if(item.isStopped) { classes.push('stopped'); }
 
             return {
                 cssClasses: classes.join(' ')
@@ -75,20 +85,20 @@ function(
                 units: "distance"
             },
             {
-                id: "Elevation",
-                name: "Elevation",
-                units: "elevation"
-            },
-            {
-                id: "Cadence",
-                name: "Cadence",
-                units: "cadence"
+                id: "Speed",
+                name: "Speed",
+                units: "speed"
             },
             {
                 id: "HeartRate",
                 name: "Heart Rate",
                 units: "heartrate"
             },
+            {
+                id: "Cadence",
+                name: "Cadence",
+                units: "cadence"
+            }, 
             {
                 id: "Power",
                 name: "Power",
@@ -103,11 +113,11 @@ function(
                 id: "PowerBalance",
                 name: "Power Balance",
                 units: "powerbalance"
-            },
+            }, 
             {
-                id: "Speed",
-                name: "Speed",
-                units: "speed"
+                id: "Elevation",
+                name: "Elevation",
+                units: "elevation"
             },
             {
                 id: "Temperature",
@@ -162,11 +172,24 @@ function(
             {
                 if(column.units)
                 {
+                    if(column.units === "speed" && _.contains([1,3,13,12], workoutType))
+                    {
+                        column.units = "pace";
+                        column.name = "Pace";
+                    }
+
                     var label = TP.utils.units.getUnitsLabel(column.units, workoutType);
                     column.name += label ? " (" + label + ")" : "";
-                    column.formatter = function(row, cell, value)
+                    column.formatter = function(row, cell, value, columnMetaData, item)
                     {
-                        return TP.utils.conversion.formatUnitsValue(column.units, value, { defaultValue: "--", workoutTypeId: workoutType });
+                        if(item.isStopped)
+                        {
+                            return column.name === "Time" ? "STOPPED" : "";
+                        }
+                        else
+                        {
+                            return TP.utils.conversion.formatUnitsValue(column.units, value, { defaultValue: "--", workoutTypeId: workoutType });
+                        }
                     };
                 }
             });
@@ -174,7 +197,8 @@ function(
             var options =
             {
                 fullWidthRows: true,
-                syncColumnCellResize: true
+                syncColumnCellResize: true,
+                explicitInitialization: true
             };
 
             var $grid = this.$(".dataGrid");
@@ -182,6 +206,13 @@ function(
             setImmediate(function()
             {
                 self.grid = new Slick.Grid($grid, new DataView(self.sampleData, columns, self.stateModel), columns, options);
+                self.grid.onHeaderCellRendered.subscribe(function(e, args)
+                {
+                    var $header = $(args.node).find(".slick-column-name");
+                    $header.attr("title", $header.text());
+                });
+
+                self.grid.init();
             });
 
             // Prevent slick grid from causing packery trouble
