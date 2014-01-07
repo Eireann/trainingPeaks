@@ -22,6 +22,7 @@ function(
 
         events: {
             "change .retiredToggle": "_onRetiredToggleChange",
+
             "click .removeEquipment": "_removeEquipment"
         },
 
@@ -78,7 +79,14 @@ function(
 
             var $notes = this.$(".equipRightCol textarea");
 
-            $retiredToggle.is(':checked') ? $notes.addClass("retiredItem") : $notes.removeClass("retiredItem");
+            if ($retiredToggle.is(':checked'))
+            {
+                $notes.addClass("retiredItem");
+            }
+            else
+            {
+                $notes.removeClass("retiredItem");
+            }
         },
 
         _removeEquipment: function()
