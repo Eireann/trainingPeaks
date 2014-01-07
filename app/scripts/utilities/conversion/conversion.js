@@ -27,6 +27,60 @@
 {
     var conversion = {
 
+
+
+
+        // CONVERT THESE TO NEW FORMAT
+
+        // length
+        parseCm: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "cm");
+            return convertToModelUnits(limitedValue, "cm");
+        },
+
+        formatCm: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(Number(value), "cm");
+            var adjustedValue = adjustFieldRange(convertedValue, "cm");
+            return conversion.formatNumber(adjustedValue, options);
+        },
+
+        // fluid? or volume?
+        formatMl: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(Number(value), "ml");
+            var adjustedValue = adjustFieldRange(convertedValue, "ml");
+            return conversion.formatNumber(adjustedValue, options);
+        },
+
+        parseMl: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "ml");
+            return convertToModelUnits(limitedValue, "ml");
+        },
+
+        // date
+        formatDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.formatEmptyNumber(value);
+            }
+            return new DateTimeFormatter().format(value, options.dateFormat);
+        },
+
+        parseDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return null;
+            }
+            return new DateTimeFormatter().parse(value, options.dateFormat);
+        },
+
+
+
         /*
             options:
                 defaultValue
@@ -36,6 +90,7 @@
         formatUnitsValue: function(units, value, options)
         {
 
+            // eventually eliminate this switch statement
             var string;
             switch(units)
             {
@@ -61,6 +116,7 @@
                     return unitsStrategy.formatValue(value);
 
 
+                // CONVERT THESE TO NEW FORMAT
                 case "minutes":
                 case "seconds":
                 case "milliseconds":
@@ -568,32 +624,7 @@
             return conversion.formatDistance(value, swimOptions);
         },
 
-        parseCm: function(value, options)
-        {
-            var limitedValue = adjustFieldRange(value, "cm");
-            return convertToModelUnits(limitedValue, "cm");
-        },
-
-        formatCm: function(value, options)
-        {
-            var convertedValue = convertToViewUnits(Number(value), "cm");
-            var adjustedValue = adjustFieldRange(convertedValue, "cm");
-            return conversion.formatNumber(adjustedValue, options);
-        },
-
-        formatMl: function(value, options)
-        {
-            var convertedValue = convertToViewUnits(Number(value), "ml");
-            var adjustedValue = adjustFieldRange(convertedValue, "ml");
-            return conversion.formatNumber(adjustedValue, options);
-        },
-
-        parseMl: function(value, options)
-        {
-            var limitedValue = adjustFieldRange(value, "ml");
-            return convertToModelUnits(limitedValue, "ml");
-        },
-
+ 
         formatPercent: function(value, options)
         {
             var adjustedValue = adjustFieldRange(value, "%");
@@ -606,23 +637,15 @@
             return adjustFieldRange(value, "%");
         },
 
-        formatDate: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.formatEmptyNumber(value);
-            }
-            return new DateTimeFormatter().format(value, options.dateFormat);
-        },
 
-        parseDate: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return null;
-            }
-            return new DateTimeFormatter().parse(value, options.dateFormat);
-        },
+
+
+
+
+
+
+
+
 
         // DEPRECATE THESE:
         formatDistance: function(value, options)
