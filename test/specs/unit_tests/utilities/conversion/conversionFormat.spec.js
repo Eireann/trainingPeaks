@@ -23,6 +23,78 @@ function(testHelpers, TP, conversion, dateTimeUtils)
 
     describe("Conversion Output Formatting", function()
     {
+        describe("Circumference", function()
+        {
+            describe("Metric", function()
+            {
+                describeFormatUnits("circumference", [
+                    // Out of range - corrected
+                    {
+                        output: "999",
+                        input: 1000 
+                    },
+                    // Out of range - corrected
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    // 1 cm = 1 cm
+                    {
+                        output: "1.00",
+                        input: 1 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        output: "",
+                        input: ""
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeFormatUnits("circumference", [
+                    // Out of range - corrected
+                    {
+                        output: "393.307",
+                        input: 1000 
+                    },
+                    // Out of range - corrected
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    // 1 cm = 0.393701 inch
+                    {
+                        output: "0.393701",
+                        input: 1
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        output: "",
+                        input: ""
+                    }
+                ],
+                {
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+        });
+
         describe("Duration", function()
         {
 

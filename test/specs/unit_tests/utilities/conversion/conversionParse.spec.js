@@ -25,6 +25,58 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
 
     describe("Conversion Input Parsing", function()
     {
+        describe("Circumference", function()
+        {
+            describe("Metric", function()
+            {
+                describeParseUnits("circumference", [
+                    // 1 cm = 1 cm
+                    {
+                        input: 1, 
+                        output: "1"
+                    },
+                    {
+                        input: 0,
+                        output: "0.00"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeParseUnits("circumference", [
+                    // 1 cm = 0.393701 inch
+                    {
+                        input: 1,
+                        output: "0.393701"
+                    },
+                    {
+                        input: 0,
+                        output: "0.00"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
+                {
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+        });
+
         describe("DateTime seconds", function()
         {
 

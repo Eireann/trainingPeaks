@@ -85,7 +85,7 @@ define(
             max: 99999
         },
         
-        circumfrence: {
+        circumference: {
 
             aliases: ["cm"],
 
