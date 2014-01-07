@@ -115,12 +115,17 @@ function(_, unitsConstants, workoutTypeUtils)
             label: "ft"
         },
 
-        "efficiencyfactor":
+        efficiencyFactorRaw:
         {
-            English: 60 * 1.09361,
-            Metric: 60
+            label: "EF",
+
+            conversions:
+            {
+                efficiencyFactorMetric: 60,
+                efficiencyFactorEnglish: 60 * 1.09361
+            }
         },
-       
+
         newtonMeters:
         {
             label: "Nm",
@@ -136,20 +141,28 @@ function(_, unitsConstants, workoutTypeUtils)
             label: "in-lbs"
         },
 
-        "cm":
+        cm:
         {
-            English: 0.393701,
-            Metric: 1
+            conversions:
+            {
+                inch: 0.393701
+            }
         },
-        "kg":
+        
+        kg:
         {
-            English: 2.20462,
-            Metric: 1
+            conversions:
+            {
+                pound: 2.20462
+            }
         },
-        "ml":
+
+        ml:
         {
-            English: 0.033814,
-            Metric: 1
+            conversions:
+            {
+                ounce: 0.033814
+            }
         }
     };
 

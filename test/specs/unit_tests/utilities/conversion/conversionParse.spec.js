@@ -10,18 +10,6 @@ define(
 function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 {
 
-    var describeParse = function(methodName, testValues)
-    {
-        _.each(testValues, function(testValue)
-        {
-            it("conversion." + methodName + "(" + testValue.input + ") Should return " + testValue.output, function()
-            {
-                expect(conversion[methodName](testValue.input, testValue.options)).to.eql(testValue.output);
-            });
-        });
-
-    };
-
     var describeParseUnits = function(units, testValues, options)
     {
         _.each(testValues, function(testValue)

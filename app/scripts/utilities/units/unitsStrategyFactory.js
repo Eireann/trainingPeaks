@@ -116,6 +116,35 @@ define(
             }
         },
 
+        efficiencyFactor: {
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 2,
+
+            min: 0,
+            max: 99,
+
+            units:
+            {
+                baseUnits: "efficiencyFactorRaw",
+                English: "efficiencyFactorRaw",
+                Metric: "efficiencyFactorRaw",
+
+                Run:
+                {
+                    English: "efficiencyFactorEnglish",
+                    Metric: "efficiencyFactorMetric"
+                },
+
+                Walk:
+                {
+                    English: "efficiencyFactorEnglish",
+                    Metric: "efficiencyFactorMetric"
+                }
+
+            }
+        },
+
         elevation: {
             formatter: integerFormatter,
             parser: integerParser,

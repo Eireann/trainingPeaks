@@ -55,6 +55,7 @@
                 case "cadence":
                 case "torque":
                 case "temperature":
+                case "efficiencyFactor":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -134,6 +135,7 @@
                 case "cadence":
                 case "torque":
                 case "temperature":
+                case "efficiencyFactor":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -186,7 +188,6 @@
         {
             var convertibleUnitTypes = [
                 "groundControl",
-                "efficiencyfactor",
                 "cm",
                 "kg",
                 "ml"
@@ -305,9 +306,6 @@
 
                 case "grade":
                     return conversion.formatGrade(value, options);
-
-                case "efficiencyfactor":
-                    return conversion.formatEfficiencyFactor(value, options);
 
                 case "mmHg":
                     if(_.isArray(value))
@@ -473,12 +471,6 @@
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             else
                 return parsedValue.toFixed(1);
-        },
-
-        formatEfficiencyFactor: function(value, options)
-        {
-            var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, conversion._getMySportType(options));
-            return convertedValue.toFixed(2);
         },
 
         formatEmptyNumber: function(value, options, defaultValue)
@@ -844,8 +836,17 @@
         parseTemperature: function(value, options)
         {
             return conversion.parseUnitsValue("temperature", value, options);
-        }
+        },
 
+        formatEfficiencyFactor: function(value, options)
+        {
+            return conversion.formatUnitsValue("efficiencyFactor", value, options);
+        },
+
+        parseEfficiencyFactor: function(value, options)
+        {
+            return conversion.parseUnitsValue("efficiencyFactor", value, options);
+        }
     };
 
     return conversion;
