@@ -3,10 +3,9 @@ define(
     "testUtils/testHelpers",
     "TP",
     "utilities/conversion/conversion",
-    "utilities/conversion/convertToModelUnits",
     "utilities/datetime/datetime"
 ],
-function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
+function(testHelpers, TP, conversion, dateTimeUtils)
 {
     var describeFormatUnits = function(units, testValues, options)
     {
@@ -15,7 +14,8 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
             it("conversion.formatUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
             {
                 var formatOptions =  _.defaults({}, testValue.options, options);
-                expect(conversion.formatUnitsValue(units, testValue.input, formatOptions)).to.be.eql(testValue.output);
+                var formattedValue = conversion.formatUnitsValue(units, testValue.input, formatOptions);
+                expect(formattedValue).to.eql(testValue.output);
             });
         });
 

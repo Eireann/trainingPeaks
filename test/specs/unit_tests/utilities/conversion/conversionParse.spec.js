@@ -4,10 +4,9 @@ define(
     "testUtils/testHelpers",
     "TP",
     "utilities/conversion/conversion",
-    "utilities/conversion/convertToModelUnits",
     "utilities/datetime/datetime"
 ],
-function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
+function(_, testHelpers, TP, conversion, dateTimeUtils)
 {
 
     var describeParseUnits = function(units, testValues, options)

@@ -48,7 +48,7 @@ function(
                     it("should display 0s", function()
                     {
                         createView(0);
-                        expect(view.$("input[name=value]").val()).to.eql("0");
+                        expect(view.$("input[name=value]").val()).to.match(/^0[\.0]*$/);
                     });
 
                     it("should parse 0s as 0", function()
@@ -56,7 +56,7 @@ function(
                         createView(42);
                         view.$("input[name=value]").val("0").change();
                         expect(model.get("value")).to.eql(0);
-                        expect(view.$("input[name=value]").val()).to.eql("0");
+                        expect(view.$("input[name=value]").val()).to.match(/^0[\.0]*$/);
                     });
                 }
                 else
