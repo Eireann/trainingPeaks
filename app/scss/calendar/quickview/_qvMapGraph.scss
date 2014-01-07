@@ -110,6 +110,13 @@
 	border:none;
 	border-radius:0;
 	-webkit-border-radius: 0;
+
+    a {
+        &:first-child,
+        &:last-child {
+            border-radius: 0;
+        }
+    } 
 }
 
 .leaflet-bar-part {
@@ -130,6 +137,10 @@
 .leaflet-control-zoom a {
 	width:23px;
 	height:23px;
+    &:hover {
+        width:23px;
+        height:23px;
+    }
 }
 
 .leaflet-control-zoom a.leaflet-control-zoom-in, 
