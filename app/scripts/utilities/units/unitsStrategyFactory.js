@@ -60,6 +60,16 @@ define(
             formatter: threeFiguresFormatter,
             labeler: defaultUnitsLabeler
         },
+
+        numberWithThreeFigures: {
+            aliases: ["hours", "kcal", "mg/dL", "mm"]
+        },
+
+        integer: {
+            aliases: ["units", "none", "mmHg"],
+            formatter: integerFormatter,
+            parser: integerParser
+        },
  
         cadence: {
             formatter: integerFormatter,
@@ -75,6 +85,21 @@ define(
             max: 99999
         },
         
+        circumfrence: {
+
+            aliases: ["cm"],
+
+            min: 0,
+            max: 999,
+
+            units:
+            {
+                baseUnits: "cm",
+                English: "inch",
+                Metric: "cm"
+            }
+        },
+
         distance: {
             min: 0,
             max: 999999,
@@ -146,6 +171,9 @@ define(
         },
 
         elevation: {
+
+            aliases: ["groundControl"],
+
             formatter: integerFormatter,
             parser: integerParser,
 
@@ -197,6 +225,18 @@ define(
             max: 99999
         },
 
+        fluid: {
+
+            aliases: ["ml"],
+
+            units:
+            {
+                baseUnits: "ml",
+                English: "oz",
+                Metric: "ml"
+            }
+        },
+
         heartrate: {
             formatter: integerFormatter,
             parser: integerParser,
@@ -244,10 +284,24 @@ define(
         },
 
         power: {
+            aliases: ["rightpower"],
+
             formatter: integerFormatter,
             parser: integerParser,
             min: 0,
             max: 9999
+        },
+
+        skinFold: {
+
+            aliases: ["thickness", "mm"],
+
+            units:
+            {
+                baseUnits: "mm",
+                English: "mm",
+                Metric: "mm"
+            }
         },
 
         speed: {
@@ -314,7 +368,7 @@ define(
 
         weight: {
 
-            alias: "kg",
+            aliases: ["kg"],
             formatter: decimalFormatter,
             parser: decimalParser,
             precision: 1,
@@ -361,7 +415,10 @@ define(
             }
             else
             {
-                return _.find(unitDefinitions, { alias: units });
+                return _.find(unitDefinitions, function(unitDefinition)
+                {
+                    return _.has(unitDefinition, "aliases") && _.contains(unitDefinition.aliases, units);
+                });
             }
         }
 

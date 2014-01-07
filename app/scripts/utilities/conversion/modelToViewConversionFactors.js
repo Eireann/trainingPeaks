@@ -148,6 +148,15 @@ function(_, unitsConstants, workoutTypeUtils)
                 inch: 0.393701
             }
         },
+
+        mm:
+        {
+            conversions:
+            {
+                cm: 0.1,
+                inch: 0.0393701
+            }
+        },
         
         kg:
         {

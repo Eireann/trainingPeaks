@@ -5,8 +5,6 @@
     "utilities/datetime/convert",
     "utilities/datetime/format",
     "utilities/workout/workoutTypes",
-    "utilities/conversion/convertToModelUnits",
-    "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange",
     "utilities/threeSigFig",
     "utilities/units/labels",
@@ -17,8 +15,6 @@
             dateTimeConversion,
             DateTimeFormatter,
             workoutTypes,
-            convertToModelUnits,
-            convertToViewUnits,
             adjustFieldRange,
             threeSigFig,
             getUnitsLabel,
@@ -26,60 +22,6 @@
             )
 {
     var conversion = {
-
-
-
-
-        // CONVERT THESE TO NEW FORMAT
-
-        // length
-        parseCm: function(value, options)
-        {
-            var limitedValue = adjustFieldRange(value, "cm");
-            return convertToModelUnits(limitedValue, "cm");
-        },
-
-        formatCm: function(value, options)
-        {
-            var convertedValue = convertToViewUnits(Number(value), "cm");
-            var adjustedValue = adjustFieldRange(convertedValue, "cm");
-            return conversion.formatNumber(adjustedValue, options);
-        },
-
-        // fluid? or volume?
-        formatMl: function(value, options)
-        {
-            var convertedValue = convertToViewUnits(Number(value), "ml");
-            var adjustedValue = adjustFieldRange(convertedValue, "ml");
-            return conversion.formatNumber(adjustedValue, options);
-        },
-
-        parseMl: function(value, options)
-        {
-            var limitedValue = adjustFieldRange(value, "ml");
-            return convertToModelUnits(limitedValue, "ml");
-        },
-
-        // date
-        formatDate: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.formatEmptyNumber(value);
-            }
-            return new DateTimeFormatter().format(value, options.dateFormat);
-        },
-
-        parseDate: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return null;
-            }
-            return new DateTimeFormatter().parse(value, options.dateFormat);
-        },
-
-
 
         /*
             options:
@@ -89,81 +31,14 @@
         */
         formatUnitsValue: function(units, value, options)
         {
-
-            // eventually eliminate this switch statement
-            var string;
-            switch(units)
-            {
-                case "distance":
-                case "speed":
-                case "duration":
-                case "pace":
-                case "calories":
-                case "elevation":
-                case "elevationGain":
-                case "elevationLoss":
-                case "energy":
-                case "tss":
-                case "if":
-                case "power":
-                case "heartrate":
-                case "cadence":
-                case "torque":
-                case "temperature":
-                case "efficiencyFactor":
-                case "kg":
-                    var unitsStrategy = conversion._buildStrategyForUnits(units, options);
-                    return unitsStrategy.formatValue(value);
-
-
-                // CONVERT THESE TO NEW FORMAT
-                case "minutes":
-                case "seconds":
-                case "milliseconds":
-                case "hours":
-                case "timeofday":
-                case "powerbalance":
-                case "latitude":
-                case "longitude":
-
-                    // if the input is null or empty string, return empty string or other default value
-                    if(conversion.valueIsEmpty(value) || conversion.valueIsNotANumber(value) || !_.isFinite(value))
-                    {
-                        return conversion.getDefaultValueForFormat(options);
-                    }           
-
-                    // convert to view units if necessary
-                    var sportType = conversion._getMySportType(options);
-                    var convertedValue = conversion._convertToViewUnits(units, value, sportType);
-
-                    // limit if necessary
-                    var limitedValue = conversion._adjustFieldRange(units, convertedValue);
-
-                    // format it
-                    string = conversion.formatEmptyNumber(conversion._formatNumberForView(units, limitedValue, options), options);
-                    break;
-
-                default:
-
-                    string = conversion._formatUnitsValueOld(units, value, options);
-                    break;
+            try {
+                return conversion._formatUnitsValue(units, value, options);
+            }
+            catch(e) {
+                var unitsStrategy = conversion._buildStrategyForUnits(units, options);
+                return unitsStrategy.formatValue(value);
             }
 
-            // add a units label
-            if(options && options.withLabel)
-            {
-                // TODO: use the unitsStrategy methods
-                string += " " + getUnitsLabel(units, conversion._getMySportType(options));
-            }
-
-            return string;
-
-        },
-
-        _buildStrategyForUnits: function(units, options)
-        {
-            var strategyOptions = _.defaults({}, options, {workoutTypeId: conversion._getMySportType(options)});
-            return UnitsStrategyFactory.buildStrategyForUnits(units, strategyOptions);
         },
 
         /*
@@ -173,101 +48,41 @@
         */
         parseUnitsValue: function(units, value, options)
         {
-            switch(units)
-            {
-
-                case "distance":
-                case "speed":
-                case "duration":
-                case "pace":
-                case "calories":
-                case "elevation":
-                case "elevationGain":
-                case "elevationLoss":
-                case "energy":
-                case "tss":
-                case "if":
-                case "power":
-                case "heartrate":
-                case "cadence":
-                case "torque":
-                case "temperature":
-                case "efficiencyFactor":
-                case "kg":
-                    var unitsStrategy = conversion._buildStrategyForUnits(units, options);
-                    return unitsStrategy.parseValue(value);
-
-                default: 
-                    return conversion._parseUnitsValue(units, value, options);
+            try {
+                return conversion._parseUnitsValue(units, value, options);
+            }
+            catch(e) {
+                var unitsStrategy = conversion._buildStrategyForUnits(units, options);
+                return unitsStrategy.parseValue(value);
             }
         },
 
-
-        _parseUnitsValue: function(units, value, options)
+        _buildStrategyForUnits: function(units, options)
         {
-            switch(units)
-            {
-
-                case "number":
-                    return conversion.parseNumber(value, options);
-
-                case "cm":
-                    return conversion.parseCm(value, options);
-
-                case "ml":
-                    return conversion.parseMl(value, options);
-
-                case "%":
-                    return conversion.parsePercent(value, options);
-
-                case "units":
-                case "none":
-                case "mmHg":
-                    return conversion.parseInteger(value, options);
-
-                case "hours":
-                case "kcal":
-                case "mg/dL":
-                case "mm":
-                    return conversion.parseNumber(value, options);
-
-                case "date":
-                    return conversion.parseDate(value, options);
-
-                default:
-                     throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
-            }
+            var strategyOptions = _.defaults({}, options, {workoutTypeId: conversion._getMySportType(options)});
+            return UnitsStrategyFactory.buildStrategyForUnits(units, strategyOptions);
         },
 
-        _convertToViewUnits: function(units, value, sportType)
-        {
-            var convertibleUnitTypes = [
-                "groundControl",
-                "cm",
-                "ml"
-            ];
 
-            switch(units)
-            {
+        // TO DO:
 
+        // CONVERT THESE TO NEW FORMAT:
+        // %, date, milliseconds, tsb, grade, timeofday, powerbalance, latitude, longitude, text
+
+        // TESTS:
+        // cm, mm, ml, %, date, milliseconds, tsb, grade, timeofday, powerbalance, latitude, longitude, text
+
+
+        /*
+
+        // convertToViewUnits
                 case "milliseconds":
                     return (Number(value) / 1000) / 3600;
 
                 case "seconds":
                     return Number(value) / 3600;
 
-                default:
-                    if(_.contains(convertibleUnitTypes, units))
-                    {
-                        return convertToViewUnits(Number(value), units, undefined, sportType);
-                    }
-                    else
-                    {
-                        return Number(value);
-                    }
-                    break;
-            }
-        },
+
 
         _adjustFieldRange: function(units, value)
         {
@@ -316,6 +131,59 @@
                     return value;
             }
 
+        },
+                    */
+
+        // REVIEW THESE:
+        // minutes, seconds 
+
+        // REVIEW WHERE THESE ARE USED 
+        
+
+        formatDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.formatEmptyNumber(value);
+            }
+            return new DateTimeFormatter().format(value, options.dateFormat);
+        },
+
+        parseDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return null;
+            }
+            return new DateTimeFormatter().parse(value, options.dateFormat);
+        },
+
+        _formatUnitsValue: function(units, value, options)
+        {
+            var string = conversion._formatUnitsValueOld(units, value, options);
+            // add a units label
+            if(options && options.withLabel)
+            {
+                // TODO: use the unitsStrategy methods
+                string += " " + getUnitsLabel(units, conversion._getMySportType(options));
+            }
+
+            return string;
+        },
+
+        _parseUnitsValue: function(units, value, options)
+        {
+            switch(units)
+            {
+                case "%":
+                    return conversion.parsePercent(value, options);
+
+                case "date":
+                    return conversion.parseDate(value, options);
+
+                default:
+                     throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
+            }
         },
 
         _formatUnitsValueOld: function(units, value, options)
@@ -643,10 +511,6 @@
 
 
 
-
-
-
-
         // DEPRECATE THESE:
         formatDistance: function(value, options)
         {
@@ -856,7 +720,28 @@
         parseKg: function(value, options)
         {
             return conversion.parseUnitsValue("kg", value, options);
-        }        
+        },
+
+        parseCm: function(value, options)
+        {
+            return conversion.parseUnitsValue("cm", value, options);
+        },
+
+        formatCm: function(value, options)
+        {
+            return conversion.formatUnitsValue("cm", value, options);
+        },
+
+        formatMl: function(value, options)
+        {
+            return conversion.formatUnitsValue("ml", value, options);
+        },
+
+        parseMl: function(value, options)
+        {
+            return conversion.parseUnitsValue("ml", value, options);
+        }
+
     };
 
     return conversion;
