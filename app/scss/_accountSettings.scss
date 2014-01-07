@@ -760,6 +760,10 @@
             float: left;
             margin-bottom: 50px;
 
+            &:first-of-type {
+                margin-top: 3px;
+            }
+
             .equipLeftCol {
                 float: left;
                 width: 436px;
@@ -777,12 +781,10 @@
                 textarea {
                     width: 100%;
                 }
-
-                
             }
 
             .removeButton {
-                clear: left;       
+                margin-top: 12px; 
             }
 
             .fieldContain {
@@ -805,7 +807,7 @@
 
         .defaultRetiredContain {
             float: left;
-            margin-top: 3px;
+            margin-top: 8px;
         }
 
         .totalDistanceContain {
@@ -838,16 +840,15 @@
             margin-right: 10px;
         }
 
-        .retiredEquip {
-           // margin-left: 5px;
-        }
-
         .bikeList {
             .notes {
                 position: relative;
                 top: 12px;
                 height: 167px;
                 max-width: 311px;
+                &.retiredItem {
+                    height: 196px;
+                }
             }
         }
 
@@ -857,6 +858,9 @@
                 top: 12px;
                 height:138px;
                 max-width: 311px;
+                &.retiredItem {
+                    height: 167px;
+                }
             }
         }
 
@@ -864,19 +868,17 @@
 
     @include clearfix;
 
-    input
-    {
-       //  width: 200px;
-       // float: left;
-       //  margin:0;
-       // height: 20px;
+    input {
+        //  width: 200px;
+        // float: left;
+        //  margin:0;
+        // height: 20px;
         color: $TPGrey3;
     }
 
-    input[type="radio"]
-    {
+    input[type="radio"] {
         // width: auto;
-       //  margin: -4px 0 0 0;
+        //  margin: -4px 0 0 0;
     }
 
     input[type="checkbox"]

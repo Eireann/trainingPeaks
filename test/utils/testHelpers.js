@@ -107,7 +107,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         resolveRequest: function(httpVerb, urlPattern, data, options)
         {
-            var request = this.findRequest(httpVerb, urlPattern);
+            var request = this.findRequest(httpVerb, urlPattern, 1);
 
             if (request)
             {
@@ -133,7 +133,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         rejectRequest: function(httpVerb, urlPattern)
         {
-            var request = this.findRequest(httpVerb, urlPattern);
+            var request = this.findRequest(httpVerb, urlPattern, 1);
 
             if (request)
             {
@@ -151,12 +151,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
             return request ? true : false;
         },
 
-        findRequest: function(httpVerb, urlPattern)
+        findRequest: function(httpVerb, urlPattern, readyState)
         {
             var pattern = new RegExp(urlPattern);
             return _.find(this.fakeAjaxRequests, function(req)
             {
-                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
+                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb) && (!readyState || req.readyState === readyState))
                 {
                     return true;
                 }
@@ -221,11 +221,14 @@ function(_, Backbone, TP, xhrData, MarsApp)
             this.resolveRequest("GET", "refresh$", {});
             this.resolveRequest("GET", "users/v1/user$", userData);
             this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
-            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings, { silent: true });
-            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", equipment);
 
             this.resolveRequest("GET", "sysinfo/v1/assemblyversion", {});
             this.resolveRequest("GET", "sysinfo/v1/timezoneswithlabels", []);
+
+            // if a user/coach has no athlete ids, these requests may not have been made, so fail silently
+            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings, { silent: true });
+            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", equipment, { silent: true });
+
         },
 
         startTheAppAndLogin: function(userData, accessRights, athleteSettings, equipment)

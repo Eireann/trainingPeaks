@@ -2,12 +2,14 @@ define(
 [
     "backbone",
     "underscore",
+    "jquery",
     "TP",
     "models/equipmentModel"
 ],
 function(
     Backbone,
     _,
+    $,
     TP,
     EquipmentModel
 )
@@ -46,6 +48,15 @@ function(
         url: function()
         {
             return theMarsApp.apiRoot + "/fitness/v1/athletes/" + this.athleteId + "/equipment";
+        },
+
+        getFetchPromise: function()
+        {
+            if(!this.promise)
+            {
+                this.promise = this.fetch();
+            }
+            return this.promise;
         },
 
         _handleSaveResponse: function(data)

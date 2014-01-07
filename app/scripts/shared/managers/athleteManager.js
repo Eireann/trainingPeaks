@@ -33,7 +33,7 @@ function(
 
                 // TODO: remove this forced resolution once api is up on app.dev
                 var equipmentPromise = new $.Deferred();
-                var equipmentFetchPromise = athlete.getEquipment().fetch().always(function()
+                var equipmentFetchPromise = athlete.getEquipment().getFetchPromise().always(function()
                 {
                     equipmentPromise.resolve();
                 });
@@ -46,7 +46,7 @@ function(
 
 /* The future starts here...
 
-                return $.when(athlete.getFetchPromise(), athlete.getEquipment().fetch())
+                return $.when(athlete.getFetchPromise(), athlete.getEquipment().getFetchPromise())
                     .done(function()
                     {
                         user.setCurrentAthlete(athlete);

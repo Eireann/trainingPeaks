@@ -63,6 +63,7 @@ function(
                 $mainRegion = testHelpers.theApp.mainRegion.$el;
                 testHelpers.theApp.router.navigate("calendar/athletes/23456", true);
                 testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", xhrData.equipment.barbkprem);
             });
             
             it("Should have the requested user set as the current athlete id", function()
@@ -114,7 +115,6 @@ function(
 
                     it("Should set the currentAthleteId to the default athlete", function()
                     {
-                        testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
                         expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
                     });
 
@@ -142,7 +142,6 @@ function(
 
                     it("Should set the currentAthleteId to the default athlete", function()
                     {
-                        testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
                         expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
                     });
 
@@ -174,7 +173,6 @@ function(
 
                     it("Should set the currentAthleteId to the default athlete", function()
                     {
-                        testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
                         expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(12345);
                     });
 
@@ -237,7 +235,7 @@ function(
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/[0-9]+/settings")).to.equal(false);
             });
 
-            xit("Should display an error message", function()
+            xit("Should display an error message TODO: this breaks because the route event on the router, after the callback, causes the modal view to close. can we fix this?", function()
             {
                 var $body = testHelpers.theApp.getBodyElement();
                 expect($body.find(".dialog").length).to.equal(0);
@@ -282,6 +280,7 @@ function(
             {
                 $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
                 testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", xhrData.equipment.barbkprem);
                 expect(testHelpers.theApp.user.getCurrentAthleteId()).to.equal(23456);
             });
 
@@ -297,6 +296,7 @@ function(
                 testHelpers.clearRequests();
                 $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
                 testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", xhrData.equipment.barbkprem);
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/23456/workouts")).to.equal(true);
             });
 
@@ -311,6 +311,7 @@ function(
                 testHelpers.theApp.router.navigate("calendar", true);
                 $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
                 testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", xhrData.equipment.barbkprem);
                 testHelpers.clearRequests();
                 testHelpers.theApp.user.getDashboardSettings().set("pods", []);
             });
@@ -341,8 +342,8 @@ function(
                 testHelpers.theApp.router.navigate("calendar", true);
                 $mainRegion.find(".athleteCalendarSelect").val(23456).trigger("change");
                 testHelpers.resolveRequest("GET", "fitness/v1/athletes/23456/settings", {});
+                testHelpers.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", xhrData.equipment.barbkprem);
                 $mainRegion.find(".athleteCalendarSelect").val(12345).trigger("change");
-                testHelpers.resolveRequest("GET", "fitness/v1/athletes/12345/settings", {});
             });
 
             it("Should change the athlete id immediately if athlete settings have already loaded", function()
