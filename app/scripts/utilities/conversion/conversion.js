@@ -115,7 +115,7 @@
                     return new DateTimeFormatter().decimalHoursAsTime(value, true);
 
                 case "timeofday":
-                    return moment(value).format("hh:mm A");
+                    
 
                 case "powerbalance":
                     value = value * 100;
@@ -511,11 +511,6 @@
             return conversion.formatUnitsValue("seconds", seconds, options);
         },
 
-        formatTimeOfDay: function(value, options)
-        {
-            return conversion.formatUnitsValue("timeofday", value, options);
-        },
-
         formatTime: function(value, options)
         {
             return conversion.formatUnitsValue("milliseconds", value, options);
@@ -714,7 +709,14 @@
         parseMl: function(value, options)
         {
             return conversion.parseUnitsValue("ml", value, options);
-        }
+        },
+
+
+        // SPECIAL CASES?
+        formatTimeOfDay: function(value, options)
+        {
+            return moment(value).format("hh:mm A");
+        },
 
     };
 

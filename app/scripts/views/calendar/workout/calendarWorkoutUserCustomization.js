@@ -56,7 +56,11 @@ function(_, TP)
                 {
                     fieldValue = TP.utils.conversion[field.conversion](fieldValue, { workoutTypeValueId: workoutTypeValueId });
                 }
-                var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, workoutTypeValueId, this) : "";
+                else if(field.units)
+                {
+                    fieldValue = TP.utils.conversion.formatUnitsValue(field.units, fieldValue, { workoutTypeValueId: workoutTypeValueId });
+                }
+                var units = field.units ? " " + TP.utils.units.getUnitsLabel(field.units, workoutTypeValueId, this) : "";
 
                 return "<p>" + prefix + fieldValue + units + "</p>";
             }

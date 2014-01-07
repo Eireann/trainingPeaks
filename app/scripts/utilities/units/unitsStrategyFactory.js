@@ -62,7 +62,7 @@ define(
         },
 
         numberWithThreeFigures: {
-            aliases: ["hours", "kcal", "mg/dL", "mm"]
+            aliases: ["hours", "calories", "kcal", "mg/dL", "mm"]
         },
 
         integer: {
