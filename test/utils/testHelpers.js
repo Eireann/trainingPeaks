@@ -221,11 +221,14 @@ function(_, Backbone, TP, xhrData, MarsApp)
             this.resolveRequest("GET", "refresh$", {});
             this.resolveRequest("GET", "users/v1/user$", userData);
             this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
-            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings, { silent: true });
-            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", equipment);
 
             this.resolveRequest("GET", "sysinfo/v1/assemblyversion", {});
             this.resolveRequest("GET", "sysinfo/v1/timezoneswithlabels", []);
+
+            // if a user/coach has no athlete ids, these requests may not have been made, so fail silently
+            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings, { silent: true });
+            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/equipment", equipment, { silent: true });
+
         },
 
         startTheAppAndLogin: function(userData, accessRights, athleteSettings, equipment)
