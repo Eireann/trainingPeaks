@@ -107,7 +107,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         resolveRequest: function(httpVerb, urlPattern, data, options)
         {
-            var request = this.findRequest(httpVerb, urlPattern);
+            var request = this.findRequest(httpVerb, urlPattern, 1);
 
             if (request)
             {
@@ -133,7 +133,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
         rejectRequest: function(httpVerb, urlPattern)
         {
-            var request = this.findRequest(httpVerb, urlPattern);
+            var request = this.findRequest(httpVerb, urlPattern, 1);
 
             if (request)
             {
@@ -151,12 +151,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
             return request ? true : false;
         },
 
-        findRequest: function(httpVerb, urlPattern)
+        findRequest: function(httpVerb, urlPattern, readyState)
         {
             var pattern = new RegExp(urlPattern);
             return _.find(this.fakeAjaxRequests, function(req)
             {
-                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
+                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb) && (!readyState || req.readyState === readyState))
                 {
                     return true;
                 }
