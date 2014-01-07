@@ -196,18 +196,6 @@
 
             switch(units)
             {
-                case "groundControl":
-                    return conversion.formatGroundControl(value, options);
-
-                case "speed":
-                    return conversion.formatSpeed(value, options);
-
-                case "pace":
-                    return conversion.formatPace(value, options);
-
-                case "rightpower":
-                    return conversion.formatPower(value, options);
-
                 case "milliseconds":
                     return conversion.formatDuration(value / (1000 * 3600), options);
 
@@ -216,12 +204,6 @@
 
                 case "tsb":
                     return conversion.formatTSB(value, options);
-
-                case "cm":
-                    return conversion.formatCm(value, options);
-
-                case "ml":
-                    return conversion.formatMl(value, options);
 
                 case "grade":
                     return conversion.formatGrade(value, options);
@@ -237,11 +219,6 @@
                     }
                     break;
 
-                case "kcal":
-                case "mg/dL":
-                case "mm":
-                    return conversion.formatNumber(value, options);
-
                 case "units":
                     var str = "";
                     if(_.isArray(value))
@@ -254,9 +231,6 @@
 
                 case "%":
                     return conversion.formatPercent(value, options);
-
-                case "none":
-                    return conversion.formatInteger(value, options);
 
                 case "date":
                     return conversion.formatDate(value, options);
