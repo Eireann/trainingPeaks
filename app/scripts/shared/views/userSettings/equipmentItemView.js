@@ -72,7 +72,13 @@ function(
 
         _onRetiredToggleChange: function()
         {
-            this.$(".retiredDate").toggle(this.$(".retiredToggle").is(':checked'));
+            var $retiredToggle = this.$(".retiredToggle");
+
+            this.$(".retiredDate").toggle($retiredToggle.is(':checked'));
+
+            var $notes = this.$(".equipRightCol textarea");
+
+            $retiredToggle.is(':checked') ? $notes.addClass("retiredItem") : $notes.removeClass("retiredItem");
         },
 
         _removeEquipment: function()
