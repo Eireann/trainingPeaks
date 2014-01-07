@@ -50,7 +50,7 @@ define(
     temperatureUnitsConverter
 ) {
 
-    var defaultUnitOptions = {
+    var unitDefinitions = {
 
         defaults: {
             workoutTypeId: 0,
@@ -310,6 +310,21 @@ define(
 
             min: 0,
             max: 9999
+        },
+
+        weight: {
+
+            alias: "kg",
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 1,
+
+            units:
+            {
+                baseUnits: "kg",
+                English: "pound",
+                Metric: "kg"
+            }
         }
 
     };
@@ -318,11 +333,12 @@ define(
 
         buildStrategyForUnits: function(units, options)
         {
-            if(defaultUnitOptions.hasOwnProperty(units))
+            var unitDefinition = this._findUnitDefinition(units);
+            if(unitDefinition)
             {
 
                 var strategyOptions = {};
-                _.defaults(strategyOptions, options, defaultUnitOptions[units], defaultUnitOptions.defaults);
+                _.defaults(strategyOptions, options, unitDefinition, unitDefinitions.defaults);
 
                 if(!strategyOptions.userUnits)
                 {
@@ -334,6 +350,18 @@ define(
             else
             {
                 throw new Error("Unknown units for unitsStrategyFactory: " + units);
+            }
+        },
+
+        _findUnitDefinition: function(units)
+        {
+            if(unitDefinitions.hasOwnProperty(units))
+            {
+                return unitDefinitions[units];
+            }
+            else
+            {
+                return _.find(unitDefinitions, { alias: units });
             }
         }
 

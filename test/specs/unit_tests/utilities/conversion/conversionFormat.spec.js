@@ -1195,16 +1195,35 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Weight", function()
         {
-            describeFormatUnits("weight", [
+            describe("Metric", function()
+            {
+                describeFormatUnits("kg", [
+                    {
+                        input: 120.34,
+                        output: "120.3"
+                    },
+                    {
+                        input: 33,
+                        output: "33.0"
+                    }
+                ]);
+            });
+            describe("English", function()
+            {
+                describeFormatUnits("kg", [
+                    {
+                        input: 100,
+                        output: "220.5"
+                    },
+                    {
+                        input: 1,
+                        output: "2.2"
+                    }
+                ],
                 {
-                    input: 120.34,
-                    output: "120.3"
-                },
-                {
-                    input: 33,
-                    output: "33.0"
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
     });
 

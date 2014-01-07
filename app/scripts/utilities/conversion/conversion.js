@@ -56,6 +56,7 @@
                 case "torque":
                 case "temperature":
                 case "efficiencyFactor":
+                case "kg":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -136,6 +137,7 @@
                 case "torque":
                 case "temperature":
                 case "efficiencyFactor":
+                case "kg":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -155,9 +157,6 @@
 
                 case "cm":
                     return conversion.parseCm(value, options);
-
-                case "kg":
-                    return conversion.parseKg(value, options);
 
                 case "ml":
                     return conversion.parseMl(value, options);
@@ -189,7 +188,6 @@
             var convertibleUnitTypes = [
                 "groundControl",
                 "cm",
-                "kg",
                 "ml"
             ];
 
@@ -298,9 +296,6 @@
                 case "cm":
                     return conversion.formatCm(value, options);
 
-                case "kg":
-                    return conversion.formatKg(value, options);
-
                 case "ml":
                     return conversion.formatMl(value, options);
 
@@ -388,11 +383,6 @@
         formatPwHr: function(value, options)
         {
             return ((value === null || value === 0) ? "" : Number(value).toFixed(2));
-        },
-
-        formatWeight: function(value, options)
-        {
-            return conversion.formatEmptyNumber(Number(value).toFixed(1), options, 0);
         },
 
         formatNumber: function(value, options)
@@ -589,19 +579,6 @@
             var convertedValue = convertToViewUnits(Number(value), "cm");
             var adjustedValue = adjustFieldRange(convertedValue, "cm");
             return conversion.formatNumber(adjustedValue, options);
-        },
-
-        formatKg: function(value, options)
-        {
-            var convertedValue = convertToViewUnits(Number(value), "kg");
-            var adjustedValue = adjustFieldRange(convertedValue, "kg");
-            return conversion.formatWeight(adjustedValue, options);
-        },
-
-        parseKg: function(value, options)
-        {
-            var limitedValue = adjustFieldRange(value, "kg");
-            return convertToModelUnits(limitedValue, "kg");
         },
 
         formatMl: function(value, options)
@@ -846,7 +823,17 @@
         parseEfficiencyFactor: function(value, options)
         {
             return conversion.parseUnitsValue("efficiencyFactor", value, options);
-        }
+        },
+
+        formatKg: function(value, options)
+        {
+            return conversion.formatUnitsValue("kg", value, options);
+        },
+
+        parseKg: function(value, options)
+        {
+            return conversion.parseUnitsValue("kg", value, options);
+        }        
     };
 
     return conversion;
