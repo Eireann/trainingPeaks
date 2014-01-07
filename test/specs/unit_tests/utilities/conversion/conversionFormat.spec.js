@@ -788,7 +788,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Power", function()
         {
-            describeFormat("formatPower", [
+            describeFormatUnits("power", [
                 {
                     input: "9999",
                     output: "9999"
@@ -826,7 +826,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("HeartRate", function()
         {
-            describeFormat("formatHeartRate", [
+            describeFormatUnits("heartrate", [
                 {
                     input: "255",
                     output: "255"
@@ -868,7 +868,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Cadence", function()
         {
-            describeFormat("formatCadence", [
+            describeFormatUnits("cadence", [
                 {
                     input: "255",
                     output: "255"

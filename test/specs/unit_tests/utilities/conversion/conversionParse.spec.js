@@ -752,7 +752,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Power", function()
         {
-            describeParse("parsePower", [
+            describeParseUnits("power", [
                 {
                     input: "9999",
                     output: 9999 
@@ -786,7 +786,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("HeartRate", function()
         {
-            describeParse("parseHeartRate", [
+            describeParseUnits("heartrate", [
                 {
                     input: "255",
                     output: 255 
@@ -820,7 +820,7 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Cadence", function()
         {
-            describeParse("parseCadence", [
+            describeParseUnits("cadence", [
                 {
                     input: "255",
                     output: 255 

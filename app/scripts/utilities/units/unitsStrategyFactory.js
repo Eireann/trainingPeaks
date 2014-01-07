@@ -57,6 +57,13 @@ define(
             labeler: defaultUnitsLabeler
         },
  
+        cadence: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 255
+        },
+
         calories: {
             formatter: integerFormatter,
             parser: integerParser,
@@ -157,6 +164,13 @@ define(
             max: 99999
         },
 
+        heartrate: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 255
+        },
+
         "if": {
             formatter: decimalFormatter,
             parser: decimalParser,
@@ -194,6 +208,13 @@ define(
                     Metric: "secondsPerHundredMeters" 
                 }
             }
+        },
+
+        power: {
+            formatter: integerFormatter,
+            parser: integerParser,
+            min: 0,
+            max: 9999
         },
 
         speed: {

@@ -50,6 +50,9 @@
                 case "energy":
                 case "tss":
                 case "if":
+                case "power":
+                case "heartrate":
+                case "cadence":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -59,7 +62,6 @@
                 case "milliseconds":
                 case "hours":
                 case "timeofday":
-                case "power":
                 case "powerbalance":
                 case "latitude":
                 case "longitude":
@@ -125,6 +127,9 @@
                 case "energy":
                 case "tss":
                 case "if":
+                case "power":
+                case "heartrate":
+                case "cadence":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -141,12 +146,6 @@
 
                 case "number":
                     return conversion.parseNumber(value, options);
-
-                case "heartrate":
-                    return conversion.parseHeartRate(value, options);
-
-                case "power":
-                    return conversion.parsePower(value, options);
 
                 case "cm":
                     return conversion.parseCm(value, options);
@@ -249,9 +248,6 @@
                 case "timeofday":
                     return moment(value).format("hh:mm A");
 
-                case "power":
-                    return Number(value).toFixed(0);
-
                 case "powerbalance":
                     value = value * 100;
                     return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
@@ -292,9 +288,6 @@
 
                 case "torque":
                     return conversion.formatTorque(value, options);
-
-                case "heartrate":
-                    return conversion.formatHeartRate(value, options);
 
                 case "milliseconds":
                     return conversion.formatDuration(value / (1000 * 3600), options);
@@ -354,9 +347,6 @@
 
                 case "none":
                     return conversion.formatInteger(value, options);
-
-                case "cadence":
-                    return conversion.formatCadence(value, options);
 
                 case "date":
                     return conversion.formatDate(value, options);
@@ -537,6 +527,26 @@
             return conversion.parseUnitsValue("if", value, options);
         },
 
+        parseHeartRate: function(value, options)
+        {
+            return conversion.parseUnitsValue("heartrate", value, options);
+        },
+
+        formatHeartRate: function(value, options)
+        {
+            return conversion.formatUnitsValue("heartrate", value, options);
+        },
+
+        parseCadence: function(value, options)
+        {
+            return conversion.parseUnitsValue("cadence", value, options);
+        },
+
+        formatCadence: function(value, options)
+        {
+            return conversion.formatUnitsValue("cadence", value, options);
+        },
+        
         // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
@@ -547,13 +557,7 @@
 
         parsePower: function(value, options)
         {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var modelValue = conversion.parseInteger(value, options);
-            modelValue = adjustFieldRange(modelValue, "power");
-            return modelValue;
+            return conversion.parseUnitsValue("power", value, options);
         },
 
         formatPaHr: function(value, options)
@@ -699,40 +703,6 @@
         {
             var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, conversion._getMySportType(options));
             return convertedValue.toFixed(2);
-        },
-
-        parseHeartRate: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var modelValue = conversion.parseInteger(value, options);
-            modelValue = adjustFieldRange(modelValue, "heartrate");
-            return modelValue;
-        },
-
-        formatHeartRate: function(value, options)
-        {
-            var adjustedValue = adjustFieldRange(Number(value), "heartrate");
-            return conversion.formatInteger(adjustedValue, options);
-        },
-
-        parseCadence: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var modelValue = conversion.parseInteger(value, options);
-            modelValue = adjustFieldRange(modelValue, "cadence");
-            return modelValue;
-        },
-
-        formatCadence: function(value, options)
-        {
-            var adjustedValue = adjustFieldRange(Number(value), "cadence");
-            return conversion.formatInteger(adjustedValue, options);
         },
 
         formatEmptyNumber: function(value, options, defaultValue)
