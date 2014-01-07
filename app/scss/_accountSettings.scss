@@ -47,6 +47,7 @@
     label
     {
         cursor: auto;
+        color: $TPGrey3;   
         
         &.clickable
         {
@@ -541,6 +542,7 @@
                 width: 125px;
                 max-width: 125px;
                 text-align: right;
+                color: $TPGrey3;
             }
 
             &.wheels,
@@ -553,7 +555,7 @@
 
             &.crankLength {
                 select {
-                    width:175px
+                    width:311px
                 }
             }
 
@@ -756,7 +758,7 @@
         // Equipment Tab
         .equipmentItem {
             float: left;
-            margin-bottom: 25px;
+            margin-bottom: 50px;
 
             .equipLeftCol {
                 float: left;
@@ -775,6 +777,8 @@
                 textarea {
                     width: 100%;
                 }
+
+                
             }
 
             .removeButton {
@@ -799,12 +803,61 @@
             margin-right: 0;
         }
 
-        .equipmentItem .actualDistance, .equipmentItem .actualDistanceUnit {
-            margin-top: 5px;
-            padding-bottom: 0px;
-            padding-left: 0px;
-            padding-right: 5px;
-            padding-top: 5px;
+        .defaultRetiredContain {
+            float: left;
+            margin-top: 3px;
+        }
+
+        .totalDistanceContain {
+            display: inline-block;
+            color: $TPGrey3;
+            float: right;
+            margin-top: 1px;
+        }
+
+        .equipmentItem .actualDistance, 
+        .equipmentItem .actualDistanceUnit {
+            font-size: $fontSizeSmall;
+            color: $TPGrey3;
+            font-family: $fontFamilyHeavy;
+        }
+
+        .defaultEquip,
+        .retiredEquip,
+        .totalDist {
+            display: inline-block;
+        }
+
+        .defaultEquip,
+        .retiredEquip {
+            cursor: pointer;
+        }
+
+        .defaultEquip {
+            margin-left: 122px;
+            margin-right: 10px;
+        }
+
+        .retiredEquip {
+           // margin-left: 5px;
+        }
+
+        .bikeList {
+            .notes {
+                position: relative;
+                top: 12px;
+                height: 167px;
+                max-width: 311px;
+            }
+        }
+
+        .shoeList {
+            .notes {
+                position: relative;
+                top: 10px;
+                height:138px;
+                max-width: 311px;
+            }
         }
 
     }

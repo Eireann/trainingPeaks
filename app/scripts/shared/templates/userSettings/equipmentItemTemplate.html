@@ -34,12 +34,8 @@
         <label class="fieldTitle">{{$ "Purchase Date" }}</label>
         <input class="datepicker" type="text" name="dateOfPurchase" data-format="date" />
     </div>
-   
-    <div class="fieldContain retiredDate" {{#ifEquals retired false}}style="display:none"{{/ifEquals}}>
-        <label class="fieldTitle">{{$ "Retired Date" }}</label>
-        <input class="datepicker" type="text" name="retiredDate" data-format="date" />
-    </div>
-    <div class="fieldContain">
+
+   <div class="fieldContain">
         <label class="fieldTitle">{{$ "Start Distance" }}</label>
         <input type="text" name="startingDistance" data-format="units:distance" />
     </div>
@@ -52,24 +48,28 @@
     </div>
     {{/ifEquals}}
 
-    <div class="fieldContain">
-        <label class="fieldTitle">{{$ "Total Distance" }}</label>
-        <span class="actualDistance value">{{#ifNot actualDistance}}0{{else}}{{formatUnitsValue "distance" actualDistance}}{{/ifNot}}</span>&nbsp;<span class="actualDistanceUnit units">{{ getUnitsLabel "distance" }}</span>
+    <div class="fieldContain retiredDate" {{#ifEquals retired false}}style="display:none"{{/ifEquals}}>
+        <label class="fieldTitle">{{$ "Retired Date" }}</label>
+        <input class="datepicker" type="text" name="retiredDate" data-format="date" />
     </div>
+
+    <div class="defaultRetiredContain">
+        <label class="fieldTitle defaultEquip"><input type="checkbox" name="isDefault" />{{$ "Default" }}</label>
+        <label class="fieldTitle retiredEquip"><input class="retiredToggle" type="checkbox" name="retired" />{{$ "Retired" }}</label>
+    </div>
+
 </div>
 
 <div class="equipRightCol">
 
-     <div class="fieldContain">
-        <label class="fieldTitle">{{$ "Default" }}</label>
-        <input type="checkbox" name="isDefault" />
+
+    <div class="totalDistanceContain">
+        <label class="fieldTitle totalDist">{{$ "Total Distance" }}:</label>
+        <span class="actualDistance value">{{#ifNot actualDistance}}0{{else}}{{formatUnitsValue "distance" actualDistance}}{{/ifNot}}</span> <span class="actualDistanceUnit units">{{ getUnitsLabel "distance" }}</span> 
     </div>
+
     <div class="fieldContain">
-        <label class="fieldTitle">{{$ "Retired" }}</label>
-        <input class="retiredToggle" type="checkbox" name="retired" />
-    </div>
-    <div class="fieldContain">
-        <textarea type="text" name="notes" />
+        <textarea type="text" name="notes" class="notes" placeholder="Notes" />
     </div>
 </div>
 
