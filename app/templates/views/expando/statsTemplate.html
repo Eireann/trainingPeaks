@@ -222,7 +222,7 @@
             <div class="statsRow" id="powerBalance">
                 <label>{{$ "PowerBalance" }}</label>
                 {{#if powerBalanceLeft }}
-                <span class="value">{{ conversion "formatPowerBalance" powerBalanceLeft }}/{{ conversion "formatPowerBalance" powerBalanceRight }}%</span>
+                <span class="value">{{ conversion "formatPowerBalance" powerBalanceRight }}</span>
                 <span class="units"></span>
                 {{ else }}
                 <span class="value">--</span>

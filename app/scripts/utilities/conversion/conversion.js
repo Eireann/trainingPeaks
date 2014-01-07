@@ -99,39 +99,6 @@
             }
         },
 
-        _formatNumberForView: function(units, value, options)
-        {
-            switch(units)
-            {
-
-                case "hours":
-                    return Math.round(value);
-
-                case "minutes":
-                    return new DateTimeFormatter().decimalHoursAsTime(value, false);
-
-                case "seconds":
-                case "milliseconds":
-                    return new DateTimeFormatter().decimalHoursAsTime(value, true);
-
-                case "timeofday":
-                    
-
-                case "powerbalance":
-                    value = value * 100;
-                    return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
-
-                case "longitude": 
-                    return (value < 0 ? "W" : "E") + " " + Math.abs(value).toFixed(6);
-
-                case "latitude":
-                    return (value < 0 ? "S" : "N") + " " + Math.abs(value).toFixed(6);
-
-                default:
-                    return value;
-            }
-
-        },
                     */
 
         // REVIEW THESE:
@@ -234,6 +201,16 @@
 
                 case "date":
                     return conversion.formatDate(value, options);
+
+                case "powerbalance":
+                    value = value * 100;
+                    return conversion.formatPercent(100 - value, options) + "% / " + conversion.formatPercent(value, options) + "%";
+
+                case "longitude": 
+                    return (value < 0 ? "W" : "E") + " " + Math.abs(value).toFixed(6);
+
+                case "latitude":
+                    return (value < 0 ? "S" : "N") + " " + Math.abs(value).toFixed(6);
 
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
@@ -466,19 +443,6 @@
             return conversion.formatDistance(value, swimOptions);
         },
 
- 
-        formatPercent: function(value, options)
-        {
-            var adjustedValue = adjustFieldRange(value, "%");
-            return conversion.formatNumber(adjustedValue, options);
-        },
-
-        parsePercent: function(value, options)
-        {
-            value = conversion.parseNumber(value, options);
-            return adjustFieldRange(value, "%");
-        },
-
 
 
 
@@ -519,11 +483,6 @@
         formatPower: function(value, options)
         {
             return conversion.formatUnitsValue("power", value, options);
-        },
-
-        formatPowerBalance: function(value, options)
-        {
-            return conversion.formatUnitsValue("powerbalance", value, options);
         },
 
         formatPace: function(value, options)
@@ -711,11 +670,27 @@
             return conversion.parseUnitsValue("ml", value, options);
         },
 
+        formatPowerBalance: function(value, options)
+        {
+            return conversion.formatUnitsValue("powerbalance", value, options);
+        },
 
         // SPECIAL CASES?
         formatTimeOfDay: function(value, options)
         {
             return moment(value).format("hh:mm A");
+        },
+
+        formatPercent: function(value, options)
+        {
+            var adjustedValue = adjustFieldRange(value, "%");
+            return conversion.formatNumber(adjustedValue, options);
+        },
+
+        parsePercent: function(value, options)
+        {
+            value = conversion.parseNumber(value, options);
+            return adjustFieldRange(value, "%");
         },
 
     };

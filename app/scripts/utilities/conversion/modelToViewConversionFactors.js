@@ -101,12 +101,21 @@ function(_, unitsConstants, workoutTypeUtils)
 
         hours:
         {
-            label: "hms",
+            label: "h:m:s",
 
             conversions:
             {
                 minutes: 60,
                 seconds: 3600
+            }
+        },
+
+        minutes:
+        {
+            conversions:
+            {
+                hours: 1 / 60,
+                seconds: 60
             }
         },
 

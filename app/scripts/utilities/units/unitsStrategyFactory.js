@@ -141,6 +141,27 @@ define(
             }
         },
 
+        durationMinutes: {
+
+            aliases: ["minutes"],
+
+            formatter: durationUnitsFormatter,
+            parser: durationUnitsParser,
+            emptyValidator: durationUnitsEmptyValidator,
+
+            max: (99 + (59 / 60) + (59 / 3600)) * 60, // 99:59:59
+            min: 0,
+
+            units:
+            {
+                baseUnits: "minutes",
+                English: "hours",
+                Metric: "hours"
+            },
+
+            seconds: false // for duration formatter
+        },
+
         efficiencyFactor: {
             formatter: decimalFormatter,
             parser: decimalParser,
