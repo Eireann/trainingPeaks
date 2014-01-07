@@ -89,11 +89,21 @@ function(_, unitsConstants, workoutTypeUtils)
             label: "yds/min"
         },
 
+        degreesFahrenheit:
+        {
+            label: "F"
+        },
+
+        degreesCelsius:
+        {
+            label: "C"
+        },
+
         hours:
         {
             label: "hms",
 
-            conversion:
+            conversions:
             {
                 minutes: 60,
                 seconds: 3600
@@ -110,12 +120,22 @@ function(_, unitsConstants, workoutTypeUtils)
             English: 60 * 1.09361,
             Metric: 60
         },
-        
-        "torque":
+       
+        newtonMeters:
         {
-            English: 8.850745793490558,
-            Metric: 1
+            label: "Nm",
+
+            conversions:
+            {
+                inchPounds: 8.850745793490558
+            }
         },
+
+        inchPounds:
+        {
+            label: "in-lbs"
+        },
+
         "cm":
         {
             English: 0.393701,

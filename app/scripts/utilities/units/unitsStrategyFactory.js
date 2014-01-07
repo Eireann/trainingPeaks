@@ -20,7 +20,9 @@ define(
 
     "./strategies/pace/paceUnitsParser",
     "./strategies/pace/paceUnitsConverter",
-    "./strategies/pace/paceUnitsFormatter"
+    "./strategies/pace/paceUnitsFormatter",
+
+    "./strategies/temperature/temperatureUnitsConverter"
 
 ], function(
     _,
@@ -43,7 +45,9 @@ define(
 
     paceUnitsParser,
     paceUnitsConverter,
-    paceUnitsFormatter
+    paceUnitsFormatter,
+
+    temperatureUnitsConverter
 ) {
 
     var defaultUnitOptions = {
@@ -240,6 +244,34 @@ define(
                 }
             }
 
+        },
+
+        temperature: {
+            min: -999,
+            max: 999,
+
+            formatter: integerFormatter,
+            parser: integerParser,
+            converter: temperatureUnitsConverter,
+
+            units:
+            {
+                baseUnits: "degreesCelsius",
+                English: "degreesFahrenheit",
+                Metric: "degreesCelsius"
+            }
+        },
+
+        torque: {
+            min: 0,
+            max: 9999,
+
+            units:
+            {
+                baseUnits: "newtonMeters",
+                English: "inchPounds",
+                Metric: "newtonMeters"
+            }
         },
 
         tss: {

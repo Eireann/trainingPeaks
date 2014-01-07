@@ -854,82 +854,146 @@ function(_, testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Torque", function()
         {
-            describeParse("parseTorque", [
-                {
-                    input: "9999",
-                    output: 9999 
-                },
-                {
-                    input: "9999.1",
-                    output: 9999
-                },
-                {
-                    input: "10000",
-                    output: 9999
-                },
-                {
-                    input: "1",
-                    output: 1
-                },
-                {
-                    input: "0",
-                    output: 0
-                },
-                {
-                    input: "-1",
-                    output: 0
-                },
-                {
-                    input: "1.23",
-                    output: 1.23
-                },
-                {
-                    input: "",
-                    output: null
-                }
-            ]);
+            describe("Metric", function()
+            {
+                describeParseUnits("torque", [
+                    {
+                        input: "9999",
+                        output: 9999 
+                    },
+                    {
+                        input: "9999.1",
+                        output: 9999
+                    },
+                    {
+                        input: "10000",
+                        output: 9999
+                    },
+                    {
+                        input: "1",
+                        output: 1
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "1.23",
+                        output: 1.23
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ]);
+            });
+
+
+            describe("English", function()
+            {
+                describeParseUnits("torque", [
+                    {
+                        input: "100",
+                        output: 11.2984829
+                    },
+                    {
+                        input: "10000",
+                        output: 1129.735305171
+                    },
+                    {
+                        input: "0",
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: 0
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ], {
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
         describe("Temperature", function()
         {
-            describeParse("parseTemperature", [
+            describe("Metric", function()
+            {
+                describeParseUnits("temperature", [
+                    {
+                        input: "999",
+                        output: 999 
+                    },
+                    {
+                        input: "999.1",
+                        output: 999
+                    },
+                    {
+                        input: "1000",
+                        output: 999
+                    },
+                    {
+                        input: "1",
+                        output: 1
+                    },
+                    {
+                        input: 0,
+                        output: 0
+                    },
+                    {
+                        input: "-1",
+                        output: -1
+                    },
+                    {
+                        input: "-999",
+                        output: -999
+                    },
+                    {
+                        input: "-1000",
+                        output: -999
+                    },
+                    {
+                        input: "",
+                        output: null
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeParseUnits("temperature", [
+                    {
+                        input: "202",
+                        output: 94 
+                    },
+                    {
+                        input: "1000",
+                        output: 537
+                    },
+                    {
+                        input: "32",
+                        output: 0
+                    },
+                    {
+                        input: 0,
+                        output: -18
+                    }, 
+                    {
+                        input: "",
+                        output: null
+                    }
+                ],
                 {
-                    input: "999",
-                    output: 999 
-                },
-                {
-                    input: "999.1",
-                    output: 999
-                },
-                {
-                    input: "1000",
-                    output: 999
-                },
-                {
-                    input: "1",
-                    output: 1
-                },
-                {
-                    input: 0,
-                    output: 0
-                },
-                {
-                    input: "-1",
-                    output: -1
-                },
-                {
-                    input: "-999",
-                    output: -999
-                },
-                {
-                    input: "-1000",
-                    output: -999
-                },
-                {
-                    input: "",
-                    output: null
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
 

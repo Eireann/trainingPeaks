@@ -53,6 +53,8 @@
                 case "power":
                 case "heartrate":
                 case "cadence":
+                case "torque":
+                case "temperature":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.formatValue(value);
 
@@ -130,6 +132,8 @@
                 case "power":
                 case "heartrate":
                 case "cadence":
+                case "torque":
+                case "temperature":
                     var unitsStrategy = conversion._buildStrategyForUnits(units, options);
                     return unitsStrategy.parseValue(value);
 
@@ -182,11 +186,6 @@
         {
             var convertibleUnitTypes = [
                 "groundControl",
-                "speed",
-                "distance",
-                "paceUnFormatted",
-                "temperature",
-                "torque",
                 "efficiencyfactor",
                 "cm",
                 "kg",
@@ -286,17 +285,11 @@
                 case "rightpower":
                     return conversion.formatPower(value, options);
 
-                case "torque":
-                    return conversion.formatTorque(value, options);
-
                 case "milliseconds":
                     return conversion.formatDuration(value / (1000 * 3600), options);
 
                 case "number":
                     return conversion.formatNumber(value, options);
-
-                case "temperature":
-                    return conversion.formatTemperature(value, options);
 
                 case "tsb":
                     return conversion.formatTSB(value, options);
@@ -376,177 +369,6 @@
             return sportType;
         },
 
-        // DEPRECATE THESE:
-        formatDistance: function(value, options)
-        {
-            return conversion.formatUnitsValue("distance", value, options);
-        },
-
-        formatDuration: function(value, options)
-        {
-            return conversion.formatUnitsValue("duration", value, options); 
-        },
-
-        formatMinutes: function(value, options)
-        {
-            return conversion.formatUnitsValue("minutes", value, options);
-        },
-
-        formatHours: function(value, options)
-        {
-            return conversion.formatUnitsValue("hours", value, options);
-        },
-
-        formatDurationFromSeconds: function(seconds, options)
-        {
-            return conversion.formatUnitsValue("seconds", seconds, options);
-        },
-
-        formatTimeOfDay: function(value, options)
-        {
-            return conversion.formatUnitsValue("timeofday", value, options);
-        },
-
-        formatTime: function(value, options)
-        {
-            return conversion.formatUnitsValue("milliseconds", value, options);
-        },
-
-        formatPower: function(value, options)
-        {
-            return conversion.formatUnitsValue("power", value, options);
-        },
-
-        formatPowerBalance: function(value, options)
-        {
-            return conversion.formatUnitsValue("powerbalance", value, options);
-        },
-
-        formatPace: function(value, options)
-        {
-            return conversion.formatUnitsValue("pace", value, options);
-        },        
-
-        parsePace: function(value, options)
-        {
-            return conversion.parseUnitsValue("pace", value, options);
-        },
-
-        formatSpeed: function(value, options)
-        {
-            return conversion.formatUnitsValue("speed", value, options);
-        },
-
-        formatElevation: function(value, options)
-        {
-            return conversion.formatUnitsValue("elevation", value, options);
-        },
-
-        parseDistance: function(value, options)
-        {
-            return conversion.parseUnitsValue("distance", value, options);
-        }, 
-
-        parseSpeed: function(value, options)
-        {
-            return conversion.parseUnitsValue("speed", value, options);
-        }, 
-
-        parseDuration: function(value, options)
-        {
-            return conversion.parseUnitsValue("duration", value, options);
-        },
-
-        formatCalories: function(value, options)
-        {
-            return conversion.formatUnitsValue("calories", value, options);
-        },
-
-        parseCalories: function(value, options)
-        {
-            return conversion.parseUnitsValue("calories", value, options);
-        },
-
-        formatElevationGain: function(value, options)
-        {
-            return conversion.formatUnitsValue("elevationGain", value, options);
-        },
-
-        parseElevationGain: function(value, options)
-        {
-            return conversion.parseUnitsValue("elevationGain", value, options);
-        },
-
-        parseElevation: function(value, options)
-        {
-            return conversion.parseUnitsValue("elevation", value, options);
-        },
-
-        formatGroundControl: function(value, options)
-        {
-            return conversion.formatUnitsValue("elevation", value, options);
-        },
-
-        formatElevationLoss: function(value, options)
-        {
-            return conversion.formatUnitsValue("elevationLoss", value, options);
-        },
-
-        parseElevationLoss: function(value, options)
-        {
-            return conversion.parseUnitsValue("elevation", value, options);
-        },
-
-        formatEnergy: function(value, options)
-        {
-            return conversion.formatUnitsValue("energy");
-        },
-
-        parseEnergy: function(value, options)
-        {
-            return conversion.parseUnitsValue("energy");
-        },
-
-        formatTSS: function(value, options)
-        {
-            return conversion.formatUnitsValue("tss", value, options);
-        },
-
-        parseTSS: function(value, options)
-        {
-            return conversion.parseUnitsValue("tss", value, options);
-        },
-
-        formatIF: function(value, options)
-        {
-            return conversion.formatUnitsValue("if", value, options);
-        },
-
-        parseIF: function (value, options)
-        {
-            return conversion.parseUnitsValue("if", value, options);
-        },
-
-        parseHeartRate: function(value, options)
-        {
-            return conversion.parseUnitsValue("heartrate", value, options);
-        },
-
-        formatHeartRate: function(value, options)
-        {
-            return conversion.formatUnitsValue("heartrate", value, options);
-        },
-
-        parseCadence: function(value, options)
-        {
-            return conversion.parseUnitsValue("cadence", value, options);
-        },
-
-        formatCadence: function(value, options)
-        {
-            return conversion.formatUnitsValue("cadence", value, options);
-        },
-        
         // REFACTOR THESE:
         parseDurationAsSeconds: function(value, options)
         {
@@ -599,28 +421,6 @@
             return (value === "" ? null : Number(value));
         },
 
-        formatTemperature: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForFormat(options);
-            }
-            var convertedValue = convertToViewUnits(Number(value), "temperature");
-            var adjustedValue = adjustFieldRange(convertedValue, "temp");
-
-            return conversion.formatInteger(adjustedValue, options);
-        },
-
-        parseTemperature: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var limitedTemperature = adjustFieldRange(parseInt(value, 10), "temp");
-            return convertToModelUnits(limitedTemperature, "temperature");
-        },
-
         formatWorkoutType: function(value, options)
         {
             return workoutTypes.getNameById(value);
@@ -631,30 +431,6 @@
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "TSB");
             return conversion.formatEmptyNumber(limitedValue.toFixed(1), options);
-        },
-
-        formatTorque: function(value, options)
-        {
-            var parameters = {
-                value: Number(value),
-                fieldType: "torque",
-                defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
-                sportType: conversion._getMySportType()
-            };
-
-            var convertedValue = convertToViewUnits(parameters);
-            var adjustedValue = adjustFieldRange(convertedValue, "torque");
-            return conversion.formatEmptyNumber(threeSigFig(adjustedValue), options);
-        },
-
-        parseTorque: function(value, options)
-        {
-            if(conversion.valueIsEmpty(value))
-            {
-                return conversion.getDefaultValueForParse(options);
-            }
-            var limitedTorque = adjustFieldRange(value, "torque");
-            return convertToModelUnits(limitedTorque, "torque");
         },
 
         formatWorkoutComments: function(commentsArray, options)
@@ -877,6 +653,197 @@
                 return null;
             }
             return new DateTimeFormatter().parse(value, options.dateFormat);
+        },
+
+        // DEPRECATE THESE:
+        formatDistance: function(value, options)
+        {
+            return conversion.formatUnitsValue("distance", value, options);
+        },
+
+        formatDuration: function(value, options)
+        {
+            return conversion.formatUnitsValue("duration", value, options); 
+        },
+
+        formatMinutes: function(value, options)
+        {
+            return conversion.formatUnitsValue("minutes", value, options);
+        },
+
+        formatHours: function(value, options)
+        {
+            return conversion.formatUnitsValue("hours", value, options);
+        },
+
+        formatDurationFromSeconds: function(seconds, options)
+        {
+            return conversion.formatUnitsValue("seconds", seconds, options);
+        },
+
+        formatTimeOfDay: function(value, options)
+        {
+            return conversion.formatUnitsValue("timeofday", value, options);
+        },
+
+        formatTime: function(value, options)
+        {
+            return conversion.formatUnitsValue("milliseconds", value, options);
+        },
+
+        formatPower: function(value, options)
+        {
+            return conversion.formatUnitsValue("power", value, options);
+        },
+
+        formatPowerBalance: function(value, options)
+        {
+            return conversion.formatUnitsValue("powerbalance", value, options);
+        },
+
+        formatPace: function(value, options)
+        {
+            return conversion.formatUnitsValue("pace", value, options);
+        },        
+
+        parsePace: function(value, options)
+        {
+            return conversion.parseUnitsValue("pace", value, options);
+        },
+
+        formatSpeed: function(value, options)
+        {
+            return conversion.formatUnitsValue("speed", value, options);
+        },
+
+        formatElevation: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevation", value, options);
+        },
+
+        parseDistance: function(value, options)
+        {
+            return conversion.parseUnitsValue("distance", value, options);
+        }, 
+
+        parseSpeed: function(value, options)
+        {
+            return conversion.parseUnitsValue("speed", value, options);
+        }, 
+
+        parseDuration: function(value, options)
+        {
+            return conversion.parseUnitsValue("duration", value, options);
+        },
+
+        formatCalories: function(value, options)
+        {
+            return conversion.formatUnitsValue("calories", value, options);
+        },
+
+        parseCalories: function(value, options)
+        {
+            return conversion.parseUnitsValue("calories", value, options);
+        },
+
+        formatElevationGain: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevationGain", value, options);
+        },
+
+        parseElevationGain: function(value, options)
+        {
+            return conversion.parseUnitsValue("elevationGain", value, options);
+        },
+
+        parseElevation: function(value, options)
+        {
+            return conversion.parseUnitsValue("elevation", value, options);
+        },
+
+        formatGroundControl: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevation", value, options);
+        },
+
+        formatElevationLoss: function(value, options)
+        {
+            return conversion.formatUnitsValue("elevationLoss", value, options);
+        },
+
+        parseElevationLoss: function(value, options)
+        {
+            return conversion.parseUnitsValue("elevation", value, options);
+        },
+
+        formatEnergy: function(value, options)
+        {
+            return conversion.formatUnitsValue("energy");
+        },
+
+        parseEnergy: function(value, options)
+        {
+            return conversion.parseUnitsValue("energy");
+        },
+
+        formatTSS: function(value, options)
+        {
+            return conversion.formatUnitsValue("tss", value, options);
+        },
+
+        parseTSS: function(value, options)
+        {
+            return conversion.parseUnitsValue("tss", value, options);
+        },
+
+        formatIF: function(value, options)
+        {
+            return conversion.formatUnitsValue("if", value, options);
+        },
+
+        parseIF: function (value, options)
+        {
+            return conversion.parseUnitsValue("if", value, options);
+        },
+
+        parseHeartRate: function(value, options)
+        {
+            return conversion.parseUnitsValue("heartrate", value, options);
+        },
+
+        formatHeartRate: function(value, options)
+        {
+            return conversion.formatUnitsValue("heartrate", value, options);
+        },
+
+        parseCadence: function(value, options)
+        {
+            return conversion.parseUnitsValue("cadence", value, options);
+        },
+
+        formatCadence: function(value, options)
+        {
+            return conversion.formatUnitsValue("cadence", value, options);
+        },
+
+        formatTorque: function(value, options)
+        {
+            return conversion.formatUnitsValue("torque", value, options);
+        },
+
+        parseTorque: function(value, options)
+        {
+            return conversion.parseUnitsValue("torque", value, options);
+        },
+
+        formatTemperature: function(value, options)
+        {
+            return conversion.formatUnitsValue("temperature", value, options);
+        },
+
+        parseTemperature: function(value, options)
+        {
+            return conversion.parseUnitsValue("temperature", value, options);
         }
 
     };

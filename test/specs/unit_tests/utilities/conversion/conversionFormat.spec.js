@@ -907,111 +907,179 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Torque", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("torque", [
+                    {
+                        output: "9999",
+                        input: 9999
+                    },
+                    {
+                        input: "9999.1",
+                        output: "9999"
+                    },
+                    {
+                        input: "10000",
+                        output: "9999"
+                    },
+                    {
+                        input: "1",
+                        output: "1.00"
+                    },
+                    {
+                        input: "0",
+                        output: "0.00"
+                    },
+                    {
+                        input: "-1",
+                        output: "0.00"
+                    },
+                    {
+                        input: "1.234",
+                        output: "1.23"
+                    },
+                    {
+                        input: 12.36,
+                        output: "12.4"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
             });
 
-            describeFormat("formatTorque", [
+            describe("English", function()
+            {
+                describeFormatUnits("torque", [
+                    {
+                        output: "885",
+                        input: 100
+                    },
+                    {
+                        input: "123.45",
+                        output: "1093"
+                    },
+                    {
+                        input: "1.2345",
+                        output: "10.9"
+                    },
+                    {
+                        input: "0",
+                        output: "0.00"
+                    },
+                    {
+                        input: "-1",
+                        output: "0.00"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    output: "9999",
-                    input: 9999
-                },
-                {
-                    input: "9999.1",
-                    output: "9999"
-                },
-                {
-                    input: "10000",
-                    output: "9999"
-                },
-                {
-                    input: "1",
-                    output: "1.00"
-                },
-                {
-                    input: "0",
-                    output: "0"
-                },
-                {
-                    input: "-1",
-                    output: "0"
-                },
-                {
-                    input: "1.234",
-                    output: "1.23"
-                },
-                {
-                    input: 12.36,
-                    output: "12.4"
-                },
-                {
-                    input: null,
-                    output: ""
-                },
-                {
-                    input: "",
-                    output: ""
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
         describe("Temperature", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("temperature", [
+                    {
+                        output: "999",
+                        input: 999
+                    },
+                    {
+                        output: "999",
+                        input: 999.1
+                    },
+                    {
+                        output: "999",
+                        input: 1000
+                    },
+                    {
+                        output: "1",
+                        input: 1
+                    },
+                    {
+                        output: "0",
+                        input: 0
+                    },
+                    {
+                        output: "-1",
+                        input: -1
+                    },
+                    {
+                        output: "-999",
+                        input: -999
+                    },
+                    {
+                        output: "-999",
+                        input: -998.5
+                    },
+                    {
+                        output: "-999",
+                        input: -1000
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
             });
 
-            describeFormat("formatTemperature", [
+            describe("English", function()
+            {
+                describeFormatUnits("temperature", [
+                    {
+                        output: "999",
+                        input: 999
+                    },
+                    {
+                        output: "32",
+                        input: 0
+                    },
+                    {
+                        output: "30",
+                        input: -1
+                    },
+                    {
+                        output: "-58",
+                        input: -50
+                    },
+                    {
+                        output: "-999",
+                        input: -1000
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    output: "999",
-                    input: 999
-                },
-                {
-                    output: "999",
-                    input: 999.1
-                },
-                {
-                    output: "999",
-                    input: 1000
-                },
-                {
-                    output: "1",
-                    input: 1
-                },
-                {
-                    output: "0",
-                    input: 0
-                },
-                {
-                    output: "-1",
-                    input: -1
-                },
-                {
-                    output: "-999",
-                    input: -999
-                },
-                {
-                    output: "-999",
-                    input: -998.5
-                },
-                {
-                    output: "-999",
-                    input: -1000
-                },
-                {
-                    input: null,
-                    output: ""
-                },
-                {
-                    input: "",
-                    output: ""
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
         describe("Efficiency Factor, for run and walk", function()
