@@ -7,7 +7,7 @@
 function (_, Handlebars, TP)
 {
 
-    var ifHasNonZeroValue = function(units, value, context)
+    var ifHasNonZeroValue = function(units, value, context, options)
     {
         var formattedValue = TP.utils.conversion.formatUnitsValue(units, value, context);
 

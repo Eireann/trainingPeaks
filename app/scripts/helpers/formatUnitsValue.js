@@ -1,9 +1,14 @@
 define(
 [
+    "underscore",
     "handlebars",
     "TP"
 ],
-function(Handlebars, TP)
+function(
+         _,
+         Handlebars,
+         TP
+         )
 {
     // context here is usually the handlebars context 'this', but could be any options object
     var formatUnitsValueHelper = function (units, value, context, defaultValue)
