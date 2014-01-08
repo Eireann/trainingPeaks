@@ -26,7 +26,9 @@ define(
     "./strategies/pace/paceUnitsConverter",
     "./strategies/pace/paceUnitsFormatter",
 
-    "./strategies/temperature/temperatureUnitsConverter"
+    "./strategies/temperature/temperatureUnitsConverter",
+
+    "./strategies/text/textStrategy"
 
 ], function(
     _,
@@ -55,10 +57,12 @@ define(
     paceUnitsConverter,
     paceUnitsFormatter,
 
-    temperatureUnitsConverter
+    temperatureUnitsConverter,
+
+    textStrategy
 ) {
 
-    var noOp = function(value){return value;},
+    var noOp = function(value){return value;};
 
     var unitDefinitions = {
 
@@ -588,6 +592,10 @@ define(
                 English: "pound",
                 Metric: "kg"
             }
+        },
+
+        text: {
+            strategy: textStrategy
         }
 
     };

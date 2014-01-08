@@ -63,12 +63,16 @@ function (
             "#dayName":
             {
                 observe: "workoutDay",
-                onGet: "formatDateToDayName"
+                onGet: "formatDateToDayName",
+                units: "date",
+                dateFormat: "dddd"
             },
             "#calendarDate":
             {
                 observe: "workoutDay",
-                onGet: "formatDateToCalendarDate"
+                onGet: "formatDateToCalendarDate",
+                units: "date",
+                dateFormat: "MMM D, YYYY"
             },
             "#startTimeInput":
             {

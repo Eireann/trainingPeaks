@@ -31,6 +31,6 @@ define(
     return function(value, options)
     {
         return validator.hasValue(value);
-    }
+    };
 
 });

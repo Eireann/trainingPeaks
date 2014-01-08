@@ -2,88 +2,15 @@
 [
     "underscore",
     "moment",
-    "utilities/datetime/convert",
-    "utilities/datetime/format",
-    "utilities/workout/workoutTypes",
-    "utilities/conversion/adjustFieldRange",
-    "utilities/threeSigFig",
-    "utilities/units/labels",
     "utilities/units/unitsStrategyFactory"
 ], function(
             _,
             moment,
-            dateTimeConversion,
-            DateTimeFormatter,
-            workoutTypes,
-            adjustFieldRange,
-            threeSigFig,
-            getUnitsLabel,
             UnitsStrategyFactory
             )
 {
     var conversion = {
 
-        // REFACTOR THESE:
-        formatWorkoutType: function(value, options)
-        {
-            return workoutTypes.getNameById(value);
-        },
-
-        formatWorkoutComments: function(commentsArray, options)
-        {
-            if (commentsArray && commentsArray.length && commentsArray[0].comment)
-            {
-                return commentsArray[0].comment;
-            }
-            return "";
-        },
-
-        formatDateToDayName: function (value, options)
-        {
-            options.dateFormat = "dddd";
-            return conversion.formatDate(value, options);
-        },
-
-        formatDateToCalendarDate: function (value, options)
-        {
-            options.dateFormat = "MMM D, YYYY";
-            return conversion.formatDate(value, options);
-        },
-
-                
-        parseTextField: function(value, options)
-        {
-            return value === "" ? null : conversion.fixNewlinesForParse(value);
-        },
-
-        formatTextField: function(value, options)
-        {
-            return value === null ? "" : conversion.fixNewlinesForFormat(value);
-        },
-
-        // converts CRLF \r\n or LF \n to CR \r
-        // FLEX WANTS \r, not \n, don't ask me why ...
-        fixNewlinesForParse: function(value)
-        {
-            if (value === null)
-                return "";
-
-            var newValue = value.replace(/\r\n/g, "\r").replace(/\n/g, "\r");
-            return newValue;
-        },
-
-        // converts LF \n or CR \r to CRLF \r\n
-        fixNewlinesForFormat: function(value)
-        {
-            if (value === null)
-                return "";
-
-            var newValue = value.replace(/\r\n/g, "\n").replace(/\r/g,"\n").replace(/\n/g, "\r\n");
-            return newValue;
-        },
-
-
-        // KEEP THESE
         /*
             options:
                 defaultValue
@@ -430,6 +357,16 @@
         formatPwHr: function(value, options)
         {
             return conversion.formatUnitsValue("powerPulseDecoupling", value, options);
+        },
+        
+        parseTextField: function(value, options)
+        {
+            return conversion.parseUnitsValue("text", value, options);
+        },
+
+        formatTextField: function(value, options)
+        {
+            return conversion.formatUnitsValue("text", value, options);
         }
 
     };

@@ -1,9 +1,10 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "utilities/workout/workoutTypes"
 ],
-function(_, TP)
+function(_, TP, workoutTypes)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -54,7 +55,7 @@ function(_, TP)
             {
                 if (field.conversion)
                 {
-                    fieldValue = TP.utils.conversion[field.conversion](fieldValue, { workoutTypeValueId: workoutTypeValueId });
+                    fieldValue = this[field.conversion](fieldValue, { workoutTypeValueId: workoutTypeValueId });
                 }
                 else if(field.units)
                 {
@@ -64,7 +65,22 @@ function(_, TP)
 
                 return "<p>" + prefix + fieldValue + units + "</p>";
             }
+        },
+
+        formatWorkoutType: function(value, options)
+        {
+            return workoutTypes.getNameById(value);
+        },
+
+        formatWorkoutComments: function(commentsArray, options)
+        {
+            if (commentsArray && commentsArray.length && commentsArray[0].comment)
+            {
+                return commentsArray[0].comment;
+            }
+            return "";
         }
+
     };
     return calendarWorkoutUserCustomization;
 });
