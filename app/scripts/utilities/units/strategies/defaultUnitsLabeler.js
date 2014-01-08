@@ -3,7 +3,7 @@ define(
     "underscore",
     "utilities/workout/workoutTypes",
     "utilities/units/constants",
-    "utilities/conversion/unitConversionFactors"
+    "../unitConversionFactors"
 ], function(
     _,
     workoutTypeUtils,
