@@ -1,9 +1,13 @@
 define(
 [
     "underscore",
+    "moment",
+
+    "utilities/datetime/format",
 
     "./strategies/defaultUnitsStrategy",
 
+    "./strategies/defaultUnitsEmptyValidator",
     "./strategies/defaultUnitsConverter",
     "./strategies/defaultUnitsLimiter",
     "./strategies/defaultUnitsLabeler",
@@ -26,9 +30,13 @@ define(
 
 ], function(
     _,
+    moment,
+
+    DateTimeFormatter,
 
     DefaultUnitsStrategy,
 
+    defaultUnitsEmptyValidator,
     defaultUnitsConverter,
     defaultUnitsLimiter,
     defaultUnitsLabeler,
@@ -50,9 +58,12 @@ define(
     temperatureUnitsConverter
 ) {
 
+    var noOp = function(value){return value;},
+
     var unitDefinitions = {
 
         defaults: {
+            aliases: ["none"],
             workoutTypeId: 0,
             strategy: DefaultUnitsStrategy,
             converter: defaultUnitsConverter,
@@ -62,15 +73,47 @@ define(
         },
 
         numberWithThreeFigures: {
-            aliases: ["hours", "calories", "kcal", "mg/dL", "mm"]
+            aliases: ["number", "calories", "kcal", "mg/dL", "mm"]
         },
 
         integer: {
-            aliases: ["units", "none", "mmHg"],
             formatter: integerFormatter,
             parser: integerParser
         },
- 
+
+        bloodPressure: {
+            aliases: ["mmHg"],
+            min: 0,
+            max: 999,
+            formatter: function(value, options)
+            {
+                if(_.isArray(value))
+                {
+                    return _.map(value, function(val) { return integerFormatter(val, options); }, this).join("/");
+                }
+                else
+                {
+                    return integerFormatter(value, options);
+                }
+            }
+        },
+
+        bloodPressureUnits: {
+            aliases: ["units"],
+            limiter: noOp,
+            formatter: function(value, options)
+            {
+                var str = "";
+                if(_.isArray(value))
+                {
+                    str += value[1] + " ";
+                    value = value[0];
+                }
+                str += integerFormatter(value, options);    
+                return str;
+            }
+        },
+
         cadence: {
             formatter: integerFormatter,
             parser: integerParser,
@@ -100,6 +143,18 @@ define(
             }
         },
 
+        date: {
+            limiter: noOp,
+            formatter: function(value, options)
+            {
+                return new DateTimeFormatter().format(value, options.dateFormat);
+            },
+            parser: function(value, options)
+            {
+                return new DateTimeFormatter().parse(value, options.dateFormat);
+            }
+        },
+
         distance: {
             min: 0,
             max: 999999,
@@ -126,6 +181,8 @@ define(
 
         duration: {
 
+            aliases: ["hours"],
+
             formatter: durationUnitsFormatter,
             parser: durationUnitsParser,
             emptyValidator: durationUnitsEmptyValidator,
@@ -141,6 +198,25 @@ define(
             }
         },
 
+        durationMilliseconds: {
+
+            aliases: ["milliseconds", "ms"],
+
+            formatter: durationUnitsFormatter,
+            parser: durationUnitsParser,
+            emptyValidator: durationUnitsEmptyValidator,
+
+            max: 999, // 999 hours, because ms only come from an uploaded file so no need to limit
+            min: 0,
+
+            units:
+            {
+                baseUnits: "milliseconds",
+                English: "hours",
+                Metric: "hours"
+            }
+        },
+
         durationMinutes: {
 
             aliases: ["minutes"],
@@ -149,7 +225,7 @@ define(
             parser: durationUnitsParser,
             emptyValidator: durationUnitsEmptyValidator,
 
-            max: (99 + (59 / 60) + (59 / 3600)) * 60, // 99:59:59
+            max: (99 + (59 / 60) + (59 / 3600)), // 99:59:59
             min: 0,
 
             units:
@@ -160,6 +236,25 @@ define(
             },
 
             seconds: false // for duration formatter
+        },
+
+        durationSeconds: {
+
+            aliases: ["seconds"],
+
+            formatter: durationUnitsFormatter,
+            parser: durationUnitsParser,
+            emptyValidator: durationUnitsEmptyValidator,
+
+            max: (99 + (59 / 60) + (59 / 3600)), // 99:59:59
+            min: 0,
+
+            units:
+            {
+                baseUnits: "seconds",
+                English: "hours",
+                Metric: "hours"
+            }
         },
 
         efficiencyFactor: {
@@ -258,6 +353,15 @@ define(
             }
         },
 
+        grade: {
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 1,
+
+            min: -999,
+            max: 999
+        },
+
         heartrate: {
             formatter: integerFormatter,
             parser: integerParser,
@@ -274,6 +378,26 @@ define(
             max: 99
         },
 
+        latitude: {
+            aliases: ["lat"],
+            min: -90,
+            max: 90,
+            formatter: function(value, options)
+            {
+                return (value < 0 ? "S" : "N") + " " + Math.abs(value).toFixed(6);
+            }
+        },
+
+        longitude: {
+            aliases: ["lng"],
+            min: -180,
+            max: 180,
+            formatter: function(value, options)
+            {
+                return (value < 0 ? "W" : "E") + " " + Math.abs(value).toFixed(6);
+            }
+        },
+                    
         pace: {
 
             converter: paceUnitsConverter,
@@ -304,6 +428,18 @@ define(
             }
         },
 
+        percent: {
+            aliases: ["%"],
+
+            min: 0,
+            max: 100,
+
+            formatter: function(value)
+            {
+
+            }
+        },
+
         power: {
             aliases: ["rightpower"],
 
@@ -311,6 +447,27 @@ define(
             parser: integerParser,
             min: 0,
             max: 9999
+        },
+
+        powerbalance: {
+
+            min: 0,
+            max: 1,
+
+            formatter: function(value, options)
+            {
+                var rightPower = value * 100;
+                var leftPower = 100 - rightPower;
+                return threeFiguresFormatter(leftPower, options) + "% / " + threeFiguresFormatter(rightPower, options) + "%";
+            }
+        },
+
+        powerPulseDecoupling: {
+            aliases: ["pwhr", "pwHr", "pw:hr"],
+
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 2
         },
 
         skinFold: {
@@ -350,6 +507,14 @@ define(
 
         },
 
+        speedPulseDecoupling: {
+            aliases: ["pahr", "paHr", "pa:hr"],
+
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 2
+        },
+
         temperature: {
             min: -999,
             max: 999,
@@ -366,6 +531,16 @@ define(
             }
         },
 
+        timeofday: {
+            min: 0,
+            max: 24,
+
+            formatter: function(value, options)
+            {
+                return moment(value).format("hh:mm A");
+            }
+        },
+
         torque: {
             min: 0,
             max: 9999,
@@ -378,7 +553,20 @@ define(
             }
         },
 
+        tsb: {
+            aliases: ["TSB"],
+            
+            formatter: decimalFormatter,
+            parser: decimalParser,
+            precision: 1,
+
+            min: -9999,
+            max: 9999
+        },
+
         tss: {
+            aliases: ["TSS"],
+
             formatter: decimalFormatter,
             parser: decimalParser,
             precision: 1,

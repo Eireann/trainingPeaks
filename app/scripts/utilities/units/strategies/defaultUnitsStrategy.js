@@ -32,8 +32,9 @@ define(
         this.formatter = options.formatter;
         this.labeler = options.labeler;
 
+        this.emptyValidator = options.emptyValidator;
+
         this.parser = options.parser || null;
-        this.emptyValidator = options.emptyValidator || this._hasValue;
     }
 
     DefaultUnitsStrategy.extend = Backbone.Marionette.extend;
@@ -106,26 +107,6 @@ define(
             return this.labeler(_.defaults({abbreviated: false}, this.options));
         },
 
-        _hasValue: function(value)
-        {
-            return !(this._valueIsEmpty(value) || this._valueIsNotANumber(value) || !_.isFinite(value));
-        },
-
-        _valueIsEmpty: function(value)
-        {
-            return _.isUndefined(value) || _.isNull(value) || ("" + value).trim() === "" || (Number(value) === 0 && !this._valueIsZero(value));
-        },
-
-        _valueIsNotANumber: function(value)
-        {
-            return _.isNaN(value) || _.isNaN(Number(value)) || _.isUndefined(value) || _.isNull(value);
-        },
-
-        _valueIsZero: function(value)
-        {
-            return value === 0 || value === "0" || /^0+.?0*$/.test(value);
-        },
-
         _getDefaultValueForFormat: function()
         {
             return _.has(this.options, "defaultValue") ? this.options.defaultValue : "";
@@ -138,7 +119,7 @@ define(
 
         _validateOptions: function(options)
         {
-            _.each(["limiter", "converter", "formatter", "labeler", "workoutTypeId", "userUnits"], function(param)
+            _.each(["emptyValidator", "limiter", "converter", "formatter", "labeler", "workoutTypeId", "userUnits"], function(param)
             {
                 if(!_.has(options, param))
                 {

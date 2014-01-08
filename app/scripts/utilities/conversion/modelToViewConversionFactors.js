@@ -114,8 +114,23 @@ function(_, unitsConstants, workoutTypeUtils)
         {
             conversions:
             {
-                hours: 1 / 60,
-                seconds: 60
+                hours: 1 / 60
+            }
+        },
+
+        seconds: 
+        {
+            conversions:
+            {
+                hours: 1 / 3600
+            }
+        },
+
+        milliseconds:
+        {
+            conversions:
+            {
+                hours: 1 / (3600 * 1000)
             }
         },
 
@@ -202,23 +217,6 @@ function(_, unitsConstants, workoutTypeUtils)
         return conversionFactor;
     };
 
-    var lookupUserUnitsFactor = function(unitsType, userUnits, sportTypeId)
-    {
-        var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
-
-        var sportTypeName = null;
-        if (sportTypeId)
-        {
-            sportTypeName = workoutTypeUtils.getNameById(sportTypeId);
-        }
-
-        if (!unitDefinitions.hasOwnProperty(unitsType))
-            throw new Error("Unknown units type (" + unitsType + ") for unit conversion");
-
-        return getUnitsFactorBySportTypeOrDefault(unitsType, sportTypeName, userUnitsKey);
-
-    };
-
     var lookupUnitsConversionFactor = function(baseUnits, conversionUnits)
     {
         if(baseUnits === conversionUnits)
@@ -245,7 +243,6 @@ function(_, unitsConstants, workoutTypeUtils)
     };
 
     return {
-        lookupUserUnitsFactor: lookupUserUnitsFactor,
         lookupUnitsConversionFactor: lookupUnitsConversionFactor,
         lookupUnitslabel: lookupUnitsLabels,
         unitDefinitions: unitDefinitions

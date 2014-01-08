@@ -29,8 +29,8 @@ function ()
         },
         calendarWorkoutLayout:
         {
-            "1": { name: "startTime", prefix: "C", conversion: "formatTimeOfDay" },
-            "2": { name: "startTimePlanned", prefix: "P", conversion: "formatTimeOfDay"},
+            "1": { name: "startTime", prefix: "C", units: "timeofday" },
+            "2": { name: "startTimePlanned", prefix: "P", units: "timeofday", },
             "3": { name: "distance", prefix: "C", units: "distance" },
             "4": { name: "distancePlanned", prefix: "P", units: "distance" },
             "5": { name: "calories", prefix: "C", units: "calories" },
