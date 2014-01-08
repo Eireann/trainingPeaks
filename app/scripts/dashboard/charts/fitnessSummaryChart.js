@@ -61,12 +61,12 @@ function(
 
             if(data.totalTimePlanned)
             {
-                tips.push({ label: "Planned duration", value: TP.utils.conversion.formatUnitsValue("duration", data.totalTimePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });
+                tips.push({ label: "Planned duration", value: TP.utils.conversion.formatUnitsValue("duration", data.totalTimePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--", max: 999999 }) });
             }
 
-            tips.push({ label: "Completed duration", value: TP.utils.conversion.formatUnitsValue("duration", data.totalTimeActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });           
+            tips.push({ label: "Completed duration", value: TP.utils.conversion.formatUnitsValue("duration", data.totalTimeActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--", max: 999999 }) });           
 
-            tips.push({ label: "TSS", value: TP.utils.conversion.formatUnitsValue("tss", data.totalTSSActual, { defaultValue: "--" }) });
+            tips.push({ label: "TSS", value: TP.utils.conversion.formatUnitsValue("tss", data.totalTSSActual, { defaultValue: "--", max: 999999 }) });
             return tips;
         },
 
