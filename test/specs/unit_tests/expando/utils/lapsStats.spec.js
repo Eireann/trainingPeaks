@@ -39,7 +39,8 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
         function serializeData(model)
         {
-            var lapsStats = new LapsStats({ model: model });
+            // test as metric user
+            var lapsStats = new LapsStats({ model: model, userUnits: 2 });
 
             return {
                 headerNames: lapsStats.getHeaders(),

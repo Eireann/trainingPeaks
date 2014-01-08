@@ -226,6 +226,7 @@ function(
 
         this.tssType = TP.utils.units.getUnitsLabel("tss", this.workoutTypeId, this.model);
 
+        this.userUnits = options.userUnits ? options.userUnits : theMarsApp.user.get("units");
         this.columnNames = options.columns ? LapsStats.getColumnNames(options.columns) : this.getDefaultColumnNames();
         this.columns = this.getColumns();
     }
@@ -246,7 +247,7 @@ function(
 
             if(column.name === "distance")
             {
-                var label = TP.utils.units.getUnitsLabel("distance", self.workoutTypeId, null, {abbreviated: false});
+                var label = TP.utils.units.getUnitsLabel("distance", self.workoutTypeId, null, {abbreviated: false, userUnits: self.userUnits });
                 column.label = label[0].toUpperCase() + label.substring(1);
             }
 
