@@ -244,7 +244,7 @@ function(_, unitsConstants, workoutTypeUtils)
 
     return {
         lookupUnitsConversionFactor: lookupUnitsConversionFactor,
-        lookupUnitslabel: lookupUnitsLabels,
+        lookupUnitsLabel: lookupUnitsLabels,
         unitDefinitions: unitDefinitions
     };
 });

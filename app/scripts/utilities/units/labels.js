@@ -219,6 +219,8 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         milliseconds: "",
         mmHg: "mmHg",
         hours: "hrs",
+        hoursAsDecimal: "hrs",
+        hoursAsInteger: "hrs",
         kcal: "kcal",
         mm: "mm",
         "mg/dL": "mg/dL",

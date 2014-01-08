@@ -96,7 +96,7 @@ define(
         },
 
         numberWithThreeFigures: {
-            aliases: ["number", "calories", "kcal", "mg/dL", "mm"]
+            aliases: ["number", "calories", "kcal", "mg/dL", "mm", "hoursAsDecimal"]
         },
 
         integer: {
@@ -303,7 +303,7 @@ define(
             precision: 2,
 
             min: 0,
-            max: 99,
+            max: 999,
 
             unitTypes:
             {
@@ -500,6 +500,9 @@ define(
         powerPulseDecoupling: {
             aliases: ["pwhr", "pwHr", "pw:hr"],
 
+            min: -999,
+            max: 999,
+
             formatter: decimalFormatter,
             parser: decimalParser,
             precision: 2
@@ -544,6 +547,9 @@ define(
 
         speedPulseDecoupling: {
             aliases: ["pahr", "paHr", "pa:hr"],
+
+            min: -999,
+            max: 999,
 
             formatter: decimalFormatter,
             parser: decimalParser,

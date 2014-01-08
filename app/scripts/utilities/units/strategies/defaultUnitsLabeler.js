@@ -31,7 +31,7 @@ define(
     {
 
         var unitsName = _lookupUserUnitName(options);
-        return unitConversionFactors.lookupUnitsLabels(unitsName);
+        return unitConversionFactors.lookupUnitsLabel(unitsName);
     }
 
     /*
@@ -41,6 +41,12 @@ define(
     */
     return function(options)
     {
+
+        if(!options || !options.unitTypes)
+        {
+            return "";
+        }
+
         var label = _lookupLabels(options);
 
         if(_.has(label, "abbreviated"))
