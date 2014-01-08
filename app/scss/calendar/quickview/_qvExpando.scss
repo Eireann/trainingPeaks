@@ -672,7 +672,8 @@
 
             &.ui-state-default {
                border-right: 1px solid $TPGrey5;
-               line-height: 1em;
+               line-height: 1.2;
+               height: 26px;
             }
         }
 
@@ -685,11 +686,12 @@
             font-size: $fontSizeSmaller;
             color: $TPGrey8;
             border-right: 1px solid $TPGrey5;
-            border-bottom: 1px solid $TPGrey5;
+            border-bottom: none;
             border-top: none;
             border-left: none;
             padding: 0.5625em 0.625em;
             line-height: 1.2;
+            height: 26px;
         }
 
         .slick-viewport{
@@ -867,10 +869,15 @@
                             padding: 5px 10px 5px 0;
                             margin: 0 5px 0 0;
                         }
-                        #powerPulseDecoupling {
+                        
+                        &#powerPulseDecoupling {
                             .units {
                                 display: none;
                             }
+                        }
+
+                        &#powerBalance {
+                            width: 163px;
                         }
 
                     }

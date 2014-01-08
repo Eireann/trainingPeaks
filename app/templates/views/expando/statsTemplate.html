@@ -76,7 +76,6 @@
             </div>
             {{/ifHasKey}}
 
-
             {{#ifHasKey "intensityFactorActual" this }}
             <div class="statsRow" id="if">
                 <label>{{$ "IF" }}</label>
@@ -154,6 +153,17 @@
             </div>
             {{/ifHasKey}}
 
+            {{#ifHasKey "powerBalanceLeft" this }}
+            <div class="statsRow" id="powerBalance">
+                <label>{{$ "PowerBalance" }}</label>
+                {{#if powerBalanceLeft }}
+                <span class="value">{{ conversion "formatPowerBalance" powerBalanceLeft }}/{{ conversion "formatPowerBalance" powerBalanceRight }}%</span>
+                <span class="units"></span>
+                {{ else }}
+                <span class="value">--</span>
+                {{/if}}
+            </div>
+            {{/ifHasKey}}
 
 
             {{#ifHasKey "elevationGain" this }}
@@ -192,8 +202,6 @@
             </div>
             {{/ifHasKey}}
 
-
-
             {{#ifHasKey "vam" this }}
             <div class="statsRow" id="vam">
                 <label>{{$ "VAM" }}</label>
@@ -218,17 +226,7 @@
             </div>
             {{/ifHasKey}}
 
-            {{#ifHasKey "powerBalanceLeft" this }}
-            <div class="statsRow" id="powerBalance">
-                <label>{{$ "PowerBalance" }}</label>
-                {{#if powerBalanceLeft }}
-                <span class="value">{{ conversion "formatPowerBalance" powerBalanceLeft }}/{{ conversion "formatPowerBalance" powerBalanceRight }}%</span>
-                <span class="units"></span>
-                {{ else }}
-                <span class="value">--</span>
-                {{/if}}
-            </div>
-            {{/ifHasKey}}
+            
         </div>
 
 
