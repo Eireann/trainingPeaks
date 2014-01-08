@@ -63,7 +63,7 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                 describeFormatUnits("circumference", [
                     // Out of range - corrected
                     {
-                        output: "393.307",
+                        output: "394",
                         input: 1000 
                     },
                     // Out of range - corrected
@@ -73,7 +73,7 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                     },
                     // 1 cm = 0.393701 inch
                     {
-                        output: "0.393701",
+                        output: "0.39",
                         input: 1
                     },
                     {
