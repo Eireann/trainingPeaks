@@ -168,7 +168,6 @@
 	@extend %spriteMapZoomBG;
 }
 
-
 .leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle {
 	margin-bottom:0 !important;
 	padding:5px;
@@ -190,4 +189,10 @@
 
 .leaflet-control-layers-base label input {
 	margin-bottom:5px;
+}
+
+.leaflet-marker-icon {
+    width: 23px !important;
+    height: 33px !important;
+    margin-top: -35px !important;
 }
