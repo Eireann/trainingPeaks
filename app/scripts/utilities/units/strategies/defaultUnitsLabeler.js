@@ -3,12 +3,12 @@ define(
     "underscore",
     "utilities/workout/workoutTypes",
     "utilities/units/constants",
-    "utilities/conversion/modelToViewConversionFactors"
+    "utilities/conversion/unitConversionFactors"
 ], function(
     _,
     workoutTypeUtils,
     unitsConstants,
-    modelToViewConversionFactors
+    unitConversionFactors
 ) {
 
     // TODO: this is duplicated in defaultUnitsConverter
@@ -31,7 +31,7 @@ define(
     {
 
         var unitsName = _lookupUserUnitName(options);
-        return modelToViewConversionFactors.lookupUnitsLabels(unitsName);
+        return unitConversionFactors.lookupUnitsLabels(unitsName);
     }
 
     /*

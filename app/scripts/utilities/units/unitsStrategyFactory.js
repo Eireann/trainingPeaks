@@ -7,7 +7,7 @@ define(
 
     "./strategies/defaultUnitsStrategy",
 
-    "./strategies/defaultUnitsEmptyValidator",
+    "./strategies/emptyValidatorZeroIsNotEmpty",
     "./strategies/defaultUnitsConverter",
     "./strategies/defaultUnitsLimiter",
     "./strategies/defaultUnitsLabeler",
@@ -38,7 +38,7 @@ define(
 
     DefaultUnitsStrategy,
 
-    defaultUnitsEmptyValidator,
+    emptyValidatorZeroIsNotEmpty,
     defaultUnitsConverter,
     defaultUnitsLimiter,
     defaultUnitsLabeler,
@@ -69,6 +69,7 @@ define(
         defaults: {
             aliases: ["none"],
             workoutTypeId: 0,
+            emptyValidator: emptyValidatorZeroIsNotEmpty,
             strategy: DefaultUnitsStrategy,
             converter: defaultUnitsConverter,
             limiter: defaultUnitsLimiter,

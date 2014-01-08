@@ -2,11 +2,11 @@ define(
 [
     "utilities/workout/workoutTypes",
     "utilities/units/constants",
-    "utilities/conversion/modelToViewConversionFactors",
+    "utilities/conversion/unitConversionFactors",
 ], function(
     workoutTypeUtils,
     unitsConstants,
-    modelToViewConversionFactors
+    unitConversionFactors
 ) {
 
     /*
@@ -37,7 +37,7 @@ define(
 
             var baseUnits = options.units.baseUnits;
             var userUnits = this._lookupUserUnitName(options);
-            return modelToViewConversionFactors.lookupUnitsConversionFactor(baseUnits, userUnits);
+            return unitConversionFactors.lookupUnitsConversionFactor(baseUnits, userUnits);
         },
 
         _lookupUserUnitName: function(options)
