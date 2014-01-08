@@ -14,7 +14,7 @@ define(
     // TODO: this is duplicated in defaultUnitsConverter
     function _lookupUserUnitName(options)
     {
-        var units = options.units;
+        var units = options.unitTypes;
         var userUnitsKey = options.userUnits === unitsConstants.English ? "English" : "Metric";
         var unitsName = units[userUnitsKey];
 

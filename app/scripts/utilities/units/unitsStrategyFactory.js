@@ -62,7 +62,25 @@ define(
     TextStrategy
 ) {
 
-    var noOp = function(value){return value;};
+    var noOpLimiter = function(value){return value;};
+
+    var noOpConverter = {
+        convertToViewUnits: function(value){return value;},
+        convertToModelUnits: function(value){return value;}
+    };
+
+    var arrayLimiter = function(value) {
+
+        if(_.isArray(value))
+        {
+            return _.map(value, function(val) { return defaultUnitsLimiter(val); });
+        }
+        else
+        {
+            return defaultUnitsLimiter(value);
+        }
+
+    };
 
     var unitDefinitions = {
 
@@ -90,11 +108,13 @@ define(
             aliases: ["mmHg"],
             min: 0,
             max: 999,
+            converter: noOpConverter,
+            limiter: arrayLimiter,
             formatter: function(value, options)
             {
                 if(_.isArray(value))
                 {
-                    return _.map(value, function(val) { return integerFormatter(val, options); }, this).join("/");
+                    return _.map(value, function(val) { return integerFormatter(val, options); }).join("/");
                 }
                 else
                 {
@@ -105,7 +125,8 @@ define(
 
         bloodPressureUnits: {
             aliases: ["units"],
-            limiter: noOp,
+            limiter: noOpLimiter,
+            converter: noOpConverter,
             formatter: function(value, options)
             {
                 var str = "";
@@ -140,7 +161,7 @@ define(
             min: 0,
             max: 999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "cm",
                 English: "inch",
@@ -157,7 +178,7 @@ define(
             min: 0,
             max: 999999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "meters",
                 English: "miles",
@@ -188,7 +209,7 @@ define(
             max: 99 + (59 / 60) + (59 / 3600), // 99:59:59
             min: 0,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "hours",
                 English: "hours",
@@ -206,7 +227,7 @@ define(
             max: 99 + (59 / 60) + (59 / 3600), // 99:59:59
             min: 0,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "hours",
                 English: "hours",
@@ -225,7 +246,7 @@ define(
             max: 999, // 999 hours, because ms only come from an uploaded file so no need to limit
             min: 0,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "milliseconds",
                 English: "hours",
@@ -244,7 +265,7 @@ define(
             max: (99 + (59 / 60) + (59 / 3600)), // 99:59:59
             min: 0,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "minutes",
                 English: "hours",
@@ -265,7 +286,7 @@ define(
             max: (99 + (59 / 60) + (59 / 3600)), // 99:59:59
             min: 0,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "seconds",
                 English: "hours",
@@ -284,7 +305,7 @@ define(
             min: 0,
             max: 99,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "efficiencyFactorRaw",
                 English: "efficiencyFactorRaw",
@@ -315,7 +336,7 @@ define(
             min: -15000,
             max: 99999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "meters",
                 English: "feet",
@@ -330,7 +351,7 @@ define(
             min: 0,
             max: 99999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "meters",
                 English: "feet",
@@ -345,7 +366,7 @@ define(
             min: 0,
             max: 99999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "meters",
                 English: "feet",
@@ -364,7 +385,7 @@ define(
 
             aliases: ["ml"],
 
-            units:
+            unitTypes:
             {
                 baseUnits: "ml",
                 English: "oz",
@@ -427,7 +448,7 @@ define(
             min: 1 / (60 * 60), // 00:00:01
             max: 99 + (59 / 60) + (59 / 3600), // 99:59:59
 
-            units:
+            unitTypes:
             {
                 baseUnits: "metersPerSecond",
                 English: "mph", // formatted as minutes per mile
@@ -451,12 +472,7 @@ define(
             aliases: ["%"],
 
             min: 0,
-            max: 100,
-
-            formatter: function(value)
-            {
-
-            }
+            max: 100
         },
 
         power: {
@@ -493,7 +509,7 @@ define(
 
             aliases: ["thickness", "mm"],
 
-            units:
+            unitTypes:
             {
                 baseUnits: "mm",
                 English: "mm",
@@ -505,7 +521,7 @@ define(
             min: 0,
             max: 999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "metersPerSecond",
                 English: "mph",
@@ -542,7 +558,7 @@ define(
             parser: integerParser,
             converter: temperatureUnitsConverter,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "degreesCelsius",
                 English: "degreesFahrenheit",
@@ -559,7 +575,7 @@ define(
             min: 0,
             max: 9999,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "newtonMeters",
                 English: "inchPounds",
@@ -596,7 +612,7 @@ define(
             parser: decimalParser,
             precision: 1,
 
-            units:
+            unitTypes:
             {
                 baseUnits: "kg",
                 English: "pound",

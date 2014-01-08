@@ -194,7 +194,7 @@ function(_, unitsConstants, workoutTypeUtils)
         {
             conversions:
             {
-                ounce: 0.033814
+                oz: 0.033814
             }
         }
     };

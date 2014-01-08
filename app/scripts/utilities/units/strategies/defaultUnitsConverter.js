@@ -30,19 +30,19 @@ define(
         _lookupConversionFactor: function(options)
         {
 
-            if(!options || !options.units)
+            if(!options || !options.unitTypes)
             {
                 return 1;
             }
 
-            var baseUnits = options.units.baseUnits;
+            var baseUnits = options.unitTypes.baseUnits;
             var userUnits = this._lookupUserUnitName(options);
             return unitConversionFactors.lookupUnitsConversionFactor(baseUnits, userUnits);
         },
 
         _lookupUserUnitName: function(options)
         {
-            var units = options.units;
+            var units = options.unitTypes;
             var userUnitsKey = options.userUnits === unitsConstants.English ? "English" : "Metric";
             var unitsName = units[userUnitsKey];
 

@@ -161,7 +161,7 @@ function (
             var self = this;
             var updateModel = function ()
             {
-                var newModelValue = self.parseTextField(newViewValue);
+                var newModelValue = self.parseUnitsValue("text", newViewValue);
                 if (self.model.get("title") !== newModelValue)
                 {
                     self.model.set("title", newModelValue);

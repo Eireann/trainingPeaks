@@ -20,7 +20,9 @@
         formatUnitsValue: function(units, value, options)
         {
             var unitsStrategy = conversion._buildStrategyForUnits(units, options);
-            return unitsStrategy.formatValue(value);
+            var formattedValue = unitsStrategy.formatValue(value);
+            //console.debug("Formatting '" + value + "' as " + units + " = " + formattedValue);
+            return formattedValue;
         },
 
         /*
@@ -31,7 +33,9 @@
         parseUnitsValue: function(units, value, options)
         {
             var unitsStrategy = conversion._buildStrategyForUnits(units, options);
-            return unitsStrategy.parseValue(value);
+            var parsedValue = unitsStrategy.parseValue(value);
+            //console.debug("Parsing '" + value + "' as " + units + " = " + parsedValue);
+            return parsedValue;
         },
 
         // keep this

@@ -92,7 +92,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             this.model.on("change:description", function ()
             {
                 this.model.set("description",
-                    this.fixNewlinesForParse(this.model.get("description")),
+                    this.parseUnitsValue("text", this.model.get("description")),
                     { silent: true });
             }, this);
 
