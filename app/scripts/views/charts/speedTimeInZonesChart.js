@@ -34,7 +34,7 @@ function(_, setImmediate, TP, TimeInZonesChartView, chartColors)
 
             var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
             var percentTime = TP.utils.conversion.toPercent(timeInZone.seconds, totalSeconds);
-            var speedFormatter = this.zoneType === "Pace" ? "formatPace" : "formatSpeed";
+            var speedFormatter = this.zoneType === "Pace" ? "pace" : "speed";
             return {       
                 tooltips: [
                     {
@@ -42,11 +42,11 @@ function(_, setImmediate, TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Range",
-                        value: TP.utils.conversion[speedFormatter](timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion[speedFormatter](timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
+                        value: TP.utils.conversion.formatUnitsValue(speedFormatter, timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion[speedFormatter](timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
                     },
                     {
                         label: "Time",
-                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
+                        value: TP.utils.conversion.formatUnitsValue("seconds", timeInZone.seconds)
                     },
                     {
                         label: "Percent",

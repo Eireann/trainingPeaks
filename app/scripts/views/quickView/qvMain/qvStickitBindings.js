@@ -15,6 +15,7 @@ function (
         initializeStickit: function()
         {
             this.bindings = _.clone(this.bindings);
+            this.addDefaultHandlersToBindings();
             this.addModelToBindings();
             this.on("render", this.stickitOnRender, this);
             this.listenTo(this.model, "change:workoutDay", _.bind(this._stickitOnDateChanged, this));
@@ -63,14 +64,12 @@ function (
             "#dayName":
             {
                 observe: "workoutDay",
-                onGet: "formatDateToDayName",
                 units: "date",
                 dateFormat: "dddd"
             },
             "#calendarDate":
             {
                 observe: "workoutDay",
-                onGet: "formatDateToCalendarDate",
                 units: "date",
                 dateFormat: "MMM D, YYYY"
             },
@@ -84,19 +83,19 @@ function (
             "#qv-header-distance":
             {
                 observe: "distance",
-                onGet: "formatDistance",
+                units: "distance",
                 defaultValue: "0"
             },
             "#qv-header-totaltime":
             {
                 observe: "totalTime",
-                onGet: "formatDuration",
+                units: "duration",
                 defaultValue: "0:00:00"
             },
             "#qv-header-tssactual":
             {
                 observe: "tssActual",
-                onGet: "formatTSS",
+                units: "tss",
                 defaultValue: "0"
             },
             "#qv-header-distancePlanned":
@@ -108,13 +107,13 @@ function (
             "#qv-header-totaltimePlanned":
             {
                 observe: "totalTimePlanned",
-                onGet: "formatDuration",
+                units: "duration",
                 defaultValue: "0:00:00"
             },
             "#qv-header-tssPlanned":
             {
                 observe: "tssPlanned",
-                onGet: "formatTSS",
+                units: "tss",
                 defaultValue: "0"
             },
             "#qv-header-tssSource":
@@ -189,8 +188,34 @@ function (
             {
                 binding.model = this.model;
             }, this);
-        }
+        },
 
+        addDefaultHandlersToBindings: function()
+        {
+            _.eah(this.bindings, function(binding)
+            {
+                if(!binding.onGet)
+                {
+                    binding.onGet = "defaultOnGet";
+                }
+
+                if(!binding.onSet)
+                {
+                    binding.onSet = "defaultOnSet";
+                }
+
+            }, this);
+        },
+
+        defaultOnGet: function(value, options)
+        {
+            return this.formatUnitsValue(options.units, value, options);
+        },
+
+        defaultOnSet: function(value, options)
+        {
+            return this.parseUnitsValue(options.units, value, options);
+        }
     };
 
     _.extend(workoutQuickViewStickitBindings, TP.utils.conversion);

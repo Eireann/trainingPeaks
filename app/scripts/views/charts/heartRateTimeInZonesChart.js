@@ -54,7 +54,7 @@ function(_, TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Time",
-                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
+                        value: TP.utils.conversion.formatUnitsValue("seconds", timeInZone.seconds)
                     },
                     {
                         label: "Percent",
