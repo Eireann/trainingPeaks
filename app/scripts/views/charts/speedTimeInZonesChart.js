@@ -42,7 +42,7 @@ function(_, setImmediate, TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Range",
-                        value: TP.utils.conversion.formatUnitsValue(speedFormatter, timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion[speedFormatter](timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
+                        value: TP.utils.conversion.formatUnitsValue(speedFormatter, timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion.formatUnitsValue(speedFormatter, timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
                     },
                     {
                         label: "Time",

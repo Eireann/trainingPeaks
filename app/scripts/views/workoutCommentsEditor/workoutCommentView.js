@@ -94,7 +94,7 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
             
             if (this.editable)
             {
-                var comment = TP.utils.conversion.parseTextField(this.ui.editedComment.val());
+                var comment = TP.utils.conversion.parseUnitsValue("text", this.ui.editedComment.val());
                 if (comment !== this.model.get("comment"))
                 {
                     this.model.set("comment", comment);
@@ -117,7 +117,7 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
             this.saveTimeout = setTimeout(function()
             {
                 //console.debug("check for save");
-                var comment = TP.utils.conversion.parseTextField(self.ui.editedComment.val());
+                var comment = TP.utils.conversion.parseUnitsValue("text", self.ui.editedComment.val());
                 if (comment !== self.model.get("comment"))
                 {
                     self.model.set("comment", comment);
