@@ -203,6 +203,24 @@ define(
             }
         },
 
+        durationAsInteger: {
+
+            aliases: ["hoursAsInteger"],
+
+            formatter: integerFormatter,
+            parser: integerParser,
+
+            max: 99 + (59 / 60) + (59 / 3600), // 99:59:59
+            min: 0,
+
+            units:
+            {
+                baseUnits: "hours",
+                English: "hours",
+                Metric: "hours"
+            }
+        },
+
         durationMilliseconds: {
 
             aliases: ["milliseconds", "ms"],
@@ -263,6 +281,9 @@ define(
         },
 
         efficiencyFactor: {
+
+            aliases: ["ef"],
+            
             formatter: decimalFormatter,
             parser: decimalParser,
             precision: 2,
