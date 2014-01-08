@@ -310,7 +310,7 @@ function(
 
         addDefaultHandlersToBindings: function()
         {
-            _.eah(this.bindings, function(binding)
+            _.each(this.bindings, function(binding)
             {
                 if(!binding.onGet)
                 {
@@ -332,11 +332,19 @@ function(
 
         defaultOnGet: function(value, options)
         {
+            if(!options.units)
+            {
+                throw new Error("Stickit bindings requires units option or onGet method: " + JSON.stringify(options));
+            }
             return this.formatUnitsValue(options.units, value, options);
         },
 
         defaultOnSet: function(value, options)
         {
+            if(!options.units)
+            {
+                throw new Error("Stickit bindings requires units option or onSet method: " + JSON.stringify(options));
+            }
             return this.parseUnitsValue(options.units, value, options);
         }
 

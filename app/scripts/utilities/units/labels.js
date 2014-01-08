@@ -10,6 +10,12 @@ function(_, unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
 
     var unitsHash =
     {
+        timeofday:
+        {
+            English: "",
+            Metric: ""
+        },
+        
         distance:
         {
             English: {

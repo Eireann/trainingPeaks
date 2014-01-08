@@ -16,7 +16,7 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
             it("conversion.parseUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
             {
                 var parseOptions =  _.defaults({}, testValue.options, options);
-                var marginOfError = testValue.marginOfError || 0.5;
+                var marginOfError = testValue.marginOfError || 0.1;
                 expect(conversion.parseUnitsValue(units, testValue.input, parseOptions)).to.be.closeTo(testValue.output, marginOfError);
             });
         });
@@ -33,19 +33,19 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                     // 1 cm = 1 cm
                     {
                         input: 1, 
-                        output: "1"
+                        output: 1
                     },
                     {
-                        input: 0,
-                        output: "0.00"
+                        input: "0.00",
+                        output: 0
                     },
                     {
                         input: null,
-                        output: ""
+                        output: null
                     },
                     {
                         input: "",
-                        output: ""
+                        output: null
                     }
                 ]);
             });
@@ -53,22 +53,22 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
             describe("English", function()
             {
                 describeParseUnits("circumference", [
-                    // 1 cm = 0.393701 inch
+                    // 1 inch = around 2.54 cm
                     {
                         input: 1,
-                        output: "0.393701"
+                        output: 2.54
                     },
                     {
                         input: 0,
-                        output: "0.00"
+                        output: 0,
                     },
                     {
                         input: null,
-                        output: ""
+                        output: null
                     },
                     {
                         input: "",
-                        output: ""
+                        output: null
                     }
                 ],
                 {
@@ -199,11 +199,12 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                 describeParseUnits("distance", [
                     {
                         input: "1",
-                        output: 1609
+                        output: 1609.3
                     },
                     {
                         input: "2",
-                        output: 3219
+                        output: 3219,
+                        marginOfError: 0.5
                     },
                     {
                         input: "0",
@@ -413,11 +414,11 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                 describeParseUnits("pace", [
                     {
                         input: "00:00:00",
-                        output: 1609 
+                        output: 1609.3
                     },
                     {
                         input: "00:00:01",
-                        output: 1609
+                        output: 1609.3
                     },
                     {
                         input: "35:20",
@@ -1010,11 +1011,12 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                 describeParseUnits("temperature", [
                     {
                         input: "202",
-                        output: 94 
+                        output: 94.4
                     },
                     {
                         input: "1000",
-                        output: 537
+                        output: 537,
+                        marginOfError: 0.5
                     },
                     {
                         input: "32",
@@ -1022,7 +1024,7 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                     },
                     {
                         input: 0,
-                        output: -18
+                        output: -17.8
                     }, 
                     {
                         input: "",

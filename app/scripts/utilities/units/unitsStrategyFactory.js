@@ -3,8 +3,6 @@ define(
     "underscore",
     "moment",
 
-    "utilities/datetime/format",
-
     "./strategies/defaultUnitsStrategy",
 
     "./strategies/emptyValidatorZeroIsNotEmpty",
@@ -17,6 +15,8 @@ define(
     "./strategies/decimalParser",
     "./strategies/decimalFormatter",
     "./strategies/threeFiguresFormatter",
+
+    "./strategies/date/datetimeUnitsStrategy",
 
     "./strategies/duration/durationUnitsParser",
     "./strategies/duration/durationUnitsFormatter",
@@ -34,8 +34,6 @@ define(
     _,
     moment,
 
-    DateTimeFormatter,
-
     DefaultUnitsStrategy,
 
     emptyValidatorZeroIsNotEmpty,
@@ -49,6 +47,8 @@ define(
     decimalFormatter,
     threeFiguresFormatter,
 
+    DateTimeUnitsStrategy,
+
     durationUnitsParser,
     durationUnitsFormatter,
     durationUnitsEmptyValidator,
@@ -59,7 +59,7 @@ define(
 
     temperatureUnitsConverter,
 
-    textStrategy
+    TextStrategy
 ) {
 
     var noOp = function(value){return value;};
@@ -149,15 +149,8 @@ define(
         },
 
         date: {
-            limiter: noOp,
-            formatter: function(value, options)
-            {
-                return new DateTimeFormatter().format(value, options.dateFormat);
-            },
-            parser: function(value, options)
-            {
-                return new DateTimeFormatter().parse(value, options.dateFormat);
-            }
+            strategy: DateTimeUnitsStrategy,
+            dateFormat: "YYYY-MM-DD"
         },
 
         distance: {
@@ -223,7 +216,7 @@ define(
 
         durationMilliseconds: {
 
-            aliases: ["milliseconds", "ms"],
+            aliases: ["milliseconds", "ms", "time"],
 
             formatter: durationUnitsFormatter,
             parser: durationUnitsParser,
@@ -558,13 +551,8 @@ define(
         },
 
         timeofday: {
-            min: 0,
-            max: 24,
-
-            formatter: function(value, options)
-            {
-                return moment(value).format("hh:mm A");
-            }
+            strategy: DateTimeUnitsStrategy,
+            dateFormat: "hh:mm A"
         },
 
         torque: {
@@ -617,7 +605,7 @@ define(
         },
 
         text: {
-            strategy: textStrategy
+            strategy: TextStrategy
         }
 
     };
