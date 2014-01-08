@@ -21,6 +21,7 @@ function(
     {
 
         events: {
+            "change .defaultToggle": "_onDefaultToggleChange",
             "change .retiredToggle": "_onRetiredToggleChange",
 
             "click .removeEquipment": "_removeEquipment"
@@ -34,7 +35,13 @@ function(
             template: equipmentItemTemplate
         },
 
-        onRender: function() {
+        initialize: function(options)
+        {
+            this.parentView = options.parentView;
+        },
+
+        onRender: function()
+        {
             this.$(".datepicker").datepicker(
             {
                 dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(),
@@ -69,6 +76,14 @@ function(
         _applyModelValuesToForm: function()
         {
             FormUtility.applyValuesToForm(this.$el, this.model);
+        },
+
+        _onDefaultToggleChange: function()
+        {
+            if (this.parentView)
+            {
+                this.parentView.trigger("defaultEquipmentChange", this.model.get("type"), this.model.get("equipmentId"));
+            }
         },
 
         _onRetiredToggleChange: function()

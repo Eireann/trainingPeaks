@@ -63,7 +63,6 @@ function(
         {
             this.set(data);
         }
-
     });
 
 });

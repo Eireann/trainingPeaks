@@ -46,6 +46,11 @@ function(
 
         itemView: EquipmentItemView,
 
+        itemViewOptions: function()
+        {
+            return { parentView: this };
+        },
+
         events:
         {
             "click .addEquipment": "_addEquipment"
@@ -73,6 +78,8 @@ function(
             this.user = options && options.user ? options.user : theMarsApp.user;
 
             this.collection = options.collection;
+
+            this.on("defaultEquipmentChange", this._handleDefaultEquipmentChange, this);
         },
 
         applyFormValuesToModels: function()
@@ -89,6 +96,24 @@ function(
             equipmentModel.set("type", EquipmentTypes.convertLabelToType($(e.target).data("equipmenttype")));
 
             this.collection.push(equipmentModel);
+        },
+
+        _handleDefaultEquipmentChange: function(type, id)
+        {
+            this.collection.each(function(equipment)
+            {
+                if (equipment.get("type") === type)
+                {
+                    if (equipment.get("equipmentId") === id)
+                    {
+                        equipment.set("isDefault", true);
+                    }
+                    else
+                    {
+                        equipment.set("isDefault", false);
+                    }
+                }
+            });
         }
 
     });
