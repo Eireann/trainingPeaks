@@ -53,7 +53,7 @@ html, body
 .frameworkTable
 {
     font-family: $fontFamilyRegular;
-    font-size: 12px;
+    font-size: 14px;
     background:none;
     border-collapse:collapse;
     width:100%;
@@ -71,6 +71,7 @@ html, body
     {
         border-right:1px solid $TPGrey5;
         color: $TPGrey8;
+        font-size: $fontSizeSmaller;
     }
     tbody
     {

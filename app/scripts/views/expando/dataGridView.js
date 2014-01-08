@@ -34,7 +34,12 @@ function(
 
         getItem: function(index)
         {
-            return this.channels.get(index);
+            var item = this.channels.get(index);
+
+            // item is a stop if all values are null, except for the first column which is time
+            item.isStopped = ! _.any(item.slice(1), function(value) { return value !== null; });
+
+            return item;
         },
 
         getItemMetadata: function(index)
@@ -53,6 +58,9 @@ function(
 
             if(inRange) { classes.push('sampleInRange'); }
             if(inPrimaryRange) { classes.push('sampleInPrimaryRange'); }
+
+            var item = this.getItem(index);
+            if(item.isStopped) { classes.push('stopped'); }
 
             return {
                 cssClasses: classes.join(' ')
@@ -172,9 +180,16 @@ function(
 
                     var label = TP.utils.units.getUnitsLabel(column.units, workoutType);
                     column.name += label ? " (" + label + ")" : "";
-                    column.formatter = function(row, cell, value)
+                    column.formatter = function(row, cell, value, columnMetaData, item)
                     {
-                        return TP.utils.conversion.formatUnitsValue(column.units, value, { defaultValue: "--", workoutTypeId: workoutType });
+                        if(item.isStopped)
+                        {
+                            return column.name === "Time" ? "STOPPED" : "";
+                        }
+                        else
+                        {
+                            return TP.utils.conversion.formatUnitsValue(column.units, value, { defaultValue: "--", workoutTypeId: workoutType });
+                        }
                     };
                 }
             });
@@ -196,6 +211,7 @@ function(
                     var $header = $(args.node).find(".slick-column-name");
                     $header.attr("title", $header.text());
                 });
+
                 self.grid.init();
             });
 

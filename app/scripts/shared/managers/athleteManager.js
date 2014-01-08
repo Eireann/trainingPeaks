@@ -82,8 +82,6 @@ function(
         {
             return this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ViewAthleteCalendar, { athlete: athlete });
         }
-
-
     });
 
     return AthleteManager;

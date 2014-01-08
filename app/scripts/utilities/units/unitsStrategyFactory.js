@@ -174,6 +174,15 @@ define(
             dateFormat: "YYYY-MM-DD"
         },
 
+        decimalAsPercent: {
+            min: 0,
+            max: 1,
+            formatter: function(value)
+            {
+                return threeFiguresFormatter(value * 100);
+            }
+        },
+
         distance: {
             min: 0,
             max: 999999,
@@ -474,6 +483,7 @@ define(
             min: 0,
             max: 100
         },
+
 
         power: {
             aliases: ["rightpower"],
