@@ -13,8 +13,8 @@ define(
     "views/expando/mapView",
     "views/expando/lapsSplitsView",
     "views/expando/lapsSplitsColumnChartView",
-    "views/expando/scatterGraphView",
-    "views/expando/dataGridView"
+    "views/expando/scatterGraphView"
+    //"views/expando/dataGridView"
 ],
 function(
     _,
@@ -30,8 +30,8 @@ function(
     MapView,
     LapsSplitsView,
     LapsSplitsColumnChartView,
-    ScatterGraphView,
-    DataGridView
+    ScatterGraphView
+    //DataGridView
 )
 {
 
@@ -107,6 +107,7 @@ function(
             });
         },
 
+        /*
         157: function(options)
         {
             return new DataGridView(
@@ -116,6 +117,7 @@ function(
                 stateModel: options.data.stateModel
             });
         },
+        */
 
         1081: function(options)
         {
