@@ -10,7 +10,7 @@ Steps:
 install node.js
 checkout code
 cd into trainingPeaks
-run nmp install
+run npm install
 
 To run the test:
 from the trainingPeaks directory run "node app.js"
