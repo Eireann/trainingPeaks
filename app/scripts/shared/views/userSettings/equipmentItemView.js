@@ -48,7 +48,7 @@ function(
                 firstDay: CalendarUtility.startOfWeek
             });
 
-            if (!this.model.has("actualDistance"))
+            if (!this.model.has("actualDistance") && this.model.has("equipmentId"))
             {
                 this.model.getActualDistance();
             }
