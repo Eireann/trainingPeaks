@@ -1,0 +1,45 @@
+  	
+  	<script type="text/template" id="chartView-template">
+		<div style="padding:10px 0px; width: 600px; height: 250px" >
+			<a href="#" class="button" id="distance" value="Distance">distance</a>
+			<a href="#" class="button" id="cadence" value="Cadence">cadence</a>
+			<a href="#" class="button" id="elevation" value="Elevation">elevation</a>
+			<a href="#" class="button" id="heartRate" value="Heart rate">Heart rate</a>
+			<a href="#" class="button" id="power" value="Power">Power</a>
+			<a href="#" class="button" id="speed" value="Speed">Speed</a>
+
+			<h3 class="chartTitle"></h3>
+	  		<div id="chartContainer" class="performanceDataChartDisplay"></div>
+			<div id="detailsContainer"></div>
+			<div id="averagePowerCalculation"></div>
+		</div>
+  	</script>
+  	
+  	<script type="text/template" id="details-template">
+		<table id="performanceDataStats">
+			<tr>
+				<td>Distance: <%= dataUtils.convertFtToMiles(Distance).toPrecision(5) + " miles"%></td>
+				<td>Time: <%= dataUtils.millisToTime(MillisecondsOffset) %></td>
+				<td>Elevation: <%= Number(Elevation).toPrecision(5) + " ft"%></td>
+			</tr>
+			<tr>
+				<td>Cadence: <%= Cadence %></td>
+				<td>Heart Rate: <%= HeartRate %></td>
+				<td>Power: <%= Power %></td>
+			</tr>
+			<tr>
+				<td>Temp: <%= Temperature %></td>
+				<td>Speed: <%= Number(Speed).toPrecision(5)%></td>
+				<td> </td>
+			</tr>
+		</table>
+	</script>
+	
+	<script type="text/template" id="average-power-template"> 
+		<p>Average power</p>
+		<div>1 min: <%= a1minAvePower %></div>
+		<div>5 min: <%= a5minAvePower %></div>
+		<div>10 min: <%= a10minAvePower %></div>
+		<div>15 min: <%= a15minAvePower %></div>
+		<div>20 min: <%= a20minAvePower %></div>
+	</script>

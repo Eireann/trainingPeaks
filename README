@@ -1,1 +1,41 @@
-TEST
+Training Peaks code test.
+
+Here is my code solution for the training peaks code test.
+
+Here are some notes to get started:
+
+To proxy the endpoint I am using Node.JS express framework. for the code example to work you will need to install node.JS
+
+Steps:
+install node.js
+checkout code
+cd into trainingPeaks
+run nmp install
+
+To run the test:
+from the trainingPeaks directory run "node app.js"
+when it has started up, in a broswer go to http://localhost:3000/
+
+ASSUMPTIONS:
+In the interest of time there were some assumptions made that likely wouldn't be a great solution for a product in production. 
+
+1. 1 second time intervals - When calculating the Average power over time intervals, I made the assumption that the datapoints are always in one second intervals.
+This can fall apart however when a gps watch or other training device has other increments such as the Suunto ambit's treking mode that records in 30 second intervals to extend batery life.
+
+2. Units - as there were no units in the data example provided, I made certain assumptions as to what the data points were recorded in.  
+I used feet for Distance (and converted the display to miles based on this assumption), BPM for heart rate, ft for elevation etc. 
+
+3. Hours - I converted all display times from milliseconds to hours.  While this should usually be fine, if someone is logging workouts under an hour, it would be a nice improvement to display the time in minutes rather than hours.
+
+
+DRAWBACKS/ IMPROVEMENTS
+
+Since time was limited, there are many thing that could be improved upon.
+
+1. file management - as I have very few files, they are all located under the src directory.  In a larger application, appropriate file structures should be used to keep the code organized.
+2. Require.JS - rather than simply importing everything into the index.html file, time permitting, it would have been cleaner to add in require.JS to help manage dependencies
+2. Marionette - For this test I did not use Marionette, but it could be a nice improvement to reduce boilerplate code.
+3. Assumptions - the Assumptions made above make the test work, but a production application should be a bit more flexible and take into account changes in areas such as units, time interval etc.
+
+
+
