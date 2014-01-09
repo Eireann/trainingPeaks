@@ -15,6 +15,7 @@ function (
         initializeStickit: function()
         {
             this.bindings = _.clone(this.bindings);
+            this.addDefaultHandlersToBindings();
             this.addModelToBindings();
             this.on("render", this.stickitOnRender, this);
             this.listenTo(this.model, "change:workoutDay", _.bind(this._stickitOnDateChanged, this));
@@ -58,17 +59,20 @@ function (
             "#workoutTitleField":
             {
                 observe: "title",
-                updateModel: "updateTitle"
+                updateModel: "updateTitle",
+                units: "text"
             },
             "#dayName":
             {
                 observe: "workoutDay",
-                onGet: "formatDateToDayName"
+                units: "date",
+                dateFormat: "dddd"
             },
             "#calendarDate":
             {
                 observe: "workoutDay",
-                onGet: "formatDateToCalendarDate"
+                units: "date",
+                dateFormat: "MMM D, YYYY"
             },
             "#startTimeInput":
             {
@@ -80,37 +84,37 @@ function (
             "#qv-header-distance":
             {
                 observe: "distance",
-                onGet: "formatDistance",
+                units: "distance",
                 defaultValue: "0"
             },
             "#qv-header-totaltime":
             {
                 observe: "totalTime",
-                onGet: "formatDuration",
+                units: "duration",
                 defaultValue: "0:00:00"
             },
             "#qv-header-tssactual":
             {
                 observe: "tssActual",
-                onGet: "formatTSS",
+                units: "tss",
                 defaultValue: "0"
             },
             "#qv-header-distancePlanned":
             {
                 observe: "distancePlanned",
-                onGet: "formatDistance",
+                units: "distance",
                 defaultValue: "0"
             },
             "#qv-header-totaltimePlanned":
             {
                 observe: "totalTimePlanned",
-                onGet: "formatDuration",
+                units: "duration",
                 defaultValue: "0:00:00"
             },
             "#qv-header-tssPlanned":
             {
                 observe: "tssPlanned",
-                onGet: "formatTSS",
+                units: "tss",
                 defaultValue: "0"
             },
             "#qv-header-tssSource":
@@ -157,7 +161,7 @@ function (
             var self = this;
             var updateModel = function ()
             {
-                var newModelValue = self.parseTextField(newViewValue);
+                var newModelValue = self.parseUnitsValue("text", newViewValue);
                 if (self.model.get("title") !== newModelValue)
                 {
                     self.model.set("title", newModelValue);
@@ -185,8 +189,42 @@ function (
             {
                 binding.model = this.model;
             }, this);
-        }
+        },
 
+        addDefaultHandlersToBindings: function()
+        {
+            _.each(this.bindings, function(binding)
+            {
+                if(!binding.onGet)
+                {
+                    binding.onGet = "defaultOnGet";
+                }
+
+                if(!binding.onSet)
+                {
+                    binding.onSet = "defaultOnSet";
+                }
+
+            }, this);
+        },
+
+        defaultOnGet: function(value, options)
+        {
+            if(!options.units)
+            {
+                throw new Error("Stickit bindings requires units option or onGet method: " + JSON.stringify(options));
+            }
+            return this.formatUnitsValue(options.units, value, options);
+        },
+
+        defaultOnSet: function(value, options)
+        {
+            if(!options.units)
+            {
+                throw new Error("Stickit bindings requires units option or onSet method: " + JSON.stringify(options));
+            }
+            return this.parseUnitsValue(options.units, value, options);
+        }
     };
 
     _.extend(workoutQuickViewStickitBindings, TP.utils.conversion);

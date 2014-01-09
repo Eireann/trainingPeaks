@@ -299,7 +299,14 @@ function(
 
       _formatYTick: function(value)
       {
-         return TP.utils.conversion.formatUnitsValue(this.subType.units, value, { defaultValue: undefined, workoutTypeId: this._getSingleWorkoutTypeId()});
+
+        // special case for zero speed/pace, otherwise we get 00:01 in a place that doesn't make sense
+        if(this.subType.units === "pace" && value === 0)
+        {
+          return "";
+        }
+
+        return TP.utils.conversion.formatUnitsValue(this.subType.units, value, { defaultValue: undefined, workoutTypeId: this._getSingleWorkoutTypeId()});
       },
 
       _getSingleWorkoutTypeId: function()

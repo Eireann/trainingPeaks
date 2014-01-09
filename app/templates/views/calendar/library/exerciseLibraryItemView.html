@@ -4,15 +4,15 @@
         <div class="workoutIcon"></div>
         <div class="workoutDistanceTime cf">
             {{#if totalTimePlanned }}
-            <label class="workoutTime">{{ conversion "formatDuration" totalTimePlanned }}</label>
+            <label class="workoutTime">{{ formatUnitsValue "duration" totalTimePlanned }}</label>
             {{/if}}
             {{#if distancePlanned}}
             
-            <label class="workoutDistance">{{ conversion "formatDistance" distancePlanned this }}<span class="units">{{ getUnitsLabel "distance" workoutTypeId }}</span></label>
+            <label class="workoutDistance">{{ formatUnitsValue "distance" distancePlanned this }}<span class="units">{{ getUnitsLabel "distance" workoutTypeId }}</span></label>
             {{/if}}
             {{#if tssPlanned}}
             
-            <label class="workoutTSS">{{ conversion "formatTSS" tssPlanned }}<span class="units">{{ getUnitsLabel "tss" workoutTypeId this }}</span></label>
+            <label class="workoutTSS">{{ formatUnitsValue "tss" tssPlanned }}<span class="units">{{ getUnitsLabel "tss" workoutTypeId this }}</span></label>
             {{/if}}
         </div>
     </div>

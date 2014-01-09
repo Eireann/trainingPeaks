@@ -59,8 +59,8 @@
 						{{ workoutTypeName workoutTypeId }} {{$ "Distance" }}
 					</div>		
 					<div class="weekSummaryTimeContain">
-		                <span class="weekSummaryTimePlanned {{ workoutTypeCssName workoutTypeId}}">{{ conversion "formatDistance" planned this "--"}}</span>
-						<span class="weekSummaryTimeCompleted  {{ workoutTypeCssName workoutTypeId}}">{{ conversion "formatDistance" completed this "--"}} {{ getUnitsLabel "distance" workoutTypeId }}</span>
+		                <span class="weekSummaryTimePlanned {{ workoutTypeCssName workoutTypeId}}">{{ formatUnitsValue "distance" planned this "--"}}</span>
+						<span class="weekSummaryTimeCompleted  {{ workoutTypeCssName workoutTypeId}}">{{ formatUnitsValue "distance" completed this "--"}} {{ getUnitsLabel "distance" workoutTypeId }}</span>
 					</div>
 		            {{{ weekSummaryBarGraph planned completed daysCompleted workoutTypeId }}}
 				</div>
@@ -74,7 +74,7 @@
 		{{#ifNot totalTimePlanned}}
 		<div class="statsRow" id="duration">
 	        <label>{{$ "Duration" }}</label>
-	        <span class="value">{{conversion "formatDuration" totalTimeCompleted this "0"}}</span>
+	        <span class="value">{{formatUnitsValue "duration" totalTimeCompleted this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "time"}}</span>
 	    </div>
 	    {{/ifNot}}
@@ -82,7 +82,7 @@
 	    {{#ifNot totalDistancePlanned}}
 		<div class="statsRow" id="distance">
 	        <label>{{$ "Distance" }}</label>
-	        <span class="value">{{conversion "formatDistance" totalDistanceCompleted this "0"}}</span>
+	        <span class="value">{{formatUnitsValue "distance" totalDistanceCompleted this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "distance"}}</span>
 	    </div>
 	    {{/ifNot}}
@@ -90,7 +90,7 @@
 	    {{#ifNot tssPlanned}}
 		<div class="statsRow" id="tss">
 	        <label>{{$ "TSS" }}</label>
-	        <span class="value">{{conversion "formatTSS" tssCompleted this "0"}}</span>
+	        <span class="value">{{formatUnitsValue "tss" tssCompleted this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "tss"}}</span>
 	    </div>
 	    {{/ifNot}}
@@ -101,7 +101,7 @@
 					{{#ifNot planned }}	
 					<div class="statsRow" id="workoutType{{ workoutTypeId }}">
 				        <label>{{ workoutTypeName workoutTypeId }}</label>
-				        <span class="value">{{conversion "formatDistance" completed this workoutTypeId}}</span>
+				        <span class="value">{{formatUnitsValue "distance" completed this workoutTypeId}}</span>
 				        <span class="units">{{getUnitsLabel "distance" workoutTypeId}}</span>
 				    </div>
 					{{/ifNot}}
@@ -109,21 +109,21 @@
 			{{/with}}
 		{{/each}}
 
-		{{#ifHasValueAfterFormatted "formatElevation" totalElevationGain this}}	
+		{{#ifHasNonZeroValue "elevationGain" totalElevationGain this}}	
 		<div class="statsRow" id="elevationGain">
 	        <label>{{$ "EGain" }}</label>
-	        <span class="value">{{conversion "formatElevation" totalElevationGain this "0"}}</span>
+	        <span class="value">{{formatUnitsValue "elevationGain" totalElevationGain this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "elevationGain" }}</span>
 	    </div>
-		{{/ifHasValueAfterFormatted}}
+		{{/ifHasNonZeroValue}}
 
-		{{#ifHasValueAfterFormatted "formatEnergy" totalEnergyCompleted this}}	
+		{{#ifHasNonZeroValue "energy" totalEnergyCompleted this}}	
 		<div class="statsRow" id="energy">
 	        <label>{{$ "Work" }}</label>
-	        <span class="value">{{conversion "formatEnergy" totalEnergyCompleted this}}</span>
+	        <span class="value">{{formatUnitsValue "energy" totalEnergyCompleted this}}</span>
 	        <span class="units">{{getUnitsLabel "energy" }}</span>
 	    </div>
-		{{/ifHasValueAfterFormatted}}
+		{{/ifHasNonZeroValue}}
 
 	</div>
 	

@@ -30,6 +30,13 @@ function(
 {
     function userCanUsePod(chartModel)
     {
+        // temporarily block data grid pod type 157
+        if(chartModel.get("podType") === 157)
+        {
+            return false;
+        }
+
+        
         var featureAttributes = { podTypeId: chartModel.get("podType") };
         return theMarsApp.featureAuthorizer.canAccessFeature(
             theMarsApp.featureAuthorizer.features.UsePod,

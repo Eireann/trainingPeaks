@@ -2,5 +2,5 @@
     <span class="name">{{ firstName }} {{ lastName }}</span>
     <span class="date"><span class="weekdayName">{{ formatDate dateCreated "ddd" }}</span> {{ formatDate dateCreated "MMMM D, YYYY" }}</span>
 </div>
-<textarea class="commentBody">{{ conversion "formatTextField" comment }}</textarea>
+<textarea class="commentBody">{{ formatUnitsValue "text" comment }}</textarea>
 <div class="deleteButton"></div>

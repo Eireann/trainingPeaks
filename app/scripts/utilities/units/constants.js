@@ -1,6 +1,6 @@
 ﻿define(
 [
-], function(getUnitsLabel)
+], function()
 {
     return {
         English: 1,

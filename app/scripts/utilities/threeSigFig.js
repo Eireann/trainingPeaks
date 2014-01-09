@@ -31,10 +31,10 @@ function(_)
             value = Number(value);
         }
 
-        if (value >= 100)
+        if (value >= 99.95)
         {
             return value.toFixed(0);
-        } else if (value >= 10)
+        } else if (value >= 9.995)
         {
             return value.toFixed(1);
         } else

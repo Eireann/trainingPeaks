@@ -48,25 +48,25 @@ function(
             var data = flotItem.series.raw.fullData;
 
             var workoutTypeName = TP.utils.workout.types.getNameById(data.workoutTypeId);
-            tips.push({ label: workoutTypeName, value: TP.utils.conversion.formatNumber(flotItem.series.percent)  + "%"});
+            tips.push({ label: workoutTypeName, value: TP.utils.conversion.formatUnitsValue("%", flotItem.series.percent)  + "%"});
 
             if(data.distancePlanned)
             {
-                tips.push({ label: "Planned distance", value: TP.utils.conversion.formatDistance(data.distancePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
+                tips.push({ label: "Planned distance", value: TP.utils.conversion.formatUnitsValue("distance", data.distancePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
                     " " + TP.utils.units.getUnitsLabel("distance", data.workoutTypeId) });
             }
 
-            tips.push({ label: "Completed distance", value: TP.utils.conversion.formatDistance(data.distanceActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
+            tips.push({ label: "Completed distance", value: TP.utils.conversion.formatUnitsValue("distance", data.distanceActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
                     " " + TP.utils.units.getUnitsLabel("distance", data.workoutTypeId) });
 
             if(data.totalTimePlanned)
             {
-                tips.push({ label: "Planned duration", value: TP.utils.conversion.formatDuration(data.totalTimePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });
+                tips.push({ label: "Planned duration", value: TP.utils.conversion.formatUnitsValue("duration", data.totalTimePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--", max: 999999 }) });
             }
 
-            tips.push({ label: "Completed duration", value: TP.utils.conversion.formatDuration(data.totalTimeActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });           
+            tips.push({ label: "Completed duration", value: TP.utils.conversion.formatUnitsValue("duration", data.totalTimeActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--", max: 999999 }) });           
 
-            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(data.totalTSSActual, { defaultValue: "--" }) });
+            tips.push({ label: "TSS", value: TP.utils.conversion.formatUnitsValue("tss", data.totalTSSActual, { defaultValue: "--", max: 999999 }) });
             return tips;
         },
 
@@ -151,7 +151,7 @@ function(
                         radius: 0.7,
                         formatter: function (label, series)
                         {
-                            return '<div class="fitnessSummartChart">' + label + '<br/>' + TP.utils.conversion.formatNumber(series.percent) + '%</div>';
+                            return '<div class="fitnessSummartChart">' + label + '<br/>' + TP.utils.conversion.formatUnitsValue("%", series.percent) + '%</div>';
                         },
                         background: { opacity: 0.5 },
                         threshold: 0.05

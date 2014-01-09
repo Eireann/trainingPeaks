@@ -308,7 +308,8 @@ function (
             var position = [lat, long];
             if (!this.hoverMarker)
             {
-                this.hoverMarker = L.marker(position);
+                var icon = new L.Icon.Default({ iconSize: [23, 32] });
+                this.hoverMarker = L.marker(position, { icon: icon });
                 this.hoverMarker.addTo(this.map);
             }
             else

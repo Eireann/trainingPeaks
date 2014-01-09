@@ -79,7 +79,7 @@ function (
 
             if (this.model.get("distance"))
             {
-                textArray.push(this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
+                textArray.push(this.formatUnitsValue("distance", this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
             }
 
             if (this.model.get("workoutTypeValueId"))
@@ -94,12 +94,12 @@ function (
 
             if(this.model.get("totalTime"))
             {
-                textArray.push("in " + this.formatDuration(this.model.get("totalTime")));
+                textArray.push("in " + this.formatUnitsValue("duration", this.model.get("totalTime")));
             }
 
             if(this.model.get("tssActual") && this.model.get("tssActual") !== 0)
             {
-                textArray.push("with " + this.formatTSS(this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
+                textArray.push("with " + this.formatUnitsValue("tss", this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
             }
             var text = textArray.join(" ");
             text += ".";

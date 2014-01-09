@@ -76,6 +76,26 @@ function(_, TP, zonesViewBase)
         formatPeakUnitsLabel: function (value, options)
         {
             return "Watts";
+        },
+        
+        formatDurationFromSeconds: function(value, options)
+        {
+            return this.formatUnitsValue("seconds", value, options);
+        },
+
+        parseDurationAsSeconds: function(value, options)
+        {
+            return this.parseUnitsValue("seconds", value, options);
+        },
+
+        formatPower: function(value, options)
+        {
+            return this.formatUnitsValue("power", value, options);
+        },
+
+        parsePower: function(value, options)
+        {
+            return this.formatUnitsValue("power", value, options);
         }
     };
 

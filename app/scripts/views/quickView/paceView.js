@@ -99,7 +99,28 @@ function(
         formatPeakUnitsLabel: function (value, options)
         {
             return TP.utils.units.getUnitsLabel("pace", this.workoutModel.get("workoutTypeValueId"));
+        },
+
+        formatPace: function(value, options)
+        {
+            return this.formatUnitsValue("pace", value, options);
+        },
+
+        parsePace: function(value, options)
+        {
+            return this.formatUnitsValue("pace", value, options);
+        },
+
+        formatDurationFromSeconds: function(value, options)
+        {
+            return this.formatUnitsValue("seconds", value, options);
+        },
+
+        parseDurationAsSeconds: function(value, options)
+        {
+            return this.parseUnitsValue("seconds", value, options);
         }
+
     };
 
     _.extend(paceViewBase, zonesViewBase);
