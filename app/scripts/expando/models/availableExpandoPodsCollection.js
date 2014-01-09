@@ -68,11 +68,13 @@ function(
                 podType: 119, // Peaks
                 name: "Peaks - Speed"
             },
+            /*
             {
                 podType: 157, // Data Grid
                 name: "Data Grid",
                 widthInColumns: 2
             },
+            */
             {
                 podType: 1081,
                 name: "Laps & Splits Column Chart",
