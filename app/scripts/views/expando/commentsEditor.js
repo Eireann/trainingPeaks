@@ -16,7 +16,10 @@ function(TP, WorkoutCommentsEditorView, commentsEditorTemplate)
 
         events:
         {
-            "click div#closeIcon": "close"
+            // close on mouseup instead of click, 
+            // because mousedown triggers a potential blur/autosave event,
+            // and then the click event doesn't fire
+            "mouseup .closeIcon": "close"
         },
 
         ui:
