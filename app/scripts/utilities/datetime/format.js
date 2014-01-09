@@ -7,10 +7,7 @@ function(_, moment)
 {
 
     var DateTimeFormatter = function(options) {
-        if(options && options.user)
-        {
-            this.user = options.user;
-        }
+        this.options = options || {};
     };
 
     _.extend(DateTimeFormatter.prototype, {
@@ -210,21 +207,29 @@ function(_, moment)
 
         _getAppUserDateFormat: function()
         {
-            var user = this.user ? this.user : theMarsApp.user;
-
-            if(!user || !user.has("dateFormat"))
+            if(this.options.dateFormat)
             {
-                return this._defaultUserDateFormat;
-            } 
-
-            var userDateFormat = user.get("dateFormat");
-
-            if(!_.contains(["mdy", "dmy"], userDateFormat))
+                return this.options.dateFormat;
+            }
+            else
             {
-                return this._defaultUserDateFormat;
+                var user = this.options.user ? this.options.user : theMarsApp.user;
+
+                if(!user || !user.has("dateFormat"))
+                {
+                    return this._defaultUserDateFormat;
+                } 
+
+                var userDateFormat = user.get("dateFormat");
+
+                if(!_.contains(["mdy", "dmy"], userDateFormat))
+                {
+                    return this._defaultUserDateFormat;
+                }
+
+                return userDateFormat;
             }
 
-            return userDateFormat;
         },
         
         // convert based on user preferences

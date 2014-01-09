@@ -29,27 +29,27 @@ function ()
         },
         calendarWorkoutLayout:
         {
-            "1": { name: "startTime", prefix: "C", conversion: "formatTimeOfDay" },
-            "2": { name: "startTimePlanned", prefix: "P", conversion: "formatTimeOfDay"},
-            "3": { name: "distance", prefix: "C", conversion: "formatDistance", unitHelper: "distance" },
-            "4": { name: "distancePlanned", prefix: "P", conversion: "formatDistance", unitHelper: "distance" },
-            "5": { name: "calories", prefix: "C", conversion:"formatCalories", unitHelper: "calories" },
-            "6": { name: "energy", prefix: "C", conversion: "formatEnergy", unitHelper: "energy" },
-            "7": { name: "totalTime", prefix: "C", conversion: "formatDuration"},
-            "8": { name: "totalTimePlanned", prefix: "P", conversion: "formatDuration"},
-            "13": { name: "tempAvg", prefix: "", conversion: "formatTemperature", unitHelper: "temperature" },
+            "1": { name: "startTime", prefix: "C", units: "timeofday" },
+            "2": { name: "startTimePlanned", prefix: "P", units: "timeofday", },
+            "3": { name: "distance", prefix: "C", units: "distance" },
+            "4": { name: "distancePlanned", prefix: "P", units: "distance" },
+            "5": { name: "calories", prefix: "C", units: "calories" },
+            "6": { name: "energy", prefix: "C", units: "energy" },
+            "7": { name: "totalTime", prefix: "C", units: "duration"},
+            "8": { name: "totalTimePlanned", prefix: "P", units: "duration"},
+            "13": { name: "tempAvg", prefix: "",  units: "temperature" },
             //"23": { name: "title", prefix: "" }, //commented out because it is hardwired
             "24": { name: "workoutTypeValueId", prefix: "", conversion: "formatWorkoutType" },
             "25": { name: "code", prefix: "" } , 
             "26": { name: "description", prefix: "" } ,
             "30": { name: "coachComments", prefix: "P" },
             "31": { name: "workoutComments", prefix: "Post", conversion: "formatWorkoutComments" },
-            "35": { name: "tssActual", prefix: "C", conversion: "formatTSS", unitHelper: "tss" },
-            "36": { name: "if", prefix: "C", conversion: "formatIF", unitHelper: "if" },
-            "38": { name: "tssPlanned", prefix: "P", conversion: "formatTSS", unitHelper: "tss" },
-            "39": { name: "ifPlanned", prefix: "P", conversion: "formatIF", unitHelper: "if" },
-            "40": { name: "caloriesPlanned", prefix: "P", conversion: "formatCalories", unitHelper: "calories" },
-            "41": { name: "energyPlanned", prefix: "P", conversion: "formatEnergy", unitHelper: "energy" }
+            "35": { name: "tssActual", prefix: "C", units: "tss" },
+            "36": { name: "if", prefix: "C", units: "if" },
+            "38": { name: "tssPlanned", prefix: "P", units: "tss" },
+            "39": { name: "ifPlanned", prefix: "P", units: "if" },
+            "40": { name: "caloriesPlanned", prefix: "P", units: "calories" },
+            "41": { name: "energyPlanned", prefix: "P", units: "energy" }
         },
         trainingStressScoreSource:
         {

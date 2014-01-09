@@ -38,7 +38,8 @@ function(_, TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Range",
-                        value: TP.utils.conversion.formatInteger(timeInZone.minimum, { defaultValue: "0" }) + "-" + TP.utils.conversion.formatInteger(timeInZone.maximum, { defaultValue: "0" }) + " Watts"
+                        value: TP.utils.conversion.formatUnitsValue("integer", timeInZone.minimum, { defaultValue: "0" }) + "-" + 
+                            TP.utils.conversion.formatUnitsValue("integer", timeInZone.maximum, { defaultValue: "0" }) + " Watts"
                     },
                     {
                         label: "% FTP",
@@ -47,7 +48,7 @@ function(_, TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Time",
-                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
+                        value: TP.utils.conversion.formatUnitsValue("seconds", timeInZone.seconds)
                     },
                     {
                         label: "Percent",

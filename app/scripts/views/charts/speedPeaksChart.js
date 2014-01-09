@@ -31,7 +31,7 @@ function(_, TP, PeaksChartView, chartColors)
 
         toolTipBuilder: function(peak, timeInZones)
         {
-            var speedFormatter = this.peakType === "Pace" ? "formatPace" : "formatSpeed";
+            var speedFormatter = this.peakType === "Pace" ? "pace" : "speed";
             return {
                 tooltips:
                 [
@@ -39,7 +39,7 @@ function(_, TP, PeaksChartView, chartColors)
                         label: peak.label
                     },
                     {
-                        value: TP.utils.conversion[speedFormatter](peak.value, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel(peak.value)
+                        value: TP.utils.conversion.formatUnitsValue(speedFormatter, peak.value, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel(peak.value)
                     }
                 ]
             };
@@ -52,8 +52,8 @@ function(_, TP, PeaksChartView, chartColors)
 
         formatYAxisTick: function(value, series)
         {
-            var speedFormatter = this.peakType === "Pace" ? "formatPace" : "formatSpeed";
-            return TP.utils.conversion[speedFormatter](value, { workoutTypeValueId: this.workoutType });
+            var speedFormatter = this.peakType === "Pace" ? "pace" : "speed";
+            return TP.utils.conversion.formatUnitsValue(speedFormatter, value, { workoutTypeValueId: this.workoutType });
         }
 
     });

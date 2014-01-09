@@ -53,8 +53,8 @@ function(
             var zonePercent = 100 * zoneMinutes / this._totalMinutes;
             var tips = [];
             tips.push({ label: "Zone " + zoneNumber });
-            tips.push({ label: "Time", value: TP.utils.conversion.formatDuration(zoneMinutes / 60) });
-            tips.push({ label: "Percent", value: TP.utils.conversion.formatNumber(zonePercent) + "%" });
+            tips.push({ label: "Time", value: TP.utils.conversion.formatUnitsValue("minutes", zoneMinutes) });
+            tips.push({ label: "Percent", value: TP.utils.conversion.formatUnitsValue("%", zonePercent) + "%" });
             return tips;
         },
 
@@ -184,7 +184,7 @@ function(
                 min: 0,
                 tickFormatter: function(zoneMinutes)
                 {
-                    return TP.utils.conversion.formatMinutes(zoneMinutes, { defaultValue: "0:00" });
+                    return TP.utils.conversion.formatUnitsValue("minutes", zoneMinutes, { defaultValue: "0:00" });
                 }
             };
 

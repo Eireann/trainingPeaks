@@ -36,6 +36,26 @@ function(_, TP, zonesViewBase)
                 onGet: "formatDurationFromSeconds",
                 onSet: "parseDurationAsSeconds"
             });
+        },
+
+        formatHeartRate: function(value, options)
+        {
+            return this.formatUnitsValue("heartrate", value, options);
+        },
+
+        parseHeartRate: function(value, options)
+        {
+            return this.parseUnitsValue("heartrate", value, options);
+        },
+
+        formatDurationFromSeconds: function(value, options)
+        {
+            return this.formatUnitsValue("seconds", value, options);
+        },
+
+        parseDurationAsSeconds: function(value, options)
+        {
+            return this.parseUnitsValue("seconds", value, options);
         }
 
     };

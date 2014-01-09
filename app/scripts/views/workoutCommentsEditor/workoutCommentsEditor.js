@@ -23,43 +23,52 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             {
                 events: [ "blur", "keyup", "change", "cut", "paste"],
                 observe: "description",
-                onSet: "parseTextField",
-                onGet: "formatTextField",
+                units: "text",
                 updateModel: "updateModel",
                 ignoreOnSetForUpdateModel: true,
-                saveTimeout: 60000
+                saveTimeout: 60000,
+                onGet: "defaultOnGet",
+                onSet: "defaultOnSet"
             },
             "#postActivityCommentsInput":
             {
                 observe: "newComment",
-                onSet: "parseTextField",
-                onGet: "formatTextField",
+                units: "text",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel",
-                saveTimeout: 60000
+                saveTimeout: 60000,
+                onGet: "defaultOnGet",
+                onSet: "defaultOnSet"
             },
             "#preActivityCommentsInput":
             {
                 observe: "coachComments",
-                onSet: "parseTextField",
-                onGet: "formatTextField",
+                units: "text",
                 events: ["blur", "change", "keyup", "paste"],
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                onGet: "defaultOnGet",
+                onSet: "defaultOnSet"
             },
             "#descriptionPrintable":
             {
                 observe: "description",
-                onGet: "formatTextField"
+                units: "text",
+                onGet: "defaultOnGet",
+                onSet: "defaultOnSet"
             },
             "#postActivityCommentsPrintable":
             {
                 observe: "newComment",
-                onGet: "formatTextField"
+                units: "text",
+                onGet: "defaultOnGet",
+                onSet: "defaultOnSet"
             },
             "#preActivityCommentsPrintable":
             {
                 observe: "coachComments",
-                onGet: "formatTextField"
+                units: "text",
+                onGet: "defaultOnGet",
+                onSet: "defaultOnSet"
             }
         },
 
@@ -83,7 +92,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             this.model.on("change:description", function ()
             {
                 this.model.set("description",
-                    this.fixNewlinesForParse(this.model.get("description")),
+                    this.parseUnitsValue("text", this.model.get("description")),
                     { silent: true });
             }, this);
 
@@ -141,6 +150,24 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 commentsArray.push(commentsModel.attributes);
             });
             return commentsArray;
+        },
+
+        defaultOnGet: function(value, options)
+        {
+            if(!options.units)
+            {
+                throw new Error("Stickit bindings requires units option or onGet method: " + JSON.stringify(options));
+            }
+            return this.formatUnitsValue(options.units, value, options);
+        },
+
+        defaultOnSet: function(value, options)
+        {
+            if(!options.units)
+            {
+                throw new Error("Stickit bindings requires units option or onSet method: " + JSON.stringify(options));
+            }
+            return this.parseUnitsValue(options.units, value, options);
         }
     };
 

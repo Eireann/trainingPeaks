@@ -39,7 +39,8 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
         function serializeData(model)
         {
-            var lapsStats = new LapsStats({ model: model });
+            // test as metric user
+            var lapsStats = new LapsStats({ model: model, userUnits: 2 });
 
             return {
                 headerNames: lapsStats.getHeaders(),
@@ -51,19 +52,24 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
         {
             describe("with all channels enabled", function()
             {
+                var serializedData;
                 var requiredAttrs = 
                     [
                         "Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Avg Heart Rate",
                         "Max Heart Rate", "Avg Pace", "Cad", "Calories"
                     ],
                     model = buildWorkoutModel(allDataChannels),
-                    serializedData = serializeData(model),
                     checkAttr = function(attr) {
                         it("Should include " + attr + " in the serialized data", function()
                         {
                             expect(_.contains(serializedData.headerNames, attr)).to.be.ok;
                         });
                     };
+
+                beforeEach(function()
+                {
+                    serializedData = serializeData(model);
+                });
 
                 _.each(requiredAttrs, function(attr)
                 {
@@ -145,8 +151,13 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
             describe("with heart rate channel disabled", function()
             {
-                var model = buildWorkoutModel(_.without(allDataChannels, "HeartRate")),
+                var serializedData, model;
+
+                beforeEach(function()
+                {
+                    model = buildWorkoutModel(_.without(allDataChannels, "HeartRate"));
                     serializedData = serializeData(model);
+                });
 
                 it("Should serialize six rows of data", function()
                 {
@@ -166,8 +177,13 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
             describe("with power channel disabled", function()
             {
-                var model = buildWorkoutModel(_.without(allDataChannels, "Power")),
+                var model, serializedData;
+
+                beforeEach(function()
+                {
+                    model = buildWorkoutModel(_.without(allDataChannels, "Power"));
                     serializedData = serializeData(model);
+                });
 
                 it("Should serialize six rows of data", function()
                 {
@@ -192,9 +208,9 @@ function(_, TP, LapsStats, WorkoutModel, detailDataLapsStats, testHelpers)
 
         describe("ordering data", function()
         {
-            var model = buildWorkoutModel(allDataChannels),
-                serializedData = serializeData(model),
-                checkOrder = function(attr, i, tssType, serializedData) {
+            var model = buildWorkoutModel(allDataChannels);
+            var serializedData = serializeData(model);
+            var checkOrder = function(attr, i, tssType, serializedData) {
                     it("Should include the " + attr + " field in location " + i + " for " + tssType + " layout", function()
                     {
                         expect(serializedData.headerNames[i]).to.equal(attr);

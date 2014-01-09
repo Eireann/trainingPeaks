@@ -61,7 +61,7 @@ function()
         {
             id: 6,
             label: "Sleep Hours",
-            units: "hours",
+            units: "hoursAsDecimal",
             min: 0,
             max: 24
         },
@@ -416,21 +416,21 @@ function()
         {
             id: 46,
             label: "Time in Deep Sleep",
-            units: "hours",
+            units: "hoursAsDecimal",
             min: 0,
             max: 24
         },
         {
             id: 47,
             label: "Time in REM Sleep",
-            units: "hours",
+            units: "hoursAsDecimal",
             min: 0,
             max: 24
         },
         {
             id: 48,
             label: "Time in Light Sleep",
-            units: "hours",
+            units: "hoursAsDecimal",
             min: 0,
             max: 24
         },
@@ -444,7 +444,7 @@ function()
         {
             id: 50,
             label: "Total Time Awake",
-            units: "hours",
+            units: "hoursAsDecimal",
             min: 0,
             max: 24
         },

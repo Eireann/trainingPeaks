@@ -143,9 +143,10 @@ function(
             var workoutType = this._getWorkoutType();
             var peakUnits = this._getPeakUnits();
 
-            function format(units, value)
+            function format(units, value, options)
             {
-                return TP.utils.conversion.formatUnitsValue(units, value, { workoutTypeId: workoutType, defaultValue: "--" });
+                var formatOptions = _.defaults({ workoutTypeId: workoutType, defaultValue: "--" }, options);
+                return TP.utils.conversion.formatUnitsValue(units, value, formatOptions);
             }
 
             function process(entry)
@@ -153,10 +154,10 @@ function(
                 return {
                     incomplete: moment(entry.endDate) > moment(),
                     startDate: entry.startDate,
-                    duration: format("duration", entry.totalDuration),
+                    duration: format("duration", entry.totalDuration, { max: 999999 }),
                     distance: format("distance", entry.totalDistance),
-                    tss: format("tss", entry.totalTSS),
-                    kj: format("energy", entry.totalKJ),
+                    tss: format("tss", entry.totalTSS, { max: 999999 }),
+                    kj: format("energy", entry.totalKJ, { max: 999999 }),
                     peak01: format(peakUnits, entry.peak01),
                     peak02: format(peakUnits, entry.peak02),
                     peak03: format(peakUnits, entry.peak03),

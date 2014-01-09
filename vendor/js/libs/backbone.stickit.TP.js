@@ -147,7 +147,15 @@
   // If the given `fn` is a string, then view[fn] is called, otherwise it is
   // a function that should be executed.
   var applyViewFn = function(view, fn) {
-    if (fn) return (_.isString(fn) ? view[fn] : fn).apply(view, _.toArray(arguments).slice(2));
+    if (fn) {
+      var viewFn = (_.isString(fn) ? view[fn] : fn);
+
+      if(!_.isFunction(viewFn))
+      {
+        throw new Error("Invalid view function for stickit: " + fn);
+      }
+      return viewFn.apply(view, _.toArray(arguments).slice(2));
+    }
   };
 
   var getSelectedOption = function($select) { return $select.find('option').not(function(){ return !this.selected; }); };

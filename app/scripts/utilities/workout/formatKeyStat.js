@@ -28,15 +28,15 @@ function(conversion, getKeyStatField)
         
         if (keyStatField === "distance" || keyStatField === "distancePlanned")
         {
-            return conversion.formatDistance(value, { workoutTypeValueId: workoutAttributes.workoutTypeValueId });
+            return conversion.formatUnitsValue("distance", value, { workoutTypeValueId: workoutAttributes.workoutTypeValueId });
         }
         else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
-            return conversion.formatDuration(value);
+            return conversion.formatUnitsValue("duration", value);
         }
         else if (keyStatField === "tssActual" || keyStatField === "tssPlanned")
         {
-            return conversion.formatTSS(value);
+            return conversion.formatUnitsValue("tss", value);
         } else
         {
             return "";

@@ -12,11 +12,11 @@
                     <span id="weekSummaryBarChartHoverPlanned" class ="summaryStats">{{formatTime timePlanned false "--:--"}}</span>
                 {{else}}
                     {{#if distancePlanned}}
-                    <span id="weekSummaryBarChartHoverPlanned" class ="summaryStats">{{ conversion "formatDistance" distancePlanned this}}</span>
+                    <span id="weekSummaryBarChartHoverPlanned" class ="summaryStats">{{ formatUnitsValue "distance" distancePlanned this}}</span>
                     <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
                     {{else}}
                         {{#if displayTSS}}
-                        <span id="weekSummaryBarChartHoverPlanned" class="summaryStats">{{conversion "formatTSS" tssPlanned this "0"}}
+                        <span id="weekSummaryBarChartHoverPlanned" class="summaryStats">{{formatUnitsValue "tss" tssPlanned this "0"}}
                         {{/if}}
                     {{/if}}
                 {{/if}}
@@ -27,11 +27,11 @@
                     <span id="weekSummaryBarChartHoverCompleted" class ="summaryStats">{{formatTime timeCompleted false "--:--"}}</span>
                 {{else}}
                     {{#if distanceCompleted}}
-                    <span id="weekSummaryBarChartHoverCompleted" class ="summaryStats">{{ conversion "formatDistance" distanceCompleted this}}</span>
+                    <span id="weekSummaryBarChartHoverCompleted" class ="summaryStats">{{ formatUnitsValue "distance" distanceCompleted this}}</span>
                     <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
                     {{else}}
                         {{#if displayTSS}}
-                        <span id="weekSummaryBarChartHoverCompleted" class="summaryStats">{{conversion "formatTSS" tssCompleted this "0"}}
+                        <span id="weekSummaryBarChartHoverCompleted" class="summaryStats">{{ formatUnitsValue "tss" tssCompleted this "0"}}
                         {{/if}}
                     {{/if}}
                 {{/if}}

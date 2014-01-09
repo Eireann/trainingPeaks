@@ -63,7 +63,7 @@ function(
             var tips = [];
             tips.push({ label: TP.utils.datetime.format(weekStartDate) + " - " + TP.utils.datetime.format(weekEndDate) });
             tips.push({ label: "Zone " + zoneNumber });
-            tips.push({ label: "Time", value: TP.utils.conversion.formatDuration(zoneMinutes / 60) });
+            tips.push({ label: "Time", value: TP.utils.conversion.formatUnitsValue("minutes", zoneMinutes) });
             return tips;
         },
 
@@ -237,7 +237,7 @@ function(
                 min: 0,
                 tickFormatter: function(zoneMinutes)
                 {
-                    return TP.utils.conversion.formatMinutes(zoneMinutes, { defaultValue: "0:00" });
+                    return TP.utils.conversion.formatUnitsValue("minutes", zoneMinutes, { defaultValue: "0:00" });
                 }
             };
             
