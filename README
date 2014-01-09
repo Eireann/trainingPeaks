@@ -8,7 +8,7 @@ To proxy the endpoint I am using Node.JS express framework. for the code example
 
 Steps:
 install node.js
-checkout code
+checkout code - git clone https://github.com/Eireann/trainingPeaks.git
 cd into trainingPeaks
 run npm install
 
