@@ -172,7 +172,6 @@ $(function(){
 		},
 	
 		render: function() {
-			console.log("render AveragePowerView");
 			console.dir(this.model);
 			$(this.el).html(_.template(this.template, this.model));
 			

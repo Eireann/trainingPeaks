@@ -40,7 +40,6 @@ $(function(){
 			    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(this.map);
 			
-			console.log(this.collection.latLonPairs);
 			// create a red polyline from an arrays of LatLng points
 			var polyline = L.polyline(this.collection.latLonPairs, {color: 'red'}).addTo(this.map);
 
