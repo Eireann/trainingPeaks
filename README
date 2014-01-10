@@ -32,7 +32,7 @@ I used feet for Distance (and converted the display to miles based on this assum
 
 DRAWBACKS/ IMPROVEMENTS
 
-Since time was limited, there are many thing that could be improved upon.
+Since time was limited, there are many things that could be improved upon.
 
 1. file management - as I have very few files, they are all located under the src directory.  In a larger application, appropriate file structures should be used to keep the code organized.
 2. Require.JS - rather than simply importing everything into the index.html file, time permitting, it would have been cleaner to add in require.JS to help manage dependencies
