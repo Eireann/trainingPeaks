@@ -88,6 +88,7 @@ function(
             describe("For an athlete user", function()
             {
 
+                var $body, $mainRegion;
                 beforeEach(function() {
                     testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
                     $mainRegion = testHelpers.theApp.mainRegion.$el;
@@ -106,7 +107,7 @@ function(
 
             describe("For a coach user", function()
             {
-
+                var $body, $mainRegion;
                 beforeEach(function() {
                     testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
                     $mainRegion = testHelpers.theApp.mainRegion.$el;
