@@ -22,6 +22,7 @@ $(function(){
 	    	var val = $(Event.target).attr("value");
 	    	this.createChart(val)
 	    },
+	    
 	    createChart: function(val) {
 	    	var self = this;
 	    	
@@ -128,24 +129,15 @@ $(function(){
 			this.detailsView.render();
 			
 	    	var powerModel = {
-	    			"a1minAvePower" : this.collection.getAveragePower(1),
-	    			"a5minAvePower" : this.collection.getAveragePower(5),
-	    			"a10minAvePower" : this.collection.getAveragePower(10),
-	    			"a15minAvePower" : this.collection.getAveragePower(15),
-	    			"a20minAvePower" : this.collection.getAveragePower(20)
+	    		"a1minAvePower" : this.collection.getAvePowerImproved(1).toPrecision(5),
+	    		"a5minAvePower" : this.collection.getAvePowerImproved(5).toPrecision(5),
+	    		"a10minAvePower" : this.collection.getAvePowerImproved(10).toPrecision(5),
+	    		"a15minAvePower" : this.collection.getAvePowerImproved(15).toPrecision(5),
+	    		"a20minAvePower" : this.collection.getAvePowerImproved(20)
 	    	};
-	    	// Not creating view for this instance because I couldn't validate making multiple views
-	    	// and a model for 6 lines of code.  but this could be models and views
-	    	//$("#averagePowerCalculation").empty();
-	    /*	$("#averagePowerCalculation").append($("<div/>").text("1 min: " + this.collection.getAveragePower(1)));
-	    	$("#averagePowerCalculation").append($("<div/>").text("5 min: " + this.collection.getAveragePower(5)));
-	    	$("#averagePowerCalculation").append($("<div/>").text("10 min: " + this.collection.getAveragePower(10)));
-	    	$("#averagePowerCalculation").append($("<div/>").text("15 min: " + this.collection.getAveragePower(15)));
-	    	$("#averagePowerCalculation").append($("<div/>").text("20 min: " + this.collection.getAveragePower(20)));
-	   */ 	this.avePower = new AveragePowerView({el: "#averagePowerCalculation", model: powerModel});
+	    	
+	    	this.avePower = new AveragePowerView({el: "#averagePowerCalculation", model: powerModel});
 	    	this.avePower.render();
-	    	
-	    	
 	    	
 	    	return this;	
 	    }
@@ -172,7 +164,6 @@ $(function(){
 		},
 	
 		render: function() {
-			console.dir(this.model);
 			$(this.el).html(_.template(this.template, this.model));
 			
 			return this;

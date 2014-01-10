@@ -1,0 +1,18 @@
+<script type="text/template" id="activity-details-template">
+
+	<h2><%= Title%></h2>
+	<div><%= Person.Name%></div>
+    <table class="workoutSummaryTable">
+        <tr>
+            <td>Activity: <%= Activity%></td>
+            <td>Distance: <%= dataUtils.convertFtToMiles(Distance).toPrecision(5)%></td>
+            <td>Duration: <%= Duration.toPrecision(5)%></td>
+        </tr>
+        <tr>
+            <td>Date: <%= dataUtils.getDateFromMillis(WorkoutDate)%></td>
+            <td>Start time: <%= dataUtils.millisToTime(StartTime)%></td>
+            <td>Climbed: <%= Climbed.toPrecision(5)%></td>
+        </tr>
+    </table>
+    
+</script>

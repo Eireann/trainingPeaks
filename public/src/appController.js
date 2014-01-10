@@ -7,13 +7,18 @@ $(function(){
 			
 			this.listenTo(this.gpsDataModel, "sync", function() {
 				self.samples = new SampleCollection(self.gpsDataModel.get("FlatSamples").Samples);
-				
 				self.samples.precomputePerformanceData();
+				
+				var summaryModel = new WorkoutSummaryModel(self.gpsDataModel.get("WorkoutSummary"));
+				
+				var activityDetails = new ActivityDetailsView({
+					el: "#activityDetails", 
+					model: summaryModel});
+				activityDetails.render();
+				
 				var chart = new ChartView({
 					collection: self.samples,
 					el: "#chartView"});
-				
-				
 				chart.render();
 				
 				var mapView = new MapView({
@@ -21,6 +26,7 @@ $(function(){
 					el: "#mapView"});
 				chart.bind("onLatLonDataUpdate", mapView.updateLatLonMarkerHandler);
 				mapView.render();
+				
 			});
 			
 			this.gpsDataModel.fetch();

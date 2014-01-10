@@ -60,7 +60,7 @@ $(function(){
 			});
 		},
 		
-		// takes in a time increment in minutes and finds the best average power over that increment
+		// Simple implementation. Lacking in that it requires a nested loop and summing of the array each iteration
 	    getAveragePower: function (timeIncrement) {
 	    	
 	    	var dataArray = this.models;
@@ -97,8 +97,48 @@ $(function(){
 		    	}
 	    		incrementlen = right - left;
 	    	}
-	    	
+
 	    	return best / incrementlen;
+	    },
+	    
+	    // Improved version of the ave power function
+	    getAvePowerImproved: function (timeIncrement) {
+	    	var dataArray = this.models;
+            
+            var best = 0;
+            var incrementlen = 0;
+            var left = 0;
+           
+            // making an assumption of items being recorded every second
+            var right = dataArray.length > (timeIncrement * 60) ? (timeIncrement * 60) : dataArray.length;
+           
+            var sum = 0
+           
+            var firstItemAmt = 0;          
+          
+            var subArray = dataArray.slice(left, right);
+            firstItemAmt = subArray[0].get("Power");
+
+            // do an initial sumation
+            for(var i = 0; i < subArray.length; i++) {
+                sum += subArray[i].get("Power");
+            }
+
+            best = sum;
+               
+            // step through and add one to the end and subract the previous first item
+            for(right; right < dataArray.length; right++) {
+
+            	sum = sum + dataArray[right].get("Power") - firstItemAmt;
+            	if (sum > best) {
+            		best = sum;
+                }
+                left ++;
+                firstItemAmt = dataArray[left].get("Power");
+            }
+            incrementlen = right - left;
+           
+            return best / incrementlen;
 	    }
 	});
 });

@@ -27,6 +27,8 @@ I used feet for Distance (and converted the display to miles based on this assum
 
 3. Hours - I converted all display times from milliseconds to hours.  While this should usually be fine, if someone is logging workouts under an hour, it would be a nice improvement to display the time in minutes rather than hours.
 
+4. TimeZone and formatting - I formatted dates and times in US format. Greater care would need to be taken to ensure proper formatting based on locale
+
 
 DRAWBACKS/ IMPROVEMENTS
 
@@ -36,6 +38,8 @@ Since time was limited, there are many thing that could be improved upon.
 2. Require.JS - rather than simply importing everything into the index.html file, time permitting, it would have been cleaner to add in require.JS to help manage dependencies
 2. Marionette - For this test I did not use Marionette, but it could be a nice improvement to reduce boilerplate code.
 3. Assumptions - the Assumptions made above make the test work, but a production application should be a bit more flexible and take into account changes in areas such as units, time interval etc.
+4. Stopped - for average power, it might be a nice feature if the algorithm was smart enough to know if the person was stopped and toss those data points to get an average power while moving.
+	The current Algorithm I have does not take this into account.
 
-
+Questions: The date time being returned in the header as milliseconds appears to correlate to a date in 1970.  This seemed odd, but perhaps the watch wasn't setup?
 

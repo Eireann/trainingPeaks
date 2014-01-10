@@ -14,6 +14,18 @@ window.dataUtils = {
 	        seconds = (seconds < 10) ? "0" + seconds : seconds;
 
 	        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+	    },
+	    
+	    getDateFromMillis: function (dateInMillis) {
+	    	var date = new Date(dateInMillis);
+	    	
+	    	return (date.getMonth() + 1) + "/" + (date.getDay() + 1) + "/" + date.getFullYear();
+	    },
+	    
+	    getDateTimeFromMillis: function (dateInMillis) {
+	    	var date = new Date(dateInMillis);
+	    	
+	    	return (date.getMonth() + 1) + "/" + (date.getDay() + 1) + "/" + date.getFullYear() + 
+	    		" " + this.millisToTime(dateInMillis);
 	    }
-
 };

@@ -11,8 +11,10 @@
 	<script src="./lib/underscore.js"></script>
  	<script src="./lib/backbone.js"></script>
  	<script src="./src/utils.js"></script>
+ 	<script src="./src/headerView.js"></script>
  	<script src="./src/chartView.js"></script>
  	<script src="./src/mapView.js"></script>
+ 	<script src="./src/workoutSummaryModel.js"></script>
  	<script src="./src/gpsDataModel.js"></script>
  	<script src="./src/appController.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
@@ -23,7 +25,7 @@
 
 <body>
  	<div id="appMain">
- 		<h2>Performance Data</h2>
+ 		<div id="activityDetails"></div>
   		<div id="mapView"></div>
   		<div id="chartView">
   		</div>

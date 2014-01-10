@@ -50,3 +50,13 @@ a {
 #chartView {
 	padding: 10px 0px;
 }
+
+.workoutSummaryTable {
+	width: 600px;
+	padding-bottom: 20px;
+}
+
+.workoutSummaryTable tr td {
+	width: 200px;
+	height: 30px;
+}
