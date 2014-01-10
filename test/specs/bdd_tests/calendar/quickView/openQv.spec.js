@@ -96,7 +96,6 @@ function(
                     testHelpers.theApp.router.navigate("calendar", true);
                     $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
                     $body.find("[data-workoutid=3]").trigger("click");
-                    expect($body.find(".workoutQuickView").length).to.equal(1);
                 });
 
                 it("Should display sharing options", function()
@@ -115,7 +114,6 @@ function(
                     testHelpers.theApp.router.navigate("calendar", true);
                     $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
                     $body.find("[data-workoutid=3]").trigger("click");
-                    expect($body.find(".workoutQuickView").length).to.equal(1);
                 });
 
                 it("Should not display sharing options", function()
