@@ -83,6 +83,47 @@ function(
             });
         });
 
+        describe("Sharing workouts", function()
+        {
+            describe("For an athlete user", function()
+            {
+
+                beforeEach(function() {
+                    testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+                    $mainRegion = testHelpers.theApp.mainRegion.$el;
+                    $body = testHelpers.theApp.getBodyElement();
+                    testHelpers.theApp.router.navigate("calendar", true);
+                    $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
+                    $body.find("[data-workoutid=3]").trigger("click");
+                    expect($body.find(".workoutQuickView").length).to.equal(1);
+                });
+
+                it("Should display sharing options", function()
+                {
+                    expect($body.find(".workoutQuickView .share:not(.hide)").length).to.eql(2);
+                });
+            });
+
+            describe("For a coach user", function()
+            {
+
+                beforeEach(function() {
+                    testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                    $mainRegion = testHelpers.theApp.mainRegion.$el;
+                    $body = testHelpers.theApp.getBodyElement();
+                    testHelpers.theApp.router.navigate("calendar", true);
+                    $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
+                    $body.find("[data-workoutid=3]").trigger("click");
+                    expect($body.find(".workoutQuickView").length).to.equal(1);
+                });
+
+                it("Should not display sharing options", function()
+                {
+                    expect($body.find(".workoutQuickView .share:not(.hide)").length).to.eql(0);
+                });
+            });
+        });
+
 
         describe("For an existing workout", function()
         {
