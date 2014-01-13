@@ -7,13 +7,14 @@
 
     background: no-repeat right 0;
     @extend %spriteSelectBoxBG;
-
-    min-height: 22px;
-    padding-left: 5px;
-    line-height: 1;
+   
     // make sure there is always room for the dropdown arrow
-    padding-right: 30px;
-    margin: 0px;
+    line-height: 16px;
+    height: 22px;
+    // min-height: 22px;
+    margin: 0;
+
+    padding: 1px 30px 2px 5px;
 
     outline: none;
     border: 1px solid $TPGrey9;
@@ -39,6 +40,7 @@
     text-overflow: '';
 
     &::-ms-expand { display: none; }
+
 }
 
 select:-moz-focusring {
