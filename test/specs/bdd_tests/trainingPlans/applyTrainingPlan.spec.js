@@ -1,10 +1,12 @@
 define(
 [
+    "underscore",
     "moment",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs"
 ],
 function(
+    _,
     moment,
     testHelpers,
     xhrData
@@ -75,6 +77,24 @@ function(
                 testHelpers.resolveRequest("GET", "plans/v1/plans/3/details$", xhrData.trainingPlanDetails);
                 expect($body.find(".trainingPlanDetails").text()).to.contain("Some Guy");
                 expect($body.find(".trainingPlanDetails").text()).to.contain("Description of a training plan");
+            });
+
+            it("Should not have an apply button if it has no workouts", function()
+            {
+                var planDetails = _.clone(xhrData.trainingPlanDetails);
+                planDetails.workoutCount = 0;
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
+                testHelpers.resolveRequest("GET", "plans/v1/plans/3/details$", planDetails);
+                expect($body.find(".trainingPlanDetails button.apply").length).to.equal(0);
+            });
+
+            it("Should have an apply button if it was not already applied", function()
+            {
+                var planDetails = _.clone(xhrData.trainingPlanDetails);
+                planDetails.planApplications = null;
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
+                testHelpers.resolveRequest("GET", "plans/v1/plans/1/details$", planDetails);
+                expect($body.find(".trainingPlanDetails button.apply").length).to.equal(1);
             });
 
             it("Should have an apply button if it was already applied", function()
