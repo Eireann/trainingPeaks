@@ -147,6 +147,36 @@ function(
             attributes: { athlete: athlete } // current app athlete or other athlete object
             options: none
             */
+            ShareWorkout: Feature({ }, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.athlete)
+                {
+                    throw new Error("ShareWorkouts requires an athlete attribute");
+                }
+
+                // a coach cannot share 
+                if(user.getAccountSettings().get("isCoach"))
+                {
+                    return false;
+                }
+
+                // user can only share their own workouts 
+                var currentUserId = user.get("userId");
+                var athleteId = getModelAttributeOrObjectProperty(attributes.athlete, "athleteId");
+                if(currentUserId !== athleteId)
+                {
+                    return false;
+                }
+
+
+                return true;
+
+            }),
+
+            /*
+            attributes: { athlete: athlete } // current app athlete or other athlete object
+            options: none
+            */
             PlanForAthlete: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.athlete)

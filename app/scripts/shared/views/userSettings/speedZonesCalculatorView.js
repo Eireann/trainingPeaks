@@ -133,7 +133,7 @@ function(
         {
             return { 
                 paceOrSpeed: _.bind(this.parsePaceOrSpeed, this),
-                duration: TP.utils.conversion.parseDuration
+                duration: function(value, options) { return TP.utils.conversion.parseUnitsValue("duration", value, options);}
             };
         },
 
@@ -141,33 +141,18 @@ function(
         {
             return { 
                 paceOrSpeed: _.bind(this.formatPaceOrSpeed, this),
-                duration: TP.utils.conversion.formatDuration
+                duration: function(value, options) { return TP.utils.conversion.formatUnitsValue("duration", value, options);}
             };
         },
 
         formatPaceOrSpeed: function(value, options)
         {
-            options.defaultValue = "";
-            if(this.model.get("paceOrSpeed") === "speed")
-            {
-                return TP.utils.conversion.formatSpeed(value, options);
-            }
-            else
-            {
-                return TP.utils.conversion.formatPace(value, options);
-            }
+            return TP.utils.conversion.formatUnitsValue(this.model.get("paceOrSpeed"), value, options);
         },
 
         parsePaceOrSpeed: function(value, options)
         {
-            if(this.model.get("paceOrSpeed") === "speed")
-            {
-                return TP.utils.conversion.parseSpeed(value, options);
-            }
-            else
-            {
-                return TP.utils.conversion.parsePace(value, options);
-            }
+            return TP.utils.conversion.parseUnitsValue(this.model.get("paceOrSpeed"), value, options);
         },
 
         _applySourceValuesToModel: function()

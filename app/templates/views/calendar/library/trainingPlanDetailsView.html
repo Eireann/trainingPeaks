@@ -21,21 +21,21 @@
             {{#everyOther @index 2}}
                 <div class="plannedWorkoutTypes">
                     <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
-                    <span class="small duration">{{#if duration}}{{ conversion "formatHours" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
-                    <span class="small distance">{{#if distance}}{{ conversion "formatDistance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
+                    <span class="small duration">{{#if duration}}{{ formatUnitsValue "durationAsInteger" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
+                    <span class="small distance">{{#if distance}}{{ formatUnitsValue "distance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
                 </div>
             {{else}}
                 <div class="plannedWorkoutTypes highlightRow">
                     <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
-                    <span class="small duration">{{#if duration}}{{ conversion "formatHours" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
-                    <span class="small distance">{{#if distance}}{{ conversion "formatDistance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
+                    <span class="small duration">{{#if duration}}{{ formatUnitsValue "durationAsInteger" duration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
+                    <span class="small distance">{{#if distance}}{{ formatUnitsValue "distance" distance this "NA"}} {{ getUnitsLabel "distance" workoutTypeId this }}/wk{{ else }}NA{{/if}}</span>
                 </div>
             {{/everyOther}}
         {{/each}}
         <div class="planTotals">
             <span class="small workoutType">{{$ "Total"}}</span>
-            <span class="small duration">{{#if totalDuration}}{{ conversion "formatHours" totalDuration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
-            <span class="small distance">{{#if totalDistance}}{{ conversion "formatDistance" totalDistance this "NA"}} {{ getUnitsLabel "distance"}}/wk{{ else }}NA{{/if}}</span>
+            <span class="small duration">{{#if totalDuration}}{{ formatUnitsValue "durationAsInteger" totalDuration this "NA" }} hrs/wk{{ else }}NA{{/if}}</span>
+            <span class="small distance">{{#if totalDistance}}{{ formatUnitsValue "distance" totalDistance this "NA"}} {{ getUnitsLabel "distance"}}/wk{{ else }}NA{{/if}}</span>
         </div>
     </div>
     {{/if}}

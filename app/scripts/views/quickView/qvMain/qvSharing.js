@@ -29,27 +29,36 @@ function (
             "click .linkIcon": "onLinkIconClicked"
         },
 
-        initializeSharing: function()
+        initializeSharing: function(options)
         {
             _.extend(this.events, this.sharingEvents);
             this.on("render", this.sharingOnRender, this);
+
+            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
         },
 
         sharingOnRender: function()
         {
-            if (this.model.get("details"))
-                this.resolveShortUrl();
-
-            this.enableOrDisableSharing();
-
-            this.model.on("change", this.enableOrDisableSharing, this);
-            this.model.get("details").on("change", this.onWorkoutDetailsChanged, this);
-
-            this.on("close", function()
+            if(this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ShareWorkout, { athlete: { athleteId: this.model.get("athleteId") }}))
             {
-                this.model.off("change", this.enableOrDisableSharing, this);
-                this.model.get("details").off("change", this.onWorkoutDetailsChanged, this);
-            }, this);
+                if (this.model.get("details"))
+                    this.resolveShortUrl();
+
+                this.enableOrDisableSharing();
+
+                this.model.on("change", this.enableOrDisableSharing, this);
+                this.model.get("details").on("change", this.onWorkoutDetailsChanged, this);
+
+                this.on("close", function()
+                {
+                    this.model.off("change", this.enableOrDisableSharing, this);
+                    this.model.get("details").off("change", this.onWorkoutDetailsChanged, this);
+                }, this);
+            }
+            else
+            {
+                this.$(".share").addClass("hide");
+            }
         },
 
         onPublicCheckboxClicked: function(e)
@@ -79,7 +88,7 @@ function (
 
             if (this.model.get("distance"))
             {
-                textArray.push(this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
+                textArray.push(this.formatUnitsValue("distance", this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
             }
 
             if (this.model.get("workoutTypeValueId"))
@@ -94,12 +103,12 @@ function (
 
             if(this.model.get("totalTime"))
             {
-                textArray.push("in " + this.formatDuration(this.model.get("totalTime")));
+                textArray.push("in " + this.formatUnitsValue("duration", this.model.get("totalTime")));
             }
 
             if(this.model.get("tssActual") && this.model.get("tssActual") !== 0)
             {
-                textArray.push("with " + this.formatTSS(this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
+                textArray.push("with " + this.formatUnitsValue("tss", this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
             }
             var text = textArray.join(" ");
             text += ".";

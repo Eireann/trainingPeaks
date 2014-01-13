@@ -83,6 +83,46 @@ function(
             });
         });
 
+        describe("Sharing workouts", function()
+        {
+            describe("For an athlete user", function()
+            {
+
+                var $body, $mainRegion;
+                beforeEach(function() {
+                    testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+                    $mainRegion = testHelpers.theApp.mainRegion.$el;
+                    $body = testHelpers.theApp.getBodyElement();
+                    testHelpers.theApp.router.navigate("calendar", true);
+                    $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
+                    $body.find("[data-workoutid=3]").trigger("click");
+                });
+
+                it("Should display sharing options", function()
+                {
+                    expect($body.find(".workoutQuickView .share:not(.hide)").length).to.eql(2);
+                });
+            });
+
+            describe("For a coach user", function()
+            {
+                var $body, $mainRegion;
+                beforeEach(function() {
+                    testHelpers.startTheAppAndLogin(xhrData.users.supercoach);
+                    $mainRegion = testHelpers.theApp.mainRegion.$el;
+                    $body = testHelpers.theApp.getBodyElement();
+                    testHelpers.theApp.router.navigate("calendar", true);
+                    $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
+                    $body.find("[data-workoutid=3]").trigger("click");
+                });
+
+                it("Should not display sharing options", function()
+                {
+                    expect($body.find(".workoutQuickView .share:not(.hide)").length).to.eql(0);
+                });
+            });
+        });
+
 
         describe("For an existing workout", function()
         {

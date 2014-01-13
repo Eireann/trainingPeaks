@@ -631,17 +631,17 @@ function(
 
             if (this.shouldShowTSS())
             {
-                tips.push({ className: "TSS", label: "TSS", value: TP.utils.conversion.formatTSS(tss, { defaultValue: "--" }) });
+                tips.push({ className: "TSS", label: "TSS", value: TP.utils.conversion.formatUnitsValue("tss", tss, { defaultValue: "--" }) });
             }
 
             if (this.shouldShowIF())
             {
-                tips.push({ className: "IF", label: "Intensity Factor", value: TP.utils.conversion.formatIF(intensity, { defaultValue: "--" }) });
+                tips.push({ className: "IF", label: "Intensity Factor", value: TP.utils.conversion.formatUnitsValue("if", intensity, { defaultValue: "--" }) });
             }
 
-            tips.push({ className: "ATL", label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(atl, { defaultValue: "--" }) });
-            tips.push({ className: "CTL", label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(ctl, { defaultValue: "--" }) });
-            tips.push({ className: "TSB", label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(tsb, { defaultValue: "--" }) });
+            tips.push({ className: "ATL", label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatUnitsValue("tss", atl, { defaultValue: "--" }) });
+            tips.push({ className: "CTL", label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatUnitsValue("tss", ctl, { defaultValue: "--" }) });
+            tips.push({ className: "TSB", label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatUnitsValue("tsb", tsb, { defaultValue: "--" }) });
             return tips;
         },
 

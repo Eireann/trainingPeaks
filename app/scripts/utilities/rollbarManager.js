@@ -1,9 +1,10 @@
 ﻿/* global _rollbar: false */
 define(
 [
+    "jquery",
     "underscore"
 ],
-function(_)
+function($, _)
 {
 
     var RollbarManager =
@@ -74,27 +75,29 @@ function(_)
                 firstScriptTag.parentNode.insertBefore(rollbarScriptTag, firstScriptTag);
             };
 
-            if(win.addEventListener){
-                win.addEventListener("load", loadRollbarOnLoad, false);
-            }
-            else
-            {
-                win.attachEvent("onload", loadRollbarOnLoad);
-            }
+            $(document).ready(loadRollbarOnLoad);
         },
 
         _addErrorHandlerToWindow: function(win)
         {
             // catch all errors at the window error 
-            win.onerror = function(e,u,l){
-               
+            win.onerror = function(error,url,lineNumber){
+             
+                // if there is no url, or the url is not on trainingpeaks, 
+                // then this error is most likely from an external script or plugin,
+                // so ignore it 
+                if(!url || !/trainingpeaks\.com/.test(url))
+                {
+                    return;
+                }
+
                 // if they were already wrapped, skip 
-                if(/\(rollbared\)/.test(e)) {
+                if(/\(rollbared\)/.test(error)) {
                     return;
                 }
                
                 // push them to rollbar array or rollbar client
-                this._rollbar.push({_t:'uncaught',e:e,u:u,l:l});
+                this._rollbar.push({_t:'uncaught',e:error,u:url,l:lineNumber});
             };
         },
 

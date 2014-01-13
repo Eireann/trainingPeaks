@@ -41,9 +41,12 @@ function(moment, TP, DateTimeFormatter)
 
         describe("mdy", function()
         {
+            var dateTimeFormatter;
             beforeEach(function()
             {
-                dateTimeFormatter.user.set("dateFormat", "mdy");
+                dateTimeFormatter = new DateTimeFormatter({
+                    user: new TP.Model({ dateFormat: "mdy" })
+                });
             });
 
             it("Should format dates as M/D/YYYY by default", function()
@@ -133,9 +136,12 @@ function(moment, TP, DateTimeFormatter)
 
         describe("dmy", function()
         {
+            var dateTimeFormatter;
             beforeEach(function()
             {
-                dateTimeFormatter.user.set("dateFormat", "dmy");
+                dateTimeFormatter = new DateTimeFormatter({
+                    user: new TP.Model({ dateFormat: "dmy" })
+                });
             });
 
             it("Should format dates as D/M/YYYY by default", function()

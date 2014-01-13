@@ -3,19 +3,19 @@ define(
     "testUtils/testHelpers",
     "TP",
     "utilities/conversion/conversion",
-    "utilities/conversion/convertToModelUnits",
     "utilities/datetime/datetime"
 ],
-function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
+function(testHelpers, TP, conversion, dateTimeUtils)
 {
-
-    var describeFormat = function(methodName, testValues)
+    var describeFormatUnits = function(units, testValues, options)
     {
         _.each(testValues, function(testValue)
         {
-            it("conversion." + methodName + "(" + testValue.input + ") Should return " + testValue.output, function()
+            it("conversion.formatUnitsValue(" + units + ", " + testValue.input + ") Should return " + testValue.output, function()
             {
-                expect(conversion[methodName](testValue.input, testValue.options)).to.eql(testValue.output);
+                var formatOptions =  _.defaults({}, testValue.options, options);
+                var formattedValue = conversion.formatUnitsValue(units, testValue.input, formatOptions);
+                expect(formattedValue).to.eql(testValue.output);
             });
         });
 
@@ -23,16 +23,82 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
     describe("Conversion Output Formatting", function()
     {
+        describe("Circumference", function()
+        {
+            describe("Metric", function()
+            {
+                describeFormatUnits("circumference", [
+                    // Out of range - corrected
+                    {
+                        output: "999",
+                        input: 1000 
+                    },
+                    // Out of range - corrected
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    // 1 cm = 1 cm
+                    {
+                        output: "1.00",
+                        input: 1 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        output: "",
+                        input: ""
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+                describeFormatUnits("circumference", [
+                    // Out of range - corrected
+                    {
+                        output: "394",
+                        input: 1000 
+                    },
+                    // Out of range - corrected
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    // 1 cm = 0.393701 inch
+                    {
+                        output: "0.39",
+                        input: 1
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        output: "",
+                        input: ""
+                    }
+                ],
+                {
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+        });
+
         describe("Duration", function()
         {
 
-            beforeEach(function()
-            {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            describeFormat("formatDuration", [
+            describeFormatUnits("duration", [
                 {
                     input: -1,
                     output: "0:00:00"
@@ -56,6 +122,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "0:00:01",
                     input: (0.99 / 3600)
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -64,138 +138,366 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Distance", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("distance", [
+                    {
+                        output: "999999",
+                        input: 999999000 
+                    },
+                    {
+                        output: "999999",
+                        input: 10000000000
+                    },
+                    {
+                        output: "1.00",
+                        input: 1000 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        input: null,
+                        output: "",
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "99.9",
+                        input: 99888.88
+                    },
+                    {
+                        output: "9.99",
+                        input: 9988.89
+                    }
+                ]);
             });
 
-            describeFormat("formatDistance", [
+            describe("English", function()
+            {
+
+                describeFormatUnits("distance", [
+                    {
+                        output: "1.00",
+                        input: 1609
+                    },
+                    {
+                        output: "2.00",
+                        input: 3219
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ],
                 {
-                    output: "999999",
-                    input: convertToModelUnits(999999, "distance")
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English Swim", function()
+            {
+                describeFormatUnits("distance", [
+                    {
+                        output: "1000",
+                        input: 914.4
+                    }
+                ],
                 {
-                    output: "999999",
-                    input: convertToModelUnits(10000000, "distance")
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
+            describe("English Rowing", function()
+            {
+                describeFormatUnits("distance", [
+                    {
+                        output: "1000",
+                        input: 1000 
+                    }
+                ],
                 {
-                    output: "1.00",
-                    input: convertToModelUnits(1, "distance")
-                },
-                {
-                    output: "",
-                    input: 0
-                },
-                {
-                    output: "",
-                    input: -1
-                },
-                {
-                    output: "99.9",
-                    input: convertToModelUnits(99.88888, "distance")
-                },
-                {
-                    output: "9.99",
-                    input: convertToModelUnits(9.988888, "distance")
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 12
+                });
+            });
         });
 
         describe("Speed", function()
         {
-
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("speed", [
+                    {
+                        output: "999",
+                        input: 277.5
+                    },
+                    {
+                        output: "999",
+                        input: 1000
+                    },
+                    {
+                        output: "9.97",
+                        input: 2.77
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ]);
             });
 
-            describeFormat("formatSpeed", [
+            describe("English", function()
+            {
+
+                describeFormatUnits("speed", [
+                    {
+                        output: "999",
+                        input: 446.5
+                    },
+                    {
+                        output: "999",
+                        input: 600
+                    },
+                    {
+                        output: "999",
+                        input: 446.5
+                    },
+                    {
+                        output: "10.0",
+                        input: 4.47 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ],
                 {
-                    output: "999",
-                    input: convertToModelUnits("999", "speed")
-                },
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
+
+            describe("English swim", function()
+            {
+                describeFormatUnits("speed", [
+                    {
+                        output: "999",
+                        input: 913.4 
+                    },
+                    {
+                        output: "999",
+                        input: 999
+                    },
+                    {
+                        output: "999",
+                        input: 1000
+                    },
+                    {
+                        output: "9.97",
+                        input: 0.152 
+                    },
+                    {
+                        output: "0.00",
+                        input: 0
+                    },
+                    {
+                        output: "0.00",
+                        input: -1
+                    },
+                    {
+                        output: "",
+                        input: null
+                    }
+                ],
                 {
-                    output: "999",
-                    input: convertToModelUnits("999.1", "speed")
-                },
-                {
-                    output: "999",
-                    input: convertToModelUnits("1000", "speed")
-                },
-                {
-                    output: "1.00",
-                    input: convertToModelUnits("1", "speed")
-                },
-                {
-                    output: "",
-                    input: 0
-                },
-                {
-                    output: "",
-                    input: 0
-                },
-                {
-                    output: "99.9",
-                    input: convertToModelUnits(99.88888, "speed")
-                },
-                {
-                    output: "9.99",
-                    input: convertToModelUnits(9.988888, "speed")
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+            
         });
 
-        describe("Pace, as metric user", function()
+        describe("Pace", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("pace", [
+                    {
+                        output: "1:39:59",
+                        input: 0.16669444907484582 // 00:99:59
+                    },
+                    {
+                        output: "00:01",
+                        input: 1000 // 00:00:01
+                    },
+                    {
+                        output: "00:01",
+                        input: 2000 // < 00:00:01
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.0027777854938485945 // 99:59:59
+                    },
+                    {
+                        output: "99:59:58",
+                        input: 0.0027777932099622774 // 99:59:58
+                    },
+                    {
+                        output: "01:00",
+                        input: 16.666666666666664 // ::59.99
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.002 // > 99:59:59 
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
             });
 
-            describeFormat("formatPace", [
+            describe("English", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "1:39:59",
+                        input: 0.2682687464770762 // 00:99:59
+                    },
+                    {
+                        output: "00:01",
+                        input: 1609.34421011598 // 00:00:01
+                    },
+                    {
+                        output: "00:01",
+                        input: 2000 // < 00:00:01
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.0044704130014693935 // 99:59:59
+                    },
+                    {
+                        output: "99:59:58",
+                        input: 0.0044704254193522735 // 99:59:58
+                    },
+                    {
+                        output: "01:00",
+                        input: 26.822403501933 // ::59.99
+                    },
+                    {
+                        output: "99:59:59",
+                        input: 0.0001 // > 99:59:59 
+                    },
+                    {
+                        output: "",
+                        input: null
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    output: "1:39:59",
-                    input: conversion.parsePace("00:99:59")
-                },
+                    userUnits: TP.utils.units.constants.English,
+                });
+            });
+
+            describe("English Swim", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "01:31",
+                        input: 1 
+                    },
+                    {
+                        output: "00:18",
+                        input: 5 
+                    }
+                ],
                 {
-                    output: "00:01",
-                    input: conversion.parsePace("00:00:01")
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 1
+                });
+            });
+
+            describe("English Row, should remain in meters", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "01:40",
+                        input: 1 
+                    },
+                    {
+                        output: "00:20",
+                        input: 5 
+                    }
+                ],
                 {
-                    output: "99:59:59",
-                    input: conversion.parsePace("99:59:59")
-                },
+                    userUnits: TP.utils.units.constants.English,
+                    workoutTypeId: 12
+                });
+            });
+
+            describe("Metric Swim", function()
+            {
+                describeFormatUnits("pace", [
+                    {
+                        output: "01:40",
+                        input: 1 
+                    },
+                    {
+                        output: "00:20",
+                        input: 5 
+                    }
+                ],
                 {
-                    output: "99:59:58",
-                    input: conversion.parsePace("99:59:58")
-                },
-                {
-                    output: "99:59:59",
-                    input: conversion.parsePace("99:59:59.99")
-                },
-                {
-                    output: "01:00",
-                    input: conversion.parsePace("::59.99")
-                },
-                {
-                    output: "00:01",
-                    input: conversion.parsePace("::0.99")
-                },
-                {
-                    output: "99:59:59",
-                    input: conversion.parsePace("100:00:00")
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.Metric,
+                    workoutTypeId: 1
+                });
+            });
         });
 
         describe("Calories", function()
         {
 
-            describeFormat("formatCalories", [
+            describeFormatUnits("calories", [
                 {
                     input: "99999",
                     output: "99999"
@@ -214,11 +516,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "12.4",
@@ -233,7 +543,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation Gain", function()
         {
-            describeFormat("formatElevationGain", [
+            describeFormatUnits("elevationGain", [
                 {
                     input: "99999",
                     output: "99999"
@@ -252,11 +562,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "1.23",
@@ -267,7 +585,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation Loss", function()
         {
-            describeFormat("formatElevationLoss", [
+            describeFormatUnits("elevationLoss", [
                 {
                     input: "99999",
                     output: "99999"
@@ -286,11 +604,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: "",
+                },
+                {
+                    input: "",
                     output: ""
                 },
                 {
                     input: "-1",
-                    output: ""
+                    output: "0"
                 },
                 {
                     input: "23.45",
@@ -301,7 +627,93 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Elevation", function()
         {
-            describeFormat("formatElevation", [
+            describe("Metric", function()
+            {
+
+                describeFormatUnits("elevation", [
+                    {
+                        input: "99999",
+                        output: "99999"
+                    },
+                    {
+                        input: "99999.1",
+                        output: "99999"
+                    },
+                    {
+                        input: "100000",
+                        output: "99999"
+                    },
+                    {
+                        input: "1",
+                        output: "1"
+                    },
+                    {
+                        input: "0",
+                        output: "0"
+                    },
+                    {
+                        input: "-1",
+                        output: "-1"
+                    },
+                    {
+                        input: "-15001",
+                        output: "-15000"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
+            });
+
+            describe("English", function()
+            {
+
+                describeFormatUnits("elevation", [
+                    {
+                        input: 35000,
+                        output: "99999"
+                    },
+                    {
+                        input: "10",
+                        output: "33"
+                    },
+                    {
+                        input: "0",
+                        output: "0"
+                    },
+                    {
+                        input: "-1",
+                        output: "-3"
+                    },
+                    {
+                        input: "-10000",
+                        output: "-15000"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
+                {
+                    userUnits: TP.utils.units.constants.English
+                });
+
+            });
+
+        });
+
+        describe("Energy", function()
+        {
+            describeFormatUnits("energy", [
                 {
                     input: "99999",
                     output: "99999"
@@ -324,44 +736,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "-1",
-                    output: "-1"
-                },
-                {
-                    input: "-15001",
-                    output: "-15000"
+                    output: "0"
                 },
                 {
                     input: null,
                     output: ""
-                }
-            ]);
-        });
-
-        describe("Energy", function()
-        {
-            describeFormat("formatEnergy", [
-                {
-                    input: "99999",
-                    output: "99999"
                 },
                 {
-                    input: "99999.1",
-                    output: "99999"
-                },
-                {
-                    input: "100000",
-                    output: "99999"
-                },
-                {
-                    input: "1",
-                    output: "1"
-                },
-                {
-                    input: "0",
-                    output: ""
-                },
-                {
-                    input: "-1",
+                    input: "",
                     output: ""
                 }
             ]);
@@ -369,7 +751,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("TSS", function()
         {
-            describeFormat("formatTSS", [
+            describeFormatUnits("tss", [
                 {
                     input: "9999",
                     output: "9999.0"
@@ -419,7 +801,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("IF", function()
         {
-            describeFormat("formatIF", [
+            describeFormatUnits("if", [
                 {
                     input: "99",
                     output: "99.00"
@@ -442,7 +824,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0",
-                    output: ""
+                    output: "0.00"
                 },
                 {
                     input: "0.234",
@@ -450,6 +832,14 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "-1",
+                    output: "0.00"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -457,7 +847,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Power", function()
         {
-            describeFormat("formatPower", [
+            describeFormatUnits("power", [
                 {
                     input: "9999",
                     output: "9999"
@@ -475,11 +865,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: "1"
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: "0"
                 },
                 {
                     input: "-1",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -487,7 +885,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("HeartRate", function()
         {
-            describeFormat("formatHeartRate", [
+            describeFormatUnits("heartrate", [
                 {
                     input: "255",
                     output: "255"
@@ -509,11 +907,19 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: "1"
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: "0"
                 },
                 {
                     input: "-1",
+                    output: "0"
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
                     output: ""
                 }
             ]);
@@ -521,7 +927,7 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Cadence", function()
         {
-            describeFormat("formatCadence", [
+            describeFormatUnits("cadence", [
                 {
                     input: "255",
                     output: "255"
@@ -539,12 +945,20 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: 1
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: 0
                 },
                 {
-                    output: "",
+                    output: "0",
                     input: -1
+                },
+                {
+                    input: null,
+                    output: ""
+                },
+                {
+                    input: "",
+                    output: ""
                 }
             ]);
         });
@@ -552,186 +966,336 @@ function(testHelpers, TP, conversion, convertToModelUnits, dateTimeUtils)
         describe("Torque", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("torque", [
+                    {
+                        output: "9999",
+                        input: 9999
+                    },
+                    {
+                        input: "9999.1",
+                        output: "9999"
+                    },
+                    {
+                        input: "10000",
+                        output: "9999"
+                    },
+                    {
+                        input: "1",
+                        output: "1.00"
+                    },
+                    {
+                        input: "0",
+                        output: "0.00"
+                    },
+                    {
+                        input: "-1",
+                        output: "0.00"
+                    },
+                    {
+                        input: "1.234",
+                        output: "1.23"
+                    },
+                    {
+                        input: 12.36,
+                        output: "12.4"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
             });
 
-            describeFormat("formatTorque", [
+            describe("English", function()
+            {
+                describeFormatUnits("torque", [
+                    {
+                        output: "885",
+                        input: 100
+                    },
+                    {
+                        input: "123.45",
+                        output: "1093"
+                    },
+                    {
+                        input: "1.2345",
+                        output: "10.9"
+                    },
+                    {
+                        input: "0",
+                        output: "0.00"
+                    },
+                    {
+                        input: "-1",
+                        output: "0.00"
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    output: "9999",
-                    input: 9999
-                },
-                {
-                    input: "9999.1",
-                    output: "9999"
-                },
-                {
-                    input: "10000",
-                    output: "9999"
-                },
-                {
-                    input: "1",
-                    output: "1.00"
-                },
-                {
-                    input: "0",
-                    output: ""
-                },
-                {
-                    input: "-1",
-                    output: ""
-                },
-                {
-                    input: "1.234",
-                    output: "1.23"
-                },
-                {
-                    input: 12.36,
-                    output: "12.4"
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
         describe("Temperature", function()
         {
 
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("temperature", [
+                    {
+                        output: "999",
+                        input: 999
+                    },
+                    {
+                        output: "999",
+                        input: 999.1
+                    },
+                    {
+                        output: "999",
+                        input: 1000
+                    },
+                    {
+                        output: "1",
+                        input: 1
+                    },
+                    {
+                        output: "0",
+                        input: 0
+                    },
+                    {
+                        output: "-1",
+                        input: -1
+                    },
+                    {
+                        output: "-999",
+                        input: -999
+                    },
+                    {
+                        output: "-999",
+                        input: -998.5
+                    },
+                    {
+                        output: "-999",
+                        input: -1000
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ]);
             });
 
-            describeFormat("formatTemperature", [
+            describe("English", function()
+            {
+                describeFormatUnits("temperature", [
+                    {
+                        output: "999",
+                        input: 999
+                    },
+                    {
+                        output: "32",
+                        input: 0
+                    },
+                    {
+                        output: "30",
+                        input: -1
+                    },
+                    {
+                        output: "-58",
+                        input: -50
+                    },
+                    {
+                        output: "-999",
+                        input: -1000
+                    },
+                    {
+                        input: null,
+                        output: ""
+                    },
+                    {
+                        input: "",
+                        output: ""
+                    }
+                ],
                 {
-                    output: "999",
-                    input: 999
-                },
-                {
-                    output: "999",
-                    input: 999.1
-                },
-                {
-                    output: "999",
-                    input: 1000
-                },
-                {
-                    output: "1",
-                    input: 1
-                },
-                {
-                    output: "0",
-                    input: 0
-                },
-                {
-                    output: "-1",
-                    input: -1
-                },
-                {
-                    output: "-999",
-                    input: -999
-                },
-                {
-                    output: "-999",
-                    input: -998.5
-                },
-                {
-                    output: "-999",
-                    input: -1000
-                },
-                {
-                    input: null,
-                    output: ""
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
 
-        describe("Efficiency Factor, for run and walk", function()
+        describe("Efficiency Factor", function()
         {
-
-            beforeEach(function()
+            describe("for run and walk", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+
+                describe("Metric", function()
+                {
+                    describeFormatUnits("efficiencyFactor", [
+                        {
+                            output: "1.00",
+                            input: 1 / 60,
+                            options: { workoutTypeId: 3 }
+                        },
+                        {
+                            output: "4.32",
+                            input: 4.315 / 60,
+                            options: { workoutTypeId: 13 }
+                        },
+                        {
+                            output: "0.00",
+                            input: 0 / 60,
+                            options: { workoutTypeId: 3 }
+                        },
+                        {
+                            output: "3.20",
+                            input: 3.2 / 60,
+                            options: { workoutTypeId: 13 }
+                        }
+                    ]);
+                });
+
+
+                describe("English", function()
+                {
+                    describeFormatUnits("efficiencyFactor", [
+                        {
+                            output: "1.09",
+                            input: 1 / 60,
+                            options: { workoutTypeId: 3 }
+                        },
+                        {
+                            output: "4.72",
+                            input: 4.315 / 60,
+                            options: { workoutTypeId: 13 }
+                        },
+                        {
+                            output: "0.00",
+                            input: 0 / 60,
+                            options: { workoutTypeId: 3 }
+                        },
+                        {
+                            output: "3.50",
+                            input: 3.2 / 60,
+                            options: { workoutTypeId: 13 }
+                        }
+                    ],
+                    {
+                        userUnits: TP.utils.units.constants.English 
+                    });
+                });
+
+                
             });
 
-            describeFormat("formatEfficiencyFactor", [
-                {
-                    output: "1.00",
-                    input: 1 / 60,
-                    options: { workoutTypeId: 3 }
-                },
-                {
-                    output: "4.32",
-                    input: 4.315 / 60,
-                    options: { workoutTypeId: 3 }
-                },
-                {
-                    output: "0.00",
-                    input: 0 / 60,
-                    options: { workoutTypeId: 3 }
-                },
-                {
-                    output: "3.20",
-                    input: 3.2 / 60,
-                    options: { workoutTypeId: 3 }
-                }
-            ]);
-        });
-
-        describe("Efficiency Factor, for other workout types", function()
-        {
-
-            beforeEach(function()
+            describe("for other workout types", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describe("Metric", function()
+                {
+                    describeFormatUnits("efficiencyFactor", [
+                        {
+                            output: "1.00",
+                            input: 1,
+                            options: { workoutTypeId: 1 }
+                        },
+                        {
+                            output: "4.32",
+                            input: 4.315,
+                            options: { workoutTypeId: 1 }
+                        },
+                        {
+                            output: "0.00",
+                            input: 0,
+                            options: { workoutTypeId: 1 }
+                        },
+                        {
+                            output: "3.20",
+                            input: 3.2,
+                            options: { workoutTypeId: 1 }
+                        }
+                    ]);
+                });
+
+                describe("English", function()
+                {
+                    describeFormatUnits("efficiencyFactor", [
+                        {
+                            output: "1.00",
+                            input: 1,
+                            options: { workoutTypeId: 1 }
+                        },
+                        {
+                            output: "4.32",
+                            input: 4.315,
+                            options: { workoutTypeId: 1 }
+                        },
+                        {
+                            output: "0.00",
+                            input: 0,
+                            options: { workoutTypeId: 1 }
+                        },
+                        {
+                            output: "3.20",
+                            input: 3.2,
+                            options: { workoutTypeId: 1 }
+                        }
+                    ],
+                    {
+                        userUnits: TP.utils.units.constants.English
+                    });
+                });
             });
 
-            describeFormat("formatEfficiencyFactor", [
-                {
-                    output: "1.00",
-                    input: 1,
-                    options: { workoutTypeId: 1 }
-                },
-                {
-                    output: "4.32",
-                    input: 4.315,
-                    options: { workoutTypeId: 1 }
-                },
-                {
-                    output: "0.00",
-                    input: 0,
-                    options: { workoutTypeId: 1 }
-                },
-                {
-                    output: "3.20",
-                    input: 3.2,
-                    options: { workoutTypeId: 1 }
-                }
-            ]);
         });
 
         describe("Weight", function()
         {
-
-            beforeEach(function()
+            describe("Metric", function()
             {
-                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
-                testHelpers.theApp.user.set("units", TP.utils.units.constants.Metric);
+                describeFormatUnits("kg", [
+                    {
+                        input: 120.34,
+                        output: "120.3"
+                    },
+                    {
+                        input: 33,
+                        output: "33.0"
+                    }
+                ]);
             });
-
-            describeFormat("formatWeight", [
+            describe("English", function()
+            {
+                describeFormatUnits("kg", [
+                    {
+                        input: 100,
+                        output: "220.5"
+                    },
+                    {
+                        input: 1,
+                        output: "2.2"
+                    }
+                ],
                 {
-                    input: 120.34,
-                    output: "120.3"
-                },
-                {
-                    input: 33,
-                    output: "33.0"
-                }
-            ]);
+                    userUnits: TP.utils.units.constants.English
+                });
+            });
         });
     });
 

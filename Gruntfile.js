@@ -333,6 +333,9 @@ module.exports = function(grunt)
             default:
             {
                 src: [ "test/mocha.html" ],
+                options: {
+                    timeout: 60000,
+                },
             },
 
             coverage:

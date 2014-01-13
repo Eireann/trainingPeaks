@@ -66,7 +66,7 @@ function(_, chartColors, DataParserUtils, conversion)
                         }
                         else if(s.label === "Time")
                         {
-                            return conversion.formatUnitsValue("time", value);
+                            return conversion.formatUnitsValue("milliseconds", value);
                         }
                         return value === 0 && s.label !== "Temperature" ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: workoutTypeValueId}), 10);
                     },

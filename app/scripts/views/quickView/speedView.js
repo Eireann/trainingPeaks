@@ -99,6 +99,26 @@ function(
         formatPeakUnitsLabel: function (value, options)
         {
             return TP.utils.units.getUnitsLabel("speed", this.workoutModel.get("workoutTypeValueId"));
+        },
+
+        formatSpeed: function(value, options)
+        {
+            return this.formatUnitsValue("speed", value, options);
+        },
+
+        parseSpeed: function(value, options)
+        {
+            return this.formatUnitsValue("speed", value, options);
+        },
+        
+        formatDurationFromSeconds: function(value, options)
+        {
+            return this.formatUnitsValue("seconds", value, options);
+        },
+
+        parseDurationAsSeconds: function(value, options)
+        {
+            return this.parseUnitsValue("seconds", value, options);
         }
     };
 

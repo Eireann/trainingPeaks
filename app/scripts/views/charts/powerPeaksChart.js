@@ -37,7 +37,7 @@ function(_, TP, PeaksChartView, chartColors)
                         label: peak.label
                     },
                     {
-                        value: TP.utils.conversion.formatInteger(peak.value) + " Watts"
+                        value: TP.utils.conversion.formatUnitsValue("power", peak.value) + " Watts"
                     }
                 ]
             };
