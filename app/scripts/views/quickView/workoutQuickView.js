@@ -138,7 +138,7 @@ function(
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeExpand();
-            this.initializeSharing();
+            this.initializeSharing(options);
 
             if (!this.model.get("title"))
             {
