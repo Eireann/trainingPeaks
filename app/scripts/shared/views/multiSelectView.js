@@ -14,6 +14,8 @@ function(
     var MultiSelectView = TP.ItemView.extend(
     {
 
+        modelEvents: {},
+        
         template: _.template(""),
 
         events:

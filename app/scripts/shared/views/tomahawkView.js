@@ -14,7 +14,7 @@ function(
 {
     var TomahawkView = TP.ItemView.extend(
     {
-
+        modelEvents: {},
         className: "tomahawk",
         modal: true, 
         closeOnResize: false,

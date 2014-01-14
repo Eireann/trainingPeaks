@@ -19,6 +19,9 @@ function(
 
     var LapsSplitsColumnChartSettingsView = TP.ItemView.extend(
     {
+
+        modelEvents: {},
+        
         template: _.template("<div class='columns'></div><button class='apply'>Apply</button>"),
 
         columnNames: [
