@@ -49,17 +49,17 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
                 {
                     date = model.get("startTime") || model.get("startTimePlanned");
                     time = date ? date.replace(/.*T/, "") : null;
-                    key = [1, time];
+                    key = time;
                 }
                 else if(model instanceof MetricModel)
                 {
                     date = model.get("timeStamp");
                     time = date ? date.replace(/.*T/, "") : null;
-                    key = [2, time];
+                    key = time;
                 }
                 else
                 {
-                    key = [99];
+                    key = null;
                 }
 
                 return key;
