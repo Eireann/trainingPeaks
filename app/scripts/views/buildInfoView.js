@@ -18,7 +18,7 @@ function (TP, buildInfoViewTemplate)
 
         events:
         {
-            click: "toggleInfo"
+            "click .toggle": "toggleInfo"
         },
 
         toggleInfo: function()

@@ -302,6 +302,9 @@
                 // padding:10px;
                 margin-bottom:10px;
                 margin-top:12px;
+                float:left;
+                width: 100%;
+
                 @include clearfix;
                 // @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 
@@ -386,6 +389,11 @@
             color:$TPGrey8;
             line-height:normal;
             margin:0;
+        }
+
+        .zones {
+            float: left;
+            width: 100%;
         }
 
         .heartRateZones, 
