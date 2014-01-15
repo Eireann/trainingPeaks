@@ -367,6 +367,7 @@ define({
 
     "End": "End",
     "EndOnEventDate": "End on Event Date",
+    "DynamicPlan": "Dynamic Plan",
     "on": "on",
     "Unapply": "Unapply",
     "Reapply": "Reapply",
