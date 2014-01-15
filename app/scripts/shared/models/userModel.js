@@ -20,7 +20,7 @@ function(
     AthleteSettingsModel, 
     DashboardSettingsModel,
     ExpandoSettingsModel
-         )
+)
 {
     return TP.APIDeepModel.extend(
     {

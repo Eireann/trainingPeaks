@@ -39,7 +39,7 @@ function (TP, UserSettingsView, accountMenuTemplate)
 
         onUserSettingsClicked: function()
         {
-            var userSettingsView = new UserSettingsView({ model: this.model });
+            var userSettingsView = new UserSettingsView.OverlayBox({ model: this.model });
             userSettingsView.render();
             this.close();
         },

@@ -47,6 +47,7 @@
     label
     {
         cursor: auto;
+        color: $TPGrey3;   
         
         &.clickable
         {
@@ -549,6 +550,21 @@
                 width: 125px;
                 max-width: 125px;
                 text-align: right;
+                color: $TPGrey3;
+            }
+
+            &.wheels,
+            &.crankLength,
+            &.maxDistance {
+                .fieldTitle {
+                   // font-family: $fontFamilyRegularItalic;
+                }
+            }
+
+            &.crankLength {
+                select {
+                    width:311px
+                }
             }
 
             &.deliveryTime1 {
@@ -603,7 +619,7 @@
                         }
                     }
                 }
-
+                
                 &.athleteTypeGender {
                     .selectBox {
                         &.athleteType {
@@ -736,30 +752,141 @@
             }
         }
 
-        &.calendarSync {
-            input[type="text"] {
-                width:632px;
-                height:20px;
+        input[type="text"], textarea {
+            width: 632px;
+            height: 22px;
+            float: left;
+        }
+
+        textarea {
+            height:100px
+        }
+
+
+        // Equipment Tab
+        .equipmentItem {
+            float: left;
+            margin-bottom: 50px;
+
+            &:first-of-type {
+                margin-top: 3px;
+            }
+
+            .equipLeftCol {
                 float: left;
+                width: 436px;
+
+                input[type="text"] {
+                    width: 311px;
+                }
+            }
+
+            .equipRightCol {
+                float: left;
+                width: 311px;
+                margin-left: 10px;
+
+                textarea {
+                    width: 100%;
+                }
+            }
+
+            .removeButton {
+                margin-top: 12px; 
+            }
+
+            .fieldContain {
+                input[type="checkbox"] {
+                    margin-top: 5px;
+                }
+                textarea:last-of-type {
+                    margin-bottom: 12px;
+                }
             }
         }
+
+        .action {
+            float: left;
+        }
+
+        .removeEquipment {
+            margin-right: 0;
+        }
+
+        .defaultRetiredContain {
+            float: left;
+            margin-top: 8px;
+        }
+
+        .totalDistanceContain {
+            display: inline-block;
+            color: $TPGrey3;
+            float: right;
+            margin-top: 1px;
+        }
+
+        .equipmentItem .actualDistance, 
+        .equipmentItem .actualDistanceUnit {
+            font-size: $fontSizeSmall;
+            color: $TPGrey3;
+            font-family: $fontFamilyHeavy;
+        }
+
+        .defaultEquip,
+        .retiredEquip,
+        .totalDist {
+            display: inline-block;
+        }
+
+        .defaultEquip,
+        .retiredEquip {
+            cursor: pointer;
+        }
+
+        .defaultEquip {
+            margin-left: 122px;
+            margin-right: 10px;
+        }
+
+        .bikeList {
+            .notes {
+                position: relative;
+                top: 12px;
+                height: 167px;
+                max-width: 311px;
+                &.retiredItem {
+                    height: 196px;
+                }
+            }
+        }
+
+        .shoeList {
+            .notes {
+                position: relative;
+                top: 12px;
+                height:138px;
+                max-width: 311px;
+                &.retiredItem {
+                    height: 167px;
+                }
+            }
+        }
+
     }
 
     @include clearfix;
 
-    input
-    {
-       //  width: 200px;
-       // float: left;
-       //  margin:0;
-       // height: 20px;
+    input {
+        //  width: 200px;
+        // float: left;
+        //  margin:0;
+        // height: 20px;
         color: $TPGrey3;
     }
 
-    input[type="radio"]
-    {
+    input[type="radio"] {
         // width: auto;
-       //  margin: -4px 0 0 0;
+        //  margin: -4px 0 0 0;
     }
 
     input[type="checkbox"]

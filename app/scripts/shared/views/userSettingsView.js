@@ -9,6 +9,7 @@
     "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
     "shared/views/userSettings/userSettingsZonesView",
+    "shared/views/userSettings/userSettingsEquipmentView",
     "views/userConfirmationView",
     "hbs!templates/views/errors/passwordValidationErrorView",
     "hbs!templates/views/errors/emailValidationErrorView",
@@ -24,6 +25,7 @@ function(
     OverlayBoxView,
     UserSettingsAccountView,
     UserSettingsZonesView,
+    UserSettingsEquipmentView,
     UserConfirmationView,
     passwordValidationErrorTemplate,
     emailValidationErrorTemplate,
@@ -70,6 +72,7 @@ function(
         initialize: function()
         {
             this._copiesOfModels = [];
+            this._copiesOfCollections = [];
             this._initializeNavigation();
             this._initializeFooter();
             this.on("before:switchView", this._applyFormValuesToModels, this);
@@ -102,6 +105,14 @@ function(
                     {
                         model: models.athleteSettings
                     }
+                },
+                {
+                    title: "Equipment",
+                    view: UserSettingsEquipmentView,
+                    options:
+                    {
+                        collection: this._copyCollection(this.model.getAthleteSettings().getEquipment())
+                    }
                 }
             ];
         },
@@ -124,6 +135,31 @@ function(
             }
 
             return copiedModel;
+        },
+
+        _copyCollection: function(originalCollection)
+        {
+            var copiedCollection = new TP.Collection(null, { model: originalCollection.model });
+            copiedCollection.originalCollection = originalCollection;
+            this._copiesOfCollections.push(copiedCollection);
+
+            originalCollection.each(function(model) {
+                var copiedModel = new originalCollection.model(TP.utils.deepClone(model.attributes));
+
+                copiedCollection.push(copiedModel);
+            });
+
+            this.listenTo(copiedCollection, "add remove", _.bind(this._onChange, this));
+
+            return copiedCollection;
+        },
+
+        _applyCopiedCollectionToRealCollection: function()
+        {
+            _.each(this._copiesOfCollections, function(collection)
+            {
+                collection.originalCollection.set(collection.toJSON());
+            });
         },
 
         _listenForFormChanges: function()
@@ -176,6 +212,7 @@ function(
         {
             this._applyFormValuesToModels();
             this._applyCopiedModelsToRealModels();
+            this._applyCopiedCollectionToRealCollection();
 
             if(this._validateForSave())
             {
@@ -183,7 +220,8 @@ function(
                 var self = this;
                 return $.when(
                     this._saveUser(),
-                    this._saveZones()
+                    this._saveZones(),
+                    this._saveEquipment()
                 ).done(
                     function()
                     {
@@ -220,6 +258,11 @@ function(
         _saveZones: function()
         {
             return UserDataSource.saveZones(this.model.getAthleteSettings());
+        },
+
+        _saveEquipment: function()
+        {
+            this.model.getAthleteSettings().getEquipment().save();
         },
 
         _cancel: function()
@@ -270,10 +313,7 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
+    OverlayBoxView.wrap(UserSettingsContentView, { className: "userSettings" });
 
-        className: "userSettings",
-        itemView: UserSettingsContentView
-    });
-
+    return UserSettingsContentView;
 });

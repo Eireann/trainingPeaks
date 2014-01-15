@@ -30,11 +30,13 @@ function(
             if(this._userCanAccessAthlete(athlete))
             {
                 var user = this.user;
-                return athlete.getFetchPromise()
+
+                return $.when(athlete.getFetchPromise(), athlete.getEquipment().getFetchPromise())
                     .done(function()
                     {
                         user.setCurrentAthlete(athlete);
                     });
+
             }
             else
             {
