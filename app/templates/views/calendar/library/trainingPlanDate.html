@@ -2,7 +2,7 @@
     <select id="applyDateType" class="dateOptions"> 
         {{# with details }}
             {{#if isDynamic}}
-                <option value="1">{{$ "Start" }}</option>
+                <option value="1">{{$ "DynamicPlan" }}</option>
             {{else}}
                 {{#ifAll eventPlan eventDate }}
                     {{#ifNot forceDate}}
