@@ -46,13 +46,21 @@ function(
 
         ui: {
             applyDate: "#applyDate",
-            applyDateType: "#applyDateType" 
+            applyDateType: "#applyDateType",
+            datePicker: ".datepicker",
+            dateOptions: ".dateOptions"
         },
 
         onRender: function()
         {
-            this.$(".datepicker").css("position", "relative").css("z-index", this.parentModal.$el.css("z-index"));
-            this.$(".datepicker").datepicker(
+            this.ui.datePicker.css("position", "relative");
+
+            if(this.parentModal)
+            {
+                this.ui.datePicker.css("z-index", this.parentModal.$el.css("z-index"));
+            }
+
+            this.ui.datePicker.datepicker(
             {
                 dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(),
                 firstDay: CalendarUtility.startOfWeek,
@@ -75,18 +83,20 @@ function(
         {
             this.applyStartType = Number(this.ui.applyDateType.val());
             this.updateDateInput();
+
+            this.ui.applyDate.attr("disabled", false);
+            this.ui.dateOptions.attr("disabled", false);
+
             if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
             {
                 this.ui.applyDate.val(TP.utils.datetime.format(this.model.details.get("eventDate")));
                 this.ui.applyDate.attr("disabled", true);
             } 
-            else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && this.model.details.get("isDynamic"))
+
+            if(this.model.details.get("isDynamic") || this.model.details.get("forceDate"))
             {
                 this.ui.applyDate.attr("disabled", true);
-            } 
-            else
-            {
-                this.ui.applyDate.attr("disabled", false);
+                this.ui.dateOptions.attr("disabled", true);
             }
         },
 

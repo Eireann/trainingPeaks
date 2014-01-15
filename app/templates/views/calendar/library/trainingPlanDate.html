@@ -1,19 +1,19 @@
 <div class="selectBoxWrapper">
     <select id="applyDateType" class="dateOptions"> 
         {{# with details }}
-            {{#if eventPlan }}
-                {{#ifNot forceDate}}
-                    {{#if isDynamic}}
-                        <option value="1">{{$ "Start" }}</option>
-                    {{else}}
+            {{#if isDynamic}}
+                <option value="1">{{$ "Start" }}</option>
+            {{else}}
+                {{#ifAll eventPlan eventDate }}
+                    {{#ifNot forceDate}}
                         <option value="1">{{$ "Start" }}</option>
                         <option value="3">{{$ "End" }}</option>
-                    {{/if}}
-                {{/ifNot}}
-                <option value="2">{{$ "EndOnEventDate" }}</option>
-            {{ else }}
-                <option value="1" selected>{{$ "Start" }}</option>
-                <option value="3">{{$ "End" }}</option>
+                    {{/ifNot}}
+                    <option value="2">{{$ "EndOnEventDate" }}</option>
+                {{ else }}
+                    <option value="1" selected>{{$ "Start" }}</option>
+                    <option value="3">{{$ "End" }}</option>
+                {{/ifAll}}
             {{/if}}
         {{/with}}
     </select>
