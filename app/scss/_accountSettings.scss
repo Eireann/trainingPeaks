@@ -42,6 +42,7 @@
     .tabbedLayoutBody {
         width: calc(100% - 142px);
         // padding:0 30px 12px 30px;
+        @include clearfix;
     }
 
     label
@@ -122,6 +123,7 @@
         }
         
         .scrollTarget {
+            @include clearfix;
             padding-top: 28px;
             padding-bottom: 28px;
         }
@@ -138,16 +140,18 @@
         }
 
         .addZoneContain {
-            margin-bottom:10px;
-            margin-left:15px;
+            margin-bottom: 10px;
+            margin-left: 15px;
+            float: left;
+            width: 100%;
 
             div {
-                float:left;
+                float: left;
             }
 
             .addWorkoutType {
-                float:left;
-                margin:0 0 0 10px;
+                float: left;
+                margin: 0 0 0 10px;
             }
 
             select
@@ -196,6 +200,7 @@
             }
 
             .zoneSetFieldset {
+                @include clearfix;
                 padding:20px 15px 23px 15px;
 
                 &.autoCalc {
@@ -221,15 +226,16 @@
                     .power,
                     .speed {
                         form {
-                            float:left;
-                            margin-right:25px;
-                            width:auto;
+                            @include clearfix;
+                            float: left;
+                            margin-right: 25px;
+                            width: auto;
                         }
                     }
 
                     .speed {
-                        float:left;
-                        width:230px;
+                        float: left;
+                        width: 230px;
                         margin-right: 13px;
 
                         form {                            
@@ -300,10 +306,11 @@
             .zoneSetContain {
                 // border:1px solid $TPGrey1;
                 // padding:10px;
-                margin-bottom:10px;
-                margin-top:12px;
-                float:left;
+                margin-bottom: 10px;
+                margin-top: 12px;
+                float: left;
                 width: 100%;
+              
 
                 @include clearfix;
                 // @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
@@ -345,7 +352,7 @@
 
                 .zoneValueContain {
                     float:left;
-                    margin-right:41px;
+                    margin-right:40px;
 
                     .numberInput {
                         width:91px;
@@ -354,8 +361,8 @@
             }
 
             .addZone {
-                margin-top:4px;
-                margin-left:16px;
+                margin-top: 4px;
+                margin-left: 16px;
             }
         }
 
@@ -369,16 +376,20 @@
             padding-bottom:7px;
             line-height:normal;
             border-bottom:1px solid $TPGrey12;
+            float: left;
+            width: 100%;
         }
 
         h3 {
-            font-family:$fontFamilyHeavy;
-            font-weight:normal;
-            font-size:$fontSizeMedium;
-            color:$TPGrey8;
-            line-height:normal;
-            margin:0;
-            margin-bottom:12px;
+            font-family: $fontFamilyHeavy;
+            font-weight: normal;
+            font-size: $fontSizeMedium;
+            color: $TPGrey8;
+            line-height: normal;
+            float: left;
+            width: 100%;
+            margin: 0;
+            margin-bottom: 12px;
         }
 
 
@@ -399,7 +410,10 @@
         .heartRateZones, 
         .powerZones, 
         .speedPaceZones {
-            margin-bottom:20px;
+            @include clearfix;
+            margin-bottom: 20px;
+            float: left;
+
         }
 
         .heartRateZones,
@@ -526,6 +540,7 @@
 
     .userSettingsPersonalSection {
         @include clearfix;
+        float:left;
 
         &.email {
             margin-bottom: 28px;
@@ -1041,8 +1056,9 @@
     overflow: visible !important;
 
     .zoneCalculatorLayoutBody {
-        float:left;
-        width:100%;
+        // float:left;
+        // width:100%;
+        
         div {
             @include clearfix;
         }
@@ -1108,8 +1124,7 @@
         font-size:$fontSizeMedium;
         color:$TPGrey8;
         line-height:normal;
-        margin:0;
-        margin-bottom:12px;
+        margin:0 0 12px 0;
     }
 
     .buttons
@@ -1122,6 +1137,9 @@
         padding:10px;
         margin-bottom:10px;
         margin-top:12px;
+
+        float: left;
+        width: 100%;
 
         label {
             margin-bottom: 10px;
@@ -1158,9 +1176,9 @@
     }
 
     .zones {
-        float:none;
-        margin:0 auto;
-        width:400px;
+        float: none;
+        margin: 0 auto;
+        width: 400px;
 
         .zoneCalculatorResult {
             padding:5px 5px 5px 6px;
@@ -1301,3 +1319,4 @@
         }
     }
 }
+
