@@ -164,12 +164,9 @@ function(
 
         _listenForFormChanges: function()
         {
-            var self = this;
-            this.$el.on("change.userSettingsView", function()
-            {
-                self._onChange();
-            });
-
+            var onChange = _.bind(this._onChange, this);
+            this.$(".tabbedLayoutBody").on("change.userSettingsView", onChange); 
+            this.$(".tabbedLayoutBody").on("click.userSettingsView", "button", onChange);
         },
 
         _onChange: function()
