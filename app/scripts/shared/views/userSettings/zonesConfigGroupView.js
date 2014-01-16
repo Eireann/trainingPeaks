@@ -1,19 +1,23 @@
 define(
 [
     "underscore",
+    "jqueryui/sortable",
     "TP",
     "backbone",
     "shared/utilities/formUtility",
     "shared/views/userSettings/zoneEntryView",
-    "jqueryui/sortable"
+    "views/userConfirmationView",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
     _,
+    jqueryuiSortable,
     TP,
     Backbone,
     FormUtility,
     ZoneEntryView,
-    jqueryuiSortable
+    UserConfirmationView,
+    deleteConfirmationTemplate
 )
 {
 
@@ -141,7 +145,9 @@ function(
 
         _removeWorkoutType: function()
         {
-            this.model.destroy();
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+            deleteConfirmationView.render();
+            this.listenTo(deleteConfirmationView, "userConfirmed",  _.bind(this.model.destroy, this.model));
         },
 
         _refreshView: function()
