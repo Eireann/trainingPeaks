@@ -376,8 +376,7 @@
             padding-bottom:7px;
             line-height:normal;
             border-bottom:1px solid $TPGrey12;
-            float: left;
-            width: 100%;
+    
         }
 
         h3 {
@@ -386,8 +385,6 @@
             font-size: $fontSizeMedium;
             color: $TPGrey8;
             line-height: normal;
-            float: left;
-            width: 100%;
             margin: 0;
             margin-bottom: 12px;
         }
@@ -540,7 +537,8 @@
 
     .userSettingsPersonalSection {
         @include clearfix;
-        float:left;
+        float: left;
+        width: 100%;
 
         &.email {
             margin-bottom: 28px;
