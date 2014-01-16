@@ -5,7 +5,9 @@ define(
     "TP",
     "shared/utilities/formUtility",
     "shared/utilities/calendarUtility",
-    "hbs!shared/templates/userSettings/equipmentItemTemplate"
+    "views/userConfirmationView",
+    "hbs!shared/templates/userSettings/equipmentItemTemplate",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(
     _,
@@ -13,7 +15,9 @@ function(
     TP,
     FormUtility,
     CalendarUtility,
-    equipmentItemTemplate
+    UserConfirmationView,
+    equipmentItemTemplate,
+    deleteConfirmationTemplate
 )
 {
 
@@ -106,7 +110,9 @@ function(
 
         _removeEquipment: function()
         {
-            this.model.trigger("destroy", this.model);
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+            deleteConfirmationView.render();
+            this.listenTo(deleteConfirmationView, "userConfirmed",  _.bind(function(){this.model.trigger("destroy", this.model);}, this));
         }
 
     });
