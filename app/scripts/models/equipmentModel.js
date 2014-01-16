@@ -16,6 +16,14 @@ function (
         idAttribute: "equipmentId",
 
         CrankLengths: [
+            150,
+            152,
+            155,
+            158,
+            160,
+            162.5,
+            165,
+            167.5,
             170,
             172.5,
             175,
