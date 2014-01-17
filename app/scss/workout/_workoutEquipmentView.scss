@@ -1,7 +1,29 @@
 ﻿@import "../globalCSS/tpstylesheet";
 
 .workoutEquipment {
-    select {
-        width: 300px
-    }
+	padding-top: 10px;
+
+	h3 {
+		width: 169px;
+		margin-left: 104px;
+		text-align: center;
+	}
+
+	.equipmentRow {
+
+		label {
+			display: inline-block;
+			width: 100px;
+			text-align: right;
+			padding-top: 5px;
+			padding-right: 5px;
+		}
+
+		@include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
+
+	    select {
+	        width: 169px;
+	        margin-bottom: 6px;
+	    }
+	}
 }

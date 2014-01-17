@@ -1,13 +1,21 @@
 <h3 class="subheadbold">{{$ "Equipment" }}</h3>
-<select name="equipmentBikeId" class="bikeSelector">
-    <option value="">{{$ "Select Bike" }}</option>
-    {{#each bikes}}
-        <option value="{{ equipmentId }}">{{ name }} ({{ model }})</option>
-    {{/each}}
-</select>
-<select name="equipmentShoeId" class="shoeSelector">
-    <option value="">{{$ "Select Shoe" }}</option>
-    {{#each shoes}}
-        <option value="{{ equipmentId }}">{{ name }} ({{ model }})</option>
-    {{/each}}
-</select>
+
+<div class="equipmentRow">
+	<label>Bike</label>
+	<select name="equipmentBikeId" class="bikeSelector">
+	    <option value="">{{$ "Select Bike" }}</option>
+	    {{#each bikes}}
+	        <option value="{{ equipmentId }}">{{ name }} ({{ model }})</option>
+	    {{/each}}
+	</select>
+</div>
+
+<div class="equipmentRow">
+	<label>Shoes</label>
+	<select name="equipmentShoeId" class="shoeSelector">
+	    <option value="">{{$ "Select Shoe" }}</option>
+	    {{#each shoes}}
+	        <option value="{{ equipmentId }}">{{ name }} ({{ model }})</option>
+	    {{/each}}
+	</select>
+</div>
