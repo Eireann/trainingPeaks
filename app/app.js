@@ -28,7 +28,8 @@ define(
     "scripts/plugins/marionette.faderegion",
     "flot/jquery.flot",
     "flot/jquery.flot.crosshair",
-    "flot/jquery.flot.resize"
+    "flot/jquery.flot.resize",
+    "shared/views/initialProfileView"
 ],
 function(
     $,
@@ -59,7 +60,8 @@ function(
     fadeRegion,
     flot,
     flotCrosshair,
-    flotResize
+    flotResize,
+    InitialProfileView
 )
 {
 
@@ -278,6 +280,26 @@ function(
                 {
                     this.featureAuthorizer.showUpgradeMessage();
                 }, this);
+            });
+
+            // add initial profile view
+            this.addInitializer(function()
+            {
+                var self = this;
+
+                this.showInitialProfile = function()
+                {
+                    var view = new InitialProfileView({ model: this.user });
+                    view.render();
+                };
+
+                this.bootPromise.then(function()
+                {
+                    if(self.user.getAccountSettings().get("shouldCompleteProfile"))
+                    {
+                        self.showInitialProfile();
+                    }
+                });
             });
 
             // add current athlete manager
