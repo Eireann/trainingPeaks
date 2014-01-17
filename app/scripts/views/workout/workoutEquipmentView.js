@@ -118,7 +118,7 @@ function (
                 WorkoutTypes.typesByName.Custom
             ];
 
-            this.$(".bikeSelector").toggle(_.contains(requiresBikeSelector, this.model.get("workoutTypeValueId")));
+            this.$(".bikeBlock").toggle(_.contains(requiresBikeSelector, this.model.get("workoutTypeValueId")));
 
             this.$("select").prop("disabled", this.model.isNew());
         }
