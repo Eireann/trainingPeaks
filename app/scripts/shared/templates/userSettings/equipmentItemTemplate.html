@@ -1,0 +1,78 @@
+<div class="equipLeftCol">
+
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "Name" }}</label>
+        <input type="text" name="name" />
+    </div>
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "Brand" }}</label>
+        <input type="text" name="brand" />
+    </div>
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "Model" }}</label>
+        <input type="text" name="model" />
+    </div>
+
+    {{! type 1 == Bike }}
+    {{#ifEquals type 1}}
+    <div class="fieldContain wheels">
+        <label class="fieldTitle">{{$ "Wheels" }}</label>
+        <input type="text" name="wheels" />
+    </div>
+    <div class="fieldContain crankLength">
+        <label class="fieldTitle">{{$ "Crank Length" }}</label>
+        <select name="crankLengthMillimeters">
+            <option value="" selected>Choose a Crank Length</option>
+        {{#each CrankLengths}}
+            <option value="{{ this }}"{{#ifEquals ../crankLengthMillimeters this}} selected{{/ifEquals}}>{{ this }}</option>
+        {{/each}}
+        </select>
+    </div>
+    {{/ifEquals}}
+
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "Purchase Date" }}</label>
+        <input class="datepicker" type="text" name="dateOfPurchase" data-format="date" />
+    </div>
+
+   <div class="fieldContain">
+        <label class="fieldTitle">{{$ "Start Distance" }}</label>
+        <input type="text" name="startingDistance" data-format="units:distance" />
+    </div>
+
+    {{! type 2 == Shoe }}
+    {{#ifEquals type 2}}
+    <div class="fieldContain maxDistance">
+        <label class="fieldTitle">{{$ "Maximum Distance" }}</label>
+        <input type="text" name="maxDistance" data-format="units:distance" />
+    </div>
+    {{/ifEquals}}
+
+    <div class="fieldContain retiredDate" {{#ifEquals retired false}}style="display:none"{{/ifEquals}}>
+        <label class="fieldTitle">{{$ "Retired Date" }}</label>
+        <input class="datepicker" type="text" name="retiredDate" data-format="date" />
+    </div>
+
+    <div class="defaultRetiredContain">
+        <label class="fieldTitle defaultEquip"><input class="defaultToggle" type="checkbox" name="isDefault" {{#ifNot equipmentId}}disabled{{/ifNot}}/>{{$ "Default" }}</label>
+        <label class="fieldTitle retiredEquip"><input class="retiredToggle" type="checkbox" name="retired" />{{$ "Retired" }}</label>
+    </div>
+
+</div>
+
+<div class="equipRightCol">
+
+
+    <div class="totalDistanceContain">
+        <label class="fieldTitle totalDist">{{$ "Total Distance" }}:</label>
+        <span class="actualDistance value">{{#ifNot actualDistance}}0{{else}}{{formatUnitsValue "distance" actualDistance}}{{/ifNot}}</span> <span class="actualDistanceUnit units">{{ getUnitsLabel "distance" }}</span> 
+    </div>
+
+    <div class="fieldContain">
+        <textarea type="text" name="notes" class="notes" placeholder="Notes" />
+    </div>
+</div>
+
+<div class="right removeButton">
+    <button class="removeEquipment">{{$ "Remove"}}</button>
+</div>

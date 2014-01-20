@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "TP"
+    "TP",
+    "models/equipmentCollection"
 ],
-function(TP)
+function(TP, EquipmentCollection)
 {
     return TP.APIDeepModel.extend(
     {
@@ -51,6 +52,16 @@ function(TP)
         {
             var athleteSettingsUrl = "fitness/v1/athletes/" + this.get("athleteId") + "/settings";
             return theMarsApp.apiRoot + "/" + athleteSettingsUrl;
+        },
+
+        getEquipment: function()
+        {
+            if (!this.equipmentCollection)
+            {
+                this.equipmentCollection = new EquipmentCollection(null, { athleteId: this.get("athleteId") });
+            }
+
+            return this.equipmentCollection;
         }
 
     });

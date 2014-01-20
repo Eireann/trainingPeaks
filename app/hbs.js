@@ -47,6 +47,10 @@ define(function(require) {
             if(node.program) {
                 walk(deps, node.program.statements);
             }
+
+            if(node.inverse) {
+                walk(deps, node.inverse.statements);
+            }
         }
     }
 

@@ -367,6 +367,7 @@ define({
 
     "End": "End",
     "EndOnEventDate": "End on Event Date",
+    "DynamicPlan": "Dynamic Plan",
     "on": "on",
     "Unapply": "Unapply",
     "Reapply": "Reapply",
@@ -468,5 +469,25 @@ define({
     "StatsViewPlaceholder": "All changes must be applied before stats can be recalculated.",
     "ConfirmDeleteLap": "Are you sure you want to delete the lap?",
 
-    "LapsColumnChart": "Laps & Splits Column Chart"
+    "LapsColumnChart": "Laps & Splits Column Chart",
+
+    "Name": "Name",
+    "Brand": "Brand",
+    "Model": "Model",
+    "Purchase Date": "Purchase Date",
+    "Default": "Default",
+    "Retired": "Retired",
+    "Retired Date": "Retired Date",
+    "Start Distance": "Start Distance",
+    "Total Distance": "Total Distance",
+    "Notes": "Notes",
+
+    "Bikes": "Bikes",
+    "Add a Bike": "Add a Bike",
+    "Wheels": "Wheels",
+    "Crank Length": "Crank Length",
+
+    "Shoes": "Shoes",
+    "Add a Shoe": "Add a Shoe",
+    "Maximum Distance": "Maximum Distance"
 });

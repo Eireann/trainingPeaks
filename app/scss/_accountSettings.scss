@@ -42,11 +42,13 @@
     .tabbedLayoutBody {
         width: calc(100% - 142px);
         // padding:0 30px 12px 30px;
+        @include clearfix;
     }
 
     label
     {
         cursor: auto;
+        color: $TPGrey3;   
         
         &.clickable
         {
@@ -121,6 +123,7 @@
         }
         
         .scrollTarget {
+            @include clearfix;
             padding-top: 28px;
             padding-bottom: 28px;
         }
@@ -137,16 +140,18 @@
         }
 
         .addZoneContain {
-            margin-bottom:10px;
-            margin-left:15px;
+            margin-bottom: 10px;
+            margin-left: 15px;
+            float: left;
+            width: 100%;
 
             div {
-                float:left;
+                float: left;
             }
 
             .addWorkoutType {
-                float:left;
-                margin:0 0 0 10px;
+                float: left;
+                margin: 0 0 0 10px;
             }
 
             select
@@ -195,6 +200,7 @@
             }
 
             .zoneSetFieldset {
+                @include clearfix;
                 padding:20px 15px 23px 15px;
 
                 &.autoCalc {
@@ -220,15 +226,16 @@
                     .power,
                     .speed {
                         form {
-                            float:left;
-                            margin-right:25px;
-                            width:auto;
+                            @include clearfix;
+                            float: left;
+                            margin-right: 25px;
+                            width: auto;
                         }
                     }
 
                     .speed {
-                        float:left;
-                        width:230px;
+                        float: left;
+                        width: 230px;
                         margin-right: 13px;
 
                         form {                            
@@ -299,8 +306,12 @@
             .zoneSetContain {
                 // border:1px solid $TPGrey1;
                 // padding:10px;
-                margin-bottom:10px;
-                margin-top:12px;
+                margin-bottom: 10px;
+                margin-top: 12px;
+                float: left;
+                width: 100%;
+              
+
                 @include clearfix;
                 // @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 
@@ -341,7 +352,7 @@
 
                 .zoneValueContain {
                     float:left;
-                    margin-right:41px;
+                    margin-right:40px;
 
                     .numberInput {
                         width:91px;
@@ -350,8 +361,8 @@
             }
 
             .addZone {
-                margin-top:4px;
-                margin-left:16px;
+                margin-top: 4px;
+                margin-left: 16px;
             }
         }
 
@@ -365,16 +376,17 @@
             padding-bottom:7px;
             line-height:normal;
             border-bottom:1px solid $TPGrey12;
+    
         }
 
         h3 {
-            font-family:$fontFamilyHeavy;
-            font-weight:normal;
-            font-size:$fontSizeMedium;
-            color:$TPGrey8;
-            line-height:normal;
-            margin:0;
-            margin-bottom:12px;
+            font-family: $fontFamilyHeavy;
+            font-weight: normal;
+            font-size: $fontSizeMedium;
+            color: $TPGrey8;
+            line-height: normal;
+            margin: 0;
+            margin-bottom: 12px;
         }
 
 
@@ -387,10 +399,18 @@
             margin:0;
         }
 
+        .zones {
+            float: left;
+            width: 100%;
+        }
+
         .heartRateZones, 
         .powerZones, 
         .speedPaceZones {
-            margin-bottom:20px;
+            @include clearfix;
+            margin-bottom: 20px;
+            float: left;
+
         }
 
         .heartRateZones,
@@ -517,6 +537,8 @@
 
     .userSettingsPersonalSection {
         @include clearfix;
+        float: left;
+        width: 100%;
 
         &.email {
             margin-bottom: 28px;
@@ -541,6 +563,21 @@
                 width: 125px;
                 max-width: 125px;
                 text-align: right;
+                color: $TPGrey3;
+            }
+
+            &.wheels,
+            &.crankLength,
+            &.maxDistance {
+                .fieldTitle {
+                   // font-family: $fontFamilyRegularItalic;
+                }
+            }
+
+            &.crankLength {
+                select {
+                    width:311px
+                }
             }
 
             &.deliveryTime1 {
@@ -595,7 +632,7 @@
                         }
                     }
                 }
-
+                
                 &.athleteTypeGender {
                     .selectBox {
                         &.athleteType {
@@ -728,30 +765,141 @@
             }
         }
 
-        &.calendarSync {
-            input[type="text"] {
-                width:632px;
-                height:20px;
+        input[type="text"], textarea {
+            width: 632px;
+            height: 22px;
+            float: left;
+        }
+
+        textarea {
+            height:100px
+        }
+
+
+        // Equipment Tab
+        .equipmentItem {
+            float: left;
+            margin-bottom: 50px;
+
+            &:first-of-type {
+                margin-top: 3px;
+            }
+
+            .equipLeftCol {
                 float: left;
+                width: 436px;
+
+                input[type="text"] {
+                    width: 311px;
+                }
+            }
+
+            .equipRightCol {
+                float: left;
+                width: 311px;
+                margin-left: 10px;
+
+                textarea {
+                    width: 100%;
+                }
+            }
+
+            .removeButton {
+                margin-top: 12px; 
+            }
+
+            .fieldContain {
+                input[type="checkbox"] {
+                    margin-top: 5px;
+                }
+                textarea:last-of-type {
+                    margin-bottom: 12px;
+                }
             }
         }
+
+        .action {
+            float: left;
+        }
+
+        .removeEquipment {
+            margin-right: 0;
+        }
+
+        .defaultRetiredContain {
+            float: left;
+            margin-top: 8px;
+        }
+
+        .totalDistanceContain {
+            display: inline-block;
+            color: $TPGrey3;
+            float: right;
+            margin-top: 1px;
+        }
+
+        .equipmentItem .actualDistance, 
+        .equipmentItem .actualDistanceUnit {
+            font-size: $fontSizeSmall;
+            color: $TPGrey3;
+            font-family: $fontFamilyHeavy;
+        }
+
+        .defaultEquip,
+        .retiredEquip,
+        .totalDist {
+            display: inline-block;
+        }
+
+        .defaultEquip,
+        .retiredEquip {
+            cursor: pointer;
+        }
+
+        .defaultEquip {
+            margin-left: 122px;
+            margin-right: 10px;
+        }
+
+        .bikeList {
+            .notes {
+                position: relative;
+                top: 12px;
+                height: 167px;
+                max-width: 311px;
+                &.retiredItem {
+                    height: 196px;
+                }
+            }
+        }
+
+        .shoeList {
+            .notes {
+                position: relative;
+                top: 12px;
+                height:138px;
+                max-width: 311px;
+                &.retiredItem {
+                    height: 167px;
+                }
+            }
+        }
+
     }
 
     @include clearfix;
 
-    input
-    {
-       //  width: 200px;
-       // float: left;
-       //  margin:0;
-       // height: 20px;
+    input {
+        //  width: 200px;
+        // float: left;
+        //  margin:0;
+        // height: 20px;
         color: $TPGrey3;
     }
 
-    input[type="radio"]
-    {
+    input[type="radio"] {
         // width: auto;
-       //  margin: -4px 0 0 0;
+        //  margin: -4px 0 0 0;
     }
 
     input[type="checkbox"]
@@ -906,8 +1054,9 @@
     overflow: visible !important;
 
     .zoneCalculatorLayoutBody {
-        float:left;
-        width:100%;
+        // float:left;
+        // width:100%;
+        
         div {
             @include clearfix;
         }
@@ -973,8 +1122,7 @@
         font-size:$fontSizeMedium;
         color:$TPGrey8;
         line-height:normal;
-        margin:0;
-        margin-bottom:12px;
+        margin:0 0 12px 0;
     }
 
     .buttons
@@ -987,6 +1135,9 @@
         padding:10px;
         margin-bottom:10px;
         margin-top:12px;
+
+        float: left;
+        width: 100%;
 
         label {
             margin-bottom: 10px;
@@ -1023,9 +1174,9 @@
     }
 
     .zones {
-        float:none;
-        margin:0 auto;
-        width:400px;
+        float: none;
+        margin: 0 auto;
+        width: 400px;
 
         .zoneCalculatorResult {
             padding:5px 5px 5px 6px;
@@ -1166,3 +1317,4 @@
         }
     }
 }
+

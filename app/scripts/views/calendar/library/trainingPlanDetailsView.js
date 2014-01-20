@@ -95,7 +95,7 @@ function(
         serializeData: function()
         {
             var data = this.model.toJSON();
-            data.applyable = this.model.details.has("title");
+            data.applyable = this.model.details.has("title") && this.model.details.get("workoutCount") > 0;
 
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
