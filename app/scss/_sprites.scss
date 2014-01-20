@@ -74,6 +74,7 @@ body[data-useragent*="MSIE"] .icon
 %tpLogoBG { @include inlineBG( "../../assets/images/tpLogo.png"); }
 %tpLogoBGWithoutText { @include inlineBG( "../../assets/images/tpLogo-clear.png"); }
 %betaBanner { @include inlineBG( "../../assets/images/beta-tag.png"); }
+%poweredBy { @include inlineBG( "../../assets/images/powered-by-trainingpeaks.png"); }
 
 %mainTabSpriteBG { @include inlineBG("../../assets/images/sprite-icons-main-tabs.png"); }
 %dashboardTabSpriteBG { @include inlineBG("../../assets/images/sprite-icons-dashboard-tabs.png"); }

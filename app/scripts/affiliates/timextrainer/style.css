@@ -1,16 +1,26 @@
 ﻿#calendarContainer .thisWeek .dayHeader
 {
-    background-color: #DC5148;
+    background-color: #C02E26;
+}
+
+#calendarContainer .thisWeek .summaryHeader
+{
+    background-color: #636569;
 }
 
 #calendarContainer .thisWeek .today .dayHeader
 {
-    background-color: rgb(235, 156, 151);
+    background-color: #DF948A;
 }
 
 #calendarContainer .thisWeek .dayHeader .calendarDate
 {
     color: #FFFFFF;
+}
+
+#userControlsContainer #userControlsBackground
+{
+    background-color: #C02E26;
 }
 
 #userControlsContainer #userControlsBackground .personHeaderLogo
