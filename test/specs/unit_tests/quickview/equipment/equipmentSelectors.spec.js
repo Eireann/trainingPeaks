@@ -18,7 +18,7 @@ function(
     SummaryView
 )
 {
-    describe("Summary View", function()
+    describe("Workout Equipment View within Summary View (unit_tests)", function()
     {
         var workoutModel;
         var summaryView;
@@ -115,7 +115,7 @@ function(
 
                     var $shoeSelector = summaryView.$("select.shoeSelector");
 
-                    expect($shoeSelector.children()[1].value).to.equal("123"); // "123" is the id of the stub bike
+                    expect($shoeSelector.children()[1].value).to.equal("123"); // "123" is the id of the stub shoe
                 });
             });
         });
