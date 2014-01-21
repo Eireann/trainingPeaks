@@ -30,7 +30,7 @@ function(
 
             saveSpy = sinon.spy(WorkoutModel.prototype, "autosave");
 
-            workoutModel = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutTypeValueId: WorkoutTypes.typesByName.Bike }, { equipment: new Backbone.Collection(xhrData.equipment.barbkprem) } );
+            workoutModel = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutTypeValueId: WorkoutTypes.typesByName.Bike }, { equipment: new TP.Collection(xhrData.equipment.barbkprem) } );
             summaryView = new SummaryView({ model: workoutModel });
         });
 
@@ -46,7 +46,7 @@ function(
 
         it("Should not throw exceptions during lifecycle calls", function()
         {
-            renderAndClose = function()
+            var renderAndClose = function()
             {
                 summaryView.render();
 

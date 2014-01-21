@@ -27,7 +27,7 @@ function(
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
 
-            workoutModel = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutTypeValueId: WorkoutTypes.typesByName.Run }, { equipment: xhrData.equipment.barbkprem });
+            workoutModel = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutTypeValueId: WorkoutTypes.typesByName.Run }, { equipment: new TP.Collection(xhrData.equipment.barbkprem) });
             summaryView = new SummaryView({ model: workoutModel });
         });
 
