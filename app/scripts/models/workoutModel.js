@@ -119,7 +119,7 @@ function (
                 this.get("detailData").set("workoutId", this.get("workoutId"));
             }, this);
 
-            this.equipment = (options && options.equipment) || theMarsApp.user.getAthleteSettings().getEquipment();
+            this.equipment = (options && options.equipment) || null;
 
             this._setUpEquipmentChangeListeners();
         },
@@ -170,7 +170,8 @@ function (
 
         _unsetActualDistance: function(equipmentType, equipmentId)
         {
-            var equipment = this.equipment.where({ type: equipmentType, equipmentId: equipmentId }, true);
+            var equipmentCollection = (this.equipment || theMarsApp.user.getAthleteSettings().getEquipment());
+            var equipment = equipmentCollection.where({ type: equipmentType, equipmentId: equipmentId }, true);
             if (equipment)
             {
                 equipment.unset("actualDistance");
