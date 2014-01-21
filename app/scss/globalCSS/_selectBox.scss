@@ -14,7 +14,7 @@
     // min-height: 22px;
     margin: 0;
 
-    padding: 1px 30px 2px 5px;
+    padding: 0px 30px 0px 5px;
 
     outline: none;
     border: 1px solid $TPGrey9;
@@ -41,6 +41,13 @@
 
     &::-ms-expand { display: none; }
 
+}
+
+// hack for FF, when alignment is right in every other browser it is 1px off in FF
+@-moz-document url-prefix() { 
+    select {
+        padding-top: 1px;
+    }
 }
 
 select:-moz-focusring {
