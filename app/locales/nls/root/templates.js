@@ -489,5 +489,8 @@ define({
 
     "Shoes": "Shoes",
     "Add a Shoe": "Add a Shoe",
-    "Maximum Distance": "Maximum Distance"
+    "Maximum Distance": "Maximum Distance",
+
+    "Select Bike": "Select Bike",
+    "Select Shoe": "Select Shoe"
 });

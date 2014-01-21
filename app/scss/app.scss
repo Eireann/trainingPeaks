@@ -34,7 +34,7 @@
 @import "globalCSS/selectBox";
 @import "elevationCorrection";
 
-@import "workoutCommentsEditor/workoutCommentsEditor";
+@import "workout/workoutCommentsEditor";
 
 @import "dashboard/dashboard";
 @import "dashboard/pmcChartSettings";
@@ -45,7 +45,8 @@
 
 @import "calendar/dragAndDropFileUpload";
 
-@import "workoutBarView";
+@import "workout/workoutBarView";
+@import "workout/workoutEquipmentView";
 
 @import "accountSettings";
 

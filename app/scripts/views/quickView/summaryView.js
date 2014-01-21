@@ -7,6 +7,7 @@
     "views/quickView/summaryView/summaryViewUserCustomization",
     "views/quickView/summaryView/summaryViewStickitBindings",
     "views/quickView/summaryView/summaryViewTextAreas",
+    "views/workout/workoutEquipmentView",
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
@@ -17,6 +18,7 @@ function (
     summaryViewUserCustomization,
     summaryViewStickitBindings,
     summaryViewTextAreas,
+    WorkoutEquipmentView,
     workoutQuickViewSummaryTemplate)
 {
     var summaryViewBase = 
@@ -47,6 +49,7 @@ function (
         {
             this.on("render", this.renderWorkoutComments, this);
             this.on("render", this.setTabOrder, this);
+            this.on("render", this.renderEquipmentSelectors, this);
             this.initializeUserCustomization();
 
             // setup stickit last because the user customization onRender needs to happen before stickit
@@ -72,6 +75,21 @@ function (
 
             // then all completed inputs
             this.$(".workoutStatsCompleted input").attr("tabindex", 3);
+        },
+
+        renderEquipmentSelectors: function ()
+        {
+            var view = new WorkoutEquipmentView({
+                collection: theMarsApp.user.getAthleteSettings().getEquipment(),
+                model: this.model
+            });
+            
+            view.render();
+
+            this.$("#equipment").append(view.el);
+
+            this.listenTo(view, "change:equipment", _.bind(this.model.autosave, this.model));
+            this.on("close", _.bind(view.close, view));
         },
 
         reRender: function()
