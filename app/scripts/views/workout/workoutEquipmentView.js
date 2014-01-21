@@ -45,17 +45,7 @@ function (
                 options.collection.filter(
                     function(e)
                     {
-                        if (e.get("type") === EquipmentTypes.Bike)
-                        {
-                            if (e.get("isDefault"))
-                            {
-                                this.defaultBike = e.get("equipmentId");
-                            }
-
-                            return true;
-                        }
-
-                        return false;
+                        return e.get("type") === EquipmentTypes.Bike;
                     },
                     this
                 )
@@ -65,17 +55,7 @@ function (
                 options.collection.filter(
                     function(e)
                     {
-                        if (e.get("type") === EquipmentTypes.Shoe)
-                        {
-                            if (e.get("isDefault"))
-                            {
-                                this.defaultShoe = e.get("equipmentId");
-                            }
-
-                            return true;
-                        }
-
-                        return false;
+                        return e.get("type") === EquipmentTypes.Shoe;
                     },
                     this
                 )
