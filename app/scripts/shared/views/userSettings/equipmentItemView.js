@@ -1,6 +1,7 @@
 define(
 [
     "underscore",
+    "setImmediate",
     "jqueryui/datepicker",
     "TP",
     "shared/data/equipmentTypes",
@@ -12,6 +13,7 @@ define(
 ],
 function(
     _,
+    setImmediate,
     datePicker,
     TP,
     EquipmentTypes,
@@ -92,6 +94,12 @@ function(
             }
 
             this._applyModelValuesToForm();
+
+            if(this.model.isNew())
+            {
+                this._toggleExpanded();
+                setImmediate(_.bind(function(){this.$("input[name=name]").focus();}, this));
+            }
         },
 
         serializeData: function()
@@ -135,9 +143,16 @@ function(
 
         _removeEquipment: function()
         {
-            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
-            deleteConfirmationView.render();
-            this.listenTo(deleteConfirmationView, "userConfirmed",  _.bind(function(){this.model.trigger("destroy", this.model);}, this));
+            if(this.model.isNew())
+            {
+                this.model.trigger("destroy", this.model); 
+            }
+            else
+            {
+                var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+                deleteConfirmationView.render();
+                this.listenTo(deleteConfirmationView, "userConfirmed",  _.bind(function(){this.model.trigger("destroy", this.model);}, this));
+            }
         },
 
         _toggleExpanded: function()
