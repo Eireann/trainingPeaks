@@ -792,10 +792,11 @@
                 height: 20px;
                 width: 50px;
                 position: absolute;
-                top: 4px;
+                top: 0;
 
                 @extend %arrowCollapsed;
                 background-repeat: no-repeat;
+                background-position: 2px 5px;
             }           
 
             .expandedContents
@@ -814,6 +815,7 @@
                 .expander
                 {
                     @extend %arrowExpanded;
+                    background-position: 2px 5px;
                 }
 
                 height: 270px;
@@ -865,8 +867,9 @@
             {
                 display: inline-block;
                 float: left;
-                margin-top: 4px;
+                margin-top: 5px;
                 margin-left: 4px;
+                height: 12px;
 
                 label
                 {
@@ -879,7 +882,6 @@
             .retiredLabel
             {
                 font-family: $fontFamilyRegularItalic;
-                margin-top: 1px;
             }
 
             .defaultLabel
@@ -935,7 +937,6 @@
         .equipmentItem .actualDistanceUnit {
             font-size: $fontSizeSmall;
             color: $TPGrey3;
-            font-family: $fontFamilyHeavy;
         }
 
         .defaultEquip,
