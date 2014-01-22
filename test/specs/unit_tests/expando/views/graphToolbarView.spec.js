@@ -3,9 +3,10 @@
     "jquery",
     "TP",
     "moment",
+    "models/workoutModel",
     "views/expando/graphToolbarView"
 ],
-function($, TP, moment, GraphToolbarView)
+function($, TP, moment, WorkoutModel, GraphToolbarView)
 {
     describe("GraphToolbarView", function()
     {
@@ -15,12 +16,13 @@ function($, TP, moment, GraphToolbarView)
         {
             var stateModel = new TP.Model();
 
-            var workoutModel = new TP.Model({
-                workoutTypeValueId: 1,
-                detailData: new TP.Model({
-                    availableDataChannels: ["HeartRate", "Speed", "Power", "Cadence", "Elevation"],
-                    disabledDataChannels: ["Cadence"]
-                })
+            var workoutModel = new WorkoutModel({
+                workoutTypeValueId: 1
+            });
+
+            workoutModel.get("detailData").set({
+                availableDataChannels: ["HeartRate", "Speed", "Power", "Cadence", "Elevation", "Distance"],
+                disabledDataChannels: ["Cadence"]
             });
 
             view = new GraphToolbarView({
@@ -78,7 +80,7 @@ function($, TP, moment, GraphToolbarView)
             expect(view.serializeData().speedLabel).to.equal("kph");
         });
 
-        describe("Button States", function()
+        describe("Channel Button States", function()
         {
             beforeEach(function()
             {
@@ -125,5 +127,40 @@ function($, TP, moment, GraphToolbarView)
             });
 
         });
+
+        describe("Time and Distance Button States", function()
+        {
+            beforeEach(function()
+            {
+                view.render();
+            });
+
+            it("Should change active x axis when clicking on distance button", function()
+            {
+                view.$(".distance").trigger("click");
+                expect(view._getGraphData().xaxis).to.eql("distance");
+                expect(view.$(".distance").is(".bold")).to.be.ok;
+                expect(view.$(".time").is(".bold")).to.not.be.ok
+            });
+
+            it("Should change active x axis when clicking time button", function()
+            {
+                view.$(".distance").trigger("click");
+                view.$(".time").trigger("click");
+                expect(view._getGraphData().xaxis).to.eql("time");
+                expect(view.$(".distance").is(".bold")).to.not.be.ok;
+                expect(view.$(".time").is(".bold")).to.be.ok
+            });
+
+            it("Should retain the x axis state when a channel is removed", function()
+            {
+                view.$(".distance").trigger("click");
+                view.model.get("detailData").set("availableDataChannels", ["Speed", "Power", "Distance"]);
+                expect(view._getGraphData().xaxis).to.eql("distance");
+                expect(view.$(".distance").is(".bold")).to.be.ok;
+                expect(view.$(".time").is(".bold")).to.not.be.ok
+            });
+
+        })
     });
 });
