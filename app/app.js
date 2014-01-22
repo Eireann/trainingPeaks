@@ -289,16 +289,27 @@ function(
 
                 this.showInitialProfile = function()
                 {
-                    var view = new InitialProfileView({ model: this.user });
-                    view.render();
+                    if(!this.initialProfileView || this.initialProfileView.isClosed)
+                    {
+                        this.initialProfileView = new InitialProfileView({ model: this.user });
+                        this.initialProfileView.render();
+                    }
                 };
 
                 this.bootPromise.then(function()
                 {
+                    // profile displays if there is a ?profile query string
+                    if(/(\?|&)profile/.test(window.location))
+                    {
+                        self.showInitialProfile();
+                    }
+
+                    /*
                     if(self.user.getAccountSettings().get("shouldCompleteProfile"))
                     {
                         self.showInitialProfile();
                     }
+                    */
                 });
             });
 
