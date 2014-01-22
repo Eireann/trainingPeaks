@@ -21,6 +21,8 @@ function(
 
         cacheable: true,
 
+        comparator: "retired",
+
         initialize: function(models, options)
         {
             if (options && options.athleteId)

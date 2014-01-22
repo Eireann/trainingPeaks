@@ -91,6 +91,8 @@ body[data-useragent*="MSIE"] .icon
 %shadowDividerBG { @include inlineBG("../../assets/images/calendarImages/shadow-divider.png"); }
 %dragIndicatorBG { @include inlineBG("../../assets/images/drag-indicator.png"); }
 
+%arrowCollapsed { @include inlineBG("../../assets/images/equipment-arrow.png"); }
+%arrowExpanded { @include inlineBG("../../assets/images/equipment-arrow-down.png"); }
 
 // Premium placeholders
 %hrZonesPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-hr-zones.jpg"); }
