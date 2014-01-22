@@ -169,7 +169,7 @@ function(
 
             var profilePromise = $.ajax(
             {
-                method: "POST",
+                method: "PUT",
                 url: apiConfig.apiRoot + "/fitness/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() + "/profile",
                 data:
                 {
