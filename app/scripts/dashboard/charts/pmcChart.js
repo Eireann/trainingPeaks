@@ -623,7 +623,7 @@ function(
             var atl = item.atl;
             var tsb = item.tsb;
 
-            if (itemDay.diff(today) > 0)
+            if (itemDay.diff(today) > 0 && !item.ifActual)
             {
                 tss = item.tssPlanned;
                 intensity = item.ifPlanned;
