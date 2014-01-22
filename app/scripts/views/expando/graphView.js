@@ -423,7 +423,7 @@ function(
 
         updateXAxis: function(axis)
         {
-            if(this.currentAxis == axis)
+            if(this.currentAxis === axis)
             {
                 return;
             }
