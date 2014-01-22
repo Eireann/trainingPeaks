@@ -140,7 +140,7 @@ function($, TP, moment, WorkoutModel, GraphToolbarView)
                 view.$(".distance").trigger("click");
                 expect(view._getGraphData().xaxis).to.eql("distance");
                 expect(view.$(".distance").is(".bold")).to.be.ok;
-                expect(view.$(".time").is(".bold")).to.not.be.ok
+                expect(view.$(".time").is(".bold")).to.not.be.ok;
             });
 
             it("Should change active x axis when clicking time button", function()
@@ -149,7 +149,7 @@ function($, TP, moment, WorkoutModel, GraphToolbarView)
                 view.$(".time").trigger("click");
                 expect(view._getGraphData().xaxis).to.eql("time");
                 expect(view.$(".distance").is(".bold")).to.not.be.ok;
-                expect(view.$(".time").is(".bold")).to.be.ok
+                expect(view.$(".time").is(".bold")).to.be.ok;
             });
 
             it("Should retain the x axis state when a channel is removed", function()
@@ -158,9 +158,10 @@ function($, TP, moment, WorkoutModel, GraphToolbarView)
                 view.model.get("detailData").set("availableDataChannels", ["Speed", "Power", "Distance"]);
                 expect(view._getGraphData().xaxis).to.eql("distance");
                 expect(view.$(".distance").is(".bold")).to.be.ok;
-                expect(view.$(".time").is(".bold")).to.not.be.ok
+                expect(view.$(".time").is(".bold")).to.not.be.ok;
             });
 
-        })
+        });
+
     });
 });
