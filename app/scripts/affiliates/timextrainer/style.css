@@ -27,11 +27,3 @@
 {
     background-image: url(timexLogo.png);
 }
-
-#userControlsContainer #userControlsBackground .rightNavigation .upgradeButton
-{
-    background-image: -webkit-linear-gradient(top, #DC5148, rgb(170, 10, 1));
-    background-image: -moz-linear-gradient(top, #DC5148, rgb(170, 10, 1));
-    background-image: -ms-linear-gradient(top, #DC5148, rgb(170, 10, 1));
-    background-image: linear-gradient(top, #DC5148, rgb(170, 10, 1));
-}
