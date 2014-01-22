@@ -47,7 +47,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -190,7 +193,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -286,7 +292,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -406,7 +415,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -551,7 +563,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                     input: "",
                     output: null
                 }
-            ]);
+            ],
+            {
+                userUnits: TP.utils.units.constants.Metric
+            });
         });
 
         describe("Elevation Loss", function()
@@ -585,7 +600,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                     input: "",
                     output: null
                 }
-            ]);
+            ],
+            {
+                userUnits: TP.utils.units.constants.Metric
+            });
         });
 
         describe("Elevation", function()
@@ -625,7 +643,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -929,7 +950,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
 
@@ -1003,7 +1027,10 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()

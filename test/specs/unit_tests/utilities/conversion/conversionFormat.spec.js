@@ -55,7 +55,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         output: "",
                         input: ""
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -177,7 +180,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         output: "9.99",
                         input: 9988.89
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -268,7 +274,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         output: "",
                         input: null
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -391,7 +400,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: ""
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -580,7 +592,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                     input: "1.23",
                     output: "1"
                 }
-            ]);
+            ],
+            {
+                userUnits: TP.utils.units.constants.Metric
+            });
         });
 
         describe("Elevation Loss", function()
@@ -622,7 +637,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                     input: "23.45",
                     output: "23"
                 }
-            ]);
+            ],
+            {
+                userUnits: TP.utils.units.constants.Metric
+            });
         });
 
         describe("Elevation", function()
@@ -667,7 +685,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: ""
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -1009,7 +1030,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: ""
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -1100,7 +1124,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         input: "",
                         output: ""
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
 
             describe("English", function()
@@ -1169,7 +1196,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                             input: 3.2 / 60,
                             options: { workoutTypeId: 13 }
                         }
-                    ]);
+                    ],
+                    {
+                        userUnits: TP.utils.units.constants.Metric
+                    });
                 });
 
 
@@ -1230,7 +1260,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                             input: 3.2,
                             options: { workoutTypeId: 1 }
                         }
-                    ]);
+                    ],
+                    {
+                        userUnits: TP.utils.units.constants.Metric
+                    });
                 });
 
                 describe("English", function()
@@ -1278,7 +1311,10 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                         input: 33,
                         output: "33.0"
                     }
-                ]);
+                ],
+                {
+                    userUnits: TP.utils.units.constants.Metric
+                });
             });
             describe("English", function()
             {
