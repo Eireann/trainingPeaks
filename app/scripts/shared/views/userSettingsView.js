@@ -139,12 +139,13 @@ function(
 
         _copyCollection: function(originalCollection)
         {
-            var copiedCollection = new TP.Collection(null, { model: originalCollection.model });
+            var copiedCollection = new originalCollection.constructor(null, { model: originalCollection.model });
             copiedCollection.originalCollection = originalCollection;
             this._copiesOfCollections.push(copiedCollection);
 
             originalCollection.each(function(model) {
                 var copiedModel = new originalCollection.model(TP.utils.deepClone(model.attributes));
+                copiedModel.originalModel = model;
 
                 copiedCollection.push(copiedModel);
             });
