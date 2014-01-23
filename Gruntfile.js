@@ -129,7 +129,7 @@ module.exports = function(grunt)
                     name: "main",
                     include: [
                         "../bower_components/almond/almond"
-                    ].concat(_.map(fs.readdirSync("app/scripts/affiliates"), function(code) { return "affiliates/" + code + "/settings"; })),
+                    ],
                     stubModules: ["text"],
                     wrap: false,
                     optimize: "none",
@@ -245,13 +245,13 @@ module.exports = function(grunt)
             debug:
             {
                 dest: "build/debug/",
-                src: [ "favicon.ico", "vendor/leaflet/*.css", "vendor/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                src: [ "favicon.ico", "vendor/leaflet/*.css", "vendor/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**"]
             },
 
             build_common:
             {
                 dest: "build/release/",
-                src: [ "favicon.ico", "vendor/leaflet/*.css", "vendor/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                src: [ "favicon.ico", "vendor/leaflet/*.css", "vendor/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**"]
             },
 
             build_debug:

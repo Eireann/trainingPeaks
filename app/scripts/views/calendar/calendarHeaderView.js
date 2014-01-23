@@ -7,7 +7,6 @@ define(
     "moment",
     "jqueryui/datepicker",
     "views/applicationHeader/athletePickerView",
-    "views/applicationHeader/coachAndAffiliateCustomizations",
     "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/calendarHeader"
 ],
@@ -19,7 +18,6 @@ function(
          moment,
          datepicker,
          AthletePickerView,
-         coachAndAffiliateCustomizations,
          CalendarUtility,
          calendarHeaderTemplate
          )
@@ -119,7 +117,6 @@ function(
             if (!this.model)
                 throw "Cannot have a calendarHeaderView without a model";
 
-            this.initializeCoachAndAffiliateCustomizations();
             this.initializeStickit();
             this.children = new Backbone.ChildViewContainer(); 
             this.on("close", _.bind(this.children.call, this.children, "close"));
@@ -175,7 +172,6 @@ function(
         }
     };
 
-    _.extend(calendarHeaderViewBase, coachAndAffiliateCustomizations);
     return TP.ItemView.extend(calendarHeaderViewBase);
 
 });
