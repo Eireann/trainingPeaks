@@ -2,6 +2,7 @@ define(
 [
     "jquery",
     "underscore",
+    "setImmediate",
     "backbone",
     "TP",
     "shared/data/equipmentTypes",
@@ -13,6 +14,7 @@ define(
 function(
     $,
     _,
+    setImmediate,
     Backbone,
     TP,
     EquipmentTypes,
@@ -56,6 +58,12 @@ function(
             "click .addEquipment": "_addEquipment"
         },
 
+        collectionEvents:
+        {
+            "change:retired": "_sortAndRender",
+            "change:isDefault": "_handleDefaultEquipmentChange"
+        },
+
         appendHtml: function(collectionView, itemView, index)
         {
             var bikeList = this.$(".bikeList");
@@ -76,10 +84,7 @@ function(
         initialize: function(options)
         {
             this.user = options && options.user ? options.user : theMarsApp.user;
-
             this.collection = options.collection;
-
-            this.on("defaultEquipmentChange", this._handleDefaultEquipmentChange, this);
         },
 
         applyFormValuesToModels: function()
@@ -98,22 +103,34 @@ function(
             this.collection.push(equipmentModel);
         },
 
-        _handleDefaultEquipmentChange: function(type, id)
+        _handleDefaultEquipmentChange: function(model)
         {
-            this.collection.each(function(equipment)
+            // if model default was turned off, nothing else to be done
+            if(!model.get("isDefault"))
             {
-                if (equipment.get("type") === type)
+                return;
+            }
+
+
+            // else set other models of this type to not default
+            _.chain(this.collection.where({ type: model.get("type") }))
+                .reject({id: model.id })
+                .each(function(model)
                 {
-                    if (equipment.get("equipmentId") === id)
-                    {
-                        equipment.set("isDefault", true);
-                    }
-                    else
-                    {
-                        equipment.set("isDefault", false);
-                    }
-                }
-            });
+                    model.set("isDefault", false);
+                });
+
+        },
+
+        _sortAndRender: function()
+        {
+            // calling this as a setImmediate to avoid modifying or removing child views during applyFormValuesToModels 
+            setImmediate(_.bind(function()
+            {
+                this.collection.sort();
+                this.closeChildren();
+                this.showCollection();            
+            }, this));
         }
 
     });

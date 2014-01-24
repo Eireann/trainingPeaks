@@ -1,12 +1,17 @@
 ﻿
 #calendarContainer .thisWeek .dayHeader
 {
-    background-color: #3C4B89;
+    background-color: #21346e;
+}
+
+#calendarContainer .thisWeek .summaryHeader
+{
+    background-color: #636569;
 }
 
 #calendarContainer .thisWeek .today .dayHeader
 {
-    background-color: rgb(144, 153, 188);
+    background-color: #8e98b5;
 }
 
 #calendarContainer .thisWeek .dayHeader .calendarDate
@@ -14,15 +19,13 @@
     color: #FFFFFF;
 }
 
+#userControlsContainer #userControlsBackground
+{
+    background-color: #21346e;
+}
+
 #userControlsContainer #userControlsBackground .personHeaderLogo
 {
     background-image: url(rwLogo.png);
 }
 
-#userControlsContainer #userControlsBackground .rightNavigation .upgradeButton
-{
-    background-image: -webkit-linear-gradient(top, #3C4B89, rgb(14, 28, 91));
-    background-image: -moz-linear-gradient(top, #3C4B89, rgb(14, 28, 91));
-    background-image: -ms-linear-gradient(top, #3C4B89, rgb(14, 28, 91));
-    background-image: linear-gradient(top, #3C4B89, rgb(14, 28, 91));
-}

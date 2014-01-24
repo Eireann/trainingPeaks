@@ -28,7 +28,8 @@ define(
     "scripts/plugins/marionette.faderegion",
     "flot/jquery.flot",
     "flot/jquery.flot.crosshair",
-    "flot/jquery.flot.resize"
+    "flot/jquery.flot.resize",
+    "shared/views/initialProfileView"
 ],
 function(
     $,
@@ -59,7 +60,8 @@ function(
     fadeRegion,
     flot,
     flotCrosshair,
-    flotResize
+    flotResize,
+    InitialProfileView
 )
 {
 
@@ -278,6 +280,37 @@ function(
                 {
                     this.featureAuthorizer.showUpgradeMessage();
                 }, this);
+            });
+
+            // add initial profile view
+            this.addInitializer(function()
+            {
+                var self = this;
+
+                this.showInitialProfile = function()
+                {
+                    if(!this.initialProfileView || this.initialProfileView.isClosed)
+                    {
+                        this.initialProfileView = new InitialProfileView({ model: this.user });
+                        this.initialProfileView.render();
+                    }
+                };
+
+                this.bootPromise.then(function()
+                {
+                    // profile displays if there is a ?profile query string
+                    if(/(\?|&)profile/.test(window.location))
+                    {
+                        self.showInitialProfile();
+                    }
+
+                    /*
+                    if(self.user.getAccountSettings().get("shouldCompleteProfile"))
+                    {
+                        self.showInitialProfile();
+                    }
+                    */
+                });
             });
 
             // add current athlete manager

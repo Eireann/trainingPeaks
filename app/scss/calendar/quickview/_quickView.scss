@@ -295,7 +295,6 @@ input[disabled='disabled']
         margin-bottom:3px;
         padding: 3px;
         border: 1px solid transparent;
-        font-size: $fontSizeSmaller;
         line-height: $fontSizeXLarge;
         color: $TPGrey3;
 
@@ -320,6 +319,7 @@ input[disabled='disabled']
             font-weight: normal;
             margin-bottom: 3px;
             color: $TPGrey3;
+            font-size: $fontSizeSmall;
 
             .date
             {
@@ -335,7 +335,9 @@ input[disabled='disabled']
         .commentBody
         {
             white-space: pre-wrap;
-            word-wrap:break-word;
+            word-wrap: break-word;
+            font-size: $fontSizeSmall;
+            line-height: $fontSizeXLarge;
         }
 
         textarea.commentBody

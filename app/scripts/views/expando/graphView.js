@@ -199,8 +199,7 @@ function(
 
             this.listenTo(this.graphToolbar, "zoom", _.bind(this.onToolbarZoom, this));
             this.listenTo(this.graphToolbar, "reset", _.bind(this.resetZoom, this));
-            this.listenTo(this.graphToolbar, "enableTimeAxis", _.bind(this.enableTimeAxis, this));
-            this.listenTo(this.graphToolbar, "enableDistanceAxis", _.bind(this.enableDistanceAxis, this));
+            this.listenTo(this._getGraphData(), "change:xaxis", _.bind(this.updateXAxis, this));
 
             this.$("#graphToolbar").append(this.graphToolbar.render().$el);
         },
@@ -422,31 +421,14 @@ function(
             }
         },
 
-        enableTimeAxis: function ()
+        updateXAxis: function(axis)
         {
-            if (this.currentAxis === "time")
+            if(this.currentAxis === axis)
+            {
                 return;
+            }
 
-//             this.onUnSelectAll();
-//             this.stateModel.get("ranges").set([]);
-//             this.resetZoom();
-//             this.graphToolbar.hideZoomButton();
-            this.currentAxis = "time";
-            this._getGraphData().setXAxis("time");
-            this.drawPlot();
-        },
-
-        enableDistanceAxis: function ()
-        {
-            if (this.currentAxis === "distance")
-                return;
-
-            // this.onUnSelectAll();
-            // this.stateModel.get("ranges").set([]);
-            // this.resetZoom();
-            // this.graphToolbar.hideZoomButton();
-            this.currentAxis = "distance";
-            this._getGraphData().setXAxis("distance");
+            this.currentAxis = axis;
             this.drawPlot();
         },
 
