@@ -62,7 +62,15 @@ function($, _, ImageData)
             if (this.isAffiliate())
             {
                 var affiliateCode = this.getAffiliateCode();
-                $("<link>").attr("rel", "stylesheet").attr("href", "app/scripts/affiliates/" + affiliateCode + "/style.css").appendTo("body");
+                this.affiliateStylesheet = $("<link>").attr("rel", "stylesheet").attr("href", "app/scripts/affiliates/" + affiliateCode + "/style.css").appendTo("body");
+            }
+        },
+
+        unloadAffiliateStylesheet: function()
+        {
+            if(this.affiliateStylesheet)
+            {
+                this.affiliateStylesheet.remove();
             }
         },
 
