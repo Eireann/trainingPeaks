@@ -1,0 +1,23 @@
+<h3 class="subheadbold">{{$ "Equipment" }}</h3>
+
+<div class="equipmentRow">
+    <div class="bikeBlock">
+    	<label>Bike</label>
+    	<select name="equipmentBikeId" class="bikeSelector">
+    	    <option value="">{{$ "Select Bike" }}</option>
+    	    {{#each bikes}}
+    	        <option value="{{ equipmentId }}">{{ name }}{{#if model}} ({{ model }}){{/if}}</option>
+    	    {{/each}}
+    	</select>
+    </div>
+</div>
+
+<div class="equipmentRow">
+	<label>Shoes</label>
+	<select name="equipmentShoeId" class="shoeSelector">
+	    <option value="">{{$ "Select Shoe" }}</option>
+	    {{#each shoes}}
+	        <option value="{{ equipmentId }}">{{ name }}{{#if model}} ({{ model }}){{/if}}</option>
+	    {{/each}}
+	</select>
+</div>

@@ -39,6 +39,7 @@ function($,
             this.listenTo(this.model.get("detailData"), "change:availableDataChannels", _.bind(this._updateButtonStates, this));
             this.listenTo(this.model.get("detailData"), "reset", _.bind(this.render, this));
             this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this.render, this));
+            this.listenTo(this._getGraphData(), "change:xaxis", _.bind(this._updateButtonStates, this));
             this.featureAuthorizer = options.featureAuthorizer ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
         },
 
@@ -199,16 +200,12 @@ function($,
 
         _onGraphTimeButtonClicked: function ()
         {
-            this.$(".time").addClass("bold");
-            this.$(".distance").removeClass("bold");
-            this.trigger("enableTimeAxis");
+            this._getGraphData().setXAxis("time");
         },
 
         _onGraphDistanceButtonClicked: function ()
         {
-            this.$(".time").removeClass("bold");
-            this.$(".distance").addClass("bold");
-            this.trigger("enableDistanceAxis");
+            this._getGraphData().setXAxis("distance");
         },
 
         _onCutClicked: function(e)
@@ -261,17 +258,18 @@ function($,
             }
             else
             {
-                var currentXAxis = this.model.get("detailData").graphData.xaxis;
+                var currentXAxis = this._getGraphData().xaxis;
                 if(currentXAxis === "distance")
                 {
                     this.$(".distance").addClass("bold");
                     this.$(".time").removeClass("bold");
                 }
-
+                else
                 {
                     this.$(".distance").removeClass("bold");
                     this.$(".time").addClass("bold");
-                }            }
+                }            
+            }
         },
 
         _onSelectionChange: function()
@@ -286,6 +284,11 @@ function($,
                 this.$(".cut").addClass("hidden");
                 this.$(".zoom").addClass("hidden");
             }
+        },
+
+        _getGraphData: function()
+        {
+            return this.model.get("detailData").graphData;
         }
     });
 });

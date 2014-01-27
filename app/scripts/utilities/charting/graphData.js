@@ -1,11 +1,12 @@
 define(
 [
     "underscore",
+    "TP",
     "utilities/charting/dataParserUtils",
     "utilities/charting/flotUtils",
     "utilities/sampleData"
 ],
-function(_, DataParserUtils, FlotUtils, SampleData)
+function(_, TP, DataParserUtils, FlotUtils, SampleData)
 {
     var defaultChannelOrder =
     [
@@ -38,8 +39,9 @@ function(_, DataParserUtils, FlotUtils, SampleData)
     };
 
     _.extend(GraphData, {defaultChannelOrder: defaultChannelOrder});
+    _.extend(GraphData.prototype, TP.Events);
 
-    GraphData.prototype =
+    _.extend(GraphData.prototype,
     {
         loadData: function(flatSamples)
         {
@@ -204,7 +206,11 @@ function(_, DataParserUtils, FlotUtils, SampleData)
             if (xaxis !== "time" && xaxis !== "distance")
                 throw new Error("DataParser: xaxis value " + xaxis + " is invalid");
 
-            this.xaxis = xaxis;
+            if(xaxis !== this.xaxis)
+            {
+                this.xaxis = xaxis;
+                this.trigger("change:xaxis", this.xaxis);
+            }
         },
 
         getMsOffsetFromDistance: function (distance)
@@ -296,6 +302,6 @@ function(_, DataParserUtils, FlotUtils, SampleData)
             return this._generateLatLonFromDataBetweenIndexes(this.sampleData.indexOf("time", startMsOffset), this.sampleData.indexOf("time", endMsOffset));
         }
 
-    };
+    });
     return GraphData;
 });

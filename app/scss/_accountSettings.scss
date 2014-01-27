@@ -779,7 +779,52 @@
         // Equipment Tab
         .equipmentItem {
             float: left;
-            margin-bottom: 50px;
+            position: relative;
+            height: 30px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid $TPGrey5;
+
+            @include single-transition(height, 200ms, ease-out); 
+            overflow-y: hidden;
+
+            .expander
+            {
+                height: 20px;
+                width: 50px;
+                position: absolute;
+                top: 0;
+
+                @extend %arrowCollapsed;
+                background-repeat: no-repeat;
+                background-position: 2px 5px;
+            }           
+
+            .expandedContents
+            {
+                @include single-transition(opacity, 300ms, ease);
+                opacity: 0;
+            }
+
+            &.expanded
+            {
+                .expandedContents
+                {
+                    opacity: 1;
+                }
+
+                .expander
+                {
+                    @extend %arrowExpanded;
+                    background-position: 2px 5px;
+                }
+
+                height: 270px;
+
+                &.bike
+                {
+                    height: 290px;
+                }
+            }
 
             &:first-of-type {
                 margin-top: 3px;
@@ -816,6 +861,56 @@
                     margin-bottom: 12px;
                 }
             }
+
+
+            .defaultOrRetiredLabelContain
+            {
+                display: inline-block;
+                float: left;
+                margin-top: 5px;
+                margin-left: 7px;
+                height: 12px;
+
+                label
+                {
+                    display: inline-block;
+                    float: left;
+                    margin-right: 10px;
+                }
+            }            
+
+            .retiredLabel
+            {
+                font-family: $fontFamilyRegularItalic;
+            }
+
+            .defaultLabel
+            {
+                font-family: $fontFamilyHeavy;
+            }
+
+            &:not(.retiredItem)
+            {
+                .retiredDate,
+                .retiredLabel
+                {
+                    display: none;
+                }
+            }
+            
+            &:not(.defaultItem)
+            {
+                .defaultLabel
+                {
+                    display: none;
+                }
+            }
+
+            &:last-of-type
+            {
+                margin-bottom: 40px;
+                border-bottom: none;
+            }
         }
 
         .action {
@@ -835,14 +930,13 @@
             display: inline-block;
             color: $TPGrey3;
             float: right;
-            margin-top: 1px;
+            margin-top: 3px;
         }
 
         .equipmentItem .actualDistance, 
         .equipmentItem .actualDistanceUnit {
             font-size: $fontSizeSmall;
             color: $TPGrey3;
-            font-family: $fontFamilyHeavy;
         }
 
         .defaultEquip,
@@ -862,13 +956,19 @@
         }
 
         .bikeList {
-            .notes {
-                position: relative;
-                top: 12px;
-                height: 167px;
-                max-width: 311px;
+            .equipmentItem
+            {
+                .notes {
+                    position: relative;
+                    top: 12px;
+                    height: 167px;
+                    max-width: 311px; 
+                }
                 &.retiredItem {
-                    height: 196px;
+                    .notes
+                    {
+                        height: 196px;
+                    }
                 }
             }
         }
@@ -879,7 +979,10 @@
                 top: 12px;
                 height:138px;
                 max-width: 311px;
-                &.retiredItem {
+            }
+            &.retiredItem {
+                .notes
+                {
                     height: 167px;
                 }
             }

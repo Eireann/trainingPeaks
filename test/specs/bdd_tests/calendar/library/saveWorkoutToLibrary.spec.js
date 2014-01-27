@@ -22,7 +22,7 @@ function(
     {
 
         var today = moment().format("YYYY-MM-DDTHH:mm:ss");
-        var workout = new WorkoutModel({ workoutDay: today, workoutId: '123'});
+        var workout = new WorkoutModel({ workoutDay: today, workoutId: '123' });
         
         beforeEach(function()
         {

@@ -1,8 +1,10 @@
 define(
 [
     "underscore",
+    "setImmediate",
     "jqueryui/datepicker",
     "TP",
+    "shared/data/equipmentTypes",
     "shared/utilities/formUtility",
     "shared/utilities/calendarUtility",
     "views/userConfirmationView",
@@ -11,8 +13,10 @@ define(
 ],
 function(
     _,
+    setImmediate,
     datePicker,
     TP,
+    EquipmentTypes,
     FormUtility,
     CalendarUtility,
     UserConfirmationView,
@@ -28,10 +32,38 @@ function(
             "change .defaultToggle": "_onDefaultToggleChange",
             "change .retiredToggle": "_onRetiredToggleChange",
 
-            "click .removeEquipment": "_removeEquipment"
+            "click .removeEquipment": "_removeEquipment",
+            "click .expander": "_toggleExpanded"
         },
 
-        className: "equipmentItem",
+        modelEvents: {
+            "change:actualDistance": "render",
+            "change:isDefault": "_updateDefaultState"
+        },
+
+        className: function()
+        {
+            var names = ["equipmentItem"];
+
+            names.push(EquipmentTypes.convertTypeToLabel(this.model.get("type")));
+
+            if(this.model.get("retired"))
+            {
+                names.push("retiredItem");
+            }
+
+            if(this.model.get("isDefault"))
+            {
+                names.push("defaultItem");
+            }
+
+            if(this.model.getState().get("expanded"))
+            {
+                names.push("expanded");
+            }
+
+            return names.join(" ");
+        },
 
         template:
         {
@@ -54,10 +86,20 @@ function(
 
             if (!this.model.has("actualDistance") && this.model.has("equipmentId"))
             {
-                this.model.getActualDistance();
+                // since this model was cloned from a parent model, fetch on the parent model so it stays in app state if we don't save this item
+                this.model.originalModel.getActualDistance().done(_.bind(function()
+                {
+                    this.model.set("actualDistance", this.model.originalModel.get("actualDistance"));
+                }, this));
             }
 
             this._applyModelValuesToForm();
+
+            if(this.model.isNew())
+            {
+                this._toggleExpanded();
+                setImmediate(_.bind(function(){this.$("input[name=name]").focus();}, this));
+            }
         },
 
         serializeData: function()
@@ -84,35 +126,39 @@ function(
 
         _onDefaultToggleChange: function()
         {
-            if (this.parentView)
-            {
-                this.parentView.trigger("defaultEquipmentChange", this.model.get("type"), this.model.get("equipmentId"));
-            }
+            this.model.set("isDefault", this.$(".defaultToggle").is(":checked"));
+        },
+
+        _updateDefaultState: function()
+        {
+            var isDefault = this.model.get("isDefault");
+            this.$(".defaultToggle").prop("checked", isDefault);
+            this.$el.toggleClass("defaultItem", isDefault);
         },
 
         _onRetiredToggleChange: function()
         {
-            var $retiredToggle = this.$(".retiredToggle");
-
-            this.$(".retiredDate").toggle($retiredToggle.is(':checked'));
-
-            var $notes = this.$(".equipRightCol textarea");
-
-            if ($retiredToggle.is(':checked'))
-            {
-                $notes.addClass("retiredItem");
-            }
-            else
-            {
-                $notes.removeClass("retiredItem");
-            }
+            this.$el.toggleClass("retiredItem", this.$(".retiredToggle").is(":checked"));
         },
 
         _removeEquipment: function()
         {
-            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
-            deleteConfirmationView.render();
-            this.listenTo(deleteConfirmationView, "userConfirmed",  _.bind(function(){this.model.trigger("destroy", this.model);}, this));
+            if(this.model.isNew())
+            {
+                this.model.trigger("destroy", this.model); 
+            }
+            else
+            {
+                var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+                deleteConfirmationView.render();
+                this.listenTo(deleteConfirmationView, "userConfirmed",  _.bind(function(){this.model.trigger("destroy", this.model);}, this));
+            }
+        },
+
+        _toggleExpanded: function()
+        {
+            this.$el.toggleClass("expanded");
+            this.model.getState().set("expanded", this.$el.is(".expanded"));
         }
 
     });

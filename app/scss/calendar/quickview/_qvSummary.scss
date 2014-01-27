@@ -10,22 +10,24 @@
 
     label
     {
-	color: $TPGrey3;
+	   color: $TPGrey3;
     }
 
     .selectionBox
     {
-	padding-left: 102px;
-	@include selectionBox(168px);
-	width: 168px;
-	padding-top: 5px;
+    	padding-left: 102px;
+    	@include selectionBox(168px);
+    	width: 168px;
+    	padding-top: 5px;
 
-	select
-	{
-	    margin-bottom: 3px;
-	    color: $TPGrey3;
-	}
+    	select
+    	{
+    	    margin-bottom: 3px;
+    	    color: $TPGrey3;
+    	}
     }
+
+    max-width: 355px;
 }
 
 .workoutStatsRow
