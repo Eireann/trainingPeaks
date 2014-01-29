@@ -1,8 +1,20 @@
 define(
 [
-   "realMoment"
-], function(realMoment)
+    "underscore",
+    "realMoment"
+], function(
+    _,
+    realMoment)
 {
-    realMoment.wrapped = true;
-    return realMoment;
+    var wrappedMoment = function (input, format, lang, strict)
+    {
+        return realMoment.utc(input, format, lang, strict);
+    };
+
+    _(realMoment).functions().each(function (functionName)
+    {
+        wrappedMoment[functionName] = realMoment[functionName];
+    });
+
+    return wrappedMoment;
 });

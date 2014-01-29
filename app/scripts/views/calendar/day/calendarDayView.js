@@ -35,7 +35,7 @@ function(
 )
 {
 
-    var today = moment().format(TP.utils.datetime.shortDateFormat);
+    var today = moment().local().format(TP.utils.datetime.shortDateFormat);
 
     return TP.CompositeView.extend(
     {
