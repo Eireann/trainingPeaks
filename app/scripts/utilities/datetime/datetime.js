@@ -8,7 +8,7 @@
 
     var formatter = new DateTimeFormatter();
 
-    return {
+    var datetime = {
 
         shortDateFormat: "YYYY-MM-DD",
         timeFormat: "THH:mm:ss",
@@ -28,11 +28,40 @@
 
         convert: convert,
 
+        getTodayDate: function()
+        {
+            return moment().local().startOf("day");
+        },
+
+        getThisWeekStartDate: function()
+        {
+            return moment().local().startOf("week");
+        },
+
         isThisWeek: function(dateToCheck)
         {
-            var thisMonday = moment().local().startOf("week");
             var mondayOfWeekToCheck = moment(dateToCheck).local().startOf("week");
-            return thisMonday.diff(mondayOfWeekToCheck) == 0;
+            return datetime.getThisWeekStartDate().diff(mondayOfWeekToCheck, "days") === 0;
+        },
+
+        isToday: function(dateToCheck)
+        {
+            var midnightOfDateToCheck = moment(dateToCheck).local().startOf("day");
+            return datetime.getTodayDate().diff(midnightOfDateToCheck, "days") === 0;
+        },
+
+        isPast: function(dateToCheck)
+        {
+            var midnightOfDateToCheck = moment(dateToCheck).local().startOf("day");
+            return datetime.getTodayDate().diff(midnightOfDateToCheck, "days") > 0;           
+        },
+
+        isFuture: function(dateToCheck)
+        {
+            var midnightOfDateToCheck = moment(dateToCheck).local().startOf("day");
+            return datetime.getTodayDate().diff(midnightOfDateToCheck, "days") < 0;           
         }
     };
+
+    return datetime;
 });

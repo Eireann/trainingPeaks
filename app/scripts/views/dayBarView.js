@@ -7,8 +7,6 @@
 function (moment, TP, dayBarViewTemplate)
 {
 
-    var today = moment().format(TP.utils.datetime.shortDateFormat);
-
     return TP.ItemView.extend(
     {
         className: "day",
@@ -21,7 +19,7 @@ function (moment, TP, dayBarViewTemplate)
 
         onRender: function()
         {
-            if (this.model.id === today)
+            if (TP.utils.datetime.isToday(this.model.id))
             {
                 this.$el.addClass("today");
             }

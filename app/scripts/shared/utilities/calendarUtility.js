@@ -51,12 +51,12 @@ function(
 
         startMomentOfWeek: function(week)
         {
-            return moment(week);
+            return moment(week).startOf("week");
         },
 
         endMomentOfWeek: function(week)
         {
-            return moment(week).add(6, "days");
+            return moment(week).endOf("week");
         },
         
         dayMomentForDate: function(date)
