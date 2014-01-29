@@ -504,6 +504,19 @@
         }
     }
 
+    textarea
+    {
+        font-size: 1em;
+        &[readonly]
+        {
+            padding: 0px;
+            border: none;
+            resize: none;
+            min-height: 20px;
+            @include box-shadow(none);
+        } 
+    } 
+
     .actions
     {
         padding-top: 16px;

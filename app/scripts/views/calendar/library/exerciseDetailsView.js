@@ -66,10 +66,12 @@ function(
         {
 
             this._enableOrDisableEditing();
+            this._showOrHideDescription();
             this.listenTo(this.model, "change:isStructuredWorkout sync", _.bind(
                 function()
                 {
                     this._enableOrDisableEditing();
+                    this._showOrHideDescription();
                     this.alignArrowTo(this.alignedTo);
                 }, this)
             );
@@ -165,7 +167,8 @@ function(
             e.preventDefault();
             this.$(".edit").hide();
             this.$(".update").show();
-            this.$("input").removeAttr("readonly");
+            this.$("input, textarea").removeAttr("readonly");
+            this.$(".descriptionContainer").show();
         },
 
         handleUpdate: function(e)
@@ -247,6 +250,11 @@ function(
             }
 
             this.$(".arrow").css("top", arrowTop + "px");
+        },
+
+        _showOrHideDescription: function()
+        {
+            this.$(".descriptionContainer").toggle(!!this.model.get("description"));
         },
 
         _enableOrDisableEditing: function()
