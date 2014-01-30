@@ -28,8 +28,6 @@ function(
         showThrobbers: false,
         tagName: "div",
 
-        today: moment().format(TP.utils.datetime.shortDateFormat),
-
         className: function()
         {
             return "workout " + this.getDynamicCssClassNames();

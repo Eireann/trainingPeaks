@@ -43,9 +43,7 @@ function (
 
         _stickitOnDateChanged: function()
         {
-            var today = moment().startOf("day");
-            var date = moment(this.model.get("workoutDay"));
-            var planned = date > today;
+            var planned = TP.utils.datetime.isFuture(this.model.get("workoutDay"));
 
             var timeAttribute = planned ? "startTimePlanned" : "startTime";
 

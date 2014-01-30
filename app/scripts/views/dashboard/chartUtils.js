@@ -182,13 +182,13 @@ function(
             getStartDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().week(thisWeek).day(1);
+                return moment().week(thisWeek).startOf("week");
             },
 
             getEndDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().week(thisWeek).day(7);
+                return moment().week(thisWeek).endOf("week");
             }
         },
 
@@ -227,13 +227,13 @@ function(
             getStartDate: function()
             {
                 var lastWeek = moment().week() - 1;
-                return moment().week(lastWeek).day(1);
+                return moment().week(lastWeek).startOf("week");
             },
 
             getEndDate: function()
             {
                 var lastWeek = moment().week() - 1;
-                return moment().week(lastWeek).day(7);
+                return moment().week(lastWeek).endOf("week");
             }
         },
 
@@ -302,13 +302,13 @@ function(
             getStartDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().subtract("years", 1).week(thisWeek).day(1);
+                return moment().subtract("years", 1).week(thisWeek).startOf("week");
             },
 
             getEndDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().subtract("years", 1).week(thisWeek).day(7);
+                return moment().subtract("years", 1).week(thisWeek).endOf("week");
             }
         },
 

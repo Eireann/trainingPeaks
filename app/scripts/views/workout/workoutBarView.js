@@ -45,8 +45,6 @@ function (
             this.watchForFileAttachments();
         },
         
-        today: moment().format(TP.utils.datetime.shortDateFormat),
-
         turnOffRenderOnChange: function()
         {
             this.model.off("change", this.render);
