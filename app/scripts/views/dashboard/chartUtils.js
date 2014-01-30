@@ -402,8 +402,8 @@ function(
 
             var dateOption = this.findChartDateOption(chartSettings.quickDateSelectOption);
 
-            chartSettings.startDate = dateOption.getStartDate(chartSettings);
-            chartSettings.endDate = dateOption.getEndDate(chartSettings);
+            chartSettings.startDate = dateOption.getStartDate(chartSettings).local();
+            chartSettings.endDate = dateOption.getEndDate(chartSettings).local();
             chartSettings.customStartDate = dateOption.customStartDate ? true : false;
             chartSettings.customEndDate = dateOption.customEndDate ? true : false;
             return chartSettings;

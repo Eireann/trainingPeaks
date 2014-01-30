@@ -608,7 +608,6 @@ function(
 
         buildTooltipData: function(flotItem)
         {
-            var today = TP.utils.datetime.getTodayDate().format("YYYY-MM-DD");
             var index = flotItem.dataIndex;
             var tips = [];
             var item = this.rawData[index];

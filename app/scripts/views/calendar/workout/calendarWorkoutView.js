@@ -60,10 +60,10 @@ function(
         getPastOrCompletedCssClassName: function()
         {
             var workout = this.model;
-            if (workout.getCalendarDay() < this.today)
+            if (TP.utils.datetime.isPast(workout.getCalendarDay()))
             {
                 return "past";
-            } else if (workout.getCalendarDay() === this.today && TP.utils.workout.determineCompletedWorkout(workout.attributes))
+            } else if (TP.utils.datetime.isToday(workout.getCalendarDay()) && TP.utils.workout.determineCompletedWorkout(workout.attributes))
             {
                 return "past";
             } else
