@@ -58,9 +58,27 @@ function(
 
         renderItemView: function(view, index)
         {
+            index = this.collection.sortBy("begin").indexOf(view.model);
             view.lapsStats = this._getLapsStats(view.model);
             view.render();
-            this.appendHtml(this, view, index);
+            var container = this.getItemViewContainer(this);
+            this._insertElementAt(container, view.$el, index);
+        },
+
+        _insertElementAt: function($container, $element, index)
+        {
+            if(index === 0)
+            {
+                $container.prepend($element);
+            }
+            else if(index >= $container.children().length)
+            {
+                $container.append($element);
+            }
+            else 
+            {
+                $element.insertBefore($container.children()[index]);
+            }
         },
 
         _afterRender: function()
@@ -71,10 +89,13 @@ function(
 
         _renderTableHeader: function()
         {
-            var headers = {
-                headerNames: this._getLapsStats().getHeaders()
-            };
-            this.$(".lapSplitsTableHeader").html(lapsSplitsTableHeaderTemplate(headers));
+            if(!this.$(".lapSplitsTableHeader th").length)
+            {
+                var headers = {
+                    headerNames: this._getLapsStats().getHeaders()
+                };
+                this.$(".lapSplitsTableHeader").html(lapsSplitsTableHeaderTemplate(headers));
+            }
         },
 
         _setNoDataClass: function()
