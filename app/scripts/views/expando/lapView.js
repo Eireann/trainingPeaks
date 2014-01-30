@@ -45,7 +45,8 @@ function(
         modelEvents: _.defaults({
             "state:change:isSelected": "_onSelectedChange",
             "change:name": "_onNameChange",
-            "state:change:isLap change:totalTime state:change:isCut": "render"
+            "state:change:isLap change:totalTime state:change:isCut": "render",
+            "state:change:hasLoaded": "_toggleAdd"
         }, EditableLapView.prototype.modelEvents),
 
         events: _.defaults({
@@ -56,6 +57,7 @@ function(
         onRender: function()
         {
             this.constructor.__super__.onRender.apply(this, arguments);
+            this._toggleAdd();
             this._onSelectedChange();
         },
 
@@ -114,7 +116,13 @@ function(
             {
                 self.$("input[type=checkbox]").attr("checked", false);
             }
+        },
+
+        _toggleAdd: function()
+        {
+            this.$(".add").toggle(!!this.model.getState().get("hasLoaded")); 
         }
+
 
     });
 

@@ -7,12 +7,14 @@ define(
     "views/expando/lapSplitView",
     "utilities/lapsStats",
 
-    "hbs!templates/views/expando/lapsSplitsTemplate"
+    "hbs!templates/views/expando/lapsSplitsTemplate",
+    "hbs!templates/views/expando/lapSplitsTableHeaderTemplate"
 ],
 function(
     _,
     TP, LapSplitView, LapsStats,
-    lapsSplitsTemplate
+    lapsSplitsTemplate,
+    lapsSplitsTableHeaderTemplate
     )
 {
 
@@ -20,14 +22,10 @@ function(
     {
         podTitle: "Laps & Splits",
         className: "expandoLapsSplitsPod",
+
         events:
         {
             "change input": "handleChange"
-        },
-
-        collectionEvents: {
-            "refresh": "render",
-            "add": "render"
         },
 
         itemView: LapSplitView,
@@ -53,35 +51,48 @@ function(
 
             this.collection = this.model.get('detailData').getRangeCollectionFor("laps");
             this.listenTo(this.model.get("detailData"), "reset change:availableDataChannels", _.bind(this.render, this));
-        },
 
-        onRender: function()
-        {
-            if(!this.collection.length)
-            {
-                this.$el.addClass("noData");
-            }
-            else
-            {
-                this.$el.removeClass("noData");
-            }
+            this.on("render", this._afterRender, this);
+            this.on("after:item:added", this._afterRender, this);
         },
 
         renderItemView: function(view, index)
         {
-            view.lapsStats = this.lapsStats;
+            view.lapsStats = this._getLapsStats(view.model);
             view.render();
             this.appendHtml(this, view, index);
         },
 
-        serializeData: function()
+        _afterRender: function()
         {
-            this.lapsStats = new LapsStats({ model: this.model });
+            this._renderTableHeader();
+            this._setNoDataClass();
+        },
 
-            return {
-                headerNames: this.lapsStats.getHeaders()
+        _renderTableHeader: function()
+        {
+            var headers = {
+                headerNames: this._getLapsStats().getHeaders()
             };
+            this.$(".lapSplitsTableHeader").html(lapsSplitsTableHeaderTemplate(headers));
+        },
+
+        _setNoDataClass: function()
+        {
+            this.$el.toggleClass("noData", !this.collection.length);
+        },
+
+        _getLapsStats: function(lapModel)
+        {
+            if(!this.lapsStats || !this.lapsStats.columns || !this.lapsStats.columns.length)
+            {
+                var laps = lapModel ? [lapModel.toJSON()] : this.model.get("detailData").get("lapsStats");
+                this.lapsStats = new LapsStats({ model: this.model, laps: laps });
+            }
+
+            return this.lapsStats;
         }
+
 
     });
 
