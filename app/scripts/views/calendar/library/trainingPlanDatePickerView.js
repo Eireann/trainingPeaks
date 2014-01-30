@@ -109,16 +109,16 @@ function(
 
         restrictTargetDate: function(targetDate)
         {
-            targetDate = moment(targetDate); 
+            targetDate = moment.local(targetDate); 
 
             if(this.model.details.get("eventPlan") && this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
             {
-                targetDate = moment(this.model.details.get("eventDate"));
+                targetDate = moment.local(this.model.details.get("eventDate"));
             }
 
             if(this.model.details.get("isDynamic"))
             {
-                targetDate = moment(this.model.details.get("startDate"));
+                targetDate = moment.local(this.model.details.get("startDate"));
 
             // force start/end to week start/end
             } else if(this.model.details.get("hasWeeklyGoals"))
@@ -128,12 +128,12 @@ function(
 
                 if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && moment(targetDate).day() !== startDayOfWeek) 
                 {
-                    targetDate = moment(targetDate).day(startDayOfWeek);
+                    targetDate = moment.local(targetDate).day(startDayOfWeek);
                 }
                 else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && moment(targetDate).day() !== endDayOfWeek) 
                 {
-                    targetDate = moment(targetDate).day(endDayOfWeek);
-                    if(targetDate.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
+                    targetDate = moment.local(targetDate).day(endDayOfWeek);
+                    if(TP.utils.datetime.isPast(targetDate))
                     {
                         targetDate.add("weeks", 1);
                     }

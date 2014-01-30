@@ -290,21 +290,6 @@
             }
         },
 
-        fetchMetrics: function(startDate, endDate)
-        {
-            if (!startDate || !endDate)
-            {
-                throw new Error("startDate & endDate needed for ReportFetcher");
-            }
-
-            var athleteId = this.user.getCurrentAthleteId();
-            var url = theMarsApp.apiRoot + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
-            url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
-            url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
-
-            return this.fetchAjax(url, { url: url, type: "GET" });
-        },
-
         _buildUrlSignature: function(url, postData)
         {
             var parts = [];
