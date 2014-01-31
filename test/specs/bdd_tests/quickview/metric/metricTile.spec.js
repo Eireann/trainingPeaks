@@ -26,7 +26,6 @@ function(
             model.setTimestamp("1:35 PM");
             view.render();
             expect(view.$el.text()).to.contain("1:35");
-            expect()
         });
 
         it("Should not display a time if the timestamp is 12:00 AM", function()

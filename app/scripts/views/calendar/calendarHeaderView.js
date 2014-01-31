@@ -174,20 +174,20 @@ function(
 
         onFullScreenClicked: function()
         {
-            $(document).toggleFullScreen(!this._isFullScreen());
+            this._getDocument().toggleFullScreen(!this._isFullScreen());
         },
 
         _setupFullScreenEvents: function()
         {
             var onFullScreenChange = _.bind(_.debounce(this._onFullScreenChange, 100), this);
-            $(document).on("fullscreenchange.calendarHeaderView", onFullScreenChange);
-            $(window).on("resize.calendarHeaderView", onFullScreenChange);
+            this._getDocument().on("fullscreenchange.calendarHeaderView", onFullScreenChange);
+            this._getWindow().on("resize.calendarHeaderView", onFullScreenChange);
         },
 
         _cleanupFullScreenEvents: function()
         {
-            $(document).off("fullscreenchange.calendarHeaderView");
-            $(window).off("resize.calendarHeaderView");
+            this._getDocument().off("fullscreenchange.calendarHeaderView");
+            this._getWindow().off("resize.calendarHeaderView");
         },
 
         _onFullScreenChange: function()
@@ -197,13 +197,13 @@ function(
 
         _isFullScreen: function()
         {
-            return !!$(document).fullScreen() || (window.innerHeight === screen.height);
+            return !!this._getDocument().fullScreen() || (this._getWindow().innerHeight() === this._getScreen().height);
         },
 
         _updateFullScreenState: function()
         {
             var isFullScreen = this._isFullScreen();
-            $("body").toggleClass("fullScreen", isFullScreen);
+            theMarsApp.getBodyElement().toggleClass("fullScreen", isFullScreen);
             setImmediate(_.bind(this._triggerScrollRefresh, this));
             this._logFullScreen(isFullScreen);
         },
@@ -238,6 +238,21 @@ function(
                 this.$(selector).append(view.$el);
             }
             this.children.add(view);
+        },
+
+        _getScreen: function()
+        {
+            return screen;
+        },
+
+        _getDocument: function()
+        {
+            return $(document);
+        },
+
+        _getWindow: function()
+        {
+            return $(window);
         }
     };
 

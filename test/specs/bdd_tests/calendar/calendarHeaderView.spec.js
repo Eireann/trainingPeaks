@@ -1,6 +1,7 @@
 define(
 [
     "jquery",
+    "underscore",
     "TP",
     "moment",
     "framework/dataManager",
@@ -9,7 +10,7 @@ define(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs"
 ],
-function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
+function($, _, TP, moment, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
 {
 
     describe("CalendarHeaderView ", function()
@@ -64,6 +65,67 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
             expect(view.$(".calendarMonthLabel").text()).to.contain("January");
             expect(view.$(".calendarMonthLabel").text()).to.contain("2014");
         });
+
+        describe("FullScreen", function()
+        {
+
+            var doc, view;
+            beforeEach(function()
+            {
+                var stateModel = new TP.Model({ date: moment().format("YYYY-MM-DD") });
+
+                doc = {
+                    isFullScreen: false,
+                    fullScreen: function(){ return this.isFullScreen;},
+                    toggleFullScreen: function(full){ 
+                        this.isFullScreen = _.isUndefined(full) ? !this.isFullScreen : full; this.callback(); },
+                    callback: function(){},
+                    on: function(eventName, callback) { 
+                        this.callback = callback; 
+                    },
+                    off: function(){ this.callback = function(){}; }
+                };
+
+                sinon.spy(doc, "fullScreen");
+                sinon.spy(doc, "toggleFullScreen");
+
+                sinon.stub(CalendarHeaderView.prototype, "_getDocument").returns(doc);
+
+                view = new CalendarHeaderView({ model: stateModel });
+                view.render();
+            });
+
+            it("Should enable full screen mode", function(done)
+            { 
+                doc.isFullScreen = false;
+                view.$(".fullScreen").trigger("click");
+                expect(doc.toggleFullScreen).to.have.been.calledWith(true);
+
+                setTimeout(function()
+                {
+                    expect(testHelpers.theApp.getBodyElement().is(".fullScreen")).to.be.ok;
+                    done();
+                }, 200);
+
+            });
+
+            it("Should disable full screen mode", function(done)
+            { 
+                doc.isFullScreen = true;
+                testHelpers.theApp.getBodyElement().addClass("fullScreen");
+
+                view.$(".fullScreen").trigger("click");
+                expect(doc.toggleFullScreen).to.have.been.calledWith(false);
+
+                setTimeout(function()
+                {
+                    expect(testHelpers.theApp.getBodyElement().is(".fullScreen")).to.not.be.ok;
+                    done();
+                }, 200);
+
+            });
+        });
+
 
     });
 });

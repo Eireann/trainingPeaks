@@ -102,13 +102,14 @@ function(
 
             it("Should truncate descriptions longer than 100 characters", function()
             {
-                var description = "I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. " 
-                    + "I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. "
-                    + "I am the very end of a very long description";
+                var description = "I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. " +
+                    "I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. " +
+                    "I am the very end of a very long description";
                 model.set("description", description);
                 view.render();
                 expect(view.$(".workoutBody").text()).to.contain("I am a very long description");
                 expect(view.$(".workoutBody").text()).to.not.contain(description);
+                expect(view.$(".workoutBody").text()).to.not.contain("I am the end of a very long description");
                 expect(view.$(".workoutBody").text()).to.contain("more");
             });
 
