@@ -47,7 +47,9 @@ function(
         {
             this.on("render", this._setupDraggable, this);
             this.on("render", this._updateSelected, this);
-            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
+
+            var user = options.user || theMarsApp.user;
+            this.listenTo(user, "change:units", _.bind(this.render, this));
             this.userSettingsMetricOrder = options.userSettingsMetricOrder || _.pluck(theMarsApp.user.getMetricsSettings().attributes, "type");
         },
 
@@ -72,7 +74,10 @@ function(
         _hideTimeIfTwelveAM: function()
         {
             var twelveAM = moment(this.model.getCalendarDay()).startOf("day");
-            this.$(".metricTimeWrapper").toggle(!!moment(this.model.getTimestamp()).diff(twelveAM));
+            if(!moment(this.model.getTimestamp()).diff(twelveAM))
+            {
+                this.$(".metricTimeWrapper").remove();
+            }
         },
 
         _updateSelected: function()
