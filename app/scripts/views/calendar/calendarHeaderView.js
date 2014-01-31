@@ -6,6 +6,7 @@ define(
     "TP",
     "moment",
     "jqueryui/datepicker",
+    "jqueryFullScreen",
     "views/applicationHeader/athletePickerView",
     "shared/utilities/calendarUtility",
     "hbs!templates/views/calendar/calendarHeader"
@@ -17,6 +18,7 @@ function(
          TP,
          moment,
          datepicker,
+         jqueryFullScreen,
          AthletePickerView,
          CalendarUtility,
          calendarHeaderTemplate
@@ -35,10 +37,11 @@ function(
 
         events:
         {
-            "click #goToTodayButton": "onGoToTodayButtonClicked",
-            "click #goToNextWeekButton": "onGoToNextWeekButtonClicked",
-            "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
+            "click .goToTodayButton": "onGoToTodayButtonClicked",
+            "click .goToNextWeekButton": "onGoToNextWeekButtonClicked",
+            "click .goToLastWeekButton": "onGoToLastWeekButtonClicked",
             "click button.refreshButton": "onRefreshButtonClicked",
+            "click button.fullScreen": "onFullScreenClicked",
             "change .datepicker": "onDateSelect"
         },
 
@@ -157,6 +160,11 @@ function(
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
             theMarsApp.calendarManager.reset();
             // TODO: Reset libraries too?
+        },
+
+        onFullScreenClicked: function()
+        {
+            $(document).toggleFullScreen();
         },
 
         _addView: function(selector, view)

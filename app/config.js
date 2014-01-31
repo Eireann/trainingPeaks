@@ -22,6 +22,7 @@ requirejs.config(
         jqueryTimepicker: "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
         jqueryTextAreaResize: "../vendor/js/libs/jquery/jquery.autosize",
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
+        jqueryFullScreen: "../vendor/js/libs/jquery/jquery.fullscreen",
         flot: "../bower_components/Flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
         lodash: "../bower_components/lodash/dist/lodash.compat",
@@ -95,6 +96,9 @@ requirejs.config(
             "jquery"
         ],
         jqueryTimepicker: [
+            "jquery"
+        ],
+        jqueryFullScreen: [
             "jquery"
         ],
         "flot/jquery.flot": [
