@@ -1,14 +1,19 @@
 define(
 [
+    "underscore"
 ],
-function()
+function(_)
 {
 
-    var multilineEllipsis = function(text, maxLength)
+    var multilineEllipsis = function(text, maxLength, ellipsis)
     {
         if (typeof maxLength !== "undefined" && text.length > maxLength)
         {
-            text = text.substr(0, maxLength - 3) + "...";
+            if(_.isUndefined(ellipsis))
+            {
+                ellipsis = "...";
+            }
+            text = text.substr(0, maxLength - 3) + ellipsis;
         }
         return text;
     };

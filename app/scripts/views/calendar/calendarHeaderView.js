@@ -1,6 +1,7 @@
 define(
 [
     "underscore",
+    "jquery",
     "setImmediate",
     "backbone",
     "TP",
@@ -13,6 +14,7 @@ define(
 ],
 function(
          _,
+         $,
          setImmediate,
          Backbone,
          TP,
@@ -74,6 +76,14 @@ function(
 
             this._addView(".athletePickerContainer", new AthletePickerView({ basePath: "calendar" }));
             this.children.call("render");
+
+            this._setupFullScreenEvents();
+            this._updateFullScreenState();
+        },
+
+        onClose: function()
+        {
+            this._cleanupFullScreenEvents(); 
         },
 
         bindings:
@@ -164,7 +174,42 @@ function(
 
         onFullScreenClicked: function()
         {
-            $(document).toggleFullScreen();
+            $(document).toggleFullScreen(!this._isFullScreen());
+        },
+
+        _setupFullScreenEvents: function()
+        {
+            var onFullScreenChange = _.bind(this._onFullScreenChange, this);
+            $(document).on("fullscreenchange.calendarHeaderView", onFullScreenChange);
+            $(window).on("resize.calendarHeaderView", onFullScreenChange);
+        },
+
+        _cleanupFullScreenEvents: function()
+        {
+            $(document).off("fullscreenchange.calendarHeaderView");
+            $(window).off("resize.calendarHeaderView");
+        },
+
+        _onFullScreenChange: function()
+        {
+            setImmediate(_.bind(this._updateFullScreenState, this));
+        },
+
+        _isFullScreen: function()
+        {
+            return !!$(document).fullScreen() || (window.innerHeight === screen.height);
+        },
+
+        _updateFullScreenState: function()
+        {
+            var isFullScreen = this._isFullScreen();
+            $("body").toggleClass("fullScreen", isFullScreen);
+            setImmediate(_.bind(this._triggerScrollRefresh, this));
+        },
+
+        _triggerScrollRefresh: function()
+        {
+            this.model.trigger("change:date", this.model, this.model.get("date"), {});
         },
 
         _addView: function(selector, view)

@@ -1,12 +1,14 @@
 define(
 [
     "underscore",
+    "jquery",
     "TP",
     "utilities/multilineEllipsis",
     "utilities/workout/workoutTypes"
 ],
 function(
          _,
+         $,
          TP,
          multilineEllipsis,
          workoutTypes
@@ -82,14 +84,19 @@ function(
         {
             if (commentsArray && commentsArray.length && commentsArray[0].comment)
             {
-                return multilineEllipsis(commentsArray[0].comment, 100);
+                return this._multilineEllipsis(commentsArray[0].comment);
             }
             return "";
         },
 
         formatDescription: function(description)
         {
-            return multilineEllipsis(description, 100);
+            return this._multilineEllipsis(description);
+        },
+
+        _multilineEllipsis: function(text)
+        {
+            return multilineEllipsis(text, 100, "...more...");
         }
 
     };

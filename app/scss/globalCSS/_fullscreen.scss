@@ -1,0 +1,60 @@
+﻿
+.fullScreen
+{
+
+    #navigation
+    {
+        display: none;
+    }
+
+    .frameworkHeader
+    {
+        height:50px;
+        margin-top: 7px;
+    }
+
+    .frameworkTitle
+    {
+        padding-left: 45px;
+    }
+
+    .frameworkMainWrapper
+    {
+        @include calc(height, "100% - 50px");
+        position: absolute;
+        top: 50px;
+    }
+
+    #calendarContainer
+    {
+        .day
+        {
+            min-height: 100px;
+
+            .addWorkoutWrapper
+            {
+                height: 24px;
+            }
+
+            .addWorkout
+            {
+                height: 24px;
+            }
+
+            
+            .workoutBody
+            {
+                p
+                {
+                    display: none;
+                }
+            }
+        }
+
+        .weekSummary
+        {
+            min-height: 100px;
+        }
+    }
+
+}
