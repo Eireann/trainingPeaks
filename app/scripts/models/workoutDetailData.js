@@ -213,7 +213,7 @@ function (
             }
             return collection;
 
-        },
+        }, 
 
         watchForSensorData: function()
         {
@@ -518,6 +518,7 @@ function (
             }, this);
 
         },
+
 
         set: function(key, value, options)
         {

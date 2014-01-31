@@ -543,7 +543,16 @@
     }
 
     .expandoPodContent.expandoLapsSplitsPod {
+
         overflow: auto;
+
+        &.noData
+        {
+            .frameworkTable
+            {
+                display: none;
+            } 
+        }
 
         table {
             border-left:none;
