@@ -2,9 +2,15 @@ define(
 [
     "underscore",
     "TP",
+    "utilities/multilineEllipsis",
     "utilities/workout/workoutTypes"
 ],
-function(_, TP, workoutTypes)
+function(
+         _,
+         TP,
+         multilineEllipsis,
+         workoutTypes
+         )
 {
     var calendarWorkoutUserCustomization = {
 
@@ -36,7 +42,7 @@ function(_, TP, workoutTypes)
                     } 
                 }, this);
 
-                this.ui.layoutAnchor.before(fields.join(''));
+                this.ui.layoutAnchor.before(fields);
             }
         },
 
@@ -63,7 +69,7 @@ function(_, TP, workoutTypes)
                 }
                 var units = field.units ? " " + TP.utils.units.getUnitsLabel(field.units, workoutTypeValueId, this) : "";
 
-                return "<p>" + prefix + fieldValue + units + "</p>";
+                return $("<p>").addClass(field.name).text(prefix + fieldValue + units);
             }
         },
 
@@ -76,9 +82,14 @@ function(_, TP, workoutTypes)
         {
             if (commentsArray && commentsArray.length && commentsArray[0].comment)
             {
-                return commentsArray[0].comment;
+                return multilineEllipsis(commentsArray[0].comment, 100);
             }
             return "";
+        },
+
+        formatDescription: function(description)
+        {
+            return multilineEllipsis(description, 100);
         }
 
     };
