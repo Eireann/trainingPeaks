@@ -56,10 +56,10 @@ requirejs.config(
         backbone: "../bower_components/backbone/backbone",
         "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette",
 
-        // we need to wrap moment.js to modify some functionality,
+        // We need to wrap moment.js to modify some functionality,
         // but because of the way it defines it's amd module, 
         // we need to let it load normally first.
-        // see end of this file
+        // See end of this file...
         moment: "../bower_components/moment/moment",
         wrappedMoment: "scripts/utilities/wrappedMoment",
     },
@@ -152,21 +152,24 @@ requirejs.config(
     }
 });
 
-// load moment.js, which defines it's amd module with the moment name,
+// Load moment.js, which defines its AMD module with the "moment" name
 require(["moment"], function(realMoment)
 {
+    // Alias it as 'realMoment'
+    define("realMoment", function()
+    {
+        return realMoment;
+    });
 
-    // alias it as 'realMoment'
-    define("realMoment", function(){return realMoment;});
-
-    // wrap it in our adapter
+    // Wrap it in our adapter
     require(["wrappedMoment"], function(wrappedMoment)
     {
-        // define our wrapped version as moment
+        // Define our wrapped version as moment
         requirejs.undef("moment");
-        define("moment", function(){return wrappedMoment;});
-
+        
+        define("moment", function()
+        {
+            return wrappedMoment;
+        });
     });
-    
 });
-

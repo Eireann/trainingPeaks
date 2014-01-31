@@ -40,31 +40,31 @@
 
         isThisWeek: function(dateToCheck)
         {
-            var mondayOfWeekToCheck = this._makeLocalMoment(dateToCheck).local().startOf("week");
+            var mondayOfWeekToCheck = this._getLocalMoment(dateToCheck).startOf("week");
             return datetime.getThisWeekStartDate().diff(mondayOfWeekToCheck, "days") === 0;
         },
 
         isToday: function(dateToCheck)
         {
-            var midnightOfDateToCheck = this._makeLocalMoment(dateToCheck).local().startOf("day");
+            var midnightOfDateToCheck = this._getLocalMoment(dateToCheck).startOf("day");
             return datetime.getTodayDate().diff(midnightOfDateToCheck, "days") === 0;
         },
 
         isPast: function(dateToCheck)
         {
-            var midnightOfDateToCheck = this._makeLocalMoment(dateToCheck).local().startOf("day");
+            var midnightOfDateToCheck = this._getLocalMoment(dateToCheck).startOf("day");
             return datetime.getTodayDate().diff(midnightOfDateToCheck, "days") > 0;           
         },
 
         isFuture: function(dateToCheck)
         {
-            var midnightOfDateToCheck = this._makeLocalMoment(dateToCheck).local().startOf("day");
+            var midnightOfDateToCheck = this._getLocalMoment(dateToCheck).startOf("day");
             return datetime.getTodayDate().diff(midnightOfDateToCheck, "days") < 0;           
         },
 
-        _makeLocalMoment: function(date)
+        _getLocalMoment: function(date)
         {
-            return moment.isMoment(date) ? date : moment.local(date);
+            return moment.isMoment(date) ? date.local() : moment.local(date);
         }
     };
 

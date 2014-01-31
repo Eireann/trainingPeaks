@@ -5,9 +5,13 @@ define(
 ],
 function(moment, datetimeUtils)
 {
+    var ONE_DAY_IN_MILLISECONDS = 24 * 3600 * 1000;
+
+    // So that we don't validate "moment" using "moment"
     Date.prototype.format = function(format)
     {
-        var formatSpecifiers = {
+        var formatSpecifiers =
+        {
             "M+": this.getMonth() + 1,
             "D+": this.getDate(),
             "h+": this.getHours(),
@@ -196,6 +200,7 @@ function(moment, datetimeUtils)
         {
             it("should return today's date as a local start-of-day date", function()
             {
+                // This will return a local date, based on the browser's time zone
                 var jsDate = new Date();
 
                 expect(datetimeUtils.getTodayDate().format("MM/DD/YYYY hh:mm:ss")).to.equal(jsDate.format("MM/DD/YYYY 12:00:00"));
@@ -211,7 +216,7 @@ function(moment, datetimeUtils)
                 while (jsDate.getDay() > 1)
                 {
                     // Move back 1 day
-                    jsDate = new Date(jsDate.getTime() - 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
                 }
 
                 expect(datetimeUtils.getThisWeekStartDate().format("MM/DD/YYYY hh:mm:ss")).to.equal(jsDate.format("MM/DD/YYYY 12:00:00"));
@@ -233,7 +238,7 @@ function(moment, datetimeUtils)
                 while (jsDate.getDay() > 1)
                 {
                     // Move back 1 day
-                    jsDate = new Date(jsDate.getTime() - 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
                 }
 
                 expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
@@ -245,7 +250,7 @@ function(moment, datetimeUtils)
                 while (jsDate.getDay() < 6)
                 {
                     // Move ahead 1 day
-                    jsDate = new Date(jsDate.getTime() + 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
                 }
 
                 expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
@@ -258,16 +263,16 @@ function(moment, datetimeUtils)
                 if (jsDate.getDay() == 0)
                 {
                     // Move back 1 day
-                    jsDate = new Date(jsDate.getTime() - 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
                 }
 
                 while (jsDate.getDay() != 0)
                 {
                     // Move back 1 day
-                    jsDate = new Date(jsDate.getTime() - 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
                 }
 
-                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(false);
             });
             it("should return 'false' for the day after this Sunday", function()
             {
@@ -277,22 +282,22 @@ function(moment, datetimeUtils)
                 if (jsDate.getDay() == 1)
                 {
                     // Move ahead 1 day
-                    jsDate = new Date(jsDate.getTime() + 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
                 }
 
                 while (jsDate.getDay() != 1)
                 {
                     // Move ahead 1 day
-                    jsDate = new Date(jsDate.getTime() + 24 * 3600 * 1000);
+                    jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
                 }
 
-                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(false);
             });
             it("should return 'false' if the specified date is 2 weeks ago", function()
             {
                 var jsDate = new Date();
 
-                var twoWeeksAgo = new Date(jsDate.getTime() - 14 * 24 * 3600 * 1000).format("MM/DD/YYYY");
+                var twoWeeksAgo = new Date(jsDate.getTime() - 14 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
 
                 expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
             });
@@ -300,7 +305,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var twoWeeksAgo = new Date(jsDate.getTime() + 14 * 24 * 3600 * 1000).format("MM/DD/YYYY");
+                var twoWeeksAgo = new Date(jsDate.getTime() + 14 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
 
                 expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
             });
@@ -308,7 +313,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var twoWeeksAgo = new Date(jsDate.getTime() - 7 * 24 * 3600 * 1000).format("MM/DD/YYYY");
+                var twoWeeksAgo = new Date(jsDate.getTime() - 7 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
 
                 expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
             });
@@ -316,7 +321,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var twoWeeksAgo = new Date(jsDate.getTime() + 7 * 24 * 3600 * 1000).format("MM/DD/YYYY");
+                var twoWeeksAgo = new Date(jsDate.getTime() + 7 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
 
                 expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
             });
@@ -356,7 +361,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var tomorrow = new Date(jsDate.getTime() + 24 * 3600 * 1000);
+                var tomorrow = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
 
                 expect(datetimeUtils.isPast(tomorrow.format("MM/DD/YYYY 12:00:00"))).to.equal(false);
             });
@@ -364,7 +369,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var yesterday = new Date(jsDate.getTime() - 24 * 3600 * 1000);
+                var yesterday = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
 
                 expect(datetimeUtils.isPast(yesterday.format("MM/DD/YYYY 12:00:00"))).to.equal(true);
             });
@@ -382,7 +387,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var yesterday = new Date(jsDate.getTime() - 24 * 3600 * 1000);
+                var yesterday = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
 
                 expect(datetimeUtils.isFuture(yesterday.format("MM/DD/YYYY 12:00:00"))).to.equal(false);
             });
@@ -390,7 +395,7 @@ function(moment, datetimeUtils)
             {
                 var jsDate = new Date();
 
-                var tomorrow = new Date(jsDate.getTime() + 24 * 3600 * 1000);
+                var tomorrow = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
 
                 expect(datetimeUtils.isFuture(tomorrow.format("MM/DD/YYYY 12:00:00"))).to.equal(true);
             });
