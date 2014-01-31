@@ -50,7 +50,7 @@ function(
 
         getUserLayoutSettings: function()
         {
-            return theMarsApp.user.getCalendarSettings().get("workoutLabelLayout");
+            return this.options.workoutLabelLayout || theMarsApp.user.getCalendarSettings().get("workoutLabelLayout");
         },
 
         applyFieldLayoutPreference: function(field)

@@ -90,6 +90,47 @@ function(
             });
         });
 
+        describe("Description truncation", function()
+        {
+            var model, view;
+            beforeEach(function()
+            {
+                model = new WorkoutModel();
+                var userLayoutSettings = [23, 26, 30, 24, 8, 7, 2, 1, 25, 31, 3, 4, 5, 40, 35, 38, 36, 39, 6, 41, 13];
+                view = new CalendarWorkoutView({ model: model, workoutLabelLayout: userLayoutSettings });
+            });
+
+            it("Should truncate descriptions longer than 100 characters", function()
+            {
+                var description = "I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. " 
+                    + "I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. I am a very long description. "
+                    + "I am the very end of a very long description";
+                model.set("description", description);
+                view.render();
+                expect(view.$(".workoutBody").text()).to.contain("I am a very long description");
+                expect(view.$(".workoutBody").text()).to.not.contain(description);
+                expect(view.$(".workoutBody").text()).to.contain("more");
+            });
+
+            it("Should not truncate descriptions shorter than 100 characters", function()
+            {
+                var description = "I am a very short description";
+                model.set("description", description);
+                view.render();
+                expect(view.$(".workoutBody").text()).to.contain(description);
+                expect(view.$(".workoutBody").text()).to.not.contain("more");
+            });
+
+            it("SHould not truncate descriptions equal to 100 characters", function()
+            {
+                var description = "I am a description with exactly 100 characters. exactly. Here are a few other characters to make 100";
+                model.set("description", description);
+                expect(view.$(".workoutBody").text()).to.contain(description);
+                expect(view.$(".workoutBody").text()).to.not.contain("more");
+            });
+
+        });
+
     });
 
 });
