@@ -155,24 +155,6 @@
             }
         }
 
-        .metricDetailCounter
-        {
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-            width: 31px;
-            height: 31px;
-            @extend %metricTriangle;
-
-            .counterText
-            {
-                color: $white;
-                position: absolute;
-                bottom: 2px;
-                right: 3px;
-                font-size: $fontSizeSmall;
-            }
-        }
     }
 
 } // end .metric

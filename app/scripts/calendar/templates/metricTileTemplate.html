@@ -19,8 +19,12 @@
                     <span class="metricValue"> {{ formatMetricValue this true }}</span>
                 </li>
                 {{/with}}
+                {{#if hiddenStatsCount}}
+                <li>
+                    <span class="metricValue">{{ hiddenStatsCount }} more...</span>
+                </li>
+                {{/if}}
             </ul>
         </div>
-        <div class="metricDetailCounter"><div class="counterText">{{ detailCount }}</div></div>
     </div>
 </div>

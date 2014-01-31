@@ -55,19 +55,18 @@ function(
         {
             var data = this.model.toJSON();
             data.keyStat = this.model.getKeyStatField(this.userSettingsMetricOrder);
-            data.detailCount = this.model.get("details").length;
+
+            if(data.details.length > 1)
+            {
+                data.hiddenStatsCount = data.details.length - 1;
+            }
+            
             return data;
         },
 
         onRender: function()
         {
             this._hideTimeIfTwelveAM();
-            this._toggleDetailCounter();
-        },
-
-        _toggleDetailCounter: function()
-        {
-            this.$(".metricDetailCounter").toggle(this.model.get("details").length > 1);
         },
 
         _hideTimeIfTwelveAM: function()
