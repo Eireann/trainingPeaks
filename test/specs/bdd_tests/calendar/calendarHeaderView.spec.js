@@ -32,10 +32,10 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
         it("Should update the calendar when a specific date is requested through the datepicker", function()
         {
 
+            sinon.stub(CalendarController.prototype, "showDate");
             var controller = new CalendarController({ dataManager: new DataManager() });
             controller.initializeHeader();
             controller.showHeader();
-            sinon.stub(controller, "showDate");
             controller.views.header.$el.find('input.datepicker').val("8/28/2013");
             controller.views.header.$el.find('input.datepicker').trigger("change");
             expect(controller.showDate).to.have.been.calledWith("2013-08-28");
