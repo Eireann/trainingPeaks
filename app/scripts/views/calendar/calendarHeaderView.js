@@ -179,7 +179,7 @@ function(
 
         _setupFullScreenEvents: function()
         {
-            var onFullScreenChange = _.bind(this._onFullScreenChange, this);
+            var onFullScreenChange = _.bind(_.debounce(this._onFullScreenChange, 100), this);
             $(document).on("fullscreenchange.calendarHeaderView", onFullScreenChange);
             $(window).on("resize.calendarHeaderView", onFullScreenChange);
         },
@@ -205,6 +205,22 @@ function(
             var isFullScreen = this._isFullScreen();
             $("body").toggleClass("fullScreen", isFullScreen);
             setImmediate(_.bind(this._triggerScrollRefresh, this));
+            this._logFullScreen(isFullScreen);
+        },
+
+        _logFullScreen: function(isFullScreen)
+        {
+            if(isFullScreen)
+            {
+                this.fullScreenStartTime = moment().unix();
+                TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "enterFullScreen", "eventLabel": "" });
+            }
+            else if(this.fullScreenStartTime)
+            {
+                var secondsInFullScreen = moment().unix() - this.fullScreenStartTime;
+                delete this.fullScreenStartTime;
+                TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "exitFullScreen", "eventLabel": "", "metric1": secondsInFullScreen });
+            }
         },
 
         _triggerScrollRefresh: function()
