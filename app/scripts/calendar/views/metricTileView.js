@@ -2,6 +2,7 @@ define(
 [
     "jquery",
     "underscore",
+    "moment",
     "TP",
     "calendar/views/metricTileSettingsView",
     "quickview/metric/views/metricQuickView",
@@ -10,6 +11,7 @@ define(
 function(
     $,
     _,
+    moment,
     TP,
     MetricTileSettingsView,
     MetricQuickView,
@@ -41,11 +43,26 @@ function(
             "state:change:isSelected": "_updateSelected"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             this.on("render", this._setupDraggable, this);
             this.on("render", this._updateSelected, this);
             this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
+            this.userSettingsMetricOrder = options.userSettingsMetricOrder || _.pluck(theMarsApp.user.getMetricsSettings().attributes, "type");
+        },
+
+        serializeData: function()
+        {
+            var data = this.model.toJSON();
+            data.keyStat = this.model.getKeyStatField(this.userSettingsMetricOrder);
+            data.detailCount = this.model.get("details").length;
+            return data;
+        },
+
+        onRender: function()
+        {
+            var twelveAM = moment(this.model.getCalendarDay()).startOf("day");
+            this.$(".metricTimeWrapper").toggle(!!moment(this.model.getTimestamp()).diff(twelveAM));
         },
 
         _updateSelected: function()
