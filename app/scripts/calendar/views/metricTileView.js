@@ -61,6 +61,17 @@ function(
 
         onRender: function()
         {
+            this._hideTimeIfTwelveAM();
+            this._toggleDetailCounter();
+        },
+
+        _toggleDetailCounter: function()
+        {
+            this.$(".metricDetailCounter").toggle(this.model.get("details").length > 1);
+        },
+
+        _hideTimeIfTwelveAM: function()
+        {
             var twelveAM = moment(this.model.getCalendarDay()).startOf("day");
             this.$(".metricTimeWrapper").toggle(!!moment(this.model.getTimestamp()).diff(twelveAM));
         },
