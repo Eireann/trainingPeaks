@@ -163,6 +163,7 @@ require(["moment"], function(realMoment)
     require(["wrappedMoment"], function(wrappedMoment)
     {
         // define our wrapped version as moment
+        requirejs.undef("moment");
         define("moment", function(){return wrappedMoment;});
 
     });
