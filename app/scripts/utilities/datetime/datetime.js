@@ -30,9 +30,9 @@
 
         isThisWeek: function(dateToCheck)
         {
-            var thisMonday = moment().day(1);
-            var mondayOfWeekToCheck = moment(dateToCheck).day(1);
-            return mondayOfWeekToCheck.isoWeek() === thisMonday.isoWeek() && mondayOfWeekToCheck.year() === thisMonday.year();
+            var thisMonday = moment().local().startOf("week");
+            var mondayOfWeekToCheck = moment(dateToCheck).local().startOf("week");
+            return thisMonday.diff(mondayOfWeekToCheck) == 0;
         }
     };
 });

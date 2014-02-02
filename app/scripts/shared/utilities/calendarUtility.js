@@ -24,15 +24,7 @@ function(
 
         weekMomentForDate: function(date)
         {
-            date = moment(date).startOf('day');
-
-            if(date.day() < CalendarUtils.startOfWeek)
-            {
-                // If startOfWeek is 1 (Monday) then Sunday needs to be part of the previous week
-                date.subtract(1, "week");
-            }
-            date.day(CalendarUtils.startOfWeek);
-            return date;
+            return moment(date).startOf("week");
         },
 
         weekForDate: function(date)
