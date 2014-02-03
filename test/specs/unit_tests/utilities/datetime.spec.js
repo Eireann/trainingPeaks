@@ -33,7 +33,7 @@ function(moment, datetimeUtils)
             {
                 format = format.replace(
                     RegExp.$1,
-                    RegExp.$1.length == 1 ? formatSpecifiers[k] : ("00" + formatSpecifiers[k]).substr(("" + formatSpecifiers[k]).length));
+                    RegExp.$1.length === 1 ? formatSpecifiers[k] : ("00" + formatSpecifiers[k]).substr(("" + formatSpecifiers[k]).length));
             }
         }
         
@@ -260,13 +260,13 @@ function(moment, datetimeUtils)
                 var jsDate = new Date();
 
                 // If we are Sunday, we want to test against the previous Sunday
-                if (jsDate.getDay() == 0)
+                if (jsDate.getDay() === 0)
                 {
                     // Move back 1 day
                     jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
                 }
 
-                while (jsDate.getDay() != 0)
+                while (jsDate.getDay() !== 0)
                 {
                     // Move back 1 day
                     jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
@@ -279,13 +279,13 @@ function(moment, datetimeUtils)
                 var jsDate = new Date();
 
                 // If we are Monday, we want to test against the next Monday
-                if (jsDate.getDay() == 1)
+                if (jsDate.getDay() === 1)
                 {
                     // Move ahead 1 day
                     jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
                 }
 
-                while (jsDate.getDay() != 1)
+                while (jsDate.getDay() !== 1)
                 {
                     // Move ahead 1 day
                     jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
