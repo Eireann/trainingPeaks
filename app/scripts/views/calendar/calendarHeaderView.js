@@ -212,14 +212,14 @@ function(
         {
             if(isFullScreen)
             {
-                this.fullScreenStartTime = moment().unix();
+                //this.fullScreenStartTime = moment().unix();
                 TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "enterFullScreen", "eventLabel": "" });
             }
             else if(this.fullScreenStartTime)
             {
-                var secondsInFullScreen = moment().unix() - this.fullScreenStartTime;
-                delete this.fullScreenStartTime;
-                TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "exitFullScreen", "eventLabel": "", "metric1": secondsInFullScreen });
+                //var secondsInFullScreen = moment().unix() - this.fullScreenStartTime;
+                //delete this.fullScreenStartTime;
+                TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "exitFullScreen", "eventLabel": "" });
             }
         },
 
