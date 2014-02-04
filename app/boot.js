@@ -1,6 +1,7 @@
 define(
 [
     "jquery",
+    "wrappedMoment",
     "polyfills/console",
     "utilities/rollbarManager",
     "shared/patches/wrapForRollbar",
@@ -8,8 +9,9 @@ define(
     "TP",
     "app"
 ],
-function($, consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
+function($, wrappedMoment, consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
 {
+
     function boot()
     {
         var theApp = window.theMarsApp = new MarsApp({"$body": $("body")});
