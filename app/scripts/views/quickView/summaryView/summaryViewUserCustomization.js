@@ -49,7 +49,7 @@ function (
 
         applyGhostingForFuture: function ()
         {
-            if (this.model.getCalendarDay() > this.today)
+            if (TP.utils.datetime.isFuture(this.model.getCalendarDay()))
             {
                 this.$(".workoutStatsCompleted input").attr("disabled", true);
                 this.$("#workoutMinMaxAvgStats input").attr("disabled", true);

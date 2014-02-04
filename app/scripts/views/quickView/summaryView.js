@@ -25,8 +25,6 @@ function (
     {
         className: "summary",
 
-        today: moment().format(TP.utils.datetime.shortDateFormat),
-
         showThrobbers: false,
 
         template:

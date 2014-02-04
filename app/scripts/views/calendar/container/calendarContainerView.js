@@ -65,7 +65,7 @@ function(
             this.initializeScrollOnDrag();
 
             this.weeksCollectionView = new ScrollableCollectionView({
-                firstModel: this.collection.get(CalendarUtility.weekForDate(options.firstDate ? moment(options.firstDate) : moment())),
+                firstModel: this.collection.get(CalendarUtility.weekForDate(options.firstDate ? moment(options.firstDate) : TP.utils.datetime.getTodayDate())),
                 itemView: CalendarWeekView,
                 collection: this.collection,
                 id: "weeksContainer",

@@ -29,7 +29,6 @@ requirejs.config(
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
         "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
         "marionette.faderegion": "scripts/plugins/marionette.faderegion",
-        moment: "../bower_components/moment/moment",
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
         affiliates: "scripts/affiliates",
@@ -55,7 +54,14 @@ requirejs.config(
         tpcore: "../tpcore/tpcore.min",
         //"jquery.event.drag": "../bower_components/slickgrid/lib/jquery.event.drag-2.2",
         backbone: "../bower_components/backbone/backbone",
-        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette"
+        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette",
+
+        // We need to wrap moment.js to modify some functionality,
+        // but because of the way it defines it's amd module, 
+        // we need to let it load normally first.
+        // See end of this file...
+        moment: "../bower_components/moment/moment",
+        wrappedMoment: "scripts/utilities/wrappedMoment",
     },
     shim: {
         handlebars: {
@@ -144,4 +150,26 @@ requirejs.config(
             deps: ['jquery']
         }
     }
+});
+
+// Load moment.js, which defines its AMD module with the "moment" name
+require(["moment"], function(realMoment)
+{
+    // Alias it as 'realMoment'
+    define("realMoment", function()
+    {
+        return realMoment;
+    });
+
+    // Wrap it in our adapter
+    require(["wrappedMoment"], function(wrappedMoment)
+    {
+        // Define our wrapped version as moment
+        requirejs.undef("moment");
+        
+        define("moment", function()
+        {
+            return wrappedMoment;
+        });
+    });
 });

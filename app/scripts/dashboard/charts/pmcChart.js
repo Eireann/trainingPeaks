@@ -170,7 +170,6 @@ function(
 
         buildFlotPoints: function(modelData, TSBMinimum)
         {
-            var today = moment().hour(0).format("YYYY-MM-DD");
 
             var chartPoints = {
                 TSS: [],
@@ -195,7 +194,7 @@ function(
 
                 // for today, overlap the atl/ctl/csb lines so there is not a gap between present and future,
                 // but don't duplicate TSS
-                if (itemDate === today)
+                if (TP.utils.datetime.isToday(itemDate))
                 {
 
                     chartPoints.TSS.push([dayMomentValue, item.tssActual]);
@@ -213,7 +212,7 @@ function(
                     chartPoints.TSB.push([dayMomentValue, item.tsb, TSBMinimum]);
 
                     // put all future value into the Future points arrays
-                } else if (itemDate > today)
+                } else if (TP.utils.datetime.isFuture(itemDate))
                 {
                     chartPoints.TSSFuture.push([dayMomentValue, item.tssPlanned]);
                     chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
@@ -609,7 +608,6 @@ function(
 
         buildTooltipData: function(flotItem)
         {
-            var today = moment().hour(0).format("YYYY-MM-DD");
             var index = flotItem.dataIndex;
             var tips = [];
             var item = this.rawData[index];
@@ -623,7 +621,7 @@ function(
             var atl = item.atl;
             var tsb = item.tsb;
 
-            if (itemDay.diff(today) > 0 && !item.ifActual)
+            if (TP.utils.datetime.isFuture(itemDay) && !item.ifActual)
             {
                 tss = item.tssPlanned;
                 intensity = item.ifPlanned;
