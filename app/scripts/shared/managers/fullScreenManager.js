@@ -96,12 +96,15 @@ function(
             if(isFullScreen)
             {
                 this.fullScreenStartTime = moment().unix();
+                console.log("Entered full screen", this.fullScreenStartTime);
                 this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "enterFullScreen", "eventLabel": "" });
             }
             else if(this.fullScreenStartTime)
             {
+                console.log("Exited full screen ", moment().unix());
                 var secondsInFullScreen = moment().unix() - this.fullScreenStartTime;
                 delete this.fullScreenStartTime;
+                console.log("Closing full screen after " + secondsInFullScreen + " seconds");
                 this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "exitFullScreen", "eventLabel": "", "metric1": secondsInFullScreen });
             }
         }
