@@ -12,7 +12,12 @@ function($, consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
 {
     function boot()
     {
-        var theApp = window.theMarsApp = new MarsApp({"$body": $("body")});
+        var theApp = window.theMarsApp = new MarsApp({
+            $body: $("body"),
+            $document: $(document),
+            $window: $(window),
+            screen: screen
+        });
 
         if(window._rollbarEnvironment && window._rollbarEnvironment === 'dummy')
         {

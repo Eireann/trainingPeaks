@@ -50,8 +50,19 @@ function(
                 throw new Error("Calendar Controller requires a data manager");
             }
 
+            if(!options.fullScreenManager)
+            {
+                throw new Error("Calendar Controller requires a full screen manager");
+            }
+
+            if(!options.calendarManager)
+            {
+                throw new Error("Calendar Controller requires a calendar manager");
+            }
+            
             this._dataManager = options.dataManager;
-            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
+            this.calendarManager = options.calendarManager;
+            this.fullScreenManager = options.fullScreenManager;
 
             this.stateModel = new CalendarStateModel();
 
@@ -210,7 +221,10 @@ function(
             if (this.views.header)
                 this.views.header.close();
             
-            this.views.header = new calendarHeaderView({ model: this.stateModel });
+            this.views.header = new calendarHeaderView({
+                model: this.stateModel,
+                fullScreenManager: this.fullScreenManager
+            });
         }
 
     });
