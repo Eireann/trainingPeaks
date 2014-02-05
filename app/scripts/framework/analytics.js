@@ -17,6 +17,7 @@ function (userTypeUtilities)
 
             arguments[1].dimension1 = userType;
             arguments[1].dimension2 = userHash;
+            arguments[1].dimension3 = theMarsApp.fullScreenManager.isFullScreen();
         }
     
         if (window.ga !== "undefined" && typeof window.ga === "function")

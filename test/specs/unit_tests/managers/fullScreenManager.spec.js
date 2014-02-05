@@ -2,11 +2,13 @@ define(
 [
     "jquery",
     "underscore",
+    "moment",
     "shared/managers/fullScreenManager"
 ],
 function(
          $,
          _,
+         moment,
          FullScreenManager
          )
 {
@@ -67,6 +69,34 @@ function(
                 expect(manager.isFullScreen()).to.not.be.ok;
                 done();
             }, 200);
+        });
+
+        it("Should log analytics when entering full screen mode", function(done)
+        { 
+            manager.toggleFullScreen();
+
+            setTimeout(function()
+            {
+                expect(manager.analytics).to.have.been.calledOnce;
+                done();
+            }, 200);
+
+        });
+
+
+        it("Should log analytics with time metric when exiting full screen mode", function(done)
+        { 
+            manager._isFullScreen = true;
+            manager.fullScreenStartTime = moment().unix();
+            manager.toggleFullScreen(false);
+
+            setTimeout(function()
+            {
+                expect(manager.analytics).to.have.been.calledOnce;
+                expect(manager.analytics.firstCall.args[1].metric1).to.exist;
+                done();
+            }, 200);
+
         });
     });
 

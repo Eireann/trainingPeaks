@@ -56,7 +56,7 @@ function(
         {
             return this._isFullScreen;
         },
-        
+
         toggleFullScreen: function(fullScreen)
         {
             if(_.isUndefined(fullScreen))
@@ -102,7 +102,7 @@ function(
             {
                 var secondsInFullScreen = moment().unix() - this.fullScreenStartTime;
                 delete this.fullScreenStartTime;
-                this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "exitFullScreen", "eventLabel": "" });
+                this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "exitFullScreen", "eventLabel": "", "metric1": secondsInFullScreen });
             }
         }
 
