@@ -19,9 +19,9 @@ function(
     {
         return new DashboardController({
             fullScreenManager: {}
-        })
+        });
     }
-    
+
     describe("Dashboard Controller", function()
     {
         beforeEach(function()
