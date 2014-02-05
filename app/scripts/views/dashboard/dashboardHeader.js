@@ -40,7 +40,8 @@ function (
         events:
         {
             "click .refreshButton": "refresh",
-            "click .calendarMonthLabel": "headerDatePicker"
+            "click .calendarMonthLabel": "headerDatePicker",
+            "click button.fullScreen": "onFullScreenClicked"
         },
 
         modelEvents: {},
@@ -52,6 +53,12 @@ function (
             this.on("user:loaded", this.render, this);
             this.listenTo(this.model, "applyDates", _.bind(this.applyDates, this));
             this.setDefaultDateSettings();
+
+            if(!options || !options.fullScreenManager)
+            {
+                throw new Error("Dashboard Header View requires a full screen manager");
+            }
+            this.fullScreenManager = options.fullScreenManager;
         },
 
         onRender: function()
@@ -136,6 +143,11 @@ function (
             var dateSettings = chartUtils.buildChartParameters(this.model.get(this.settingsKey));
             _.extend(data, dateSettings);
             return data;
+        },
+
+        onFullScreenClicked: function()
+        {
+            this.fullScreenManager.toggleFullScreen();
         },
 
         _addView: function(selector, view)

@@ -84,7 +84,7 @@ function(
         });
 
 
-        it("Should log analytics with time metric when exiting full screen mode", function(done)
+        it("Should log analytics with time value when exiting full screen mode", function(done)
         { 
             manager._isFullScreen = true;
             manager.fullScreenStartTime = moment().unix();
@@ -93,7 +93,7 @@ function(
             setTimeout(function()
             {
                 expect(manager.analytics).to.have.been.calledOnce;
-                expect(manager.analytics.firstCall.args[1].metric1).to.exist;
+                expect(manager.analytics.firstCall.args[1].eventValue).to.exist;
                 done();
             }, 200);
 
