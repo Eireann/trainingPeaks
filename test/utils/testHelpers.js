@@ -37,7 +37,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
             // capture ajax calls
             this.setupFakeAjax();
 
-            this.theApp = window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
+            this.theApp = window.theMarsApp = new MarsApp({
+                $body: $("<body></body>"),
+                $document: $("<body></body>"),
+                $window: $("<div></div>"),
+                screen: { height: 1000, width: 1500 }
+            });
 
             // backbone history doesn't work well with our tests for some reason
             this.theApp.historyEnabled = false;

@@ -25,7 +25,7 @@ function(
 
         initialize: function(options)
         {
-            this.isFullScreen = false;
+            this._isFullScreen = false;
 
             this.analytics = options.analytics || TP.analytics;
 
@@ -52,11 +52,16 @@ function(
             this.$window.off("resize.fullScreenManager");
         },
 
+        isFullScreen: function()
+        {
+            return this._isFullScreen;
+        },
+        
         toggleFullScreen: function(fullScreen)
         {
             if(_.isUndefined(fullScreen))
             {
-                fullScreen = !this.isFullScreen;
+                fullScreen = !this._isFullScreen;
             }
             this.$document.toggleFullScreen(fullScreen);
         },
@@ -74,15 +79,15 @@ function(
         _updateFullScreenState: function()
         {
             var isFullScreen = this._checkIfFullScreen();
-            var changed = isFullScreen !== this.isFullScreen;
-            this.isFullScreen = isFullScreen;
+            var changed = isFullScreen !== this._isFullScreen;
+            this._isFullScreen = isFullScreen;
 
-            this.$body.toggleClass("fullScreen", isFullScreen);
+            this.$body.toggleClass("fullScreen", this._isFullScreen);
 
             if(changed)
             {
-                this._logFullScreen(isFullScreen);
-                this.trigger("change:fullScreen", this, this.isFullScreen);
+                this._logFullScreen(this._isFullScreen);
+                this.trigger("change:fullScreen", this, this._isFullScreen);
             }
         },
 

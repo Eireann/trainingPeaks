@@ -13,6 +13,14 @@ define(
 function($, _, TP, moment, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
 {
 
+    function buildFullScreenManager()
+    {
+        return {
+            on: sinon.stub(),
+            toggleFullScreen: sinon.stub()
+        };
+    }
+
     describe("CalendarHeaderView ", function()
     {
         beforeEach(function()
@@ -34,7 +42,11 @@ function($, _, TP, moment, DataManager, CalendarController, CalendarHeaderView, 
         {
 
             sinon.stub(CalendarController.prototype, "showDate");
-            var controller = new CalendarController({ dataManager: new DataManager() });
+            var controller = new CalendarController({ 
+                dataManager: new DataManager(),  
+                fullScreenManager: buildFullScreenManager(),
+                calendarManager: {}
+            });
             controller.initializeHeader();
             controller.showHeader();
             controller.views.header.$el.find('input.datepicker').val("8/28/2013");
@@ -45,7 +57,10 @@ function($, _, TP, moment, DataManager, CalendarController, CalendarHeaderView, 
         it("Should display the current month and year, based on the last day of the current week", function()
         {
             var stateModel = new TP.Model({ date: moment().format("YYYY-MM-DD") });
-            var view = new CalendarHeaderView({ model: stateModel });
+            var view = new CalendarHeaderView({ 
+                model: stateModel,
+                fullScreenManager: buildFullScreenManager()
+            });
             view.render();
 
             stateModel.set("date", "2013-10-21");
@@ -69,60 +84,24 @@ function($, _, TP, moment, DataManager, CalendarController, CalendarHeaderView, 
         describe("FullScreen", function()
         {
 
-            var doc, view;
+            var view, fullScreenManager;
             beforeEach(function()
             {
                 var stateModel = new TP.Model({ date: moment().format("YYYY-MM-DD") });
-
-                doc = {
-                    isFullScreen: false,
-                    fullScreen: function(){ return this.isFullScreen;},
-                    toggleFullScreen: function(full){ 
-                        this.isFullScreen = _.isUndefined(full) ? !this.isFullScreen : full; this.callback(); },
-                    callback: function(){},
-                    on: function(eventName, callback) { 
-                        this.callback = callback; 
-                    },
-                    off: function(){ this.callback = function(){}; }
-                };
-
-                sinon.spy(doc, "fullScreen");
-                sinon.spy(doc, "toggleFullScreen");
-
-                sinon.stub(CalendarHeaderView.prototype, "_getDocument").returns(doc);
-
-                view = new CalendarHeaderView({ model: stateModel });
+                fullScreenManager = buildFullScreenManager();
+                view = new CalendarHeaderView({ model: stateModel, fullScreenManager: fullScreenManager });
                 view.render();
             });
 
-            it("Should enable full screen mode", function(done)
+            it("Should toggle full screen mode", function()
             { 
-                doc.isFullScreen = false;
                 view.$(".fullScreen").trigger("click");
-                expect(doc.toggleFullScreen).to.have.been.calledWith(true);
-
-                setTimeout(function()
-                {
-                    expect(testHelpers.theApp.getBodyElement().is(".fullScreen")).to.be.ok;
-                    done();
-                }, 200);
-
+                expect(fullScreenManager.toggleFullScreen).to.have.been.called;
             });
 
-            it("Should disable full screen mode", function(done)
+            it("Should listen for changes to full screen state", function()
             { 
-                doc.isFullScreen = true;
-                testHelpers.theApp.getBodyElement().addClass("fullScreen");
-
-                view.$(".fullScreen").trigger("click");
-                expect(doc.toggleFullScreen).to.have.been.calledWith(false);
-
-                setTimeout(function()
-                {
-                    expect(testHelpers.theApp.getBodyElement().is(".fullScreen")).to.not.be.ok;
-                    done();
-                }, 200);
-
+                expect(fullScreenManager.on).to.have.been.calledWith("change:fullScreen");
             });
         });
 
