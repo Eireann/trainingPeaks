@@ -19,13 +19,16 @@ function(
         {
             if(!this.get("date"))
             {
-                this.setDate(moment());
+                this.setDate(TP.utils.datetime.getTodayDate());
             }
         },
 
         setDate: function(date, options)
         {
-            date = moment(date);
+            if(!moment.isMoment(date))
+            {
+                date = moment(date);
+            }
             this.set({date: date.format(CalendarUtility.idFormat)}, options);
         }
 

@@ -157,7 +157,7 @@ function(
 
                 // if it hasn't loaded, watch for changes
                 this.stopWaitingForStats();
-                if (!range.hasLoaded)
+                if (!range.getState().get("hasLoaded"))
                 {
                     this.waitForStats(range);
                 }

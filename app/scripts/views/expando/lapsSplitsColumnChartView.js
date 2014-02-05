@@ -85,6 +85,7 @@ function(
             
             this.collection = this.model.get('detailData').getRangeCollectionFor("laps");
             this.collection.availableDataChannels = this.model.get("detailData").get("availableDataChannels");
+            this.listenTo(this.collection, "add remove reset", _.bind(this.render, this));
             this.listenTo(this.model, "reset change", _.bind(this.render, this));
             this.listenTo(this.model.get("detailData"), "reset change:availableDataChannels", _.bind(this.render, this));
 
@@ -101,7 +102,7 @@ function(
             var self = this;
             var columnIds = [1].concat(_.sortBy(this.podModel.get("columns")));
 
-            this.lapsStats = new LapsStats({ model: this.model, columns: columnIds });
+            this.lapsStats = new LapsStats({ model: this.model, columns: columnIds, laps: new TP.Collection(this.collection.sortBy("begin")).toJSON() });
 
             var columns = this.columns = this.lapsStats.processColumns({ format: false });
             this.rows = this.lapsStats.processRows({ format: { withLabel: true, seconds: true } });

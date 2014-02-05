@@ -1,8 +1,9 @@
 ﻿define(
 [
+    "underscore",
     "TP"
 ],
-function(TP)
+function(_, TP)
 {
     var WorkoutStatsForRange = TP.Model.extend(
     {
@@ -27,7 +28,7 @@ function(TP)
 
             if(attrs.hasOwnProperty("hasLoaded"))
             {
-                this.hasLoaded = attrs.hasLoaded;
+                this.getState().set("hasLoaded", attrs.hasLoaded);
                 delete attrs.hasLoaded;
             }
 
@@ -42,8 +43,12 @@ function(TP)
             {
                 response.name = this.get("name");
             }
-            this.hasLoaded = true;
             return response;
+        },
+
+        fetch: function(options)
+        {
+            return TP.Model.prototype.fetch.call(this, options).done(_.bind(function(){ this.getState().set("hasLoaded", true); }, this));
         },
 
         _augmentData: function()

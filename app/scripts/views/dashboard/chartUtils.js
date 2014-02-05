@@ -22,15 +22,15 @@ function(
 
             getStartDate: function(chartSettings)
             {
-                var globalSettings = chartUtils.findGlobalChartSettings();
-                var chartSettingsHandler = chartUtils.findGlobalChartSettingsHandler();
+                var globalSettings = chartUtils._findGlobalChartSettings();
+                var chartSettingsHandler = chartUtils._findGlobalChartSettingsHandler();
                 return chartSettingsHandler.getStartDate(globalSettings);
             },
 
             getEndDate: function(chartSettings)
             {
-                var globalSettings = chartUtils.findGlobalChartSettings();
-                var chartSettingsHandler = chartUtils.findGlobalChartSettingsHandler();
+                var globalSettings = chartUtils._findGlobalChartSettings();
+                var chartSettingsHandler = chartUtils._findGlobalChartSettingsHandler();
                 return chartSettingsHandler.getEndDate(globalSettings);
             }
         },
@@ -182,13 +182,13 @@ function(
             getStartDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().week(thisWeek).day(1);
+                return moment().week(thisWeek).startOf("week");
             },
 
             getEndDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().week(thisWeek).day(7);
+                return moment().week(thisWeek).endOf("week");
             }
         },
 
@@ -227,13 +227,13 @@ function(
             getStartDate: function()
             {
                 var lastWeek = moment().week() - 1;
-                return moment().week(lastWeek).day(1);
+                return moment().week(lastWeek).startOf("week");
             },
 
             getEndDate: function()
             {
                 var lastWeek = moment().week() - 1;
-                return moment().week(lastWeek).day(7);
+                return moment().week(lastWeek).endOf("week");
             }
         },
 
@@ -302,13 +302,13 @@ function(
             getStartDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().subtract("years", 1).week(thisWeek).day(1);
+                return moment().subtract("years", 1).week(thisWeek).startOf("week");
             },
 
             getEndDate: function()
             {
                 var thisWeek = moment().week();
-                return moment().subtract("years", 1).week(thisWeek).day(7);
+                return moment().subtract("years", 1).week(thisWeek).endOf("week");
             }
         },
 
@@ -399,11 +399,12 @@ function(
         buildChartParameters: function(baseSettings)
         {
             var chartSettings = _.clone(baseSettings);
+            chartSettings = this._fixDates(chartSettings);
 
             var dateOption = this.findChartDateOption(chartSettings.quickDateSelectOption);
 
-            chartSettings.startDate = dateOption.getStartDate(chartSettings);
-            chartSettings.endDate = dateOption.getEndDate(chartSettings);
+            chartSettings.startDate = dateOption.getStartDate(chartSettings).local();
+            chartSettings.endDate = dateOption.getEndDate(chartSettings).local();
             chartSettings.customStartDate = dateOption.customStartDate ? true : false;
             chartSettings.customEndDate = dateOption.customEndDate ? true : false;
             return chartSettings;
@@ -424,7 +425,7 @@ function(
             return selectedOption;
         },
 
-        findGlobalChartSettings: function()
+        _findGlobalChartSettings: function()
         {
             var globalSettingKey = "dateOptions";
             var dashboardSettings = theMarsApp.user.getDashboardSettings();
@@ -435,17 +436,32 @@ function(
             return dashboardSettings.get(globalSettingKey);
         },
 
-        findGlobalChartSettingsHandler: function()
+        _findGlobalChartSettingsHandler: function()
         {
             // default
             var quickDateSelectOption = chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
-            var globalSettings = this.findGlobalChartSettings();
+            var globalSettings = this._findGlobalChartSettings();
             if(globalSettings.quickDateSelectOption && globalSettings.quickDateSelectOption > 1)
             {
                 quickDateSelectOption = globalSettings.quickDateSelectOption;
             }
 
             return chartUtils.findChartDateOption(quickDateSelectOption);
+        },
+
+        _fixDates: function(chartSettings)
+        {
+            _.each(["startDate", "endDate"], function(key)
+            {
+                if(_.has(chartSettings, key) && _.isString(chartSettings[key]))
+                {
+                    // strip the time portion of a datetime string
+                    var dateString = chartSettings[key].replace(/T.*$/,'');
+                    chartSettings[key] = moment.local(dateString).format();
+                }
+            });
+
+            return chartSettings;
         },
 
         chartDateOptions: chartDateOptions,

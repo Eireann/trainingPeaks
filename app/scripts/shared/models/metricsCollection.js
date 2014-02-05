@@ -29,8 +29,8 @@ function(
                 throw new Error("startDate & endData needed for MetricsCollection");
             }
 
-            var start = this.startDate.format(TP.utils.datetime.shortDateFormat);
-            var end = this.endDate.format(TP.utils.datetime.shortDateFormat);
+            var start = moment(this.startDate).format(TP.utils.datetime.shortDateFormat);
+            var end = moment(this.endDate).format(TP.utils.datetime.shortDateFormat);
 
             return this.urlRoot() + "/" + start + "/" + end;
         },

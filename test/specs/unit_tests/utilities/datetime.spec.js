@@ -5,32 +5,47 @@ define(
 ],
 function(moment, datetimeUtils)
 {
+    var ONE_DAY_IN_MILLISECONDS = 24 * 3600 * 1000;
+
+    // So that we don't validate "moment" using "moment"
+    Date.prototype.format = function(format)
+    {
+        var formatSpecifiers =
+        {
+            "M+": this.getMonth() + 1,
+            "D+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "S": this.getMilliseconds()
+        };
+
+        if (/(Y+)/.test(format))
+        {
+            format = format.replace(
+                RegExp.$1,
+                (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+
+        for (var k in formatSpecifiers)
+        {
+            if (new RegExp("("+ k +")").test(format))
+            {
+                format = format.replace(
+                    RegExp.$1,
+                    RegExp.$1.length === 1 ? formatSpecifiers[k] : ("00" + formatSpecifiers[k]).substr(("" + formatSpecifiers[k]).length));
+            }
+        }
+        
+        return format;
+    };
+
     describe("datetime", function()
     {
-        describe("isThisWeek", function()
-        {
-            it("should return true for today", function()
-            {
-                expect(datetimeUtils.isThisWeek(moment())).to.equal(true);
-            });
-
-            it("should return false for last week", function()
-            {
-                expect(datetimeUtils.isThisWeek(moment().add("weeks", -1))).to.equal(false);
-            });
-
-            it("should return false for next year", function()
-            {
-                expect(datetimeUtils.isThisWeek(moment().add("years", 1))).to.equal(false);
-            });
-
-        });
-
         describe("convert", function()
         {
             describe("timeToDecimalHours", function()
             {
-
                 it("Should return 0 for invalid numbers", function()
                 {
                     expect(datetimeUtils.convert.timeToDecimalHours("x")).to.equal(0);
@@ -178,6 +193,211 @@ function(moment, datetimeUtils)
                     expect(datetimeUtils.convert.timeToDecimalHours("90:")).to.eql(1.5);
                     expect(datetimeUtils.convert.timeToDecimalHours("120:")).to.eql(2);
                 });
+            });
+        });
+
+        describe("getTodayDate", function()
+        {
+            it("should return today's date as a local start-of-day date", function()
+            {
+                // This will return a local date, based on the browser's time zone
+                var jsDate = new Date();
+
+                expect(datetimeUtils.getTodayDate().format("MM/DD/YYYY hh:mm:ss")).to.equal(jsDate.format("MM/DD/YYYY 12:00:00"));
+            });
+        });
+
+        describe("getThisWeekStartDate", function()
+        {
+            it("should return the first day of the week as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                while (jsDate.getDay() > 1)
+                {
+                    // Move back 1 day
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
+                }
+
+                expect(datetimeUtils.getThisWeekStartDate().format("MM/DD/YYYY hh:mm:ss")).to.equal(jsDate.format("MM/DD/YYYY 12:00:00"));
+            });
+        });
+
+        describe("isThisWeek", function()
+        {
+            it("should return 'true' for today", function()
+            {
+                var jsDate = new Date();
+
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
+            });
+            it("should return 'true' for the first day of this week", function()
+            {
+                var jsDate = new Date();
+
+                while (jsDate.getDay() > 1)
+                {
+                    // Move back 1 day
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
+                }
+
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
+            });
+            it("should return 'true' for the last day of this week", function()
+            {
+                var jsDate = new Date();
+
+                while (jsDate.getDay() < 6)
+                {
+                    // Move ahead 1 day
+                    jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
+                }
+
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(true);
+            });
+            it("should return 'false' for the day before this Monday", function()
+            {
+                var jsDate = new Date();
+
+                // If we are Sunday, we want to test against the previous Sunday
+                if (jsDate.getDay() === 0)
+                {
+                    // Move back 1 day
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
+                }
+
+                while (jsDate.getDay() !== 0)
+                {
+                    // Move back 1 day
+                    jsDate = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
+                }
+
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(false);
+            });
+            it("should return 'false' for the day after this Sunday", function()
+            {
+                var jsDate = new Date();
+
+                // If we are Monday, we want to test against the next Monday
+                if (jsDate.getDay() === 1)
+                {
+                    // Move ahead 1 day
+                    jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
+                }
+
+                while (jsDate.getDay() !== 1)
+                {
+                    // Move ahead 1 day
+                    jsDate = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
+                }
+
+                expect(datetimeUtils.isThisWeek(jsDate.format("MM/DD/YYYY"))).to.equal(false);
+            });
+            it("should return 'false' if the specified date is 2 weeks ago", function()
+            {
+                var jsDate = new Date();
+
+                var twoWeeksAgo = new Date(jsDate.getTime() - 14 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
+
+                expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
+            });
+            it("should return 'false' if the specified date is 2 weeks in the future", function()
+            {
+                var jsDate = new Date();
+
+                var twoWeeksAgo = new Date(jsDate.getTime() + 14 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
+
+                expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
+            });
+            it("should return 'false' if the specified date is 7 days ago", function()
+            {
+                var jsDate = new Date();
+
+                var twoWeeksAgo = new Date(jsDate.getTime() - 7 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
+
+                expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
+            });
+            it("should return 'false' if the specified date is 7 days in the future", function()
+            {
+                var jsDate = new Date();
+
+                var twoWeeksAgo = new Date(jsDate.getTime() + 7 * ONE_DAY_IN_MILLISECONDS).format("MM/DD/YYYY");
+
+                expect(datetimeUtils.isThisWeek(twoWeeksAgo)).to.equal(false);
+            });
+        });
+
+        describe("isToday", function()
+        {
+            it("should return 'true' for today's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                expect(datetimeUtils.isToday(jsDate.format("MM/DD/YYYY 12:00:00"))).to.equal(true);
+            });
+            it("should return 'true' for today's date formated as 'MM/DD/YYYY'", function()
+            {
+                var jsDate = new Date();
+
+                expect(datetimeUtils.isToday(jsDate.format("MM/DD/YYYY"))).to.equal(true);
+            });
+            it("should return 'true' for today's date formated using JavaScript's default format", function()
+            {
+                var jsDate = new Date();
+
+                expect(datetimeUtils.isToday(jsDate.toString())).to.equal(true);
+            });
+        });
+
+        describe("isPast", function()
+        {
+            it("should return 'false' for today's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                expect(datetimeUtils.isPast(jsDate.format("MM/DD/YYYY 12:00:00"))).to.equal(false);
+            });
+            it("should return 'false' for tomorrow's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                var tomorrow = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
+
+                expect(datetimeUtils.isPast(tomorrow.format("MM/DD/YYYY 12:00:00"))).to.equal(false);
+            });
+            it("should return 'true' for yesterday's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                var yesterday = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
+
+                expect(datetimeUtils.isPast(yesterday.format("MM/DD/YYYY 12:00:00"))).to.equal(true);
+            });
+        });
+
+        describe("isFuture", function()
+        {
+            it("should return 'false' for today's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                expect(datetimeUtils.isFuture(jsDate.format("MM/DD/YYYY 12:00:00"))).to.equal(false);
+            });
+            it("should return 'false' for yesterday's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                var yesterday = new Date(jsDate.getTime() - ONE_DAY_IN_MILLISECONDS);
+
+                expect(datetimeUtils.isFuture(yesterday.format("MM/DD/YYYY 12:00:00"))).to.equal(false);
+            });
+            it("should return 'true' for tomorrow's date as a local start-of-day date", function()
+            {
+                var jsDate = new Date();
+
+                var tomorrow = new Date(jsDate.getTime() + ONE_DAY_IN_MILLISECONDS);
+
+                expect(datetimeUtils.isFuture(tomorrow.format("MM/DD/YYYY 12:00:00"))).to.equal(true);
             });
         });
     });

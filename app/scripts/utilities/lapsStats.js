@@ -222,7 +222,7 @@ function(
         this.model = options.model;
         this.workoutTypeId = this.model.get("workoutTypeValueId");
         this.detailData = this.model.get("detailData");
-        this.laps = _.map(this.detailData.get("lapsStats"), _.clone);
+        this.laps = _.map(options.laps || this.detailData.get("lapsStats"), _.clone);
 
         this.tssType = TP.utils.units.getUnitsLabel("tss", this.workoutTypeId, this.model);
 

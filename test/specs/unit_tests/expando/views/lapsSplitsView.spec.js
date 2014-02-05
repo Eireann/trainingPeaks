@@ -15,21 +15,21 @@ function(moment, _, TP, LapsSplitsView, WorkoutModel, detailDataLapsStats)
 
 		var buildWorkoutModel = function(availableDataChannels)
 		{
-			var detailData = new TP.Model({lapsStats: detailDataLapsStats });
-			detailData.set("availableDataChannels", availableDataChannels);
-			detailData.rangeCollections = {laps: new TP.Collection(detailDataLapsStats)};
-			detailData.getRangeCollectionFor = function(key)
-			{
-				return this.rangeCollections[key];
-			};
 			
-			return new TP.Model({
+			var model = new WorkoutModel({
 				id: 1234,
-				details: new TP.Model(),
-				workoutTypeValueId: 3,
-				detailData: detailData
+				workoutTypeValueId: 3
 			});
+
+			model.get("detailData").set("lapsStats", detailDataLapsStats);
+			model.get("detailData").set("availableDataChannels", availableDataChannels);
+
+			var lapsCollection = new TP.Collection(detailDataLapsStats);
+			sinon.stub(model.get("detailData"), "getRangeCollectionFor").returns(lapsCollection);
+
+			return model;
 		},
+
 		setTSSsource = function(model, tssSource)
 		{
 			_.each(model.get('detailData').get('lapsStats'), function(lapStat, i)

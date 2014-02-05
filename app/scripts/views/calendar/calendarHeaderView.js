@@ -150,7 +150,7 @@ function(
         onGoToTodayButtonClicked: function ()
         {
             this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
-            this.model.setDate(moment());
+            this.model.setDate(TP.utils.datetime.getTodayDate());
         },
         
         onGoToNextWeekButtonClicked: function()
