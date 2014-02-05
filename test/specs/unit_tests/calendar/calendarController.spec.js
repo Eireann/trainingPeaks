@@ -37,9 +37,15 @@ function(
     {
         var dataManager = new DataManager();
         var calendarManager = new CalendarManager({ dataManager: dataManager });
+        var fullScreenManager = {
+            on: sinon.stub(),
+            toggleFullScreen: sinon.stub()
+        };
+
         var controller = new CalendarController({
             dataManager: dataManager,
-            calendarManager: calendarManager
+            calendarManager: calendarManager,
+            fullScreenManager: fullScreenManager
         });
 
         return controller;
