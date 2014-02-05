@@ -8,17 +8,22 @@
                 <button></button>
             </div>
 
-            <span class="metricTime">{{ formatDate timeStamp "h:mm" }}<span class="metricAMPM">{{ formatDate timeStamp "a" }}</span></span>
+            <span class="metricTimeWrapper"><span class="metricTime">{{ formatDate timeStamp "h:mm" }}<span class="metricAMPM">{{ formatDate timeStamp "a" }}</span></span></span>
         </div>
         <div class="metricBody">
             <div class="metricSettingsContain"></div>
             <ul>
-                {{#each details}}
+                {{#with keyStat}}
                 <li>
                     <span class="metricTitle">{{ formatMetricLabel this }}:</span>
                     <span class="metricValue"> {{ formatMetricValue this true }}</span>
                 </li>
-                {{/each}}
+                {{/with}}
+                {{#if hiddenStatsCount}}
+                <li>
+                    <span class="metricValue">{{ hiddenStatsCount }} more...</span>
+                </li>
+                {{/if}}
             </ul>
         </div>
     </div>

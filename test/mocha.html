@@ -93,7 +93,12 @@
                 ["app"],
                 function(MarsApp)
                 {
-                    window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
+                    window.theMarsApp = new MarsApp({
+                        $body: $("body"),
+                        $document: $(document),
+                        $window: $(window),
+                        screen: screen
+                    });
 
                     requirejs(
                     [

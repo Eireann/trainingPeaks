@@ -120,6 +120,23 @@ function(
             {
                 this.moveToDay(options.date);
             }
+        },
+
+        getKeyStatField: function(userSettingsMetricOrder)
+        {
+            var details = this.get("details");
+            var detailsByType = {};
+            _.each(details, function(detail)
+            {
+                detailsByType[detail.type] = detail;
+            });
+
+            var keyMetricTypeId = _.find(userSettingsMetricOrder, function(metricTypeId)
+            {
+                return _.has(detailsByType, metricTypeId);
+            });
+
+            return _.isUndefined(keyMetricTypeId) ? null : detailsByType[keyMetricTypeId];
         }
 
     });

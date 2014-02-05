@@ -1,10 +1,18 @@
 define(
 [
     "underscore",
+    "jquery",
     "TP",
+    "utilities/multilineEllipsis",
     "utilities/workout/workoutTypes"
 ],
-function(_, TP, workoutTypes)
+function(
+         _,
+         $,
+         TP,
+         multilineEllipsis,
+         workoutTypes
+         )
 {
     var calendarWorkoutUserCustomization = {
 
@@ -36,13 +44,13 @@ function(_, TP, workoutTypes)
                     } 
                 }, this);
 
-                this.ui.layoutAnchor.before(fields.join(''));
+                this.ui.layoutAnchor.before(fields);
             }
         },
 
         getUserLayoutSettings: function()
         {
-            return theMarsApp.user.getCalendarSettings().get("workoutLabelLayout");
+            return this.options.workoutLabelLayout || theMarsApp.user.getCalendarSettings().get("workoutLabelLayout");
         },
 
         applyFieldLayoutPreference: function(field)
@@ -63,7 +71,7 @@ function(_, TP, workoutTypes)
                 }
                 var units = field.units ? " " + TP.utils.units.getUnitsLabel(field.units, workoutTypeValueId, this) : "";
 
-                return "<p>" + prefix + fieldValue + units + "</p>";
+                return $("<p>").addClass(field.name).text(prefix + fieldValue + units);
             }
         },
 
@@ -76,9 +84,19 @@ function(_, TP, workoutTypes)
         {
             if (commentsArray && commentsArray.length && commentsArray[0].comment)
             {
-                return commentsArray[0].comment;
+                return this._multilineEllipsis(commentsArray[0].comment);
             }
             return "";
+        },
+
+        formatDescription: function(description)
+        {
+            return this._multilineEllipsis(description);
+        },
+
+        _multilineEllipsis: function(text)
+        {
+            return multilineEllipsis(text, 100, "...more...");
         }
 
     };
