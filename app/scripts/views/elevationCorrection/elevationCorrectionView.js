@@ -86,7 +86,7 @@ function ($, _, TP, ElevationCorrectionModel, defaultFlotOptions, chartColors, c
             var minimum = null;
             _.each(modelData, function (item, index)
             {
-                if (item[1] < minimum || minimum === null)
+                if (minimum == null || (item[1] !== null && item[1] < minimum))
                     minimum = item[1];
             });
             return minimum;
