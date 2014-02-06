@@ -25,7 +25,6 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 observe: "description",
                 units: "text",
                 updateModel: "updateModel",
-                ignoreOnSetForUpdateModel: true,
                 saveTimeout: 60000,
                 onGet: "formatForStickit",
                 onSet: "parseForStickit"
