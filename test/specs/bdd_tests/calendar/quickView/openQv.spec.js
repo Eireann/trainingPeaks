@@ -138,14 +138,14 @@ function(
 
                 var workout = {
                     workoutId: 1,
-                    workoutDay: moment().format("YYYY-MM-DD"),
+                    workoutDay: moment.local().format("YYYY-MM-DD"),
                     title: "Today's workout",
                     workoutTypeValueId: 2,
                     athleteId: 426489
                 };
 
-                testHelpers.resolveRequest("GET", "workouts/" + moment().day(1).format("YYYY-MM-DD"), [workout]);
-                testHelpers.resolveRequest("GET", "timedmetrics/" + moment().day(1).format("YYYY-MM-DD"), []);
+                testHelpers.resolveRequest("GET", "workouts/" + moment.local().startOf("week").format("YYYY-MM-DD"), [workout]);
+                testHelpers.resolveRequest("GET", "timedmetrics/" + moment.local().startOf("week").format("YYYY-MM-DD"), []);
             });
 
             afterEach(function()
