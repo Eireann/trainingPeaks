@@ -1,6 +1,7 @@
 define(
 [
     "jquery",
+    "underscore",
     "TP",
     "moment",
     "framework/dataManager",
@@ -9,8 +10,16 @@ define(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs"
 ],
-function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
+function($, _, TP, moment, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
 {
+
+    function buildFullScreenManager()
+    {
+        return {
+            on: sinon.stub(),
+            toggleFullScreen: sinon.stub()
+        };
+    }
 
     describe("CalendarHeaderView ", function()
     {
@@ -32,10 +41,14 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
         it("Should update the calendar when a specific date is requested through the datepicker", function()
         {
 
-            var controller = new CalendarController({ dataManager: new DataManager() });
+            sinon.stub(CalendarController.prototype, "showDate");
+            var controller = new CalendarController({ 
+                dataManager: new DataManager(),  
+                fullScreenManager: buildFullScreenManager(),
+                calendarManager: {}
+            });
             controller.initializeHeader();
             controller.showHeader();
-            sinon.stub(controller, "showDate");
             controller.views.header.$el.find('input.datepicker').val("8/28/2013");
             controller.views.header.$el.find('input.datepicker').trigger("change");
             expect(controller.showDate).to.have.been.calledWith("2013-08-28");
@@ -44,7 +57,10 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
         it("Should display the current month and year, based on the last day of the current week", function()
         {
             var stateModel = new TP.Model({ date: moment().format("YYYY-MM-DD") });
-            var view = new CalendarHeaderView({ model: stateModel });
+            var view = new CalendarHeaderView({ 
+                model: stateModel,
+                fullScreenManager: buildFullScreenManager()
+            });
             view.render();
 
             stateModel.set("date", "2013-10-21");
@@ -64,6 +80,31 @@ function($, TP, moment, DataManager, CalendarController, CalendarHeaderView, tes
             expect(view.$(".calendarMonthLabel").text()).to.contain("January");
             expect(view.$(".calendarMonthLabel").text()).to.contain("2014");
         });
+
+        describe("FullScreen", function()
+        {
+
+            var view, fullScreenManager;
+            beforeEach(function()
+            {
+                var stateModel = new TP.Model({ date: moment().format("YYYY-MM-DD") });
+                fullScreenManager = buildFullScreenManager();
+                view = new CalendarHeaderView({ model: stateModel, fullScreenManager: fullScreenManager });
+                view.render();
+            });
+
+            it("Should toggle full screen mode", function()
+            { 
+                view.$(".fullScreen").trigger("click");
+                expect(fullScreenManager.toggleFullScreen).to.have.been.called;
+            });
+
+            it("Should listen for changes to full screen state", function()
+            { 
+                expect(fullScreenManager.on).to.have.been.calledWith("change:fullScreen");
+            });
+        });
+
 
     });
 });

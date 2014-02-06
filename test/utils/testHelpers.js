@@ -11,7 +11,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
     var testHelpers = {
 
-        theApp: new MarsApp({"$body": $("<body></body>")}),
+        theApp: new MarsApp({
+            $body: $("<body></body>"),
+            $document: $("<body></body>"),
+            $window: $("<div></div>"),
+            screen: { height: 1000, width: 1500 }
+        }),
 
         setupRegionElements: function()
         {
@@ -32,7 +37,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
             // capture ajax calls
             this.setupFakeAjax();
 
-            this.theApp = window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
+            this.theApp = window.theMarsApp = new MarsApp({
+                $body: $("<body></body>"),
+                $document: $("<body></body>"),
+                $window: $("<div></div>"),
+                screen: { height: 1000, width: 1500 }
+            });
 
             // backbone history doesn't work well with our tests for some reason
             this.theApp.historyEnabled = false;
@@ -91,6 +101,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
                 this.theApp._regionManager.closeRegions();
                 this.theApp.dataManager.forceReset();
                 this.theApp.calendarManager.stopListening();
+                this.theApp.fullScreenManager.close();
                 Backbone.history.stop();
                 Backbone.history.handlers = [];
             }

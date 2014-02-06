@@ -39,7 +39,7 @@
         apiRoot: apiRoots[configuration],
         oAuthRoot: oAuthRoots[configuration],
         buildNumber: "local",
-        gaAccount: "",
+        gaAccount: "UA-42726244-3",
         buildHash: "",
         devWwwRoot: wwwRoots.dev,
         coachUpgradeURL: "https://cat6.dev.trainingpeaks.com/account-professional-edition.aspx",

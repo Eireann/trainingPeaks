@@ -37,6 +37,14 @@ function(
             this.constructor.__super__.initialize.call(this);
 
             this.listenTo(theMarsApp.user, "athlete:change", _.bind(this.reset, this));
+
+
+            if(!options.fullScreenManager)
+            {
+                throw new Error("Dashboard Controller requires a full screen manager");
+            }
+
+            this.fullScreenManager = options.fullScreenManager;
         },
 
         onLayoutClose: function()
@@ -75,7 +83,7 @@ function(
         createViews: function()
         {
             this.views.dashboard = new DashboardChartsContainerView({ dataManager: this.dataManager, model: theMarsApp.user.getDashboardSettings() });
-            this.views.header = new DashboardHeaderView({model:theMarsApp.user.getDashboardSettings() });
+            this.views.header = new DashboardHeaderView({model:theMarsApp.user.getDashboardSettings(), fullScreenManager: this.fullScreenManager });
             this.views.library = new DashboardLibraryView();
         },
 

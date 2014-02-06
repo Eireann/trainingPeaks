@@ -1,0 +1,101 @@
+﻿
+.fullScreen
+{
+
+    #navigation
+    {
+        display: none;
+    }
+
+    .frameworkHeader
+    {
+        height:50px;
+        margin-top: 7px;
+
+        .printRefreshButtons {
+            button.fullScreen 
+                {
+                    
+
+                    background: no-repeat 0 -140px;
+                    @extend %spriteHeaderIconsBG;
+                   
+                    &:hover {
+                        background-position: -36px -140px;
+                    }
+                    &:active {
+                         @extend %spriteHeaderIconsBG;
+                        background-position: -72px -140px;
+                    }
+                }
+            }
+        }
+
+    .frameworkTitle
+    {
+        padding-left: 45px;
+    }
+
+    .frameworkMainWrapper
+    {
+        @include calc(height, "100% - 50px");
+        position: absolute;
+        top: 50px;
+    }
+
+    #calendarContainer
+    {
+        .day
+        {
+            min-height: 100px;
+
+            .addWorkoutWrapper
+            {
+                height: 24px;
+            }
+
+            .addWorkout
+            {
+                height: 24px;
+
+                .addWorkoutPlus {
+                    @extend %calendarPlusSmallBG;
+                    width:18px;
+                    height:18px;
+                    position:relative;
+                    left:50%;
+                    margin-left:-10px;
+                    top:50%;
+                    margin-top:-9px;
+                }
+
+                &.active
+                {
+                    background: #bcd1eb;
+                    border: 1px solid #0043ff;
+                    opacity: 0.5;
+                    visibility: visible;
+                    .addWorkoutPlus {
+                        @extend %calendarPlusSmallBG;
+                        background: 0 -18px no-repeat; 
+                    }
+                }
+            }
+
+            
+            .workoutBody
+            {
+                p
+                {
+                    display: none;
+                }
+            }
+        }
+
+        .weekSummary
+        {
+            min-height: 100px;
+        }
+    }
+
+}

@@ -11,6 +11,7 @@ define(
     "shared/managers/calendarManager",
     "shared/managers/selectionManager",
     "shared/managers/athleteManager",
+    "shared/managers/fullScreenManager",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -43,6 +44,7 @@ function(
     CalendarManager,
     SelectionManager,
     AthleteManager,
+    FullScreenManager,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -133,11 +135,19 @@ function(
                 throw new Error("TheMarsApp constructor requires a body element");
             }
 
+            if(!options.$document || !options.$window || !options.screen)
+            {
+                throw new Error("TheMarsApp requires a document, window, and screen");
+            }
+
             this.setupBootPromises();
 
             TP.Application.apply(this, arguments);
 
             this.$body = options.$body;
+            this.$document = options.$document;
+            this.$window = options.$window;
+            this.screen = options.screen;
 
             this.setApiConfig();
 
@@ -180,7 +190,7 @@ function(
             {
                 var self = this;
 
-                $(document).ajaxError(function(event, xhr)
+                this.$document.ajaxError(function(event, xhr)
                 {
                     if (xhr.status === 400 || xhr.status === 500)
                     {
@@ -270,6 +280,18 @@ function(
                     var modelUrl = _.result(model, "url");
                     this.dataManager.reset(modelUrl);
                 }, this);
+            });
+
+            // add full screen manager
+            this.addInitializer(function()
+            {
+                this.fullScreenManager = new FullScreenManager({
+                    $body: this.$body,
+                    $document: this.$document,
+                    $window: this.$window,
+                    screen: this.screen
+                });
+
             });
 
             // add feature authorizer
@@ -381,9 +403,15 @@ function(
                 // Set up controllers container and eagerly load all the required Controllers.
                 this.controllers = {};
 
-                this.controllers.navigationController = new NavigationController();
-                this.controllers.calendarController = new CalendarController({ dataManager: this.dataManager });
-                this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManager });
+                var controllerOptions = {
+                    dataManager: this.dataManager,
+                    fullScreenManager: this.fullScreenManager,
+                    calendarManager: this.calendarManager
+                };
+
+                this.controllers.navigationController = new NavigationController(controllerOptions);
+                this.controllers.calendarController = new CalendarController(controllerOptions);
+                this.controllers.dashboardController = new DashboardController(controllerOptions);
             });
 
             this.addInitializer(function()
@@ -428,7 +456,7 @@ function(
                 var self = this;
                 self.isBlurred = false;
 
-                $(window).focus(function()
+                this.$window.focus(function()
                 {
                     setTimeout(function()
                     {
@@ -436,7 +464,7 @@ function(
                     }, 1000);
                 });
 
-                $(window).blur(function()
+                this.$window.blur(function()
                 {
                     self.isBlurred = true;
                 });
@@ -457,7 +485,7 @@ function(
             // filter non-numeric input
             this.addInitializer(function ()
             {
-                $(document).on("keypress.filterNumberInput", ".numberInput", function (evt)
+                this.$document.on("keypress.filterNumberInput", ".numberInput", function (evt)
                 {
                     var charCode = (evt.which) ? evt.which : evt.keyCode;
                     if(!TextFieldNumberFilter.isNumberKey(charCode))
@@ -470,7 +498,7 @@ function(
             // trigger an 'enter' event on enter key in text field
             this.addInitializer(function ()
             {
-                $(document).on("keypress.watchForEnter", "input[type=text]", function (evt)
+                this.$document.on("keypress.watchForEnter", "input[type=text]", function (evt)
                     {
                         var charCode = (evt.which) ? evt.which : evt.keyCode;
                         if(charCode === 13)
@@ -489,7 +517,7 @@ function(
             // trigger a 'cancel' event on escape key in text field
             this.addInitializer(function ()
             {
-                $(document).on("keyup.watchForCancel", "input[type=text]", function (evt)
+                this.$document.on("keyup.watchForCancel", "input[type=text]", function (evt)
                     {
                         var charCode = (evt.which) ? evt.which : evt.keyCode;
                         if(charCode === 27)
@@ -508,7 +536,7 @@ function(
             // close the top most modal view on escape
             this.addInitializer(function ()
             {
-                $(document).on("keyup.closeModalOnEscape", function (evt)
+                this.$document.on("keyup.closeModalOnEscape", function (evt)
                 {
                     var charCode = (evt.which) ? evt.which : evt.keyCode;
                     if(charCode === 27)

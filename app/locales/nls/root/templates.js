@@ -492,5 +492,7 @@ define({
     "Maximum Distance": "Maximum Distance",
 
     "Select Bike": "Select Bike",
-    "Select Shoe": "Select Shoe"
+    "Select Shoe": "Select Shoe",
+
+    "Full Screen": "Full Screen"
 });
