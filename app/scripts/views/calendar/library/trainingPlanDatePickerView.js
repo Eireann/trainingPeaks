@@ -126,13 +126,13 @@ function(
                 var startDayOfWeek = this.getStartDayOfWeekIndex();
                 var endDayOfWeek = this.getEndDayOfWeekIndex(); 
 
-                if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && moment(targetDate).day() !== startDayOfWeek) 
+                if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && targetDate.day() !== startDayOfWeek) 
                 {
-                    targetDate = moment.local(targetDate).day(startDayOfWeek);
+                    targetDate = targetDate.day(startDayOfWeek);
                 }
-                else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && moment(targetDate).day() !== endDayOfWeek) 
+                else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && targetDate.day() !== endDayOfWeek) 
                 {
-                    targetDate = moment.local(targetDate).day(endDayOfWeek);
+                    targetDate = targetDate.day(endDayOfWeek);
                     if(TP.utils.datetime.isPast(targetDate))
                     {
                         targetDate.add("weeks", 1);
