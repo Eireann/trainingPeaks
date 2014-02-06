@@ -195,18 +195,18 @@ function (
             {
                 if(!binding.onGet)
                 {
-                    binding.onGet = "defaultOnGet";
+                    binding.onGet = "formatForStickit";
                 }
 
                 if(!binding.onSet)
                 {
-                    binding.onSet = "defaultOnSet";
+                    binding.onSet = "parseForStickit";
                 }
 
             }, this);
         },
 
-        defaultOnGet: function(value, options)
+        formatForStickit: function(value, options)
         {
             if(!options.units)
             {
@@ -215,7 +215,7 @@ function (
             return this.formatUnitsValue(options.units, value, options);
         },
 
-        defaultOnSet: function(value, options)
+        parseForStickit: function(value, options)
         {
             if(!options.units)
             {

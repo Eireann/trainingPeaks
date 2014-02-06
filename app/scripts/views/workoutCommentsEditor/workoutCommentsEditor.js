@@ -27,8 +27,8 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 updateModel: "updateModel",
                 ignoreOnSetForUpdateModel: true,
                 saveTimeout: 60000,
-                onGet: "defaultOnGet",
-                onSet: "defaultOnSet"
+                onGet: "formatForStickit",
+                onSet: "parseForStickit"
             },
             "#postActivityCommentsInput":
             {
@@ -37,8 +37,8 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel",
                 saveTimeout: 60000,
-                onGet: "defaultOnGet",
-                onSet: "defaultOnSet"
+                onGet: "formatForStickit",
+                onSet: "parseForStickit"
             },
             "#preActivityCommentsInput":
             {
@@ -46,29 +46,29 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 units: "text",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel",
-                onGet: "defaultOnGet",
-                onSet: "defaultOnSet"
+                onGet: "formatForStickit",
+                onSet: "parseForStickit"
             },
             "#descriptionPrintable":
             {
                 observe: "description",
                 units: "text",
-                onGet: "defaultOnGet",
-                onSet: "defaultOnSet"
+                onGet: "formatForStickit",
+                onSet: "parseForStickit"
             },
             "#postActivityCommentsPrintable":
             {
                 observe: "newComment",
                 units: "text",
-                onGet: "defaultOnGet",
-                onSet: "defaultOnSet"
+                onGet: "formatForStickit",
+                onSet: "parseForStickit"
             },
             "#preActivityCommentsPrintable":
             {
                 observe: "coachComments",
                 units: "text",
-                onGet: "defaultOnGet",
-                onSet: "defaultOnSet"
+                onGet: "formatForStickit",
+                onSet: "parseForStickit"
             }
         },
 
@@ -152,7 +152,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             return commentsArray;
         },
 
-        defaultOnGet: function(value, options)
+        formatForStickit: function(value, options)
         {
             if(!options.units)
             {
@@ -161,7 +161,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             return this.formatUnitsValue(options.units, value, options);
         },
 
-        defaultOnSet: function(value, options)
+        parseForStickit: function(value, options)
         {
             if(!options.units)
             {
