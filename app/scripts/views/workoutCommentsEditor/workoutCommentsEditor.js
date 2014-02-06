@@ -138,7 +138,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
         saveComments: function()
         {
             this.model.set("workoutComments",  this.getCommentsAsArray(), { silent: true });
-            this.model.autosave();
+            this.model.autosave({});
         },
 
         getCommentsAsArray: function()

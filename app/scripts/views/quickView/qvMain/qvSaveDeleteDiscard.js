@@ -78,12 +78,11 @@ function(
                 this.enableDiscardButton();
         },
 
-        saveOnModelChange: function()
+        saveOnModelChange: function(model, options)
         {
             // if this change was triggered by a fetch, don't save
             if(arguments.length === 2)
             {
-                var options = arguments[1];
                 if(options && options.xhr)
                 {
                     return;
@@ -98,7 +97,7 @@ function(
                    _.has(this.model.changed, "workoutTypeValueId") ||
                    _.has(this.model.changed, "startTime") || _.has(this.model.changed, "startTimePlanned"))
                 {
-                    this.model.autosave();
+                    this.model.autosave(options);
                 }
             }
         },

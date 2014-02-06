@@ -163,7 +163,7 @@ function (
                 if (self.model.get("title") !== newModelValue)
                 {
                     self.model.set("title", newModelValue);
-                    self.model.autosave();
+                    self.model.autosave({});
                 }
             };
 

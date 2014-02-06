@@ -129,7 +129,7 @@ function(
         {
             if(this.model.autosave)
             {
-                this.model.autosave();
+                this.model.autosave({});
             }
             else
             {

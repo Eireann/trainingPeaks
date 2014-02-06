@@ -72,8 +72,8 @@ function(
             it("Should not save multiple copies", function()
             {
                 var model = new WorkoutModel();
-                model.autosave();
-                model.autosave();
+                model.autosave({});
+                model.autosave({});
 
                 var requests = testHelpers.findAllRequests("POST", "/workouts");
                 expect(requests).to.have.length(1);
@@ -90,8 +90,8 @@ function(
             it("Should start delayed saves on failures", function()
             {
                 var model = new WorkoutModel();
-                model.autosave();
-                model.autosave();
+                model.autosave({});
+                model.autosave({});
 
                 var requests = testHelpers.findAllRequests("POST", "/workouts");
                 expect(requests).to.have.length(1);
@@ -105,8 +105,8 @@ function(
             it("Should sequence saves", function()
             {
                 var model = new WorkoutModel({ workoutId: 42 });
-                model.autosave();
-                model.autosave();
+                model.autosave({});
+                model.autosave({});
 
                 var requests = testHelpers.findAllRequests("PUT", "/workouts");
                 expect(requests).to.have.length(1);
@@ -121,7 +121,7 @@ function(
             {
                 var model = new WorkoutModel({ workoutId: 42, title: "original", description: "original" });
 
-                model.autosave();
+                model.autosave({});
 
                 model.set({ title: "local" });
 

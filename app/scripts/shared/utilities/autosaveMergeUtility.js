@@ -89,8 +89,21 @@ function(
         mixin:
         {
             // Place the autosave and parse methods on an object to implement.
-            autosave: function()
+            autosave: function(options)
             {
+
+                if(!_.isObject(options))
+                {
+                    throw new Error("AutosaveMergeUtility.mixin.autosave requires an options argument");
+                }
+
+                // if the autosaved flag is true, then we have received a server response that has triggered model change events,
+                // but we don't want to save again
+                if(options.autosaved)
+                {
+                    return;
+                }
+
                 // NOTE: this refers to the model.
                 var self = this;
 
@@ -106,7 +119,7 @@ function(
                             // null out models, otherwise return undefined to use default logic
                             return item instanceof Backbone.Model ? null : undefined;
                         }
-                        self._autosaveRequest = self.save(null, { diff: _.clone(self.attributes, true, cloneFilter) });
+                        self._autosaveRequest = self.save(null, { diff: _.clone(self.attributes, true, cloneFilter), autosaved: true });
                         deferred.resolve(self._autosaveRequest);
                     };
 
