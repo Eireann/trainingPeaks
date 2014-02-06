@@ -1333,6 +1333,25 @@ function(testHelpers, TP, conversion, dateTimeUtils)
                 });
             });
         });
+
+
+        describe("Text", function()
+        {
+            it("Should format empty string as empty string", function()
+            {
+                expect(conversion.formatUnitsValue("text", "")).to.eql("");                
+            });
+
+            it("Should format null as empty string", function()
+            {
+                expect(conversion.formatUnitsValue("text", null)).to.eql("");
+            });
+
+            it("Should preserve non empty string", function()
+            {
+                expect(conversion.formatUnitsValue("text", "I have some text")).to.eql("I have some text");
+            });
+        });
     });
 
 });

@@ -57,8 +57,8 @@ function(
             {
 
                 // should request workouts for this week
-                var monday = moment().day(1).format("YYYY-MM-DD");
-                var sunday = moment().day(7).format("YYYY-MM-DD");
+                var monday = moment.local().startOf("week").format("YYYY-MM-DD");
+                var sunday = moment.local().endOf("week").format("YYYY-MM-DD");
                 var thisWeekWorkouts = "workouts/" + monday + "/" + sunday;
                 var thisWeekMetrics = "timedmetrics/" + monday + "/" + sunday;
                 expect(testHelpers.hasRequest("GET", thisWeekWorkouts)).to.equal(true);
@@ -67,7 +67,7 @@ function(
                     {
                         athleteId: 426489,
                         workoutId: 1,
-                        workoutDay: moment().format("YYYY-MM-DD"),
+                        workoutDay: moment.local().format("YYYY-MM-DD"),
                         title: "My Workout"
                     }
                 ];

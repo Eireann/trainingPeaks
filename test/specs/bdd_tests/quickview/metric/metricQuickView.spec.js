@@ -78,7 +78,7 @@ function(
 
                 metric = {
                     id: 1,
-                    timeStamp: moment().format("YYYY-MM-DDTHH:mm:ss"),
+                    timeStamp: moment.local().format("YYYY-MM-DDTHH:mm:ss"),
                     athleteId: 426489,
                     details: [{
                         type: 12,
@@ -86,8 +86,8 @@ function(
                     }]
                 };
 
-                testHelpers.resolveRequest("GET", "workouts/" + moment().day(1).format("YYYY-MM-DD"), []);
-                testHelpers.resolveRequest("GET", "timedmetrics/" + moment().day(1).format("YYYY-MM-DD"), [metric]);
+                testHelpers.resolveRequest("GET", "workouts/" + moment.local().startOf("week").format("YYYY-MM-DD"), []);
+                testHelpers.resolveRequest("GET", "timedmetrics/" + moment.local().startOf("week").format("YYYY-MM-DD"), [metric]);
             });
 
             afterEach(function()
