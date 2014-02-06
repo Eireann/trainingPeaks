@@ -195,19 +195,33 @@ function(
         describe("mixin.autosave", function()
         {
 
-            it("should seriealize save calls", function()
+            var model, deferreds;
+            beforeEach(function()
             {
-                var model = new Backbone.Model();
-                var deferreds = [];
+                model = new Backbone.Model();
+                deferreds = [];
                 sinon.stub(model, "save", function()
                 {
                     var deferred = new $.Deferred();
                     deferreds.push(deferred);
                     return deferred.promise();
                 });
+            });
 
-                AutosaveMergeUtility.mixin.autosave.call(model);
-                AutosaveMergeUtility.mixin.autosave.call(model);
+            it("should require an options parameter", function()
+            {
+                var autosaveWithoutOptions = function()
+                {
+                    AutosaveMergeUtility.mixin.autosave.call(model);
+                };
+
+                expect(autosaveWithoutOptions).to.throw();
+            });
+
+            it("should serialize save calls", function()
+            {
+                AutosaveMergeUtility.mixin.autosave.call(model, {});
+                AutosaveMergeUtility.mixin.autosave.call(model, {});
                 expect(model.save).to.have.been.called.once;
 
                 deferreds.shift().resolve();
@@ -215,6 +229,22 @@ function(
                 expect(model.save).to.have.been.called.twice;
 
                 deferreds.shift().resolve();
+            });
+
+            it("should add an autosaved flag to the save options", function()
+            {
+                AutosaveMergeUtility.mixin.autosave.call(model, {});
+                expect(model.save).to.have.been.called.once;
+
+                var saveOptions = model.save.firstCall.args[1];
+                expect(_.isObject(saveOptions)).to.be.ok;
+                expect(saveOptions.autosaved).to.be.ok;
+            });
+
+            it("should not trigger a save if the autosaved flag is present in save options", function()
+            {
+                AutosaveMergeUtility.mixin.autosave.call(model, { autosaved: true });
+                expect(model.save).not.to.have.been.called;
             });
 
         });

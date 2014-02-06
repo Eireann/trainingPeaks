@@ -1064,9 +1064,23 @@ function(_, testHelpers, TP, conversion, dateTimeUtils)
             });
         });
 
+        describe("Text", function()
+        {
+            it("Should parse empty string as null", function()
+            {
+                expect(conversion.parseUnitsValue("text", "")).to.eql(null);                
+            });
 
+            it("Should parse null as null", function()
+            {
+                expect(conversion.parseUnitsValue("text", null)).to.eql(null);
+            });
 
-
+            it("Should preserve non empty string", function()
+            {
+                expect(conversion.parseUnitsValue("text", "I have some text")).to.eql("I have some text");
+            });
+        });
 
     });
 
