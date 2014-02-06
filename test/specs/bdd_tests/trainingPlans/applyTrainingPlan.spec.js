@@ -165,7 +165,7 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var wednesday = moment().day(3);
+                var wednesday = moment.local().day(3);
                 $body.find("#applyDateType").val("3");
                 $body.find("#applyDate").val(wednesday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
@@ -182,7 +182,7 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var tuesday = moment().day(2);
+                var tuesday = moment.local().day(2);
                 $body.find("#applyDateType").val("1");
                 $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
@@ -199,7 +199,7 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var tomorrow = moment().add("days", 1);
+                var tomorrow = moment.local().add("days", 1);
                 $body.find("#applyDateType").val("2");
                 $body.find("#applyDateType").trigger("change");
 
@@ -262,8 +262,8 @@ function(
             it("Should trigger a start on date apply command, starting on a monday", function()
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
-                var thursday = moment().day(4);
-                var monday = moment().day(1);
+                var thursday = moment.local().day(4);
+                var monday = moment.local().day(1);
                 $body.find("#applyDateType").val("1");
                 $body.find("#applyDateType").change();
 
@@ -284,12 +284,12 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var sunday = moment().day(0);
-                if(sunday.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
+                var sunday = moment.local().day(0);
+                if(sunday.format("YYYY-MM-DD") < moment.local().format("YYYY-MM-DD"))
                 {
                     sunday.add("weeks", 1);
                 }
-                var tuesday = moment().day(2);
+                var tuesday = moment.local().day(2);
                 $body.find("#applyDateType").val("3");
                 $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
@@ -323,8 +323,8 @@ function(
 
 
                 var trainingPlanRestrictedToWeekDates = _.extend({}, xhrData.trainingPlanDetails, { hasWeeklyGoals: true });
-                trainingPlanRestrictedToWeekDates.startDate = moment().day(5).format("YYYY-MM-DD");
-                trainingPlanRestrictedToWeekDates.endDate = moment().add("weeks", 12).day(4).format("YYYY-MM-DD");
+                trainingPlanRestrictedToWeekDates.startDate = moment.local().day(5).format("YYYY-MM-DD");
+                trainingPlanRestrictedToWeekDates.endDate = moment.local().add("weeks", 12).day(4).format("YYYY-MM-DD");
 
                 testHelpers.resolveRequest("GET", "plans/v1/plans/1/details$", trainingPlanRestrictedToWeekDates);
 
@@ -339,8 +339,8 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var thursday = moment().day(4);
-                var friday = moment().day(5);
+                var thursday = moment.local().day(4);
+                var friday = moment.local().day(5);
                 $body.find("#applyDateType").val("1");
                 $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(thursday.format("M/D/YYYY"));
@@ -359,12 +359,12 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var thursday = moment().day(4);
-                if(thursday.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
+                var thursday = moment.local().day(4);
+                if(thursday.format("YYYY-MM-DD") < moment.local().format("YYYY-MM-DD"))
                 {
                     thursday.add("weeks", 1);
                 }
-                var tuesday = moment().day(2);
+                var tuesday = moment.local().day(2);
                 $body.find("#applyDateType").val("3");
                 $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
@@ -412,8 +412,8 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).to.equal(false);
 
-                var thursday = moment().day(4);
-                var friday = moment().day(5);
+                var thursday = moment.local().day(4);
+                var friday = moment.local().day(5);
                 $body.find("#applyDateType").val("1");
                 $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(thursday.format("M/D/YYYY"));

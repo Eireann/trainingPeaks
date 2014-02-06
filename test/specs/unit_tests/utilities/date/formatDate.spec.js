@@ -34,7 +34,7 @@ function(moment, TP, DateTimeFormatter)
 
         it("Should not remove dashes on date formats that begin with YY", function()
         {
-            var testDate = "Apr 1, 2019";
+            var testDate = moment.local("Apr 1, 2019");
             expect(dateTimeFormatter.format(testDate, "YYYY-MM-DD")).to.equal("2019-04-01");
             expect(dateTimeFormatter.format(testDate, "YY-MM-DD")).to.equal("19-04-01");
         });
@@ -51,7 +51,7 @@ function(moment, TP, DateTimeFormatter)
 
             it("Should format dates as M/D/YYYY by default", function()
             {
-                var testDate = "April 1, 2020";
+                var testDate = moment.local("April 1, 2020");
                 expect(dateTimeFormatter.format(testDate)).to.equal("4/1/2020");
             });
 
@@ -59,20 +59,20 @@ function(moment, TP, DateTimeFormatter)
             {
                 it("Should print a formatted year, month, and day on the first of the year if no format is passed", function()
                 {
-                    var testDate = "Jan 1, 2013";
+                    var testDate = moment.local("Jan 1, 2013");
                     expect(dateTimeFormatter.format(testDate, "calendarDay")).to.equal("Jan 1 2013");
                 });
 
                 it("Should print a formatted month and day on the first of the month if no format is passed", function()
                 {
-                    var testDate = "Feb 1, 2013";
+                    var testDate = moment.local("Feb 1, 2013");
                     expect(dateTimeFormatter.format(testDate, "calendarDay")).to.equal("Feb 1");
                 });
             });
 
             describe("Convert dmy to mdy", function()
             {
-                var testDate = "April 1, 2019";
+                var testDate = moment.local("April 1, 2019");
 
                 it("Should preserve MM/DD/YYYY as MM/DD/YYYY", function()
                 {
@@ -146,7 +146,7 @@ function(moment, TP, DateTimeFormatter)
 
             it("Should format dates as D/M/YYYY by default", function()
             {
-                var testDate = "April 1, 2020";
+                var testDate = moment.local("April 1, 2020");
                 expect(dateTimeFormatter.format(testDate)).to.equal("1/4/2020");
             });
 
@@ -154,20 +154,20 @@ function(moment, TP, DateTimeFormatter)
             {
                 it("Should print a formatted year, month, and day on the first of the year if no format is passed", function()
                 {
-                    var testDate = "Jan 1, 2013";
+                    var testDate = moment.local("Jan 1, 2013");
                     expect(dateTimeFormatter.format(testDate, "calendarDay")).to.equal("1 Jan 2013");
                 });
 
                 it("Should print a formatted month and day on the first of the month if no format is passed", function()
                 {
-                    var testDate = "Feb 1, 2013";
+                    var testDate = moment.local("Feb 1, 2013");
                     expect(dateTimeFormatter.format(testDate, "calendarDay")).to.equal("1 Feb");
                 });
             });
 
             describe("Convert mdy to dmy", function()
             {
-                var testDate = "April 1, 2019";
+                var testDate = moment.local("April 1, 2019");
 
                 it("Should preserve DD/MM/YYYY to DD/MM/YYYY", function()
                 {

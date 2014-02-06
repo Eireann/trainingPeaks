@@ -27,7 +27,7 @@ function(
         {
             if(!moment.isMoment(date))
             {
-                date = moment(date);
+                date = moment.local(date);
             }
             this.set({date: date.format(CalendarUtility.idFormat)}, options);
         }
