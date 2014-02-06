@@ -172,14 +172,14 @@ function(
 
                 it("Should allow any user to save workout to a past date", function()
                 {
-                    var attributes = { targetDate: moment().subtract("days", 1)};
+                    var attributes = { targetDate: moment.local().subtract("days", 1)};
                     expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(true);
                     expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(true);
                 });
 
                 it("Should allow only an authorized user to save workout to a future date", function()
                 {
-                    var attributes = { targetDate: moment().add("days", 7)};
+                    var attributes = { targetDate: moment.local().add("days", 7)};
 
                     expect(unauthorizedFeatureAuthorizer.canAccessFeature(unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(false);
                     expect(authorizedFeatureAuthorizer.canAccessFeature(authorizedFeatureAuthorizer.features.SaveWorkoutToDate, attributes)).to.equal(true);

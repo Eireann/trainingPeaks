@@ -67,7 +67,7 @@ function(
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            if (options.ignoreOnSetForUpdateModel || !options.onSet)
+            if (!options.onSet)
             {
                 if (newViewValue != currentModelValue)
                 {
@@ -104,7 +104,7 @@ function(
         setModelValue: function(newViewValue, options)
         {
             // Do the save!
-            var newModelValue = (options.ignoreOnSetForUpdateModel || !options.onSet) ? newViewValue : this[options.onSet](newViewValue, options);
+            var newModelValue = options.onSet ? this[options.onSet](newViewValue, options) : newViewValue;
             this.model.set(options.observe, newModelValue);
             this.trigger("setModelValue", newViewValue, options);
         },
@@ -129,7 +129,7 @@ function(
         {
             if(this.model.autosave)
             {
-                this.model.autosave();
+                this.model.autosave({});
             }
             else
             {

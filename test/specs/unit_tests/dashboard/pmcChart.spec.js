@@ -30,7 +30,7 @@ function(
         for(var i = 0;i < howManyItems;i++)
         {
             modelData.push({
-                workoutDay: moment().add("days", multiplier * i).hour(0).format(TP.utils.datetime.shortDateFormat),
+                workoutDay: moment.local().add("days", multiplier * i).hour(0).format(TP.utils.datetime.shortDateFormat),
                 tssActual: i * 10,
                 tssPlanned: i * 15,
                 atl: i * 5,
@@ -114,13 +114,13 @@ function(
                         expect(
                             moment(chartPoints.TSS[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSS[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -154,13 +154,13 @@ function(
                         expect(
                             moment(chartPoints.ATL[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.ATL[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -194,13 +194,13 @@ function(
                         expect(
                             moment(chartPoints.IF[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.IF[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -234,13 +234,13 @@ function(
                         expect(
                             moment(chartPoints.CTL[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.CTL[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -275,13 +275,13 @@ function(
                         expect(
                             moment(chartPoints.TSB[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSB[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -324,13 +324,13 @@ function(
                         expect(
                             moment(chartPoints.TSSFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSSFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -370,13 +370,13 @@ function(
                         expect(
                             moment(chartPoints.TSBFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.TSBFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -416,13 +416,13 @@ function(
                         expect(
                             moment(chartPoints.ATLFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.ATLFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -462,13 +462,13 @@ function(
                         expect(
                             moment(chartPoints.IFFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.IFFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
@@ -507,13 +507,13 @@ function(
                         expect(
                             moment(chartPoints.CTLFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().format(TP.utils.datetime.shortDateFormat)
+                            moment.local().format(TP.utils.datetime.shortDateFormat)
                         );
 
                         expect(
                             moment(chartPoints.CTLFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).to.eql(
-                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                            moment.local().add("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
                     });
                 });
