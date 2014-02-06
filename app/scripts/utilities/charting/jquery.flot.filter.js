@@ -58,12 +58,12 @@ function ($, _)
         var emas = [];
         var timeSeriesCopy = ([]).concat(timeSeries);
 
+        if (reverse)
+            timeSeriesCopy.reverse();
+        
         var startingSma = computeSimpleMovingAverages(timeSeriesCopy.slice(0, period))[0];
         var previousEma = startingSma;
         var currentEma;
-
-        if (reverse)
-            timeSeriesCopy.reverse();
 
         var smoothing = 2.0 / (period + 1);
         var seriesLength = timeSeriesCopy.length;
