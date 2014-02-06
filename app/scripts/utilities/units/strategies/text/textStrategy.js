@@ -7,15 +7,11 @@ define(
     DefaultUnitsStrategy
 ) {
 
-    /*
-        Text strategy parse/format converts line endings to be compatible with db/flex
-    */
     return DefaultUnitsStrategy.extend({
 
         formatValue: function(value)
         {
 
-            // if the input is null or empty string, return empty string or other default value
             if(!_.isString(value) || this._isEmptyString(value))
             {
                 return this._getDefaultValueForFormat();
