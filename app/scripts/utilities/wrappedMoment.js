@@ -51,13 +51,13 @@ define(
     // To construct a utc date, or convert a date to utc, moment.utc()
     wrappedMoment.utc = function(input, format, lang, strict)
     {
-        return realMoment.isMoment(input) ? input.utc() : realMoment.utc(input, format, lang, strict);
+        return realMoment.utc(input, format, lang, strict);
     };
 
     // To construct a local date, or convert a date to local, call moment.local()
     wrappedMoment.local = function(input, format, lang, strict)
     {
-        return realMoment.isMoment(input) ? input.local() : realMoment(input, format, lang, strict);
+        return realMoment(input, format, lang, strict).local();
     };
 
     // redefine moment as our wrapped version    

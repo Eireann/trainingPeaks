@@ -33,6 +33,14 @@ function(
                 expect(constructFromLocalMoment).to.throw();
             });
 
+            it("Should return a new moment instance without modifying the source instance", function()
+            {
+                var originalMoment = moment();
+                var utcMoment = moment(originalMoment);
+                expect(originalMoment._isUTC).to.be.ok;
+                expect(utcMoment._isUTC).to.be.ok;
+                expect(utcMoment === originalMoment).to.not.be.ok;
+            });
         });
 
         describe(".utc", function()
@@ -61,6 +69,15 @@ function(
                 var newMoment = moment(utcMoment);
                 expect(newMoment._isUTC).to.be.ok;
             });
+
+            it("Should return a new moment instance without modifying the source instance", function()
+            {
+                var localMoment = moment.local();
+                var utcMoment = moment.utc(localMoment);
+                expect(utcMoment === localMoment).to.not.be.ok;
+                expect(localMoment._isUTC).to.not.be.ok;
+                expect(utcMoment._isUTC).to.be.ok;
+            });
         });
 
         describe(".local", function()
@@ -88,6 +105,15 @@ function(
                 var localMoment = moment.local();
                 var newMoment = moment.local(localMoment);
                 expect(newMoment._isUTC).to.not.be.ok;
+            });
+
+            it("Should return a new moment instance without modifying the source instance", function()
+            {
+                var utcMoment = moment.utc();
+                var localMoment = moment.local(utcMoment);
+                expect(localMoment === utcMoment).to.not.be.ok;
+                expect(utcMoment._isUTC).to.be.ok;
+                expect(localMoment._isUTC).to.not.be.ok;
             });
         });
 
