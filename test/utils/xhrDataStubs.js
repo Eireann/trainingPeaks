@@ -316,7 +316,7 @@ function()
                     "lastLogin": "2013-05-07T16:30:53",
                     "lastPlannedWorkout":"3911-03-08T00:00:00",
                     "settings":null,
-                    "photoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
+                    "profilePhotoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
                 ]
             }, // END BARBKPREM
 
@@ -457,7 +457,7 @@ function()
                         "lastLogin": "2013-05-07T16:30:53",
                         "lastPlannedWorkout": "3911-03-08T00:00:00",
                         "settings": null,
-                        "photoUrl": "/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"
+                        "profilePhotoUrl": "/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"
                     },
                     {
                     "athleteId": 23456,
@@ -469,7 +469,7 @@ function()
                     "lastLogin": "2013-05-07T16:30:53",
                     "lastPlannedWorkout":"3911-03-08T00:00:00",
                     "settings":null,
-                    "photoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
+                    "profilePhotoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
                 ]
             } // END SUPERCOACH
 
