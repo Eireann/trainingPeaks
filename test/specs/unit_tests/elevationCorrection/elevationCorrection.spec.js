@@ -97,6 +97,7 @@
                 beforeEach(function()
                 {
                     var workoutModel = new TP.Model({
+                        distance: 1000,
                         detailData: new TP.Model({
                             totalStats: {
                                 minimumElevation: 1,
@@ -138,11 +139,39 @@
 
                 });
 
-                xit("Should calculate appropriate grade (TODO: fix this test)", function()
+                it("Should calculate appropriate grade", function()
                 {
-                    ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
-                    var expectedGrade = 20.12;
-                    // expect(viewModel.get("correctedGrade")).to.eql(expectedGrade);
+                    var expectedGrade = (100 * (viewContext.elevationCorrectionModel.get("gain") - viewContext.elevationCorrectionModel.get("loss")) / viewContext.workoutModel.get("distance"));
+                    
+                    var serializedData = viewContext.serializeData();
+
+                    expect(serializedData.correctedGrade).to.eql(expectedGrade);
+                });
+
+                it("Should find the minimum elevation correctly, even if the elevation channel includes null values", function()
+                {
+                    var originalElevation = [ [ 0, null ], [ 1, 100 ], [ 2, 125 ], [ 3, 150 ], [ 4, null ] ];
+
+                    var graphData = new GraphData({ detailData: {} });
+                    sinon.stub(graphData, "getDataByAxisAndChannel").returns(originalElevation);
+
+                    var viewContext = {
+                        model: buildWorkoutModel(),
+                        originalElevation: originalElevation,
+                        elevationCorrectionModel: new TP.Model(),
+                        findMinimumElevation: ElevationCorrectionView.prototype.findMinimumElevation,
+                        addMinimumElevation: ElevationCorrectionView.prototype.addMinimumElevation,
+                        _getGraphData: function() { return graphData; }
+                    };
+
+                    // The equivalent of showUpdatedElevationProfile()
+                    ElevationCorrectionView.prototype.setOriginalElevation.apply(viewContext);
+                    var series = ElevationCorrectionView.prototype.buildPlotSeries.apply(viewContext);
+
+                    expect(series.length).to.equal(1);
+                    expect(series[0].data[0][2]).to.equal(100);
+                    expect(series[0].data[1][2]).to.equal(100);
+                    expect(series[0].data[2][2]).to.equal(100);
                 });
 
             });

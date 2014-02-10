@@ -41,7 +41,7 @@ function ()
             //"23": { name: "title", prefix: "" }, //commented out because it is hardwired
             "24": { name: "workoutTypeValueId", prefix: "", conversion: "formatWorkoutType" },
             "25": { name: "code", prefix: "" } , 
-            "26": { name: "description", prefix: "" } ,
+            "26": { name: "description", prefix: "", conversion: "formatDescription" } ,
             "30": { name: "coachComments", prefix: "P" },
             "31": { name: "workoutComments", prefix: "Post", conversion: "formatWorkoutComments" },
             "35": { name: "tssActual", prefix: "C", units: "tss" },

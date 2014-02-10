@@ -69,6 +69,7 @@ body[data-useragent*="MSIE"] .icon
 %spriteSelectBoxBG { @include inlineBG("../../assets/images/sprite-dropdown.png"); }
 
 %calendarPlusBG { @include inlineBG("../../assets/images/calendarImages/sprite-calendar-plus.png"); }
+%calendarPlusSmallBG { @include inlineBG("../../assets/images/calendarImages/sprite-calendar-plus-small.png"); }
 
 %messagesIconBG { @include inlineBG("../../assets/images/calendarImages/messagesIcon.png"); }
 %tpLogoBG { @include inlineBG( "../../assets/images/tpLogo.png"); }
@@ -139,6 +140,7 @@ body[data-useragent*="MSIE"] .icon
     %spriteSelectBoxBG { @include inlineRetinaBG("../../assets/images/sprite-dropdown@2x.png"); }
 
     %calendarPlusBG { @include inlineRetinaBG( "../../assets/images/calendarImages/sprite-calendar-plus@2x.png"); }
+    %calendarPlusSmallBG { @include inlineRetinaBG( "../../assets/images/calendarImages/sprite-calendar-plus-small@2x.png"); }
     %tpLogoBG { @include inlineRetinaBG( "../../assets/images/tpLogo@2x.png"); }
     %tpLogoBGWithoutText { @include inlineRetinaBG( "../../assets/images/tpLogo@2x-clear.png"); }
 

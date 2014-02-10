@@ -17,7 +17,7 @@ function(_, moment)
         {
             if(momentParseableDate)
             {
-                var momentDate = moment(momentParseableDate);
+                var momentDate = moment.isMoment(momentParseableDate) ? momentParseableDate : moment(momentParseableDate);
                 formatString = this._getNamedDateFormatString(formatString, momentDate);
                 formatString = this._convertFormatStringToUserPreferredDateFormat(formatString);
 

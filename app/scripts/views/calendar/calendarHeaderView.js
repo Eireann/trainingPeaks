@@ -1,6 +1,7 @@
 define(
 [
     "underscore",
+    "jquery",
     "setImmediate",
     "backbone",
     "TP",
@@ -12,6 +13,7 @@ define(
 ],
 function(
          _,
+         $,
          setImmediate,
          Backbone,
          TP,
@@ -35,10 +37,11 @@ function(
 
         events:
         {
-            "click #goToTodayButton": "onGoToTodayButtonClicked",
-            "click #goToNextWeekButton": "onGoToNextWeekButtonClicked",
-            "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
+            "click .goToTodayButton": "onGoToTodayButtonClicked",
+            "click .goToNextWeekButton": "onGoToNextWeekButtonClicked",
+            "click .goToLastWeekButton": "onGoToLastWeekButtonClicked",
             "click button.refreshButton": "onRefreshButtonClicked",
+            "click button.fullScreen": "onFullScreenClicked",
             "change .datepicker": "onDateSelect"
         },
 
@@ -71,6 +74,8 @@ function(
 
             this._addView(".athletePickerContainer", new AthletePickerView({ basePath: "calendar" }));
             this.children.call("render");
+
+
         },
 
         bindings:
@@ -112,14 +117,22 @@ function(
             "change:date": "updateDatepicker"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             if (!this.model)
                 throw "Cannot have a calendarHeaderView without a model";
 
+            this.analytics = options.analytics || TP.analytics;
             this.initializeStickit();
             this.children = new Backbone.ChildViewContainer(); 
             this.on("close", _.bind(this.children.call, this.children, "close"));
+
+            if(!options || !options.fullScreenManager)
+            {
+                throw new Error("Calendar Header View requires a full screen manager");
+            }
+            this.fullScreenManager = options.fullScreenManager;
+            this.listenTo(this.fullScreenManager, "change:fullScreen", _.bind(this._triggerScrollRefresh, this));
         },
 
         updateDatepicker: function()
@@ -136,27 +149,41 @@ function(
 
         onGoToTodayButtonClicked: function ()
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
-            this.model.setDate(moment());
+            this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
+            this.model.setDate(TP.utils.datetime.getTodayDate());
         },
         
         onGoToNextWeekButtonClicked: function()
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "nextWeekClicked", "eventLabel": "" });
+            this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "nextWeekClicked", "eventLabel": "" });
             this.model.setDate(moment(this.model.get("date")).add(1, "week"));
         },
         
         onGoToLastWeekButtonClicked: function()
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "lastWeekClicked", "eventLabel": "" });
+            this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "lastWeekClicked", "eventLabel": "" });
             this.model.setDate(moment(this.model.get("date")).subtract(1, "week"));
         },
         
         onRefreshButtonClicked: function()
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
+            this.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
             theMarsApp.calendarManager.reset();
             // TODO: Reset libraries too?
+        },
+
+        onFullScreenClicked: function()
+        {
+            this.fullScreenManager.toggleFullScreen();
+        },
+
+        _triggerScrollRefresh: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.model.trigger("change:date", self.model, self.model.get("date"), {});
+            });
         },
 
         _addView: function(selector, view)
@@ -170,6 +197,7 @@ function(
             }
             this.children.add(view);
         }
+
     };
 
     return TP.ItemView.extend(calendarHeaderViewBase);

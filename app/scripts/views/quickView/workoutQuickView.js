@@ -50,8 +50,6 @@ function(
 
         closeOnResize: false,
 
-        today: moment().format(TP.utils.datetime.shortDateFormat),
-
         className: "workoutQuickView",
 
         showThrobbers: false,

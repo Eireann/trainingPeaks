@@ -22,6 +22,7 @@
             requirejs(
             [
                 "underscore",
+                "wrappedMoment",
                 "q",
                 "chai",
                 "sinon",
@@ -30,6 +31,7 @@
             ],
             function(
                 _,
+                wrappedMoment,
                 Q,
                 chai,
                 sinon,
@@ -91,7 +93,12 @@
                 ["app"],
                 function(MarsApp)
                 {
-                    window.theMarsApp = new MarsApp({"$body": $("<body></body>")});
+                    window.theMarsApp = new MarsApp({
+                        $body: $("body"),
+                        $document: $(document),
+                        $window: $(window),
+                        screen: screen
+                    });
 
                     requirejs(
                     [

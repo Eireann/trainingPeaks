@@ -198,10 +198,8 @@ function(
                 {
                     throw new Error("SaveWorkoutToDate requires a targetDate attribute");
                 }
-                var today = moment().format(TP.utils.datetime.shortDateFormat);
-                var newDate = moment(attributes.targetDate).format(TP.utils.datetime.shortDateFormat);
 
-                if(newDate > today)
+                if(TP.utils.datetime.isFuture(attributes.targetDate))
                 {
                     return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
                 }

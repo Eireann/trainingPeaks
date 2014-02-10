@@ -11,14 +11,13 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 
 	describe("applyTrainingPlanToCalendarConfirmationView ", function()
 	{
-		var trainingPlan, today, baselineDate;
+		var trainingPlan, today;
 		beforeEach(function()
 		{
 			trainingPlan = new TrainingPlan({planId: 123});
-			today = moment().format("MM-DD-YYYY");
-			baselineDate = moment("2013-09-02"); // a monday
+			today = moment.local().format("MM-DD-YYYY");
 			trainingPlan.details.fetch = function() { return new $.Deferred().resolve(); };
-			trainingPlan.details.set({startDate: moment().format("MM-DD-YYYY")});
+			trainingPlan.details.set({startDate: moment.local().format("MM-DD-YYYY")});
 		});
 
 		it("Should be loaded as a module", function()
@@ -50,12 +49,12 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 		});
 		it("Should apply the plan", function()
 		{
-			var monday = moment(baselineDate).day(1);
-			var tuesday = moment(baselineDate).day(2);
+			var monday = moment.local().day(1).format("YYYY-MM-DD");
+			var tuesday = moment.local().day(2).format("YYYY-MM-DD");
 			var nextEligibleTuesday = tuesday;
 			
 			// plan must start on a tuesday
-			trainingPlan.details.set({startDate: tuesday.format("YYYY-MM-DD"), hasWeeklyGoals: true});
+			trainingPlan.details.set({startDate: tuesday, hasWeeklyGoals: true});
 
 			var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday});
 			view.modal = null;
@@ -67,7 +66,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, TP, moment, 
 			sinon.stub(view.model, "applyToDate").returns(new $.Deferred().resolve());
 			view.applyPlan();
 
-			expect(view.model.applyToDate).to.have.been.calledWith(tuesday.format("M/D/YYYY"), 1);
+			expect(view.model.applyToDate).to.have.been.calledWith(moment.local(tuesday).format("M/D/YYYY"), 1);
 		});
 
 

@@ -22,6 +22,7 @@ requirejs.config(
         jqueryTimepicker: "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
         jqueryTextAreaResize: "../vendor/js/libs/jquery/jquery.autosize",
         jqueryHtmlClean: "../vendor/js/libs/jquery/jquery.htmlClean.TP",
+        jqueryFullScreen: "../vendor/js/libs/jquery/jquery.fullscreen",
         flot: "../bower_components/Flot",
         "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
         lodash: "../bower_components/lodash/dist/lodash.compat",
@@ -29,7 +30,6 @@ requirejs.config(
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
         "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
         "marionette.faderegion": "scripts/plugins/marionette.faderegion",
-        moment: "../bower_components/moment/moment",
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
         affiliates: "scripts/affiliates",
@@ -55,7 +55,11 @@ requirejs.config(
         tpcore: "../tpcore/tpcore.min",
         //"jquery.event.drag": "../bower_components/slickgrid/lib/jquery.event.drag-2.2",
         backbone: "../bower_components/backbone/backbone",
-        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette"
+        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette",
+
+        // We need to wrap moment.js to modify some functionality
+        moment: "../bower_components/moment/moment",
+        wrappedMoment: "scripts/utilities/wrappedMoment"
     },
     shim: {
         handlebars: {
@@ -95,6 +99,9 @@ requirejs.config(
             "jquery"
         ],
         jqueryTimepicker: [
+            "jquery"
+        ],
+        jqueryFullScreen: [
             "jquery"
         ],
         "flot/jquery.flot": [

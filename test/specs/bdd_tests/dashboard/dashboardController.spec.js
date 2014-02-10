@@ -15,6 +15,13 @@ function(
     )
 {
 
+    function buildDashboardController()
+    {
+        return new DashboardController({
+            fullScreenManager: {}
+        });
+    }
+
     describe("Dashboard Controller", function()
     {
         beforeEach(function()
@@ -42,7 +49,7 @@ function(
 
             it("Should have a layout", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 expect(controller.getLayout()).to.not.be.undefined;
             });
 
@@ -65,28 +72,28 @@ function(
 
             it("Should have a dashboard view", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 controller.show();
                 expect(controller.views.dashboard).to.not.be.undefined;
             });
 
             it("Should have a library view", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 controller.show();
                 expect(controller.views.library).to.not.be.undefined;
             });
 
             it("Should have a header view", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 controller.show();
                 expect(controller.views.header).to.not.be.undefined;
             });
 
             it("Should display the dashboard view in the dashboard region", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 sinon.stub(controller.layout.dashboardRegion, "show");
                 controller.show();
                 expect(controller.layout.dashboardRegion.show).to.have.been.calledWith(controller.views.dashboard);
@@ -94,7 +101,7 @@ function(
 
             it("Should display the header view in the header region", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 sinon.stub(controller.layout.headerRegion, "show");
                 controller.show();
                 expect(controller.layout.headerRegion.show).to.have.been.calledWith(controller.views.header);
@@ -102,7 +109,7 @@ function(
 
             it("Should display the library view in the library region", function()
             {
-                var controller = new DashboardController();
+                var controller = buildDashboardController();
                 sinon.stub(controller.layout.libraryRegion, "show");
                 controller.show();
                 expect(controller.layout.libraryRegion.show).to.have.been.calledWith(controller.views.library);

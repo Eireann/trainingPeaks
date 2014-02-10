@@ -106,7 +106,8 @@ function (
         {
             this.waitingOff();
 
-            this.model.set(workoutModelJson);
+            // since this data came from the server, make sure we don't try to save it on model change events
+            this.model.set(workoutModelJson, { autosaved: true });
 
             var self = this;
             this.model.get("details").fetch().done(function()

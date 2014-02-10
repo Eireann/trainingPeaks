@@ -32,7 +32,7 @@ function(
             // this className won't break anything in the javascript, but the css is depending on it
             it("Should have 'day' css class", function()
             {
-                var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
+                var dayModel = new CalendarDayModel({ date: moment.local().format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
                 expect(dayView.$el.hasClass('day')).to.be.ok;
@@ -40,7 +40,7 @@ function(
 
             it("Should add a 'today' class if the date is today", function()
             {
-                var today = moment();
+                var today = moment.local();
                 var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
@@ -49,7 +49,7 @@ function(
 
             it("Should not add a 'today' class if the date is to.notday", function()
             {
-                var tomorrow = moment().add("days", 1);
+                var tomorrow = moment.local().add("days", 1);
                 var dayModel = new CalendarDayModel({ date: tomorrow.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
@@ -58,7 +58,7 @@ function(
 
             it("Should render a date", function()
             {
-                var today = moment();
+                var today = moment.local();
                 var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
@@ -70,7 +70,7 @@ function(
 
                 it("Should make $el a droppable target", function()
                 {
-                    var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
+                    var dayModel = new CalendarDayModel({ date: moment.local().format(TP.utils.datetime.shortDateFormat) });
                     var dayView = new CalendarDayView({ model: dayModel });
                     sinon.stub(dayView.$el, "droppable");
                     dayView.setUpDroppable();

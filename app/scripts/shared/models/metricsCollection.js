@@ -29,6 +29,11 @@ function(
                 throw new Error("startDate & endData needed for MetricsCollection");
             }
 
+            if(!moment.isMoment(this.startDate) || !moment.isMoment(this.endDate))
+            {
+                throw new Error("startDate & endData should be moment instances for MetricsCollection");
+            }
+
             var start = this.startDate.format(TP.utils.datetime.shortDateFormat);
             var end = this.endDate.format(TP.utils.datetime.shortDateFormat);
 

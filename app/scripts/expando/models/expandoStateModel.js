@@ -52,7 +52,7 @@ function(
             {
                 range.getState().set("isFocused", true);
 
-                if(!range.hasLoaded)
+                if(!range.getState().get("hasLoaded"))
                 {
                     range.fetch();
                 }

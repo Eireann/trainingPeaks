@@ -43,9 +43,7 @@ function (
 
         _stickitOnDateChanged: function()
         {
-            var today = moment().startOf("day");
-            var date = moment(this.model.get("workoutDay"));
-            var planned = date > today;
+            var planned = TP.utils.datetime.isFuture(this.model.get("workoutDay"));
 
             var timeAttribute = planned ? "startTimePlanned" : "startTime";
 
@@ -165,7 +163,7 @@ function (
                 if (self.model.get("title") !== newModelValue)
                 {
                     self.model.set("title", newModelValue);
-                    self.model.autosave();
+                    self.model.autosave({});
                 }
             };
 
@@ -197,18 +195,18 @@ function (
             {
                 if(!binding.onGet)
                 {
-                    binding.onGet = "defaultOnGet";
+                    binding.onGet = "formatForStickit";
                 }
 
                 if(!binding.onSet)
                 {
-                    binding.onSet = "defaultOnSet";
+                    binding.onSet = "parseForStickit";
                 }
 
             }, this);
         },
 
-        defaultOnGet: function(value, options)
+        formatForStickit: function(value, options)
         {
             if(!options.units)
             {
@@ -217,7 +215,7 @@ function (
             return this.formatUnitsValue(options.units, value, options);
         },
 
-        defaultOnSet: function(value, options)
+        parseForStickit: function(value, options)
         {
             if(!options.units)
             {

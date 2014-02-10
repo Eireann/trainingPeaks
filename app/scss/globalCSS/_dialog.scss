@@ -76,6 +76,7 @@
     padding-top: 40px;
     padding-bottom: 40px;
     
+    background-color: $TPGrey1;
     @include filter-gradient(#ffffff, #dedcde, horizontal);
     @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
     @include buttons(0px, 65px, 12px);

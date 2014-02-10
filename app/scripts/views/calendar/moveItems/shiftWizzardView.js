@@ -30,7 +30,7 @@ function(
     // convert from model YYYY-MM-DD format to user mdy or dmy format
     function formatGetDate(value)
     {
-        return value ? TP.utils.datetime.format(value) : value;
+        return value ? TP.utils.datetime.format(moment.local(value)) : value;
     }
 
     // convert from user mdy or dmy format to model YYYY-MM-DD format
@@ -304,7 +304,7 @@ function(
             switch (this.model.get("shiftBy"))
             {
                 case "MoveToNewStartDate":
-                    shiftCommand.set("days", moment(this.model.get("moveToStartDate")).diff(moment(shiftCommand.get("startDate")), "days"));
+                    shiftCommand.set("days", moment.local(this.model.get("moveToStartDate")).diff(moment.local(shiftCommand.get("startDate")), "days"));
                     break;
 
                 case "MoveBySpecifiedNumberOfDays":
@@ -380,7 +380,7 @@ function(
         validateDate: function(attributeName, deferred)
         {
             var value = this.model.get(attributeName);
-            if (!value || !moment(value, "YYYY-MM-DD").isValid())
+            if (!value || !moment.local(value, "YYYY-MM-DD").isValid())
             {
                 deferred.rejectWith(this, [dateErrorTemplate]);
             }

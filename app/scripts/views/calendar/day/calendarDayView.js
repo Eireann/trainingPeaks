@@ -35,8 +35,6 @@ function(
 )
 {
 
-    var today = moment().format(TP.utils.datetime.shortDateFormat);
-
     return TP.CompositeView.extend(
     {
         tagName: "div",
@@ -153,7 +151,7 @@ function(
         setTodayCss: function()
         {
             // so we can style today or scroll to it
-            if (this.model.get("date") === today)
+            if (TP.utils.datetime.isToday(this.model.get("date")))
             {
                 this.$el.addClass("today");
             }

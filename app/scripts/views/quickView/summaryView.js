@@ -25,8 +25,6 @@ function (
     {
         className: "summary",
 
-        today: moment().format(TP.utils.datetime.shortDateFormat),
-
         showThrobbers: false,
 
         template:
@@ -88,7 +86,8 @@ function (
 
             this.$("#equipment").append(view.el);
 
-            this.listenTo(view, "change:equipment", _.bind(this.model.autosave, this.model));
+            var saveModel = _.bind(function(){ this.model.autosave({}); }, this);
+            this.listenTo(view, "change:equipment", saveModel);
             this.on("close", _.bind(view.close, view));
         },
 

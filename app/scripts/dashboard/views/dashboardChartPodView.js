@@ -142,7 +142,7 @@ function(
             if (chartDateOption.customStartDate)
             {
                 dateOptions = ChartUtils.buildChartParameters(dateOptions);
-                return TP.utils.datetime.format(moment(dateOptions.startDate).utc()) + " - " + TP.utils.datetime.format(moment(dateOptions.endDate).utc());
+                return TP.utils.datetime.format(dateOptions.startDate) + " - " + TP.utils.datetime.format(dateOptions.endDate);
             } else if (quickDateSelectOption && quickDateSelectOption !== 1)
             {
                 return chartDateOption.label;

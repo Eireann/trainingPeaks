@@ -121,11 +121,11 @@ function(
                     legend: { show: true },
                     xaxis:
                     {
-                        min: moment(dateOptions.startDate).valueOf(),
-                        max: moment(dateOptions.endDate).valueOf(),
+                        min: dateOptions.startDate.valueOf(),
+                        max: dateOptions.endDate.valueOf(),
                         ticks: function(axis)
                         {
-                            var date = moment(axis.min).startOf('day');
+                            var date = moment.local(axis.min).startOf('day');
                             var delta = Math.ceil(moment.duration(axis.delta * 1.3).asDays());
 
                             var ticks = [date.valueOf()];
