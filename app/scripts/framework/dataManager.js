@@ -267,13 +267,18 @@
 
             if (!startDate || !endDate)
             {
-                throw new Error("startDate & endDate needed for ReportFetcher");
+                throw new Error("startDate & endDate needed for DataManager.fetchReport");
+            }
+
+            if (!moment.isMoment(startDate) || !moment.isMoment(endDate))
+            {
+                throw new Error("startDate & endDate should be moment instances for DataManager.fetchReport");
             }
 
             var athleteId = this.user.getCurrentAthleteId();
             var url = theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/reporting/" + reportName;
-            url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
-            url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
+            url += "/" +  startDate.format(TP.utils.datetime.shortDateFormat);
+            url += "/" +  endDate.format(TP.utils.datetime.shortDateFormat);
 
             if(postData)
             {

@@ -44,12 +44,12 @@ function(
 
             getStartDate: function(chartSettings)
             {
-                return chartSettings.startDate ? moment.utc(chartSettings.startDate) : moment().subtract("weeks", 1);
+                return chartSettings.startDate ? moment.local(chartSettings.startDate) : moment.local().startOf("day").subtract("weeks", 1);
             },
 
             getEndDate: function(chartSettings)
             {
-                return chartSettings.endDate ? moment.utc(chartSettings.endDate) : moment();
+                return chartSettings.endDate ? moment.local(chartSettings.endDate) : moment.local().startOf("day");
             }
         },
 
@@ -61,12 +61,12 @@ function(
 
             getStartDate: function(chartSettings)
             {
-                return chartSettings.startDate ? moment.utc(chartSettings.startDate) : moment().subtract("weeks", 1);
+                return chartSettings.startDate ? moment.local(chartSettings.startDate) : moment.local().startOf("day").subtract("weeks", 1);
             },
 
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             }
         },
 
@@ -77,12 +77,12 @@ function(
 
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             },
 
             getStartDate: function()
             {
-                return moment().subtract("days", 7);
+                return moment.local().startOf("day").subtract("days", 7);
             }
         },
 
@@ -92,12 +92,12 @@ function(
             label: TP.utils.translate("Last 14 days"),
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             },
 
             getStartDate: function()
             {
-                return moment().subtract("days", 14);
+                return moment.local().startOf("day").subtract("days", 14);
             }
         },
 
@@ -107,12 +107,12 @@ function(
             label: TP.utils.translate("Last 28 days"),
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             },
 
             getStartDate: function()
             {
-                return moment().subtract("days", 28);
+                return moment.local().startOf("day").subtract("days", 28);
             }
         },
 
@@ -122,12 +122,12 @@ function(
             label: TP.utils.translate("Last 90 days"),
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             },
 
             getStartDate: function()
             {
-                return moment().subtract("days", 90);
+                return moment.local().startOf("day").subtract("days", 90);
             }
         },
 
@@ -137,12 +137,12 @@ function(
             label: TP.utils.translate("Last 180 days"),
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             },
 
             getStartDate: function()
             {
-                return moment().subtract("days", 180);
+                return moment.local().startOf("day").subtract("days", 180);
             }
         },
 
@@ -152,12 +152,12 @@ function(
             label: TP.utils.translate("Last 365 days"),
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             },
 
             getStartDate: function()
             {
-                return moment().subtract("days", 365);
+                return moment.local().startOf("day").subtract("days", 365);
             }
         },
 
@@ -167,11 +167,11 @@ function(
             label: TP.utils.translate("Last 730 days"),
             getStartDate: function()
             {
-                return moment().subtract("years", 2).add("days", 1);
+                return moment.local().startOf("day").subtract("years", 2).add("days", 1);
             },
             getEndDate: function()
             {
-                return moment();
+                return moment.local().startOf("day");
             }
         },
 
@@ -181,14 +181,14 @@ function(
             label: TP.utils.translate("This week"),
             getStartDate: function()
             {
-                var thisWeek = moment().week();
-                return moment().week(thisWeek).startOf("week");
+                var thisWeek = moment.local().startOf("day").week();
+                return moment.local().startOf("day").week(thisWeek).startOf("week");
             },
 
             getEndDate: function()
             {
-                var thisWeek = moment().week();
-                return moment().week(thisWeek).endOf("week");
+                var thisWeek = moment.local().startOf("day").week();
+                return moment.local().startOf("day").week(thisWeek).endOf("week");
             }
         },
 
@@ -198,11 +198,11 @@ function(
             label: TP.utils.translate("This month"),
             getStartDate: function()
             {
-                return moment().date(1);
+                return moment.local().startOf("day").date(1);
             },
             getEndDate: function()
             {
-                return moment().date(moment().daysInMonth());
+                return moment.local().startOf("day").date(moment.local().startOf("day").daysInMonth());
             }
         },
 
@@ -212,11 +212,11 @@ function(
             label: TP.utils.translate("This year"),
             getStartDate: function()
             {
-                return moment().month(0).date(1);
+                return moment.local().startOf("day").month(0).date(1);
             },
             getEndDate: function()
             {
-                return moment().month(11).date(31);
+                return moment.local().startOf("day").month(11).date(31);
             }
         },
 
@@ -226,14 +226,14 @@ function(
             label: TP.utils.translate("Last week"),
             getStartDate: function()
             {
-                var lastWeek = moment().week() - 1;
-                return moment().week(lastWeek).startOf("week");
+                var lastWeek = moment.local().startOf("day").week() - 1;
+                return moment.local().startOf("day").week(lastWeek).startOf("week");
             },
 
             getEndDate: function()
             {
-                var lastWeek = moment().week() - 1;
-                return moment().week(lastWeek).endOf("week");
+                var lastWeek = moment.local().startOf("day").week() - 1;
+                return moment.local().startOf("day").week(lastWeek).endOf("week");
             }
         },
 
@@ -243,7 +243,7 @@ function(
             label: TP.utils.translate("Last month"),
             getStartDate: function()
             {
-                return moment().date(1).subtract("months", 1);
+                return moment.local().startOf("day").date(1).subtract("months", 1);
             },
             getEndDate: function()
             {
@@ -258,11 +258,11 @@ function(
             label: TP.utils.translate("Last 3 months"),
             getStartDate: function()
             {
-                return moment().date(1).subtract("months", 3);
+                return moment.local().startOf("day").date(1).subtract("months", 3);
             },
             getEndDate: function()
             {
-                var lastMonth = moment().date(1).subtract("months", 1);
+                var lastMonth = moment.local().startOf("day").date(1).subtract("months", 1);
                 return lastMonth.date(lastMonth.daysInMonth());
             }
         },
@@ -273,11 +273,11 @@ function(
             label: TP.utils.translate("Last year"),
             getStartDate: function()
             {
-                return moment().month(0).date(1).subtract("years", 1);
+                return moment.local().startOf("day").month(0).date(1).subtract("years", 1);
             },
             getEndDate: function()
             {
-                return moment().month(11).date(31).subtract("years", 1);
+                return moment.local().startOf("day").month(11).date(31).subtract("years", 1);
             }
         },
 
@@ -287,11 +287,11 @@ function(
             label: TP.utils.translate("Last 2 years"),
             getStartDate: function()
             {
-                return moment().month(0).date(1).subtract("years", 2);
+                return moment.local().startOf("day").month(0).date(1).subtract("years", 2);
             },
             getEndDate: function()
             {
-                return moment().month(11).date(31).subtract("years", 1);
+                return moment.local().startOf("day").month(11).date(31).subtract("years", 1);
             }
         },
 
@@ -301,14 +301,14 @@ function(
             label: TP.utils.translate("This week last year"),
             getStartDate: function()
             {
-                var thisWeek = moment().week();
-                return moment().subtract("years", 1).week(thisWeek).startOf("week");
+                var thisWeek = moment.local().startOf("day").week();
+                return moment.local().startOf("day").subtract("years", 1).week(thisWeek).startOf("week");
             },
 
             getEndDate: function()
             {
-                var thisWeek = moment().week();
-                return moment().subtract("years", 1).week(thisWeek).endOf("week");
+                var thisWeek = moment.local().startOf("day").week();
+                return moment.local().startOf("day").subtract("years", 1).week(thisWeek).endOf("week");
             }
         },
 
@@ -319,13 +319,13 @@ function(
 
             getStartDate: function()
             {
-                return moment().subtract("years", 1).month(moment().month()).date(1);
+                return moment.local().startOf("day").subtract("years", 1).month(moment.local().startOf("day").month()).date(1);
             },
 
             getEndDate: function()
             {
-                var thisWeek = moment().week();
-                var lastYear = moment().subtract("years", 1).month(moment().month());
+                var thisWeek = moment.local().startOf("day").week();
+                var lastYear = moment.local().startOf("day").subtract("years", 1).month(moment.local().startOf("day").month());
                 return lastYear.date(lastYear.daysInMonth());
             }
         },
@@ -337,12 +337,12 @@ function(
             label: TP.utils.translate("Last 28 and next 7 days"),
             getStartDate: function()
             {
-                return moment().subtract("days", 28);
+                return moment.local().startOf("day").subtract("days", 28);
             },
 
             getEndDate: function()
             {
-                return moment().add("days", 7);
+                return moment.local().startOf("day").add("days", 7);
             }
         },
 
@@ -352,12 +352,12 @@ function(
             label: TP.utils.translate("Last 90 and next 21 days"),
             getStartDate: function()
             {
-                return moment().subtract("days", 90);
+                return moment.local().startOf("day").subtract("days", 90);
             },
 
             getEndDate: function()
             {
-                return moment().add("days", 21);
+                return moment.local().startOf("day").add("days", 21);
             }
         },
 
@@ -367,12 +367,12 @@ function(
             label: TP.utils.translate("Last 180 and next 45 days"),
             getStartDate: function()
             {
-                return moment().subtract("days", 180);
+                return moment.local().startOf("day").subtract("days", 180);
             },
 
             getEndDate: function()
             {
-                return moment().add("days", 45);
+                return moment.local().startOf("day").add("days", 45);
             }
         },
 
@@ -384,12 +384,12 @@ function(
 
             getStartDate: function(chartSettings)
             {
-                return chartSettings.startDate ? moment.utc(chartSettings.startDate) : moment().subtract("weeks", 1);
+                return chartSettings.startDate ? moment.local(chartSettings.startDate) : moment.local().startOf("day").subtract("weeks", 1);
             },
 
             getEndDate: function()
             {
-                return moment().add("days", 7);
+                return moment.local().startOf("day").add("days", 7);
             }
         }
     };
@@ -403,8 +403,8 @@ function(
 
             var dateOption = this.findChartDateOption(chartSettings.quickDateSelectOption);
 
-            chartSettings.startDate = dateOption.getStartDate(chartSettings).local();
-            chartSettings.endDate = dateOption.getEndDate(chartSettings).local();
+            chartSettings.startDate = dateOption.getStartDate(chartSettings);
+            chartSettings.endDate = dateOption.getEndDate(chartSettings);
             chartSettings.customStartDate = dateOption.customStartDate ? true : false;
             chartSettings.customEndDate = dateOption.customEndDate ? true : false;
             return chartSettings;

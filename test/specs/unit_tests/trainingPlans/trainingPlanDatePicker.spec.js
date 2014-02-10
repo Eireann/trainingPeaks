@@ -77,7 +77,7 @@ function(
             it("Shouild default to start date", function()
             {
                 var pickerDate = view.$(".datepicker").datepicker("getDate");
-                expect(moment(pickerDate).format("YYYY-MM-DD")).to.eql("2014-01-01");
+                expect(moment.local(pickerDate).format("YYYY-MM-DD")).to.eql("2014-01-01");
             });
 
             it("Should have start option only", function()
@@ -122,7 +122,7 @@ function(
                 it("Shouild default to the event end date", function()
                 {
                     var pickerDate = view.$(".datepicker").datepicker("getDate");
-                    expect(moment(pickerDate).format("YYYY-MM-DD")).to.eql("2014-12-31");
+                    expect(moment.local(pickerDate).format("YYYY-MM-DD")).to.eql("2014-12-31");
                 });
 
                 it("Should have only 'End on Event Date' option", function()
