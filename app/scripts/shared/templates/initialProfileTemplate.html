@@ -100,22 +100,22 @@
             </div>
 
             <div class="fieldContain runPaceContain">
-                <label for="runPaceSpeed" class="fieldTitle">Run Pace/Speed</label>
+                <label for="runPaceSpeed" class="fieldTitle">Run Pace (mm:ss)</label>
                 <input id="runPaceSpeed" name="runPaceSpeed" type="text" placeholder="10:00" data-format="runPace" data-required>
                 
                 <label class="radioContain">
                     <input name="runUnits" type="radio" id="runUnitsSpeed" value="speed">
-                    <label for="runUnitsSpeed">mph</label>
+                    <label for="runUnitsSpeed">5k</label>
                 </label>
                 
                 <label class="radioContain">
                     <input name="runUnits" type="radio" id="runUnitsPace" value="pace">
-                    <label for="runUnitsPace">min/mile</label>
+                    <label for="runUnitsPace">10k</label>
                 </label>
             </div>
 
             <div class="fieldContain swimPaceContain">
-                <label for="swimPace" class="fieldTitle">Swim Pace/Speed</label>
+                <label for="swimPace" class="fieldTitle">Swim Pace (mm:ss)</label>
                 <input id="swimPace" name="swimPace" type="text" placeholder="2:00" data-format="swimPace" data-required>
                 
                 <label class="radioContain">
@@ -129,10 +129,14 @@
                 </label>
             </div>
 
+            <div class="helpMessaging">
+                <p>Not sure about your threshold values? Just leave the default settings and we'll manage your values over time.</p>
+            </div>
+
             <div class="accountBottom">
-                <input name="submit" type="submit" class="buttonBlue1" value="Next">
+                <input name="submit" type="submit" class="buttonBlue1" value="Done">
             
-                <p class="configure">Configure email preferences and more in account settings</p>
+                <p class="configure">Configure email preferences and more in <a href="#">account settings</a>.</p>
             </div>
 
         </form>

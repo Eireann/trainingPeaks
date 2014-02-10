@@ -238,7 +238,7 @@
 				// bottom: 9px;
 				margin-top: 25px;
 				margin-bottom: 0;
-				font-size: 1.3 * $size;
+				font-size: 1.2 * $size;
 				font-family:$fontFamilyRegularItalic;
     		}
     	}
@@ -449,6 +449,26 @@
 		.weightUnits {
 	   		color: #999;
 	   		font-size: $size * 1.2;
+	   	}
+
+	   	.helpMessaging {
+	   		position: absolute;
+		    top: 330px;
+		    left: 400px;
+		    width: 200px;
+		    // background: #f9f9f9;
+		    padding: 20px;
+		  	@include inlineBG("../../assets/images/complete-your-profile-note.png");
+		  	background-repeat: no-repeat;
+
+
+		    p {
+		    	font-family: $fontFamilyLight;
+		    	font-size: 15px;
+		   	 	line-height: 1.3;
+		   	 	padding-bottom: 0;
+		    	margin-bottom: 0;
+		    }
 	   	}
     }
 
