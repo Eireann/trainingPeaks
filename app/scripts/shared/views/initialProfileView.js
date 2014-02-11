@@ -7,6 +7,7 @@ define(
     "shared/utilities/formUtility",
     "shared/data/countriesAndStates",
     "views/userConfirmationView",
+    "shared/views/userSettingsView",
     "hbs!shared/templates/initialProfileTemplate"
 ],
 function(
@@ -17,6 +18,7 @@ function(
     FormUtility,
     countriesAndStates,
     UserConfirmationView,
+    UserSettingsView,
     initialProfileTemplate
 )
 {
@@ -47,10 +49,11 @@ function(
 
         events:
         {
-            "submit form": "_onSubmit"
+            "submit form": "_onSubmit",
+            "click .accountSettings": "_onAccountSettingsClicked"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             var birthday = moment(theMarsApp.user.get("birthday"));
 
@@ -65,6 +68,8 @@ function(
                 swimThreshold = swimZones.threshold;
             }
 
+            this.userModel = options.userModel || theMarsApp.user;
+
             this.model = new TP.Model(
             {
                 language: theMarsApp.user.get("language") || "en-us",
@@ -73,11 +78,11 @@ function(
                 timeZone: theMarsApp.user.get("timeZone"),
                 birthdayMonth: birthday && (birthday.month() + 1),
                 birthdayYear: birthday && birthday.year(),
-                runUnits: "pace",
                 swimUnits: 1,
                 thresholdPower: powerThreshold,
                 thresholdHeartRate: heartRateThreshold,
                 runPaceSpeed: speedThreshold,
+                runDistance: "10k",
                 swimPace: swimThreshold
             });
         },
@@ -87,10 +92,6 @@ function(
             var self = this;
             var formatters =
             {
-                runPace: function(value)
-                {
-                    return TP.utils.conversion.formatUnitsValue(self.model.get("runUnits"), value, { workoutTyoeId: 3 });
-                },
                 swimPace: function(value)
                 {
                     return TP.utils.conversion.formatUnitsValue("pace", value, { workoutTypeId: 1 });
@@ -99,10 +100,6 @@ function(
 
             var parsers =
             {
-                runPace: function(value)
-                {
-                    return TP.utils.conversion.parseUnitsValue(self.model.get("runUnits"), value, { workoutTypeId: 3 });
-                },
                 swimPace: function(value)
                 {
                     return TP.utils.conversion.parseUnitsValue("pace", value, { workoutTypeId: 1 });
@@ -122,6 +119,7 @@ function(
             // Bind Form to "Model"
             FormUtility.bindFormToModel(this.$el, this.model, this.formUtilityOptions());
             this._updateUnits();
+            this.$("input[name=weight]").focus();
         },
 
         serializeData: function()
@@ -177,7 +175,8 @@ function(
                     heartRateThreshold: this.model.get("thresholdHeartRate"),
                     powerThreshold: this.model.get("thresholdPower"),
                     swimPace: this.model.get("swimPace"),
-                    runPace: this.model.get("runPaceSpeed")
+                    runPace: this.model.get("runPaceSpeed"),
+                    runDistance: this.model.get("runDistance") === "10k" ? 3 : 2
                 }
             });
 
@@ -207,8 +206,6 @@ function(
             theMarsApp.user.set("unitsBySportType.1", this.model.get("swimUnits"));
             FormUtility.applyValuesToForm(this.$el, this.model, this.formUtilityOptions());
             this.$(".weightUnits").text(TP.utils.units.getUnitsLabel("kg"));
-            this.$("label[for=runUnitsPace]").text(TP.utils.units.getUnitsLabel("pace", 3));
-            this.$("label[for=runUnitsSpeed]").text(TP.utils.units.getUnitsLabel("speed", 3));
         },
 
         _validate: function()
@@ -230,7 +227,14 @@ function(
         {
             var view = new UserConfirmationView({ message: message });
             view.render();
-        }
+        },
+
+        _onAccountSettingsClicked: function()
+        {
+            var userSettingsView = new UserSettingsView.OverlayBox({ model: this.userModel });
+            userSettingsView.render();
+            this.close();
+        },
 
     });
 
