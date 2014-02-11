@@ -264,7 +264,7 @@
 
 		    label[for="thresholdPower"],
 	     	label[for="thresholdHeartRate"],
-	    	label[for="runPaceSpeed"],
+	    	label[for="runDuration"],
 	    	label[for="swimPace"] {
 				display: inline-block;
 				width: 160px;
@@ -274,7 +274,7 @@
 	    	}
  		}
 
-	    label[for="runPaceSpeed"],
+	    label[for="runDuration"],
 	    label[for="swimPace"] {
 			display: inline-block;
 			width: 160px;
@@ -368,7 +368,7 @@
 	    select[name="country"],
 	    input[name="thresholdPower"],
 	    input[name="thresholdHeartRate"],
-	    input[name="runPaceSpeed"],
+	    input[name="runDuration"],
 	    input[name="swimPace"],
 	    input[name="weight"] {
 			width: 160px;

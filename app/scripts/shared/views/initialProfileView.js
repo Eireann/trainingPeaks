@@ -74,6 +74,9 @@ function(
                 swimThreshold = swimZones.threshold;
             }
 
+            var runDurationInSeconds = (10000 / speedThreshold);
+            var runDuratoinInHours = runDurationInSeconds / 3600;
+
             this.model = new TP.Model(
             {
                 language: this.userModel.get("language") || "en-us",
@@ -85,7 +88,7 @@ function(
                 swimUnits: 1,
                 thresholdPower: powerThreshold,
                 thresholdHeartRate: heartRateThreshold,
-                runPaceSpeed: speedThreshold,
+                runDuration: runDuratoinInHours,
                 runDistance: "10k",
                 swimPace: swimThreshold
             });
@@ -96,6 +99,11 @@ function(
             var self = this;
             var formatters =
             {
+                runDuration: function(value)
+                {
+                    var formatted =  TP.utils.conversion.formatUnitsValue("duration", value);
+                    return formatted.replace(/^0:/,'');
+                },
                 swimPace: function(value)
                 {
                     return TP.utils.conversion.formatUnitsValue("pace", value, { workoutTypeId: 1 });
@@ -104,6 +112,10 @@ function(
 
             var parsers =
             {
+                runDuration: function(value)
+                {
+                    return TP.utils.conversion.parseUnitsValue("duration", value);
+                },
                 swimPace: function(value)
                 {
                     return TP.utils.conversion.parseUnitsValue("pace", value, { workoutTypeId: 1 });
@@ -207,10 +219,17 @@ function(
                     heartRateThreshold: this.model.get("thresholdHeartRate"),
                     powerThreshold: this.model.get("thresholdPower"),
                     swimPace: this.model.get("swimPace"),
-                    runPace: this.model.get("runPaceSpeed"),
+                    runPace: this._calculateRunSpeed(),
                     runDistance: this.model.get("runDistance") === "10k" ? 3 : 2
                 }
             });
+        },
+
+        _calculateRunSpeed: function()
+        {
+            var runDurationInSeconds = this.model.get("runDuration") * 3600;
+            var runDistanceInMeters = this.model.get("runDistance") === "10k" ? 10000 : 5000;
+            return runDistanceInMeters / runDurationInSeconds;
         },
 
         _fetchAthleteSettings: function()
