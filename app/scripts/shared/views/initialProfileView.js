@@ -55,27 +55,31 @@ function(
 
         initialize: function(options)
         {
-            var birthday = moment(theMarsApp.user.get("birthday"));
 
-            var powerThreshold = theMarsApp.user.getAthleteSettings().get("powerZones.0.threshold") || 200;
-            var heartRateThreshold = theMarsApp.user.getAthleteSettings().get("heartRateZones.0.threshold") || 160;
-            var speedThreshold = theMarsApp.user.getAthleteSettings().get("speedZones.0.threshold") || 2.68224;
+            this.userModel = options.userModel || theMarsApp.user;
+            this.analytics = options.analytics || TP.analytics;
+            this.timeZones = options.timeZones || theMarsApp.timeZones.get("zonesWithLabels");
+            this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
+
+            var birthday = moment(this.userModel.get("birthday"));
+
+            var powerThreshold = this.userModel.getAthleteSettings().get("powerZones.0.threshold") || 200;
+            var heartRateThreshold = this.userModel.getAthleteSettings().get("heartRateZones.0.threshold") || 160;
+            var speedThreshold = this.userModel.getAthleteSettings().get("speedZones.0.threshold") || 2.68224;
             var swimThreshold = 0.762;
 
-            var swimZones = _.find(theMarsApp.user.getAthleteSettings().get("speedZones"), { workoutTypeId: 1 });
+            var swimZones = _.find(this.userModel.getAthleteSettings().get("speedZones"), { workoutTypeId: 1 });
             if(swimZones && swimZones.threshold)
             {
                 swimThreshold = swimZones.threshold;
             }
 
-            this.userModel = options.userModel || theMarsApp.user;
-
             this.model = new TP.Model(
             {
-                language: theMarsApp.user.get("language") || "en-us",
-                unitPreference: theMarsApp.user.get("units") || 1,
-                country: theMarsApp.user.get("country") || "US",
-                timeZone: theMarsApp.user.get("timeZone"),
+                language: this.userModel.get("language") || "en-us",
+                unitPreference: this.userModel.get("units") || 1,
+                country: this.userModel.get("country") || "US",
+                timeZone: this.userModel.get("timeZone"),
                 birthdayMonth: birthday && (birthday.month() + 1),
                 birthdayYear: birthday && birthday.year(),
                 swimUnits: 1,
@@ -128,7 +132,7 @@ function(
 
             _.extend(data, {
                 countries: countriesAndStates.countries,
-                timeZones: theMarsApp.timeZones.get("zonesWithLabels")
+                timeZones: this.timeZones 
             });
 
             return data;
@@ -156,7 +160,32 @@ function(
         {
             this.waitingOn();
             var self = this;
-            var userPromise = theMarsApp.user.save(
+            var userPromise = this._saveUserModel();
+            var profilePromise = this._saveProfileData();
+
+            var athleteDeferred = new $.Deferred();
+            profilePromise.then(function()
+            {
+                var xhr = self._fetchAthleteSettings();
+                xhr.then(athleteDeferred.resolve, athleteDeferred.reject);
+            });
+
+            return $.when(profilePromise, userPromise, athleteDeferred.promise()).then(function()
+            {
+                if(self.$("#interestedIn"))
+                {
+                    var interestedIn = self.$("#interestedIn").val();
+                    self.analytics("send", { "hitType": "event", "eventCategory": "persona", "eventAction": "submitProfile", "eventLabel": interestedIn });
+                }
+
+                self.calendarManager.reset();
+                self.close();
+            });
+        },
+
+        _saveUserModel: function()
+        {
+            return this.userModel.save(
             {
                 language: this.model.get("language"),
                 units: this.model.get("unitPreference"),
@@ -164,11 +193,14 @@ function(
                 timeZone: this.model.get("timeZone"),
                 country: this.model.get("country")
             });
+        },
 
-            var profilePromise = $.ajax(
-            {
+        _saveProfileData: function()
+        {
+            return $.ajax(
+                {
                 method: "PUT",
-                url: apiConfig.apiRoot + "/fitness/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() + "/profile",
+                url: apiConfig.apiRoot + "/fitness/v1/athletes/" + this.userModel.getCurrentAthleteId() + "/profile",
                 data:
                 {
                     weightInKg: this.model.get("weight"),
@@ -179,31 +211,17 @@ function(
                     runDistance: this.model.get("runDistance") === "10k" ? 3 : 2
                 }
             });
+        },
 
-            var athleteDeferred = new $.Deferred();
-            profilePromise.then(function()
-            {
-                var xhr = theMarsApp.user.getAthleteSettings().fetch();
-                xhr.then(athleteDeferred.resolve, athleteDeferred.reject);
-            });
-
-            return $.when(profilePromise, userPromise, athleteDeferred.promise()).then(function()
-            {
-                if(self.$("#interestedIn"))
-                {
-                    var interestedIn = self.$("#interestedIn").val();
-                    TP.analytics("send", { "hitType": "event", "eventCategory": "persona", "eventAction": "submitProfile", "eventLabel": interestedIn });
-                }
-
-                theMarsApp.calendarManager.reset();
-                self.close();
-            });
+        _fetchAthleteSettings: function()
+        {
+            return this.userModel.getAthleteSettings().fetch();
         },
 
         _updateUnits: function(event)
         {
-            theMarsApp.user.set("units", this.model.get("unitPreference"));
-            theMarsApp.user.set("unitsBySportType.1", this.model.get("swimUnits"));
+            this.userModel.set("units", this.model.get("unitPreference"));
+            this.userModel.set("unitsBySportType.1", this.model.get("swimUnits"));
             FormUtility.applyValuesToForm(this.$el, this.model, this.formUtilityOptions());
             this.$(".weightUnits").text(TP.utils.units.getUnitsLabel("kg"));
         },

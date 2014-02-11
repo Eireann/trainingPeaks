@@ -6,7 +6,6 @@
     "TP",
     "utilities/localStorageUtils",
     "shared/models/accountSettingsModel",
-    "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel",
     "shared/models/expandoSettingsModel"
 ],
@@ -17,7 +16,6 @@ function(
     TP,
     localStorageUtils,
     AccountSettingsModel,
-    AthleteSettingsModel, 
     DashboardSettingsModel,
     ExpandoSettingsModel
 )
