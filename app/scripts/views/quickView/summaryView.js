@@ -7,6 +7,7 @@
     "views/quickView/summaryView/summaryViewUserCustomization",
     "views/quickView/summaryView/summaryViewStickitBindings",
     "views/quickView/summaryView/summaryViewTextAreas",
+    "views/quickView/summaryView/summaryViewWorkoutStructure",
     "views/workout/workoutEquipmentView",
     "hbs!templates/views/quickView/summaryView"
 ],
@@ -18,6 +19,7 @@ function (
     summaryViewUserCustomization,
     summaryViewStickitBindings,
     summaryViewTextAreas,
+    summaryViewWorkoutStructure,
     WorkoutEquipmentView,
     workoutQuickViewSummaryTemplate)
 {
@@ -54,6 +56,8 @@ function (
             this.initializeStickit();
 
             this.initializeTextAreas();
+
+            this.initializeWorkoutStructure();
         },
 
         renderWorkoutComments: function()
@@ -100,6 +104,7 @@ function (
     _.extend(summaryViewBase, summaryViewUserCustomization);
     _.extend(summaryViewBase, summaryViewStickitBindings);
     _.extend(summaryViewBase, summaryViewTextAreas);
+    _.extend(summaryViewBase, summaryViewWorkoutStructure);
 
     return TP.ItemView.extend(summaryViewBase);
 
