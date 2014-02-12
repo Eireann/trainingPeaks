@@ -6,7 +6,6 @@
     "TP",
     "utilities/localStorageUtils",
     "shared/models/accountSettingsModel",
-    "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel",
     "shared/models/expandoSettingsModel"
 ],
@@ -17,7 +16,6 @@ function(
     TP,
     localStorageUtils,
     AccountSettingsModel,
-    AthleteSettingsModel, 
     DashboardSettingsModel,
     ExpandoSettingsModel
 )
@@ -34,12 +32,14 @@ function(
             address: null,
             address2: null,
             age: 0,
+            allowMarketingEmails: null,
             birthday: null,
             cellPhone: null,
             city: null,
             country: null,
             dateFormat: "mdy",
             email: null,
+            enablePrivateMessageNotifications: null,
             expireDate: null,
             firstName: null,
             gender: null,
@@ -58,6 +58,7 @@ function(
             userId: 0,
             userIdentifierHash: "",
             userName: null,
+            userType: null,
             zipCode: null,
             zuoraAccountNumber: null,
 

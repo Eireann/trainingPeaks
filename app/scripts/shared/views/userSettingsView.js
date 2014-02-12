@@ -139,7 +139,7 @@ function(
 
         _copyCollection: function(originalCollection)
         {
-            var copiedCollection = new originalCollection.constructor(null, { model: originalCollection.model });
+            var copiedCollection = new originalCollection.constructor(null, { model: originalCollection.model, userModel: this.model });
             copiedCollection.originalCollection = originalCollection;
             this._copiesOfCollections.push(copiedCollection);
 
