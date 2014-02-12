@@ -25,7 +25,7 @@
 
                 <div class="fieldContain weight">
                     <label for="weight" class="fieldTitle">Weight</label>
-                    <input id="weight" name="weight" data-format="units:kg" type="text">
+                    <input id="weight" name="weight" class="numberInput" data-format="units:kg" type="text">
                     <span class="weightUnits"></span>
                 </div>
             </div><!-- End .selectArea -->
@@ -92,16 +92,16 @@
             
             <div class="fieldContain">
                 <label for="thresholdPower" class="fieldTitle">Threshold Power</label>
-                <input id="thresholdPower" name="thresholdPower" type="text" data-format="units:power">
+                <input id="thresholdPower" name="thresholdPower" class="numberInput" type="text" data-format="units:power">
             </div>
             <div class="fieldContain">
                 <label for="thresholdHeartRate" class="fieldTitle">Threshold Heart Rate</label>
-                <input id="thresholdHeartRate" name="thresholdHeartRate" type="text" data-format="units:heartrate">
+                <input id="thresholdHeartRate" name="thresholdHeartRate" class="numberInput" type="text" data-format="units:heartrate">
             </div>
 
             <div class="fieldContain runPaceContain">
-                <label for="runDuration" class="fieldTitle">Run Pace (mm:ss)</label>
-                <input id="runDuration" name="runDuration" type="text" placeholder="36:00" data-format="runDuration">
+                <label for="runDuration" class="fieldTitle">Run Time (mm:ss)</label>
+                <input id="runDuration" name="runDuration" class="numberInput" type="text" placeholder="30:00" data-format="runDuration">
                 
                 <label class="radioContain">
                     <input name="runDistance" type="radio" id="runDistance" value="5k">
@@ -116,7 +116,7 @@
 
             <div class="fieldContain swimPaceContain">
                 <label for="swimPace" class="fieldTitle">Swim Pace (mm:ss)</label>
-                <input id="swimPace" name="swimPace" type="text" placeholder="2:00" data-format="swimPace">
+                <input id="swimPace" name="swimPace" class="numberInput" type="text" placeholder="2:00" data-format="swimPace">
                 
                 <label class="radioContain">
                     <input name="swimUnits" type="radio" id="swimPaceRadio1" value="2" data-format="number">

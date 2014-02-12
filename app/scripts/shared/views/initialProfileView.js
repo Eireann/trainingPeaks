@@ -22,8 +22,6 @@ function(
     initialProfileTemplate
 )
 {
-    // HR: 137 - 195
-    // Swim Pace: Max: 25:21 / 100m / 1km
 
     var InitialProfileView = TP.ItemView.extend(
     {
@@ -61,36 +59,22 @@ function(
             this.timeZones = options.timeZones || theMarsApp.timeZones.get("zonesWithLabels");
             this.calendarManager = options.calendarManager || theMarsApp.calendarManager;
 
-            var birthday = moment(this.userModel.get("birthday"));
-
-            var powerThreshold = this.userModel.getAthleteSettings().get("powerZones.0.threshold") || 200;
-            var heartRateThreshold = this.userModel.getAthleteSettings().get("heartRateZones.0.threshold") || 160;
-            var speedThreshold = this.userModel.getAthleteSettings().get("speedZones.0.threshold") || 2.68224;
-            var swimThreshold = 0.762;
-
-            var swimZones = _.find(this.userModel.getAthleteSettings().get("speedZones"), { workoutTypeId: 1 });
-            if(swimZones && swimZones.threshold)
-            {
-                swimThreshold = swimZones.threshold;
-            }
-
-            var runDurationInSeconds = (10000 / speedThreshold);
-            var runDuratoinInHours = runDurationInSeconds / 3600;
+            var birthday = this.userModel.get("birthday") ? moment(this.userModel.get("birthday")) : moment().subtract("years", 35);
 
             this.model = new TP.Model(
             {
                 language: this.userModel.get("language") || "en-us",
                 unitPreference: this.userModel.get("units") || 1,
                 country: this.userModel.get("country") || "US",
-                timeZone: this.userModel.get("timeZone"),
+                timeZone: this.userModel.get("timeZone") || "US/Mountain",
                 birthdayMonth: birthday && (birthday.month() + 1),
                 birthdayYear: birthday && birthday.year(),
                 swimUnits: 1,
-                thresholdPower: powerThreshold,
-                thresholdHeartRate: heartRateThreshold,
-                runDuration: runDuratoinInHours,
-                runDistance: "10k",
-                swimPace: swimThreshold
+                thresholdPower: this.userModel.getAthleteSettings().get("powerZones.0.threshold") || 220,
+                thresholdHeartRate: this.userModel.getAthleteSettings().get("heartRateZones.0.threshold") || 148,
+                runDuration: 0.5,
+                runDistance: "5k",
+                swimPace: 0.762
             });
         },
 
@@ -211,7 +195,7 @@ function(
         {
             return $.ajax(
                 {
-                method: "PUT",
+                method: "POST",
                 url: apiConfig.apiRoot + "/fitness/v1/athletes/" + this.userModel.getCurrentAthleteId() + "/profile",
                 data:
                 {
@@ -219,17 +203,10 @@ function(
                     heartRateThreshold: this.model.get("thresholdHeartRate"),
                     powerThreshold: this.model.get("thresholdPower"),
                     swimPace: this.model.get("swimPace"),
-                    runPace: this._calculateRunSpeed(),
+                    runDuration: this.model.get("runDuration"),
                     runDistance: this.model.get("runDistance") === "10k" ? 3 : 2
                 }
             });
-        },
-
-        _calculateRunSpeed: function()
-        {
-            var runDurationInSeconds = this.model.get("runDuration") * 3600;
-            var runDistanceInMeters = this.model.get("runDistance") === "10k" ? 10000 : 5000;
-            return runDistanceInMeters / runDurationInSeconds;
         },
 
         _fetchAthleteSettings: function()
