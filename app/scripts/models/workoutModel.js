@@ -120,62 +120,6 @@ function (
             }, this);
 
             this.equipment = (options && options.equipment) || null;
-
-            this._setUpEquipmentChangeListeners();
-        },
-
-        _setUpEquipmentChangeListeners: function()
-        {
-            this.on("change:equipmentBikeId", _.bind(
-                function()
-                {
-                    var oldValue = this._previousAttributes.equipmentBikeId;
-                    var newValue = this.changed.equipmentBikeId;
-
-                    if (oldValue)
-                    {
-                        this._unsetActualDistance(EquipmentTypes.Bike, oldValue);
-                    }
-                    this._unsetActualDistance(EquipmentTypes.Bike, newValue);
-                },
-                this));
-            this.on("change:equipmentShoeId", _.bind(
-                function()
-                {
-                    var oldValue = this._previousAttributes.equipmentShoeId;
-                    var newValue = this.changed.equipmentShoeId;
-
-                    if (oldValue)
-                    {
-                        this._unsetActualDistance(EquipmentTypes.Shoe, oldValue);
-                    }
-                    this._unsetActualDistance(EquipmentTypes.Shoe, newValue);
-                },
-                this));
-
-            this.on("change:distance destroy", _.bind(
-                function()
-                {
-                    if (this.has("equipmentBikeId"))
-                    {
-                        this._unsetActualDistance(EquipmentTypes.Bike, this.get("equipmentBikeId"));
-                    }
-                    if (this.has("equipmentShoeId"))
-                    {
-                        this._unsetActualDistance(EquipmentTypes.Shoe, this.get("equipmentShoeId"));
-                    }
-                },
-                this));
-        },
-
-        _unsetActualDistance: function(equipmentType, equipmentId)
-        {
-            var equipmentCollection = (this.equipment || theMarsApp.user.getAthleteSettings().getEquipment());
-            var equipment = equipmentCollection.where({ type: equipmentType, equipmentId: equipmentId }, true);
-            if (equipment)
-            {
-                equipment.unset("actualDistance");
-            }
         },
 
         autosave: AutosaveMergeUtility.mixin.autosave,
