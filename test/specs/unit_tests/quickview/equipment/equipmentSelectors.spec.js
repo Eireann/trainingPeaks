@@ -1,46 +1,41 @@
 define(
 [
     "jquery",
-    "TP",
-    "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
+    "shared/models/userModel",
     "models/workoutModel",
+    "models/equipmentCollection",
     "utilities/workout/workoutTypes",
-    "views/quickView/summaryView"
+    "views/workout/workoutEquipmentView"
 ],
 function(
     $,
-    TP,
-    testHelpers,
     xhrData,
+    UserModel,
     WorkoutModel,
+    EquipmentCollection,
     WorkoutTypes,
-    SummaryView
+    WorkoutEquipmentView
 )
 {
     describe("Workout Equipment View within Summary View (unit_tests)", function()
     {
         var workoutModel;
-        var summaryView;
+        var workoutEquipmentView;
+        var equipmentCollection;
 
         beforeEach(function()
         {
-            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-
-            workoutModel = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutTypeValueId: WorkoutTypes.typesByName.Run }, { equipment: new TP.Collection(xhrData.equipment.barbkprem) });
-            summaryView = new SummaryView({ model: workoutModel });
-        });
-
-        afterEach(function()
-        {
-            testHelpers.stopTheApp();
+            equipmentCollection = new EquipmentCollection(xhrData.equipment.barbkprem, { userModel: new UserModel(), athleteId: 426489});
+            workoutModel = new WorkoutModel({ workoutId: 1, athleteId: 426489, workoutTypeValueId: WorkoutTypes.typesByName.Run }, { equipment: equipmentCollection });
+            workoutEquipmentView = new WorkoutEquipmentView({ model: workoutModel, collection: equipmentCollection });
         });
 
         it("Should render without throwing any exception.", function()
         {
             var render = function()
             {
-                summaryView.render();
+                workoutEquipmentView.render();
             };
 
             expect(render).not.to.throw();
@@ -50,7 +45,7 @@ function(
         {
             var closeIt = function()
             {
-                summaryView.close();
+                workoutEquipmentView.close();
             };
 
             expect(closeIt).not.to.throw();
@@ -58,15 +53,23 @@ function(
 
         describe("Equipment selectors", function()
         {
+            beforeEach(function()
+            {
+                workoutEquipmentView.render();
+            });
+
+            afterEach(function()
+            {
+                workoutEquipmentView.close();
+            });
+
             it("Should have a Bike selector and a Shoe selector.", function()
             {
-                summaryView.render();
-
-                var $bikeSelector = summaryView.$("select.bikeSelector");
+                var $bikeSelector = workoutEquipmentView.$("select.bikeSelector");
 
                 expect($bikeSelector.length).to.equal(1);
 
-                var $shoeSelector = summaryView.$("select.shoeSelector");
+                var $shoeSelector = workoutEquipmentView.$("select.shoeSelector");
 
                 expect($shoeSelector.length).to.equal(1);
             });
@@ -75,48 +78,45 @@ function(
             {
                 it("Should have a 'no equipment' option.", function()
                 {
-                    summaryView.render();
-
-                    var $bikeSelector = summaryView.$("select.bikeSelector");
+                    var $bikeSelector = workoutEquipmentView.$("select.bikeSelector");
 
                     expect($bikeSelector.children()[0].value).to.equal("");
                 });
+
                 it("Should be populated with bikes.", function()
                 {
-                    summaryView.render();
+                    var $bikeSelector = workoutEquipmentView.$("select.bikeSelector");
 
-                    var $bikeSelector = summaryView.$("select.bikeSelector");
-
-                    expect($bikeSelector.children()[1].value).to.equal("124"); // "124" is the id of the stub bike
+                    // 2 bikes plus one 'no equipment'
+                    expect($bikeSelector.children().length).to.equal(3);
                 });
+
                 it("Should be hidden for this 'run' workout.", function()
                 {
-                    summaryView.render();
-
-                    var $bikeSelector = summaryView.$("select.bikeSelector:hidden");
+                    var $bikeSelector = workoutEquipmentView.$("select.bikeSelector:hidden");
 
                     expect($bikeSelector.length).to.equal(1);
                 });
+
             });
 
             describe("Shoe selector", function()
             {
                 it("Should have a 'no equipment' option.", function()
                 {
-                    summaryView.render();
-
-                    var $shoeSelector = summaryView.$("select.shoeSelector");
+                    var $shoeSelector = workoutEquipmentView.$("select.shoeSelector");
 
                     expect($shoeSelector.children()[0].value).to.equal("");
                 });
+
                 it("Should be populated with shoes.", function()
                 {
-                    summaryView.render();
+                    var $shoeSelector = workoutEquipmentView.$("select.shoeSelector");
 
-                    var $shoeSelector = summaryView.$("select.shoeSelector");
-
-                    expect($shoeSelector.children()[1].value).to.equal("123"); // "123" is the id of the stub shoe
+                    // two shoes plus one 'no equipment'
+                    expect($shoeSelector.children().length).to.equal(3);
                 });
+
             });
         });
     });

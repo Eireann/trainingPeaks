@@ -133,6 +133,24 @@ function()
         {
             barbkprem: [
                 {
+                    equipmentId: 125,
+                    name: "My Other Bike",
+                    notes: "",
+                    brand: "Schwinn",
+                    model: "Stingray",
+                    dateOfPurchase: "12/20/1973",
+                    athleteId: 426489,
+                    retired: false,
+                    retiredDate: null,
+                    isDefault: false,
+                    startingDistance: 0,
+                    actualDistance: 1000,
+                    crankLengthMillimeters: "155",
+                    wheels: "training",
+                    maxDistance: null,
+                    type: 1        
+                },
+                {
                     equipmentId: 124,
                     name: "Speed 007",
                     notes: "It's great!",
@@ -149,6 +167,24 @@ function()
                     wheels: "2 or more",
                     maxDistance: null,
                     type: 1        
+                },
+                {
+                    equipmentId: 126,
+                    name: "Snowshoes",
+                    notes: "for when it snows",
+                    brand: "REI",
+                    model: "snowshoe",
+                    dateOfPurchase: "12/20/2012",
+                    athleteId: 426489,
+                    retired: false,
+                    retiredDate: null,
+                    isDefault: false,
+                    startingDistance: 0,
+                    actualDistance: 2,
+                    crankLengthMillimeters: null,
+                    wheels: null,
+                    maxDistance: 500,
+                    type: 2        
                 },
                 {
                     equipmentId: 123,
