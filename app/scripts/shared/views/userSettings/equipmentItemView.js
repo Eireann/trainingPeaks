@@ -84,7 +84,7 @@ function(
                 firstDay: CalendarUtility.startOfWeek
             });
 
-            if (!this.model.has("actualDistance") && this.model.has("equipmentId"))
+            if (this.model.has("equipmentId"))
             {
                 // since this model was cloned from a parent model, fetch on the parent model so it stays in app state if we don't save this item
                 this.model.originalModel.getActualDistance().done(_.bind(function()
