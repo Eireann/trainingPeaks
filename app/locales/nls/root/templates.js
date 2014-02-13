@@ -494,5 +494,10 @@ define({
     "Select Bike": "Select Bike",
     "Select Shoe": "Select Shoe",
 
-    "Full Screen": "Full Screen"
+    "Full Screen": "Full Screen",
+
+    "Workout Instructions": "Workout Instructions",
+    "Active": "Active",
+    "Rest": "Rest"
+
 });

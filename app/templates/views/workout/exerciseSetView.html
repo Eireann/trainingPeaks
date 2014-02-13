@@ -1,0 +1,11 @@
+<span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span><br/>
+<div class="setProperties">
+{{#each instructions}}
+    <div data-property="{{name}}">
+        <span class="propertyName">{{name}}</span>:
+        <span class="propertyPlannedValue">{{planValue}}{{#if planMaxSpecified}} - {{planMax}}{{/if}}</span>
+        {{#if actualValueSpecified}}/ <span class="propertyCompletedValue">{{actualValue}}{{#if actualMaxSpecified}} - {{actualMax}}{{/if}}</span>{{/if}}
+        {{#if units}}, in <span class="propertyUnit">{{ units }}</span>{{/if}}
+    </div>
+{{/each}}
+</div>

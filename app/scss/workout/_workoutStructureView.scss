@@ -1,0 +1,29 @@
+#workoutStructureToggleContainer {
+    margin: 4px;
+
+    .workoutStructureToggle {
+        float: right;
+    }
+}
+
+.workoutStructureContainer {
+    clear: both;
+
+    .header {
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        margin-bottom: 5px;
+        margin-left: 15px;
+        color: $TPGrey3;
+    }
+}
+
+.workoutStructure {
+    border: 1px solid #ccc;
+    color: #636569;
+    line-height: 1.214em;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 15px;
+}
