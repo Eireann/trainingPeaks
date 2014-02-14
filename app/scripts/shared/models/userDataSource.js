@@ -114,6 +114,15 @@ function(
         getPhotoRootUrl: function()
         {
             return theMarsApp.apiConfig.devWwwRoot ? theMarsApp.apiConfig.devWwwRoot : theMarsApp.apiConfig.wwwRoot;
+        },
+
+        verifyEmail: function()
+        {
+            var ajaxOptions = {
+                url: theMarsApp.apiRoot + "/users/v1/user/" + theMarsApp.user.id + "/verifyemail",
+                type: "POST"
+            };
+            return Backbone.ajax(ajaxOptions);
         }
 
     };

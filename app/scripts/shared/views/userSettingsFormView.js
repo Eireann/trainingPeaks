@@ -159,7 +159,8 @@ function(
             "click .uploadPhoto": "_selectProfilePhoto",
             "click .removePhoto": "_removeProfilePhoto",
             "change .fileUploadInput": "_onProfilePhotoSelected",
-            "click .upgrade": "_showUpgradePrompt"
+            "click .upgrade": "_showUpgradePrompt",
+            "click .verifyEmail": "_verifyEmail"
         },
 
         initialize: function(options)
@@ -276,7 +277,10 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]" });
             FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
+
+            this.$(".emailVerification").toggle(!this.userModel.get("isEmailVerified"));   
         },
+
 
         _onICalFocus: function(e)
         {
@@ -377,6 +381,11 @@ function(
         _showUpgradePrompt: function()
         {
             theMarsApp.featureAuthorizer.showUpgradeMessage();
+        },
+
+        _verifyEmail: function()
+        {
+            UserDataSource.verifyEmail();
         }
 
     });
