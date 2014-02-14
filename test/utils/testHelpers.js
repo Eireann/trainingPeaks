@@ -251,6 +251,7 @@ function(_, Backbone, TP, xhrData, MarsApp)
             
             this.startTheApp();
 
+            var userIsCoach = this._userIsCoach(userData);
             if(!_.isArray(accessRights))
             {
                 accessRights = this.deepClone(xhrData.defaultTestUserAccessRights);
@@ -258,12 +259,12 @@ function(_, Backbone, TP, xhrData, MarsApp)
 
             if(!_.isObject(athleteSettings))
             {
-                athleteSettings = this.deepClone(xhrData.athleteSettings.barbkprem);
+                athleteSettings = userIsCoach ? {} : this.deepClone(xhrData.athleteSettings.barbkprem);
             }
 
             if(!_.isObject(equipment))
             {
-                equipment = this.deepClone(xhrData.equipment.barbkprem);
+                equipment = userIsCoach ? [] : this.deepClone(xhrData.equipment.barbkprem);
             }
 
             this.loadUser(userData, accessRights, athleteSettings, equipment);
@@ -272,8 +273,14 @@ function(_, Backbone, TP, xhrData, MarsApp)
         deepClone: function(obj)
         {
             return TP.utils.deepClone(obj);
-        }
+        },
+
+        _userIsCoach: function(userData)
+        {
+            return userData && userData.settings && userData.settings.account && userData.settings.account.isCoach;
+        }        
     };
+
 
     return testHelpers;
 
