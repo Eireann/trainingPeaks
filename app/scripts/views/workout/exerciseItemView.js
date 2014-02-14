@@ -42,7 +42,8 @@ function (
         {
             var data = this.model.toJSON();
 
-            data.notes = HTMLCleaner.clean(data.notes);
+            if (data.notes)
+                data.notes = HTMLCleaner.clean(data.notes);
 
             return data;
         }

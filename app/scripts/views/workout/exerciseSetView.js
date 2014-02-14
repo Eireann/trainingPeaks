@@ -28,7 +28,10 @@ function (
 
             data.index = this.options.index + 1;
 
-            data.active = _.find(data.instructions, { name: "Active or Rest" }).planValue;
+            var activeOrRest = _.find(data.instructions, { name: "Active or Rest" });
+
+            if (activeOrRest)
+                data.active = activeOrRest.planValue;
 
             data.instructions = _.reject(data.instructions, { name: "Active or Rest" });
 

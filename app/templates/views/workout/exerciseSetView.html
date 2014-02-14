@@ -1,3 +1,4 @@
+<!--
 <span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span><br/>
 <div class="setProperties">
 {{#each instructions}}
@@ -8,4 +9,40 @@
         {{#if units}}, in <span class="propertyUnit">{{ units }}</span>{{/if}}
     </div>
 {{/each}}
+</div>
+-->
+<div class="setProperties">
+    <table>
+       <caption><span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span></caption>
+       <thead>
+          <tr>
+             <th colspan="4" style="text-align:center;width:50%">Instructed</th>
+             <th colspan="4" style="text-align:center;width:50%">Completed</th>
+          </tr>
+          <tr>
+             <th>&nbsp;</th>
+             <th><span class="targets">&#8853;</span></th>
+             <th>Min</th>
+             <th>Max</th>
+             <th>Max</th>
+             <th>Min</th>
+             <th><span class="targets">&#8855;</span></th>
+             <th>&nbsp;</th>
+          </tr>
+       </thead>
+       <tbody>
+    {{#each instructions}}
+          <tr data-property="{{name}}">
+             <td style="text-align:left;">{{name}}{{#if units}} ({{ units }}){{/if}}</td>
+             <td>{{planValue}}</td>
+             <td>{{planValue}}</td>
+             <td>{{#if planMaxSpecified}}{{planMax}}{{else}}N/A{{/if}}</td>
+             <td>{{#if actualMaxSpecified}}{{actualMax}}{{else}}N/A{{/if}}</td>
+             <td>{{#if actualValueSpecified}}{{actualValue}}{{else}}N/A{{/if}}</td>
+             <td>{{#if actualValueSpecified}}{{actualValue}}{{else}}N/A{{/if}}</td>
+             <td style="text-align:right;">{{name}}{{#if units}} ({{ units }}){{/if}}</td>
+          </tr>
+    {{/each}}
+       </tbody>
+    </table>
 </div>

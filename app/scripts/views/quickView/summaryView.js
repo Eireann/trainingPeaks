@@ -52,6 +52,7 @@ function (
             this.on("render", this.setTabOrder, this);
             this.on("render", this.renderEquipmentSelectors, this);
             this.on("render", this.renderWorkoutStructure, this);
+            this.model.get("details").on("change", this.renderWorkoutStructure, this);
             this.initializeUserCustomization();
 
             // setup stickit last because the user customization onRender needs to happen before stickit
@@ -97,12 +98,10 @@ function (
 
         renderWorkoutStructure: function()
         {
-            /*
             if (!this.model.get("details").get("workoutStructure"))
                 return;
-            */
 
-            var view = new WorkoutStructureView(this.model.get("details").get("workoutStructure"));
+            var view = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure") });
 
             view.render();
 
