@@ -52,16 +52,6 @@ function(
         {
             var actionName = $(e.currentTarget).attr("class");
             this.trigger(actionName);
-        },
-
-        disableCancel: function(enable)
-        {
-            this.$("button.cancel").prop("disabled", true);
-        },
-
-        enableCancel: function(enable)
-        {
-            this.$("button.cancel").prop("disabled", false);
         }
     });
 
@@ -76,7 +66,6 @@ function(
             this._initializeNavigation();
             this._initializeFooter();
             this.on("before:switchView", this._applyFormValuesToModels, this);
-            this.on("render", this._listenForFormChanges, this);
         },
 
         _initializeNavigation: function()
@@ -150,8 +139,6 @@ function(
                 copiedCollection.push(copiedModel);
             });
 
-            this.listenTo(copiedCollection, "add remove", _.bind(this._onChange, this));
-
             return copiedCollection;
         },
 
@@ -161,18 +148,6 @@ function(
             {
                 collection.originalCollection.set(collection.toJSON());
             });
-        },
-
-        _listenForFormChanges: function()
-        {
-            var onChange = _.bind(this._onChange, this);
-            this.$(".tabbedLayoutBody").on("change.userSettingsView", onChange); 
-            this.$(".tabbedLayoutBody").on("click.userSettingsView", "button", onChange);
-        },
-
-        _onChange: function()
-        {
-            this.footerView.enableCancel();
         },
 
         _applyCopiedModelsToRealModels: function()
@@ -195,7 +170,6 @@ function(
         _showFooter: function()
         {
             this.footerRegion.show(this.footerView);
-            this.footerView.disableCancel(false);
         },
 
         _applyFormValuesToModels: function()
@@ -224,7 +198,6 @@ function(
                     function()
                     {
                         self.$el.removeClass("waiting");
-                        self.footerView.disableCancel();
                     }
                 );
             }

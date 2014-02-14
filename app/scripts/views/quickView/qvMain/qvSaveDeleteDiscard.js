@@ -24,6 +24,7 @@ function(
 
         initializeSaveDeleteDiscard: function()
         {
+            this.changed = false;
             var self = this;
             
             _.extend(this.events, this.saveDeleteDiscardEvents);
@@ -57,8 +58,8 @@ function(
                     details.checkpoint();
                 });
                 this.model.on("change", this.saveOnModelChange, this);
-                this.model.on("change", this.enableDiscardButtonOnModelChange, this);
-                this.on("change:details", this.enableDiscardButtonOnModelChange, this);
+                this.model.on("change", this.setChanged, this);
+                this.on("change:details", this.setChanged, this);
                 this.discardButtonColor = this.$("button#discard").css("color");
                 this.$("button#discard").css("color", "grey");
                 this.saveDeleteDiscardInitialized = true;
@@ -68,14 +69,16 @@ function(
         removeSaveOnModelChange: function()
         {
             this.model.off("change", this.saveOnModelChange);
-            this.model.off("change", this.enableDiscardButtonOnModelChange);
-            this.off("change:details", this.enableDiscardButtonOnModelChange);
+            this.model.off("change", this.setChanged);
+            this.off("change:details", this.setChanged);
         },
 
-        enableDiscardButtonOnModelChange: function(model)
+        setChanged: function(model)
         {
             if (!_.isEmpty(model.changed) && !_.has(model.changed, "workoutDay"))
-                this.enableDiscardButton();
+            {
+                this.changed = true;
+            }
         },
 
         saveOnModelChange: function(model, options)
@@ -102,20 +105,21 @@ function(
             }
         },
 
-        enableDiscardButton: function()
-        {
-            this.$("button#discard").removeAttr("disabled");
-            this.$("button#discard").css("color", this.discardButtonColor);
-        },
-
         onDiscardClicked: function()
         {
-            this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
-            this.discardConfirmation.render();
-            this.discardConfirmation.on("userConfirmed", this.onDiscardChangesConfirmed, this);
+            if(this.changed)
+            {
+                this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
+                this.discardConfirmation.render();
+                this.discardConfirmation.on("userConfirmed", this.discardAndClose, this);
+            }
+            else
+            {
+                this.discardAndClose();
+            }
         },
 
-        onDiscardChangesConfirmed: function()
+        discardAndClose: function()
         {
             if (this.isNewWorkout)
             {
