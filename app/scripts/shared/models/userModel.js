@@ -95,24 +95,24 @@ function(
                     }
                 });
 
-                var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
-                ajaxFetch.done(function()
+                var ajaxFetchPromise = TP.APIDeepModel.prototype.fetch.call(self, options);
+                ajaxFetchPromise.done(function()
                 {
-                    localStorageUtils.setItem("app_user", self.attributes);
+                    self.localStorage.setItem("app_user", self.attributes);
                 });
-                return ajaxFetch;
+                return ajaxFetchPromise;
             };
 
 
             // Even if we have a cached user we want to update the data, we just may end up not waiting for it.
             var promise = superFetch();
 
-            if(!options.nocache)
+            if(!_.result(options, "nocache"))
             {
                 // If the user is saved in localStorage, immediately set that data
                 // to this model and return a resolved deferred.
                 // Then do the actual AJAX fetch
-                var cachedUser = localStorageUtils.getItem('app_user');
+                var cachedUser = this.localStorage.getItem('app_user');
 
                 if(cachedUser)
                 {
@@ -121,7 +121,7 @@ function(
                         if(options && options.user && cachedUser.userName !== options.user)
                         {
                             // Our cache is for the wrong user, blow it away.
-                            localStorage.removeItem('app_user');
+                            this.localStorage.removeItem('app_user');
                         }
                         else
                         {
@@ -145,6 +145,8 @@ function(
         {
             Backbone.Model.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
+
+            this.localStorage = (options && options.localStorage) ? options.localStorage : localStorageUtils;
         },
         
         checkpoint: function()
