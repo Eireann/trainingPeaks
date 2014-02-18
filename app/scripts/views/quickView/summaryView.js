@@ -99,7 +99,15 @@ function (
         renderWorkoutStructure: function()
         {
             if (!this.model.get("details").get("workoutStructure"))
+            {
+                this.$(".workoutStructureToggleContainer").hide();
+
                 return;
+            }
+            else
+            {
+                this.$(".workoutStructureToggleContainer").show();
+            }
 
             var view = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure") });
 

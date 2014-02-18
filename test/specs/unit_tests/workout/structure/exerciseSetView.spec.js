@@ -83,6 +83,23 @@ function (
                         "actualMinSpecified": false,
                         "actualMaxSpecified": false,
                         "actualUnitsSpecified": false
+                    },
+                    {
+                        "type": 1,
+                        "isEmpty": false,
+                        "name": "Duration",
+                        "planNote": null,
+                        "planValueSpecified": true,
+                        "planMinSpecified": false,
+                        "planMaxSpecified": false,
+                        "planUnitsSpecified": true,
+                        "planUnits": 21,
+                        "planValue": 375,
+                        "actualNote": null,
+                        "actualValueSpecified": false,
+                        "actualMinSpecified": false,
+                        "actualMaxSpecified": false,
+                        "actualUnitsSpecified": false
                     }
                 ]
             };
@@ -124,17 +141,24 @@ function (
 
         it("Should have a weight range", function()
         {
-            expect(exerciseSetView.$("[data-property=Weight] .propertyPlannedValue").text()).to.contain("150 - 300");
+            expect(exerciseSetView.$("[data-property=Weight] .propertyPlannedMinValue").text()).to.contain("150");
+            expect(exerciseSetView.$("[data-property=Weight] .propertyPlannedMaxValue").text()).to.contain("300");
         });
 
         it("Should have actual values for RPE", function()
         {
-            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedValue").text()).to.contain("2 - 10");
+            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedValue").text()).to.contain("2");
+            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedMaxValue").text()).to.contain("10");
         });
 
         it("Should display the right unit for Weight", function()
         {
             expect(exerciseSetView.$("[data-property=Weight] .propertyUnit").text()).to.contain("lb");
+        });
+
+        it("Should display duration in seconds as HH:MM:SS", function()
+        {
+            expect(exerciseSetView.$("[data-property=Duration] .propertyPlannedValue").text()).to.contain("06:15");
         });
     });
 });

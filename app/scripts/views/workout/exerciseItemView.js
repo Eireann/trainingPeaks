@@ -35,7 +35,7 @@ function (
 
         initialize: function(options)
         {
-            this.collection = new TP.Collection(options.model.get("sets"));
+            this.collection = new TP.Collection(options.model.get("sets"), { model: TP.DeepModel });
         },
 
         serializeData: function()

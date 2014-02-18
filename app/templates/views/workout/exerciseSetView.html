@@ -33,14 +33,14 @@
        <tbody>
     {{#each instructions}}
           <tr data-property="{{name}}">
-             <td style="text-align:left;">{{name}}{{#if units}} ({{ units }}){{/if}}</td>
-             <td>{{planValue}}</td>
-             <td>{{planValue}}</td>
-             <td>{{#if planMaxSpecified}}{{planMax}}{{else}}N/A{{/if}}</td>
-             <td>{{#if actualMaxSpecified}}{{actualMax}}{{else}}N/A{{/if}}</td>
-             <td>{{#if actualValueSpecified}}{{actualValue}}{{else}}N/A{{/if}}</td>
-             <td>{{#if actualValueSpecified}}{{actualValue}}{{else}}N/A{{/if}}</td>
-             <td style="text-align:right;">{{name}}{{#if units}} ({{ units }}){{/if}}</td>
+             <td class="propertyName" style="text-align:left;">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</td>
+             <td class="propertyPlannedValue">{{formatExerciseValue planValue units}}</td>
+             <td class="propertyPlannedMinValue">{{formatExerciseValue planValue units}}</td>
+             <td class="propertyPlannedMaxValue">{{#if planMaxSpecified}}{{formatExerciseValue planMax units}}{{else}}-{{/if}}</td>
+             <td class="propertyCompletedMaxValue">{{#if actualMaxSpecified}}{{formatExerciseValue actualMax units}}{{else}}-{{/if}}</td>
+             <td class="propertyCompletedMinValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</td>
+             <td class="propertyCompletedValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</td>
+             <td style="text-align:right;">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</td>
           </tr>
     {{/each}}
        </tbody>
