@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "shared/views/userSettingsView",
     "hbs!templates/views/userControls/accountMenu"
 ],
-function (TP, UserSettingsView, accountMenuTemplate)
+function (_, TP, UserSettingsView, accountMenuTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -38,6 +39,11 @@ function (TP, UserSettingsView, accountMenuTemplate)
         },
 
         onUserSettingsClicked: function()
+        {
+            this.model.fetch({ nocache: true }).done(_.bind(this._openUserSettings, this));
+        },
+
+        _openUserSettings: function()
         {
             var userSettingsView = new UserSettingsView.OverlayBox({ model: this.model });
             userSettingsView.render();

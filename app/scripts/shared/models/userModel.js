@@ -39,6 +39,7 @@ function(
             country: null,
             dateFormat: "mdy",
             email: null,
+            isEmailVerified: false,
             enablePrivateMessageNotifications: null,
             expireDate: null,
             firstName: null,
@@ -94,42 +95,46 @@ function(
                     }
                 });
 
-                var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
-                ajaxFetch.done(function()
+                var ajaxFetchPromise = TP.APIDeepModel.prototype.fetch.call(self, options);
+                ajaxFetchPromise.done(function()
                 {
-                    localStorageUtils.setItem("app_user", self.attributes);
+                    self.localStorage.setItem("app_user", self.attributes);
                 });
-                return ajaxFetch;
+                return ajaxFetchPromise;
             };
 
-            // If the user is saved in localStorage, immediately set that data
-            // to this model and return a resolved deferred.
-            // Then do the actual AJAX fetch
-            var cachedUser = localStorageUtils.getItem('app_user');
 
             // Even if we have a cached user we want to update the data, we just may end up not waiting for it.
             var promise = superFetch();
 
-            if(cachedUser)
+            if(!_.result(options, "nocache"))
             {
-                try
+                // If the user is saved in localStorage, immediately set that data
+                // to this model and return a resolved deferred.
+                // Then do the actual AJAX fetch
+                var cachedUser = this.localStorage.getItem('app_user');
+
+                if(cachedUser)
                 {
-                    if(options && options.user && cachedUser.userName !== options.user)
+                    try
                     {
-                        // Our cache is for the wrong user, blow it away.
-                        localStorage.removeItem('app_user');
+                        if(options && options.user && cachedUser.userName !== options.user)
+                        {
+                            // Our cache is for the wrong user, blow it away.
+                            this.localStorage.removeItem('app_user');
+                        }
+                        else
+                        {
+                            // Pre-populate the user, and don't wait for the current data before loading the app
+                            this.set(cachedUser);
+                            this.populateUserModels(cachedUser);
+                            promise = $.Deferred().resolve().promise();
+                        }
                     }
-                    else
+                    catch(e)
                     {
-                        // Pre-populate the user, and don't wait for the current data before loading the app
-                        this.set(cachedUser);
-                        this.populateUserModels(cachedUser);
-                        promise = $.Deferred().resolve().promise();
+                        // We were unable to use the cached user, maybe the JSON was invalid, just wait <D-r>
                     }
-                }
-                catch(e)
-                {
-                    // We were unable to use the cached user, maybe the JSON was invalid, just wait <D-r>
                 }
             }
 
@@ -140,6 +145,8 @@ function(
         {
             Backbone.Model.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
+
+            this.localStorage = (options && options.localStorage) ? options.localStorage : localStorageUtils;
         },
         
         checkpoint: function()

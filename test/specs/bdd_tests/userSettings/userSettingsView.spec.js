@@ -121,6 +121,35 @@ function(
             expect(testHelpers.hasRequest("PUT", "fitness/v1/athletes/[0-9]+/equipment")).to.equal(true);
         });
 
+        it("Should display an email verification message if email has not been verified", function()
+        {
+            testHelpers.theApp.user.set("isEmailVerified", false);
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
+            view.render();
+
+            expect(view.$(".emailVerification").length).to.eql(1);
+            expect(view.$(".emailVerification").css("display")).to.not.eql("none");
+        });
+
+        it("Should not display an email verification message if email has been verified", function()
+        {
+            testHelpers.theApp.user.set("isEmailVerified", true);
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
+            view.render();
+
+            expect(view.$(".emailVerification").length).to.eql(1);
+            expect(view.$(".emailVerification").css("display")).to.eql("none");
+        });
+
+        it("Should request email verification", function()
+        {
+            testHelpers.theApp.user.set("isEmailVerified", false);
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
+            view.render();
+
+            view.$(".verifyEmail").trigger("click");
+            expect(testHelpers.hasRequest("POST", "verifyemail")).to.be.ok;
+        });
     });
 
 });
