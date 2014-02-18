@@ -220,10 +220,26 @@ function(
 
         _saveUser: function()
         {
+            this._copyUserAttributesToAthlete();    
             return UserDataSource.saveUserSettingsAndPassword({
                 models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
                 password: this.model.getPasswordSettings().get("password")
             });
+        },
+
+        _copyUserAttributesToAthlete: function()
+        {
+            if(this.model.getCurrentAthleteId() === this.model.get("userId"))
+            {
+                var athleteSettings = this.model.getAthleteSettings();
+                _.each(this.model.attributes, function(value, key)
+                {
+                    if(_.has(athleteSettings.attributes, key))
+                    {
+                        athleteSettings.set(key, value);
+                    }
+                });
+            }
         },
 
         _saveZones: function()
