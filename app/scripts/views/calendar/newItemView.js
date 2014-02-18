@@ -104,7 +104,7 @@ function(
 
         onNewMetricClicked: function(e)
         {
-            var now = moment(), timeStamp;
+            var now = moment.local(), timeStamp;
             if(now.format(CalendarUtility.idFormat) === this.model.get("date"))
             {
                 timeStamp = now;
