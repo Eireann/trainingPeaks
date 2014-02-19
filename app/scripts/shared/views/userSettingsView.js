@@ -222,7 +222,7 @@ function(
         {
             this._copyUserAttributesToAthlete();    
             return UserDataSource.saveUserSettingsAndPassword({
-                models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
+                userModel: this.model,
                 password: this.model.getPasswordSettings().get("password")
             });
         },
