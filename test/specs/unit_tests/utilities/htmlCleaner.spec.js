@@ -48,7 +48,7 @@ function (
                 var html = "I am paragraph one";
                 var cleaned = htmlCleaner.clean(html);
                 expect($("<div>").html(html).find("p").length).to.eql(0);
-                expect($("<div>").html(cleaned).find("p").length).to.eql(1)
+                expect($("<div>").html(cleaned).find("p").length).to.eql(1);
             });
         });
 

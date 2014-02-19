@@ -60,7 +60,7 @@ function (
                 {
                     instruction.units = ExerciseSetUnits[instruction.planUnits];
                 }
-            })
+            });
 
             return data;
         }
