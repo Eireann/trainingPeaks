@@ -13,6 +13,7 @@ define(
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/quickView/fileUploadErrorView",
+    "hbs!templates/views/confirmationViews/emailVerificationConfirmationView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
 function(
@@ -28,7 +29,8 @@ function(
     UserDataSource,
     FormUtility,
     UserConfirmationView,
-    fileUploadErrorTemplate, 
+    fileUploadErrorTemplate,
+    emailVerificationConfirmationTemplate,
     userSettingsFormTemplate
 )
 {
@@ -385,7 +387,13 @@ function(
 
         _verifyEmail: function()
         {
-            UserDataSource.verifyEmail();
+            this.waitingOn();
+            var self = this;
+            UserDataSource.verifyEmail().always(function()
+            {
+                self.waitingOff();
+                new UserConfirmationView({template: emailVerificationConfirmationTemplate}).render();
+            });
         }
 
     });
