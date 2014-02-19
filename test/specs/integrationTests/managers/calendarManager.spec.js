@@ -19,7 +19,7 @@ function(
 )
 {
 
-    describe("CalendarManager (BDD)", function()
+    describe("CalendarManager (Integration)", function()
     {
 
         var calendarManager, dataManager;
