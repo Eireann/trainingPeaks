@@ -34,13 +34,16 @@ function(
         getCalendarDay: function()
         {
             var timeStamp = this.get("timeStamp");
-            return timeStamp ? moment(timeStamp).format(TP.utils.datetime.shortDateFormat) : "";
+            return timeStamp ? moment.local(timeStamp).format(TP.utils.datetime.shortDateFormat) : "";
         },
 
         setCalendarDay: function(date)
         {
-            date = moment(date);
-            var timeStamp = moment(this.get("timeStamp")).year(date.year()).month(date.month()).date(date.date());
+            date = moment.local(date);
+            // If the metric entry is dragged to another day on the calendar,
+            // this code tries to preserve the original "time" component of the entry,
+            // even though it is not quite relevant.
+            var timeStamp = moment.local(this.get("timeStamp")).year(date.year()).month(date.month()).date(date.date());
             this.set("timeStamp", timeStamp.format(TP.utils.datetime.longDateFormat));
         },
 
@@ -51,16 +54,18 @@ function(
 
         setTimestamp: function(time)
         {
-            time = moment(time, "h:mm a");
-            var timeStamp = moment(this.get("timeStamp"));
+            // This updates the "time" component of the metric entry based on the passed in "time",
+            // which comes from the time picker in the QV header.
+            time = moment.local(time, "h:mm a");
+            var timeStamp = moment.local(this.get("timeStamp"));
             timeStamp.hour(time.hour()).minute(time.minute()).second(time.second());
             this.set("timeStamp", timeStamp.format(TP.utils.datetime.longDateFormat));
         },
 
         moveToDay: function(date)
         {
-            date = moment(date);
-            var timestamp = moment(this.get("timeStamp"));
+            date = moment.local(date);
+            var timestamp = moment.local(this.get("timeStamp"));
             var attrs =
             {
                 timeStamp: date.format("YYYY-MM-DD")  + timestamp.format("THH:mm:ss")
@@ -96,7 +101,7 @@ function(
                     var metric = this.clone();
                     metric.save(
                     {
-                        timeStamp: moment(date).format(TP.utils.datetime.longDateFormat),
+                        timeStamp: moment.local(date).format(TP.utils.datetime.longDateFormat),
                         athleteId: athleteId
                     });
                     theMarsApp.calendarManager.addItem(metric);
