@@ -13,6 +13,7 @@
     "views/userConfirmationView",
     "hbs!templates/views/errors/passwordValidationErrorView",
     "hbs!templates/views/errors/emailValidationErrorView",
+    "hbs!templates/views/confirmationViews/discardConfirmationView",
     "hbs!shared/templates/userSettings/userSettingsFooterTemplate"
 ],
 function(
@@ -29,6 +30,7 @@ function(
     UserConfirmationView,
     passwordValidationErrorTemplate,
     emailValidationErrorTemplate,
+    discardConfirmationTemplate,
     userSettingsFooterTemplate
 )
 {
@@ -61,11 +63,17 @@ function(
 
         initialize: function()
         {
+            this.changed = false;
             this._copiesOfModels = [];
             this._copiesOfCollections = [];
             this._initializeNavigation();
             this._initializeFooter();
             this.on("before:switchView", this._applyFormValuesToModels, this);
+        },
+
+        onRender: function()
+        {
+            this.$el.on("change.userSettingsView", "input, select", _.bind(this._setChanged, this));
         },
 
         _initializeNavigation: function()
@@ -252,9 +260,23 @@ function(
             this.model.getAthleteSettings().getEquipment().save();
         },
 
+        _setChanged: function()
+        {
+            this.changed = true;
+        },
+
         _cancel: function()
         {
-            this.close(); 
+            if(this.changed)
+            {
+                this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
+                this.discardConfirmation.render();
+                this.discardConfirmation.on("userConfirmed", this.close, this);
+            }
+            else
+            {
+                this.close(); 
+            }
         },
 
         _validateForSave: function()
@@ -296,7 +318,9 @@ function(
             }
 
             return true;
-        }
+        },
+
+
 
     });
 

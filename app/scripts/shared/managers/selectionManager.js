@@ -145,6 +145,9 @@ function(
                 this.selection.deactivate();
                 this.selection = null;
             }
+
+            // If "focus" was left behind, clear it so that "paste" operations will work correctly.
+            this._clearFocus();
         },
 
         execute: function(action, options, selection)
@@ -180,6 +183,11 @@ function(
         clearClipboard: function()
         {
             this.clipboard = null;
+        },
+
+        _clearFocus: function()
+        {
+            $(document.activeElement).blur();
         },
 
         _selectionClassForModel: function(model)
