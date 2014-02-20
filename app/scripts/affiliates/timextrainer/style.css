@@ -18,12 +18,8 @@
     color: #FFFFFF;
 }
 
-#userControlsContainer #userControlsBackground
-{
-    background-color: #c12e1a;
-}
-
-#userControlsContainer #userControlsBackground .personHeaderLogo
+#userControlsContainer #userControlsBackground .personHeaderLogo.affiliate
 {
     background-image: url(timexLogo.png);
+    background-position-y: 0px;
 }
