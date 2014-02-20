@@ -22,23 +22,24 @@ function(
             if(options.password)
             {
                 return $.when(
-                    UserDataSource.saveUserSettings(options.userModel),
+                    UserDataSource.saveUserSettings(options.models),
                     UserDataSource.savePassword(options.password)
                 );
             }  
             else
             {
-                return UserDataSource.saveUserSettings(options.userModel);
+                return UserDataSource.saveUserSettings(options.models);
             }
         },
 
-        saveUserSettings: function(userModel)
+        saveUserSettings: function(models)
         {
-            return userModel.save().then(function(){
-                userModel.getAthleteSettings().save();
-            }).then(function(){
-                userModel.getAccountSettings().save();
+            var modelSaveDeferreds = _.map(models, function(model)
+            {
+                return model.save();
             });
+
+            return $.when.apply($, modelSaveDeferreds);
         },
 
         savePassword: function(password)
