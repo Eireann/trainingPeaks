@@ -13,8 +13,11 @@
         font-family: $fontFamilyHeavy;
         font-size: $fontSizeSmall;
         margin-bottom: 5px;
-        margin-left: 4px;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-bottom: 5px;
         color: $TPGrey3;
+        border-bottom: 1px solid #a2a3a6;
     }
 }
 
@@ -22,32 +25,32 @@
     color: #636569;
     margin-bottom: 15px;
     margin-top: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .workoutStructure .exerciseTitle {
-    border-bottom: 2px dashed #ccc;
     color: $TPGrey3;
     font-family: $fontFamilyHeavy;
     font-size: $fontSizeSmall;
-    margin-bottom: 10px;
-    margin-left: 4px;
-    margin-right: 4px;
-    margin-top: 10px;
-    padding-bottom: 4px;
+    margin-bottom: 5px;
+    margin-left: 10px;
 }
 
 .workoutStructure .exerciseNotes {
-    border: 1px dashed #ccc;
-    margin: 4px;
-    padding: 4px;
+    margin: 0px 10px 0 10px;
+
+    p {
+        font-size: $fontSizeSmall;
+    }
 }
 
 // Temporary table styles
 
 .workoutStructure table {
     background: transparent;
-    border: 1px solid #ccc;
-    border-colapse: colapse;
+    border: none;
+    border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: 25px;
     margin-left: 4px;
@@ -57,7 +60,6 @@
 }
 
 .workoutStructure caption {
-    border: 2px solid #ccc;
     border-bottom: none;
     display: table-caption;
     font-style: italic;
@@ -66,11 +68,10 @@
 }
 
 .workoutStructure thead {
-    background-color: #ddd;    
+    background-color: transparent;    
 }
 
 .workoutStructure thead th {
-    border: 1px solid #ccc;
     color: $TPGrey3;
     font-family: $fontFamilyHeavy;
     font-size: $fontSizeSmall;
@@ -80,12 +81,17 @@
 }
 
 .workoutStructure tr td {
-    border: 1px solid #ccc;
     color: #636569;
     font-size: 0.875em;
     line-height: 1.214em;
     padding: 4px 4px;
     text-align: center;
+
+    &.propertyName {
+        text-align: right;
+        font-size: $fontSizeSmaller;
+        width: 100px;
+    }
 }
 
 .workoutStructure tr.even, .workoutStructure tr.alt, .workoutStructure tr:nth-of-type(even) {

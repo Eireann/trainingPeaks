@@ -16,16 +16,16 @@
        <caption><span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span></caption>
        <thead>
           <tr>
-             <th colspan="4" style="text-align:center;width:50%">Instructed</th>
-             <th colspan="4" style="text-align:center;width:50%">Completed</th>
+             <th colspan="4" class="headerInstructed">Instructed</th>
+             <th colspan="4" class="headerCompleted">Completed</th>
           </tr>
           <tr>
              <th>&nbsp;</th>
              <th><span class="targets">&#8853;</span></th>
-             <th>Min</th>
-             <th>Max</th>
-             <th>Max</th>
-             <th>Min</th>
+             <th class="min">Min</th>
+             <th class="max">Max</th>
+             <th class="max">Max</th>
+             <th class="min">Min</th>
              <th><span class="targets">&#10003;</span></th>
              <th>&nbsp;</th>
           </tr>
@@ -33,14 +33,13 @@
        <tbody>
     {{#each instructions}}
           <tr data-property="{{name}}">
-             <td class="propertyName" style="text-align:left;">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</td>
+             <td class="propertyName">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</td>
              <td class="propertyPlannedValue">{{formatExerciseValue planValue units}}</td>
              <td class="propertyPlannedMinValue">{{formatExerciseValue planValue units}}</td>
              <td class="propertyPlannedMaxValue">{{#if planMaxSpecified}}{{formatExerciseValue planMax units}}{{else}}-{{/if}}</td>
              <td class="propertyCompletedMaxValue">{{#if actualMaxSpecified}}{{formatExerciseValue actualMax units}}{{else}}-{{/if}}</td>
              <td class="propertyCompletedMinValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</td>
              <td class="propertyCompletedValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</td>
-             <td style="text-align:right;">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</td>
           </tr>
     {{/each}}
        </tbody>
