@@ -27,6 +27,36 @@
     margin-top: 15px;
     margin-left: 10px;
     margin-right: 10px;
+
+    .exerciseSets {
+
+        .workoutStatsRow {
+            div {
+                float: left;
+                width: 82px;
+                height: 22px;
+                border: 1px solid #cccccc;
+                text-align: center;
+                font-size: $fontSizeSmall;
+                margin-right: 2px;
+                padding-top: 4px;
+
+                &.propertyName {
+                    float: left;
+                    text-align: right;
+                    font-size: $fontSizeSmaller;
+                    width: 100px;
+                    padding-top: 5px;
+                    padding-right: 5px;
+                    border: none;
+                }
+
+                &.propertyCompletedMaxValue {
+                    margin-left:15px;
+                }
+            }
+        }   
+    }
 }
 
 .workoutStructure .exerciseTitle {
@@ -45,56 +75,9 @@
     }
 }
 
-// Temporary table styles
-
-.workoutStructure table {
-    background: transparent;
-    border: none;
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-bottom: 25px;
-    margin-left: 4px;
-    margin-right: 4px;
-    text-align: left;
-    width: 633px;
-}
-
-.workoutStructure caption {
-    border-bottom: none;
-    display: table-caption;
-    font-style: italic;
-    padding: 4px;
-    text-align: center;
-}
-
-.workoutStructure thead {
-    background-color: transparent;    
-}
-
-.workoutStructure thead th {
-    color: $TPGrey3;
-    font-family: $fontFamilyHeavy;
-    font-size: $fontSizeSmall;
-    font-weight: normal;
-    padding: 8px 8px;
-    text-align: center;
-}
-
-.workoutStructure tr td {
-    color: #636569;
-    font-size: 0.875em;
-    line-height: 1.214em;
-    padding: 4px 4px;
-    text-align: center;
-
-    &.propertyName {
-        text-align: right;
-        font-size: $fontSizeSmaller;
-        width: 100px;
-    }
-}
-
-.workoutStructure tr.even, .workoutStructure tr.alt, .workoutStructure tr:nth-of-type(even) {
+.workoutStructure tr.even, 
+.workoutStructure tr.alt, 
+.workoutStructure tr:nth-of-type(even) {
     background: transparent;
 }
 
