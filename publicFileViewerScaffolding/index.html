@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>Public File Viewer V3</title>
+
+        <style type="text/css">
+        .task
+        {
+            border: 1px solid black;
+            width: 96%;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        </style>
+
+        <script src="js/libs/requirejs/require.js"></script>
+        <script src="js/requireJsConfig.js"></script>
+
+        <script src="js/publicFileViewer.js"></script>
+
+        <script>
+        requirejs([
+            "wrappedMoment"
+        ], function(wrappedMoment)
+        {
+            requirejs(
+            [
+              "jquery",
+              "components/publicFileViewer"
+            ],
+            function(
+              $,
+              PublicFileViewer
+            )
+            {
+                $(document).ready(function()
+                {
+                    var pfv = new PublicFileViewer({ $el: $("#main") });
+                    pfv.load();
+                });
+            });
+        });
+
+        </script>
+    </head>
+    <body>
+
+        <div id="main"></div>
+        
+    </body>
+</html>
+
+
