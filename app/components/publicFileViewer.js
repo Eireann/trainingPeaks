@@ -3,18 +3,22 @@ define(
     "underscore",
     "jquery",
     "backbone.marionette.handlebars",
+    "flot/jquery.flot",
     "shared/models/userModel",
     "models/workoutModel",
-    "models/workoutDetails",
-    "views/workout/workoutBarView"
+    "expando/models/expandoStateModel",
+    "views/workout/workoutBarView",
+    "views/expando/graphView"
 ],
 function(_,
          $,
          bmhbs,
+         Flot,
          UserModel, 
          WorkoutModel,
-         WorkoutDetails,
-         WorkoutBarView)
+         ExpandoStateModel,
+         WorkoutBarView,
+         GraphView)
 {
 
     var PublicFileViewer = function(options)
@@ -38,27 +42,30 @@ function(_,
 
         render: function(data)
         {
-            /*
-                UserName = athlete.FirstName + " " + athlete.LastName,
-                ProfileImageUrl = athlete.PhotoFileData != null ? athlete.PhotoFileData.GetUrl() : null,
-                Units = athlete.UnitsValue,
-                Workout = workout.ToAPIWorkout(),
-                WorkoutDetailData = builder.Build()
-            
-            */
-
-            this.userModel = new UserModel(data);
+            var userModel = new UserModel(data);
 
             window.theMarsApp = {
-                user: this.userModel
+                user: userModel
             };
 
-            this.workout = new WorkoutModel(data.workout);
-            this.workout.get("detailData").set(data.workoutDetailData);
+            var workout = new WorkoutModel(data.workout);
+            workout.get("detailData").set(data.workoutDetailData);
+            workout.get("detailData").reset();
 
-            var workoutBarView = new WorkoutBarView({ model: this.workout });
+            var workoutBarView = new WorkoutBarView({ model: workout });
 
-            this.$el.append(workoutBarView.render().$el);
+            this.$el.find(".workoutBarView").append(workoutBarView.render().$el);
+
+            var expandoStateModel = new ExpandoStateModel();
+
+            var graphView = new GraphView(
+            {
+                model: workout,
+                detailDataPromise: new $.Deferred().resolve(),
+                stateModel: expandoStateModel
+            });
+
+            this.$el.find(".expandoPackeryRegion").append(graphView.render().$el);
         }
     });
 
