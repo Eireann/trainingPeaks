@@ -135,6 +135,27 @@ module.exports = function(grunt)
                     optimize: "none",
                     useSourceUrl: true
                 }
+            },
+
+            publicFileViewer:
+            {
+                options:
+                {
+                    mainConfigFile: "app/config.js",
+                    out: "build/publicFileViewer/single.js",
+                    baseUrl: "app",
+                    name: "components/publicFileViewer",
+                    deps: [
+                        "wrappedMoment"
+                    ],
+                    include: [
+                        "../bower_components/almond/almond"
+                    ],
+                    stubModules: ["text"],
+                    wrap: false,
+                    optimize: "none",
+                    useSourceUrl: true
+                }
             }
         },
 
