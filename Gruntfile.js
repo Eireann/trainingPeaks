@@ -142,14 +142,15 @@ module.exports = function(grunt)
                 options:
                 {
                     mainConfigFile: "app/config.js",
-                    out: "build/publicFileViewer/single.js",
+                    out: "build/publicFileViewer/publicFileViewer.js",
                     baseUrl: "app",
-                    name: "components/publicFileViewer",
+                    name: "publicFileViewer/publicFileViewer",
                     deps: [
                         "wrappedMoment"
                     ],
                     include: [
-                        "../bower_components/almond/almond"
+                        "../bower_components/almond/almond",
+                        "components/publicFileViewer/publicFileViewerLoader"
                     ],
                     stubModules: ["text"],
                     wrap: false,

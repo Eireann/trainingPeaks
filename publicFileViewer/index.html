@@ -6,69 +6,47 @@
 
         <link rel="stylesheet" href="build/debug/app/css/app.css" />
         <style type="text/css">
-            .expandoGraphPod {
+            #main
+            {
+                width: 100%;
+            }
+
+            #workOutQuickView, .workoutQuickView
+            {
+                height: 100%;
+                width: 100%;
+            }
+
+            #quickViewExpandedContent
+            {
+                height: calc(100% - 125px);
+            }
+
+            .expandoLeftColumn
+            {
+                height: 100%;
+            }
+
+            .expandoPod {
                 height: 400px;
+                width: calc(100% - 20px);
+                position: relative;
             }
         </style>
 
-        <script src="js/libs/requirejs/require.js"></script>
-        <script src="js/requireJsConfig.js"></script>
-
-        <script src="build/publicFileViewer/single.js"></script>
+        <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="build/publicFileViewer/publicFileViewer.js"></script>
 
         <script>
-        requirejs([
-            "wrappedMoment"
-        ], function(wrappedMoment)
+        $(document).ready(function()
         {
-            requirejs(
-            [
-              "jquery",
-              "components/publicFileViewer"
-            ],
-            function(
-              $,
-              PublicFileViewer
-            )
-            {
-                $(document).ready(function()
-                {
-                    var pfv = new PublicFileViewer({ $el: $("#main") });
-                    pfv.load();
-                });
-            });
+            $("#main").height($(window).innerHeight());
+            LoadPublicFileViewer("#main", "H6WHJO736OM54TYLHHYMI7V2OE");
         });
-
         </script>
     </head>
     <body>
-
-        <div id="main">
-
-            <div class="workoutQuickView expanded">
-                <div id="workOutQuickView">
-                    <div class="QVHeader">
-                  
-                        <div class="QVHeaderItemsContain cf">
-                            <div class="workoutBarView"></div>
-                        </div>
-                    </div>
-
-                    <div id="quickViewExpandedContent">
-                        <div class="expandoLeftColumn">
-                            <div class="expandoPackeryRegion"></div>
-                        </div>
-                        <div class="expandoRightColumn">
-                            <div class="expandoEditControlsRegion"></div>
-                            <div class="expandoStatsRegion"></div>
-                            <div class="expandoLapsRegion"></div>
-                        </div>
-                    </div>
-     
-                </div>
-            </div>
-        </div>
-        
+        <div id="main"></div>        
     </body>
 </html>
 
