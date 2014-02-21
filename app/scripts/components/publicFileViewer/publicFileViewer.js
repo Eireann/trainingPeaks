@@ -57,14 +57,30 @@ function(_,
         setupModels: function(data)
         {
             this.userModel = new UserModel(data);
-
-            window.theMarsApp = {
-                user: this.userModel
-            };
-
             this.workout = new WorkoutModel(data.workout);
             this.workout.get("detailData").set(data.workoutDetailData);
             this.workout.get("detailData").reset();
+            this.setupMarsApp();
+        },
+
+        setupMarsApp: function()
+        {
+            var $body = $("body");
+            window.theMarsApp = {
+                user: this.userModel,
+                
+                getBodyElement: function()
+                {
+                    return $body;
+                },
+
+                featureAuthorizer: {
+                    canAccessFeature: function(){return false;},
+                    runCallbackOrShowUpgradeMessage: function(featureChecker, callback, attributes, options){return;},
+                    features: {}
+                }
+
+            };
         },
 
         onRender: function()
