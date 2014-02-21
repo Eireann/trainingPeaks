@@ -258,6 +258,10 @@ module.exports = function(grunt)
             post_build:
             {
                 src: ["build/**/single.js"]
+            },
+            publicFileViewer:
+            {
+                src: ["publicFileViewer/build"]
             }
         },
 
@@ -305,6 +309,12 @@ module.exports = function(grunt)
             {
                 dest: "build/debug/",
                 src: ["coverage/lcov-report/**"]
+            },
+
+            publicFileViewer:
+            {
+                dest: "publicFileViewer/",
+                src: ["build/**"]
             }
         },
 
@@ -409,4 +419,6 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug_fast", ["clean", "uglify:tpcore", "uglify:tpcore.deps", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
+
+    grunt.registerTask("pfv", ["clean", "compass:debug", "requirejs:publicFileViewer", "copy:publicFileViewer"]);
 };

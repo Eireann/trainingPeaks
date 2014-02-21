@@ -20,7 +20,7 @@ function(_,
     var PublicFileViewer = function(options)
     {
         this.token = "H5RXMLFQDGFSJJF3VWEM57YVUU";
-        this.urlRoot = "https://tpapi.local.trainingpeaks.com/public/v1/workouts/";
+        this.urlRoot = "https://tpapi.dev.trainingpeaks.com/public/v1/workouts/";
         this.$el = options.$el;
     };
 
