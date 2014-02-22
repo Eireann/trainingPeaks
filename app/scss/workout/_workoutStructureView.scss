@@ -8,72 +8,118 @@
 
 .workoutStructureContainer {
     clear: both;
+    margin: 0 11px;
 
     .header {
         font-family: $fontFamilyHeavy;
         font-size: $fontSizeSmall;
         margin-bottom: 5px;
-        margin-left: 20px;
-        margin-right: 20px;
         padding-bottom: 5px;
         color: $TPGrey3;
         border-bottom: 1px solid #a2a3a6;
+        &:first-of-type {
+            margin-top: 23px;
+        }
     }
 }
 
 .workoutStructure {
     color: #636569;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    margin-left: 10px;
-    margin-right: 10px;
+
+    .exerciseTitle {
+        color: $TPGrey3;
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        margin:15px 0 5px 0;
+    }
+
+    .exerciseNotes {
+        p {
+            font-size: $fontSizeSmall;
+        }
+    }
 
     .exerciseSets {
+        .setProperties {
+            margin-bottom: 27px;
 
-        .workoutStatsRow {
-            div {
-                float: left;
-                width: 82px;
-                height: 22px;
-                border: 1px solid #cccccc;
-                text-align: center;
-                font-size: $fontSizeSmall;
-                margin-right: 2px;
-                padding-top: 4px;
+            .columnLabelsInstructedCompleted {
+                @include clearfix;
+                margin: 15px 0 15px 106px;
 
-                &.propertyName {
+                div {
                     float: left;
-                    text-align: right;
-                    font-size: $fontSizeSmaller;
-                    width: 100px;
-                    padding-top: 5px;
-                    padding-right: 5px;
-                    border: none;
-                }
+                    text-align: center;
+                    width: 247px;
+                    font-size: $fontSizeSmall;
 
-                &.propertyCompletedMaxValue {
-                    margin-left:15px;
+                    &.headerCompleted {
+                        margin-left: 17px;
+                    }
                 }
             }
-        }   
+
+            .columnLabelsTargetsMinMax {
+                @include clearfix;
+                margin-left:106px;
+
+                div {
+                    text-align: center;
+                    float: left;
+                    width: 81px;
+                    margin-right: 2px;
+                    margin-bottom: 5px;
+                    font-size: $fontSizeSmall;
+                    font-family: $fontFamilyHeavy;
+
+                    &.completedMin {
+                        margin-left: 19px;
+                    }
+                    &:last-of-type,
+                    &.instructedMax {
+                        margin-right: 0;
+                    }
+                }
+            }
+
+            .workoutStatsRow {
+                @include clearfix;
+
+                div {
+                    float: left;
+                    width: 81px;
+                    height: 22px;
+                    border: 1px solid #cccccc;
+                    text-align: center;
+                    font-size: $fontSizeSmall;
+                    margin-right: 2px;
+                    padding-top: 4px;
+
+                    &:last-of-type {
+                        margin-right: 0;
+                    }
+
+                    &.propertyName {
+                        float: left;
+                        text-align: right;
+                        font-size: $fontSizeSmaller;
+                        width: 104px;
+                        padding-top: 5px;
+                        padding-right: 5px;
+                        border: none;
+                    }
+
+                    &.propertyCompletedMinValue {
+                        margin-left:17px;
+                    }
+                }
+            } 
+        }  
     }
 }
 
-.workoutStructure .exerciseTitle {
-    color: $TPGrey3;
-    font-family: $fontFamilyHeavy;
-    font-size: $fontSizeSmall;
-    margin-bottom: 5px;
-    margin-left: 10px;
-}
 
-.workoutStructure .exerciseNotes {
-    margin: 0px 10px 0 10px;
 
-    p {
-        font-size: $fontSizeSmall;
-    }
-}
 
 .workoutStructure tr.even, 
 .workoutStructure tr.alt, 

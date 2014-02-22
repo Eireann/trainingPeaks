@@ -12,7 +12,9 @@
 </div>
 -->
 <div class="setProperties">
-  <span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span>
+  <div class="header">
+    <span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span>
+  </div>
 
   <div class="columnLabelsInstructedCompleted">
     <div class="headerInstructed">Instructed</div>
@@ -20,12 +22,12 @@
   </div>
 
   <div class="columnLabelsTargetsMinMax">
-    <div class="targets">&#8853;</div>
-    <div class="min">Min</div>
-    <div class="max">Max</div>
-    <div class="max">Max</div>
-    <div class="min">Min</div>
-    <div class="targets">&#10003;</div>
+    <div class="instructedTarget">&#8853;</div>
+    <div class="instructedMin">Min</div>
+    <div class="instructedMax">Max</div>
+    <div class="completedMin">Min</div>
+    <div class="completedMax">Max</div>
+    <div class="completedTarget">&#10003;</div>
   </div>
 
   {{#each instructions}}
@@ -34,8 +36,8 @@
       <div class="propertyPlannedValue">{{formatExerciseValue planValue units}}</div>
       <div class="propertyPlannedMinValue">{{formatExerciseValue planValue units}}</div>
       <div class="propertyPlannedMaxValue">{{#if planMaxSpecified}}{{formatExerciseValue planMax units}}{{else}}-{{/if}}</div>
-      <div class="propertyCompletedMaxValue">{{#if actualMaxSpecified}}{{formatExerciseValue actualMax units}}{{else}}-{{/if}}</div>
       <div class="propertyCompletedMinValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</div>
+      <div class="propertyCompletedMaxValue">{{#if actualMaxSpecified}}{{formatExerciseValue actualMax units}}{{else}}-{{/if}}</div> 
       <div class="propertyCompletedValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</div>
     </div>
   {{/each}}
