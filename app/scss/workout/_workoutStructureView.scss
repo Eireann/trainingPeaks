@@ -16,7 +16,7 @@
         margin-bottom: 5px;
         padding-bottom: 5px;
         color: $TPGrey3;
-        border-bottom: 1px solid #a2a3a6;
+        border-bottom: 1px solid $TPGrey12;
         &:first-of-type {
             margin-top: 23px;
         }
@@ -61,7 +61,7 @@
 
             .columnLabelsTargetsMinMax {
                 @include clearfix;
-                margin-left:106px;
+                margin-left: 106px;
 
                 div {
                     text-align: center;
@@ -89,7 +89,7 @@
                     float: left;
                     width: 81px;
                     height: 22px;
-                    border: 1px solid #cccccc;
+                    border: 1px solid $TPGrey2;
                     text-align: center;
                     font-size: $fontSizeSmall;
                     margin-right: 2px;
