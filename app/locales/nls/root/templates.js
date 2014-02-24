@@ -494,5 +494,9 @@ define({
     "Select Bike": "Select Bike",
     "Select Shoe": "Select Shoe",
 
-    "Full Screen": "Full Screen"
+    "Full Screen": "Full Screen",
+
+    "EmailIsNotVerified": "Email address is not verified",
+    "VerifyEmail": "Verify Email",
+    "EmailVerificationSent": "An e-mail has been sent to the address provided. Please follow the instructions in the e-mail to complete the validation process."
 });

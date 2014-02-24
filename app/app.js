@@ -325,13 +325,10 @@ function(
                     {
                         self.showInitialProfile();
                     }
-
-                    /*
-                    if(self.user.getAccountSettings().get("shouldCompleteProfile"))
+                    else if(self.user.getAccountSettings().get("shouldCompleteProfile"))
                     {
                         self.showInitialProfile();
                     }
-                    */
                 });
             });
 

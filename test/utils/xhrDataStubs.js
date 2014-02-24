@@ -17,6 +17,7 @@ function()
         {
             barbkprem:
             {
+                "athleteId": 426489,
                 "userName": null,
                 "birthday": null,
                 "gender": null,
@@ -133,6 +134,24 @@ function()
         {
             barbkprem: [
                 {
+                    equipmentId: 125,
+                    name: "My Other Bike",
+                    notes: "",
+                    brand: "Schwinn",
+                    model: "Stingray",
+                    dateOfPurchase: "12/20/1973",
+                    athleteId: 426489,
+                    retired: false,
+                    retiredDate: null,
+                    isDefault: false,
+                    startingDistance: 0,
+                    actualDistance: 1000,
+                    crankLengthMillimeters: "155",
+                    wheels: "training",
+                    maxDistance: null,
+                    type: 1        
+                },
+                {
                     equipmentId: 124,
                     name: "Speed 007",
                     notes: "It's great!",
@@ -149,6 +168,24 @@ function()
                     wheels: "2 or more",
                     maxDistance: null,
                     type: 1        
+                },
+                {
+                    equipmentId: 126,
+                    name: "Snowshoes",
+                    notes: "for when it snows",
+                    brand: "REI",
+                    model: "snowshoe",
+                    dateOfPurchase: "12/20/2012",
+                    athleteId: 426489,
+                    retired: false,
+                    retiredDate: null,
+                    isDefault: false,
+                    startingDistance: 0,
+                    actualDistance: 2,
+                    crankLengthMillimeters: null,
+                    wheels: null,
+                    maxDistance: 500,
+                    type: 2        
                 },
                 {
                     equipmentId: 123,
@@ -316,7 +353,7 @@ function()
                     "lastLogin": "2013-05-07T16:30:53",
                     "lastPlannedWorkout":"3911-03-08T00:00:00",
                     "settings":null,
-                    "photoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
+                    "profilePhotoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
                 ]
             }, // END BARBKPREM
 
@@ -457,7 +494,7 @@ function()
                         "lastLogin": "2013-05-07T16:30:53",
                         "lastPlannedWorkout": "3911-03-08T00:00:00",
                         "settings": null,
-                        "photoUrl": "/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"
+                        "profilePhotoUrl": "/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"
                     },
                     {
                     "athleteId": 23456,
@@ -469,7 +506,7 @@ function()
                     "lastLogin": "2013-05-07T16:30:53",
                     "lastPlannedWorkout":"3911-03-08T00:00:00",
                     "settings":null,
-                    "photoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
+                    "profilePhotoUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=502e9e5717044a137867e211&f=426489_1255469787_17_8_2012.jpg"}
                 ]
             } // END SUPERCOACH
 

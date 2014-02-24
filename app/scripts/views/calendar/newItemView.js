@@ -104,14 +104,21 @@ function(
 
         onNewMetricClicked: function(e)
         {
-            var now = moment(), timeStamp;
+            var now = moment.local(), timeStamp;
             if(now.format(CalendarUtility.idFormat) === this.model.get("date"))
             {
+                // The user is logging a metric for today, therefore it makes sense to include a "time"
+                // component in the timestamp.
                 timeStamp = now;
             }
             else
             {
-                timeStamp = moment(this.model.get("date"));
+                // The user is logging a metric for a day other than today, the current time is
+                // certainly irrelevant in this case, so base the timestamp on the localized calendar day,
+                // without a "time" component.
+                // The user can still pick a time from the QV header time picker, if they feel strongly
+                // about it.
+                timeStamp = moment.local(this.model.get("date"));
             }
 
             var newMetric = new MetricModel(

@@ -13,6 +13,7 @@
     "views/userConfirmationView",
     "hbs!templates/views/errors/passwordValidationErrorView",
     "hbs!templates/views/errors/emailValidationErrorView",
+    "hbs!templates/views/confirmationViews/discardConfirmationView",
     "hbs!shared/templates/userSettings/userSettingsFooterTemplate"
 ],
 function(
@@ -29,6 +30,7 @@ function(
     UserConfirmationView,
     passwordValidationErrorTemplate,
     emailValidationErrorTemplate,
+    discardConfirmationTemplate,
     userSettingsFooterTemplate
 )
 {
@@ -52,16 +54,6 @@ function(
         {
             var actionName = $(e.currentTarget).attr("class");
             this.trigger(actionName);
-        },
-
-        disableCancel: function(enable)
-        {
-            this.$("button.cancel").prop("disabled", true);
-        },
-
-        enableCancel: function(enable)
-        {
-            this.$("button.cancel").prop("disabled", false);
         }
     });
 
@@ -71,12 +63,17 @@ function(
 
         initialize: function()
         {
+            this.changed = false;
             this._copiesOfModels = [];
             this._copiesOfCollections = [];
             this._initializeNavigation();
             this._initializeFooter();
             this.on("before:switchView", this._applyFormValuesToModels, this);
-            this.on("render", this._listenForFormChanges, this);
+        },
+
+        onRender: function()
+        {
+            this.$el.on("change.userSettingsView", "input, select", _.bind(this._setChanged, this));
         },
 
         _initializeNavigation: function()
@@ -139,7 +136,7 @@ function(
 
         _copyCollection: function(originalCollection)
         {
-            var copiedCollection = new originalCollection.constructor(null, { model: originalCollection.model });
+            var copiedCollection = new originalCollection.constructor(null, { model: originalCollection.model, userModel: this.model });
             copiedCollection.originalCollection = originalCollection;
             this._copiesOfCollections.push(copiedCollection);
 
@@ -150,8 +147,6 @@ function(
                 copiedCollection.push(copiedModel);
             });
 
-            this.listenTo(copiedCollection, "add remove", _.bind(this._onChange, this));
-
             return copiedCollection;
         },
 
@@ -161,18 +156,6 @@ function(
             {
                 collection.originalCollection.set(collection.toJSON());
             });
-        },
-
-        _listenForFormChanges: function()
-        {
-            var onChange = _.bind(this._onChange, this);
-            this.$(".tabbedLayoutBody").on("change.userSettingsView", onChange); 
-            this.$(".tabbedLayoutBody").on("click.userSettingsView", "button", onChange);
-        },
-
-        _onChange: function()
-        {
-            this.footerView.enableCancel();
         },
 
         _applyCopiedModelsToRealModels: function()
@@ -195,7 +178,6 @@ function(
         _showFooter: function()
         {
             this.footerRegion.show(this.footerView);
-            this.footerView.disableCancel(false);
         },
 
         _applyFormValuesToModels: function()
@@ -224,7 +206,6 @@ function(
                     function()
                     {
                         self.$el.removeClass("waiting");
-                        self.footerView.disableCancel();
                     }
                 );
             }
@@ -247,10 +228,26 @@ function(
 
         _saveUser: function()
         {
+            this._copyUserAttributesToAthlete();    
             return UserDataSource.saveUserSettingsAndPassword({
                 models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
                 password: this.model.getPasswordSettings().get("password")
             });
+        },
+
+        _copyUserAttributesToAthlete: function()
+        {
+            if(this.model.getCurrentAthleteId() === this.model.get("userId"))
+            {
+                var athleteSettings = this.model.getAthleteSettings();
+                _.each(this.model.attributes, function(value, key)
+                {
+                    if(_.has(athleteSettings.attributes, key))
+                    {
+                        athleteSettings.set(key, value);
+                    }
+                });
+            }
         },
 
         _saveZones: function()
@@ -263,9 +260,23 @@ function(
             this.model.getAthleteSettings().getEquipment().save();
         },
 
+        _setChanged: function()
+        {
+            this.changed = true;
+        },
+
         _cancel: function()
         {
-            this.close(); 
+            if(this.changed)
+            {
+                this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
+                this.discardConfirmation.render();
+                this.discardConfirmation.on("userConfirmed", this.close, this);
+            }
+            else
+            {
+                this.close(); 
+            }
         },
 
         _validateForSave: function()
@@ -307,7 +318,9 @@ function(
             }
 
             return true;
-        }
+        },
+
+
 
     });
 

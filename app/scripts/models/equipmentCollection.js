@@ -25,14 +25,8 @@ function(
 
         initialize: function(models, options)
         {
-            if (options && options.athleteId)
-            {
-                this.athleteId = options.athleteId;
-            }
-            else
-            {
-                this.athleteId = theMarsApp.user.getCurrentAthleteId();
-            }
+            this.userModel = (options && options.userModel) || theMarsApp.user;
+            this.athleteId = (options && options.athleteId) || this.userModel.getCurrentAthleteId();
         },
 
         save: function()

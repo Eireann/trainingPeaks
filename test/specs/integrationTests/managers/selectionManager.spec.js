@@ -17,7 +17,7 @@ function(
 )
 {
 
-    describe("SelectionManager (BDD)", function()
+    describe("SelectionManager (Integration)", function()
     {
 
         var selectionManager, calendarManager, $body;
