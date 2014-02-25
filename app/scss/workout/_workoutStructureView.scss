@@ -8,20 +8,22 @@
     @extend %structureDownArrow;
     background-size: 9px 5px;
     background-repeat: no-repeat;
-    background-position: 0 5px;
+    background-position: 0 4px;
     
     .workoutStructureToggle {
         font-family: $fontFamilyHeavy;
         font-size: $fontSizeXSmall;
         color: $TPGrey3;
-        padding-left: 14px;
+        display: block;
         text-transform: uppercase;
+        padding-top: 2px;
     }
 }
 
 .workoutStructureContainer {
     clear: both;
-    margin: 0 11px;
+    margin: 0 0 0 11px;
+    width: 619px;
 
     .header {
         font-family: $fontFamilyHeavy;
@@ -63,7 +65,7 @@
                 div {
                     float: left;
                     text-align: center;
-                    width: 247px;
+                    width: 248px;
                     font-size: $fontSizeSmall;
 
                     &.headerCompleted {
