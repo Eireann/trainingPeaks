@@ -327,7 +327,8 @@ function(
                     }
                     else if(self.user.getAccountSettings().get("shouldCompleteProfile"))
                     {
-                        self.showInitialProfile();
+                        // TODO: Re-Enable this when feature is ready for production
+                        //self.showInitialProfile();
                     }
                 });
             });

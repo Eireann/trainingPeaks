@@ -6,7 +6,7 @@
     	<select name="equipmentBikeId" class="bikeSelector">
     	    <option value="">{{$ "Select Bike" }}</option>
     	    {{#each bikes}}
-    	        <option value="{{ equipmentId }}">{{ name }} ({{formatUnitsValue "distance" actualDistance}} {{ getUnitsLabel "distance" }})</option>
+    	        <option value="{{ equipmentId }}">{{ name }}</option>
     	    {{/each}}
     	</select>
     </div>
@@ -17,7 +17,7 @@
 	<select name="equipmentShoeId" class="shoeSelector">
 	    <option value="">{{$ "Select Shoe" }}</option>
 	    {{#each shoes}}
-	        <option value="{{ equipmentId }}">{{ name }} ({{formatUnitsValue "distance" actualDistance}} {{ getUnitsLabel "distance" }})</option>
+	        <option value="{{ equipmentId }}">{{ name }}</option>
 	    {{/each}}
 	</select>
 </div>
