@@ -8,6 +8,7 @@
     "views/quickView/summaryView/summaryViewStickitBindings",
     "views/quickView/summaryView/summaryViewTextAreas",
     "views/workout/workoutEquipmentView",
+    "views/workout/workoutStructureView",
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
@@ -19,6 +20,7 @@ function (
     summaryViewStickitBindings,
     summaryViewTextAreas,
     WorkoutEquipmentView,
+    WorkoutStructureView,
     workoutQuickViewSummaryTemplate)
 {
     var summaryViewBase = 
@@ -40,7 +42,8 @@ function (
 
         events:
         {
-            "keydown .numberInput": "isNumberKey"
+            "keydown .numberInput": "isNumberKey",
+            "click .workoutStructureToggle": "_scrollToWorkoutStructure"
         },
 
         initialize: function()
@@ -48,6 +51,8 @@ function (
             this.on("render", this.renderWorkoutComments, this);
             this.on("render", this.setTabOrder, this);
             this.on("render", this.renderEquipmentSelectors, this);
+            this.on("render", this.renderWorkoutStructure, this);
+            this.model.get("details").on("change", this.renderWorkoutStructure, this);
             this.initializeUserCustomization();
 
             // setup stickit last because the user customization onRender needs to happen before stickit
@@ -84,11 +89,51 @@ function (
             
             view.render();
 
-            this.$("#equipment").append(view.el);
+            this.$(".equipment").append(view.el);
 
             var saveModel = _.bind(function(){ this.model.autosave({}); }, this);
             this.listenTo(view, "change:equipment", saveModel);
             this.on("close", _.bind(view.close, view));
+        },
+
+        renderWorkoutStructure: function()
+        {
+            if (!this.model.get("details").get("workoutStructure"))
+            {
+                this.$(".workoutStructureToggleContainer").hide();
+
+                return;
+            }
+            else
+            {
+                this.$(".workoutStructureToggleContainer").show();
+            }
+
+            var view = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure") });
+
+            view.render();
+
+            this.$("#commentsContainer").after(view.el);
+
+            this.on("close", _.bind(view.close, view));
+        },
+
+        _scrollToWorkoutStructure: function()
+        {
+            var $container = this.$el.closest("#quickViewContent");
+            var $target = this.$(".workoutStructureContainer");
+
+            var self = this;
+            self.scrolling = true;
+
+            $container.animate(
+                {
+                    scrollTop: $target.position().top + $container.scrollTop()
+                },
+                {
+                    done: function() { self.scrolling = false; }
+                }
+            );
         },
 
         reRender: function()
