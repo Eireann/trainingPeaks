@@ -183,7 +183,7 @@ function (
 
         it("Should have a header", function()
         {
-            expect(workoutStructureView.$(".header").length).to.equal(1);
+            expect(workoutStructureView.$(".header:contains('Workout Instructions')").length).to.equal(1);
             expect(workoutStructureView.$(".header").text()).to.contain("Workout Instructions");
         });
 
