@@ -43,6 +43,7 @@ function(
             enablePrivateMessageNotifications: null,
             expireDate: null,
             firstName: null,
+            fullName: null,
             gender: null,
             language: null,
             lastName: null,
@@ -56,12 +57,12 @@ function(
             timeZone: null,
             units: 2,
             unitsBySportType: {},
+            personId: 0,
             userId: 0,
             userIdentifierHash: "",
             userName: null,
             userType: null,
             zipCode: null,
-            zuoraAccountNumber: null,
 
             settings: {},
             athletes: []

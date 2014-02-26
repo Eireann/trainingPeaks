@@ -16,10 +16,12 @@ function(TP, EquipmentCollection)
         {
 
             athleteId: 0,
+            personId: 0,
 
             userName: null,
             firstName: null,
             lastName: null,
+            fullName: null,
 
             age: null,
             birthday: null,
@@ -43,8 +45,17 @@ function(TP, EquipmentCollection)
             isEmailVerified: null,
             phone: null,
             cellPhone: null,
+           
+            language: null,
+
+            logonToHtml5: null,
+            userIdentifierHash: "",
+
+            latitude: null,
+            longitude: null,
 
             profilePhotoUrl: null,
+            story: null,
 
             allowMarketingEmails: null,
             enablePrivateMessageNotifications: null,
