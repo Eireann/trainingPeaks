@@ -498,6 +498,9 @@ define({
 
     "Workout Instructions": "Workout Instructions",
     "Active": "Active",
-    "Rest": "Rest"
+    "Rest": "Rest",
 
+    "EmailIsNotVerified": "Email address is not verified",
+    "VerifyEmail": "Verify Email",
+    "EmailVerificationSent": "An e-mail has been sent to the address provided. Please follow the instructions in the e-mail to complete the validation process."
 });

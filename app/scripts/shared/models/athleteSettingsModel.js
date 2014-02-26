@@ -14,38 +14,56 @@ function(TP, EquipmentCollection)
 
         defaults:
         {
+
             athleteId: 0,
+
             userName: null,
+            firstName: null,
+            lastName: null,
+
+            age: null,
             birthday: null,
             gender: null,
-            email: null,
+
+            athleteType: null,
+            userType: null,
+
             address: null,
             address2: null,
             city: null,
             state: null,
             country: null,
             zipCode: null,
+
+            timeZone: null,
+            dateFormat: null,
+            units: 1,
+
+            email: null,
+            isEmailVerified: null,
             phone: null,
             cellPhone: null,
+
             profilePhotoUrl: null,
-            age: null,
-            units: 0,
-            dateFormat: null,
-            timeZone: null,
-            heartRateZones: null,
-            powerZones: null,
-            speedZones: null,
-            iCalendarKeys: {
-                workoutsAndMetrics: null,
-                workoutOnly: null,
-                metricsOnly: null
-            },
-            enableWorkoutCommentNotification: null,
+
+            allowMarketingEmails: null,
+            enablePrivateMessageNotifications: null,
             enableVirtualCoachEmails: null,
             virtualCoachEmailHour: null,
+            enableWorkoutCommentNotification: null,
+
+            heartRateZones: null, 
+            powerZones: null,
+            speedZones: null,
             thresholdsAutoApply: false,
             thresholdsNotifyAthlete: false,
-            thresholdsNotifyCoach: false
+            thresholdsNotifyCoach: false,
+
+            iCalendarKeys: {
+                metricsOnly: null,
+                workoutsAndMetrics: null,
+                workoutOnly: null
+            }
         },
 
         url: function()
@@ -66,3 +84,4 @@ function(TP, EquipmentCollection)
 
     });
 });
+

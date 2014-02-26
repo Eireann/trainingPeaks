@@ -68,6 +68,12 @@ function(
                 }
             );
 
+            // normally UserSettingsView would do this
+            equipmentCollection.each(function(model)
+            {
+                model.originalModel = model;
+            });
+
             userSettingsEquipmentView = new UserSettingsEquipmentView(
             {
                 collection: equipmentCollection,

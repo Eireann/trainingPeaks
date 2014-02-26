@@ -10,14 +10,14 @@
             <div class="group selectArea">
                 <div class="fieldContain">
                     <label for="language" class="fieldTitle">Language</label>
-                    <select id="language" name="language" data-required>
+                    <select id="language" name="language">
                         <option value="en-us">English</option>
                     </select><!-- End #language -->
                 </div>
 
                 <div class="fieldContain">
                     <label for="unitPreference" class="fieldTitle">Unit Preference</label>
-                    <select id="unitPreference" name="unitPreference" data-format="number" data-required>
+                    <select id="unitPreference" name="unitPreference" data-format="number">
                         <option value="1">Imperial</option>
                         <option value="2">Metric</option>
                     </select><!-- End #unitPreference -->
@@ -25,7 +25,7 @@
 
                 <div class="fieldContain weight">
                     <label for="weight" class="fieldTitle">Weight</label>
-                    <input id="weight" name="weight" data-format="units:kg" type="text" data-required>
+                    <input id="weight" name="weight" class="numberInput" data-format="units:kg" type="text">
                     <span class="weightUnits"></span>
                 </div>
             </div><!-- End .selectArea -->
@@ -33,7 +33,7 @@
             <div class="group selectArea">
                 <div class="fieldContain">
                     <label for="birthdayMonth" class="fieldTitle">Birthday Month</label>
-                    <select id="birthdayMonth" name="birthdayMonth" data-required>
+                    <select id="birthdayMonth" name="birthdayMonth">
                         <option value="" selected>{{$ "Month" }}</option>
                         {{# forRange 1 12 }}
                             <option value="{{ index }}">{{ formatMonth index "MMMM" }}</option>
@@ -43,7 +43,7 @@
 
                 <div class="fieldContain">
                     <label for="birthdayYear" class="fieldTitle">Birthday Year</label>
-                    <select id="birthdayYear" name="birthdayYear" data-required>
+                    <select id="birthdayYear" name="birthdayYear">
                         <option value="" selected>{{$ "Year" }}</option>
                         {{#forRange 1900 2100 }}
                             <option value="{{ index }}">{{ formatYear index "YYYY" }}</option>
@@ -55,7 +55,7 @@
             <div class="group selectArea">
                 <div class="fieldContain">
                     <label for="timeZone" class="fieldTitle">Time Zone</label>
-                    <select id="timeZone" name="timeZone" data-required>
+                    <select id="timeZone" name="timeZone">
                         <option value="" selected>{{$ "TimeZone" }}</option>
                         {{#each timeZones }}
                             <option value="{{ key }}">{{ value }}</option>
@@ -65,7 +65,7 @@
 
                 <div class="fieldContain">
                     <label for="country" class="fieldTitle">Country</label>
-                    <select id="country" name="country" data-required>
+                    <select id="country" name="country">
                         <option value="" selected>{{$ "Country" }}</option>
                         {{#each countries}}
                             <option value="{{ data }}">{{ label }}</option>
@@ -77,12 +77,12 @@
 
             <div class="group selectArea">
                 <div class="fieldContain mostInterestedIn">
-                    <select id="interestedIn" name="interestedIn" data-required data-label="Primary Interest">
+                    <select id="interestedIn" name="interestedIn" data-label="Primary Interest">
                         <option value="">I'm most interested in...</option>
-                        <option value="tracking">Tracking my training</option>
-                        <option value="planning">Planning my season</option>
-                        <option value="analyzing">Analyzing my data</option>
-                        <option value="instruction">Getting expert instruction</option>
+                        <option value="Dependent">Having an expert tell me what to do</option>
+                        <option value="Planner">Planning my own training</option>
+                        <option value="Analyzer">Analyzing my training data</option>
+                        <option value="Full Looper">Planning and analyzing all my training</option>
                     </select><!-- End #interestedIn -->
                 </div>
 
@@ -92,31 +92,31 @@
             
             <div class="fieldContain">
                 <label for="thresholdPower" class="fieldTitle">Threshold Power</label>
-                <input id="thresholdPower" name="thresholdPower" type="text" data-format="units:power" data-required>
+                <input id="thresholdPower" name="thresholdPower" class="numberInput" type="text" data-format="units:power">
             </div>
             <div class="fieldContain">
                 <label for="thresholdHeartRate" class="fieldTitle">Threshold Heart Rate</label>
-                <input id="thresholdHeartRate" name="thresholdHeartRate" type="text" data-format="units:heartrate" data-required>
+                <input id="thresholdHeartRate" name="thresholdHeartRate" class="numberInput" type="text" data-format="units:heartrate">
             </div>
 
             <div class="fieldContain runPaceContain">
-                <label for="runPaceSpeed" class="fieldTitle">Run Pace/Speed</label>
-                <input id="runPaceSpeed" name="runPaceSpeed" type="text" placeholder="10:00" data-format="runPace" data-required>
+                <label for="runDuration" class="fieldTitle">Run Time (mm:ss)</label>
+                <input id="runDuration" name="runDuration" class="numberInput" type="text" placeholder="30:00" data-format="runDuration">
                 
                 <label class="radioContain">
-                    <input name="runUnits" type="radio" id="runUnitsSpeed" value="speed">
-                    <label for="runUnitsSpeed">mph</label>
+                    <input name="runDistance" type="radio" id="runDistance" value="5k">
+                    <label for="runDistance">5k</label>
                 </label>
                 
                 <label class="radioContain">
-                    <input name="runUnits" type="radio" id="runUnitsPace" value="pace">
-                    <label for="runUnitsPace">min/mile</label>
+                    <input name="runDistance" type="radio" id="runDistance" value="10k">
+                    <label for="runDistance">10k</label>
                 </label>
             </div>
 
             <div class="fieldContain swimPaceContain">
-                <label for="swimPace" class="fieldTitle">Swim Pace/Speed</label>
-                <input id="swimPace" name="swimPace" type="text" placeholder="2:00" data-format="swimPace" data-required>
+                <label for="swimPace" class="fieldTitle">Swim Pace (mm:ss)</label>
+                <input id="swimPace" name="swimPace" class="numberInput" type="text" placeholder="2:00" data-format="swimPace">
                 
                 <label class="radioContain">
                     <input name="swimUnits" type="radio" id="swimPaceRadio1" value="2" data-format="number">
@@ -129,10 +129,14 @@
                 </label>
             </div>
 
+            <div class="helpMessaging">
+                <p>Not sure about your threshold values? Just leave the default settings and we'll manage your values over time.</p>
+            </div>
+
             <div class="accountBottom">
-                <input name="submit" type="submit" class="buttonBlue1" value="Next">
+                <input name="submit" type="submit" class="buttonBlue1" value="Done">
             
-                <p class="configure">Configure email preferences and more in account settings</p>
+                <p class="configure">Configure email preferences and more in <a href="#" class="accountSettings">account settings</a>.</p>
             </div>
 
         </form>

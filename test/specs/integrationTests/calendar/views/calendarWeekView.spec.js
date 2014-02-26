@@ -11,15 +11,6 @@ function(testHelpers, TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
 
     describe("CalendarWeekView", function()
     {
-        beforeEach(function()
-        {
-            testHelpers.startTheApp();
-        });
-
-        afterEach(function()
-        {
-            testHelpers.stopTheApp();
-        });
 
         it("should be loaded as a module", function()
         {

@@ -18,7 +18,7 @@ function(
     SummaryView
 )
 {
-    describe("Workout Equipment View within Summary View (BDD_tests)", function()
+    describe("Workout Equipment View within Summary View (integration_tests)", function()
     {
         var saveSpy;
         var workoutModel;

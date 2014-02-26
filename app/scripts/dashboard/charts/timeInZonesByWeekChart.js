@@ -104,12 +104,14 @@ function(
 
         _getWeekStartDate: function(weekNumber)
         {
-            return this.dateOptions.startDate.add("weeks", weekNumber).day(1);
+            var startDate = this.dateOptions.startDate.clone();
+            return startDate.add("weeks", weekNumber).day(1);
         },
 
         _getWeekEndDate: function(weekNumber)
         {
-            return this.dateOptions.startDate.add("weeks", weekNumber).day(7);
+            var startDate = this.dateOptions.startDate.clone();
+            return startDate.add("weeks", weekNumber).day(7);
         },
 
         _formatXTick: function(weekNumber)
