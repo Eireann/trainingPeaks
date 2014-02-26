@@ -128,7 +128,7 @@ function (
 
             $container.animate(
                 {
-                    scrollTop: $target.position().top - $container.position().top
+                    scrollTop: $target.position().top + $container.scrollTop()
                 },
                 {
                     done: function() { self.scrolling = false; }

@@ -33,11 +33,11 @@
   {{#each instructions}}
     <div class="workoutStatsRow" data-property="{{name}}">
       <div class="propertyName">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</div>
-      <div class="propertyPlannedValue">{{formatExerciseValue planValue units}}</div>
-      <div class="propertyPlannedMinValue">{{formatExerciseValue planValue units}}</div>
+      <div class="propertyPlannedValue">{{#if planValueSpecified}}{{formatExerciseValue planValue units}}{{else}}-{{/if}}</div>
+      <div class="propertyPlannedMinValue">{{#if planMinSpecified}}{{formatExerciseValue planMin units}}{{else}}-{{/if}}</div>
       <div class="propertyPlannedMaxValue">{{#if planMaxSpecified}}{{formatExerciseValue planMax units}}{{else}}-{{/if}}</div>
-      <div class="propertyCompletedMinValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</div>
-      <div class="propertyCompletedMaxValue">{{#if actualMaxSpecified}}{{formatExerciseValue actualMax units}}{{else}}-{{/if}}</div> 
+      <div class="propertyCompletedMinValue">{{#if actualMinSpecified}}{{formatExerciseValue actualMin units}}{{else}}-{{/if}}</div>
+      <div class="propertyCompletedMaxValue">{{#if actualMaxSpecified}}{{formatExerciseValue actualMax units}}{{else}}-{{/if}}</div>
       <div class="propertyCompletedValue">{{#if actualValueSpecified}}{{formatExerciseValue actualValue units}}{{else}}-{{/if}}</div>
     </div>
   {{/each}}
