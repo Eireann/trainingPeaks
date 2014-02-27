@@ -5,7 +5,6 @@
     "backbone",
     "TP",
     "utilities/localStorageUtils",
-    "shared/models/accountSettingsModel",
     "shared/models/dashboardSettingsModel",
     "shared/models/expandoSettingsModel"
 ],
@@ -15,7 +14,6 @@ function(
     Backbone,
     TP,
     localStorageUtils,
-    AccountSettingsModel,
     DashboardSettingsModel,
     ExpandoSettingsModel
 )
@@ -212,7 +210,7 @@ function(
         {
             if(!this.accountSettings)
             {
-                this.accountSettings = new AccountSettingsModel(this.get("settings.account"));
+                this.accountSettings = new TP.Model(this.get("settings.account"));
             }
             return this.accountSettings;
         },

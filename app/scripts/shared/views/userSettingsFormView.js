@@ -172,11 +172,6 @@ function(
                 throw new Error("UserSettingsFormView requires a user model");
             }
 
-            if(!options || !options.accountSettingsModel)
-            {
-                throw new Error("UserSettingsFormView requires an account settings model");
-            }
-
             if(!options || !options.athleteSettingsModel)
             {
                 throw new Error("UserSettingsFormView requires an athlete settings model");
@@ -188,7 +183,6 @@ function(
             }
 
             this.userModel = options.userModel;
-            this.accountSettingsModel = options.accountSettingsModel;
             this.athleteSettingsModel = options.athleteSettingsModel;
             this.passwordSettingsModel = options.passwordSettingsModel;
 
@@ -227,7 +221,6 @@ function(
             FormUtility.applyValuesToModel(this.$el, this.userBirthdayModel, { filterSelector: "[data-modelname=userBirthday]"});
             FormUtility.applyValuesToModel(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]"});
             FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
-            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
         },
 
@@ -277,7 +270,6 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.userModel, { filterSelector: "[data-modelname=user]" });
             FormUtility.applyValuesToForm(this.$el, this.userBirthdayModel, { filterSelector: "[data-modelname=userBirthday]" });
             FormUtility.applyValuesToForm(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]" });
-            FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
 
             this.$(".emailVerification").toggle(!this.userModel.get("isEmailVerified"));   
