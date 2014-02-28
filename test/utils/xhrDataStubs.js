@@ -253,7 +253,6 @@ function()
                             "isEmailVerified":true,
                             "lastLogon":"2013-05-07T16:30:53",
                             "numberOfVisits":5464,
-                            "userType":4,
                             "shouldCompleteProfile": false
                         },
                     "affiliate":
@@ -401,7 +400,6 @@ function()
                             "isEmailVerified":true,
                             "lastLogon":"2013-05-07T16:30:53",
                             "numberOfVisits":5464,
-                            "userType":4,
                             "shouldCompleteProfile":false
                         },
                     "affiliate":
