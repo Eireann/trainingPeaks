@@ -77,25 +77,34 @@ function(
 
             var self = this;
 
-            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                this.featureAuthorizer.features.ViewGraphRanges,
-                function()
-                {
-                    // first clicks sets model as focused, second click begins editing
-                    if(!self.model.getState().get("isFocused"))
+            // first clicks sets model as focused, second click begins editing
+            if(self.model.getState().get("isFocused"))
+            {
+                this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    this.featureAuthorizer.features.EditLapNames,
+                    function()
+                    {
+                        if(self.model.getState().get("isLap") && !self.model.getState().get("isEditing"))
+                        {
+                            self._startEditing();
+                        }
+                        else if(self.model.getState().get("isLap") && !$(e.target).is("input.lapName"))
+                        {
+                            self._stopEditing(e);
+                        }
+                    }
+                );
+            }
+            else
+            {
+                this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    this.featureAuthorizer.features.ViewGraphRanges,
+                    function()
                     {
                         self.stateModel.set("primaryRange", self.model);
                     }
-                    else if(self.model.getState().get("isLap") && !self.model.getState().get("isEditing"))
-                    {
-                        self._startEditing();
-                    }
-                    else if(self.model.getState().get("isLap") && !$(e.target).is("input.lapName"))
-                    {
-                        self._stopEditing(e);
-                    }
-                }
-            );
+                );
+            }
         },
 
         _startEditing: function()

@@ -2,14 +2,18 @@ define(
 [
     "underscore",
     "jquery",
+    "jqueryui/position",
     "backbone.marionette.handlebars",
     "flot/jquery.flot",
+    "flot/jquery.flot.resize",
     "TP",
     "shared/models/userModel",
     "models/workoutModel",
     "models/workoutStatsForRange",
     "expando/models/expandoStateModel",
+    "./dateAndTimeView",
     "views/workout/workoutBarView",
+    "./userNameView",
     "views/expando/graphView",
     "views/expando/mapView",
     "views/expando/statsView",
@@ -18,14 +22,18 @@ define(
 ],
 function(_,
          $,
+         Position,
          bmhbs,
          Flot,
+         FlotResize,
          TP,
          UserModel, 
          WorkoutModel,
          WorkoutStatsForRangeModel,
          ExpandoStateModel,
+         DateAndTimeView,
          WorkoutBarView,
+         UserNameView,
          GraphView,
          MapView,
          StatsView,
@@ -37,6 +45,8 @@ function(_,
     var PublicFileViewer = TP.ItemView.extend({
 
         showThrobbers: false,
+
+        subviews: [],
 
         template:
         {
@@ -78,8 +88,9 @@ function(_,
         {
             var $body = $("body");
 
-            var apiConfig = {
-                assetsRoot: "build/debug/assets/"
+            this.apiConfig = {
+                assetsRoot: "build/debug/assets/",
+                wwwRoot: "http://www.dev.trainingpeaks.com"
             };
 
             window.theMarsApp = {
@@ -104,21 +115,30 @@ function(_,
                     },
 
                     features: {
-                        ViewGraphRanges: true
+                        ViewGraphRanges: true,
+                        EditLapNames: false
                     }
                 },
 
-                assetsRoot: apiConfig.assetsRoot
+                assetsRoot: this.apiConfig.assetsRoot
 
             };
         },
 
         onRender: function()
         {
-            
-            var workoutBarView = new WorkoutBarView({ model: this.workout });
 
+            var dateAndTimeView = new DateAndTimeView({ model: this.workout });
+            this.$(".workoutBarView").before(dateAndTimeView.render().$el);
+            this.subviews.push(dateAndTimeView); 
+
+            var workoutBarView = new WorkoutBarView({ model: this.workout });
             this.$(".workoutBarView").append(workoutBarView.render().$el);
+            this.subviews.push(workoutBarView);
+
+            var userNameView = new UserNameView({ model: this.userModel, wwwRoot: this.apiConfig.wwwRoot });
+            this.$(".QVHeader").append(userNameView.render().$el);
+            this.subviews.push(userNameView);
 
             var expandoStateModel = new ExpandoStateModel();
 
@@ -130,16 +150,22 @@ function(_,
 
             var graphView = new GraphView(podOptions);
             this.appendExpandoPod(graphView);
+            this.subviews.push(graphView);
 
             var mapView = new MapView(podOptions);
             this.appendExpandoPod(mapView, "expandoMapPod");
+            this.subviews.push(mapView);
 
             var statsView = new StatsView(podOptions);
             this.$(".expandoStatsRegion").append(statsView.render().$el); 
+            this.subviews.push(statsView);
 
             var lapsView = new LapsView(podOptions);
             this.$(".expandoLapsRegion").append(lapsView.render().$el);
             lapsView.onShow();
+            this.subviews.push(lapsView);
+
+            this._watchForWindowResize();
         },
 
         appendExpandoPod: function(view, classnames)
@@ -148,6 +174,27 @@ function(_,
             $pod.addClass(classnames);
             view.render().$el.addClass("expandoPodContent").appendTo($pod);
             this.$(".expandoPackeryRegion").append($pod);
+        },
+
+        _watchForWindowResize: function()
+        {
+            // window resize, and ui resize, trigger too many events
+            $(window).on("resize.workoutQuickView", _.bind(_.debounce(this._onWindowResize, 500), this));
+
+            this.on("close", this._stopWatchingWindowResize, this);
+        },
+
+        _stopWatchingWindowResize: function()
+        {
+            $(window).off("resize.workoutQuickView");
+        },
+
+        _onWindowResize: function()
+        {
+            _.each(this.subviews, function(subview)
+            {
+                subview.trigger("pod:resize");
+            });
         }
 
     });

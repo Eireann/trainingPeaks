@@ -5,7 +5,8 @@ function LoadPublicFileViewer(cssSelector, token)
     viewerReady.done(function(PublicFileViewer)
     {
         var pfv = new PublicFileViewer({ el: $("#main"), token: token });
-        pfv.load().done(function(){pfv.render()})
+
+        pfv.load().done(function(){pfv.render()});
     });
 }
 
