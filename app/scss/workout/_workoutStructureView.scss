@@ -131,6 +131,29 @@
                         margin-left:17px;
                     }
                 }
+
+                &.notes {
+                    line-height: $fontSizeXLarge;
+                    display: flex;
+                    height: 100%;
+                    width: 620px;
+                    align-items: stretch;
+                                
+                    .propertyPlannedValue {
+                        width: 248px;
+                        height: auto;
+                        text-align: left;
+                        padding: 5px;
+                    }
+
+                    .propertyCompletedValue {
+                        width: 248px;
+                        height: auto;
+                        margin-left: 17px;
+                        text-align: left;
+                        padding: 5px;
+                    }
+                }
             } 
         }  
     }
