@@ -9,10 +9,16 @@ function(_, TP)
     {
         cacheable: true,
 
-        url: function()
+
+        urlRoot: function()
         {
             var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutId") + "/stats/" + this.get("begin") + "/" + this.get("end");
+            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutId") + "/";
+        },
+
+        url: function()
+        {
+            return this.urlRoot() + "stats/" + this.get("begin") + "/" + this.get("end");
         },
 
         initialize: function(attrs)

@@ -4,6 +4,7 @@
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
         <title>Public File Viewer V3</title>
 
+        <link rel="stylesheet" href="build/debug/vendor/leaflet/leaflet.css" />
         <link rel="stylesheet" href="build/debug/app/css/app.css" />
         <style type="text/css">
             #main
@@ -22,18 +23,29 @@
                 height: calc(100% - 125px);
             }
 
-            .expandoLeftColumn
+            .expandoLeftColumn, .expandoRightColumn
             {
                 height: 100%;
             }
 
+            .expandoRightColumn .expandoStatsRegion
+            {
+                height: 50%;
+            }
+
+            .expandoRightColumn .expandoLapsRegion
+            {
+                height: 50%;
+            }
+
             .expandoPod {
-                height: 400px;
+                height: calc(50% - 10px);
                 width: calc(100% - 20px);
                 position: relative;
             }
         </style>
-
+        
+        <script src="//maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
         <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script src="build/publicFileViewer/publicFileViewer.js"></script>
 

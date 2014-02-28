@@ -33,7 +33,7 @@ requirejs.config(
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
         affiliates: "scripts/affiliates",
-        leaflet: "../vendor/leaflet/leaflet",
+        leaflet: "../vendor/leaflet/leaflet-src",
         leafletGoogleTiles: "../vendor/js/libs/leaflet/Google",
         packery: "../vendor/packery",
         testUtils: "../test/utils",

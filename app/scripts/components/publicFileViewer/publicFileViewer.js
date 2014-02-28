@@ -7,10 +7,13 @@ define(
     "TP",
     "shared/models/userModel",
     "models/workoutModel",
+    "models/workoutStatsForRange",
     "expando/models/expandoStateModel",
     "views/workout/workoutBarView",
     "views/expando/graphView",
     "views/expando/mapView",
+    "views/expando/statsView",
+    "views/expando/lapsView",
     "hbs!publicFileViewer/publicFileViewerTemplate"
 ],
 function(_,
@@ -20,10 +23,13 @@ function(_,
          TP,
          UserModel, 
          WorkoutModel,
+         WorkoutStatsForRangeModel,
          ExpandoStateModel,
          WorkoutBarView,
          GraphView,
          MapView,
+         StatsView,
+         LapsView,
          publicFileViewerTemplate
          )
 {
@@ -41,7 +47,12 @@ function(_,
         initialize: function(options)
         {
             this.token = options.token;
-            this.urlRoot = "https://tpapi.dev.trainingpeaks.com/public/v1/workouts/";
+            var urlRoot = "https://tpapi.dev.trainingpeaks.com/public/v1/workouts/";
+            this.urlRoot = urlRoot;
+            WorkoutStatsForRangeModel.prototype.urlRoot = function()
+            {
+                return urlRoot + options.token + "/"; 
+            };
         },
 
         load: function()
@@ -66,6 +77,11 @@ function(_,
         setupMarsApp: function()
         {
             var $body = $("body");
+
+            var apiConfig = {
+                assetsRoot: "build/debug/assets/"
+            };
+
             window.theMarsApp = {
                 user: this.userModel,
                 
@@ -75,10 +91,24 @@ function(_,
                 },
 
                 featureAuthorizer: {
-                    canAccessFeature: function(){return false;},
-                    runCallbackOrShowUpgradeMessage: function(featureChecker, callback, attributes, options){return;},
-                    features: {}
-                }
+
+                    canAccessFeature: function(featureValue){
+                        return !!featureValue;
+                    },
+
+                    runCallbackOrShowUpgradeMessage: function(featureChecker, callback, attributes, options){
+                        if(this.canAccessFeature(featureChecker))
+                        {
+                            callback(); 
+                        }
+                    },
+
+                    features: {
+                        ViewGraphRanges: true
+                    }
+                },
+
+                assetsRoot: apiConfig.assetsRoot
 
             };
         },
@@ -102,12 +132,20 @@ function(_,
             this.appendExpandoPod(graphView);
 
             var mapView = new MapView(podOptions);
-            this.appendExpandoPod(mapView);
+            this.appendExpandoPod(mapView, "expandoMapPod");
+
+            var statsView = new StatsView(podOptions);
+            this.$(".expandoStatsRegion").append(statsView.render().$el); 
+
+            var lapsView = new LapsView(podOptions);
+            this.$(".expandoLapsRegion").append(lapsView.render().$el);
+            lapsView.onShow();
         },
 
-        appendExpandoPod: function(view)
+        appendExpandoPod: function(view, classnames)
         {
             var $pod = $("<div class='expandoPod'></div>");
+            $pod.addClass(classnames);
             view.render().$el.addClass("expandoPodContent").appendTo($pod);
             this.$(".expandoPackeryRegion").append($pod);
         }
