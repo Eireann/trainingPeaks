@@ -44,9 +44,9 @@
 
   <!-- Notes -->
   <div class="workoutStatsRow notes" data-property="{{name}}">
-    <div class="propertyName">Notes</div>
-    <div class="propertyPlannedValue">Planned Notes. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</div>
-    <div class="propertyCompletedValue">Completed Notes. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. </div>
+    <div class="propertyName">{{$ "Notes"}}</div>
+    <div class="propertyPlannedValue">{{#if planNote}}{{ planNote }}{{else}}N/A{{/if}}</div>
+    <div class="propertyCompletedValue">{{#if actualNote}}{{ actualNote }}{{else}}N/A{{/if}}</div>
   </div>
   <!-- Notes -->
 
