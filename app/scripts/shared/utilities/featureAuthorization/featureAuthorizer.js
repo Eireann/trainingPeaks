@@ -317,7 +317,7 @@ function(
             */
             AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
             {
-                var currentAthleteType = user.getAthleteSettings()().get("userType");
+                var currentAthleteType = user.getAthleteSettings().get("userType");
                 return userIsPremium(currentAthleteType);
             }),
 
