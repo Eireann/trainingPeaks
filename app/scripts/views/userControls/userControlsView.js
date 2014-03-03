@@ -24,7 +24,9 @@ function($, _, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, u
             "click .upgradeButton": "onUpgradeClicked"
         },
 
-        modelEvents: {},
+        modelEvents: {
+            "change:firstName change:lastName change:userType": "render"
+        },
 
         initialize: function()
         {

@@ -35,6 +35,7 @@ function()
                 "units": 0,
                 "dateFormat": null,
                 "timeZone": null,
+                "isAthlete": true,
                 "heartRateZones": [{ "threshold": 110,
                     "maximumHeartRate": 160,
                     "restingHeartRate": 15,
@@ -241,18 +242,10 @@ function()
                     "account":
                         {
                             "accessGroupIds": [999999],
-                            "affiliateId":596,
-                            "allowMarketingEmails":false,
-                            "enablePrivateMessageNotifications":false,
-                            "expirationDate":"2014-11-27T15:19:00",
                             "headerImageUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=4fda2babbc3fc714fc11de99&f=training_peaks_banner.png",
                             "headerLink": "http://www.trainingpeaks.com",
-                            "isAthlete": true,
                             "isCoach":false,
                             "isCoached":false,
-                            "isEmailVerified":true,
-                            "lastLogon":"2013-05-07T16:30:53",
-                            "numberOfVisits":5464,
                             "shouldCompleteProfile": false
                         },
                     "affiliate":
@@ -382,24 +375,17 @@ function()
                 "longitude":null,
                 "latitude":null,
                 "language":"en-us",
+                "isAthlete": false,
                 "settings":
                 {
                     "account":
                         {
                             "accessGroupIds": [999999],
-                            "affiliateId":596,
-                            "allowMarketingEmails":false,
-                            "enablePrivateMessageNotifications":false,
-                            "expirationDate":"2014-11-27T15:19:00",
                             "headerImageUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=4fda2babbc3fc714fc11de99&f=training_peaks_banner.png",
                             "headerLink": "http://www.trainingpeaks.com",
-                            "isAthlete": false,
                             "isCoach": true,
                             "coachType": 1,
                             "isCoached":false,
-                            "isEmailVerified":true,
-                            "lastLogon":"2013-05-07T16:30:53",
-                            "numberOfVisits":5464,
                             "shouldCompleteProfile":false
                         },
                     "affiliate":

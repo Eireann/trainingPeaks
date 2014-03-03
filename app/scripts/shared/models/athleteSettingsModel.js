@@ -27,6 +27,7 @@ function(TP, EquipmentCollection)
             birthday: null,
             gender: null,
 
+            isAthlete: true,
             athleteType: null,
             userType: null,
 
@@ -50,6 +51,10 @@ function(TP, EquipmentCollection)
 
             logonToHtml5: null,
             userIdentifierHash: "",
+            numberOfVisits: 0,
+            lastLogon: null,
+            expireDate: null,
+            hasCompletedProfile: true,
 
             latitude: null,
             longitude: null,

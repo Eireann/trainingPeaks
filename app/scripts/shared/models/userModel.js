@@ -44,11 +44,14 @@ function(
             firstName: null,
             fullName: null,
             gender: null,
+            isAthlete: true,
             language: null,
             lastName: null,
             latitude: null,
+            lastLogon: null,
             logonToHtml5: false,
             longitude: null,
+            numberOfVisits: 0,
             phone: null,
             profilePhotoUrl: null,
             state: null,
@@ -62,6 +65,7 @@ function(
             userName: null,
             userType: null,
             zipCode: null,
+            hasCompletedProfile: true,
 
             settings: {},
             athletes: []
@@ -281,7 +285,7 @@ function(
 
         isCoach: function()
         {
-            return !this.getAccountSettings().get("isAthlete");
+            return !this.get("isAthlete");
         },
 
         isCoachWithAthletes: function()

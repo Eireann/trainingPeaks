@@ -66,7 +66,7 @@ function(
         }
 
         // if not a coach, user can only view their own account
-        if(user.getAccountSettings().get("isAthlete"))
+        if(user.get("isAthlete"))
         {
             return false;
         }
@@ -109,7 +109,7 @@ function(
                 }
 
                 // if not a coach, user can only view their own account
-                if(user.getAccountSettings().get("isAthlete"))
+                if(user.get("isAthlete"))
                 {
                     return false;
                 }
