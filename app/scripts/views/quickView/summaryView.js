@@ -113,7 +113,7 @@ function (
 
             view.render();
 
-            this.$("#commentsContainer").after(view.el);
+            this.$("#workoutStructure").html(view.el);
 
             this.on("close", _.bind(view.close, view));
         },
