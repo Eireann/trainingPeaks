@@ -498,7 +498,7 @@ define({
 
     "Full Screen": "Full Screen",
 
-    "Workout Instructions": "Workout Instructions",
+    "Workout Instructions": "Workout Structure",
     "Active": "Active",
     "Rest": "Rest",
 
