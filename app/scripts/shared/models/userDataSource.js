@@ -14,9 +14,8 @@ function(
     ProfilePhotoFileData
 )
 {
-
-    var UserDataSource = {
-
+    var UserDataSource =
+    {
         saveUserSettingsAndPassword: function(options)
         {
             if(options.password)
@@ -44,12 +43,14 @@ function(
 
         savePassword: function(password)
         {
-            var ajaxOptions = {
+            var ajaxOptions =
+            {
                 url: theMarsApp.apiRoot + "/users/v1/user/auth",
                 type: "PUT",
                 contentType: "application/json",
                 data: JSON.stringify({ text: password })
             };
+
             return Backbone.ajax(ajaxOptions);
         },
 
@@ -57,28 +58,31 @@ function(
         {
             var deferred = new $.Deferred();
 
-            new FileReader(sourceFile).readFile().done(
-                function(fileName, dataAsString)
-                {
-                    var profilePhotoFileData = new ProfilePhotoFileData({ data: dataAsString, fileName: fileName });
-                    profilePhotoFileData.save().done(
-                        function()
-                        {
-                            deferred.resolveWith(this, [profilePhotoFileData.get("profilePhotoUrl")]);
-                        }
-                    ).fail(
-                        function()
-                        {
-                            deferred.reject();
-                        }
-                    );
-                }
-            ).fail(
-                function()
+            new FileReader(sourceFile).readFile()
+            .done(function(fileName, dataAsString)
+            {
+                if(!dataAsString)
                 {
                     deferred.reject();
+                    return;
                 }
-            );
+
+                var profilePhotoFileData = new ProfilePhotoFileData({ data: dataAsString, fileName: fileName });
+
+                profilePhotoFileData.save()
+                .done(function()
+                {
+                    deferred.resolveWith(this, [profilePhotoFileData.get("profilePhotoUrl")]);
+                })
+                .fail(function()
+                {
+                    deferred.reject();
+                });
+            })
+            .fail(function()
+            {
+                deferred.reject();
+            });
 
             return deferred;
         },
@@ -88,7 +92,8 @@ function(
             var requests = _.map(["heartRate", "power", "speed"], function(zoneType)
             {
                 var zones = athleteModel.get(zoneType + "Zones");
-                var ajaxOptions = {
+                var ajaxOptions =
+                {
                     url: theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteModel.id + "/" + zoneType.toLowerCase() + "zones",
                     type: "PUT",
                     contentType: "application/json",
@@ -104,7 +109,8 @@ function(
 
         deleteProfilePhoto: function()
         {
-            var ajaxOptions = {
+            var ajaxOptions =
+            {
                 url: theMarsApp.apiRoot + "/users/v1/user/" + theMarsApp.user.id + "/profilephoto",
                 type: "DELETE"
             };
@@ -118,17 +124,14 @@ function(
 
         verifyEmail: function()
         {
-            var ajaxOptions = {
+            var ajaxOptions =
+            {
                 url: theMarsApp.apiRoot + "/users/v1/user/" + theMarsApp.user.id + "/verifyemail",
                 type: "POST"
             };
             return Backbone.ajax(ajaxOptions);
         }
-
     };
 
-
     return UserDataSource;
-
 });
-
