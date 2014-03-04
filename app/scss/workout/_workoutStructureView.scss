@@ -29,13 +29,14 @@
 
     .header {
         font-family: $fontFamilyHeavy;
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeSmaller;
         margin-bottom: 5px;
         padding-bottom: 5px;
         color: $TPGrey3;
-        border-bottom: 1px solid $TPBlue;
+        border-top: 2px solid $TPBlue;
         margin-top: 13px;
-        padding-top: 10px;       
+        padding-top: 2px;   
+        text-transform: uppercase;    
     }
 
     .setProperties {
@@ -57,7 +58,7 @@
         color: $TPGrey3;
         font-family: $fontFamilyHeavy;
         font-size: $fontSizeSmall;
-        margin: 15px 0 5px 0;
+        margin: 25px 0 5px 0;
     }
 
     .exerciseNotes {
