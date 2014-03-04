@@ -31,7 +31,7 @@
   </div>
 
   {{#each instructions}}
-    <div class="workoutStatsRow" data-property="{{name}}">
+    <div class="workoutStatsRowStructure" data-property="{{name}}">
       <div class="propertyName">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</div>
       <div class="propertyPlannedValue">{{#if planValueSpecified}}{{formatExerciseValue planValue units}}{{else}}-{{/if}}</div>
       <div class="propertyPlannedMinValue">{{#if planMinSpecified}}{{formatExerciseValue planMin units}}{{else}}-{{/if}}</div>
@@ -43,7 +43,7 @@
   {{/each}}
 
   <!-- Notes -->
-  <div class="workoutStatsRow notes" data-property="{{name}}">
+  <div class="workoutStatsRowStructure notes" data-property="{{name}}">
     <div class="propertyName">{{$ "Notes"}}</div>
     <div class="propertyPlannedValue">{{#if planNote}}{{ planNote }}{{else}}N/A{{/if}}</div>
     <div class="propertyCompletedValue">{{#if actualNote}}{{ actualNote }}{{else}}N/A{{/if}}</div>

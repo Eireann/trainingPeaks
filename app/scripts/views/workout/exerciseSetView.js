@@ -50,7 +50,7 @@ function (
                 if (instruction.type === 24)
                 {
                     // Real estate for this label is very limited, so override its content.
-                    instruction.name = TP.utils.translate("%max HR");
+                    instruction.name = TP.utils.translate("% Max HR");
                     instruction.planUnitsSpecified = false;
                 }
                 // 9 = "HR Zone"
