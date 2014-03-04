@@ -100,10 +100,7 @@ function(
                 });
 
                 var ajaxFetchPromise = TP.APIDeepModel.prototype.fetch.call(self, options);
-                ajaxFetchPromise.done(function()
-                {
-                    self.localStorage.setItem("app_user", self.attributes);
-                });
+                ajaxFetchPromise.done(_.bind(self.updateLocalStorage, self));
                 return ajaxFetchPromise;
             };
 
@@ -321,6 +318,11 @@ function(
             delete attrs.settings;
             delete attrs.pods;
             return attrs;
+        },
+
+        updateLocalStorage: function()
+        {
+            this.localStorage.setItem("app_user", this.attributes);
         }
         
     });

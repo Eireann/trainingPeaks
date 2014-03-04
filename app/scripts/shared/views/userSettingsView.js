@@ -231,7 +231,7 @@ function(
             return UserDataSource.saveUserSettingsAndPassword({
                 models: [this.model, this.model.getAthleteSettings()],
                 password: this.model.getPasswordSettings().get("password")
-            });
+            }).done(_.bind(this.model.updateLocalStorage, this.model));
         },
 
         _copyUserAttributesToAthlete: function()

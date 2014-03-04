@@ -121,7 +121,10 @@ function(
                 return;
             }
 
-            var nameParts = this.get("firstAndLastName").split(" ");
+            var fullName = this.get("firstAndLastName");
+            this.userModel.set("fullName", fullName);
+            
+            var nameParts = fullName.split(" ");
             this.userModel.set("lastName", nameParts.pop());
             this.userModel.set("firstName", nameParts.join(" "));
         },
