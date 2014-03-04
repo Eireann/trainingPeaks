@@ -12,7 +12,8 @@ define(
     "shared/models/userDataSource",
     "shared/utilities/formUtility",
     "views/userConfirmationView",
-    "hbs!templates/views/quickView/fileUploadErrorView",
+    "hbs!templates/views/confirmationViews/saveProfilePhotoErrorTemplate",
+    "hbs!templates/views/confirmationViews/removeProfilePhotoErrorTemplate",
     "hbs!templates/views/confirmationViews/emailVerificationConfirmationView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
@@ -29,7 +30,8 @@ function(
     UserDataSource,
     FormUtility,
     UserConfirmationView,
-    fileUploadErrorTemplate,
+    saveProfilePhotoErrorTemplate,
+    removeProfilePhotoErrorTemplate,
     emailVerificationConfirmationTemplate,
     userSettingsFormTemplate
 )
@@ -312,7 +314,7 @@ function(
                 self._updatePhotoUrl();
             }).fail(function()
             {
-                new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+                new UserConfirmationView({ template: saveProfilePhotoErrorTemplate }).render();
             }).always(function()
             {
                 self.waitingOff(); 
@@ -354,7 +356,7 @@ function(
                 self._updatePhotoUrl();
             }).fail(function()
             {
-                new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+                new UserConfirmationView({ template: removeProfilePhotoErrorTemplate }).render();
             }).always(function()
             {
                 self.waitingOff(); 

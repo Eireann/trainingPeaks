@@ -274,6 +274,8 @@ define({
 
     "Error": "Error",
     "ErrorUploadingFile": "An error occurred uploading your device file",
+    "ErrorUploadingProfilePhoto": "An error occurred uploading your new profile photo. Please try again.",
+    "ErrorRemovingProfilePhoto": "An error occurred removing your profile photo. Please try again.",
 
     "BrowseFiles": "Browse Files",
     "GetDeviceAgent": "Get Device Agent",
@@ -495,6 +497,10 @@ define({
     "Select Shoe": "Select Shoe",
 
     "Full Screen": "Full Screen",
+
+    "Workout Instructions": "Workout Structure",
+    "Active": "Active",
+    "Rest": "Rest",
 
     "EmailIsNotVerified": "Email address is not verified",
     "VerifyEmail": "Verify Email",

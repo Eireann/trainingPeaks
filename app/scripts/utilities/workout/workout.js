@@ -9,7 +9,8 @@
     "utilities/workout/formatKeyStat",
     "utilities/workout/formatKeyStatUnits",
     "utilities/workout/formatPeakTime",
-    "utilities/workout/formatPeakDistance"
+    "utilities/workout/formatPeakDistance",
+    "utilities/workout/formatExerciseValue"
 ], function(
     _,
     workoutTypes,
@@ -20,7 +21,8 @@
     formatKeyStat,
     formatKeyStatUnits,
     formatPeakTime,
-    formatPeakDistance
+    formatPeakDistance,
+    formatExerciseValue
     )
 {
     return {
@@ -30,6 +32,7 @@
         layoutFormatter: workoutLayoutFormatter,
         formatPeakTime: formatPeakTime,
         formatPeakDistance: formatPeakDistance,
+        formatExerciseValue: formatExerciseValue,
 
         keyStat: {
             getField: getKeyStatField,
