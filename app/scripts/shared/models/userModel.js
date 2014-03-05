@@ -25,7 +25,7 @@ function(
         webAPIModelName: "User",
         idAttribute: "userId",
 
-        defaults:
+        personDefaultFields: 
         {
             address: null,
             address2: null,
@@ -58,17 +58,22 @@ function(
             story: null,
             timeZone: null,
             units: 2,
-            unitsBySportType: {},
             personId: 0,
-            userId: 0,
             userIdentifierHash: "",
             userName: null,
             userType: null,
             zipCode: null,
-            hasCompletedProfile: true,
+            hasCompletedProfile: true
+        },
 
-            settings: {},
-            athletes: []
+        defaults: function()
+        {
+            return _.extend({}, this.personDefaultFields, {
+                userId: 0,
+                unitsBySportType: {},
+                settings: {},
+                athletes: []
+            });
         },
 
         url: function()
