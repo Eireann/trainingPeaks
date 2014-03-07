@@ -17,11 +17,12 @@
 
   {{#each instructions}}
     <div class="workoutStatsRowStructure" data-property="{{name}}">
-      <div class="propertyName">{{name}}{{#if units}} (<span class="propertyUnit">{{ units }}</span>){{/if}}</div>
+      <div class="propertyName">{{name}}</div>
       <div class="propertyPlannedMinValue">{{formatExerciseValue planValue planMin units}}</div>
       <div class="propertyPlannedMaxValue">{{formatExerciseValue planMax units}}</div>
       <div class="propertyCompletedMinValue">{{formatExerciseValue actualValue actualMin units}}</div>
       <div class="propertyCompletedMaxValue">{{formatExerciseValue actualMax units}}</div>
+      <div class="propertyUnit">{{#if units}}<span class="propertyUnit">{{ units }}</span>{{/if}}</div>
     </div>
   {{/each}}
 

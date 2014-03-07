@@ -22,165 +22,176 @@
     }
 }
 
-.workoutStructureContainer {
-    clear: both;
-    margin: 0 0 0 11px;
-    width: 619px;
+#workoutStructure {
+    float: left;
+    margin-top: 25px;
 
-    .header {
-        font-family: $fontFamilyHeavy;
-        font-size: $fontSizeSmaller;
-        margin-bottom: 5px;
-        padding-bottom: 5px;
-        color: $TPGrey3;
-        border-top: 2px solid $TPBlue;
-        margin-top: 13px;
-        padding-top: 2px;   
-        text-transform: uppercase;    
-    }
+    .workoutStructureContainer {
+        clear: both;
+        margin: 0 0 0 11px;
+        width: 619px;
 
-    .setProperties {
         .header {
-            border-bottom: 1px solid $TPGrey12;
-            border-top:none;
-            padding-top: 10px;
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmaller;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
             color: $TPGrey3;
-            font-size: $fontSizeSmall;
-            text-transform: none;
+            border-top: 2px solid $TPBlue;
+            padding-top: 2px;   
+            text-transform: uppercase;    
+            display: inline-block;
         }
-    }
-}
 
-.workoutStructure {
-    color: #636569;
-
-    .exerciseTitle {
-        color: $TPGrey3;
-        font-family: $fontFamilyHeavy;
-        font-size: $fontSizeSmall;
-        margin: 25px 0 5px 0;
-    }
-
-    .exerciseNotes {
-        p {
-            font-size: $fontSizeSmall;
-        }
-    }
-
-    .exerciseSets {
         .setProperties {
-            margin-bottom: 27px;
-
-            .columnLabelsInstructedCompleted {
-                @include clearfix;
-                margin: 15px 0 15px 106px;
-
-                div {
-                    float: left;
-                    text-align: center;
-                    width: 248px;
-                    font-size: $fontSizeSmall;
-                    // font-family: $fontFamilyRegularItalic;
-                    font-family: $fontFamilyHeavy;
-                    padding: 3px 0;
-                    background-color: $TPGrey2;
-                    // color: $TPBlue;
-
-                    &.headerCompleted {
-                        margin-left: 17px;
-                    }
-                }
+            .header {
+                border-bottom: 1px solid $TPGrey12;
+                border-top:none;
+                padding-top: 10px;
+                color: $TPGrey3;
+                font-size: $fontSizeSmall;
+                text-transform: none;
+                display: block;
             }
+        }
+    }
 
-            .columnLabelsTargetsMinMax {
-                @include clearfix;
-                margin-left: 106px;
+    .workoutStructure {
+        color: #636569;
 
-                div {
-                    text-align: center;
-                    float: left;
-                    width: 122px;
-                    margin-right: 2px;
-                    margin-bottom: 5px;
-                    font-size: $fontSizeSmall;
-                    font-family: $fontFamilyHeavy;
-                    font-family: $fontFamilyRegular;
+        .exerciseTitle {
+            color: $TPGrey3;
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmall;
+            margin: 20px 0 5px 0;
+        }
 
-                    &.completedMin {
-                        margin-left: 19px;
-                    }
-                    &:last-of-type,
-                    &.instructedMax {
-                        margin-right: 0;
-                    }
-                }
+        .exerciseNotes {
+            p {
+                font-size: $fontSizeSmall;
             }
+        }
 
-            .workoutStatsRowStructure {
-                @include clearfix;
-                display: flex;
-                align-items: stretch;
-                width: 620px;
+        .exerciseSets {
+            .setProperties {
+                margin-bottom: 27px;
 
-                div {
-                    // float: left;
-                    width: 124px;
-                    min-height: 22px;
-                    border: 1px solid $TPGrey2;
-                    text-align: center;
-                    font-size: $fontSizeSmall;
-                    margin-right: 2px;
-                    padding-top: 4px;
-                    padding-bottom: 4px;
-                    margin-bottom: 2px;
+                .columnLabelsInstructedCompleted {
+                    @include clearfix;
+                    margin: 15px 0 15px 106px;
 
-                    &:last-of-type {
-                        margin-right: 0;
-                    }
-
-                    &.propertyName {
+                    div {
                         float: left;
-                        text-align: right;
-                        font-size: $fontSizeSmaller;
-                        width: 104px;
-                        padding-top: 5px;
-                        padding-right: 5px;
-                        border: none;
-                    }
+                        text-align: center;
+                        width: 221px;
+                        font-size: $fontSizeSmall;
+                        font-family: $fontFamilyHeavy;
+                        padding: 3px 0;
+                        background-color: $TPGrey2;
 
-                    &.propertyCompletedMinValue {
-                        margin-left:15px;
+                        &.headerCompleted {
+                            margin-left: 17px;
+                        }
                     }
                 }
 
-                &.notes {
-                    line-height: $fontSizeXLarge;
+                .columnLabelsTargetsMinMax {
+                    @include clearfix;
+                    margin-left: 106px;
+
+                    div {
+                        text-align: center;
+                        float: left;
+                        width: 110px;
+                        margin-right: 2px;
+                        margin-bottom: 5px;
+                        font-size: $fontSizeSmall;
+                        font-family: $fontFamilyHeavy;
+                        font-family: $fontFamilyRegular;
+
+                        &.completedMin {
+                            margin-left: 15px;
+                        }
+                        &:last-of-type,
+                        &.instructedMax {
+                            margin-right: 0;
+                        }
+                    }
+                }
+
+                .workoutStatsRowStructure {
+                    @include clearfix;
                     display: flex;
-                    height: 100%;
-                   
                     align-items: stretch;
-                                
-                    .propertyPlannedValue {
-                        width: 248px;
-                        height: auto;
-                        text-align: left;
-                        padding: 5px;
+                    width: 620px;
+
+                    div {
+                        width: 109px;
+                        min-height: 22px;
+                        border: 1px solid $TPGrey2;
+                        text-align: center;
+                        font-size: $fontSizeSmall;
+                        margin-right: 2px;
+                        padding-top: 4px;
+                        padding-bottom: 4px;
+                        margin-bottom: 2px;
+
+                        &:last-of-type {
+                            margin-right: 0;
+                        }
+
+                        &.propertyName {
+                            float: left;
+                            text-align: right;
+                            font-size: $fontSizeSmaller;
+                            width: 104px;
+                            padding-top: 5px;
+                            padding-right: 5px;
+                            border: none;
+                        }
+
+                        &.propertyUnit {
+                            float: left;
+                            text-align: left;
+                            font-size: $fontSizeSmaller;
+                            width: 52px;
+                            padding-top: 5px;
+                            padding-left: 5px;
+                            border: none;
+                        }
+
+                        &.propertyCompletedMinValue {
+                            margin-left:15px;
+                        }
                     }
 
-                    .propertyCompletedValue {
-                        width: 248px;
-                        height: auto;
-                        margin-left: 17px;
-                        text-align: left;
-                        padding: 5px;
+                    &.notes {
+                        line-height: $fontSizeXLarge;
+                        display: flex;
+                        height: 100%;
+                       
+                        align-items: stretch;
+                                    
+                        .propertyPlannedValue {
+                            width: 248px;
+                            height: auto;
+                            text-align: left;
+                            padding: 5px;
+                        }
+
+                        .propertyCompletedValue {
+                            width: 248px;
+                            height: auto;
+                            margin-left: 17px;
+                            text-align: left;
+                            padding: 5px;
+                        }
                     }
-                }
-            } 
-        }  
+                } 
+            }  
+        }
     }
 }
-
-
 
 
 .workoutStructure tr.even, 
