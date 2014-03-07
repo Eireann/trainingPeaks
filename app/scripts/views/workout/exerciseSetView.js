@@ -68,9 +68,12 @@ function (
 
         _extractModeAndNotes: function(data)
         {
+            // A set is "active" unless it is marked "rest".
             var activeOrRest = _.find(data.instructions, { name: "Active or Rest" });
-            if (activeOrRest)
-                data.active = activeOrRest.planValue;
+            if (activeOrRest && activeOrRest.planValue == 2)
+                data.active = false;
+            else
+                data.active = true;
 
             var notes = _.find(data.instructions, { name: "Notes" });
             if (notes)
@@ -147,5 +150,6 @@ function (
                 }
             }
         }
+
     });
 });
