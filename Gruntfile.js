@@ -315,7 +315,7 @@ module.exports = function(grunt)
             publicFileViewer:
             {
                 dest: "publicFileViewer/",
-                src: ["build/**"]
+                src: ["build/**", "!build/debug/assets/**"]
             }
         },
 

@@ -78,9 +78,9 @@ function(_,
         {
             var $body = $("body");
 
-            var apiConfig = {
-                assetsRoot: "build/debug/assets/"
-            };
+            var apiConfig = _.defaults({}, window.apiConfig, {
+                assetsRoot: "http://app.trainingpeaks.com/assets"
+            });
 
             window.theMarsApp = {
                 user: this.userModel,
