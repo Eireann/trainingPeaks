@@ -14,7 +14,7 @@ function
 
         if (arguments.length === 3)
         {
-            value = (planValue != null && planValue != undefined) ? planValue : minValue;
+            value = (planValue !== null && planValue !== undefined) ? planValue : minValue;
         }
         else
         {
@@ -22,7 +22,7 @@ function
             displayUnits = minValue;
         }
 
-        if (value == null || value == undefined)
+        if (value === null || value === undefined)
         {
             return "-";
         }

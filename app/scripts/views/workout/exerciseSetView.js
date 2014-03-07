@@ -70,7 +70,7 @@ function (
         {
             // A set is "active" unless it is marked "rest".
             var activeOrRest = _.find(data.instructions, { name: "Active or Rest" });
-            if (activeOrRest && activeOrRest.planValue == 2)
+            if (activeOrRest && activeOrRest.planValue === 2)
                 data.active = false;
             else
                 data.active = true;
