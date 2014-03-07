@@ -131,7 +131,7 @@ function (
 
         it("Should have a number of reps equal to 10", function()
         {
-            expect(exerciseSetView.$("[data-property=Reps] .propertyPlannedValue").text()).to.contain("10");
+            expect(exerciseSetView.$("[data-property=Reps] .propertyPlannedMinValue").text()).to.contain("10");
         });
 
         it("Should not have an 'Active or Rest' property", function()
@@ -147,7 +147,7 @@ function (
 
         it("Should have actual values for RPE", function()
         {
-            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedValue").text()).to.contain("2");
+            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedMinValue").text()).to.contain("2");
             expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedMaxValue").text()).to.contain("10");
         });
 
@@ -158,7 +158,7 @@ function (
 
         it("Should display duration in seconds as HH:MM:SS", function()
         {
-            expect(exerciseSetView.$("[data-property=Duration] .propertyPlannedValue").text()).to.contain("06:15");
+            expect(exerciseSetView.$("[data-property=Duration] .propertyPlannedMinValue").text()).to.contain("06:15");
         });
     });
 });
