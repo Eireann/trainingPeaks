@@ -12,7 +12,7 @@ function
     {
         var value = null;
 
-        if (arguments.length >= 3)
+        if (arguments.length > 3)
         {
             value = (planValue !== null && planValue !== undefined) ? planValue : minValue;
         }
