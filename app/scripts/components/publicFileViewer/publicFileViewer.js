@@ -19,6 +19,7 @@ define(
     "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
+    "./workoutCommentsView",
     "hbs!publicFileViewer/publicFileViewerTemplate"
 ],
 function(
@@ -41,6 +42,7 @@ function(
          MapView,
          StatsView,
          LapsView,
+         WorkoutCommentsView,
          publicFileViewerTemplate
          )
 {
@@ -123,6 +125,10 @@ function(
             this.$(".expandoLapsRegion").append(lapsView.render().$el);
             lapsView.onShow();
             this.subviews.push(lapsView);
+
+            var commentsView = new WorkoutCommentsView({ collection: this.workout.getPostActivityComments() });
+            this.$(".commentsContainer").append(commentsView.render().$el);
+            this.subviews.push(commentsView);
 
             this._watchForWindowResize();
         },
