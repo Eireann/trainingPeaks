@@ -1,11 +1,13 @@
+/* jshint ignore:start */
 var viewerReady = new $.Deferred();
 
 function LoadPublicFileViewer(cssSelector, token)
 {
     viewerReady.done(function(PublicFileViewer)
     {
-        var pfv = new PublicFileViewer({ el: $("#main"), token: token });
-        pfv.load().done(function(){pfv.render()})
+        var pfv = new PublicFileViewer({ el: $(cssSelector), token: token });
+
+        pfv.load().done(function(){pfv.render();});
     });
 }
 
@@ -26,3 +28,4 @@ requirejs([
         viewerReady.resolve(PublicFileViewer);
     });
 });
+/* jshint ignore:end */

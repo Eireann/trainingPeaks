@@ -421,5 +421,5 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 
-    grunt.registerTask("pfv", ["clean", "compass:debug", "requirejs:publicFileViewer", "copy:debug", "copy:publicFileViewer"]);
+    grunt.registerTask("pfv", ["clean", "jshint", "compass:debug", "requirejs:publicFileViewer", "copy:debug", "copy:publicFileViewer"]);
 };
