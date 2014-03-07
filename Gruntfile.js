@@ -70,7 +70,8 @@ module.exports = function(grunt)
                     "theMarsApp": false,
                     "requirejs": false,
                     "define": false,
-                    "require": false
+                    "require": false,
+                    "WebFont": false
                 }
             }
         },
@@ -312,10 +313,18 @@ module.exports = function(grunt)
                 src: ["coverage/lcov-report/**"]
             },
 
-            publicFileViewer:
+            publicFileViewerPreview:
             {
                 dest: "publicFileViewer/",
-                src: ["build/**", "!build/debug/assets/**"]
+                src: ["build/**"]
+            },
+
+            publicFileViewerCss:
+            {
+                dest: "build/publicFileViewer/",
+                src: ["build/debug/app/css/publicFileViewer.css"],
+                expand: true,
+                flatten: true,
             }
         },
 
@@ -421,5 +430,6 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 
-    grunt.registerTask("pfv", ["clean", "jshint", "compass:debug", "requirejs:publicFileViewer", "copy:debug", "copy:publicFileViewer"]);
+    grunt.registerTask("build_public_file_viewer", ["clean", "jshint", "compass:debug", "requirejs:publicFileViewer", "copy:publicFileViewerCss", "clean:debug"]);
+    grunt.registerTask("pfv", ["build_public_file_viewer", "copy:publicFileViewerPreview", "debug"]);
 };

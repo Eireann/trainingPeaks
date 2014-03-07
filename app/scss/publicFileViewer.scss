@@ -1,0 +1,144 @@
+@import "settings";
+@import "foundation";
+
+@import "globalCSS/tpstylesheet";
+@import "globalCSS/tpfontstyles";
+@import "globalCSS/mixIn";
+@import "globalCSS/throbber";
+@import "globalCSS/modal";
+
+@import "globalCSS/packeryCollection";
+
+@import "globalCSS/table";
+
+@import "calendar/quickView/quickview";
+@import "calendar/calendarWorkout";
+@import "calendar/workoutColor";
+@import "globalCSS/hoverBox";
+
+@import "globalCSS/tooltip";
+@import "globalCSS/selectBox";
+
+@import "workout/workoutCommentsEditor";
+
+@import "workout/workoutBarView";
+
+@import "touch";
+
+@import "charts";
+
+@import "overlayBox";
+
+@import "sprites";
+
+@import "tomahawk";
+@import "upgrade";
+
+
+.pfvContainer
+{
+    min-height: 100%;
+    @include nice-scrollbar;
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;
+    color: $TPGrey4;
+
+    @include buttons(0px, auto, $fontSizeMedium);
+
+    .clickable
+    {
+        cursor: pointer;
+    }
+
+    .hidden
+    {
+        display: none;
+    }
+
+    @include nice-scrollbar-real;
+
+
+    .QVHeaderItemsContain .workoutBarViewHeader
+    {
+        cursor: default;
+    }
+
+    .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
+    {
+        cursor: default;
+    }
+
+    #time
+    {
+        font-family: "HelveticaNeueW01-55Roma";
+        font-size: 0.857em;
+        color: #636569;
+    }
+
+    #workOutQuickView, .workoutQuickView
+    {
+        height: 100%;
+        width: 100%;
+    }
+
+    .profileImage
+    {
+        font-family: "HelveticaNeueW01-75Bold";
+        font-size: 0.857em;
+        color: #636569;
+        position: absolute;
+        left: 580px;
+        top: 26px;
+    }
+
+    .profileImage img {
+        height: 80px;
+        vertical-align: bottom;
+    }
+
+    .headerIcons
+    {
+        display: none;
+    }
+
+    .QVHeader .workoutBarViewHeader .workoutHeaderStats .title span.workoutTitleText
+    {
+        display: inline;
+    }
+    .QVHeader .workoutBarViewHeader .workoutHeaderStats .title input#workoutTitleField
+    {
+        display: none;
+    }
+
+    #quickViewExpandedContent
+    {
+        height: calc(100% - 125px);
+    }
+
+    .expandoLeftColumn, .expandoRightColumn
+    {
+        height: 100%;
+    }
+
+    .expandoRightColumn .expandoStatsRegion
+    {
+        height: 50%;
+    }
+
+    .expandoRightColumn .expandoLapsRegion
+    {
+        height: 50%;
+    }
+
+    .expandoPod {
+        height: calc(50% - 10px);
+        width: calc(100% - 20px);
+        position: relative;
+    }
+
+   #quickViewExpandedContent .lap.highlight .lapName .add, #quickViewExpandedContent .peak.highlight .lapName .add 
+   {
+        display: none;
+   }
+}
+
