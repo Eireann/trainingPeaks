@@ -14,6 +14,7 @@ define(
     "expando/models/expandoStateModel",
     "./dateAndTimeView",
     "views/workout/workoutBarView",
+    "./userProfileImageView",
     "./userNameView",
     "views/expando/graphView",
     "views/expando/mapView",
@@ -37,6 +38,7 @@ function(
          ExpandoStateModel,
          DateAndTimeView,
          WorkoutBarView,
+         UserProfileImageView,
          UserNameView,
          GraphView,
          MapView,
@@ -46,6 +48,13 @@ function(
          publicFileViewerTemplate
          )
 {
+
+    var WorkoutBarViewExtra = WorkoutBarView.extend({
+        getComplianceCssClassName: function ()
+        {
+            return "ComplianceNone";
+        }
+    });
 
     var PublicFileViewer = TP.ItemView.extend({
 
@@ -93,12 +102,16 @@ function(
             this.$(".workoutBarView").before(dateAndTimeView.render().$el);
             this.subviews.push(dateAndTimeView); 
 
-            var workoutBarView = new WorkoutBarView({ model: this.workout });
+            var workoutBarView = new WorkoutBarViewExtra({ model: this.workout });
             this.$(".workoutBarView").append(workoutBarView.render().$el);
             this.subviews.push(workoutBarView);
 
-            var userNameView = new UserNameView({ model: this.userModel, wwwRoot: this.apiConfig.wwwRoot });
-            this.$(".QVHeader").append(userNameView.render().$el);
+            var userProfileImageView = new UserProfileImageView({ model: this.userModel, wwwRoot: this.apiConfig.wwwRoot });
+            this.$(".QVHeaderItemsContain").append(userProfileImageView.render().$el);
+            this.subviews.push(userProfileImageView);
+
+            var userNameView = new UserNameView({ model: this.userModel });
+            this.$(".QVHeaderRightColumn").append(userNameView.render().$el);
             this.subviews.push(userNameView);
 
             var expandoStateModel = new ExpandoStateModel();

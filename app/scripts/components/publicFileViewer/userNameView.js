@@ -14,25 +14,13 @@ function(
 {
 
     var UserNameView = TP.ItemView.extend({
-        className: "profileImage cf",
+        className: "userName",
         tagName: "div",
 
         template:
         {
             type: "handlebars",
             template: userNameViewTemplate
-        },
-
-        serializeData: function()
-        {
-            var data = this.model.toJSON();
-
-            if (data.profileImageUrl)
-            {
-                data.profileImageUrl = this.options.wwwRoot + data.profileImageUrl;
-            }
-
-            return data;
         }
     });
 

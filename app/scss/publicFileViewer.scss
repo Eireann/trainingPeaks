@@ -41,7 +41,6 @@
     @include nice-scrollbar;
     font-size: $baseFontSize;
     font-family: $fontFamilyRegular;
-    color: $TPGrey4;
 
     @include buttons(0px, auto, $fontSizeMedium);
 
@@ -75,30 +74,57 @@
         color: #636569;
     }
 
+    .dateAndTime
+    {
+        height: 22px;
+    }
+
     #workOutQuickView, .workoutQuickView
     {
+        background: none;
         height: 100%;
         width: 100%;
     }
 
+    .workout.past.ComplianceNone
+    {
+        background: none;
+        border: none;
+    }
+
     .profileImage
     {
-        font-family: "HelveticaNeueW01-75Bold";
-        font-size: 0.857em;
-        color: #636569;
-        position: absolute;
-        left: 580px;
-        top: 26px;
+        float: right;
     }
 
     .profileImage img {
         height: 80px;
-        vertical-align: bottom;
+        margin-right: 12px;
+        vertical-align: top;
+    }
+
+    .userName
+    {
+        font-size: 0.857em;
+        color: #636569;
+        margin-top: 22px;
+    }
+
+    .userName span
+    {
+        font-family: "HelveticaNeueW01-75Bold";
     }
 
     .headerIcons
     {
         display: none;
+    }
+
+    .QVHeader
+    {
+        background: none;
+        border-bottom: 1px solid #ccc;
+        @include box-shadow(none);
     }
 
     .QVHeader .workoutBarViewHeader .workoutHeaderStats .title span.workoutTitleText
@@ -125,6 +151,11 @@
         height: 50%;
     }
 
+    .expandoLeftColumn
+    {
+        overflow-y: visible;
+    }
+
     .expandoRightColumn .expandoLapsRegion
     {
         height: 50%;
@@ -132,7 +163,7 @@
 
     .expandoPod {
         height: calc(50% - 10px);
-        width: calc(100% - 20px);
+        width: 100%;
         position: relative;
     }
 
