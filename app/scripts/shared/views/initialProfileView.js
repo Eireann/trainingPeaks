@@ -199,7 +199,7 @@ function(
                 url: apiConfig.apiRoot + "/fitness/v1/athletes/" + this.userModel.getCurrentAthleteId() + "/profile",
                 data:
                 {
-                    weightInKg: this.model.get("weight"),
+                    weightInKg: TP.utils.conversion.parseUnitsValue("weight", this.model.get("weight"), { userUnits: this.model.get("unitPreference") }),
                     heartRateThreshold: this.model.get("thresholdHeartRate"),
                     powerThreshold: this.model.get("thresholdPower"),
                     swimPace: this.model.get("swimPace"),

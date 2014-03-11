@@ -23,7 +23,14 @@ function(
             }
             else if(format === "number")
             {
-                value = Number(value || 0).toString();
+                if(value === null || value === "" || value === undefined)
+                {
+                    value = "";
+                }
+                else
+                {
+                    value = Number(value).toString();    
+                }
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
