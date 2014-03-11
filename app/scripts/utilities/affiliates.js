@@ -22,7 +22,7 @@ function($, _, ImageData)
 
         isCoachedAccount: function()
         {
-            if (theMarsApp.user.getAccountSettings().has("isAthlete") && !theMarsApp.user.getAccountSettings().get("isAthlete"))
+            if (theMarsApp.user.has("isAthlete") && !theMarsApp.user.get("isAthlete"))
                 return true;
 
             if (theMarsApp.user.getAccountSettings().get("isCoached"))

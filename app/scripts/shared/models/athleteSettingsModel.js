@@ -1,9 +1,11 @@
 ﻿define(
 [
+    "underscore",
     "TP",
+    "./userModel",
     "models/equipmentCollection"
 ],
-function(TP, EquipmentCollection)
+function(_, TP, UserModel, EquipmentCollection)
 {
     return TP.APIDeepModel.extend(
     {
@@ -12,58 +14,26 @@ function(TP, EquipmentCollection)
         webAPIModelName: "AthleteSettings",
         idAttribute: "athleteId",
 
-        defaults:
+        defaults: function()
         {
+            return _.extend({}, UserModel.prototype.personDefaultFields, {
+                athleteId: 0,
+                enableVirtualCoachEmails: null,
+                enableWorkoutCommentNotification: null,
+                virtualCoachEmailHour: null,
+                heartRateZones: null, 
+                powerZones: null,
+                speedZones: null,
+                thresholdsAutoApply: false,
+                thresholdsNotifyAthlete: false,
+                thresholdsNotifyCoach: false,
 
-            athleteId: 0,
-
-            userName: null,
-            firstName: null,
-            lastName: null,
-
-            age: null,
-            birthday: null,
-            gender: null,
-
-            athleteType: null,
-            userType: null,
-
-            address: null,
-            address2: null,
-            city: null,
-            state: null,
-            country: null,
-            zipCode: null,
-
-            timeZone: null,
-            dateFormat: null,
-            units: 1,
-
-            email: null,
-            isEmailVerified: null,
-            phone: null,
-            cellPhone: null,
-
-            profilePhotoUrl: null,
-
-            allowMarketingEmails: null,
-            enablePrivateMessageNotifications: null,
-            enableVirtualCoachEmails: null,
-            virtualCoachEmailHour: null,
-            enableWorkoutCommentNotification: null,
-
-            heartRateZones: null, 
-            powerZones: null,
-            speedZones: null,
-            thresholdsAutoApply: false,
-            thresholdsNotifyAthlete: false,
-            thresholdsNotifyCoach: false,
-
-            iCalendarKeys: {
-                metricsOnly: null,
-                workoutsAndMetrics: null,
-                workoutOnly: null
-            }
+                iCalendarKeys: {
+                    metricsOnly: null,
+                    workoutsAndMetrics: null,
+                    workoutOnly: null
+                }
+            });
         },
 
         url: function()

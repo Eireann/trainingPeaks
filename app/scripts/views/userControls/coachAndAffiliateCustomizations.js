@@ -41,7 +41,8 @@ function($, _, affiliateUtils)
         {
             var setupHeader = _.bind(this.setupHeader, this);
             this.listenTo(theMarsApp.user.getAffiliateSettings(), "change:code", setupHeader);
-            this.listenTo(theMarsApp.user.getAccountSettings(), "change:isAthlete change:isCoached", setupHeader);
+            this.listenTo(theMarsApp.user, "change:isAthlete", setupHeader);
+            this.listenTo(theMarsApp.user.getAccountSettings(), "change:isCoached", setupHeader);
         },
 
         onLogoClicked: function(e)
