@@ -52,7 +52,11 @@ function(
             {
                 // parse the input based on user preference,
                 // make sure the model is in consistent format regardless of user preference
-                value = value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : null;
+                if(value)
+                {
+                    var parsedDate = TP.utils.datetime.parse(value);
+                    value = parsedDate ? parsedDate.format("YYYY-MM-DD") : null;
+                }
             }
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
