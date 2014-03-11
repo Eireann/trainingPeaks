@@ -23,7 +23,14 @@ function(
             }
             else if(format === "number")
             {
-                value = Number(value || 0).toString();
+                if(value === null || value === "" || value === undefined)
+                {
+                    value = "";
+                }
+                else
+                {
+                    value = Number(value).toString();    
+                }
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
@@ -110,7 +117,7 @@ function(
             if($field.is("select"))
             {
                 // Add an empty or Unknown entry if needed
-                var valueAsString = value === undefined || value === null ? "" : value.toString();
+                var valueAsString = value === undefined || value === null ? "" : String(value);
                 if($field.val() !== valueAsString)
                 {
                     var text = value ? "Unknown" : "";

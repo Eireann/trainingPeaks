@@ -234,7 +234,7 @@
     <div class="fieldContain deliveryTime1">
         <label class="fieldTitle">{{$ "deliveryTime"}}</label>
         <div class="selectBox">
-            <select data-modelname="athlete" name="virtualCoachEmailHour" >
+            <select data-modelname="athlete" data-format="number" name="virtualCoachEmailHour" >
             {{#each hours}}
                 <option value="{{ data }}">{{ label }}</option>
             {{/each}}
