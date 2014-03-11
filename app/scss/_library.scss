@@ -444,8 +444,8 @@
 
 .workoutDetails
 {
-    width: 310px;
-    max-width: 310px;
+    width: 272px;
+    max-width: 345px;
 
     .hoverBox
     {
@@ -455,20 +455,17 @@
         }
     }
 
-    p, pre
-    {
+    p, pre {
         font-family: inherit;
         word-wrap: break-word;
         white-space: pre-wrap;
     }
 
-    button
-    {
+    button {
         font-size: 12px;
-        width: 137px;
-        &.delete
-        {
-            left: 8px;
+        width: 118px;
+        &.delete {
+            margin-left: 8px;
         }
     }
 
@@ -493,13 +490,13 @@
             font-size: 1em;
         }
 
-        &[readonly]
-        {
+        &[readonly] {
             border-color: $TPGrey1;
             &.title
             {
                 border-color: transparent;
                 padding: 0px;
+                margin-bottom: 6px;
             }
         }
     }
@@ -517,11 +514,11 @@
         } 
     } 
 
-    .actions
-    {
-        padding-top: 16px;
+    .actions {
+        padding-top: 12px;
         border-top: solid 1px #cccccc;
         margin-top: 10px;
+        text-align: center;
     }
 
     .workoutStatsRow
@@ -531,19 +528,17 @@
         clear: both;
         height: 24px;
 
-        .workoutStatsColumn
-        {
+        .workoutStatsColumn {
             float:left;
             padding-right: 2px;
-            label
-            {
+            
+            label {
                 text-align: right;
-                width: 100px;
+                width: 80px;
                 padding-top: 5px;
                 padding-right: 5px;
 
-                &.ghosted
-                {
+                &.ghosted {
                     color: $TPGrey7;
                 }
 
@@ -551,12 +546,11 @@
 
             @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
 
-            &.workoutStatsUnitLabel
-            {
-                label
-                {
+            &.workoutStatsUnitLabel {
+                padding-right: 0;
+                label {
                     text-align: left;
-                    width: 45px;
+                    width: 80px;
                     padding-top: 5px;
                     padding-left: 5px;
                 }
@@ -564,6 +558,8 @@
 
             input {
                 height:22px;
+                width: 84px;
+                margin-bottom: 0;
             }
         }
     }

@@ -34,33 +34,12 @@ function (
             {
                 instruction.name = TP.utils.translate(instruction.name);
 
-                // 24 = "Percent HR"
-                if (instruction.type === 24)
-                {
-                    // Real estate for this label is very limited, so override its content.
-                    instruction.name = TP.utils.translate("% Max HR");
-                    instruction.planUnitsSpecified = false;
-                }
-                // 9 = "HR Zone"
-                else if (instruction.type === 9)
-                {
-                    this._convertHeartRateZones(instruction);
-                }
-                // 26 = "Speed Zone"
-                else if (instruction.type === 26)
-                {
-                    this._convertSpeedZones(instruction);
-                }
-                // 11 = "Power Zone"
-                else if (instruction.type === 11)
-                {
-                    this._convertPowerZones(instruction);
-                }
-
                 if (instruction.planUnitsSpecified)
                 {
                     instruction.units = ExerciseSetUnits[instruction.planUnits];
                 }
+
+                this._postProcessNamesAndUnits(instruction);
             }, this));
 
             return data;
@@ -68,9 +47,12 @@ function (
 
         _extractModeAndNotes: function(data)
         {
+            // A set is "active" unless it is marked "rest".
             var activeOrRest = _.find(data.instructions, { name: "Active or Rest" });
-            if (activeOrRest)
-                data.active = activeOrRest.planValue;
+            if (activeOrRest && activeOrRest.planValue === 2)
+                data.active = false;
+            else
+                data.active = true;
 
             var notes = _.find(data.instructions, { name: "Notes" });
             if (notes)
@@ -86,6 +68,57 @@ function (
 
             data.instructions = _.reject(data.instructions, { name: "Active or Rest" });
             data.instructions = _.reject(data.instructions, { name: "Notes" });
+        },
+
+        _postProcessNamesAndUnits: function(instruction)
+        {
+            // The backend does not send us what we need to display.
+            // Hence make some necessary adjustments here, until the backend knows better.
+
+            // 9 = "HR Zone"
+            if (instruction.type === 9)
+            {
+                this._convertHeartRateZones(instruction);
+            }
+            // 11 = "Power Zone"
+            else if (instruction.type === 11)
+            {
+                this._convertPowerZones(instruction);
+            }
+            // 10 = "Heart Rate"
+            else if (instruction.type === 10)
+            {
+                instruction.name = TP.utils.translate("Heart Rate");
+                instruction.units = "bpm";
+            }
+            // 12 = "Power"
+            else if (instruction.type === 12)
+            {
+                instruction.units = "watts";
+            }
+            // 13 = "Peak Power"
+            else if (instruction.type === 13)
+            {
+                instruction.units = "watts";
+            }
+            // 20 = "Energy"
+            else if (instruction.type === 20)
+            {
+                instruction.units = "kj";
+            }
+            // 24 = "Percent HR"
+            else if (instruction.type === 24)
+            {
+                // Real estate for this label is very limited, so override its content.
+                // Massage the name to show the unit and use "bpm" in the unit column.
+                instruction.name = TP.utils.translate(instruction.units === "%lt HR" ? "%LT HR": instruction.units);
+                instruction.units = "bpm";
+            }
+            // 26 = "Speed Zone"
+            else if (instruction.type === 26)
+            {
+                this._convertSpeedZones(instruction);
+            }
         },
 
         _convertHeartRateZones: function(instruction)
@@ -147,5 +180,6 @@ function (
                 }
             }
         }
+
     });
 });

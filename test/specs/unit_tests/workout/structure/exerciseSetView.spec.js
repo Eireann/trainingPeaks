@@ -85,6 +85,22 @@ function (
                         "actualUnitsSpecified": false
                     },
                     {
+                        "actualMaxSpecified": false,
+                        "actualMinSpecified": false,
+                        "actualNote": null,
+                        "actualUnitsSpecified": false,
+                        "actualValueSpecified": false,
+                        "isEmpty": false,
+                        "name": "HeartRate",
+                        "planMaxSpecified": false,
+                        "planMinSpecified": false,
+                        "planNote": null,
+                        "planUnitsSpecified": false,
+                        "planValue": 140.0,
+                        "planValueSpecified": true,
+                        "type": 10
+                    },
+                    {
                         "type": 1,
                         "isEmpty": false,
                         "name": "Duration",
@@ -100,6 +116,71 @@ function (
                         "actualMinSpecified": false,
                         "actualMaxSpecified": false,
                         "actualUnitsSpecified": false
+                    },
+                    {
+                        "actualMaxSpecified": false,
+                        "actualMinSpecified": false,
+                        "actualNote": null,
+                        "actualUnitsSpecified": false,
+                        "actualValueSpecified": false,
+                        "isEmpty": false,
+                        "name": "Percent HR",
+                        "planMaxSpecified": false,
+                        "planMinSpecified": false,
+                        "planNote": null,
+                        "planUnits": 16,
+                        "planUnitsSpecified": true,
+                        "planValue": 75.0,
+                        "planValueSpecified": true,
+                        "type": 24
+                    },
+                    {
+                        "actualMaxSpecified": false,
+                        "actualMinSpecified": false,
+                        "actualNote": null,
+                        "actualUnitsSpecified": false,
+                        "actualValueSpecified": false,
+                        "isEmpty": false,
+                        "name": "Energy",
+                        "planMaxSpecified": false,
+                        "planMinSpecified": false,
+                        "planNote": null,
+                        "planUnitsSpecified": false,
+                        "planValue": 1000.0,
+                        "planValueSpecified": true,
+                        "type": 20
+                    },
+                    {
+                        "actualMaxSpecified": false,
+                        "actualMinSpecified": false,
+                        "actualNote": null,
+                        "actualUnitsSpecified": false,
+                        "actualValueSpecified": false,
+                        "isEmpty": false,
+                        "name": "Power",
+                        "planMaxSpecified": false,
+                        "planMinSpecified": false,
+                        "planNote": null,
+                        "planUnitsSpecified": false,
+                        "planValue": 150.0,
+                        "planValueSpecified": true,
+                        "type": 12
+                    },
+                    {
+                        "actualMaxSpecified": false,
+                        "actualMinSpecified": false,
+                        "actualNote": null,
+                        "actualUnitsSpecified": false,
+                        "actualValueSpecified": false,
+                        "isEmpty": false,
+                        "name": "Peak Power",
+                        "planMaxSpecified": false,
+                        "planMinSpecified": false,
+                        "planNote": null,
+                        "planUnitsSpecified": false,
+                        "planValue": 300.0,
+                        "planValueSpecified": true,
+                        "type": 13
                     }
                 ]
             };
@@ -131,7 +212,7 @@ function (
 
         it("Should have a number of reps equal to 10", function()
         {
-            expect(exerciseSetView.$("[data-property=Reps] .propertyPlannedValue").text()).to.contain("10");
+            expect(exerciseSetView.$("[data-property=Reps] .propertyPlannedMinValue").text()).to.contain("10");
         });
 
         it("Should not have an 'Active or Rest' property", function()
@@ -147,7 +228,7 @@ function (
 
         it("Should have actual values for RPE", function()
         {
-            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedValue").text()).to.contain("2");
+            expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedMinValue").text()).to.contain("2");
             expect(exerciseSetView.$("[data-property=RPE] .propertyCompletedMaxValue").text()).to.contain("10");
         });
 
@@ -158,7 +239,33 @@ function (
 
         it("Should display duration in seconds as HH:MM:SS", function()
         {
-            expect(exerciseSetView.$("[data-property=Duration] .propertyPlannedValue").text()).to.contain("06:15");
+            expect(exerciseSetView.$("[data-property=Duration] .propertyPlannedMinValue").text()).to.contain("06:15");
+        });
+
+        // The following data items are served without a unit by the backend, but we must display a unit in the front-end.
+        // Check that all units are correctly added.
+
+        it("Should display a proper unit for Power and Peak Power.", function()
+        {
+            expect(exerciseSetView.$("[data-property=Power] span.propertyUnit").text()).to.contain("watts");
+            expect(exerciseSetView.$("[data-property='Peak Power'] span.propertyUnit").text()).to.contain("watts");
+        });
+
+        it("Should display a proper unit for Energy.", function()
+        {
+            expect(exerciseSetView.$("[data-property=Energy] span.propertyUnit").text()).to.contain("kj");
+        });
+
+        it("Should display 'Percent HR' as either '%max HR' or '%LT HR' with a 'bpm' unit.", function()
+        {
+            var target = exerciseSetView.$("[data-property='%max HR'] span.propertyUnit")[0] || exerciseSetView.$("[data-property='%LT HR'] span.propertyUnit")[0];
+            
+            expect(target.innerText).to.contain("bpm");
+        });
+
+        it("Should correct 'HeartRate' to 'Heart Rate' with a 'bpm' unit.", function()
+        {
+            expect(exerciseSetView.$("[data-property='Heart Rate'] span.propertyUnit").text()).to.contain("bpm");
         });
     });
 });

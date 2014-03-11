@@ -8,8 +8,25 @@ function
 )
 {
 
-    function formatExerciseValue(value, displayUnits)
+    function formatExerciseValue(planValue, minValue, displayUnits)
     {
+        var value = null;
+
+        if (arguments.length > 3)
+        {
+            value = (planValue !== null && planValue !== undefined) ? planValue : minValue;
+        }
+        else
+        {
+            value = planValue;
+            displayUnits = minValue;
+        }
+
+        if (value === null || value === undefined)
+        {
+            return "-";
+        }
+
         switch (displayUnits)
         {
             case "HH:MM:SS":

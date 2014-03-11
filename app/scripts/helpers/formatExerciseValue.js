@@ -8,15 +8,8 @@ function(
     TP
 )
 {
-    function formatExerciseValue(value, displayUnits)
-    {
-        return TP.utils.workout.formatExerciseValue(value, displayUnits);
-    }
-
     Handlebars.registerHelper(
         "formatExerciseValue",
-        formatExerciseValue
+        TP.utils.workout.formatExerciseValue
     );
-
-    return formatExerciseValue;
 });
