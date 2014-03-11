@@ -218,7 +218,6 @@ function(
         {
             this.userModel.set("units", this.model.get("unitPreference"));
             this.userModel.set("unitsBySportType.1", this.model.get("swimUnits"));
-            FormUtility.applyValuesToForm(this.$el, this.model, this.formUtilityOptions());
             this.$(".weightUnits").text(TP.utils.units.getUnitsLabel("kg"));
         },
 
