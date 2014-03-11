@@ -5,7 +5,6 @@
     "backbone",
     "TP",
     "utilities/localStorageUtils",
-    "shared/models/accountSettingsModel",
     "shared/models/dashboardSettingsModel",
     "shared/models/expandoSettingsModel"
 ],
@@ -15,7 +14,6 @@ function(
     Backbone,
     TP,
     localStorageUtils,
-    AccountSettingsModel,
     DashboardSettingsModel,
     ExpandoSettingsModel
 )
@@ -27,11 +25,12 @@ function(
         webAPIModelName: "User",
         idAttribute: "userId",
 
-        defaults:
+        personDefaultFields: 
         {
             address: null,
             address2: null,
             age: 0,
+            athleteType: null,
             allowMarketingEmails: null,
             birthday: null,
             cellPhone: null,
@@ -43,28 +42,38 @@ function(
             enablePrivateMessageNotifications: null,
             expireDate: null,
             firstName: null,
+            fullName: null,
             gender: null,
+            isAthlete: true,
             language: null,
             lastName: null,
             latitude: null,
+            lastLogon: null,
             logonToHtml5: false,
             longitude: null,
+            numberOfVisits: 0,
             phone: null,
             profilePhotoUrl: null,
             state: null,
             story: null,
             timeZone: null,
             units: 2,
-            unitsBySportType: {},
-            userId: 0,
+            personId: 0,
             userIdentifierHash: "",
             userName: null,
             userType: null,
             zipCode: null,
-            zuoraAccountNumber: null,
+            hasCompletedProfile: true
+        },
 
-            settings: {},
-            athletes: []
+        defaults: function()
+        {
+            return _.extend({}, this.personDefaultFields, {
+                userId: 0,
+                unitsBySportType: {},
+                settings: {},
+                athletes: []
+            });
         },
 
         url: function()
@@ -96,10 +105,7 @@ function(
                 });
 
                 var ajaxFetchPromise = TP.APIDeepModel.prototype.fetch.call(self, options);
-                ajaxFetchPromise.done(function()
-                {
-                    self.localStorage.setItem("app_user", self.attributes);
-                });
+                ajaxFetchPromise.done(_.bind(self.updateLocalStorage, self));
                 return ajaxFetchPromise;
             };
 
@@ -211,7 +217,7 @@ function(
         {
             if(!this.accountSettings)
             {
-                this.accountSettings = new AccountSettingsModel(this.get("settings.account"));
+                this.accountSettings = new TP.Model(this.get("settings.account"));
             }
             return this.accountSettings;
         },
@@ -281,7 +287,7 @@ function(
 
         isCoach: function()
         {
-            return !this.getAccountSettings().get("isAthlete");
+            return !this.get("isAthlete");
         },
 
         isCoachWithAthletes: function()
@@ -317,6 +323,11 @@ function(
             delete attrs.settings;
             delete attrs.pods;
             return attrs;
+        },
+
+        updateLocalStorage: function()
+        {
+            this.localStorage.setItem("app_user", this.attributes);
         }
         
     });

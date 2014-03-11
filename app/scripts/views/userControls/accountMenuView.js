@@ -40,6 +40,7 @@ function (_, TP, UserSettingsView, accountMenuTemplate)
 
         onUserSettingsClicked: function()
         {
+            this.waitingOn();
             this.model.fetch({ nocache: true }).done(_.bind(this._openUserSettings, this));
         },
 

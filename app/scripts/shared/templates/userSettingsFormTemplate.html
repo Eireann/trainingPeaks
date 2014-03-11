@@ -19,7 +19,7 @@
         <div class="fieldContain athleteTypeGender">
             <label class="fieldTitle">{{$ "AthleteType" }}</label>
             <div class="selectBox athleteType">
-                 <select data-modelname="account" name="athleteTypeValue" >
+                 <select data-modelname="user" name="athleteType" >
                     <option value="" selected>{{$ "Choose" }}</option>                 
                 {{#each athleteTypes}}
                     <option value="{{ data }}">{{ label }}</option>
@@ -215,7 +215,7 @@
     <h2 class="accountSettingsSectionTitle">{{$ "EmailOptions" }}</h2>
 
     <div class="fieldContain">
-        <label class="checkBoxRow clickable"><input data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> {{$ "emailPMNotificationSetting" }} </label>
+        <label class="checkBoxRow clickable"><input data-modelname="user" type="checkbox" name="enablePrivateMessageNotifications"> {{$ "emailPMNotificationSetting" }} </label>
     </div>
 
     <div class="fieldContain">
@@ -245,7 +245,7 @@
     <p class="userSettingsHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
     <div class="fieldContain">
-        <label class="checkBoxRow clickable"><input data-modelname="account" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+        <label class="checkBoxRow clickable"><input data-modelname="user" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 
 </div>
