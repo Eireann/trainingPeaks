@@ -1,4 +1,4 @@
-﻿define(
+define(
 [
     "underscore",
     "utilities/units/constants",
@@ -196,6 +196,11 @@ function(_, unitsConstants, workoutTypeUtils)
             {
                 oz: 0.033814
             }
+        },
+
+        secondsPerHundredYards:
+        {
+            label: "sec/100y"
         }
     };
 
