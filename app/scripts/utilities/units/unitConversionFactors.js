@@ -201,6 +201,11 @@ function(_, unitsConstants, workoutTypeUtils)
         secondsPerHundredYards:
         {
             label: "sec/100y"
+        },
+
+        secondsPerHundredMeters:
+        {
+            label: "sec/100m"
         }
     };
 
