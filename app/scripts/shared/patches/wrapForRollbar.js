@@ -20,6 +20,22 @@ function(
             return callback;
         }
 
+        var addStack = function(e)
+        {
+            // Rollbar won't look in those other places for a potential stack,
+            // so give it a push.
+            // We have nothing to lose since e.stack is either null or undefined to begin with.
+            if (e.stacktrace)
+            {
+                e.stack = e.stacktrace;
+            }
+            else if (e.message)
+            {
+                e.stack = e.message;
+            }
+        };
+
+        /*
         var addStack = function(arguments, e)
         {
             if (!arguments || !arguments.callee || !arguments.callee.caller)
@@ -38,6 +54,7 @@ function(
 
             e.stack = stack.join("\n");
         };
+        */
 
         return function()
         {
@@ -53,7 +70,7 @@ function(
                     // If e.stack is null or undefined, see if we can scramble something.
                     if (!e.stack)
                     {
-                        addStack(arguments, e);
+                        addStack(e);
                     }
 
                     window._rollbar.push(e);
@@ -63,9 +80,6 @@ function(
                 {
                     e._rollbared = true;
                     e.message += " (rollbared)";
-
-                    addStack(arguments, e);
-                    console.log(e.stack);
                 }
 
                 throw e;
