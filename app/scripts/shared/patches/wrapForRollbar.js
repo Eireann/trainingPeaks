@@ -37,18 +37,19 @@ function(
 
             if (backupException.stack)
             {
-                // Rollbar expects the stack to be in "e.stack", so give it that.
                 e.stack = backupException.stack;
             }
             else if (backupException.stacktrace)
             {
-                // Rollbar expects the stack to be in "e.stack", so give it that.
                 e.stack = backupException.stacktrace;
             }
             else if (backupException.message)
             {
-                // Rollbar expects the stack to be in "e.stack", so give it that.
                 e.stack = backupException.message;
+            }
+            else if (e.sourceURL && e.line)
+            {
+                e.stack = e.sourceURL + ":" + e.line;
             }
         };
 
@@ -74,7 +75,6 @@ function(
                 {
                     e._rollbared = true;
                     e.message += " (rollbared)";
-                    console.log(e);
                 }
 
                 throw e;

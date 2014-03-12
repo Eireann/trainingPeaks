@@ -95,6 +95,13 @@ function($, _)
                 if(/\(rollbared\)/.test(error)) {
                     return;
                 }
+
+                if (error)
+                {
+                    // If there is an error message, Rollbar won't let us know the error was reported via window.onerror,
+                    // so, add this prefix.
+                    error = "uncaught exception: " + error;
+                }
                
                 // push them to rollbar array or rollbar client
                 this._rollbar.push({_t:'uncaught',e:error,u:url,l:lineNumber});

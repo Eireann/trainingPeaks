@@ -235,8 +235,6 @@ function(
         {
             var flotOptions = defaultFlotOptions.getBarOptions();
 
-            null.undef();
-
             flotOptions.yaxis = {
                 min: 0,
                 tickFormatter: function(zoneMinutes)
