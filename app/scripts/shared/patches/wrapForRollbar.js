@@ -20,37 +20,23 @@ function(
             return callback;
         }
 
-        var createException = function()
+        var addStack = function(arguments, e)
         {
-            try
+            if (!arguments || !arguments.callee || !arguments.callee.caller)
             {
-                this.undef();
-            } catch (e)
-            {
-                return e;
+                return;
             }
-        };
 
-        var addStack = function(e)
-        {
-            var backupException = createException();
+            var stack = [];
+            
+            var f = arguments.callee.caller;
+            while (f)
+            {
+                stack.push(f.name);
+                f = f.caller;
+            }
 
-            if (backupException.stack)
-            {
-                e.stack = backupException.stack;
-            }
-            else if (backupException.stacktrace)
-            {
-                e.stack = backupException.stacktrace;
-            }
-            else if (backupException.message)
-            {
-                e.stack = backupException.message;
-            }
-            else if (e.sourceURL && e.line)
-            {
-                e.stack = e.sourceURL + ":" + e.line;
-            }
+            e.stack = stack.join("\n");
         };
 
         return function()
@@ -63,9 +49,11 @@ function(
             {
                 if (window._rollbar && !e._rollbared)
                 {
+                    // Last resort attempt to collect a stack:
+                    // If e.stack is null or undefined, see if we can scramble something.
                     if (!e.stack)
                     {
-                        addStack(e);
+                        addStack(arguments, e);
                     }
 
                     window._rollbar.push(e);
@@ -75,6 +63,9 @@ function(
                 {
                     e._rollbared = true;
                     e.message += " (rollbared)";
+
+                    addStack(arguments, e);
+                    console.log(e.stack);
                 }
 
                 throw e;
