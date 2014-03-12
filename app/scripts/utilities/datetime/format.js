@@ -21,7 +21,7 @@ function(_, moment)
                 formatString = this._getNamedDateFormatString(formatString, momentDate);
                 formatString = this._convertFormatStringToUserPreferredDateFormat(formatString);
 
-                return momentDate.format(formatString);
+                return this._isValidDateRange(momentDate) ? momentDate.format(formatString) : "";
             }
             else
             {
@@ -37,7 +37,8 @@ function(_, moment)
                 parseFormat = this._defaultDateFormatString;
             }
             parseFormat = this._convertFormatStringToUserPreferredDateFormat(parseFormat);
-            return moment(momentParseableDate, parseFormat);
+            var parsedDate = moment(momentParseableDate, parseFormat);
+            return this._isValidDateRange(parsedDate) ? parsedDate : null;
         },
 
         // TP.utils.datetime.formatter.decimalSecondsAsTime
@@ -282,6 +283,11 @@ function(_, moment)
             }
 
             return formatString;
+        },
+
+        _isValidDateRange: function(momentDate)
+        {
+            return momentDate && momentDate.isValid() && Math.abs(moment().diff(momentDate, "years")) < 100;
         }
 
     });

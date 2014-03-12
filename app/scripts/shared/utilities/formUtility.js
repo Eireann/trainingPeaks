@@ -23,7 +23,14 @@ function(
             }
             else if(format === "number")
             {
-                value = Number(value || 0).toString();
+                if(value === null || value === "" || value === undefined)
+                {
+                    value = "";
+                }
+                else
+                {
+                    value = Number(value).toString();    
+                }
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
@@ -52,7 +59,11 @@ function(
             {
                 // parse the input based on user preference,
                 // make sure the model is in consistent format regardless of user preference
-                value = value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : null;
+                if(value)
+                {
+                    var parsedDate = TP.utils.datetime.parse(value);
+                    value = parsedDate ? parsedDate.format("YYYY-MM-DD") : null;
+                }
             }
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
@@ -106,7 +117,7 @@ function(
             if($field.is("select"))
             {
                 // Add an empty or Unknown entry if needed
-                var valueAsString = value === undefined || value === null ? "" : value.toString();
+                var valueAsString = value === undefined || value === null ? "" : String(value);
                 if($field.val() !== valueAsString)
                 {
                     var text = value ? "Unknown" : "";

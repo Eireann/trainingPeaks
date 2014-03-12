@@ -2,10 +2,10 @@ define(
 [
     "jquery",
     "underscore",
-    "jqueryHtmlClean",
     "setImmediate",
     "TP",
     "tpcore",
+    "utilities/htmlCleaner",
     "models/commands/applyTrainingPlan",
     "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
@@ -20,10 +20,10 @@ define(
 function(
     $,
     _,
-    jqueryHtmlClean,
     setImmediate,
     TP,
     tpcore,
+    htmlCleaner,
     ApplyTrainingPlanCommand,
     RemoveTrainingPlanCommand,
     UserConfirmationView,
@@ -125,16 +125,7 @@ function(
             if (data.details.description)
             {
                 // strip most tags
-                var cleanText = $.htmlClean(data.details.description, { allowedTags: ["p", "br", "li", "ul", "ol"] });
-
-                // wrap plain text in paragraphs, at the top level only
-                var htmlContainer = $("<div>").html(cleanText);
-                htmlContainer.contents().filter(function(){return this.nodeType === 3;}).wrap("<p></p>");
-
-                // remove line break tags, at the top level only
-                htmlContainer.contents().filter("br").remove(); 
-
-                data.details.descriptionText = htmlContainer.html();
+                data.details.descriptionText = htmlCleaner.clean(data.details.description);
             }
 
             return data;

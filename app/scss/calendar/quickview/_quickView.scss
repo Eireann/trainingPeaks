@@ -21,7 +21,7 @@
     {
         @include box-shadow(none);
         color: $TPGrey3;
-        line-height:$fontSizeXLarge;
+        line-height: $fontSizeXLarge;
         &:focus
         {
             background-color: #FFFFFF;

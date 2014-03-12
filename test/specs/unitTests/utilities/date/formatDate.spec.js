@@ -230,5 +230,50 @@ function(moment, TP, DateTimeFormatter)
             });
 
         });
+
+        describe("Invalid date inputs", function()
+        {
+
+            describe("Parse", function()
+            {
+                it("Should return null if the input is not a valid date", function()
+                {
+                    expect(dateTimeFormatter.parse("notadate")).to.be.null;
+                    expect(dateTimeFormatter.parse("")).to.be.null;
+                    expect(dateTimeFormatter.parse(null)).to.be.null;
+                });
+
+                it("Should return null if the input is not within a reasonable date range", function()
+                {
+                    var nextYear = moment().add("years", 1).format("M/D/YYYY");
+                    expect(dateTimeFormatter.parse(nextYear)).to.not.be.null;
+                    var tooFarInFuture = moment().add("years", 101).format("M/D/YYYY");
+                    expect(dateTimeFormatter.parse(tooFarInFuture)).to.be.null;
+                    var tooFarInPast = moment().subtract("years", 101).format("M/D/YYYY");
+                    expect(dateTimeFormatter.parse(tooFarInPast)).to.be.null;
+                });
+            });
+
+            describe("Format", function()
+            {
+                it("Should return empty string if the input is not a valid date", function()
+                {
+                    expect(dateTimeFormatter.format("notadate")).to.eql("");
+                    expect(dateTimeFormatter.format("")).to.eql("");
+                    expect(dateTimeFormatter.format(null)).to.eql("");
+                });
+
+                it("Should return empty string if the input is not within a reasonable date range", function()
+                {
+                    var nextYear = moment().add("years", 1).format("M/D/YYYY");
+                    expect(dateTimeFormatter.format(nextYear)).to.eql(nextYear);
+                    var tooFarInFuture = moment().add("years", 101).format("M/D/YYYY");
+                    expect(dateTimeFormatter.format(tooFarInFuture)).to.eql("");
+                    var tooFarInPast = moment().subtract("years", 101).format("M/D/YYYY");
+                    expect(dateTimeFormatter.format(tooFarInPast)).to.eql("");
+                });
+            });
+
+        });
     });
 });

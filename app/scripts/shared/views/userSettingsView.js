@@ -90,7 +90,6 @@ function(
                     options:
                     {
                         userModel: this._copyModel(this.model, { changesToApplyImmediately: ["profilePhotoUrl"] }),
-                        accountSettingsModel: this._copyModel(this.model.getAccountSettings()),
                         athleteSettingsModel: models.athleteSettings,
                         passwordSettingsModel: this.model.getPasswordSettings()
                     }
@@ -230,9 +229,9 @@ function(
         {
             this._copyUserAttributesToAthlete();    
             return UserDataSource.saveUserSettingsAndPassword({
-                models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
+                models: [this.model, this.model.getAthleteSettings()],
                 password: this.model.getPasswordSettings().get("password")
-            });
+            }).done(_.bind(this.model.updateLocalStorage, this.model));
         },
 
         _copyUserAttributesToAthlete: function()

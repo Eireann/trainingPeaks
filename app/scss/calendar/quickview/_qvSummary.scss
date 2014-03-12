@@ -1,172 +1,150 @@
 ﻿@import "../../globalCSS/tpstylesheet";
+.summary {
+	position: relative;
 
-.stats
-{
-    padding-left: 15px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    background: transparent;
-    float: left;
+	.stats {
+	    padding-left: 15px;
+	    padding-right: 20px;
+	    padding-bottom: 20px;
+	    background: transparent;
+	    float: left;
 
-    label
-    {
-	   color: $TPGrey3;
-    }
+	    label {
+		   color: $TPGrey3;
+	    }
 
-    .selectionBox
-    {
-    	padding-left: 102px;
-    	@include selectionBox(168px);
-    	width: 168px;
-    	padding-top: 5px;
+	    .selectionBox {
+	    	padding-left: 102px;
+	    	@include selectionBox(168px);
+	    	width: 168px;
+	    	padding-top: 5px;
 
-    	select
-    	{
-    	    margin-bottom: 3px;
-    	    color: $TPGrey3;
-    	}
-    }
+	    	select {
+	    	    margin-bottom: 3px;
+	    	    color: $TPGrey3;
+	    	}
+	    }
 
-    max-width: 355px;
-}
-
-.workoutStatsRow
-{
-    @include grid-row();
-
-    clear: both;
-    height: 24px;
-
-    .workoutStatsColumn
-    {
-	float:left;
-	padding-right: 2px;
-	// height: 23px;
-
-	@include inputs(83.5px, 22px, 12px, $fontFamilyRegular);
-	input {
-	    margin: 0;
-	    padding: 0;
-	    color: $TPGrey4;
+	    max-width: 355px;
 	}
 
-	.hide
-	{
-	    display:none;
-	}
-    }
+	.workoutStatsRow {
+	    @include grid-row();
 
+	    clear: both;
+	    height: 24px;
 
+	    .workoutStatsColumn {
+			float:left;
+			padding-right: 2px;
+			// height: 23px;
 
-    .workoutStatsColumnMinMaxAvg
-    {
-	float:left;
-	height: 23px;
-	@include inputs(55px, 20px, 12px, $fontFamilyRegular);
-	padding-right: 2px;
-    }
+			@include inputs(83.5px, 22px, 12px, $fontFamilyRegular);
+			input {
+			    margin: 0;
+			    padding: 0;
+			    color: $TPGrey4;
+			}
 
-    label
-    {
-	text-align: right;
-	width: 100px;
-	padding-top: 5px;
-	padding-right: 5px;
+			.hide {
+			    display:none;
+			}
+	    }
 
+	    .workoutStatsColumnMinMaxAvg {
+			float:left;
+			height: 23px;
+			@include inputs(55px, 20px, 12px, $fontFamilyRegular);
+			padding-right: 2px;
+	    }
 
-	&.ghosted
-	{
-	    color: $TPGrey7;
-	}
+	    label {
+			text-align: right;
+			width: 100px;
+			padding-top: 5px;
+			padding-right: 5px;
 
-    }
+			&.ghosted {
+			    color: $TPGrey7;
+			}
 
-    @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
+	    }
 
-    .workoutStatsUnitLabel
-    {
-	label
-	{
-	    text-align: left;
-	    width: 45px;
-	    padding-top: 5px;
-	    padding-left: 5px;
-	}
-    }
-}
+	    @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
 
-.columnLabelsPlannedCompleted
-{
-    padding-left: 105px;
-    padding-top: 14px;
-    // padding-bottom: 18px;
-    width: 100%;
-    // height: 15px;
-    background: transparent;
-
-    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
-    label
-    {
-	float: left;
-	width: 80px;
-	text-align: center;
-	margin-bottom:5px;
-
-	&.ghosted
-	{
-	    color: $TPGrey7;
-	}
-    }
-
-    .workoutStatsCompleted
-    {
-	padding-left: 10px;
-    }
-
-}
-
-.columnLabelsMinMaxAvg
-{
-    padding-left: 105px;
-    width: 100%;
-    // height: 27px;
-    background: transparent;
-    padding-top: 10px;
-
-
-    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
-    label
-    {
-	float: left;
-	width: 56px;
-	text-align: center;
-	margin-bottom:5px;
-	margin-top:2px;
-	&.ghosted
-	{
-	    color: $TPGrey7;
-	}
-    }
-}
-
-
-#commentsContainer {
-    .comments {
-	width:275px;
-	float:left;
-	padding-top:14px;
-	.header {
-	    font-family: $fontFamilyHeavy;
-	    font-size: $fontSizeSmall;
-	    margin-bottom: 5px;
-	    color: $TPGrey3;
+	    .workoutStatsUnitLabel {
+			label {
+			    text-align: left;
+			    width: 45px;
+			    padding-top: 5px;
+			    padding-left: 5px;
+			}
+	    }
 	}
 
-	textarea#descriptionInput,
-	textarea#preActivityCommentsInput,
-	textarea#postActivityCommentsInput {
-	    max-width: 275px;
-	    resize: vertical;
+	.columnLabelsPlannedCompleted {
+	    padding-left: 105px;
+	    padding-top: 14px;
+	    // padding-bottom: 18px;
+	    width: 100%;
+	    // height: 15px;
+	    background: transparent;
+
+	    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+	    label {
+			float: left;
+			width: 80px;
+			text-align: center;
+			margin-bottom:5px;
+
+			&.ghosted {
+			    color: $TPGrey7;
+			}
+	    }
+
+	    .workoutStatsCompleted {
+			padding-left: 10px;
+	    }
 	}
-    }
+
+	.columnLabelsMinMaxAvg {
+	    padding-left: 105px;
+	    width: 100%;
+	    // height: 27px;
+	    background: transparent;
+	    padding-top: 10px;
+
+	    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+	    label {
+			float: left;
+			width: 56px;
+			text-align: center;
+			margin-bottom:5px;
+			margin-top:2px;
+			&.ghosted {
+			    color: $TPGrey7;
+			}
+	    }
+	}
+
+	#commentsContainer {
+	    .comments {
+			width:275px;
+			float:left;
+			padding-top:14px;
+			.header {
+			    font-family: $fontFamilyHeavy;
+			    font-size: $fontSizeSmall;
+			    margin-bottom: 5px;
+			    color: $TPGrey3;
+			}
+
+			textarea#descriptionInput,
+			textarea#preActivityCommentsInput,
+			textarea#postActivityCommentsInput {
+			    max-width: 275px;
+			    resize: vertical;
+			}
+	    }
+	}
 }

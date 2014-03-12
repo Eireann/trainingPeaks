@@ -1,0 +1,15 @@
+define(
+[
+    "handlebars",
+    "TP"
+],
+function(
+    Handlebars,
+    TP
+)
+{
+    Handlebars.registerHelper(
+        "formatExerciseValue",
+        TP.utils.workout.formatExerciseValue
+    );
+});

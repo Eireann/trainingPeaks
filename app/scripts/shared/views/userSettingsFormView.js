@@ -12,7 +12,8 @@ define(
     "shared/models/userDataSource",
     "shared/utilities/formUtility",
     "views/userConfirmationView",
-    "hbs!templates/views/quickView/fileUploadErrorView",
+    "hbs!templates/views/confirmationViews/saveProfilePhotoErrorTemplate",
+    "hbs!templates/views/confirmationViews/removeProfilePhotoErrorTemplate",
     "hbs!templates/views/confirmationViews/emailVerificationConfirmationView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
@@ -29,7 +30,8 @@ function(
     UserDataSource,
     FormUtility,
     UserConfirmationView,
-    fileUploadErrorTemplate,
+    saveProfilePhotoErrorTemplate,
+    removeProfilePhotoErrorTemplate,
     emailVerificationConfirmationTemplate,
     userSettingsFormTemplate
 )
@@ -121,7 +123,10 @@ function(
                 return;
             }
 
-            var nameParts = this.get("firstAndLastName").split(" ");
+            var fullName = this.get("firstAndLastName");
+            this.userModel.set("fullName", fullName);
+            
+            var nameParts = fullName.split(" ");
             this.userModel.set("lastName", nameParts.pop());
             this.userModel.set("firstName", nameParts.join(" "));
         },
@@ -172,11 +177,6 @@ function(
                 throw new Error("UserSettingsFormView requires a user model");
             }
 
-            if(!options || !options.accountSettingsModel)
-            {
-                throw new Error("UserSettingsFormView requires an account settings model");
-            }
-
             if(!options || !options.athleteSettingsModel)
             {
                 throw new Error("UserSettingsFormView requires an athlete settings model");
@@ -188,7 +188,6 @@ function(
             }
 
             this.userModel = options.userModel;
-            this.accountSettingsModel = options.accountSettingsModel;
             this.athleteSettingsModel = options.athleteSettingsModel;
             this.passwordSettingsModel = options.passwordSettingsModel;
 
@@ -227,7 +226,6 @@ function(
             FormUtility.applyValuesToModel(this.$el, this.userBirthdayModel, { filterSelector: "[data-modelname=userBirthday]"});
             FormUtility.applyValuesToModel(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]"});
             FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
-            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
         },
 
@@ -277,7 +275,6 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.userModel, { filterSelector: "[data-modelname=user]" });
             FormUtility.applyValuesToForm(this.$el, this.userBirthdayModel, { filterSelector: "[data-modelname=userBirthday]" });
             FormUtility.applyValuesToForm(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]" });
-            FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
 
             this.$(".emailVerification").toggle(!this.userModel.get("isEmailVerified"));   
@@ -317,7 +314,7 @@ function(
                 self._updatePhotoUrl();
             }).fail(function()
             {
-                new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+                new UserConfirmationView({ template: saveProfilePhotoErrorTemplate }).render();
             }).always(function()
             {
                 self.waitingOff(); 
@@ -359,7 +356,7 @@ function(
                 self._updatePhotoUrl();
             }).fail(function()
             {
-                new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+                new UserConfirmationView({ template: removeProfilePhotoErrorTemplate }).render();
             }).always(function()
             {
                 self.waitingOff(); 

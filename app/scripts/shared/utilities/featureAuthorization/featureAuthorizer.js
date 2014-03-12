@@ -66,7 +66,7 @@ function(
         }
 
         // if not a coach, user can only view their own account
-        if(user.getAccountSettings().get("isAthlete"))
+        if(user.get("isAthlete"))
         {
             return false;
         }
@@ -109,7 +109,7 @@ function(
                 }
 
                 // if not a coach, user can only view their own account
-                if(user.getAccountSettings().get("isAthlete"))
+                if(user.get("isAthlete"))
                 {
                     return false;
                 }
@@ -201,7 +201,7 @@ function(
 
                 if(TP.utils.datetime.isFuture(attributes.targetDate))
                 {
-                    return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
+                    return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteSettings() }, options);
                 }
                 else
                 {
@@ -215,7 +215,7 @@ function(
             */
             ShiftWorkouts: Feature({ slideId: "advanced-scheduling" }, function(user, userAccess, attributes, options)
             {
-                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
+                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteSettings() }, options);
             }),
 
             /*
@@ -313,7 +313,7 @@ function(
             */
             ViewICalendarUrl: Feature({}, function(user, userAccess, attributes, options)
             {
-                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteDetails() }, options);
+                return this.features.PlanForAthlete(user, userAccess, { athlete: user.getAthleteSettings() }, options);
             }),
 
             /*
@@ -322,7 +322,7 @@ function(
             */
             AutoApplyThresholdChanges: Feature({}, function(user, userAccess, attributes, options)
             {
-                var currentAthleteType = user.getAthleteDetails().get("userType");
+                var currentAthleteType = user.getAthleteSettings().get("userType");
                 return userIsPremium(currentAthleteType);
             }),
 
@@ -356,7 +356,7 @@ function(
             */
             ReceivePostActivityNotification: Feature({}, function(user, userAccess, attributes, options)
             {
-                var currentAthleteType = user.getAthleteDetails().get("userType");
+                var currentAthleteType = user.getAthleteSettings().get("userType");
                 return userIsPremium(currentAthleteType);
             }),
 

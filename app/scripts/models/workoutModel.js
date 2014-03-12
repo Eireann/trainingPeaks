@@ -226,7 +226,8 @@ function (
                 "ifPlanned",
                 "velocityPlanned",
                 "energyPlanned",
-                "elevationGainPlanned"
+                "elevationGainPlanned",
+                "startTimePlanned"
             ];
 
             return new WorkoutModel(this.pick(attributesToCopy));
