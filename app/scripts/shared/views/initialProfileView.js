@@ -199,7 +199,7 @@ function(
                 url: apiConfig.apiRoot + "/fitness/v1/athletes/" + this.userModel.getCurrentAthleteId() + "/profile",
                 data:
                 {
-                    weightInKg: this.model.get("weight"),
+                    weightInKg: TP.utils.conversion.parseUnitsValue("weight", this.model.get("weight"), { userUnits: this.model.get("unitPreference") }),
                     heartRateThreshold: this.model.get("thresholdHeartRate"),
                     powerThreshold: this.model.get("thresholdPower"),
                     swimPace: this.model.get("swimPace"),
@@ -218,7 +218,6 @@ function(
         {
             this.userModel.set("units", this.model.get("unitPreference"));
             this.userModel.set("unitsBySportType.1", this.model.get("swimUnits"));
-            FormUtility.applyValuesToForm(this.$el, this.model, this.formUtilityOptions());
             this.$(".weightUnits").text(TP.utils.units.getUnitsLabel("kg"));
         },
 
