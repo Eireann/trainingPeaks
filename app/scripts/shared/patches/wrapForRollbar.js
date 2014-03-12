@@ -20,6 +20,38 @@ function(
             return callback;
         }
 
+        var createException = function()
+        {
+            try
+            {
+                this.undef();
+            } catch (e)
+            {
+                return e;
+            }
+        };
+
+        var addStack = function(e)
+        {
+            var backupException = createException();
+
+            if (backupException.stack)
+            {
+                // Rollbar expects the stack to be in "e.stack", so give it that.
+                e.stack = backupException.stack;
+            }
+            else if (backupException.stacktrace)
+            {
+                // Rollbar expects the stack to be in "e.stack", so give it that.
+                e.stack = backupException.stacktrace;
+            }
+            else if (backupException.message)
+            {
+                // Rollbar expects the stack to be in "e.stack", so give it that.
+                e.stack = backupException.message;
+            }
+        };
+
         return function()
         {
             try
@@ -30,6 +62,11 @@ function(
             {
                 if (window._rollbar && !e._rollbared)
                 {
+                    if (!e.stack)
+                    {
+                        addStack(e);
+                    }
+
                     window._rollbar.push(e);
                 }
 
@@ -37,6 +74,7 @@ function(
                 {
                     e._rollbared = true;
                     e.message += " (rollbared)";
+                    console.log(e);
                 }
 
                 throw e;
