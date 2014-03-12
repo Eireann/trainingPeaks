@@ -3,7 +3,7 @@ define(
     "underscore",
     "jquery",
     "TP",
-    "hbs!publicFileViewer/userNameViewTemplate"
+    "hbs!../templates/userNameViewTemplate"
 ],
 function(
     _,

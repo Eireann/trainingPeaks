@@ -71,7 +71,8 @@ module.exports = function(grunt)
                     "requirejs": false,
                     "define": false,
                     "require": false,
-                    "WebFont": false
+                    "WebFont": false,
+                    "module": false
                 }
             }
         },
@@ -115,7 +116,18 @@ module.exports = function(grunt)
                     require: "zurb-foundation",
                     imagesDir: "assets/images"
                 }
-            }
+            },
+            components:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/components/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
+            },
         },
 
         requirejs:
@@ -143,15 +155,15 @@ module.exports = function(grunt)
                 options:
                 {
                     mainConfigFile: "app/config.js",
-                    out: "build/publicFileViewer/publicFileViewer.js",
+                    out: "build/components/js/publicFileViewer.js",
                     baseUrl: "app",
-                    name: "publicFileViewer/publicFileViewer",
+                    name: "components/publicFileViewer/js/publicFileViewer",
                     deps: [
                         "wrappedMoment"
                     ],
                     include: [
                         "../bower_components/almond/almond",
-                        "components/publicFileViewer/publicFileViewerLoader"
+                       "components/publicFileViewer/js/publicFileViewerLoader"
                     ],
                     stubModules: ["text"],
                     wrap: false,
@@ -206,6 +218,15 @@ module.exports = function(grunt)
                     "vendor/js/libs/flot/jquery.flot.js",
                     "bower_components/flot-axislabels/jquery.flot.axislabels.js"
                 ]
+            },
+            components:
+            {
+                files: [{
+                    expand: true,
+                    cwd: "build/components",
+                    src: "**/*.js",
+                    dest: "build/components"
+                }]
             }
         },
 
@@ -260,10 +281,6 @@ module.exports = function(grunt)
             post_build:
             {
                 src: ["build/**/single.js"]
-            },
-            publicFileViewer:
-            {
-                src: ["publicFileViewer/build"]
             }
         },
 
@@ -313,18 +330,12 @@ module.exports = function(grunt)
                 src: ["coverage/lcov-report/**"]
             },
 
-            publicFileViewerPreview:
+            components:
             {
-                dest: "publicFileViewer/",
-                src: ["build/**"]
-            },
-
-            publicFileViewerCss:
-            {
-                dest: "build/publicFileViewer/",
-                src: ["build/debug/app/css/publicFileViewer.css"],
+                dest: "build/components/",
+                src: ["app/scripts/components/componentPreviewer/**/*.html"],
                 expand: true,
-                flatten: true,
+                flatten: true
             }
         },
 
@@ -430,6 +441,9 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 
-    grunt.registerTask("build_public_file_viewer", ["clean", "jshint", "compass:debug", "requirejs:publicFileViewer", "copy:publicFileViewerCss", "clean:debug"]);
-    grunt.registerTask("pfv", ["build_public_file_viewer", "copy:publicFileViewerPreview", "debug"]);
+    // to build external components
+    grunt.registerTask("components", ["clean", "jshint", "debug", "copy:components", "compass:components", "requirejs:components", "uglify:components"]);
+
+    // list any individual external components here to be included in the build_components task
+    grunt.registerTask("requirejs:components", ["requirejs:publicFileViewer"]);
 };

@@ -62,8 +62,7 @@ requirejs.config(
         wrappedMoment: "scripts/utilities/wrappedMoment",
 
         // Reuseable components
-        components: "scripts/components",
-        publicFileViewer: "scripts/components/publicFileViewer"
+        components: "scripts/components"
     },
     shim: {
         handlebars: {

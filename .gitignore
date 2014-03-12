@@ -23,9 +23,6 @@ JSLintOptions.xml
 todo.txt
 scratch.txt
 
-publicFileViewer/build/
-publicFileViewer/node_modules/
-
 # Don't keep the phantomjs binaries in git
 node_modules/grunt-mocha/node_modules/grunt-lib-phantomjs/node_modules/phantomjs/lib/phantom
 node_modules/grunt-mocha/node_modules/grunt-lib-phantomjs/node_modules/phantomjs/lib/location.js

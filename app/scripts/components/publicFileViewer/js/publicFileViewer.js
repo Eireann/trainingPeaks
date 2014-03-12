@@ -21,7 +21,7 @@ define(
     "views/expando/statsView",
     "views/expando/lapsView",
     "./workoutCommentsView",
-    "hbs!publicFileViewer/publicFileViewerTemplate"
+    "hbs!../templates/publicFileViewerTemplate"
 ],
 function(
          webfonts,

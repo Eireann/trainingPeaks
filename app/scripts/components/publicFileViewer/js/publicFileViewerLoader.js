@@ -18,7 +18,7 @@ requirejs([
     requirejs(
     [
       "jquery",
-      "publicFileViewer/publicFileViewer"
+      "components/publicFileViewer/js/publicFileViewer"
     ],
     function(
       $,

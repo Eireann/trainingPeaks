@@ -3,7 +3,7 @@ define(
     "underscore",
     "jquery",
     "TP",
-    "hbs!publicFileViewer/dateAndTimeViewTemplate"
+    "hbs!../templates/dateAndTimeViewTemplate"
 ],
 function(
     _,
