@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>Apply Training Plan</title>
+
+        <link rel="stylesheet" href="css/applyTrainingPlan.css" />
+        <script src="js/applyTrainingPlan.js"></script>
+        </script>
+        <script>
+
+        var trainingPlanParam = window.location.search.match(/(\?|&)id=([^&]*)/);
+        var trainingPlanId = trainingPlanParam ? trainingPlanParam[2] :  30819; // welcome to training peaks
+        $(document).ready(function()
+        {
+            LoadApplyTrainingPlan("#applyTrainingPlan", trainingPlanId);
+        });
+        </script>
+    </head>
+    <body>
+        <div id="applyTrainingPlan" style="width: 400px"></div>        
+    </body>
+</html>
+

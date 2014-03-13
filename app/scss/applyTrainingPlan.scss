@@ -1,0 +1,32 @@
+@import "settings";
+@import "foundation";
+
+@import "globalCSS/tpstylesheet";
+@import "globalCSS/tpfontstyles";
+@import "globalCSS/mixIn";
+@import "globalCSS/flex";
+@import "globalCSS/throbber";
+@import "globalCSS/modal";
+
+@import "calendar/tabLibraries/trainingPlans";
+
+@import "globalCSS/hoverBox";
+
+@import "globalCSS/tooltip";
+@import "globalCSS/selectBox";
+
+@import "touch";
+
+@import "overlayBox";
+
+@import "sprites";
+
+@import "tomahawk";
+
+
+.applyTrainingPlanContainer
+{
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;
+    @include buttons(0px, auto, $fontSizeMedium);
+}

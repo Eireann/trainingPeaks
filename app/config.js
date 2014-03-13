@@ -59,7 +59,10 @@ requirejs.config(
 
         // We need to wrap moment.js to modify some functionality
         moment: "../bower_components/moment/moment",
-        wrappedMoment: "scripts/utilities/wrappedMoment"
+        wrappedMoment: "scripts/utilities/wrappedMoment",
+        
+        // Reuseable components
+        components: "scripts/components"
     },
     shim: {
         handlebars: {
