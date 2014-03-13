@@ -213,14 +213,6 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).targetDate).to.equal(moment(xhrData.trainingPlanDetails.eventDate).format("YYYY-MM-DD"));
             });
 
-            it("Should refresh the plan after applying the plan", function()
-            {
-                testHelpers.clearRequests();
-                $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/commands/applyplan", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
-                expect(testHelpers.hasRequest("GET", "plans/v1/plans/1$")).to.equal(true);
-            });
-
             it("Should refresh the calendar after applying the plan", function()
             {
                 testHelpers.clearRequests();

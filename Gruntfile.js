@@ -150,6 +150,28 @@ module.exports = function(grunt)
                 }
             },
 
+            applyTrainingPlan:
+            {
+                options:
+                {
+                    mainConfigFile: "app/config.js",
+                    out: "build/components/js/applyTrainingPlan.js",
+                    baseUrl: "app",
+                    name: "components/applyTrainingPlan/js/applyTrainingPlan",
+                    deps: [
+                        "wrappedMoment"
+                    ],
+                    include: [
+                        "../bower_components/almond/almond",
+                       "components/applyTrainingPlan/js/applyTrainingPlanLoader"
+                    ],
+                    stubModules: ["text"],
+                    wrap: false,
+                    optimize: "none",
+                    useSourceUrl: true
+                }
+            },
+
             publicFileViewer:
             {
                 options:
@@ -170,7 +192,7 @@ module.exports = function(grunt)
                     optimize: "none",
                     useSourceUrl: true
                 }
-            }
+            } 
         },
 
         /*
@@ -445,5 +467,5 @@ module.exports = function(grunt)
     grunt.registerTask("components", ["clean", "jshint", "debug", "copy:components", "compass:components", "requirejs:components", "uglify:components"]);
 
     // list any individual external components here to be included in the build_components task
-    grunt.registerTask("requirejs:components", ["requirejs:publicFileViewer"]);
+    grunt.registerTask("requirejs:components", ["requirejs:applyTrainingPlan", "requirejs:publicFileViewer"]);
 };

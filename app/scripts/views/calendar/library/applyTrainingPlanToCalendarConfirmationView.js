@@ -2,57 +2,15 @@ define(
 [
     "TP",
     "moment",
-    "views/calendar/library/trainingPlanDatePickerView",
+    "views/calendar/library/trainingPlanApplyView",
     "views/userConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanToCalendarConfirmation",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView"
 ],
-function(TP, moment, TrainingPlanDatePickerView, UserConfirmationView, applyTrainingPlanTemplate, trainingPlanErrorTemplate)
+function(TP, moment, TrainingPlanApplyView, UserConfirmationView, applyTrainingPlanTemplate, trainingPlanErrorTemplate)
 {
     return TP.ItemView.extend(
     {
-        initialize: function(options)
-        {
-            if (!(options.model && options.targetDate))
-            {
-                throw "A model and targetDate are required";
-            }
-            this.model = options.model;
-            this.targetDate = options.targetDate;
-            this.dateView = new TrainingPlanDatePickerView({model: this.model, el: this.$el.find('.chooseDate'), parentModal: this, defaultDate: this.targetDate});
-            this.detailDataPromise = this.model.details.fetch();
-            this.detailDataPromise.done(this.render);
-        },
-
-        onRender: function ()
-        {
-            this.dateView.setElement(this.$el.find('.chooseDate'));
-            this.dateView.render();
-        },
-
-        applyPlan: function()
-        {
-            var self = this;
-            if (this.detailDataPromise.state() === "pending")
-            {
-                return;
-            }
-            this.$el.addClass('waiting');
-
-            var applyStartType = Number(this.dateView.ui.applyDateType.val());
-            var targetDate = this.dateView.ui.applyDate.val();
-
-            var apply = this.model.applyToDate(targetDate, applyStartType);
-            apply.done(function()
-            {
-                self.close();
-            }).fail(function()
-            {
-                var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
-                errorMessageView.render();
-                self.$el.removeClass('waiting');
-            });
-        },
 
         modal:
         {
@@ -68,19 +26,49 @@ function(TP, moment, TrainingPlanDatePickerView, UserConfirmationView, applyTrai
 
         events:
         {
-            'click #confirmationOk': 'applyPlan',
-            'click #confirmationCancel' : 'onCancel'
-        },
-
-        onCancel: function()
-        {
-            this.close();
+            'click #confirmationCancel' : 'close'
         },
 
         template:
         {
             type: "handlebars",
             template: applyTrainingPlanTemplate
+        },
+
+        initialize: function(options)
+        {
+            if (!(options.model && options.targetDate))
+            {
+                throw "A model and targetDate are required";
+            }
+            this.model = options.model;
+            this.targetDate = options.targetDate;
+            this.detailDataPromise = this.model.details.fetch();
+            this.detailDataPromise.done(this.render);
+        },
+
+        onRender: function ()
+        {
+            this.renderPlanApplyView();
+        },
+
+        renderPlanApplyView: function()
+        {
+            if(this.planApplyView)
+            {
+                this.planApplyView.close();
+            }
+            this.planApplyView = new TrainingPlanApplyView({model: this.model, parentModal: this});
+            this.listenTo(this.planApplyView, "planApplied", this._refreshCalendar);
+            this.$(".chooseDate").append(this.planApplyView.render().$el);
+            this.on("close", this.planApplyView.close, this.planApplyView);
+        },
+
+        _refreshCalendar: function()
+        {
+            this.close();
+            theMarsApp.calendarManager.reset();
         }
+
     });
 });
