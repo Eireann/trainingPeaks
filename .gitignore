@@ -29,3 +29,6 @@ node_modules/grunt-mocha/node_modules/grunt-lib-phantomjs/node_modules/phantomjs
 
 # ignore npm binaries
 .bin
+
+mars.sublime-project
+mars.sublime-workspace
