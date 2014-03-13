@@ -12,9 +12,8 @@ define(
     "shared/views/tomahawkView",
     "./trainingPlanFullDescriptionView",
     "scripts/helpers/multilineEllipsis",
-    "views/calendar/library/trainingPlanDatePickerView",
+    "views/calendar/library/trainingPlanApplyView",
     "hbs!templates/views/confirmationViews/unapplyConfirmationView",
-    "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
 function(
@@ -30,9 +29,8 @@ function(
     TomahawkView,
     trainingPlanFullDescriptionView,
     multilineEllipsis,
-    TrainingPlanDatePickerView,
+    TrainingPlanApplyView,
     deleteConfirmationTemplate,
-    trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
     )
 {
@@ -52,7 +50,6 @@ function(
 
         events:
         {
-            "click .apply": "onApply",
             "click #closeIcon": "close",
             "click .removePlan": "confirmDeleteAppliedPlan",
             "click .more": "moreClicked"
@@ -66,7 +63,6 @@ function(
         {
             this.model.details.on("change", this.render, this);
             this.once("render", this.onInitialRender, this);
-            this.dateView = new TrainingPlanDatePickerView({model: this.model, el: this.$el.find('.startEndPlan'), parentModal: this});
         },
 
         onInitialRender: function()
@@ -86,10 +82,20 @@ function(
 
         onRender: function()
         {
-            var self = this;
-            this.dateView.setElement(this.ui.dateSection);
-            self.dateView.render();
+            this.renderPlanApplyView();
             this.trigger("reposition");
+        },
+
+        renderPlanApplyView: function()
+        {
+            if(this.planApplyView)
+            {
+                this.planApplyView.close();
+            }
+            this.planApplyView = new TrainingPlanApplyView({model: this.model, parentModal: this});
+            this.listenTo(this.planApplyView, "planApplied", this._refreshCalendar);
+            this.ui.dateSection.append(this.planApplyView.render().$el);
+            this.on("close", this.planApplyView.close, this.planApplyView);
         },
 
         serializeData: function()
@@ -131,29 +137,6 @@ function(
             return data;
         },
 
-        onApply: function()
-        {
-
-            this.applyStartType = Number(this.dateView.ui.applyDateType.val());
-            var targetDate = TP.utils.datetime.parse(this.dateView.ui.applyDate.val()).format("YYYY-MM-DD");
-
-            var apply = this.model.applyToDate(targetDate, this.applyStartType);
-
-            var self = this;
-            self.waitingOn();
-            apply.done(function()
-            {
-                self.close();
-            }).fail(function()
-            {
-                var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
-                errorMessageView.render();
-            }).always(function()
-            {
-                self.waitingOff();
-            });
-        },
-
         confirmDeleteAppliedPlan: function(e)
         {
             var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
@@ -171,8 +154,7 @@ function(
             self.waitingOn();
             removeAppliedPlan.execute().done(function()
             {
-                self.model.refreshDependencies();
-                self.close();
+                self._refreshCalendar();
             }).fail(function()
             {
                 var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
@@ -212,6 +194,12 @@ function(
         {
             this.fullDescriptionView.off("close", this.onDetailsClose, this);
             this.fullDescriptionView = null;
+        },
+
+        _refreshCalendar: function()
+        {
+            this.close();
+            theMarsApp.calendarManager.reset();
         }
 
     });

@@ -2,14 +2,12 @@
 [
     "TP",
     "./trainingPlanDetails",
-    "models/commands/applyTrainingPlan",
     "models/calendar/calendarDay",
     "views/calendar/library/applyTrainingPlanToCalendarConfirmationView"
 ],
 function (
     TP,
     TrainingPlanDetailsModel,
-    ApplyTrainingPlanCommand,
     CalendarDay,
     ApplyTrainingPlanToCalendarConfirmationView
 )
@@ -37,27 +35,6 @@ function (
         initialize: function()
         {
             this.details = new TrainingPlanDetailsModel({ planId: this.get("planId") });
-        },
-        refreshDependencies: function(date)
-        {
-            this.fetch();
-            theMarsApp.calendarManager.reset();
-        },
-        applyToDate: function(date, startType)
-        {
-            var command = new ApplyTrainingPlanCommand({
-                athleteId: theMarsApp.user.getCurrentAthleteId(),
-                planId: this.get('planId'),
-                startType: startType,
-                targetDate: date
-            });
-            var def = command.execute();
-            var self = this;
-            def.done(function()
-            {
-                self.refreshDependencies(date);
-            });
-            return def;
         },
 
         dropped: function(options)
