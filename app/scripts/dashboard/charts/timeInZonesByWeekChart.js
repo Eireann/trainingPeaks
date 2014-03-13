@@ -253,6 +253,7 @@ function(
             flotOptions.xaxis.ticks = function(axis)
             {
                 self = undefined;
+
                 var startIndex = self._data.length > 5 ? Math.ceil(self._data.length / 20) : 0;
                 var endIndex = self._data.length > 5 ? self._data.length - Math.floor(self._data.length / 10) - 1 : self._data.length - 1;
 
