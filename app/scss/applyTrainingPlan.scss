@@ -7,12 +7,14 @@
 @import "globalCSS/flex";
 @import "globalCSS/throbber";
 @import "globalCSS/modal";
+@import "globalCSS/timepicker";
 
 @import "calendar/tabLibraries/trainingPlans";
 
 @import "globalCSS/hoverBox";
 
 @import "globalCSS/tooltip";
+@import "globalCSS/dialog";
 @import "globalCSS/selectBox";
 
 @import "touch";
@@ -26,7 +28,21 @@
 
 .applyTrainingPlanContainer
 {
+    width: 330px;
     font-size: $baseFontSize;
     font-family: $fontFamilyRegular;
     @include buttons(0px, auto, $fontSizeMedium);
+
+    input[type="text"]
+    {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        cursor: text;
+        @include box-shadow(none);
+
+        &:focus
+        {
+            @include box-shadow(none);
+        }
+    }
 }

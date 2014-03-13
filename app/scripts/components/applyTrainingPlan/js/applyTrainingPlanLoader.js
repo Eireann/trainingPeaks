@@ -1,13 +1,22 @@
 /* jshint ignore:start */
 var applyReady = new $.Deferred();
 
-function LoadApplyTrainingPlan(cssSelector, trainingPlanId)
+/*
+options:
+trainingPlanId
+target
+onSuccess
+*/
+
+function LoadApplyTrainingPlan(options)
 {
     applyReady.done(function(ApplyTrainingPlan)
     {
-        var applyPlan = new ApplyTrainingPlan({ el: $(cssSelector), trainingPlanId: trainingPlanId });
+        var applyPlan = new ApplyTrainingPlan(options);
 
-        applyPlan.load().done(function(){applyPlan.render();});
+        applyPlan.load().done(function(){
+          $(options.target).append(applyPlan.render().$el);
+        });
     });
 }
 

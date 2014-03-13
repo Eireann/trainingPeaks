@@ -6,19 +6,25 @@
 
         <link rel="stylesheet" href="css/applyTrainingPlan.css" />
         <script src="js/applyTrainingPlan.js"></script>
-        </script>
         <script>
 
         var trainingPlanParam = window.location.search.match(/(\?|&)id=([^&]*)/);
         var trainingPlanId = trainingPlanParam ? trainingPlanParam[2] :  30819; // welcome to training peaks
         $(document).ready(function()
         {
-            LoadApplyTrainingPlan("#applyTrainingPlan", trainingPlanId);
+            LoadApplyTrainingPlan({
+                target: "#applyTrainingPlan",
+                trainingPlanId: trainingPlanId,
+                onSuccess: function(){alert('plan has been applied');}
+            });
         });
         </script>
     </head>
-    <body>
-        <div id="applyTrainingPlan" style="width: 400px"></div>        
+    <body style="min-height: 1000px;">
+        <div style="margin: 50px;">
+            <h1>Apply training plan</h1>
+            <div id="applyTrainingPlan" style="width: 400px"></div>        
+        </div>
     </body>
 </html>
 

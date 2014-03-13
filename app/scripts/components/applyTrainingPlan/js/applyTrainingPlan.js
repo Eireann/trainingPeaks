@@ -77,7 +77,7 @@ function(
             this.planApplyView = new TrainingPlanApplyView({model: this.model});
             this.$el.append(this.planApplyView.render().$el);
             this.on("close", this.planApplyView.close, this);
-            //this.listenTo(this.planApplyView, "planApplied", this._refreshCalendar);
+            this.listenTo(this.planApplyView, "planApplied", this.options.onSuccess);
         },
 
         _setupApiConfig: function()
@@ -170,9 +170,7 @@ function(
             {
                 $("<link>").attr("rel", "stylesheet").attr("href", stylesheet).insertBefore("link:first");
             });
-        },
-
-
+        }
     });
 
     return ApplyTrainingPlan;
