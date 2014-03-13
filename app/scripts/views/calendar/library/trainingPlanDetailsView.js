@@ -14,6 +14,7 @@ define(
     "scripts/helpers/multilineEllipsis",
     "views/calendar/library/trainingPlanApplyView",
     "hbs!templates/views/confirmationViews/unapplyConfirmationView",
+    "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
 function(
@@ -31,6 +32,7 @@ function(
     multilineEllipsis,
     TrainingPlanApplyView,
     deleteConfirmationTemplate,
+    trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
     )
 {
