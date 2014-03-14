@@ -1,42 +1,48 @@
+@charset "UTF-8";
 @import "settings";
-@import "foundation";
 
-@import "globalCSS/tpstylesheet";
-@import "globalCSS/tpfontstyles";
-@import "globalCSS/mixIn";
-@import "globalCSS/throbber";
-@import "globalCSS/modal";
-
-@import "globalCSS/packeryCollection";
-
-@import "globalCSS/table";
-
-@import "calendar/quickView/quickview";
-@import "calendar/calendarWorkout";
-@import "calendar/workoutColor";
-@import "globalCSS/hoverBox";
-
-@import "globalCSS/tooltip";
-@import "globalCSS/selectBox";
-
-@import "workout/workoutCommentsEditor";
-
-@import "workout/workoutBarView";
+@import "foundationMinimal";
 
 @import "touch";
-
-@import "charts";
-
+@import "globalCSS/modal";
+@import "globalCSS/hoverBox";
 @import "overlayBox";
-
-@import "sprites";
-
+@import "globalCSS/tooltip";
 @import "tomahawk";
 @import "upgrade";
+@import "calendar/quickview/flotTip";
 
+@import "../../assets/icons/icons";
 
 .pfvContainer
-{
+{ 
+    $include-html-type-classes: true;
+    @import "foundation/components/type";
+
+    $include-html-form-classes: true;
+    @import "foundation/components/forms";
+
+    $include-html-label-classes: true;
+    @import "foundation/components/labels";
+
+    @import "sprites";
+    @import "globalCSS/tpstylesheet";
+    @import "globalCSS/tpfontstyles";
+    @import "globalCSS/mixIn";
+    @import "globalCSS/throbber";
+
+    @import "globalCSS/packeryCollection";
+    @import "globalCSS/table";
+    @import "calendar/quickView/quickview";
+    @import "calendar/calendarWorkout";
+    @import "calendar/workoutColor";
+    @import "workout/workoutCommentsEditor";
+    @import "workout/workoutBarView";
+    @import "charts";
+
+
+    @import "globalCSS/selectBox";
+
     min-height: 100%;
     @include nice-scrollbar;
     font-size: $baseFontSize;
@@ -56,20 +62,14 @@
 
     @include nice-scrollbar-real;
 
-
-    .QVHeaderItemsContain .workoutBarViewHeader
-    {
-        cursor: default;
-    }
-
-    .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
+    .QVHeaderItemsContain .workoutBarViewHeader, .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
     {
         cursor: default;
     }
 
     #time
     {
-        font-family: "HelveticaNeueW01-55Roma";
+        font-family: $fontFamilyRegular;
         font-size: 0.857em;
         color: #636569;
     }
@@ -81,15 +81,8 @@
 
     #workOutQuickView, .workoutQuickView
     {
-        background: none;
         height: 100%;
         width: 100%;
-    }
-
-    .workout.past.ComplianceNone
-    {
-        background: none;
-        border: none;
     }
 
     .profileImage
@@ -98,8 +91,7 @@
     }
 
     .profileImage img {
-        height: 80px;
-        margin-right: 12px;
+        height: 70px;
         vertical-align: top;
     }
 
@@ -108,6 +100,7 @@
         font-size: 0.857em;
         color: #636569;
         margin-top: 22px;
+        margin-left: 12px;
     }
 
     .userName span
@@ -120,56 +113,94 @@
         display: none;
     }
 
-    .QVHeader
-    {
-        background: none;
-        border-bottom: 1px solid #ccc;
-        @include box-shadow(none);
-    }
-
-    .QVHeader .workoutBarViewHeader .workoutHeaderStats .title span.workoutTitleText
-    {
-        display: inline;
-    }
-    .QVHeader .workoutBarViewHeader .workoutHeaderStats .title input#workoutTitleField
-    {
-        display: none;
-    }
-
     #quickViewExpandedContent
     {
         height: calc(100% - 125px);
-    }
 
-    .expandoLeftColumn, .expandoRightColumn
-    {
-        height: 100%;
-    }
+        .expandoRightColumn
+        {
+            height: 100%;
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+            background-color: $TPGrey1;
+        }
 
-    .expandoRightColumn .expandoStatsRegion
-    {
-        height: 50%;
-    }
+        .expandoLeftColumn
+        {
+            height: 100%;
 
-    .expandoLeftColumn
-    {
-        overflow-y: visible;
-    }
+            .expandoPackeryRegion
+            {
+                padding: 0px;   
+            }
+        }
 
-    .expandoRightColumn .expandoLapsRegion
-    {
-        height: 50%;
+        select
+        {
+           @extend %spriteSelectBoxBG; 
+        }
     }
 
     .expandoPod {
-        height: calc(50% - 10px);
+        height: 50%;
         width: 100%;
         position: relative;
+        border: none;
+
+        &:hover
+        {
+            border: none;
+        }
     }
 
    #quickViewExpandedContent .lap.highlight .lapName .add, #quickViewExpandedContent .peak.highlight .lapName .add 
    {
         display: none;
    }
+
+    *, *:before, *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    .hidden
+    {
+        display: none;
+    }
+
+    .workoutBarViewHeader .workoutHeaderStats .title input.workoutTitle
+    {
+        width: auto;
+    }
+
+}
+
+.modal
+{
+    @import "globalCSS/tpfontstyles";
+
+    $include-html-type-classes: true;
+    @import "foundation/components/type";
+
+    $include-html-form-classes: true;
+    @import "foundation/components/forms";
+
+    $include-html-label-classes: true;
+    @import "foundation/components/labels";
+
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;   
+
+    .hidden
+    {
+        display: none;
+    }
+
+    *, *:before, *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
 }
 

@@ -128,6 +128,17 @@ module.exports = function(grunt)
                     imagesDir: "assets/images"
                 }
             },
+            components_debug:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/components/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
+            }
         },
 
         requirejs:
@@ -282,7 +293,11 @@ module.exports = function(grunt)
         {
             compass: {
                 files: ["Gruntfile.js", "app/scss/**/*.scss"],
-                tasks: "compass:debug"
+                tasks: ["compass:debug", "compass:components_debug"]
+            },
+            components: {
+                files: ["app/scripts/components/**/*.html", "app/scripts/components/**/*.js"],
+                tasks: ["components:debug"]
             }
         },
 
@@ -303,6 +318,10 @@ module.exports = function(grunt)
             post_build:
             {
                 src: ["build/**/single.js"]
+            },
+            components:
+            {
+                src: ["build/components"]
             }
         },
 
@@ -474,6 +493,7 @@ module.exports = function(grunt)
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 
     // to build external components
+    grunt.registerTask("components:debug", ["clean:components", "copy:components", "compass:debug", "compass:components_debug", "requirejs:components"]);
     grunt.registerTask("components", ["clean", "jshint", "debug", "copy:components", "compass:components", "requirejs:components", "uglify:components"]);
 
     // list any individual external components here to be included in the build_components task

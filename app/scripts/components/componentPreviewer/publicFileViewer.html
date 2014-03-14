@@ -10,18 +10,16 @@
         <script>
 
         // workout token here is just an example - this should be the actual workout token provided in public workout url query string
-        var workoutToken = "H6WHJO736OM54TYLHHYMI7V2OE";
-        
+        var tokenParam = window.location.search.match(/token=(.*)/);
+        var workoutToken = tokenParam ? tokenParam[1] : "H6WHJO736OM54TYLHHYMI7V2OE";
+
         $(document).ready(function()
         {
-            $("#main").height($(window).innerHeight());
-            LoadPublicFileViewer("#main", workoutToken);
+            LoadPublicFileViewer("#publicFileViewer", workoutToken);
         });
         </script>
     </head>
     <body>
-        <div id="main" style="width: 100%"></div>        
+        <div id="publicFileViewer" style="width: 70%; height: 800px; margin-left: auto; margin-right: auto;"></div>        
     </body>
 </html>
-
-

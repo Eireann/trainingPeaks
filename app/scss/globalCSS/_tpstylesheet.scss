@@ -109,23 +109,3 @@ $clrTime: #2ac8f4;
 // elevation correction colors
 $clrElevOriginal: #6e96b9;
 $clrElevCorrected: #e61101;
-
-.helpText
-{
-    font-family: $fontFamilyRegularItalic;
-    font-size: $fontSizeSmall;
-}
-
-
-a {
-	color: $TPLinkBlue;
-}
-
-a:hover, a:focus {
-	color: $TPLinkBlueHover;
-}
-
-button {
-	// fix for chrome button halo
-	outline: none;
-}

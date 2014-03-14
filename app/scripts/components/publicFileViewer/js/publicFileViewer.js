@@ -18,9 +18,10 @@ define(
     "./userNameView",
     "views/expando/graphView",
     "views/expando/mapView",
+    //"views/charts/heartRateTimeInZonesChart",
+    //"views/charts/powerTimeInZonesChart",
     "views/expando/statsView",
     "views/expando/lapsView",
-    "./workoutCommentsView",
     "hbs!../templates/publicFileViewerTemplate"
 ],
 function(
@@ -42,19 +43,22 @@ function(
          UserNameView,
          GraphView,
          MapView,
+         //HeartRateTimeInZonesChart,
+         //PowerTimeInZonesChart,
          StatsView,
          LapsView,
-         WorkoutCommentsView,
          publicFileViewerTemplate
          )
 {
 
-    var WorkoutBarViewExtra = WorkoutBarView.extend({
+    /*
+    var WorkoutBarViewWithoutCompliance = WorkoutBarView.extend({
         getComplianceCssClassName: function ()
         {
             return "ComplianceNone";
         }
     });
+    */
 
     var PublicFileViewer = TP.ItemView.extend({
 
@@ -98,14 +102,29 @@ function(
             webfonts.loadFonts();
             this.$el.addClass("pfvContainer");
 
+            var options = {
+                model: this.workout,
+                detailDataPromise: new $.Deferred().resolve(),
+                stateModel: new ExpandoStateModel()
+            };
+
+            this.renderHeader();
+            this.renderExpandoPods(options);
+            this.renderExpandoLeftColumn(options);
+        },
+
+        renderHeader: function()
+        {
             var dateAndTimeView = new DateAndTimeView({ model: this.workout });
             this.$(".workoutBarView").before(dateAndTimeView.render().$el);
             this.subviews.push(dateAndTimeView); 
 
-            var workoutBarView = new WorkoutBarViewExtra({ model: this.workout });
+            var workoutBarView = new WorkoutBarView({ model: this.workout });
             this.$(".workoutBarView").append(workoutBarView.render().$el);
+            workoutBarView.$("input.workoutTitle").prop("disabled", true);
             this.subviews.push(workoutBarView);
 
+            /*
             var userProfileImageView = new UserProfileImageView({ model: this.userModel, wwwRoot: this.apiConfig.wwwRoot });
             this.$(".QVHeaderItemsContain").append(userProfileImageView.render().$el);
             this.subviews.push(userProfileImageView);
@@ -113,37 +132,51 @@ function(
             var userNameView = new UserNameView({ model: this.userModel });
             this.$(".QVHeaderRightColumn").append(userNameView.render().$el);
             this.subviews.push(userNameView);
+            */
 
-            var expandoStateModel = new ExpandoStateModel();
+            this._watchForWindowResize();
+        },
 
-            var podOptions = {
-                model: this.workout,
-                detailDataPromise: new $.Deferred().resolve(),
-                stateModel: expandoStateModel
-            };
+        renderExpandoPods: function(options)
+        {
+            var pods = [
+                {
+                    podView: MapView,
+                    cssClass: "expandoMapPod"
+                },
+                {
+                    podView: GraphView,
+                    cssClass: ""
+                },
+                /*{
+                    podView: HeartRateTimeInZonesChart,
+                    cssClass: ""
+                },
+                {
+                    podView: PowerTimeInZonesChart,
+                    cssClass: ""
+                }*/
+            ];
 
-            var graphView = new GraphView(podOptions);
-            this._appendExpandoPod(graphView);
-            this.subviews.push(graphView);
+            _.each(pods, function(pod)
+            {
+                var view = new pod.podView(options);
+                this._appendExpandoPod(view, pod.cssClass);
+                this.subviews.push(view);
+            }, this);
 
-            var mapView = new MapView(podOptions);
-            this._appendExpandoPod(mapView, "expandoMapPod");
-            this.subviews.push(mapView);
+        },
 
-            var statsView = new StatsView(podOptions);
+        renderExpandoLeftColumn: function(options)
+        {
+            var statsView = new StatsView(options);
             this.$(".expandoStatsRegion").append(statsView.render().$el); 
             this.subviews.push(statsView);
 
-            var lapsView = new LapsView(podOptions);
+            var lapsView = new LapsView(options);
             this.$(".expandoLapsRegion").append(lapsView.render().$el);
             lapsView.onShow();
             this.subviews.push(lapsView);
-
-            var commentsView = new WorkoutCommentsView({ collection: this.workout.getPostActivityComments() });
-            this.$(".commentsContainer").append(commentsView.render().$el);
-            this.subviews.push(commentsView);
-
-            this._watchForWindowResize();
         },
 
         _setupModels: function(data)
@@ -184,7 +217,7 @@ function(
         _setupMarsApp: function()
         {
             var $body = $("body");
-
+            
             window.theMarsApp = {
                 
                 user: new UserModel(),

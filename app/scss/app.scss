@@ -60,6 +60,7 @@
 @import "tabbedLayout";
 @import "overlayBox";
 
+@import "../../assets/icons/icons";
 @import "sprites";
 
 @import "tomahawk";
@@ -127,6 +128,26 @@ input[type="text"]
 .hidden
 {
     display: none;
+}
+
+.helpText
+{
+    font-family: $fontFamilyRegularItalic;
+    font-size: $fontSizeSmall;
+}
+
+
+a {
+    color: $TPLinkBlue;
+}
+
+a:hover, a:focus {
+    color: $TPLinkBlueHover;
+}
+
+button {
+    // fix for chrome button halo
+    outline: none;
 }
 
 @include nice-scrollbar-real;
