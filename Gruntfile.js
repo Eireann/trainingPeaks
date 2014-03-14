@@ -123,7 +123,7 @@ module.exports = function(grunt)
                 {
                     sassDir: "app/scss",
                     cssDir: "build/components/css",
-                    outputStyle: "expanded",
+                    outputStyle: "compressed",
                     require: "zurb-foundation",
                     imagesDir: "assets/images"
                 }
