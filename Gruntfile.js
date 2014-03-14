@@ -416,6 +416,16 @@ module.exports = function(grunt)
             {
                 src: [ "coverage/test/mocha.html" ],
             }
+        },
+
+        availabletasks: {
+            tasks: {
+
+                options: {
+                    filter: "include",
+                    tasks: ["build", "debug", "components", "compass", "copy", "test", "watch"]
+                }
+            }
         }
 
     });
@@ -429,7 +439,6 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-htmlmin");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-watch");
@@ -439,6 +448,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-targethtml");
     grunt.loadNpmTasks("grunt-bower-requirejs");
     grunt.loadNpmTasks("grunt-mocha");
+    grunt.loadNpmTasks("grunt-available-tasks");
 
     grunt.registerTask("tpcore", ["uglify:tpcore", "uglify:tpcore.deps"]);
 
@@ -468,4 +478,7 @@ module.exports = function(grunt)
 
     // list any individual external components here to be included in the build_components task
     grunt.registerTask("requirejs:components", ["requirejs:applyTrainingPlan", "requirejs:publicFileViewer"]);
+
+    // help
+    grunt.registerTask("help", ["availabletasks"]);
 };
