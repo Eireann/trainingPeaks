@@ -16,6 +16,8 @@
 
 .pfvContainer
 { 
+
+    @include nice-scrollbar;
     $include-html-type-classes: true;
     @import "foundation/components/type";
 
@@ -44,7 +46,7 @@
     @import "globalCSS/selectBox";
 
     min-height: 100%;
-    @include nice-scrollbar;
+
     font-size: $baseFontSize;
     font-family: $fontFamilyRegular;
 
@@ -60,7 +62,6 @@
         display: none;
     }
 
-    @include nice-scrollbar-real;
 
     .QVHeaderItemsContain .workoutBarViewHeader, .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
     {
@@ -137,8 +138,14 @@
 
         select
         {
-           @extend %spriteSelectBoxBG; 
+            @extend %spriteSelectBoxBG; 
         }
+
+        .timeDistButtons button
+        {
+            @extend %backgroundGradientButtonBG;
+        }
+
     }
 
     .expandoPod {

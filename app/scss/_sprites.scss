@@ -14,7 +14,6 @@ body[data-useragent*="MSIE"] .icon
     background-size: (image-width($url) / $scale) (image-height($url) / $scale);
 }
 
-
 // Expando/Quickview Icons
 
 %resizeIndicatorBG { @include inlineBG("../../assets/images/QVImages/resize-indicator.png"); }
