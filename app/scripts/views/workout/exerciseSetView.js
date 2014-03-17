@@ -102,6 +102,7 @@ function (
             else if (instruction.type === 10)
             {
                 instruction.name = TP.utils.translate("Heart Rate");
+                instruction.units = "bpm";
             }
             // 12 = "Power"
             else if (instruction.type === 12)
