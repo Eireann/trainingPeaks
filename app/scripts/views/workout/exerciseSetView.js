@@ -162,12 +162,23 @@ function (
 
         _convertSpeedZones: function(instruction)
         {
+            var isPaced = false;
+
             if (instruction.planValueSpecified)
             {
                 var planSpeedZone = this._getZone("speed", instruction.planValue);
                 if (planSpeedZone)
                 {
-                    instruction.planValue = this._buildZoneString(planSpeedZone, _.contains(pacedWorkoutTypes, this.options.workoutTypeId) ? "pace" : "speed");
+                    isPaced = _.contains(pacedWorkoutTypes, this.options.workoutTypeId);
+
+                    if (isPaced)
+                    {
+                        instruction.planValue = this._buildZoneString(planSpeedZone, "pace", "min/mi");
+                    }
+                    else
+                    {
+                        instruction.planValue = this._buildZoneString(planSpeedZone, "speed", "mph");
+                    }
                 }
             }
             if (instruction.actualValueSpecified)
@@ -175,7 +186,16 @@ function (
                 var actualSpeedZone = this._getZone("speed", instruction.actualValue);
                 if (actualSpeedZone)
                 {
-                    instruction.actualValue = this._buildZoneString(actualSpeedZone, _.contains(pacedWorkoutTypes, this.options.workoutTypeId) ? "pace" : "speed");
+                    isPaced = _.contains(pacedWorkoutTypes, this.options.workoutTypeId);
+
+                    if (isPaced)
+                    {
+                        instruction.actualValue = this._buildZoneString(actualSpeedZone, "pace", "min/mi");
+                    }
+                    else
+                    {
+                        instruction.actualValue = this._buildZoneString(actualSpeedZone, "speed", "mph");
+                    }
                 }
             }
         },
