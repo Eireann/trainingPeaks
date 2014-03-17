@@ -4,10 +4,11 @@
   </div>
 
   {{#each instructions}}
-    {{#removeWhitespaceBetweenTags}}
     <div class="workoutStatsRowStructure" data-property="{{name}}">
 
       <div class="propertyName">{{name}}</div>
+
+      <div class="plannedOrCompleted">{{$ "Planned" }}:</div>
 
       <div class="propertyPlannedMinValue">{{formatExerciseValue planValue planMin units}}</div>
 
@@ -15,25 +16,30 @@
           <div class="minMaxSeparator">-</div>
           <div class="propertyPlannedMaxValue">{{formatExerciseValue planMax units}}</div>
       {{/if}}
-     
+
+      {{#if units}}
+        <div class="propertyUnit">{{ units }}</div>
+      {{/if}}    
+
       {{#ifAny actualValue actualMin}} 
         <div class="plannedActualSeparator">/</div>
+
+        <div class="plannedOrCompleted">{{$ "Completed" }}:</div>
+
         <div class="propertyCompletedMinValue">{{formatExerciseValue actualValue actualMin units}}</div>
 
         {{#if actualMax}}
           <div class="minMaxSeparator">-</div>
           <div class="propertyCompletedMaxValue">{{formatExerciseValue actualMax units}}</div>
         {{/if}}
+
+        {{#if units}}
+          <div class="propertyUnit">{{ units }}</div>
+        {{/if}}
+
       {{/ifAny}}
 
-      {{#if units}}
-        <div class="propertyUnit">{{ units }}</div>
-      {{/if}}
-
     </div>
-
-    <div class="workoutStatsRowSeparator">,</div>
-    {{/removeWhitespaceBetweenTags}}
   {{/each}}
 
   {{#if displayNotes}}
