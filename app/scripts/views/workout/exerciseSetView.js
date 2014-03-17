@@ -221,7 +221,14 @@ function (
                 return zoneSet.workoutTypeId === workoutTypeId;
             });
 
-            return zonesForWorkoutType.zones[(zoneNumber - 1)];
+            if (zonesForWorkoutType && zonesForWorkoutType.zones && zonesForWorkoutType.zones.length >= zoneNumber)
+            {
+                return zonesForWorkoutType.zones[(zoneNumber - 1)];
+            }
+            else
+            {
+                return undefined;
+            }
         }
 
     });
