@@ -1,0 +1,213 @@
+@charset "UTF-8";
+@import "settings";
+
+@import "foundationMinimal";
+
+@import "touch";
+@import "globalCSS/modal";
+@import "globalCSS/hoverBox";
+@import "overlayBox";
+@import "globalCSS/tooltip";
+@import "tomahawk";
+@import "upgrade";
+@import "calendar/quickview/flotTip";
+
+@import "../../assets/icons/icons";
+
+.pfvContainer
+{ 
+
+    @include nice-scrollbar;
+    $include-html-type-classes: true;
+    @import "foundation/components/type";
+
+    $include-html-form-classes: true;
+    @import "foundation/components/forms";
+
+    $include-html-label-classes: true;
+    @import "foundation/components/labels";
+
+    @import "sprites";
+    @import "globalCSS/tpstylesheet";
+    @import "globalCSS/tpfontstyles";
+    @import "globalCSS/mixIn";
+    @import "globalCSS/throbber";
+
+    @import "globalCSS/packeryCollection";
+    @import "globalCSS/table";
+    @import "calendar/quickView/quickview";
+    @import "calendar/calendarWorkout";
+    @import "calendar/workoutColor";
+    @import "workout/workoutCommentsEditor";
+    @import "workout/workoutBarView";
+    @import "charts";
+
+
+    @import "globalCSS/selectBox";
+
+    min-height: 100%;
+
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;
+
+    @include buttons(0px, auto, $fontSizeMedium);
+
+    .clickable
+    {
+        cursor: pointer;
+    }
+
+    .hidden
+    {
+        display: none;
+    }
+
+
+    .QVHeaderItemsContain .workoutBarViewHeader, .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
+    {
+        cursor: default;
+    }
+
+    #time
+    {
+        font-family: $fontFamilyRegular;
+        font-size: 0.857em;
+        color: #636569;
+    }
+
+    .dateAndTime
+    {
+        height: 22px;
+    }
+
+    #workOutQuickView, .workoutQuickView
+    {
+        height: 100%;
+        width: 100%;
+    }
+
+    .profileImage
+    {
+        float: right;
+    }
+
+    .profileImage img {
+        height: 70px;
+        vertical-align: top;
+    }
+
+    .userName
+    {
+        font-size: 0.857em;
+        color: #636569;
+        margin-top: 22px;
+        margin-left: 12px;
+    }
+
+    .userName span
+    {
+        font-family: "HelveticaNeueW01-75Bold";
+    }
+
+    .headerIcons
+    {
+        display: none;
+    }
+
+    #quickViewExpandedContent
+    {
+        height: calc(100% - 125px);
+
+        .expandoRightColumn
+        {
+            height: 100%;
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+            background-color: $TPGrey1;
+        }
+
+        .expandoLeftColumn
+        {
+            height: 100%;
+
+            .expandoPackeryRegion
+            {
+                padding: 0px;   
+            }
+        }
+
+        select
+        {
+            @extend %spriteSelectBoxBG; 
+        }
+
+        .timeDistButtons button
+        {
+            @extend %backgroundGradientButtonBG;
+        }
+
+    }
+
+    .expandoPod {
+        height: 50%;
+        width: 100%;
+        position: relative;
+        border: none;
+
+        &:hover
+        {
+            border: none;
+        }
+    }
+
+   #quickViewExpandedContent .lap.highlight .lapName .add, #quickViewExpandedContent .peak.highlight .lapName .add 
+   {
+        display: none;
+   }
+
+    *, *:before, *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    .hidden
+    {
+        display: none;
+    }
+
+    .workoutBarViewHeader .workoutHeaderStats .title input.workoutTitle
+    {
+        width: auto;
+    }
+
+}
+
+.modal
+{
+    @import "globalCSS/tpfontstyles";
+
+    $include-html-type-classes: true;
+    @import "foundation/components/type";
+
+    $include-html-form-classes: true;
+    @import "foundation/components/forms";
+
+    $include-html-label-classes: true;
+    @import "foundation/components/labels";
+
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;   
+
+    .hidden
+    {
+        display: none;
+    }
+
+    *, *:before, *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+}
+

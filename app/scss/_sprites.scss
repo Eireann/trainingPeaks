@@ -1,5 +1,3 @@
-@import "../../assets/icons/icons";
-
 body[data-useragent*="MSIE"] .icon
 {
     line-height: normal;
@@ -14,14 +12,6 @@ body[data-useragent*="MSIE"] .icon
 {
     background-image: inline-image($url);
     background-size: (image-width($url) / $scale) (image-height($url) / $scale);
-}
-
-@mixin sportTypeIcon($type, $fg, $bg, $size)
-{
-    @extend .icon-#{$type};
-    color: $fg;
-    background: $bg;
-    font-size: $size;
 }
 
 // Expando/Quickview Icons
