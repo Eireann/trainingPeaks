@@ -79,10 +79,9 @@
 
             .workoutStatsRowStructure {
 
-                display: inline;
-
+                height: 22px;
+                
                 div {
-                    margin-right: 5px;
                     display: inline;
                     font-size: $fontSizeSmall;
 
@@ -117,14 +116,6 @@
 
             } 
 
-            .workoutStatsRowSeparator
-            {
-                display: inline;
-                &:last-of-type
-                {
-                    display: none;
-                }
-            }
         }
     }
 }
