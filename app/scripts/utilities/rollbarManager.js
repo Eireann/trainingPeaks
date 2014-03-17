@@ -100,7 +100,7 @@ function($, _)
                 {
                     // If there is an error message, Rollbar won't let us know the error was reported via window.onerror,
                     // so, add this prefix.
-                    error = "Uncaught exception: " + error;
+                    error = "Via window.onerror: " + error;
                 }
                
                 // push them to rollbar array or rollbar client

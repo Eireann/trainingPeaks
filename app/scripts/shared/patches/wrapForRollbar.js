@@ -148,8 +148,7 @@ function(
             return stack;
         };
 
-        // This function will never be called if e.stack exists, yet it considers e.stack in its search.
-        // This is so to retain the original completeness of the code this was derived from.
+        // This function will never be called if e.stack exists (in live), yet it considers e.stack in its search.
         // Clean up later if we find the approach is viable.
         var findStackAnywhere = function(e)
         {
@@ -180,6 +179,7 @@ function(
                 }
                 else if (e.message.indexOf('\n') > -1 && e.message.split('\n').length > e.stacktrace.split('\n').length)
                 {
+                    // If e.message has more frames than e.stacktrace, prefer e.message.
                     e.stack = parseOpera9Exception(e);
                 }
                 else 
@@ -209,7 +209,16 @@ function(
 
             if (e.stack)
             {
-                e.stack = e.stack.join("\n");
+                // Flatten to a human-readable string
+
+                var stack = "";
+
+                _.each(e.stack, function(frame)
+                {
+                    stack += "\t" + frame + "\n";
+                });
+
+                e.stack = (e.name ? e.name + ": " : "") + e.message + "\n" + stack;
             }
         };
 
@@ -221,16 +230,16 @@ function(
             }
             catch(e)
             {
+                // Last resort attempt to collect a stack...
+                // If e.stack is null or undefined, see if we can find a stack in any other place.
+                // If e.stack exists, leave it alone.
+                if (!e.stack)
+                {
+                    findStackAnywhere(e);
+                }
+
                 if (window._rollbar && !e._rollbared)
                 {
-                    // Last resort attempt to collect a stack...
-                    // If e.stack is null or undefined, see if we can find a stack in any other place.
-                    // If e.stack exists, do not interfere. (That's the current behavior.)
-                    if (!e.stack)
-                    {
-                        findStackAnywhere(e);
-                    }
-
                     window._rollbar.push(e);
                 }
 
@@ -238,10 +247,6 @@ function(
                 {
                     e._rollbared = true;
                     e.message += " (rollbared)";
-
-                    // For testing only, always reformat the stack, even if it's found in e.stack.
-                    findStackAnywhere(e);
-                    console.log(e);
                 }
 
                 throw e;
