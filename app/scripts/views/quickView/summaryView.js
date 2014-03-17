@@ -113,7 +113,7 @@ function (
                 this.$(".workoutStructureToggleContainer").show();
             }
 
-            var view = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure") });
+            var view = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure"), itemViewOptions: { workoutTypeId: this.model.get("workoutTypeValueId")} });
 
             view.render();
 

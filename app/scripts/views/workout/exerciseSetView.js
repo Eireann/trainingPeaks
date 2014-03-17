@@ -194,7 +194,18 @@ function (
 
         _getZone: function(zoneType, zoneNumber)
         {
-            var workoutTypeId = 0;
+            var zone = this._getZoneBySportType(zoneType, zoneNumber, this.options.workoutTypeId);
+
+            if(!zone)
+            {
+                zone = this._getZoneBySportType(zoneType, zoneNumber, 0);
+            }
+
+            return zone;
+        },
+
+        _getZoneBySportType: function(zoneType, zoneNumber, workoutTypeId)
+        {
             return theMarsApp.user.getAthleteSettings().get(zoneType + "Zones." + workoutTypeId + ".zones." + (zoneNumber - 1));
         }
 
