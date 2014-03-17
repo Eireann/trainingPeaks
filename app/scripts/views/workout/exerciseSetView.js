@@ -127,8 +127,8 @@ function (
 
         _buildZoneString: function(zone, units, label)
         {
-            var min = units ? TP.utils.conversion.formatUnitsValue(units, zone.minimum) : zone.minimum;
-            var max = units ? TP.utils.conversion.formatUnitsValue(units, zone.maximum) : zone.maximum;
+            var min = units ? TP.utils.conversion.formatUnitsValue(units, zone.minimum, { workoutTypeId: this.options.workoutTypeId }) : zone.minimum;
+            var max = units ? TP.utils.conversion.formatUnitsValue(units, zone.maximum, { workoutTypeId: this.options.workoutTypeId }) : zone.maximum;
             return zone.label + " (" + min + " - " + max + (label ? " " + label : "") + ")";
         },
 
