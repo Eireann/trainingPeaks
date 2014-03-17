@@ -24,7 +24,7 @@ function
 
         if (value === null || value === undefined)
         {
-            return "-";
+            return "";
         }
 
         switch (displayUnits)
