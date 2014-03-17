@@ -3,6 +3,7 @@
     "underscore",
     "moment",
     "TP",
+    "utilities/workout/workoutTypes",
     "views/workoutCommentsEditor/workoutCommentsEditor",
     "views/quickView/summaryView/summaryViewUserCustomization",
     "views/quickView/summaryView/summaryViewStickitBindings",
@@ -15,6 +16,7 @@ function (
     _,
     moment,
     TP,
+    WorkoutTypes,
     WorkoutCommentsEditorView,
     summaryViewUserCustomization,
     summaryViewStickitBindings,
@@ -105,7 +107,9 @@ function (
                 return;
             }
             else
-            {
+            { 
+                this._setupWorkoutStructureLink();
+                this.listenTo(this.model, "change:workoutTypeValueId", this._setupWorkoutStructureLink);
                 this.$(".workoutStructureToggleContainer").show();
             }
 
@@ -116,6 +120,12 @@ function (
             this.$("#workoutStructure").html(view.el);
 
             this.on("close", _.bind(view.close, view));
+        },
+
+        _setupWorkoutStructureLink: function()
+        {
+            this.$(".workoutStructureToggle.intervals").toggle(this.model.get("workoutTypeValueId") !== WorkoutTypes.getIdByName("Strength"));
+            this.$(".workoutStructureToggle.exercises").toggle(this.model.get("workoutTypeValueId") === WorkoutTypes.getIdByName("Strength"));
         },
 
         _scrollToWorkoutStructure: function()
