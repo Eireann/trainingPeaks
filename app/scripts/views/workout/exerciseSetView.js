@@ -3,15 +3,23 @@ define(
     "underscore",
     "TP",
     "shared/data/exerciseSetUnits",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/workout/exerciseSetView"
 ],
 function (
     _,
     TP,
     ExerciseSetUnits,
+    WorkoutTypes,
     exerciseSetView
 )
 {
+    var pacedWorkoutTypes = [
+        WorkoutTypes.typesByName.Swim,
+        WorkoutTypes.typesByName.Run,
+        WorkoutTypes.typesByName.Walk
+    ];
+
     return TP.ItemView.extend(
     {
         className: "exerciseSet",
@@ -159,7 +167,7 @@ function (
                 var planSpeedZone = this._getZone("speed", instruction.planValue);
                 if (planSpeedZone)
                 {
-                    instruction.planValue = this._buildZoneString(planSpeedZone, "pace");
+                    instruction.planValue = this._buildZoneString(planSpeedZone, _.contains(pacedWorkoutTypes, this.options.workoutTypeId) ? "pace" : "speed");
                 }
             }
             if (instruction.actualValueSpecified)
@@ -167,7 +175,7 @@ function (
                 var actualSpeedZone = this._getZone("speed", instruction.actualValue);
                 if (actualSpeedZone)
                 {
-                    instruction.actualValue = this._buildZoneString(actualSpeedZone, "pace");
+                    instruction.actualValue = this._buildZoneString(actualSpeedZone, _.contains(pacedWorkoutTypes, this.options.workoutTypeId) ? "pace" : "speed");
                 }
             }
         },
@@ -196,7 +204,7 @@ function (
         {
             var zone = this._getZoneBySportType(zoneType, zoneNumber, this.options.workoutTypeId);
 
-            if(!zone)
+            if (!zone)
             {
                 zone = this._getZoneBySportType(zoneType, zoneNumber, 0);
             }
@@ -206,7 +214,14 @@ function (
 
         _getZoneBySportType: function(zoneType, zoneNumber, workoutTypeId)
         {
-            return theMarsApp.user.getAthleteSettings().get(zoneType + "Zones." + workoutTypeId + ".zones." + (zoneNumber - 1));
+            var zoneSets = theMarsApp.user.getAthleteSettings().get(zoneType + "Zones");
+
+            var zonesForWorkoutType = _.find(zoneSets, function(zoneSet)
+            {
+                return zoneSet.workoutTypeId === workoutTypeId;
+            });
+
+            return zonesForWorkoutType.zones[(zoneNumber - 1)];
         }
 
     });

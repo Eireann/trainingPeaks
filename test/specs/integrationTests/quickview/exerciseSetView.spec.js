@@ -18,7 +18,7 @@ function(
     ExerciseSetView
 )
 {
-    var setupTest = function(workoutName, workoutType, expectedResult)
+    var setupTest = function(workoutName, workoutType, units, expectedValue)
     {
         describe("Exercise Set View for " + workoutName, function()
         {
@@ -110,22 +110,23 @@ function(
 
             var exerciseSetModel, exerciseSetView;
 
-            it("Should display speed zones using paces.", function()
+            it("Should display speed zones using " + units + ".", function()
             {
                 // Something may be off here...class "propertyPlannedMinValue" may not be right.
-                expect(exerciseSetView.$("[data-property='Speed Zones'] .propertyPlannedMinValue").text()).to.contain(expectedResult);
+                expect(exerciseSetView.$("[data-property='Speed Zones'] .propertyPlannedMinValue").text()).to.contain(expectedValue);
             });
         });
     };
 
-    var pacedWorkouts = [
-        { name: "Swim", type: WorkoutTypes.typesByName.Swim, expectedResult: "Zone 2 (32:43 - 30:51)" },
-        { name: "Run", type: WorkoutTypes.typesByName.Run, expectedResult: "Zone 2 (15:29 - 13:41)" },
-        { name: "Walk", type: WorkoutTypes.typesByName.Walk, expectedResult: "Zone 2 (15:29 - 13:41)" }
+    var workouts = [
+        { name: "Swim", type: WorkoutTypes.typesByName.Swim, units: "paces", expectedValue: "Zone 2 (32:43 - 30:51)" },
+        { name: "Bike", type: WorkoutTypes.typesByName.Bike, units: "speeds", expectedValue: "Zone 2 (2.31 - 2.49)" },
+        { name: "Run", type: WorkoutTypes.typesByName.Run, units: "paces", expectedValue: "Zone 2 (15:29 - 13:41)" },
+        { name: "Walk", type: WorkoutTypes.typesByName.Walk, units: "paces", expectedValue: "Zone 2 (15:29 - 13:41)" }
     ];
 
-    _.each(pacedWorkouts, function(workout)
+    _.each(workouts, function(workout)
     {
-        setupTest(workout.name, workout.type, workout.expectedResult);
+        setupTest(workout.name, workout.type, workout.units, workout.expectedValue);
     });
 });
