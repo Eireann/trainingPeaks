@@ -8,7 +8,6 @@ function (
     ExerciseSetView
 )
 {
-
     describe("Exercise Set View", function()
     {
         var exerciseSetData =
@@ -247,25 +246,25 @@ function (
 
         it("Should display a proper unit for Power and Peak Power.", function()
         {
-            expect(exerciseSetView.$("[data-property=Power] span.propertyUnit").text()).to.contain("watts");
-            expect(exerciseSetView.$("[data-property='Peak Power'] span.propertyUnit").text()).to.contain("watts");
+            expect(exerciseSetView.$("[data-property=Power] div.propertyUnit").text()).to.contain("watts");
+            expect(exerciseSetView.$("[data-property='Peak Power'] div.propertyUnit").text()).to.contain("watts");
         });
 
         it("Should display a proper unit for Energy.", function()
         {
-            expect(exerciseSetView.$("[data-property=Energy] span.propertyUnit").text()).to.contain("kj");
+            expect(exerciseSetView.$("[data-property=Energy] div.propertyUnit").text()).to.contain("kj");
         });
 
         it("Should display 'Percent HR' as either '%max HR' or '%LT HR' with a 'bpm' unit.", function()
         {
-            var target = exerciseSetView.$("[data-property='%max HR'] span.propertyUnit")[0] || exerciseSetView.$("[data-property='%LT HR'] span.propertyUnit")[0];
+            var target = exerciseSetView.$("[data-property='%max HR'] div.propertyUnit")[0] || exerciseSetView.$("[data-property='%LT HR'] div.propertyUnit")[0];
             
             expect(target.innerText).to.contain("bpm");
         });
 
         it("Should correct 'HeartRate' to 'Heart Rate' with a 'bpm' unit.", function()
         {
-            expect(exerciseSetView.$("[data-property='Heart Rate'] span.propertyUnit").text()).to.contain("bpm");
+            expect(exerciseSetView.$("[data-property='Heart Rate'] div.propertyUnit").text()).to.contain("bpm");
         });
     });
 });

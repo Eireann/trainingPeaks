@@ -75,120 +75,24 @@
         .exerciseSets {
             .setProperties {
                 margin-bottom: 27px;
+            }
 
-                .columnLabelsInstructedCompleted {
-                    @include clearfix;
-                    margin: 15px 0 15px 106px;
+            .workoutStatsRowStructure {
 
-                    div {
-                        float: left;
-                        text-align: center;
-                        width: 221px;
-                        font-size: $fontSizeSmall;
-                        font-family: $fontFamilyHeavy;
-                        padding: 3px 0;
-                        background-color: $TPGrey2;
+                margin-bottom: 10px; 
+                
+                div {
+                    display: inline;
+                    font-size: $fontSizeSmall;
 
-                        &.headerCompleted {
-                            margin-left: 17px;
-                        }
+                    &:last-of-type {
+                        margin-right: 0;
                     }
+
                 }
 
-                .columnLabelsTargetsMinMax {
-                    @include clearfix;
-                    margin-left: 106px;
+            } 
 
-                    div {
-                        text-align: center;
-                        float: left;
-                        width: 110px;
-                        margin-right: 2px;
-                        margin-bottom: 5px;
-                        font-size: $fontSizeSmall;
-                        font-family: $fontFamilyHeavy;
-                        font-family: $fontFamilyRegular;
-
-                        &.completedMin {
-                            margin-left: 15px;
-                        }
-                        &:last-of-type,
-                        &.instructedMax {
-                            margin-right: 0;
-                        }
-                    }
-                }
-
-                .workoutStatsRowStructure {
-                    @include clearfix;
-                    display: flex;
-                    align-items: stretch;
-                    width: 620px;
-
-                    div {
-                        width: 109px;
-                        min-height: 22px;
-                        border: 1px solid $TPGrey2;
-                        text-align: center;
-                        font-size: $fontSizeSmall;
-                        margin-right: 2px;
-                        padding-top: 4px;
-                        padding-bottom: 4px;
-                        margin-bottom: 2px;
-
-                        &:last-of-type {
-                            margin-right: 0;
-                        }
-
-                        &.propertyName {
-                            float: left;
-                            text-align: right;
-                            font-size: $fontSizeSmaller;
-                            width: 104px;
-                            padding-top: 5px;
-                            padding-right: 5px;
-                            border: none;
-                        }
-
-                        &.propertyUnit {
-                            float: left;
-                            text-align: left;
-                            font-size: $fontSizeSmaller;
-                            width: 52px;
-                            padding-top: 5px;
-                            padding-left: 5px;
-                            border: none;
-                        }
-
-                        &.propertyCompletedMinValue {
-                            margin-left:15px;
-                        }
-                    }
-
-                    &.notes {
-                        line-height: $fontSizeXLarge;
-                        display: flex;
-                        height: 100%;
-                       
-                        align-items: stretch;
-                                    
-                        .propertyPlannedValue {
-                            width: 220px;
-                            height: auto;
-                            text-align: left;
-                            padding: 5px;
-                        }
-
-                        .propertyCompletedValue {
-                            width: 220px;
-                            height: auto;
-                            margin-left: 15px;
-                            text-align: left;
-                            padding: 5px;
-                        }
-                    }
-                } 
-            }  
         }
     }
 }

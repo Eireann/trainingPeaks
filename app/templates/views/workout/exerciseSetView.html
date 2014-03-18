@@ -3,37 +3,43 @@
     <span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span>
   </div>
 
-  <div class="columnLabelsInstructedCompleted">
-    <div class="headerInstructed">Instructed</div>
-    <div class="headerCompleted">Completed</div>
-  </div>
-
-  <div class="columnLabelsTargetsMinMax">
-    <div class="instructedMin">Min</div>
-    <div class="instructedMax">Max</div>
-    <div class="completedMin">Min</div>
-    <div class="completedMax">Max</div>
-  </div>
-
   {{#each instructions}}
     <div class="workoutStatsRowStructure" data-property="{{name}}">
+
       <div class="propertyName">{{name}}</div>
+
+      <div class="plannedOrCompleted">{{$ "Planned" }}:</div>
+
       <div class="propertyPlannedMinValue">{{formatExerciseValue planValue planMin units}}</div>
-      <div class="propertyPlannedMaxValue">{{formatExerciseValue planMax units}}</div>
-      <div class="propertyCompletedMinValue">{{formatExerciseValue actualValue actualMin units}}</div>
-      <div class="propertyCompletedMaxValue">{{formatExerciseValue actualMax units}}</div>
-      <div class="propertyUnit">{{#if units}}<span class="propertyUnit">{{ units }}</span>{{/if}}</div>
+
+      {{#if planMax}}
+          <div class="minMaxSeparator">-</div>
+          <div class="propertyPlannedMaxValue">{{formatExerciseValue planMax units}}</div>
+      {{/if}}
+
+      {{#if units}}
+        <div class="propertyUnit">{{ units }}</div>
+      {{/if}}    
+
+      {{#ifAny actualValue actualMin}} 
+        <div class="plannedActualSeparator">/</div>
+
+        <div class="plannedOrCompleted">{{$ "Completed" }}:</div>
+
+        <div class="propertyCompletedMinValue">{{formatExerciseValue actualValue actualMin units}}</div>
+
+        {{#if actualMax}}
+          <div class="minMaxSeparator">-</div>
+          <div class="propertyCompletedMaxValue">{{formatExerciseValue actualMax units}}</div>
+        {{/if}}
+
+        {{#if units}}
+          <div class="propertyUnit">{{ units }}</div>
+        {{/if}}
+
+      {{/ifAny}}
+
     </div>
   {{/each}}
-
-  {{#if displayNotes}}
-  <!-- Notes -->
-  <div class="workoutStatsRowStructure notes" data-property="{{name}}">
-    <div class="propertyName">{{$ "Notes"}}</div>
-    <div class="propertyPlannedValue">{{#if planNote}}{{ planNote }}{{else}}N/A{{/if}}</div>
-    <div class="propertyCompletedValue">{{#if actualNote}}{{ actualNote }}{{else}}N/A{{/if}}</div>
-  </div>
-  <!-- Notes -->
-  {{/if}}
 
 </div>

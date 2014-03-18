@@ -8,7 +8,6 @@ function (
     WorkoutStructureView
 )
 {
-
     describe("Workout Structure View", function()
     {
         var workoutStructureData =
@@ -173,22 +172,36 @@ function (
               ]
             };        
 
+        var getWorkoutStructureView = function(workoutType)
+        {
+            var workoutStructureView = new WorkoutStructureView({ workoutStructure: workoutStructureData, itemViewOptions: { workoutTypeId: workoutType } } );
+            workoutStructureView.render();
+
+            return workoutStructureView;
+        };
+
         var workoutStructureView;
 
-        beforeEach(function()
+        it("Should have a header set to 'Intervals' for non-Strength workouts.", function()
         {
-            workoutStructureView = new WorkoutStructureView({ workoutStructure: workoutStructureData });
-            workoutStructureView.render();
+            workoutStructureView = getWorkoutStructureView(1);
+
+            expect(workoutStructureView.$(".header span.intervals").filter(function() { return $(this).css('display') === 'inline'; }).length).to.equal(1);
+            expect(workoutStructureView.$(".header span.intervals").filter(function() { return $(this).css('display') === 'inline'; }).text()).to.contain("Intervals");
         });
 
-        it("Should have a header", function()
+        it("Should have a header set to 'Exercises' for Strength workouts.", function()
         {
-            expect(workoutStructureView.$(".header:contains('Workout Structure')").length).to.equal(1);
-            expect(workoutStructureView.$(".header").text()).to.contain("Workout Structure");
+            workoutStructureView = getWorkoutStructureView(9);
+
+            expect(workoutStructureView.$(".header span.exercises").filter(function() { return $(this).css('display') === 'inline'; }).length).to.equal(1);
+            expect(workoutStructureView.$(".header span.exercises").filter(function() { return $(this).css('display') === 'inline'; }).text()).to.contain("Exercises");
         });
 
         it("Should have an exercise with 2 sets", function()
         {
+            workoutStructureView = getWorkoutStructureView(1);
+
             expect(workoutStructureView.$(".workoutStructure .workoutExercise .exerciseSets .exerciseSet").length).to.equal(2);
         });
     });
