@@ -37,4 +37,15 @@ requirejs([
         applyReady.resolve(ApplyTrainingPlan);
     });
 });
+
+// some jquery components call define with only one arg, which breaks in almond
+almondDefine = define;
+define = function(name, deps, callback)
+{
+    if(typeof deps === 'undefined')
+    {
+        deps = [];
+    }
+    return almondDefine(name, deps, callback);
+}
 /* jshint ignore:end */
