@@ -163,23 +163,14 @@ function (
 
         _convertSpeedZones: function(instruction)
         {
-            var isPaced = false;
+            var units = _.contains(pacedWorkoutTypes, this.options.workoutTypeId) ? "pace" : "speed";
 
             if (instruction.planValueSpecified)
             {
                 var planSpeedZone = this._getZone("speed", instruction.planValue);
                 if (planSpeedZone)
                 {
-                    isPaced = _.contains(pacedWorkoutTypes, this.options.workoutTypeId);
-
-                    if (isPaced)
-                    {
-                        instruction.planValue = this._buildZoneString(planSpeedZone, "pace", "min/mi");
-                    }
-                    else
-                    {
-                        instruction.planValue = this._buildZoneString(planSpeedZone, "speed", "mph");
-                    }
+                    instruction.planValue = this._buildZoneString(planSpeedZone, units, TP.utils.units.getUnitsLabel(units, this.options.workoutTypeId));
                 }
             }
             if (instruction.actualValueSpecified)
@@ -187,16 +178,7 @@ function (
                 var actualSpeedZone = this._getZone("speed", instruction.actualValue);
                 if (actualSpeedZone)
                 {
-                    isPaced = _.contains(pacedWorkoutTypes, this.options.workoutTypeId);
-
-                    if (isPaced)
-                    {
-                        instruction.actualValue = this._buildZoneString(actualSpeedZone, "pace", "min/mi");
-                    }
-                    else
-                    {
-                        instruction.actualValue = this._buildZoneString(actualSpeedZone, "speed", "mph");
-                    }
+                    instruction.actualValue = this._buildZoneString(actualSpeedZone, units, TP.utils.units.getUnitsLabel(units, this.options.workoutTypeId));
                 }
             }
         },
@@ -208,7 +190,7 @@ function (
                 var planPowerZone = this._getZone("power", instruction.planValue);
                 if (planPowerZone)
                 {
-                    instruction.planValue = this._buildZoneString(planPowerZone, "power", "watts");
+                    instruction.planValue = this._buildZoneString(planPowerZone, "power", TP.utils.units.getUnitsLabel("power", this.options.workoutTypeId));
                 }
             }
             if (instruction.actualValueSpecified)
@@ -216,7 +198,7 @@ function (
                 var actualPowerZone = this._getZone("power", instruction.actualValue);
                 if (actualPowerZone)
                 {
-                    instruction.actualValue = this._buildZoneString(actualPowerZone, "power", "watts");
+                    instruction.actualValue = this._buildZoneString(actualPowerZone, "power", TP.utils.units.getUnitsLabel("power", this.options.workoutTypeId));
                 }
             }
         },

@@ -119,7 +119,7 @@ function(
     };
 
     var workouts = [
-        { name: "Swim", type: WorkoutTypes.typesByName.Swim, units: "paces", expectedValue: "Zone 2 (32:43 - 30:51 min/mi)" },
+        { name: "Swim", type: WorkoutTypes.typesByName.Swim, units: "paces", expectedValue: "Zone 2 (01:52 - 01:45 sec/100y)" },
         { name: "Bike", type: WorkoutTypes.typesByName.Bike, units: "speeds", expectedValue: "Zone 2 (2.31 - 2.49 mph)" },
         { name: "Run", type: WorkoutTypes.typesByName.Run, units: "paces", expectedValue: "Zone 2 (15:29 - 13:41 min/mi)" },
         { name: "Walk", type: WorkoutTypes.typesByName.Walk, units: "paces", expectedValue: "Zone 2 (15:29 - 13:41 min/mi)" }
