@@ -42,14 +42,4 @@
     </div>
   {{/each}}
 
-  {{#if displayNotes}}
-  <!-- Notes -->
-  <div class="workoutStatsRowStructure notes" data-property="{{name}}">
-    <div class="propertyName">{{$ "Notes"}}</div>
-    <div class="propertyPlannedValue">{{#if planNote}}{{ planNote }}{{else}}N/A{{/if}}</div>
-    <div class="propertyCompletedValue">{{#if actualNote}}{{ actualNote }}{{else}}N/A{{/if}}</div>
-  </div>
-  <!-- Notes -->
-  {{/if}}
-
 </div>

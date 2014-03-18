@@ -62,20 +62,7 @@ function (
             else
                 data.active = true;
 
-            var notes = _.find(data.instructions, { name: "Notes" });
-            if (notes)
-            {
-                data.planNote = notes.planValue;
-                data.actualNote = notes.actualValue;
-
-                if (data.planNote || data.actualNote)
-                    data.displayNotes = true;
-                else
-                    data.displayNotes = false;
-            }
-
             data.instructions = _.reject(data.instructions, { name: "Active or Rest" });
-            data.instructions = _.reject(data.instructions, { name: "Notes" });
         },
 
         _postProcessNamesAndUnits: function(instruction)

@@ -79,7 +79,7 @@
 
             .workoutStatsRowStructure {
 
-                height: 22px;
+                margin-bottom: 10px; 
                 
                 div {
                     display: inline;
@@ -89,29 +89,6 @@
                         margin-right: 0;
                     }
 
-                }
-
-                &.notes {
-                    line-height: $fontSizeXLarge;
-                    display: flex;
-                    height: 100%;
-                   
-                    align-items: stretch;
-                                
-                    .propertyPlannedValue {
-                        width: 220px;
-                        height: auto;
-                        text-align: left;
-                        padding: 5px;
-                    }
-
-                    .propertyCompletedValue {
-                        width: 220px;
-                        height: auto;
-                        margin-left: 15px;
-                        text-align: left;
-                        padding: 5px;
-                    }
                 }
 
             } 
