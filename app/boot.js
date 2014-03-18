@@ -1,5 +1,6 @@
 define(
 [
+    "webfonts",
     "jquery",
     "wrappedMoment",
     "polyfills/console",
@@ -9,11 +10,13 @@ define(
     "TP",
     "app"
 ],
-function($, wrappedMoment, consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
+function(webfonts, $, wrappedMoment, consolePolyfill, RollbarManager, rollbarPatches, bmhbs, TP, MarsApp)
 {
 
     function boot()
     {
+        webfonts.loadFonts();
+        
         var theApp = window.theMarsApp = new MarsApp({
             $body: $("body"),
             $document: $(document),

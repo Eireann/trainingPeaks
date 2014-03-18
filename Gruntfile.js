@@ -70,7 +70,9 @@ module.exports = function(grunt)
                     "theMarsApp": false,
                     "requirejs": false,
                     "define": false,
-                    "require": false
+                    "require": false,
+                    "WebFont": false,
+                    "module": false
                 }
             }
         },
@@ -114,6 +116,28 @@ module.exports = function(grunt)
                     require: "zurb-foundation",
                     imagesDir: "assets/images"
                 }
+            },
+            components:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/components/css",
+                    outputStyle: "compressed",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
+            },
+            components_debug:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/components/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
             }
         },
 
@@ -129,6 +153,28 @@ module.exports = function(grunt)
                     name: "main",
                     include: [
                         "../bower_components/almond/almond"
+                    ],
+                    stubModules: ["text"],
+                    wrap: false,
+                    optimize: "none",
+                    useSourceUrl: true
+                }
+            },
+
+            applyTrainingPlan:
+            {
+                options:
+                {
+                    mainConfigFile: "app/config.js",
+                    out: "build/components/js/applyTrainingPlan.js",
+                    baseUrl: "app",
+                    name: "components/applyTrainingPlan/js/applyTrainingPlan",
+                    deps: [
+                        "wrappedMoment"
+                    ],
+                    include: [
+                        "../bower_components/almond/almond",
+                       "components/applyTrainingPlan/js/applyTrainingPlanLoader"
                     ],
                     stubModules: ["text"],
                     wrap: false,
@@ -183,6 +229,15 @@ module.exports = function(grunt)
                     "vendor/js/libs/flot/jquery.flot.js",
                     "bower_components/flot-axislabels/jquery.flot.axislabels.js"
                 ]
+            },
+            components:
+            {
+                files: [{
+                    expand: true,
+                    cwd: "build/components",
+                    src: "**/*.js",
+                    dest: "build/components"
+                }]
             }
         },
 
@@ -216,7 +271,11 @@ module.exports = function(grunt)
         {
             compass: {
                 files: ["Gruntfile.js", "app/scss/**/*.scss"],
-                tasks: "compass:debug"
+                tasks: ["compass:debug", "compass:components_debug"]
+            },
+            components: {
+                files: ["app/scripts/components/**/*.html", "app/scripts/components/**/*.js"],
+                tasks: ["components:debug"]
             }
         },
 
@@ -237,6 +296,10 @@ module.exports = function(grunt)
             post_build:
             {
                 src: ["build/**/single.js"]
+            },
+            components:
+            {
+                src: ["build/components"]
             }
         },
 
@@ -284,6 +347,14 @@ module.exports = function(grunt)
             {
                 dest: "build/debug/",
                 src: ["coverage/lcov-report/**"]
+            },
+
+            components:
+            {
+                dest: "build/components/",
+                src: ["app/scripts/components/componentPreviewer/**/*.html"],
+                expand: true,
+                flatten: true
             }
         },
 
@@ -342,6 +413,16 @@ module.exports = function(grunt)
             {
                 src: [ "coverage/test/mocha.html" ],
             }
+        },
+
+        availabletasks: {
+            tasks: {
+
+                options: {
+                    filter: "include",
+                    tasks: ["build", "debug", "components", "compass", "copy", "test", "watch"]
+                }
+            }
         }
 
     });
@@ -355,7 +436,6 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-htmlmin");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-watch");
@@ -365,6 +445,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-targethtml");
     grunt.loadNpmTasks("grunt-bower-requirejs");
     grunt.loadNpmTasks("grunt-mocha");
+    grunt.loadNpmTasks("grunt-available-tasks");
 
     grunt.registerTask("tpcore", ["uglify:tpcore", "uglify:tpcore.deps"]);
 
@@ -388,4 +469,14 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug_fast", ["clean", "uglify:tpcore", "uglify:tpcore.deps", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
+
+    // to build external components
+    grunt.registerTask("components:debug", ["clean:components", "copy:components", "compass:debug", "compass:components_debug", "requirejs:components"]);
+    grunt.registerTask("components", ["clean", "jshint", "debug", "copy:components", "compass:components", "requirejs:components", "uglify:components"]);
+
+    // list any individual external components here to be included in the build_components task
+    grunt.registerTask("requirejs:components", ["requirejs:applyTrainingPlan"]);
+
+    // help
+    grunt.registerTask("help", ["availabletasks"]);
 };

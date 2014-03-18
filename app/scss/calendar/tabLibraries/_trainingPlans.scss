@@ -208,45 +208,8 @@
 
         margin-top: 5px;
         margin-bottom: 6px;
-
-        .on
-        {
-            padding: 4px 8px 0 8px;
-            float: left;
-        }
-
-        .selectBoxWrapper
-        {
-            height:25px;
-            float:left;
-        }
-        #applyDateType
-        {
-            width: 140px;
-        }
-
-        #applyDate
-        {
-            width: 78px;
-            padding: 0;
-            height: 22px;
-            float: left;
-            padding-left: 2px;
-            margin-bottom:0;
-        }
     }
-    button.apply
-    {
-        display: block;
-        float: left;
-        height: 22px;
-        margin-left: 8px;
-        width: 50px;
-        font-size: $fontSizeSmall;
-        float: right;
-        position: relative;
-        bottom: 31px;
-    }
+    
 
     .appliedPlansContainer
     {
@@ -306,6 +269,49 @@
     }
 }
 
+.trainingPlanApplyView
+{
+    overflow: auto;
+
+    .on
+    {
+        padding: 4px 8px 0 8px;
+        float: left;
+    }
+
+    .selectBoxWrapper
+    {
+        height:25px;
+        float:left;
+    }
+
+    #applyDateType
+    {
+        width: 150px;
+    }
+
+    #applyDate
+    {
+        width: 90px;
+        padding: 0;
+        height: 22px;
+        float: left;
+        padding-left: 2px;
+        margin-bottom:0;
+    }
+
+    button.apply
+    {
+        display: block;
+        float: left;
+        height: 22px;
+        margin-left: 8px;
+        width: 50px;
+        font-size: $fontSizeSmall;
+        float: right;
+        position: relative;
+    }
+}
 
 .fullDescription
 {

@@ -1,13 +1,13 @@
 ﻿define(
 [
     "moment",
-    "views/calendar/library/trainingPlanDatePickerView",
+    "views/calendar/library/trainingPlanApplyView",
     "models/library/trainingPlan",
     "models/library/trainingPlanDetails"
 ],
 function(
     moment,
-    TrainingPlanDatePickerView,
+    TrainingPlanApplyView,
     TrainingPlan,
     TrainingPlanDetails
 
@@ -25,7 +25,7 @@ function(
             {
                 var model = new TrainingPlan();
 
-                view = new TrainingPlanDatePickerView({ model: model });
+                view = new TrainingPlanApplyView({ model: model });
                 view.render();
             });
 
@@ -65,7 +65,7 @@ function(
                     startDate: "2014-01-01T00:00:00"
                 });
 
-                view = new TrainingPlanDatePickerView({ model: model });
+                view = new TrainingPlanApplyView({ model: model });
                 view.render();
             });
 
@@ -110,7 +110,7 @@ function(
                         forceDate: true
                     });
 
-                    view = new TrainingPlanDatePickerView({ model: model });
+                    view = new TrainingPlanApplyView({ model: model });
                     view.render();
                 });
 
@@ -153,7 +153,7 @@ function(
                         forceDate: false
                     });
 
-                    view = new TrainingPlanDatePickerView({ model: model });
+                    view = new TrainingPlanApplyView({ model: model });
                     view.render();
                 });
 
@@ -194,7 +194,7 @@ function(
                         startDate: "2014-01-01T00:00:00"
                     });
 
-                    view = new TrainingPlanDatePickerView({ model: model });
+                    view = new TrainingPlanApplyView({ model: model });
                     view.render();
                 });
 

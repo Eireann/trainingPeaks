@@ -7,7 +7,10 @@ define(
     "TP",
     "utilities/trainingPlan/trainingPlan",
     "shared/utilities/calendarUtility",
-    "hbs!templates/views/calendar/library/trainingPlanDate"
+    "models/commands/applyTrainingPlan",
+    "views/userConfirmationView",
+    "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
+    "hbs!templates/views/calendar/library/trainingPlanApply"
 ],
 function(
     _,
@@ -17,7 +20,10 @@ function(
     TP,
     trainingPlanUtility,
     CalendarUtility,
-    trainingPlanDateTemplate
+    ApplyTrainingPlanCommand,
+    UserConfirmationView,
+    trainingPlanErrorTemplate,
+    trainingPlanApplyTemplate
     )
 {
     return TP.ItemView.extend(
@@ -25,22 +31,26 @@ function(
 
         applyStartType: TP.utils.trainingPlan.startTypeEnum.StartDate,
 
+        className: "trainingPlanApplyView",
+        
         template:
         {
             type: "handlebars",
-            template: trainingPlanDateTemplate
+            template: trainingPlanApplyTemplate
         },
 
         events:
         {
             "change #applyDateType": "updateDateInputOptions",
-            "change #applyDate": "updateDateInput"
+            "change #applyDate": "updateDateInput",
+            "click .apply": "onApply"
         },
 
         initialize: function(options)
         {
             this.parentModal = options.parentModal;
             this.defaultDate = options.defaultDate;
+            this.user = options.user ? options.user : theMarsApp.user;
             _.bindAll(this, "checkWhetherDayIsSelectable");
         },
 
@@ -178,7 +188,49 @@ function(
         getEndDayOfWeekIndex: function()
         {
             return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
+        },
+
+        onApply: function(e)
+        {
+
+            // prevent default is here so when we export this as a component for kentico,
+            // the button doesn't cause the containing form to submit
+            e.preventDefault();
+
+            this.applyStartType = Number(this.ui.applyDateType.val());
+            var targetDate = TP.utils.datetime.parse(this.ui.applyDate.val()).format("YYYY-MM-DD");
+
+            var apply = this.applyToDate(targetDate, this.applyStartType);
+
+            var self = this;
+            self.waitingOn();
+            apply.fail(function()
+            {
+                var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
+                errorMessageView.render();
+            }).always(function()
+            {
+                self.waitingOff();
+            });
+        },
+
+        applyToDate: function(date, startType)
+        {
+            var command = new ApplyTrainingPlanCommand({
+                athleteId: this.user.getCurrentAthleteId(),
+                planId: this.model.get('planId'),
+                startType: startType,
+                targetDate: date
+            });
+            var deferred = command.execute();
+            var self = this;
+            deferred.done(function()
+            {
+                self.trigger("planApplied");
+            });
+            return deferred;
         }
+
 
     });
 });

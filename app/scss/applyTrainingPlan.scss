@@ -1,0 +1,80 @@
+@charset "UTF-8";
+@import "settings";
+@import "foundationMinimal";
+
+@import "globalCSS/tpstylesheet";
+@import "globalCSS/tpfontstyles";
+@import "globalCSS/timepicker";
+@import "globalCSS/mixIn";
+@import "globalCSS/flex";
+@import "globalCSS/throbber";
+@import "globalCSS/modal";
+@import "globalCSS/hoverBox";
+@import "globalCSS/tooltip";
+@import "globalCSS/dialog";
+@import "overlayBox";
+@import "tomahawk";
+
+.applyTrainingPlanContainer
+{
+
+    width: 330px;
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;
+
+    $include-html-type-classes: true;
+    @import "foundation/components/type";
+
+    $include-html-form-classes: true;
+    @import "foundation/components/forms";
+
+    $include-html-label-classes: true;
+    @import "foundation/components/labels";
+
+    @import "globalCSS/selectBox";
+
+    @import "sprites";
+
+    @import "calendar/tabLibraries/trainingPlans";
+
+    @include buttons(0px, auto, $fontSizeMedium);
+
+    input[type="text"]
+    {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        cursor: text;
+        @include box-shadow(none);
+
+        &:focus
+        {
+            @include box-shadow(none);
+        }
+    }
+}
+
+.modal
+{
+    $include-html-type-classes: true;
+    @import "foundation/components/type";
+
+    $include-html-form-classes: true;
+    @import "foundation/components/forms";
+
+    $include-html-label-classes: true;
+    @import "foundation/components/labels";
+
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;   
+
+    .hidden
+    {
+        display: none;
+    }
+
+    *, *:before, *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+}

@@ -1,6 +1,7 @@
 @import "globalCSS/mixIn";
 
 .tomahawk {
+    
     position: absolute;
     @include box-shadow(0 1px 3px 0 #ADADAD);
     background: #fff;
