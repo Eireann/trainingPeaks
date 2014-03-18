@@ -30,7 +30,6 @@ function(
             address: null,
             address2: null,
             age: 0,
-            athleteType: null,
             allowMarketingEmails: null,
             birthday: null,
             cellPhone: null,
