@@ -177,7 +177,7 @@ function (
 
         beforeEach(function()
         {
-            workoutStructureView = new WorkoutStructureView({ workoutStructure: workoutStructureData });
+            workoutStructureView = new WorkoutStructureView({ workoutStructure: workoutStructureData, itemViewOptions: { workoutTypeId: 1 } } );
             workoutStructureView.render();
         });
 
