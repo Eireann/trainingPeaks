@@ -14,12 +14,9 @@ define(
     "expando/models/expandoStateModel",
     "./dateAndTimeView",
     "views/workout/workoutBarView",
-    "./userProfileImageView",
-    "./userNameView",
+    "./userProfileView",
     "views/expando/graphView",
     "views/expando/mapView",
-    //"views/charts/heartRateTimeInZonesChart",
-    //"views/charts/powerTimeInZonesChart",
     "views/expando/statsView",
     "views/expando/lapsView",
     "hbs!../templates/publicFileViewerTemplate"
@@ -39,12 +36,9 @@ function(
          ExpandoStateModel,
          DateAndTimeView,
          WorkoutBarView,
-         UserProfileImageView,
-         UserNameView,
+         UserProfileView,
          GraphView,
          MapView,
-         //HeartRateTimeInZonesChart,
-         //PowerTimeInZonesChart,
          StatsView,
          LapsView,
          publicFileViewerTemplate
@@ -124,15 +118,9 @@ function(
             workoutBarView.$("input.workoutTitle").prop("disabled", true);
             this.subviews.push(workoutBarView);
 
-            /*
-            var userProfileImageView = new UserProfileImageView({ model: this.userModel, wwwRoot: this.apiConfig.wwwRoot });
-            this.$(".QVHeaderItemsContain").append(userProfileImageView.render().$el);
-            this.subviews.push(userProfileImageView);
-
-            var userNameView = new UserNameView({ model: this.userModel });
-            this.$(".QVHeaderRightColumn").append(userNameView.render().$el);
-            this.subviews.push(userNameView);
-            */
+            var userProfileView = new UserProfileView({ model: this.userModel, wwwRoot: this.apiConfig.wwwRoot });
+            this.$(".QVHeaderProfile").append(userProfileView.render().$el);
+            this.subviews.push(userProfileView);
 
             this._watchForWindowResize();
         },
@@ -147,15 +135,7 @@ function(
                 {
                     podView: GraphView,
                     cssClass: ""
-                },
-                /*{
-                    podView: HeartRateTimeInZonesChart,
-                    cssClass: ""
-                },
-                {
-                    podView: PowerTimeInZonesChart,
-                    cssClass: ""
-                }*/
+                }
             ];
 
             _.each(pods, function(pod)

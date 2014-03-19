@@ -68,6 +68,18 @@
         cursor: default;
     }
 
+    .QVHeaderLeft
+    {
+        float: left;
+        width: calc(100% - 335px);
+    }
+
+    .QVHeaerRight
+    {
+        float: left;
+        width: 335px;
+    }
+
     #time
     {
         font-family: $fontFamilyRegular;
@@ -86,27 +98,24 @@
         width: 100%;
     }
 
-    .profileImage
+    .QVHeaderProfile
     {
-        float: right;
-    }
+        .userProfile
+        {
+            padding-top: 24px;
+        }
+        
+        .userImage
+        {
+            float: left;
+            height: 80px;
+            vertical-align: bottom;
+        }
 
-    .profileImage img {
-        height: 70px;
-        vertical-align: top;
-    }
-
-    .userName
-    {
-        font-size: 0.857em;
-        color: #636569;
-        margin-top: 22px;
-        margin-left: 12px;
-    }
-
-    .userName span
-    {
-        font-family: "HelveticaNeueW01-75Bold";
+        .userName
+        {
+            float: left;
+        }
     }
 
     .headerIcons

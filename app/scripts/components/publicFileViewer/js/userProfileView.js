@@ -3,24 +3,24 @@ define(
     "underscore",
     "jquery",
     "TP",
-    "hbs!../templates/userProfileImageViewTemplate"
+    "hbs!../templates/userProfileViewTemplate"
 ],
 function(
     _,
     $,
     TP,
-    userProfileImageViewTemplate
+    userProfileViewTemplate
 )
 {
 
-    var UserProfileImageView = TP.ItemView.extend({
-        className: "profileImage",
+    var UserProfileView = TP.ItemView.extend({
+        className: "userProfile",
         tagName: "div",
 
         template:
         {
             type: "handlebars",
-            template: userProfileImageViewTemplate
+            template: userProfileViewTemplate
         },
 
         serializeData: function()
@@ -34,7 +34,8 @@ function(
 
             return data;
         }
+        
     });
 
-    return UserProfileImageView;
+    return UserProfileView;
 });
