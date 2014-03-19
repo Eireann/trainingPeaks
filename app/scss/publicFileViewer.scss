@@ -60,7 +60,9 @@
     }
 
     .QVHeaderItemsContain .workoutBarViewHeader {
-        width: 628px;
+        width: 646px;
+        // This will probably need to be adjusted once scroll bars are added to main column.
+        // The right side should align with the right side of the map.
     }
 
 
@@ -73,11 +75,12 @@
     .QVHeaderLeft
     {
         float: left;
-        width: calc(100% - 335px);
+        width: calc(100% - 336px);
 
         .dateAndTime
         {
             height: 22px;
+            padding-left: 0;
 
             #dayName,
             #calendarDate,
@@ -87,8 +90,11 @@
         }
 
         .workoutBarView {
-            .workoutIconLarge {
-                margin-top: -4px;
+            .workout {
+                margin-left: 0;
+                .workoutIconLarge {
+                    margin-top: -4px;
+                }
             }
         }
     }
@@ -172,9 +178,8 @@
         {
             height: 100%;
 
-            .expandoPackeryRegion
-            {
-                padding: 0px;   
+            .expandoPackeryRegion {
+                padding: 12px 12px 0 12px;
             }
 
             .graphToolbar .cutButtons
@@ -210,6 +215,11 @@
 
         .leaflet-control-container {
             top: 0;
+            .leaflet-top {
+                .leaflet-control {
+                    margin-top: 10px;
+                }
+            }
         }
     }
 
