@@ -153,13 +153,11 @@ function(
             if (existingModel)
             {
                 newModel = existingModel;
-                newModel.set(workoutModelJson);
-                newModel.parse(workoutModelJson);
+                newModel.set(newModel.parse(workoutModelJson));
             }
             else
             {
-                newModel.set(workoutModelJson);
-                newModel.parse(workoutModelJson);
+                newModel.set(newModel.parse(workoutModelJson));
                 theMarsApp.calendarManager.addItem(newModel);
             }
 

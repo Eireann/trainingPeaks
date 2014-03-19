@@ -131,31 +131,13 @@ function (
         getStartTime: function(value, options)
         {
             value = value || this.model.get("startTime") || this.model.get("startTimePlanned");
-
-            try
+            if (value)
             {
-                if (value)
-                {
-                    if (value.match(/[+|-]\d\d:\d\d$/))
-                    // If an offset is included, then this is a local moment...
-                    // (Some backend file parsers localize the start time after processing uploaded files.)
-                    {
-                        return moment.local(value).format("h:mm a");
-                    }
-                    else
-                    // ...else it is a UTC moment.
-                    {
-                        return moment(value).format("h:mm a");
-                    }
-                }
-                else
-                {
-                    return "";
-                }
+                return moment(value).format("h:mm a");
             }
-            catch (e)
+            else
             {
-                return value;
+                return "";
             }
         },
 

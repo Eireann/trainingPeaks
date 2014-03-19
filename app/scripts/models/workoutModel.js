@@ -126,7 +126,17 @@ function (
         parse: function()
         {
             var data = AutosaveMergeUtility.mixin.parse.apply(this, arguments);
-            this.getPostActivityComments().set(data.workoutComments);
+
+            if(data.startTime)
+            {
+                // remove time zone offset value and assume it is a local time
+                data.startTime = data.startTime.replace(/:[\d\.]+[+|-]\d\d:\d\d$/,'');
+            }
+
+            if(this.postActivityComments)
+            {
+                this.postActivityComments.set(data.workoutComments);
+            }
             return data;
         },
 
