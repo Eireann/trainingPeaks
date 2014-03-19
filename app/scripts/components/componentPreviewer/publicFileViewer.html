@@ -10,12 +10,14 @@
         <script>
 
         // workout token here is just an example - this should be the actual workout token provided in public workout url query string
-        var tokenParam = window.location.search.match(/token=(.*)/);
+        var tokenParam = window.location.search.match(/token=([0-9A-Za-z]*)/);
+        var userTypeParam = window.location.search.match(/userType=([0-9]*)/i);
         var workoutToken = tokenParam ? tokenParam[1] : "K3IU6BSSU3GQOOGDAK53ZK3C4Q";
+        var userType = userTypeParam ? Number(userTypeParam[1]) : 0;
 
         $(document).ready(function()
         {
-            LoadPublicFileViewer("#publicFileViewer", workoutToken);
+            LoadPublicFileViewer("#publicFileViewer", workoutToken, userType);
         });
         </script>
     </head>

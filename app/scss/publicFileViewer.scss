@@ -2,17 +2,15 @@
 @import "settings";
 
 @import "foundationMinimal";
-
+@import "compass/css3/box-shadow";
+@import "globalCSS/mixIn";
 @import "touch";
-@import "globalCSS/modal";
-@import "globalCSS/hoverBox";
-@import "overlayBox";
-@import "globalCSS/tooltip";
-@import "tomahawk";
-@import "upgrade";
 @import "calendar/quickview/flotTip";
+@import "calendar/quickview/qvExpando";
 
 @import "../../assets/icons/icons";
+@import "sprites";
+
 
 .pfvContainer
 { 
@@ -27,7 +25,6 @@
     $include-html-label-classes: true;
     @import "foundation/components/labels";
 
-    @import "sprites";
     @import "globalCSS/tpstylesheet";
     @import "globalCSS/tpfontstyles";
     @import "globalCSS/mixIn";
@@ -143,6 +140,11 @@
             {
                 padding: 0px;   
             }
+
+            .graphToolbar .cutButtons
+            {
+                display: none;
+            }
         }
 
         select
@@ -218,5 +220,23 @@
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }
+
+    .dialogContent
+    {
+        padding: 40px;
+
+        .upgradeLeft
+        {
+            margin-right: 20px;
+        }
+    }
 }
+
+@import "globalCSS/modal";
+@import "globalCSS/hoverBox";
+@import "overlayBox";
+@import "globalCSS/tooltip";
+@import "globalCSS/dialog";
+@import "tomahawk";
+@import "upgrade";
 

@@ -19,6 +19,7 @@ define(
     "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
+    "shared/views/userUpgradeView",
     "hbs!../templates/publicFileViewerTemplate"
 ],
 function(
@@ -41,6 +42,7 @@ function(
          MapView,
          StatsView,
          LapsView,
+         UserUpgradeView,
          publicFileViewerTemplate
          )
 {
@@ -53,6 +55,63 @@ function(
         }
     });
     */
+
+    var LightweightFeatureAuthorizer = function(options){
+        this.userType = options.userType;
+    };
+
+    _.extend(LightweightFeatureAuthorizer.prototype, {
+
+        userIsPremium: function()
+        {
+            return _.contains([1,2,4,5], this.userType);
+        },
+
+        features: {
+            ViewGraphRanges: function(){ return this.userIsPremium(); },
+            ExpandoDataEditing: function(){ return this.userIsPremium(); },
+            EditLapNames: false
+        },
+
+        canAccessFeature: function(featureChecker, attributes, options){
+            if(_.isFunction(featureChecker))
+            {
+                return featureChecker.call(this, this.userType, attributes, options);
+            }
+            else
+            {
+                return !!featureChecker; 
+            }
+        },
+
+        runCallbackOrShowUpgradeMessage: function(featureChecker, callback, attributes, options)
+        {
+            if(this.canAccessFeature(featureChecker, attributes, options))
+            {
+                callback();
+            }
+            else
+            {
+                this.showUpgradeMessage(_.extend({ }, featureChecker.options, options));
+            }
+        },
+
+        showUpgradeMessage: function(options)
+        {
+            options = options || {};
+
+            _.defaults(options, { userType: this.userType, imageRoot: theMarsApp.apiConfig.appRoot + "/" });
+
+            if(!this.upgradeView || this.upgradeView.isClosed)
+            {
+                this.upgradeView = new UserUpgradeView(options);
+                this.upgradeView.render();
+
+                if(options.onClose) this.upgradeView.once("close", options.onClose);
+            }
+        }
+
+    });
 
     var PublicFileViewer = TP.ItemView.extend({
 
@@ -69,6 +128,7 @@ function(
         initialize: function(options)
         {
             this.token = options.token;
+            this.userType = options.userType || 0;
             this._setupApiConfig();
             this._setupMarsApp();
             this._loadExternalStylesheets();
@@ -182,9 +242,11 @@ function(
             this.apiConfig = _.defaults({}, window.apiConfig, {
                 wwwRoot: "//www." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
                 appRoot: "//app." + env + ".trainingpeaks.com" + port,
-                apiRoot: "//tpapi." + (env === "local" ? "dev" : env) + ".trainingpeaks.com"
+                apiRoot: "//tpapi." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
+                coachUpgradeURL: "//home.trainingpeaks.com/account-professional-edition.aspx",
+                upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade"
             });
-
+        
             if(!this.apiConfig.assetsRoot)
             {
                 this.apiConfig.assetsRoot = this.apiConfig.appRoot + "/assets/";
@@ -194,6 +256,7 @@ function(
             {
                 this.apiConfig.cssRoot = this.apiConfig.appRoot + ( this.apiConfig.appRoot.indexOf("local") >= 0 ? "/build/debug" : "");
             }
+
         },
 
         _setupMarsApp: function()
@@ -209,26 +272,11 @@ function(
                     return $body;
                 },
 
-                featureAuthorizer: {
+                featureAuthorizer: new LightweightFeatureAuthorizer({userType: this.userType}),
 
-                    canAccessFeature: function(featureValue){
-                        return !!featureValue;
-                    },
+                assetsRoot: this.apiConfig.assetsRoot,
 
-                    runCallbackOrShowUpgradeMessage: function(featureChecker, callback, attributes, options){
-                        if(this.canAccessFeature(featureChecker))
-                        {
-                            callback(); 
-                        }
-                    },
-
-                    features: {
-                        ViewGraphRanges: true,
-                        EditLapNames: false
-                    }
-                },
-
-                assetsRoot: this.apiConfig.assetsRoot
+                apiConfig: this.apiConfig
 
             };
         },
