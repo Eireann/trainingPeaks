@@ -136,7 +136,7 @@ function (
             {
                 if (value)
                 {
-                    if (value.match(/-\d\d:\d\d$/))
+                    if (value.match(/[+|-]\d\d:\d\d$/))
                     // If an offset is included, then this is a local moment...
                     // (Some backend file parsers localize the start time after processing uploaded files.)
                     {
