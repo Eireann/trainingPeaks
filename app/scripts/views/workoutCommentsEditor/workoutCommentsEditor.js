@@ -134,10 +134,17 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             }
         },
 
-        saveComments: function()
+        saveComments: function(workoutCommentView)
         {
             this.model.set("workoutComments",  this.getCommentsAsArray(), { silent: true });
-            this.model.autosave({});
+            this.model.autosave({}).done(
+                function()
+                {
+                    var $commentBody = workoutCommentView.$(".commentBody");
+                    var value = $commentBody.val();
+                    $commentBody.focus().val("").val(value);
+                }
+            );
         },
 
         getCommentsAsArray: function()

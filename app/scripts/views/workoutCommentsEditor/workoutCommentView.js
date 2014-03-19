@@ -8,7 +8,7 @@ define(
     "hbs!templates/views/workoutCommentsEditor/workoutComments",
     "hbs!templates/views/workoutCommentsEditor/editableWorkoutComments"
 ],
-function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
+function($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -89,6 +89,14 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
         
         onCommentBodyBlur: function()
         {
+            // If the blur event is a consequence of re-rendering upon a "save", no action is required.
+            // If the blur event occurs because the user clicked outside the comment textarea, we need to detect any change and save.
+            if (this.saving)
+            {
+                this.saving = false;
+                return;
+            }
+
             if (this.saveTimeout)
                 clearTimeout(this.saveTimeout);
             
@@ -98,7 +106,7 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
                 if (comment !== this.model.get("comment"))
                 {
                     this.model.set("comment", comment);
-                    this.trigger("commentedited");
+                    this.trigger("commentedited", self);
                 }
                 
                 this.editable = false;
@@ -120,8 +128,9 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
                 var comment = TP.utils.conversion.parseUnitsValue("text", self.ui.editedComment.val());
                 if (comment !== self.model.get("comment"))
                 {
+                    self.saving = true;
                     self.model.set("comment", comment);
-                    self.trigger("commentedited");
+                    self.trigger("commentedited", self);
                 }
             }, 2000);
         }
