@@ -106,7 +106,7 @@ function($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, 
                 if (comment !== this.model.get("comment"))
                 {
                     this.model.set("comment", comment);
-                    this.trigger("commentedited", self);
+                    this.trigger("commentedited");
                 }
                 
                 this.editable = false;

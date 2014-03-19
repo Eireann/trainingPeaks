@@ -138,18 +138,22 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
         {
             this.model.set("workoutComments",  this.getCommentsAsArray(), { silent: true });
 
-            // A DOM blur event may have removed the focus from the text area used to edit the comment.
-            // Restore it here and move the cursor to the end of the data input.
-            // If this "save" was prompted by an acutal blur event (i.e., the user clicked outside the text area),
-            // workoutCommentView.onCommentBodyBlur will take care of re-rendering the view as intended.
-            this.model.autosave({}).done(
-                function()
-                {
-                    var $commentBody = workoutCommentView.$(".commentBody");
-                    var text = $commentBody.val();
-                    $commentBody.focus().val("").val(text);
-                }
-            );
+            var autosavePromise = this.model.autosave({});
+            if (workoutCommentView)
+            {
+                // A DOM blur event may have removed the focus from the text area used to edit the comment.
+                // Restore it here and move the cursor to the end of the data input.
+                // If this "save" was prompted by an acutal blur event (i.e., the user clicked outside the text area),
+                // workoutCommentView.onCommentBodyBlur will take care of re-rendering the view as intended.
+                autosavePromise.done(
+                    function()
+                    {
+                        var $commentBody = workoutCommentView.$(".commentBody");
+                        var text = $commentBody.val();
+                        $commentBody.focus().val("").val(text);
+                    }
+                );
+            }
         },
 
         getCommentsAsArray: function()
