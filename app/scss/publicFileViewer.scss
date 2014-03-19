@@ -72,12 +72,45 @@
     {
         float: left;
         width: calc(100% - 335px);
+
+        .dateAndTime
+        {
+            height: 22px;
+
+            #dayName,
+            #calendarDate,
+            #time {
+                cursor: default;
+            }
+        }
+
+        .workoutBarView {
+            .workoutIconLarge {
+                margin-top: -4px;
+            }
+        }
     }
 
-    .QVHeaerRight
-    {
+    .QVHeaderRight {
         float: left;
         width: 335px;
+
+        .QVHeaderProfile {
+           
+            .userProfile {
+                 @include clearfix;
+
+                 .userName {
+                    font-family: $fontFamilyLight;
+                    font-size: $fontSizeXLarge;
+                    color: $TPGrey4;
+                    position: relative;
+                    top: 30px;
+                    left: 10px;
+                 }
+
+            }
+        }
     }
 
     #time
@@ -87,10 +120,7 @@
         color: #636569;
     }
 
-    .dateAndTime
-    {
-        height: 22px;
-    }
+    
 
     #workOutQuickView, .workoutQuickView
     {
@@ -163,9 +193,15 @@
         position: relative;
         border: none;
 
-        &:hover
-        {
+        &:hover {
             border: none;
+            .leaflet-control-container {
+                top: 0;
+            }
+        }
+
+        .leaflet-control-container {
+            top: 0;
         }
     }
 
