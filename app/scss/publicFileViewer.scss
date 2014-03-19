@@ -62,8 +62,13 @@
         display: none;
     }
 
+    .QVHeaderItemsContain .workoutBarViewHeader {
+        width: 628px;
+    }
 
-    .QVHeaderItemsContain .workoutBarViewHeader, .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
+
+    .QVHeaderItemsContain .workoutBarViewHeader, 
+    .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
     {
         cursor: default;
     }
@@ -162,6 +167,7 @@
             height: 100%;
             border-top: 1px solid #ccc;
             border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
             background-color: $TPGrey1;
         }
 
