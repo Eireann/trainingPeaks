@@ -192,6 +192,8 @@ function(
         {
             var env = "local";
             var hostNameMatch = document.location.hostname.match(/([a-z]+)\.trainingpeaks\.com/);
+            var port = document.location.port ? ":" + document.location.port : "";
+
             if(hostNameMatch && hostNameMatch.length === 2)
             {
                 env = hostNameMatch[1];
@@ -199,7 +201,7 @@ function(
 
             this.apiConfig = _.defaults({}, window.apiConfig, {
                 wwwRoot: "//www." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
-                appRoot: "//app." + env + ".trainingpeaks.com",
+                appRoot: "//app." + env + ".trainingpeaks.com" + port,
                 apiRoot: "//tpapi." + (env === "local" ? "dev" : env) + ".trainingpeaks.com"
             });
 
