@@ -90,10 +90,10 @@ function(
             }
 
             this.apiConfig = _.defaults({}, window.apiConfig, {
-                wwwRoot: "http://www." + env + ".trainingpeaks.com",
-                appRoot: "http://app." + env + ".trainingpeaks.com",
-                apiRoot: "http://tpapi." + env + ".trainingpeaks.com",
-                cmsRoot: "http://home." + env + ".trainingpeaks.com"
+                wwwRoot: "//www." + env + ".trainingpeaks.com",
+                appRoot: "//app." + env + ".trainingpeaks.com",
+                apiRoot: "//tpapi." + env + ".trainingpeaks.com",
+                cmsRoot: "//home." + env + ".trainingpeaks.com"
             });
 
             if(!this.apiConfig.assetsRoot)
