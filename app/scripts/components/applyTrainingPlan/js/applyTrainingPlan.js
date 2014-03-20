@@ -44,6 +44,7 @@ function(
             this._setupMarsApp();
             this._loadExternalStylesheets();
             this._loadExternalScripts();
+            webfonts.loadFonts();
         },
 
         load: function()
@@ -78,8 +79,6 @@ function(
 
         onRender: function()
         {
-
-            webfonts.loadFonts();
             if(!this.loaded)
             {
                 this.$(".yourPlanHasBeenApplied").hide();
