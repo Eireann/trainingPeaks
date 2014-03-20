@@ -21,9 +21,6 @@
     font-size: $baseFontSize;
     font-family: $fontFamilyRegular;
 
-    $include-html-type-classes: true;
-    @import "foundation/components/type";
-
     $include-html-form-classes: true;
     @import "foundation/components/forms";
 
