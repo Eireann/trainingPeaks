@@ -89,8 +89,8 @@ function($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, 
         
         onCommentBodyBlur: function()
         {
-            // If the blur event is a consequence of re-rendering upon a "save", no action is required.
-            // If the blur event occurs because the user clicked outside the comment textarea, we need to detect any change and save.
+            // If the blur event is a consequence of re-rendering upon saving, no action is required.
+            // If the blur event occurs because the user clicked outside the comment text area, we need to detect any change and save.
             if (this.saving)
             {
                 this.saving = false;
@@ -130,7 +130,7 @@ function($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, 
                 {
                     self.saving = true;
                     self.model.set("comment", comment);
-                    self.trigger("commentedited", self);
+                    self.trigger("commentedited");
                 }
             }, 2000);
         }
