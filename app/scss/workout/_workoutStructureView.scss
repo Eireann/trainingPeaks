@@ -79,6 +79,7 @@
 
             .setProperties {
                 padding: 0 0 3px 0;
+                line-height: $fontSizeLarge;
             }
 
             .workoutStatsRowStructure {
@@ -87,11 +88,6 @@
                 div {
                     display: inline;
                     font-size: $fontSizeSmall;
-
-                    &:last-of-type {
-                        // margin-right: 0;
-                    }
-
                 }
 
             } 
