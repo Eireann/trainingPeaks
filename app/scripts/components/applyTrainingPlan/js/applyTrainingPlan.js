@@ -55,7 +55,8 @@ function(
             var promise = new $.Deferred();
             var self = this;
 
-            self.user.fetch().done(function()
+            // do not allow to fetch the user from localstorage
+            self.user.fetch({ nocache: true }).done(function()
             {
                 var athletes = self.user.get("athletes");
                 var athleteId = athletes && athletes.length ? athletes[0].athleteId : self.user.get("userId");

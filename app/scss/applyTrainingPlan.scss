@@ -53,6 +53,12 @@
     }
 }
 
+.modalOverlay
+{
+    // kentico main region has a very high z-index, so set our modals higher
+    z-index: 10000;
+}
+
 .modal
 {
     $include-html-type-classes: true;
@@ -77,4 +83,7 @@
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }
+
+    // kentico main region has a very high z-index, so set our modals highe
+    z-index: 10001;
 }
