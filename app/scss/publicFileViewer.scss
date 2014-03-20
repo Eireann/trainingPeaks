@@ -33,6 +33,7 @@
     @import "globalCSS/packeryCollection";
     @import "globalCSS/table";
     @import "calendar/quickView/quickview";
+    @import "calendar/quickView/flotTip";
     @import "calendar/calendarWorkout";
     @import "calendar/workoutColor";
     @import "workout/workoutCommentsEditor";
@@ -240,7 +241,14 @@
     {
         width: auto;
     }
+}
 
+#flotTip {
+    font-size: 14px;
+ 
+    .time {
+        display: block;
+    }
 }
 
 .modal
