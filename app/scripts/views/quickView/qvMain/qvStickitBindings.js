@@ -131,14 +131,13 @@ function (
         getStartTime: function(value, options)
         {
             value = value || this.model.get("startTime") || this.model.get("startTimePlanned");
-
-            try
+            if (value)
             {
-                return value ? moment(value).format("h:mm a") : "";
+                return moment(value).format("h:mm a");
             }
-            catch (e)
+            else
             {
-                return value;
+                return "";
             }
         },
 

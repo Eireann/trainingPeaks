@@ -254,6 +254,41 @@ function(
             });
 
         });
+
+        describe("parse", function()
+        {
+            it("Should update the post activity comments collection if it already exists", function()
+            {
+                var workout = new WorkoutModel();
+                var postActivityComments = workout.getPostActivityComments();
+                expect(postActivityComments.length).to.eql(0);
+                workout.parse({
+                    workoutComments: [
+                        { firstName: "test", lastName: "user", comment: "some comment" }
+                    ]                    
+                });
+                expect(postActivityComments.length).to.eql(1);
+            });
+
+            it("Should not create a post activity comments collection if it does not already exist", function()
+            {
+                var workout = new WorkoutModel();
+                workout.parse({
+                    workoutComments: [
+                        { firstName: "test", lastName: "user", comment: "some comment" }
+                    ]                    
+                });
+                expect(workout.postActivityComments).to.not.be.ok;
+            });
+
+            it("Should remove time zone offset string from start time", function()
+            {
+                var workout = new WorkoutModel();
+                expect(workout.parse({ startTime: "2014-01-01T12:00:00-06:00" }).startTime).to.eql("2014-01-01T12:00");
+                expect(workout.parse({ startTime: "2014-03-19T15:51:49.3923409-06:00" }).startTime).to.eql("2014-03-19T15:51");
+               
+            });
+        });
     });
 
 });
