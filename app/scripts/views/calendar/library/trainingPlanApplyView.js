@@ -190,8 +190,12 @@ function(
             return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
         },
 
-        onApply: function()
+        onApply: function(e)
         {
+
+            // prevent default is here so when we export this as a component for kentico,
+            // the button doesn't cause the containing form to submit
+            e.preventDefault();
 
             this.applyStartType = Number(this.ui.applyDateType.val());
             var targetDate = TP.utils.datetime.parse(this.ui.applyDate.val()).format("YYYY-MM-DD");

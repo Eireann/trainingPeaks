@@ -18,6 +18,7 @@ function(_, TP, UserModel, EquipmentCollection)
         {
             return _.extend({}, UserModel.prototype.personDefaultFields, {
                 athleteId: 0,
+                athleteType: null,
                 enableVirtualCoachEmails: null,
                 enableWorkoutCommentNotification: null,
                 virtualCoachEmailHour: null,

@@ -3,15 +3,23 @@ define(
     "underscore",
     "TP",
     "shared/data/exerciseSetUnits",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/workout/exerciseSetView"
 ],
 function (
     _,
     TP,
     ExerciseSetUnits,
+    WorkoutTypes,
     exerciseSetView
 )
 {
+    var pacedWorkoutTypes = [
+        WorkoutTypes.typesByName.Swim,
+        WorkoutTypes.typesByName.Run,
+        WorkoutTypes.typesByName.Walk
+    ];
+
     return TP.ItemView.extend(
     {
         className: "exerciseSet",
@@ -54,20 +62,7 @@ function (
             else
                 data.active = true;
 
-            var notes = _.find(data.instructions, { name: "Notes" });
-            if (notes)
-            {
-                data.planNote = notes.planValue;
-                data.actualNote = notes.actualValue;
-
-                if (data.planNote || data.actualNote)
-                    data.displayNotes = true;
-                else
-                    data.displayNotes = false;
-            }
-
             data.instructions = _.reject(data.instructions, { name: "Active or Rest" });
-            data.instructions = _.reject(data.instructions, { name: "Notes" });
         },
 
         _postProcessNamesAndUnits: function(instruction)
@@ -75,8 +70,13 @@ function (
             // The backend does not send us what we need to display.
             // Hence make some necessary adjustments here, until the backend knows better.
 
+            // 6 = "Cadence"
+            if (instruction.type === 6)
+            {
+                instruction.units = "rpm";
+            }
             // 9 = "HR Zone"
-            if (instruction.type === 9)
+            else if (instruction.type === 9)
             {
                 this._convertHeartRateZones(instruction);
             }
@@ -121,42 +121,51 @@ function (
             }
         },
 
+        _buildZoneString: function(zone, units, label)
+        {
+            var min = units ? TP.utils.conversion.formatUnitsValue(units, zone.minimum, { workoutTypeId: this.options.workoutTypeId }) : zone.minimum;
+            var max = units ? TP.utils.conversion.formatUnitsValue(units, zone.maximum, { workoutTypeId: this.options.workoutTypeId }) : zone.maximum;
+            return zone.label + " (" + min + " - " + max + (label ? " " + label : "") + ")";
+        },
+
         _convertHeartRateZones: function(instruction)
         {
             if (instruction.planValueSpecified)
             {
-                var planHrZone = theMarsApp.user.getAthleteSettings().get("heartRateZones.0.zones." + (instruction.planValue - 1));
+                var planHrZone = this._getZone("heartRate", instruction.planValue);
                 if (planHrZone)
                 {
-                    instruction.planValue = planHrZone.minimum + " - " + planHrZone.maximum;
+                    instruction.planValue = this._buildZoneString(planHrZone, "heartrate", "bpm");
                 }
             }
             if (instruction.actualValueSpecified)
             {
-                var actualHrZone = theMarsApp.user.getAthleteSettings().get("heartRateZones.0.zones." + (instruction.actualValue - 1));
+                var actualHrZone = this._getZone("heartRate", instruction.actualValue);
                 if (actualHrZone)
                 {
-                    instruction.actualValue = actualHrZone.minimum + " - " + actualHrZone.maximum;
+                    instruction.actualValue = this._buildZoneString(actualHrZone, "heartrate", "bpm"); 
                 }
             }
         },
 
         _convertSpeedZones: function(instruction)
         {
+            var units = _.contains(pacedWorkoutTypes, this.options.workoutTypeId) ? "pace" : "speed";
+
             if (instruction.planValueSpecified)
             {
-                var planSpeedZone = theMarsApp.user.getAthleteSettings().get("speedZones.0.zones." + (instruction.planValue - 1));
+                var planSpeedZone = this._getZone("speed", instruction.planValue);
                 if (planSpeedZone)
                 {
-                    instruction.planValue = TP.utils.conversion.formatUnitsValue("pace", planSpeedZone.minimum) + " - " + TP.utils.conversion.formatUnitsValue("pace", planSpeedZone.maximum);
+                    instruction.planValue = this._buildZoneString(planSpeedZone, units, TP.utils.units.getUnitsLabel(units, this.options.workoutTypeId));
                 }
             }
             if (instruction.actualValueSpecified)
             {
-                var actualSpeedZone = theMarsApp.user.getAthleteSettings().get("speedZones.0.zones." + (instruction.actualValue - 1));
+                var actualSpeedZone = this._getZone("speed", instruction.actualValue);
                 if (actualSpeedZone)
                 {
-                    instruction.actualValue = TP.utils.conversion.formatUnitsValue("pace", actualSpeedZone.minimum) + " - " + TP.utils.conversion.formatUnitsValue("pace", actualSpeedZone.maximum);
+                    instruction.actualValue = this._buildZoneString(actualSpeedZone, units, TP.utils.units.getUnitsLabel(units, this.options.workoutTypeId));
                 }
             }
         },
@@ -165,19 +174,50 @@ function (
         {
             if (instruction.planValueSpecified)
             {
-                var planPowerZone = theMarsApp.user.getAthleteSettings().get("powerZones.0.zones." + (instruction.planValue - 1));
+                var planPowerZone = this._getZone("power", instruction.planValue);
                 if (planPowerZone)
                 {
-                    instruction.planValue = TP.utils.conversion.formatUnitsValue("power", planPowerZone.minimum) + " - " + TP.utils.conversion.formatUnitsValue("power", planPowerZone.maximum);
+                    instruction.planValue = this._buildZoneString(planPowerZone, "power", TP.utils.units.getUnitsLabel("power", this.options.workoutTypeId));
                 }
             }
             if (instruction.actualValueSpecified)
             {
-                var actualPowerZone = theMarsApp.user.getAthleteSettings().get("powerZones.0.zones." + (instruction.actualValue - 1));
+                var actualPowerZone = this._getZone("power", instruction.actualValue);
                 if (actualPowerZone)
                 {
-                    instruction.actualValue = TP.utils.conversion.formatUnitsValue("power", actualPowerZone.minimum) + " - " + TP.utils.conversion.formatUnitsValue("power", actualPowerZone.maximum);
+                    instruction.actualValue = this._buildZoneString(actualPowerZone, "power", TP.utils.units.getUnitsLabel("power", this.options.workoutTypeId));
                 }
+            }
+        },
+
+        _getZone: function(zoneType, zoneNumber)
+        {
+            var zone = this._getZoneBySportType(zoneType, zoneNumber, this.options.workoutTypeId);
+
+            if (!zone)
+            {
+                zone = this._getZoneBySportType(zoneType, zoneNumber, 0);
+            }
+
+            return zone;
+        },
+
+        _getZoneBySportType: function(zoneType, zoneNumber, workoutTypeId)
+        {
+            var zoneSets = theMarsApp.user.getAthleteSettings().get(zoneType + "Zones");
+
+            var zonesForWorkoutType = _.find(zoneSets, function(zoneSet)
+            {
+                return zoneSet.workoutTypeId === workoutTypeId;
+            });
+
+            if (zonesForWorkoutType && zonesForWorkoutType.zones && zonesForWorkoutType.zones.length >= zoneNumber)
+            {
+                return zonesForWorkoutType.zones[(zoneNumber - 1)];
+            }
+            else
+            {
+                return undefined;
             }
         }
 

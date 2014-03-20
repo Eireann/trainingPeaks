@@ -3,6 +3,7 @@
     "underscore",
     "moment",
     "TP",
+    "utilities/workout/workoutTypes",
     "views/workoutCommentsEditor/workoutCommentsEditor",
     "views/quickView/summaryView/summaryViewUserCustomization",
     "views/quickView/summaryView/summaryViewStickitBindings",
@@ -15,6 +16,7 @@ function (
     _,
     moment,
     TP,
+    WorkoutTypes,
     WorkoutCommentsEditorView,
     summaryViewUserCustomization,
     summaryViewStickitBindings,
@@ -52,7 +54,8 @@ function (
             this.on("render", this.setTabOrder, this);
             this.on("render", this.renderEquipmentSelectors, this);
             this.on("render", this.renderWorkoutStructure, this);
-            this.model.get("details").on("change", this.renderWorkoutStructure, this);
+            this.listenTo(this.model.get("details"), "change", this.renderWorkoutStructure);
+            this.listenTo(this.model, "change:workoutTypeValueId", this.renderWorkoutStructure);
             this.initializeUserCustomization();
 
             // setup stickit last because the user customization onRender needs to happen before stickit
@@ -105,17 +108,30 @@ function (
                 return;
             }
             else
-            {
+            { 
+                this._setupWorkoutStructureLink();
+                this.listenTo(this.model, "change:workoutTypeValueId", this._setupWorkoutStructureLink);
                 this.$(".workoutStructureToggleContainer").show();
             }
 
-            var view = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure") });
+            if(this.workoutStructureView)
+            {
+                this.workoutStructureView.close();
+            }
+            
+            this.workoutStructureView = new WorkoutStructureView({ workoutStructure: this.model.get("details").get("workoutStructure"), itemViewOptions: { workoutTypeId: this.model.get("workoutTypeValueId")} });
 
-            view.render();
+            this.workoutStructureView.render();
 
-            this.$("#workoutStructure").html(view.el);
+            this.$("#workoutStructure").html(this.workoutStructureView.el);
 
-            this.on("close", _.bind(view.close, view));
+            this.on("close", _.bind(this.workoutStructureView.close, this.workoutStructureView));
+        },
+
+        _setupWorkoutStructureLink: function()
+        {
+            this.$(".workoutStructureToggle.intervals").toggle(this.model.get("workoutTypeValueId") !== WorkoutTypes.getIdByName("Strength"));
+            this.$(".workoutStructureToggle.exercises").toggle(this.model.get("workoutTypeValueId") === WorkoutTypes.getIdByName("Strength"));
         },
 
         _scrollToWorkoutStructure: function()

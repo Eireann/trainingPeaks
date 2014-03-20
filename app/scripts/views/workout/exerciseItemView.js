@@ -23,7 +23,8 @@ function (
         itemViewOptions: function(model, index)
         {
             return {
-                index: index
+                index: index,
+                workoutTypeId: this.options.workoutTypeId
             };
         },
 
