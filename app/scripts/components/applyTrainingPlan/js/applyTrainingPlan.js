@@ -8,7 +8,8 @@ define(
     "TP",
     "shared/models/userModel",
     "models/library/trainingPlan",
-    "views/calendar/library/trainingPlanApplyView"
+    "views/calendar/library/trainingPlanApplyView",
+    "hbs!../templates/applyTrainingPlan"
 ],
 function(
          webfonts,
@@ -19,7 +20,8 @@ function(
          TP,
          UserModel, 
          TrainingPlanModel,
-         TrainingPlanApplyView
+         TrainingPlanApplyView,
+         applyTrainingPlanTemplate
          )
 {
 
@@ -27,13 +29,15 @@ function(
 
         className: "applyTrainingPlanContainer",
 
-        template: function(data)
+        template:
         {
-            return "";
+            type: "handlebars",
+            template: applyTrainingPlanTemplate
         },
 
         initialize: function(options)
         {
+            this.loaded = false;
             this.model = new TrainingPlanModel({ planId: options.trainingPlanId });
             this.user = new UserModel();
             this._setupApiConfig();
@@ -63,6 +67,8 @@ function(
                 self.user.setCurrentAthlete(new TP.Model({ athleteId: athleteId }));
                 self.model.details.fetch().done(function()
                 {
+                    self.loaded = true;
+                    self.render();
                     promise.resolve();
                 });
             });
@@ -74,11 +80,51 @@ function(
         {
 
             webfonts.loadFonts();
+            if(!this.loaded)
+            {
+                this.$(".yourPlanHasBeenApplied").hide();
+                this.$(".applyYourTrainingPlan").hide();
+            }
+            else if(this._planHasBeenApplied())
+            {
+                this.$(".applyYourTrainingPlan").hide();
+                this.$(".loginToTrainingPeaks").hide();
+                if(_.isFunction(this.options.onSuccess))
+                {
+                    this.options.onSuccess();
+                }
+            }
+            else
+            {
+                this.$(".yourPlanHasBeenApplied").hide();
+                this.planApplyView = new TrainingPlanApplyView({model: this.model});
+                this.$(".applyTrainingPlan").append(this.planApplyView.render().$el);
+                this.on("close", this.planApplyView.close, this.planApplyView);
+                this.listenTo(this.planApplyView, "planApplied", this._onPlanApplied);
+            }
+        },
 
-            this.planApplyView = new TrainingPlanApplyView({model: this.model});
-            this.$el.append(this.planApplyView.render().$el);
-            this.on("close", this.planApplyView.close, this);
-            this.listenTo(this.planApplyView, "planApplied", this.options.onSuccess);
+        serializeData: function()
+        {
+            var data = this.model.toJSON();
+
+            if(this._planHasBeenApplied())
+            {
+                data.planApplication = this.model.details.get("planApplications.0");
+            }
+
+            return data;
+        },
+
+        _planHasBeenApplied: function()
+        {
+            var planApplications = this.model.details.get("planApplications");
+            return planApplications && planApplications.length;
+        },
+
+        _onPlanApplied: function()
+        {
+            this.model.details.fetch().done(_.bind(this.render, this));
         },
 
         _setupApiConfig: function()

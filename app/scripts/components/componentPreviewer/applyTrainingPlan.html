@@ -15,16 +15,15 @@
             LoadApplyTrainingPlan({
                 target: "#applyTrainingPlan",
                 trainingPlanId: trainingPlanId,
-                onSuccess: function(){alert('plan has been applied');}
+                onSuccess: function(){console.log('plan has been applied');}
             });
         });
         </script>
     </head>
     <body style="min-height: 1000px;">
         <div style="margin: 50px;">
-            <h1>Apply training plan</h1>
             <form method="GET" action="http://www.google.com"/>
-                <div id="applyTrainingPlan" style="width: 400px"></div>        
+                <div id="applyTrainingPlan"></div>        
             </form>
         </div>
     </body>

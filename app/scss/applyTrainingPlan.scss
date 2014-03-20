@@ -18,7 +18,6 @@
 .applyTrainingPlanContainer
 {
 
-    width: 330px;
     font-size: $baseFontSize;
     font-family: $fontFamilyRegular;
 
@@ -39,6 +38,11 @@
 
     @include buttons(0px, auto, $fontSizeMedium);
 
+    .trainingPlanApplyView
+    {
+        width: 330px;
+    }
+    
     input[type="text"]
     {
         padding-top: 0px;
