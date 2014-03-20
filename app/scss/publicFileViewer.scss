@@ -92,9 +92,6 @@
         .workoutBarView {
             .workout {
                 margin-left: 0;
-                .workoutIconLarge {
-                    margin-top: -4px;
-                }
             }
         }
     }
@@ -292,3 +289,4 @@
 @import "tomahawk";
 @import "upgrade";
 
+@include nice-scrollbar-real;
