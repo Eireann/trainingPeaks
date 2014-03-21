@@ -185,17 +185,13 @@ function (
         it("Should have a header set to 'Intervals' for non-Strength workouts.", function()
         {
             workoutStructureView = getWorkoutStructureView(1);
-
-            expect(workoutStructureView.$(".header span.intervals").filter(function() { return $(this).css('display') === 'inline'; }).length).to.equal(1);
-            expect(workoutStructureView.$(".header span.intervals").filter(function() { return $(this).css('display') === 'inline'; }).text()).to.contain("Intervals");
+            expect(workoutStructureView.$(".headline").text()).to.contain("Intervals");
         });
 
         it("Should have a header set to 'Exercises' for Strength workouts.", function()
         {
             workoutStructureView = getWorkoutStructureView(9);
-
-            expect(workoutStructureView.$(".header span.exercises").filter(function() { return $(this).css('display') === 'inline'; }).length).to.equal(1);
-            expect(workoutStructureView.$(".header span.exercises").filter(function() { return $(this).css('display') === 'inline'; }).text()).to.contain("Exercises");
+            expect(workoutStructureView.$(".headline").text()).to.contain("Exercises");
         });
 
         it("Should have an exercise with 2 sets", function()
