@@ -150,7 +150,17 @@ function(
                 contentType: "application/json",
             };
 
-            return $.ajax(ajaxOptions).done(_.bind(this._setupModels, this));
+            var loadPromise = new $.Deferred();
+
+            var self = this;
+            $.ajax(ajaxOptions).done(function(data)
+            {
+                self._setupModels(data);
+                self.render();
+                loadPromise.resolve();
+            });
+
+            return loadPromise;
         },
 
         onRender: function()

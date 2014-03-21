@@ -3,12 +3,16 @@ var viewerReady = new $.Deferred();
 
 function LoadPublicFileViewer(options)
 {
+    var loadPromise = new $.Deferred();
     viewerReady.done(function(PublicFileViewer)
     {
         var pfv = new PublicFileViewer(options);
-
-        pfv.load().done(function(){pfv.render();});
+        pfv.load().done(function()
+        {
+          loadPromise.resolve();
+        });
     });
+    return loadPromise;
 }
 
 requirejs([
