@@ -35,7 +35,17 @@ function(
 
         events:
         {
-            "click .submit": "_onSubmit"
+            "click .submit": "_onSubmit",
+            "keypress .email": "_onKeyPress"
+        },
+
+        _onKeyPress: function (evt)
+        {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if(charCode === 13)
+            {
+                this._onSubmit();
+            }
         },
 
         _onSubmit: function()
@@ -62,9 +72,10 @@ function(
                 url: this.options.cmsRoot + "/tp/marketing/SubscribeToNewsletter",
                 contentType: 'application/json',
                 dataType: 'json',
-                data: JSON.stringify(subscription),
-                success: _.bind(this.close, this)
+                data: JSON.stringify(subscription)
             });
+
+            this.close();
         },
 
         _isValidEmail: function(emailAddress) {
