@@ -6,7 +6,6 @@
 @import "globalCSS/mixIn";
 @import "touch";
 @import "calendar/quickview/flotTip";
-@import "calendar/quickview/qvExpando";
 
 @import "../../assets/icons/icons";
 @import "sprites";
@@ -247,6 +246,7 @@
     {
         width: auto;
     }
+
 }
 
 #flotTip {
@@ -255,6 +255,7 @@
     .time {
         display: block;
     }
+
 }
 
 .modal
@@ -326,4 +327,3 @@
 @import "tomahawk";
 @import "upgrade";
 
-@include nice-scrollbar-real;

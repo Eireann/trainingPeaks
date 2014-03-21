@@ -8,6 +8,8 @@ define(
     "flot/jquery.flot",
     "flot/jquery.flot.resize",
     "TP",
+    "utilities/rollbarManager",
+    "shared/patches/wrapForRollbar",
     "shared/models/userModel",
     "models/workoutModel",
     "models/workoutStatsForRange",
@@ -32,6 +34,8 @@ function(
          Flot,
          FlotResize,
          TP,
+         RollbarManager,
+         rollbarPatches,
          UserModel, 
          WorkoutModel,
          WorkoutStatsForRangeModel,
@@ -48,15 +52,6 @@ function(
          publicFileViewerTemplate
          )
 {
-
-    /*
-    var WorkoutBarViewWithoutCompliance = WorkoutBarView.extend({
-        getComplianceCssClassName: function ()
-        {
-            return "ComplianceNone";
-        }
-    });
-    */
 
     var LightweightFeatureAuthorizer = function(options){
         this.userType = options.userType;
@@ -133,6 +128,7 @@ function(
             this.userType = options.userType ? Number(options.userType) : 0;
             this.capture = options.capture || false;
             this._setupApiConfig();
+            this._setupRollbar();
             this._setupMarsApp();
             this._loadExternalStylesheets();
             this._loadExternalScripts();
@@ -273,7 +269,8 @@ function(
                 cmsRoot: "//home." + env + ".trainingpeaks.com" + port,
                 apiRoot: "//tpapi." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
                 coachUpgradeURL: "//home.trainingpeaks.com/account-professional-edition.aspx",
-                upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade"
+                upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade",
+                environment: env
             });
         
             if(!this.apiConfig.assetsRoot)
@@ -286,6 +283,16 @@ function(
                 this.apiConfig.cssRoot = this.apiConfig.appRoot + ( this.apiConfig.appRoot.indexOf("local") >= 0 ? "/build/debug" : "");
             }
 
+        },
+
+        _setupRollbar: function()
+        {
+            window._rollbarParams =
+            {
+                "server.environment": this.apiConfig ? this.apiConfig.environment : "local"
+            };
+            window._rollbarEnvironment = 'live';
+            RollbarManager.initRollbar(window._rollbarParams, $, window, document);
         },
 
         _setupMarsApp: function()
