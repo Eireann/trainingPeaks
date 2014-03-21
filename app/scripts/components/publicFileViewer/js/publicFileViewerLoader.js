@@ -1,11 +1,11 @@
 /* jshint ignore:start */
 var viewerReady = new $.Deferred();
 
-function LoadPublicFileViewer(cssSelector, token, userType)
+function LoadPublicFileViewer(options)
 {
     viewerReady.done(function(PublicFileViewer)
     {
-        var pfv = new PublicFileViewer({ el: $(cssSelector), token: token, userType: userType });
+        var pfv = new PublicFileViewer(options);
 
         pfv.load().done(function(){pfv.render();});
     });

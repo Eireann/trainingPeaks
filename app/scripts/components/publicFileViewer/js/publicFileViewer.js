@@ -20,6 +20,7 @@ define(
     "views/expando/statsView",
     "views/expando/lapsView",
     "shared/views/userUpgradeView",
+    "./emailCaptureView",
     "hbs!../templates/publicFileViewerTemplate"
 ],
 function(
@@ -43,6 +44,7 @@ function(
          StatsView,
          LapsView,
          UserUpgradeView,
+         EmailCaptureView,
          publicFileViewerTemplate
          )
 {
@@ -128,7 +130,8 @@ function(
         initialize: function(options)
         {
             this.token = options.token;
-            this.userType = options.userType || 0;
+            this.userType = options.userType ? Number(options.userType) : 0;
+            this.capture = options.capture || false;
             this._setupApiConfig();
             this._setupMarsApp();
             this._loadExternalStylesheets();
@@ -165,6 +168,11 @@ function(
             this.renderHeader();
             this.renderExpandoPods(options);
             this.renderExpandoLeftColumn(options);
+
+            if(this.capture)
+            {
+                this.renderCapture();
+            }
         },
 
         renderHeader: function()
@@ -219,6 +227,16 @@ function(
             this.subviews.push(lapsView);
         },
 
+        renderCapture: function()
+        {
+            var capture = new EmailCaptureView(this.apiConfig);
+            capture.render();
+            var self = this;
+            capture.on("close", function(){
+                self.capture = false;
+            });
+        },
+
         _setupModels: function(data)
         {
             theMarsApp.user.set(data);
@@ -242,6 +260,7 @@ function(
             this.apiConfig = _.defaults({}, window.apiConfig, {
                 wwwRoot: "//www." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
                 appRoot: "//app." + env + ".trainingpeaks.com" + port,
+                cmsRoot: "//home." + env + ".trainingpeaks.com" + port,
                 apiRoot: "//tpapi." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
                 coachUpgradeURL: "//home.trainingpeaks.com/account-professional-edition.aspx",
                 upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade"

@@ -62,7 +62,7 @@
 
     .QVHeader
     {
-        padding: 12px 100px;
+        padding: 12px 14.75%;
     }
 
     .QVHeaderItemsContain .workoutBarViewHeader {
@@ -166,7 +166,7 @@
 
     #quickViewExpandedContent
     {
-        padding: 0px 100px;
+        padding: 0px  14.75%;
         height: calc(100% - 125px);
 
         .expandoRightColumn
@@ -297,6 +297,24 @@
     .deleteSeries
     {
         display: none;
+    }
+
+    &.emailCaptureView
+    {
+        padding: 40px;
+        background-color: $white;
+
+        .title
+        {
+            font-size: $fontSizeXLarge;
+        }
+
+        @include buttons(0px, 100px, $fontSizeMedium);
+
+        button
+        {
+            float: right;
+        }
     }
 }
 
