@@ -65,7 +65,8 @@
     }
 
     .QVHeaderItemsContain .workoutBarViewHeader {
-        width: 634px;
+        // width: 634px;
+        width: calc(100% - 13px);
         // This will probably need to be adjusted once scroll bars are added to main column.
         // The right side should align with the right side of the map.
     }
@@ -80,7 +81,7 @@
     .QVHeaderLeft
     {
         float: left;
-        width: calc(100% - 336px);
+        width: calc(100% - 334px);
 
         .dateAndTime
         {
@@ -103,13 +104,13 @@
 
     .QVHeaderRight {
         float: left;
-        width: 335px;
+        width: 330px;
 
         .QVHeaderProfile {
            
             .userProfile {
                 @include clearfix;
-                padding-top: 24px;
+                padding-top: 22px;
 
                 .userImage {
                     float: left;
