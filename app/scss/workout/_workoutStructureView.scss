@@ -39,13 +39,11 @@
             text-align: center;   
         }
 
-        .setProperties {
-            .header {
-                font-family: $fontFamilyHeavy;
-                font-size: $fontSizeSmall;
-                color: $TPGrey3;
-                display: inline-block;
-            }
+        .header {
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmall;
+            color: $TPGrey3;
+            display: inline-block;
         }
     }
 
@@ -65,13 +63,24 @@
 
         .exerciseNotes {
             padding-left: 10px;
-            p {
-                font-size: $fontSizeSmall;
-                line-height: $fontSizeXXLarge;
-                &:last-of-type {
-                    margin-bottom: $fontSizeXSmall;
-                }
+            font-size: $fontSizeSmall;
+            line-height: $fontSizeXXLarge;
+
+            .header
+            {
+                font-size: 1em;
+                margin-right: 5px;
             }
+
+            p:last-of-type {
+                margin-bottom: 0px;
+            }
+
+            br {
+                line-height: 2em;
+            }
+
+            margin-bottom: $fontSizeSmall;
         }
 
         .exerciseSets {
