@@ -289,7 +289,9 @@ function(
         {
             window._rollbarParams =
             {
-                "server.environment": this.apiConfig ? this.apiConfig.environment : "local"
+                "server.environment": this.apiConfig ? this.apiConfig.environment : "local",
+                "client.javascript.source_map_enabled": true,
+                "client.javascript.code_version": "{BUILD_VERSION}" 
             };
             window._rollbarEnvironment = 'live';
             RollbarManager.initRollbar(window._rollbarParams, $, window, document);

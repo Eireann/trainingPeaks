@@ -44,6 +44,8 @@
     "grunt-contrib-compass": "~0.6.0",
     "lodash": "~2.2.1",
     "grunt-cli": "~0.1.11",
-    "grunt-available-tasks": "~0.4.3"
+    "grunt-available-tasks": "~0.4.3",
+    "grunt-http-upload": "git+https://github.com/TrainingPeaks/grunt-http-upload.git",
+    "grunt-string-replace": "~0.2.7"
   }
 }
