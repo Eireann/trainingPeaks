@@ -129,6 +129,7 @@ function(
             this.capture = options.capture || false;
             this._setupApiConfig();
             this._setupRollbar();
+            this._setupGoogleAnalytics();
             this._setupMarsApp();
             this._loadExternalStylesheets();
             this._loadExternalScripts();
@@ -254,24 +255,58 @@ function(
 
         _setupApiConfig: function()
         {
-            var env = "local";
-            var hostNameMatch = document.location.hostname.match(/([a-z]+)\.trainingpeaks\.com/);
-            var port = document.location.port ? ":" + document.location.port : "";
+            this.apiConfig = _.defaults({}, window.apiConfig, { 
+                coachUpgradeURL: "//home.trainingpeaks.com/account-professional-edition.aspx",
+                upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade"
+            });
 
+            var hostNameMatch = document.location.hostname.match(/([a-z]+\.trainingpeaks\.com|localhost)/);
+            var subdomain = "";
             if(hostNameMatch && hostNameMatch.length === 2)
             {
-                env = hostNameMatch[1];
+                subdomain = hostNameMatch[1];
             }
 
-            this.apiConfig = _.defaults({}, window.apiConfig, {
-                wwwRoot: "//www." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
-                appRoot: "//app." + env + ".trainingpeaks.com" + port,
-                cmsRoot: "//home." + env + ".trainingpeaks.com" + port,
-                apiRoot: "//tpapi." + (env === "local" ? "dev" : env) + ".trainingpeaks.com",
-                coachUpgradeURL: "//home.trainingpeaks.com/account-professional-edition.aspx",
-                upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade",
-                environment: env
-            });
+            switch(subdomain)
+            {
+                case "localhost":
+                case "local.trainingpeaks.com":
+                    var port = document.location.port ? ":" + document.location.port : "";
+                    this.apiConfig.env = "local";
+                    this.apiConfig.wwwRoot = "//www.dev.trainingpeaks.com";
+                    this.apiConfig.appRoot = "//app.local.trainingpeaks.com" + port;
+                    this.apiConfig.cmsRoot = "//home.local.trainingpeaks.com";
+                    this.apiConfig.apiRoot = "//tpapi.dev.trainingpeaks.com";
+                    this.apiConfig.gaAccount = "UA-42726244-3"
+                    break;
+
+                case "dev.trainingpeaks.com":
+                    this.apiConfig.env = "dev";
+                    this.apiConfig.wwwRoot = "//www.dev.trainingpeaks.com";
+                    this.apiConfig.appRoot = "//app.dev.trainingpeaks.com";
+                    this.apiConfig.cmsRoot = "//home.dev.trainingpeaks.com";
+                    this.apiConfig.apiRoot = "//tpapi.dev.trainingpeaks.com";
+                    this.apiConfig.gaAccount = "UA-42726244-1";
+                    break;
+
+                case "sandbox.trainingpeaks.com":
+                    this.apiConfig.env = "sandbox";
+                    this.apiConfig.wwwRoot = "//www.sandbox.trainingpeaks.com";
+                    this.apiConfig.appRoot = "//app.sandbox.trainingpeaks.com";
+                    this.apiConfig.cmsRoot = "//home.sandbox.trainingpeaks.com";
+                    this.apiConfig.apiRoot = "//tpapi.sandbox.trainingpeaks.com";
+                    break;
+
+                default:
+                    this.apiConfig.env = "live";
+                    this.apiConfig.wwwRoot = "//www.trainingpeaks.com";
+                    this.apiConfig.appRoot = "//app.trainingpeaks.com";
+                    this.apiConfig.cmsRoot = "//home.trainingpeaks.com";
+                    this.apiConfig.apiRoot = "//tpapi.trainingpeaks.com";
+                    this.apiConfig.gaAccount = "UA-42726244-2";
+                    break;
+            }
+
         
             if(!this.apiConfig.assetsRoot)
             {
@@ -295,6 +330,26 @@ function(
             };
             window._rollbarEnvironment = 'live';
             RollbarManager.initRollbar(window._rollbarParams, $, window, document);
+        },
+
+        _setupGoogleAnalytics: function()
+        {
+
+            if(!window.ga && this.apiConfig.gaAccount)
+            {
+                (function (i, s, o, g, r, a, m)
+                {
+                    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function ()
+                    {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+                ga("create", this.apiConfig.gaAccount);
+                ga("send", "pageview");
+            }
+
         },
 
         _setupMarsApp: function()
