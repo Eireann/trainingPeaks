@@ -108,16 +108,28 @@
         .QVHeaderProfile {
            
             .userProfile {
-                 @include clearfix;
+                @include clearfix;
+                padding-top: 24px;
 
-                 .userName {
+                .userImage {
+                    float: left;
+                    height: 80px;
+                    width: 80px;
+                    vertical-align: bottom;
+                    background-position: 50% 50%;
+                    background-size: cover;
+                    background-color: #ddd;
+                }
+
+                .userName {
                     font-family: $fontFamilyLight;
                     font-size: $fontSizeXLarge;
                     color: $TPGrey4;
                     position: relative;
                     top: 30px;
                     left: 10px;
-                 }
+                    float: left;
+                }
 
             }
         }
@@ -136,27 +148,6 @@
     {
         height: 100%;
         width: 100%;
-    }
-
-    .QVHeaderProfile
-    {
-        .userProfile
-        {
-            padding-top: 24px;
-        }
-        
-        .userImage
-        {
-            float: left;
-            height: 80px;
-            width: 80px;
-            vertical-align: bottom;
-        }
-
-        .userName
-        {
-            float: left;
-        }
     }
 
     .headerIcons
