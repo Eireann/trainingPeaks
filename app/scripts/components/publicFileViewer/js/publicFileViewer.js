@@ -89,7 +89,10 @@ function(
             }
             else
             {
-                this.showUpgradeMessage(_.extend({ }, featureChecker.options, options));
+                if(this.userType > 0 && !this.userIsPremium())
+                {
+                    this.showUpgradeMessage(_.extend({ }, featureChecker.options, options));
+                }
             }
         },
 
