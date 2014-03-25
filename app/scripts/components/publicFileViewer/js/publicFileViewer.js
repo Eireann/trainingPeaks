@@ -277,7 +277,7 @@ function(
                     this.apiConfig.appRoot = "//app.local.trainingpeaks.com" + port;
                     this.apiConfig.cmsRoot = "//home.local.trainingpeaks.com";
                     this.apiConfig.apiRoot = "//tpapi.dev.trainingpeaks.com";
-                    this.apiConfig.gaAccount = "UA-42726244-3"
+                    this.apiConfig.gaAccount = "UA-42726244-3";
                     break;
 
                 case "dev.trainingpeaks.com":
@@ -337,6 +337,8 @@ function(
 
             if(!window.ga && this.apiConfig.gaAccount)
             {
+                // This is Google code, don't let jshint complain about it.
+                /* jshint ignore:start */
                 (function (i, s, o, g, r, a, m)
                 {
                     i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function ()
@@ -348,6 +350,7 @@ function(
 
                 ga("create", this.apiConfig.gaAccount);
                 ga("send", "pageview");
+                /* jshint ignore:end */
             }
 
         },
