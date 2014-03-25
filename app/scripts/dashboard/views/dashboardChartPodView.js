@@ -55,6 +55,8 @@ function(
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
             this.$currentToolTip = $tooltipEl;
+
+            this.trigger("tooltip");
         },
 
         _hideToolTip: function()

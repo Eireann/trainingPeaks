@@ -94,12 +94,13 @@ function(
             this.listenTo(this.packeryCollectionView, "itemview:popIn", _.bind(this.packeryCollectionView.enablePackeryResize, this.packeryCollectionView));
             this.listenTo(this.packeryCollectionView, "itemview:popOut", _.bind(this.packeryCollectionView.disablePackeryResize, this.packeryCollectionView));
 
+            this.analytics = options.analytics || TP.analytics;
             this._setupAnalytics();
         },
 
         onDashboardDatesChange: function()
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "setGlobalDate", "eventLabel": "" });
+            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "setGlobalDate", "eventLabel": "" });
 
             this.collection.each(function(model)
             {
@@ -135,9 +136,25 @@ function(
 
         _setupAnalytics: function()
         {
+            var addingNewChart = false;
+
+            // adding a new chart will trigger multiple reorders, so block those events temporarily when adding
             this.listenTo(this.filteredCollection, "add", function(model)
             {
-                TP.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "addChartFromLibrary", "eventLabel": model.getChartName() });   
+                addingNewChart = true;
+                this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "addChartFromLibrary", "eventLabel": _.result(model, "defaultTitle") });   
+                setTimeout(function()
+                {
+                    addingNewChart = false;
+                }, 1000);
+            });
+
+            this.listenTo(this.packeryCollectionView, "reorder", function()
+            {
+                if(!addingNewChart)
+                {
+                    this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "reorderCharts"});   
+                }
             });
 
         }
