@@ -75,6 +75,7 @@ module.exports = function(grunt)
                     "define": false,
                     "require": false,
                     "WebFont": false,
+                    "WebFontConfig": true,
                     "module": false
                 }
             }

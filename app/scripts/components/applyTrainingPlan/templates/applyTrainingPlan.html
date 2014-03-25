@@ -1,0 +1,23 @@
+
+<div class="applyYourTrainingPlan">            
+    <div id="applyTpHeader">
+        <h2 class="darkGrey prodInfo">Apply Your Training Plan</h2>
+        <p>Choose your start or end date to apply your training plan:</p>
+    </div>
+
+    <div class="applyTrainingPlan"></div>
+</div>
+
+<div class="loginToTrainingPeaks">
+    <h2 id="loginHeader" class="darkGrey prodInfo">Log In</h2>
+    <p>Log in to TrainingPeaks now to start tracking, analyzing and planning to reach your goals:</p>
+</div>
+
+<div class="yourPlanHasBeenApplied">
+    <h2 id="loginHeader" class="darkGrey prodInfo">Your Training Plan Has Been Applied</h2>  
+    {{#with planApplication}}
+    <p>Your training plan has been applied to your calendar from {{ formatDate startDate }} to {{ formatDate endDate }}.</p>
+    {{/with}}
+    <p>Log in to TrainingPeaks now to start tracking, analyzing and planning to reach your goals:</p> 
+</div>
+

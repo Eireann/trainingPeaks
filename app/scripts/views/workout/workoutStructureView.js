@@ -37,8 +37,8 @@ function (
 
         onRender: function()
         {
-            this.$(".header .intervals").toggle(this.options.itemViewOptions.workoutTypeId !== WorkoutTypes.getIdByName("Strength"));
-            this.$(".header .exercises").toggle(this.options.itemViewOptions.workoutTypeId === WorkoutTypes.getIdByName("Strength"));
+            this.$(".headline .intervals").toggle(this.options.itemViewOptions.workoutTypeId !== WorkoutTypes.getIdByName("Strength"));
+            this.$(".headline .exercises").toggle(this.options.itemViewOptions.workoutTypeId === WorkoutTypes.getIdByName("Strength"));
         }
     });
 });

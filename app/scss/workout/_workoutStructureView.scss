@@ -1,58 +1,49 @@
 .workoutStructureToggleContainer {
-    float: right;
+    float: left;
     cursor: pointer;
-    border-top: 2px solid $TPBlue;
-    width: 73px;
-    text-align: right;
+    width: 275px;
+    text-align: center;
     @extend %structureDownArrow;
     background-size: 9px 5px;
     background-repeat: no-repeat;
-    background-position: 0 4px;
-    position: absolute;
-    top: 0;
-    right: 11px;
+    background-position: 175px 8px;
+    padding: 5px;
+    margin-top: 14px;
+    background-color: #ccc;
     
     .workoutStructureToggle {
-        font-family: $fontFamilyHeavy;
-        font-size: $fontSizeXSmall;
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeSmall;
         color: $TPGrey3;
         display: block;
-        text-transform: uppercase;
-        padding-top: 2px;
+        padding-right: 15px;
     }
 }
 
 #workoutStructure {
     float: left;
-    margin-top: 25px;
+    margin: 25px 0;
 
     .workoutStructureContainer {
         clear: both;
-        margin: 0 0 0 11px;
-        width: 619px;
+        margin: 0 0 0 117px;
+        width: 407px;
+
+        .headline {
+            font-family: $fontFamilyRegular;
+            font-size: $fontSizeSmall;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+            padding: 5px;   
+            background-color: #ccc;
+            text-align: center;   
+        }
 
         .header {
             font-family: $fontFamilyHeavy;
-            font-size: $fontSizeSmaller;
-            margin-bottom: 5px;
-            padding-bottom: 5px;
+            font-size: $fontSizeSmall;
             color: $TPGrey3;
-            border-top: 2px solid $TPBlue;
-            padding-top: 2px;   
-            text-transform: uppercase;    
             display: inline-block;
-        }
-
-        .setProperties {
-            .header {
-                border-bottom: 1px solid $TPGrey12;
-                border-top:none;
-                padding-top: 10px;
-                color: $TPGrey3;
-                font-size: $fontSizeSmall;
-                text-transform: none;
-                display: block;
-            }
         }
     }
 
@@ -60,33 +51,56 @@
         color: #636569;
 
         .exerciseTitle {
+            margin: 5px 0 5px 0;
+            font-family: $fontFamilyRegular;
+            font-size: $fontSizeMedium;
+            padding-bottom: 5px;
+            padding-top: 10px;
             color: $TPGrey3;
-            font-family: $fontFamilyHeavy;
-            font-size: $fontSizeSmall;
-            margin: 20px 0 5px 0;
+            display: block;
+            text-transform: uppercase;
         }
 
         .exerciseNotes {
-            p {
-                font-size: $fontSizeSmall;
+            padding-left: 10px;
+            font-size: $fontSizeSmall;
+            line-height: $fontSizeXXLarge;
+
+            .header
+            {
+                font-size: 1em;
+                margin-right: 5px;
             }
+
+            p:last-of-type {
+                margin-bottom: 0px;
+            }
+
+            br {
+                line-height: 2em;
+            }
+
+            margin-bottom: $fontSizeSmall;
         }
 
         .exerciseSets {
+            padding-left: 10px;
+
             .setProperties {
-                margin-bottom: 27px;
+                padding: 0 0 3px 0;
+                line-height: $fontSizeMedLarge;
             }
 
             .workoutStatsRowStructure {
-
-                margin-bottom: 10px; 
-                
+                margin: 3px 0;
+                display: inline;
                 div {
                     display: inline;
                     font-size: $fontSizeSmall;
 
-                    &:last-of-type {
-                        margin-right: 0;
+                    &.comma
+                    {
+                        margin-left: -3px;
                     }
 
                 }

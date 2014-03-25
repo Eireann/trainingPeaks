@@ -8,7 +8,7 @@ define(
     "hbs!templates/views/workoutCommentsEditor/workoutComments",
     "hbs!templates/views/workoutCommentsEditor/editableWorkoutComments"
 ],
-function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
+function($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -89,6 +89,7 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
         
         onCommentBodyBlur: function()
         {
+
             if (this.saveTimeout)
                 clearTimeout(this.saveTimeout);
             
@@ -120,7 +121,7 @@ function ($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate,
                 var comment = TP.utils.conversion.parseUnitsValue("text", self.ui.editedComment.val());
                 if (comment !== self.model.get("comment"))
                 {
-                    self.model.set("comment", comment);
+                    self.model.set("comment", comment, { silent: true });
                     self.trigger("commentedited");
                 }
             }, 2000);

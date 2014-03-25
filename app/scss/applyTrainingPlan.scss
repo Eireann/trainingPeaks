@@ -18,12 +18,8 @@
 .applyTrainingPlanContainer
 {
 
-    width: 330px;
     font-size: $baseFontSize;
     font-family: $fontFamilyRegular;
-
-    $include-html-type-classes: true;
-    @import "foundation/components/type";
 
     $include-html-form-classes: true;
     @import "foundation/components/forms";
@@ -39,6 +35,11 @@
 
     @include buttons(0px, auto, $fontSizeMedium);
 
+    .trainingPlanApplyView
+    {
+        width: 330px;
+    }
+    
     input[type="text"]
     {
         padding-top: 0px;
@@ -51,6 +52,12 @@
             @include box-shadow(none);
         }
     }
+}
+
+.modalOverlay
+{
+    // kentico main region has a very high z-index, so set our modals higher
+    z-index: 10000;
 }
 
 .modal
@@ -77,4 +84,7 @@
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }
+
+    // kentico main region has a very high z-index, so set our modals highe
+    z-index: 10001;
 }

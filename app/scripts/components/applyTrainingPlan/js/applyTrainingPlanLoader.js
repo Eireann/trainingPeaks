@@ -13,10 +13,8 @@ function LoadApplyTrainingPlan(options)
     applyReady.done(function(ApplyTrainingPlan)
     {
         var applyPlan = new ApplyTrainingPlan(options);
-
-        applyPlan.load().done(function(){
-          $(options.target).append(applyPlan.render().$el);
-        });
+        $(options.target).append(applyPlan.render().$el);
+        applyPlan.load();
     });
 }
 

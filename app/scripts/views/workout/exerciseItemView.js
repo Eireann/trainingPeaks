@@ -44,9 +44,19 @@ function (
             var data = this.model.toJSON();
 
             if (data.notes)
-                data.notes = HTMLCleaner.clean(data.notes);
+            {
+                if(data.notes.match(/<[^<>]+>/))
+                {
+                    data.notes = HTMLCleaner.clean(data.notes);
+                }
+                else
+                {
+                   data.notes = data.notes.replace(/\r\n|\r|\n/g,"<br>");
+                }
+            }
 
             return data;
         }
+        
     });
 });

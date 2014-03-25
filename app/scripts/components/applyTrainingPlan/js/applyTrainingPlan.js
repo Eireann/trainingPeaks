@@ -8,7 +8,8 @@ define(
     "TP",
     "shared/models/userModel",
     "models/library/trainingPlan",
-    "views/calendar/library/trainingPlanApplyView"
+    "views/calendar/library/trainingPlanApplyView",
+    "hbs!../templates/applyTrainingPlan"
 ],
 function(
          webfonts,
@@ -19,7 +20,8 @@ function(
          TP,
          UserModel, 
          TrainingPlanModel,
-         TrainingPlanApplyView
+         TrainingPlanApplyView,
+         applyTrainingPlanTemplate
          )
 {
 
@@ -27,19 +29,22 @@ function(
 
         className: "applyTrainingPlanContainer",
 
-        template: function(data)
+        template:
         {
-            return "";
+            type: "handlebars",
+            template: applyTrainingPlanTemplate
         },
 
         initialize: function(options)
         {
+            this.loaded = false;
             this.model = new TrainingPlanModel({ planId: options.trainingPlanId });
             this.user = new UserModel();
             this._setupApiConfig();
             this._setupMarsApp();
             this._loadExternalStylesheets();
             this._loadExternalScripts();
+            webfonts.loadFonts();
         },
 
         load: function()
@@ -55,13 +60,16 @@ function(
             var promise = new $.Deferred();
             var self = this;
 
-            self.user.fetch().done(function()
+            // do not allow to fetch the user from localstorage
+            self.user.fetch({ nocache: true }).done(function()
             {
                 var athletes = self.user.get("athletes");
                 var athleteId = athletes && athletes.length ? athletes[0].athleteId : self.user.get("userId");
                 self.user.setCurrentAthlete(new TP.Model({ athleteId: athleteId }));
                 self.model.details.fetch().done(function()
                 {
+                    self.loaded = true;
+                    self.render();
                     promise.resolve();
                 });
             });
@@ -71,13 +79,51 @@ function(
 
         onRender: function()
         {
+            if(!this.loaded)
+            {
+                this.$(".yourPlanHasBeenApplied").hide();
+                this.$(".applyYourTrainingPlan").hide();
+            }
+            else if(this._planHasBeenApplied())
+            {
+                this.$(".applyYourTrainingPlan").hide();
+                this.$(".loginToTrainingPeaks").hide();
+                if(_.isFunction(this.options.onSuccess))
+                {
+                    this.options.onSuccess();
+                }
+            }
+            else
+            {
+                this.$(".yourPlanHasBeenApplied").hide();
+                this.planApplyView = new TrainingPlanApplyView({model: this.model});
+                this.$(".applyTrainingPlan").append(this.planApplyView.render().$el);
+                this.on("close", this.planApplyView.close, this.planApplyView);
+                this.listenTo(this.planApplyView, "planApplied", this._onPlanApplied);
+            }
+        },
 
-            webfonts.loadFonts();
+        serializeData: function()
+        {
+            var data = this.model.toJSON();
 
-            this.planApplyView = new TrainingPlanApplyView({model: this.model});
-            this.$el.append(this.planApplyView.render().$el);
-            this.on("close", this.planApplyView.close, this);
-            this.listenTo(this.planApplyView, "planApplied", this.options.onSuccess);
+            if(this._planHasBeenApplied())
+            {
+                data.planApplication = this.model.details.get("planApplications.0");
+            }
+
+            return data;
+        },
+
+        _planHasBeenApplied: function()
+        {
+            var planApplications = this.model.details.get("planApplications");
+            return planApplications && planApplications.length;
+        },
+
+        _onPlanApplied: function()
+        {
+            this.model.details.fetch().done(_.bind(this.render, this));
         },
 
         _setupApiConfig: function()

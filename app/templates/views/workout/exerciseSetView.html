@@ -1,6 +1,6 @@
 <div class="setProperties">
   <div class="header">
-    <span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}})</span>
+    <span class="setIndex">Step {{ index }}</span> <span class="setType">({{#if active}}{{$ "Active"}}{{else}}{{$ "Rest"}}{{/if}}):</span>
   </div>
 
   {{#each instructions}}
@@ -20,7 +20,7 @@
       {{#if units}}
         <div class="propertyUnit">{{ units }}</div>
       {{/if}}    
-
+      
       {{#ifAny actualValue actualMin}} 
         <div class="plannedActualSeparator">/</div>
 
@@ -36,8 +36,11 @@
         {{#if units}}
           <div class="propertyUnit">{{ units }}</div>
         {{/if}}
-
+        
       {{/ifAny}}
+
+
+    {{#unless @last}}<div class="comma">,</div>{{/unless}}
 
     </div>
   {{/each}}
