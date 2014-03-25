@@ -93,6 +93,8 @@ function(
             this.listenTo(this.collection, "remove", _.bind(this._onRemoveChart, this));
             this.listenTo(this.packeryCollectionView, "itemview:popIn", _.bind(this.packeryCollectionView.enablePackeryResize, this.packeryCollectionView));
             this.listenTo(this.packeryCollectionView, "itemview:popOut", _.bind(this.packeryCollectionView.disablePackeryResize, this.packeryCollectionView));
+
+            this._setupAnalytics();
         },
 
         onDashboardDatesChange: function()
@@ -129,6 +131,15 @@ function(
         _saveSettings: function()
         {
             theMarsApp.user.getDashboardSettings().save();
+        },
+
+        _setupAnalytics: function()
+        {
+            this.listenTo(this.filteredCollection, "add", function(model)
+            {
+                TP.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "addChartFromLibrary", "eventLabel": model.getChartName() });   
+            });
+
         }
 
     });

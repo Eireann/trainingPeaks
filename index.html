@@ -203,7 +203,19 @@
     // local analytics disabled by default, but can be enabled with an ?analytics query string
     if(/analytics/.test(window.location.search))
     {
-      initGoogleAnalytics();
+      if(/analytics=dummy/.test(window.location.search))
+      {
+        window.ga = function()
+        {
+          var args = Array.prototype.slice.call(arguments);
+          args.unshift("Google Analytics Dummy");
+          console.log.call(console, args);
+        }
+      }
+      else
+      {
+        initGoogleAnalytics();
+      }
     }
   </script>
   <!--<!(endif)-->
