@@ -474,7 +474,8 @@
                     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
                     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
                     background-color:#ededed;
-                    background: repeat-x 0 0;
+                    background-repeat: repeat-x;
+                    background-position: 0 0;
                     @extend %backgroundGradientButtonBG;
                     border: 1px solid $TPGrey9;
                     height: 20px;

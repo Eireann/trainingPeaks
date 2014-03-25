@@ -330,6 +330,12 @@ body {
     }
 }
 
+.expandoStatsThrobber
+{
+    @include throbber;
+    z-index: 2000;
+}
+
 @import "globalCSS/modal";
 @import "globalCSS/hoverBox";
 @import "overlayBox";
