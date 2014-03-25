@@ -241,7 +241,7 @@ function(
 
         _setChartCssClass: function()
         {
-            var className = this.model.getChartName().replace(/[^a-zA-Z]/g,""); 
+            var className = this.model.getChartName().replace(/[^a-zA-Z]/g,"");
             className = className.substring(0, 1).toLowerCase() + className.substring(1);
             this.$el.addClass(className); 
         },
