@@ -253,6 +253,8 @@ function(
 
         _setupAnalytics: function()
         {
+            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "viewChart", "eventLabel": this._getChartNameForAnalytics() });   
+            
             this.listenTo(this, "popOut", function()
             {
                 this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "maximizeChart", "eventLabel": this._getChartNameForAnalytics() });   
