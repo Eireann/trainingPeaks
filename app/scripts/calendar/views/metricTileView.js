@@ -50,7 +50,7 @@ function(
 
             var user = options.user || theMarsApp.user;
             this.listenTo(user, "change:units", _.bind(this.render, this));
-            this.userSettingsMetricOrder = options.userSettingsMetricOrder || _.pluck(theMarsApp.user.getMetricsSettings().attributes, "type");
+            this.userSettingsMetricOrder = options.userSettingsMetricOrder || _.pluck(theMarsApp.user.getMetricsSettings().get("metricTypes"), "type");
         },
 
         serializeData: function()

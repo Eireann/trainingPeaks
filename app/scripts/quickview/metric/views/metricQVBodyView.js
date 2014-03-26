@@ -21,7 +21,7 @@ function(
 
         initialize: function()
         {
-            var types = _.pluck(theMarsApp.user.getMetricsSettings().attributes, "type");
+            var types = _.pluck(theMarsApp.user.getMetricsSettings().get("metricTypes"), "type");
 
             var details = _.map(types, function(type) { return { type: type }; });
 

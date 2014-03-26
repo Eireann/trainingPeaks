@@ -261,14 +261,7 @@ function(
         {
             if(!this.metricsSettings)
             {
-                var MetricsSettingsModel = TP.Model.extend({
-                    reset: function(data)
-                    {
-                        this.attributes = {};
-                        this.set.apply(this, arguments);
-                    }
-                });
-                this.metricsSettings = new MetricsSettingsModel(this.get("settings.metrics"));
+                this.metricsSettings = new TP.Model(this.get("settings.metrics"));
             }
             return this.metricsSettings;
         },
@@ -309,9 +302,8 @@ function(
             this.getCalendarSettings().set(data.settings.calendar);
             this.getDashboardSettings().set(data.settings.dashboard);
             this.getExpandoSettings().set(data.settings.expando);
+            this.getMetricsSettings().set("metricTypes", data.settings.metrics);
             this.getWorkoutSettings().set(data.settings.workout);
-
-            this.getMetricsSettings().reset(data.settings.metrics);
         },
 
         parse: function(resp, options)
