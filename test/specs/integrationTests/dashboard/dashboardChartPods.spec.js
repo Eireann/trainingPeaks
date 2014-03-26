@@ -78,11 +78,21 @@ function(
                 expect($body.find(".dashboardHeaderDatePicker .dashboardDatePicker .dateRanges").is(".customEndDate")).to.equal(true);
             });
 
-            it("Should save settings when closing datepicker tomahawk", function()
+            it("Should not save settings when closing datepicker tomahawk if the settings have not changed", function()
             {
                 testHelpers.clearRequests();
                 $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
                 expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(false);
+                $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
+                expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(false);
+            });
+
+            it("Should save settings when closing datepicker tomahawk if the settings have changed", function()
+            {
+                testHelpers.clearRequests();
+                $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
+                expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(false);
+                $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.LAST_7_DAYS.id).trigger("change");
                 $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
                 expect(testHelpers.hasRequest("PUT", "settings/dashboard")).to.equal(true);
             });

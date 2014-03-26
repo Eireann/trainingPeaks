@@ -52,6 +52,7 @@ function(
             this.listenTo(theMarsApp.user, "change:units", _.bind(this._renderPod, this));
             this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._renderPod, this));
 
+            this.analytics = options.analytics || TP.analytics;
             this._setChartCssClass();
         },
 
@@ -73,6 +74,7 @@ function(
         onRender: function()
         {
             this.contentView = this.model.createContentView({ model: this.model, el: this.el });
+            this._setupAnalytics();
         },
 
         _renderPod: function()
@@ -115,6 +117,10 @@ function(
 
             this.listenTo(this.chartSettings, "close", _.bind(this._onChartSettingsClose, this));
             this.listenTo(this.chartSettings, "apply", _.bind(this._renderPod, this));
+
+            this._setupSettingsAnalytics();
+
+            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "openChartSettings", "eventLabel": this._getChartNameForAnalytics() });   
         },
 
         _onChartSettingsClose: function()
@@ -243,6 +249,47 @@ function(
         _onDashboardReset: function()
         {
             this._renderPod();
+        },
+
+        _setupAnalytics: function()
+        {
+            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "viewChart", "eventLabel": this._getChartNameForAnalytics() });   
+            
+            this.listenTo(this, "popOut", function()
+            {
+                this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "maximizeChart", "eventLabel": this._getChartNameForAnalytics() });   
+            });
+
+            this.listenToOnce(this.contentView, "tooltip", function()
+            {
+                this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "chartToolTip", "eventLabel": this._getChartNameForAnalytics() });   
+            });
+        },
+
+        _setupSettingsAnalytics: function()
+        {
+            this.listenTo(this.model, "change", this._logSettingsChange);
+
+            this.listenToOnce(this.model, "change:title", this._logTitleChange);
+        },
+
+        _logSettingsChange: function(model, options)
+        {
+            if(_.without(_.keys(model.changed), "title", "index").length)
+            {
+                this.stopListening(this.model, "change", this._logSettingsChange);
+                this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "changeChartSettings", "eventLabel": this._getChartNameForAnalytics() });   
+            }
+        },
+
+        _logTitleChange: function()
+        {
+            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "changeChartTitle", "eventLabel": this._getChartNameForAnalytics() });   
+        },
+
+        _getChartNameForAnalytics: function()
+        {
+            return _.result(this.model, "defaultTitle").split(":")[0];
         }
 
     });

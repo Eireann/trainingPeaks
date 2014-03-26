@@ -35,27 +35,39 @@ function(
             "click button.apply": "apply"
         },
 
-        modelEvents: {},
+        modelEvents: {
+            "change": "flagAsChanged"
+        },
         
         initialize: function(options)
         {
             this.originalModel = this.model;
             this.settingsKey = options.key || (options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions");
             this.model = new TP.Model({ dateOptions: this.originalModel.get(this.settingsKey) });
+            this.changed = false;
 
-            this.on("close", this.saveOnClose, this);
+            this.on("close", this.saveIfChanged, this);
             this.children = new Backbone.ChildViewContainer();
         },
 
         apply: function()
         {
-            this.saveOnClose();
+            this.saveIfChanged();
         },
 
-        saveOnClose: function()
+        saveIfChanged: function()
         {
-            this.originalModel.set(this.settingsKey, this.model.get("dateOptions"));
-            this.originalModel.trigger("applyDates");
+            if(this.changed)
+            {
+                this.originalModel.set(this.settingsKey, this.model.get("dateOptions"));
+                this.originalModel.trigger("applyDates");
+                this.changed = false;
+            }
+        },
+
+        flagAsChanged: function()
+        {
+            this.changed = true;
         },
 
         onRender: function ()
