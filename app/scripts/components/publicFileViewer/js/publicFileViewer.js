@@ -14,6 +14,7 @@ define(
     "models/workoutModel",
     "models/workoutStatsForRange",
     "expando/models/expandoStateModel",
+    "./lightweightFeatureAuthorizer",
     "./dateAndTimeView",
     "views/workout/workoutBarView",
     "./userProfileView",
@@ -40,6 +41,7 @@ function(
          WorkoutModel,
          WorkoutStatsForRangeModel,
          ExpandoStateModel,
+         LightweightFeatureAuthorizer,
          DateAndTimeView,
          WorkoutBarView,
          UserProfileView,
@@ -47,71 +49,10 @@ function(
          MapView,
          StatsView,
          LapsView,
-         UserUpgradeView,
          EmailCaptureView,
          publicFileViewerTemplate
          )
 {
-
-    var LightweightFeatureAuthorizer = function(options){
-        this.userType = options.userType;
-    };
-
-    _.extend(LightweightFeatureAuthorizer.prototype, {
-
-        userIsPremium: function()
-        {
-            return _.contains([1,2,4,5], this.userType);
-        },
-
-        features: {
-            ViewGraphRanges: function(){ return this.userIsPremium(); },
-            ExpandoDataEditing: function(){ return this.userIsPremium(); },
-            EditLapNames: false
-        },
-
-        canAccessFeature: function(featureChecker, attributes, options){
-            if(_.isFunction(featureChecker))
-            {
-                return featureChecker.call(this, this.userType, attributes, options);
-            }
-            else
-            {
-                return !!featureChecker; 
-            }
-        },
-
-        runCallbackOrShowUpgradeMessage: function(featureChecker, callback, attributes, options)
-        {
-            if(this.canAccessFeature(featureChecker, attributes, options))
-            {
-                callback();
-            }
-            else
-            {
-                if(this.userType > 0 && !this.userIsPremium())
-                {
-                    this.showUpgradeMessage(_.extend({ }, featureChecker.options, options));
-                }
-            }
-        },
-
-        showUpgradeMessage: function(options)
-        {
-            options = options || {};
-
-            _.defaults(options, { userType: this.userType, imageRoot: theMarsApp.apiConfig.appRoot + "/" });
-
-            if(!this.upgradeView || this.upgradeView.isClosed)
-            {
-                this.upgradeView = new UserUpgradeView(options);
-                this.upgradeView.render();
-
-                if(options.onClose) this.upgradeView.once("close", options.onClose);
-            }
-        }
-
-    });
 
     var PublicFileViewer = TP.ItemView.extend({
 
@@ -371,7 +312,7 @@ function(
                     return $body;
                 },
 
-                featureAuthorizer: new LightweightFeatureAuthorizer({userType: this.userType}),
+                featureAuthorizer: new LightweightFeatureAuthorizer({userType: this.userType, appRoot: this.apiConfig.appRoot}),
 
                 assetsRoot: this.apiConfig.assetsRoot,
 
