@@ -1,11 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "jquery",
     "TP",
     "shared/views/userSettingsView",
     "hbs!templates/views/userControls/accountMenu"
 ],
-function (_, TP, UserSettingsView, accountMenuTemplate)
+function (_, $, TP, UserSettingsView, accountMenuTemplate)
 {
     return TP.ItemView.extend(
     {
