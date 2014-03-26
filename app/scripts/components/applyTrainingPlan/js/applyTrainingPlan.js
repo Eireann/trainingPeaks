@@ -6,6 +6,7 @@ define(
     "jqueryui/position",
     "backbone.marionette.handlebars",
     "TP",
+    "components/shared/apiConfigBuilder",
     "shared/models/userModel",
     "models/library/trainingPlan",
     "views/calendar/library/trainingPlanApplyView",
@@ -18,6 +19,7 @@ function(
          Position,
          bmhbs,
          TP,
+         ApiConfigBuilder,
          UserModel, 
          TrainingPlanModel,
          TrainingPlanApplyView,
@@ -128,29 +130,7 @@ function(
 
         _setupApiConfig: function()
         {
-            var env = "local";
-            var hostNameMatch = document.location.hostname.match(/([a-z]+)\.trainingpeaks\.com/);
-            if(hostNameMatch && hostNameMatch.length === 2)
-            {
-                env = hostNameMatch[1];
-            }
-
-            this.apiConfig = _.defaults({}, window.apiConfig, {
-                wwwRoot: "//www." + env + ".trainingpeaks.com",
-                appRoot: "//app." + env + ".trainingpeaks.com",
-                apiRoot: "//tpapi." + env + ".trainingpeaks.com",
-                cmsRoot: "//home." + env + ".trainingpeaks.com"
-            });
-
-            if(!this.apiConfig.assetsRoot)
-            {
-                this.apiConfig.assetsRoot = this.apiConfig.appRoot + "/assets/";
-            }
-
-            if(!this.apiConfig.cssRoot)
-            {
-                this.apiConfig.cssRoot = this.apiConfig.appRoot + ( this.apiConfig.appRoot.indexOf("local") >= 0 ? "/build/debug" : "");
-            }
+            this.apiConfig = ApiConfigBuilder.buildApiConfig(); 
         },
 
         _setupMarsApp: function()

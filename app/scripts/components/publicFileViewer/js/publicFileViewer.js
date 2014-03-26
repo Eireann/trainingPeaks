@@ -8,6 +8,7 @@ define(
     "flot/jquery.flot",
     "flot/jquery.flot.resize",
     "TP",
+    "components/shared/apiConfigBuilder",
     "utilities/rollbarManager",
     "shared/patches/wrapForRollbar",
     "shared/models/userModel",
@@ -34,6 +35,7 @@ function(
          Flot,
          FlotResize,
          TP,
+         ApiConfigBuilder,
          RollbarManager,
          rollbarPatches,
          UserModel, 
@@ -198,69 +200,7 @@ function(
 
         _setupApiConfig: function()
         {
-            this.apiConfig = _.defaults({}, window.apiConfig, { 
-                coachUpgradeURL: "//home.trainingpeaks.com/account-professional-edition.aspx",
-                upgradeURL: "//home.trainingpeaks.com/account-manager/athlete-upgrade"
-            });
-
-            var hostNameMatch = document.location.hostname.match(/([a-z]+\.trainingpeaks\.com|localhost)/);
-            var subdomain = "";
-            if(hostNameMatch && hostNameMatch.length === 2)
-            {
-                subdomain = hostNameMatch[1];
-            }
-
-            switch(subdomain)
-            {
-                case "localhost":
-                case "local.trainingpeaks.com":
-                    var port = document.location.port ? ":" + document.location.port : "";
-                    this.apiConfig.env = "local";
-                    this.apiConfig.wwwRoot = "//www.dev.trainingpeaks.com";
-                    this.apiConfig.appRoot = "//app.local.trainingpeaks.com" + port;
-                    this.apiConfig.cmsRoot = "//home.local.trainingpeaks.com";
-                    this.apiConfig.apiRoot = "//tpapi.dev.trainingpeaks.com";
-                    this.apiConfig.gaAccount = "UA-42726244-3";
-                    break;
-
-                case "dev.trainingpeaks.com":
-                    this.apiConfig.env = "dev";
-                    this.apiConfig.wwwRoot = "//www.dev.trainingpeaks.com";
-                    this.apiConfig.appRoot = "//app.dev.trainingpeaks.com";
-                    this.apiConfig.cmsRoot = "//home.dev.trainingpeaks.com";
-                    this.apiConfig.apiRoot = "//tpapi.dev.trainingpeaks.com";
-                    this.apiConfig.gaAccount = "UA-42726244-1";
-                    break;
-
-                case "sandbox.trainingpeaks.com":
-                    this.apiConfig.env = "sandbox";
-                    this.apiConfig.wwwRoot = "//www.sandbox.trainingpeaks.com";
-                    this.apiConfig.appRoot = "//app.sandbox.trainingpeaks.com";
-                    this.apiConfig.cmsRoot = "//home.sandbox.trainingpeaks.com";
-                    this.apiConfig.apiRoot = "//tpapi.sandbox.trainingpeaks.com";
-                    break;
-
-                default:
-                    this.apiConfig.env = "live";
-                    this.apiConfig.wwwRoot = "//www.trainingpeaks.com";
-                    this.apiConfig.appRoot = "//app.trainingpeaks.com";
-                    this.apiConfig.cmsRoot = "//home.trainingpeaks.com";
-                    this.apiConfig.apiRoot = "//tpapi.trainingpeaks.com";
-                    this.apiConfig.gaAccount = "UA-42726244-2";
-                    break;
-            }
-
-        
-            if(!this.apiConfig.assetsRoot)
-            {
-                this.apiConfig.assetsRoot = this.apiConfig.appRoot + "/assets/";
-            }
-
-            if(!this.apiConfig.cssRoot)
-            {
-                this.apiConfig.cssRoot = this.apiConfig.appRoot + ( this.apiConfig.appRoot.indexOf("local") >= 0 ? "/build/debug" : "");
-            }
-
+            this.apiConfig = ApiConfigBuilder.buildApiConfig();
         },
 
         _setupRollbar: function()
