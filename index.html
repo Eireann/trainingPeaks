@@ -109,7 +109,10 @@
     "server.environment": window.apiConfig ? window.apiConfig.environment : "local",
     "server.sha": window.apiConfig ? window.apiConfig.buildHash : "",
     "client.javascript.source_map_enabled": true,
-    "client.javascript.code_version": window.apiConfig ? window.apiConfig.buildHash : ""
+    "client.javascript.code_version": window.apiConfig ? window.apiConfig.buildHash : "",
+    // Optionally have Rollbar guess which frames the error was thrown from
+    // when the browser does not provide line and column numbers.
+    "client.javascript.guess_uncaught_frames": true
   };
   </script>
 
