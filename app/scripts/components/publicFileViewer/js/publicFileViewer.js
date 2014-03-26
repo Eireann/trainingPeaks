@@ -22,7 +22,6 @@ define(
     "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
-    "shared/views/userUpgradeView",
     "./emailCaptureView",
     "hbs!../templates/publicFileViewerTemplate"
 ],
