@@ -425,6 +425,12 @@ function(
             return selectedOption;
         },
 
+        findChartDateOptionName: function(selectedOptionId)
+        {
+           var selectedKey = _.findKey(this.chartDateOptions, { id: Number(selectedOptionId) });
+           return selectedKey ? selectedKey : "";
+        },
+
         _findGlobalChartSettings: function()
         {
             var globalSettingKey = "dateOptions";

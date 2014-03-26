@@ -9,6 +9,7 @@
     "./dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
     "views/packeryCollectionView",
+    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/dashboardChartsContainer"
 ],
 function(
@@ -21,6 +22,7 @@ function(
     dashboardChartBuilder,
     PrimaryContainerView,
     PackeryCollectionView,
+    ChartUtils,
     dashboardContainerTemplate
 )
 {
@@ -100,7 +102,8 @@ function(
 
         onDashboardDatesChange: function()
         {
-            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "setGlobalDate", "eventLabel": "" });
+            var selectedDateOptionName = ChartUtils.findChartDateOptionName(this.model.get("dateOptions.quickDateSelectOption"));
+            this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "setGlobalDate", "eventLabel": selectedDateOptionName });
 
             this.collection.each(function(model)
             {
@@ -142,7 +145,7 @@ function(
             this.listenTo(this.filteredCollection, "add", function(model)
             {
                 addingNewChart = true;
-                this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "addChartFromLibrary", "eventLabel": _.result(model, "defaultTitle") });   
+                this.analytics("send", { "hitType": "event", "eventCategory": "dashboard", "eventAction": "addChartFromLibrary", "eventLabel": _.result(model, "defaultTitle").split(":")[0] });   
                 setTimeout(function()
                 {
                     addingNewChart = false;
