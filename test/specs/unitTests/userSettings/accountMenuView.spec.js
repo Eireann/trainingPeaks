@@ -28,6 +28,7 @@ function(
             userModel.setCurrentAthlete(new AthleteSettingsModel(xhrData.athleteSettings.barbkprem));
 
             sinon.stub(userModel, "fetch").returns(new $.Deferred());
+            sinon.stub(userModel.getAthleteSettings(), "fetch").returns(new $.Deferred());
 
             view = new AccountMenuView({ model: userModel });
             view.render();
@@ -46,6 +47,7 @@ function(
             it("Should render user settings view once fetch returns", function()
             {
                 userModel.fetch.returns(new $.Deferred().resolve());
+                userModel.getAthleteSettings().fetch.returns(new $.Deferred().resolve());
                 view.$("#accountMenuUserSettings").trigger("click");
                 expect(userModel.fetch).to.have.been.called;
                 expect(UserSettingsView.prototype.render).to.have.been.called;
