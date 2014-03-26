@@ -31,6 +31,15 @@ function(
 
             this.listenTo(this.model.get("detailData"), "change", _.bind(this.render, this));
             this.listenTo(this.stateModel, "change:primaryRange", _.bind(this._onStatsRangeChanged, this));
+
+            if (options.featureAuthorizer)
+            {
+                this.featureAuthorizer = options.featureAuthorizer;
+            }
+            else
+            {
+                this.featureAuthorizer = theMarsApp.featureAuthorizer;
+            }
         },
 
         reset: function()
@@ -248,7 +257,7 @@ function(
 
         removePremiumFields: function(lapData)
         {
-            if(!theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.ViewGraphRanges))
+            if(!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ViewGraphRanges))
             {
                 _.each(["efficiencyFactor", "speedPulseDecoupling", "powerPulseDecoupling"], function(key)
                 {
