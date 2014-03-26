@@ -302,7 +302,7 @@ function(
             this.getCalendarSettings().set(data.settings.calendar);
             this.getDashboardSettings().set(data.settings.dashboard);
             this.getExpandoSettings().set(data.settings.expando);
-            this.getMetricsSettings().set(data.settings.metrics);
+            this.getMetricsSettings().set("metricTypes", data.settings.metrics);
             this.getWorkoutSettings().set(data.settings.workout);
         },
 
