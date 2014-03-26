@@ -283,6 +283,11 @@ function(
                 return _.contains(useablePods, "view_Ranges");
             }),
 
+            EditLapNames: Feature({ slideId: "map-and-graph" }, function(user, userAccess, attributes, options)
+            {   
+                return this.features.ViewGraphRanges(user, userAccess, attributes, options);
+            }),
+
             /*
             attributes: { collection: libraryExercisesCollection } // collection to add to
             options: none 

@@ -33,7 +33,7 @@ requirejs.config(
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
         affiliates: "scripts/affiliates",
-        leaflet: "../vendor/leaflet/leaflet",
+        leaflet: "../vendor/leaflet/leaflet-src",
         leafletGoogleTiles: "../vendor/js/libs/leaflet/Google",
         packery: "../vendor/packery",
         testUtils: "../test/utils",
@@ -60,7 +60,7 @@ requirejs.config(
         // We need to wrap moment.js to modify some functionality
         moment: "../bower_components/moment/moment",
         wrappedMoment: "scripts/utilities/wrappedMoment",
-        
+
         // Reuseable components
         components: "scripts/components"
     },

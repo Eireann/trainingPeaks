@@ -21,7 +21,7 @@
             <label id="qv-header-tssactual" class="actual">{{ formatUnitsValue "tss" tssActual this "0" }}</label>
         </div>
         <div class="headerWorkoutValueLabel tss">
-            <label id="qv-header-tssSource"><!-- stickit tss label --></label>
+            <label id="qv-header-tssSource">{{ getUnitsLabel "tss" workoutTypeValueId this}}</label>
         </div> 
         <div class="title">
             <span class="workoutTitleText">{{ title }}</span>

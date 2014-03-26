@@ -2,17 +2,18 @@
 @import "settings";
 
 @import "foundationMinimal";
-
+@import "compass/css3/box-shadow";
+@import "globalCSS/mixIn";
 @import "touch";
-@import "globalCSS/modal";
-@import "globalCSS/hoverBox";
-@import "overlayBox";
-@import "globalCSS/tooltip";
-@import "tomahawk";
-@import "upgrade";
 @import "calendar/quickview/flotTip";
 
 @import "../../assets/icons/icons";
+@import "sprites";
+
+body {
+    line-height: 1;
+    // needed for correct workout type icon position
+}
 
 .pfvContainer
 { 
@@ -27,7 +28,6 @@
     $include-html-label-classes: true;
     @import "foundation/components/labels";
 
-    @import "sprites";
     @import "globalCSS/tpstylesheet";
     @import "globalCSS/tpfontstyles";
     @import "globalCSS/mixIn";
@@ -36,6 +36,7 @@
     @import "globalCSS/packeryCollection";
     @import "globalCSS/table";
     @import "calendar/quickView/quickview";
+    @import "calendar/quickView/flotTip";
     @import "calendar/calendarWorkout";
     @import "calendar/workoutColor";
     @import "workout/workoutCommentsEditor";
@@ -62,10 +63,91 @@
         display: none;
     }
 
+    .QVHeader
+    {
+        padding: 12px 14.75%;
 
-    .QVHeaderItemsContain .workoutBarViewHeader, .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
+        .QVHeaderItemsContain 
+        {
+            min-width: 775px;
+
+            .workoutBarViewHeader {
+                // width: 634px;
+                width: calc(100% - 13px);
+                // This will probably need to be adjusted once scroll bars are added to main column.
+                // The right side should align with the right side of the map.
+
+                .workoutHeaderStats
+                {
+                    width: auto;
+                }
+            }
+        }
+    }
+
+
+    .QVHeaderItemsContain .workoutBarViewHeader, 
+    .QVHeaderItemsContain .workoutBarViewHeader .workoutIconLarge
     {
         cursor: default;
+    }
+
+    .QVHeaderLeft
+    {
+        float: left;
+        width: calc(100% - 334px);
+
+        .dateAndTime
+        {
+            height: 22px;
+            padding-left: 0;
+
+            #dayName,
+            #calendarDate,
+            #time {
+                cursor: default;
+            }
+        }
+
+        .workoutBarView {
+            .workout {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .QVHeaderRight {
+        float: left;
+        width: 330px;
+
+        .QVHeaderProfile {
+           
+            .userProfile {
+                @include clearfix;
+                padding-top: 22px;
+
+                .userImage {
+                    float: left;
+                    height: 80px;
+                    width: 80px;
+                    vertical-align: bottom;
+                    background-position: 50% 50%;
+                    background-size: cover;
+                    background-color: #ddd;
+                }
+
+                .userName {
+                    font-family: $fontFamilyLight;
+                    font-size: $fontSizeXLarge;
+                    color: $TPGrey4;
+                    position: relative;
+                    top: 30px;
+                    left: 10px;
+                    float: left;
+                }
+
+            }
+        }
     }
 
     #time
@@ -75,38 +157,13 @@
         color: #636569;
     }
 
-    .dateAndTime
-    {
-        height: 22px;
-    }
+    
 
     #workOutQuickView, .workoutQuickView
     {
         height: 100%;
         width: 100%;
-    }
-
-    .profileImage
-    {
-        float: right;
-    }
-
-    .profileImage img {
-        height: 70px;
-        vertical-align: top;
-    }
-
-    .userName
-    {
-        font-size: 0.857em;
-        color: #636569;
-        margin-top: 22px;
-        margin-left: 12px;
-    }
-
-    .userName span
-    {
-        font-family: "HelveticaNeueW01-75Bold";
+        min-width: 1100px;
     }
 
     .headerIcons
@@ -116,13 +173,16 @@
 
     #quickViewExpandedContent
     {
+        padding: 0px  14.75%;
         height: calc(100% - 125px);
+        min-width: 1100px;
 
         .expandoRightColumn
         {
             height: 100%;
             border-top: 1px solid #ccc;
             border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
             background-color: $TPGrey1;
         }
 
@@ -130,10 +190,16 @@
         {
             height: 100%;
 
-            .expandoPackeryRegion
-            {
-                padding: 0px;   
+            .expandoPackeryRegion {
+                padding: 12px 13px 0px 0px;
             }
+
+            .graphToolbar .cutButtons
+            {
+                display: none;
+            }
+
+            overflow: visible;
         }
 
         select
@@ -154,9 +220,20 @@
         position: relative;
         border: none;
 
-        &:hover
-        {
+        &:hover {
             border: none;
+            .leaflet-control-container {
+                top: 0;
+            }
+        }
+
+        .leaflet-control-container {
+            top: 0;
+            .leaflet-top {
+                .leaflet-control {
+                    margin-top: 10px;
+                }
+            }
         }
     }
 
@@ -179,6 +256,15 @@
     .workoutBarViewHeader .workoutHeaderStats .title input.workoutTitle
     {
         width: auto;
+    }
+
+}
+
+#flotTip {
+    font-size: 14px;
+ 
+    .time {
+        display: block;
     }
 
 }
@@ -209,5 +295,52 @@
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
     }
+
+    .dialogContent
+    {
+        padding: 40px;
+
+        .upgradeLeft
+        {
+            margin-right: 20px;
+        }
+    }
+
+    .deleteSeries
+    {
+        display: none;
+    }
+
+    &.emailCaptureView
+    {
+        padding: 40px;
+        background-color: $white;
+
+        .title
+        {
+            font-size: $fontSizeXLarge;
+        }
+
+        @include buttons(0px, 100px, $fontSizeMedium);
+
+        button
+        {
+            float: right;
+        }
+    }
 }
+
+.expandoStatsThrobber
+{
+    @include throbber;
+    z-index: 2000;
+}
+
+@import "globalCSS/modal";
+@import "globalCSS/hoverBox";
+@import "overlayBox";
+@import "globalCSS/tooltip";
+@import "globalCSS/dialog";
+@import "tomahawk";
+@import "upgrade";
 

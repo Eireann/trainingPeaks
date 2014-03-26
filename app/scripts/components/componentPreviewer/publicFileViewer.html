@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>Public File Viewer V3</title>
+
+        <link rel="stylesheet" href="css/publicFileViewer.css" />
+        <script src="js/publicFileViewer.js"></script>
+        </script>
+        <script>
+
+        // workout token here is just an example - this should be the actual workout token provided in public workout url query string
+        var tokenParam = window.location.search.match(/token=([0-9A-Za-z]*)/);
+        var workoutToken = tokenParam ? tokenParam[1] : "ELXAKXV2Q33EODHRGF27XL3TVM";
+
+        var userTypeParam = window.location.search.match(/userType=([0-9]*)/i);
+        var userType = userTypeParam ? Number(userTypeParam[1]) : 0;
+
+        var captureParam = window.location.search.match(/capture=([a-z]*)/i);
+        var capture = !!captureParam;
+
+        $(document).ready(function()
+        {
+            LoadPublicFileViewer({
+                el: "#publicFileViewer",
+                token: workoutToken, 
+                userType: userType,
+                capture: capture 
+            }).done(function(){
+                $("#publicFileViewer").height($(window).innerHeight())
+                console.log("PFV Has Loaded");
+            });
+        });
+        </script>
+    </head>
+    <body style="margin:0px;">
+        <div id="publicFileViewer" style="width: 100%; height: 800px; min-height: 600px; margin: 0px;"></div>        
+    </body>
+</html>

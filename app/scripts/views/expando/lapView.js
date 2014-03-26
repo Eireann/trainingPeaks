@@ -89,9 +89,15 @@ function(
 
         _onClickAdd: function(e)
         {
-            e.preventDefault();
-            this.model.getState().set({temporary: false, isLap: true });
-            this._startEditing(e);
+            var self = this;
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.EditLapNames,
+                function()
+                {
+                    e.preventDefault();
+                    self.model.getState().set({temporary: false, isLap: true });
+                    self._startEditing(e);
+                });
         },
 
         _onCheckboxChange: function(e)
@@ -120,7 +126,7 @@ function(
 
         _toggleAdd: function()
         {
-            this.$(".add").toggle(!!this.model.getState().get("hasLoaded")); 
+            this.$(".add").toggle(!!this.model.getState().get("hasLoaded") && this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLapNames)); 
         }
 
 

@@ -2,6 +2,9 @@ var _ = require("lodash");
 var path = require("path");
 var fs = require("fs");
 
+
+var currentDate = new Date().toISOString();
+
 module.exports = function(grunt)
 {
     grunt.initConfig(
@@ -182,7 +185,29 @@ module.exports = function(grunt)
                     optimize: "none",
                     useSourceUrl: true
                 }
-            }
+            },
+
+            publicFileViewer:
+            {
+                options:
+                {
+                    mainConfigFile: "app/config.js",
+                    out: "build/components/js/publicFileViewer.js",
+                    baseUrl: "app",
+                    name: "components/publicFileViewer/js/publicFileViewer",
+                    deps: [
+                        "wrappedMoment"
+                    ],
+                    include: [
+                        "../bower_components/almond/almond",
+                       "components/publicFileViewer/js/publicFileViewerLoader"
+                    ],
+                    stubModules: ["text"],
+                    wrap: false,
+                    optimize: "none",
+                    useSourceUrl: true
+                }
+            } 
         },
 
         /*
@@ -424,7 +449,42 @@ module.exports = function(grunt)
                     tasks: ["build", "debug", "components", "compass", "copy", "test", "watch"]
                 }
             }
+        },
+
+        http_upload: {
+
+            publicFileViewer: {
+                options: {
+                  url: "https://api.rollbar.com/api/1/sourcemap",
+                  method: "POST",
+                  data: {
+                    access_token: "d9da7f12d9d540b587053271608193b9",
+                    version: currentDate,
+                    minified_url: "http://home.trainingpeaks.com/CMSPages/GetResource.ashx?scriptfile=%2fCMSScripts%2fCustom%2fMarsWebApp%2fpublicFileViewer.js"
+                  },
+                },
+                src: "build/components/js/publicFileViewer.js.map",
+                dest: "source_map"
+            }
+        },
+
+        'string-replace': {
+
+            publicFileViewer: {
+                files: { 
+                    "build/components/js/publicFileViewer.js" : "build/components/js/publicFileViewer.js"
+                },
+                options: {
+                    replacements: [
+                        {
+                            pattern: "{BUILD_VERSION}",
+                            replacement: currentDate 
+                        }
+                    ]
+                }                    
+            }
         }
+
 
     });
 
@@ -447,6 +507,8 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-bower-requirejs");
     grunt.loadNpmTasks("grunt-mocha");
     grunt.loadNpmTasks("grunt-available-tasks");
+    grunt.loadNpmTasks("grunt-http-upload");
+    grunt.loadNpmTasks("grunt-string-replace");
 
     grunt.registerTask("tpcore", ["uglify:tpcore", "uglify:tpcore.deps"]);
 
@@ -472,12 +534,17 @@ module.exports = function(grunt)
     grunt.registerTask("build", ["build_common", "copy:build", "uglify:build", "clean:post_build", "targethtml:build", "revision"]);
 
     // to build external components
-    grunt.registerTask("components:debug", ["clean:components", "copy:components", "compass:debug", "compass:components_debug", "requirejs:components"]);
-    grunt.registerTask("components", ["clean", "jshint", "debug", "copy:components", "compass:components", "requirejs:components", "uglify:components"]);
+    grunt.registerTask("components:debug", ["clean:components", "copy:components", "compass:debug", "compass:components_debug", "requirejs:components", "string-replace:components"]);
+    grunt.registerTask("components", ["clean", "jshint", "debug", "copy:components", "compass:components", "requirejs:components", "string-replace:components", "uglify:components"]);
 
     // list any individual external components here to be included in the build_components task
-    grunt.registerTask("requirejs:components", ["requirejs:applyTrainingPlan"]);
+    grunt.registerTask("requirejs:components", ["requirejs:applyTrainingPlan", "requirejs:publicFileViewer"]);
+    grunt.registerTask("string-replace:components", ["string-replace:publicFileViewer"]);
+
+    // to build public file viewer upload source maps to rollbar
+    grunt.registerTask("publicFileViewer:release", ["components", "http_upload:publicFileViewer"]);
 
     // help
     grunt.registerTask("help", ["availabletasks"]);
+
 };

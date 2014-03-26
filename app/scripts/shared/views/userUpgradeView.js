@@ -35,10 +35,15 @@ function (_, TP, slides, userUpgradeTemplate)
             template: userUpgradeTemplate
         },
 
+        initialize: function(options)
+        {
+            this.userType = _.has(options, "userType") ? options.userType : theMarsApp.user.getAccountSettings().get("userType");
+            this.imageRoot = _.has(options, "imageRoot") ? options.imageRoot : "";
+        },
+
         serializeData: function()
         {
-            var userType = theMarsApp.user.getAccountSettings().get("userType");
-            var upgradeURL = userType === 5 ? theMarsApp.apiConfig.coachUpgradeURL : theMarsApp.apiConfig.upgradeURL;
+            var upgradeURL = this.userType === 5 ? theMarsApp.apiConfig.coachUpgradeURL : theMarsApp.apiConfig.upgradeURL;
             return { slides: slides, upgradeUrl: upgradeURL.replace("http:","https:") };
         },
 
@@ -61,7 +66,7 @@ function (_, TP, slides, userUpgradeTemplate)
 
             this.$(".upgradeSlideTitle").text(slide.title);
             this.$(".upgradeSlideText").html(slide.html);
-            this.$(".upgradeSlideImage").attr("src", slide.image);
+            this.$(".upgradeSlideImage").attr("src", this.imageRoot + slide.image);
         },
 
         _nextSlide: function()
