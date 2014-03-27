@@ -95,6 +95,9 @@ body[data-useragent*="MSIE"] .icon
 %speedZonesPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-speed-zones.jpg"); }
 %speedPeaksPremiumBG { @include inlineBG("../../assets/images/premiumPlaceholders/premium-qv-graphs-speed-peak.jpg"); }
 
+// Public File Viewer
+%emptyProfilePlaceholder { @include inlineBG("../../assets/images/publicFileViewer/empty-profile-image.png"); }
+
 // Retina
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2)
@@ -127,6 +130,9 @@ body[data-useragent*="MSIE"] .icon
     %spriteButtonsChartModal { @include inlineRetinaBG("../../assets/images/charts/sprite-buttons-chart-modal@2x.png"); }
 
     // Misc Retina Icons
+
+    // Public File Viewer
+    %emptyProfilePlaceholder { @include inlineBG("../../assets/images/publicFileViewer/empty-profile-image@2x.png"); }
 
     %spriteSelectBoxBG { @include inlineRetinaBG("../../assets/images/sprite-dropdown@2x.png"); }
 

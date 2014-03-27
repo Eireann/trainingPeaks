@@ -134,6 +134,8 @@ body {
                     background-position: 50% 50%;
                     background-size: cover;
                     background-color: #ddd;
+
+                    @extend %emptyProfilePlaceholder;
                 }
 
                 .userName {
