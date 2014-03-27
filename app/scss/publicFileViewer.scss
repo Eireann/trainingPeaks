@@ -315,19 +315,23 @@ body {
 
     &.emailCaptureView
     {
-        padding: 40px;
-        background-color: $white;
-
-        .title
-        {
-            font-size: $fontSizeXLarge;
-        }
-
-        @include buttons(0px, 100px, $fontSizeMedium);
+        padding: 60px;
+        background-color: rgba(255, 255, 255, 0.83);
 
         button
         {
-            float: right;
+            float: left;
+            margin-right: 12px;
+
+            &.buttonBlue1
+            {
+                font-family: $fontFamilyRegular;
+            }
+        }
+
+        .emailSection
+        {
+            margin-top: 50px;
         }
     }
 }
@@ -345,4 +349,4 @@ body {
 @import "globalCSS/dialog";
 @import "tomahawk";
 @import "upgrade";
-
+@import "initialProfile";

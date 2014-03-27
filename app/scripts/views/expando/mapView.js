@@ -101,6 +101,17 @@ function (
                     if (!this.map)
                     {
                         this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
+
+                        if(_.has(this.options, "drag") && !this.options.drag)
+                        {
+                            this.map.dragging.disable();
+                        }
+
+                        if(_.has(this.options, "touchZoom") && !this.options.touchZoom)
+                        {
+                            this.map.touchZoom.disable();
+                            this.map.doubleClickZoom.disable();
+                        }
                     }
 
                     MapUtils.removeItemsFromMap(this.map, this.baseLayers);
