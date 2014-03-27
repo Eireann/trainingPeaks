@@ -167,7 +167,8 @@ function(
             "click .removePhoto": "_removeProfilePhoto",
             "change .fileUploadInput": "_onProfilePhotoSelected",
             "click .upgrade": "_showUpgradePrompt",
-            "click .verifyEmail": "_verifyEmail"
+            "click .verifyEmail": "_verifyEmail",
+            "click .manageAccount": "_gotoManageAccount"
         },
 
         initialize: function(options)
@@ -391,6 +392,11 @@ function(
                 self.waitingOff();
                 new UserConfirmationView({template: emailVerificationConfirmationTemplate}).render();
             });
+        },
+
+        _gotoManageAccount: function()
+        {
+            window.open(theMarsApp.apiConfig.cmsRoot + "/accountmanagement");
         }
 
     });
