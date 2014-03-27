@@ -1,11 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "jquery",
     "TP",
     "shared/views/userSettingsView",
     "hbs!templates/views/userControls/accountMenu"
 ],
-function (_, TP, UserSettingsView, accountMenuTemplate)
+function (_, $, TP, UserSettingsView, accountMenuTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -41,7 +42,8 @@ function (_, TP, UserSettingsView, accountMenuTemplate)
         onUserSettingsClicked: function()
         {
             this.waitingOn();
-            this.model.fetch({ nocache: true }).done(_.bind(this._openUserSettings, this));
+            $.when(this.model.fetch({ nocache: true }),
+                   this.model.getAthleteSettings().fetch()).done(_.bind(this._openUserSettings, this));
         },
 
         _openUserSettings: function()

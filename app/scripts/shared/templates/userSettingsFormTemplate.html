@@ -157,7 +157,7 @@
     
     <div class="fieldContain">
         <label class="fieldTitle">{{$ "AccountType" }}</label>
-        <label class="labelbold">{{ userType }}</label>
+        <label class="labelbold">{{ userType }} <a class="manageAccount">{{$ "ManageAccount" }}</a></label>
     </div>
 
     <div class="fieldContain units">
@@ -178,6 +178,10 @@
                 <option value="dmy">DD/MM/YY</option>
             </select>
         </div>
+    </div>
+
+    <div class="fieldContain logonToHtml5">
+        <label class="checkBoxRow clickable"><input data-modelname="user" type="checkbox" name="logonToHtml5"> {{$ "MakeBetaDefault" }} </label>
     </div>
 </div>
 

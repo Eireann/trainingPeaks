@@ -508,5 +508,7 @@ define({
     "Exercises": "Exercises",
     "Intervals": "Intervals",
     "ViewExercises": "View Exercises",
-    "ViewIntervals": "View Intervals"
+    "ViewIntervals": "View Intervals",
+    "MakeBetaDefault": "Make \"Beta\" my default application on log in",
+    "ManageAccount": "Manage your subscription and payments"
 });
