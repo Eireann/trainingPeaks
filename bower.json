@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "mocha": "1.18.2",
-    "chai": "~1.8.1",
+    "chai": "1.9.1",
     "sinon": "http://sinonjs.org/releases/sinon-1.7.3.js",
     "sinon-chai": "https://raw.github.com/domenic/sinon-chai/2.4.0/lib/sinon-chai.js",
     "requirejs": "~2.1.9",
