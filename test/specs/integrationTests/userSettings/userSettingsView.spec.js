@@ -150,6 +150,21 @@ function(
             view.$(".verifyEmail").trigger("click");
             expect(testHelpers.hasRequest("POST", "verifyemail")).to.be.ok;
         });
+
+        it("Should display athleteOnly fields to athletes", function()
+        {
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
+            view.render();           
+            expect(view.$(".athleteOnly").length).not.to.eql(0);
+        });
+
+        it("Should not display athleteOnly fields to coaches", function()
+        {
+            testHelpers.theApp.user.set("isAthlete", false);
+            var view = new UserSettingsView({ model: testHelpers.theApp.user });
+            view.render();           
+            expect(view.$(".athleteOnly").length).to.eql(0);
+        });
     });
 
 });

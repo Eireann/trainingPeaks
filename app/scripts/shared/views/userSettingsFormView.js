@@ -197,6 +197,7 @@ function(
 
         onRender: function()
         {
+            this._removeAthleteOnlyFieldsForCoaches();
             this._applyModelValuesToForm();
             this._updatePhotoUrl();
 
@@ -228,6 +229,14 @@ function(
             FormUtility.applyValuesToModel(this.$el, this.userNameModel, { filterSelector: "[data-modelname=userName]"});
             FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
             FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
+        },
+
+        _removeAthleteOnlyFieldsForCoaches: function()
+        {
+            if(!this.userModel.get("isAthlete"))
+            {
+                this.$(".athleteOnly").remove();
+            }
         },
 
         _createUserAdapterModels: function()
