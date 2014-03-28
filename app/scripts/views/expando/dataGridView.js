@@ -1,6 +1,7 @@
 define(
 [
     "jquery",
+    "jqueryui/sortable",
     "underscore",
     "setImmediate",
     "TP",
@@ -9,6 +10,7 @@ define(
 ],
 function(
     $,
+    jqueryuiSortable,
     _,
     setImmediate,
     TP,
