@@ -8,7 +8,7 @@
     "sinon-chai": "2.5.0",
     "requirejs": "2.1.11",
     "jquery": "2.1.0",
-    "q": "~0.9.7",
+    "q": "1.0.1",
     "backbone.marionette.handlebars": "~0.2.0",
     "handlebars": "1.1.2",
     "requirejs-text": "~2.0.10",
