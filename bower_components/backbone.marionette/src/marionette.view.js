@@ -7,25 +7,31 @@ Marionette.View = Backbone.View.extend({
   constructor: function(options){
     _.bindAll(this, "render");
 
-    var args = Array.prototype.slice.apply(arguments);
+    if (_.isObject(this.behaviors)) {
+      new Marionette.Behaviors(this);
+    }
 
     // this exposes view options to the view initializer
     // this is a backfill since backbone removed the assignment
     // of this.options
     // at some point however this may be removed
-    this.options = _.extend({}, this.options, options);
+    this.options = _.extend({}, _.result(this, 'options'), _.isFunction(options) ? options.call(this) : options);
 
     // parses out the @ui DSL for events
     this.events = this.normalizeUIKeys(_.result(this, 'events'));
-    Backbone.View.prototype.constructor.apply(this, args);
+    Backbone.View.prototype.constructor.apply(this, arguments);
 
     Marionette.MonitorDOMRefresh(this);
-    this.listenTo(this, "show", this.onShowCalled, this);
+    this.listenTo(this, "show", this.onShowCalled);
   },
 
   // import the "triggerMethod" to trigger events with corresponding
   // methods if the method exists
   triggerMethod: Marionette.triggerMethod,
+
+  // Imports the "normalizeMethods" to transform hashes of
+  // events=>function references/names to a hash of events=>function references
+  normalizeMethods: Marionette.normalizeMethods,
 
   // Get the template for this view
   // instance. You can set a `template` attribute in the view
@@ -49,23 +55,10 @@ Marionette.View = Backbone.View.extend({
     return _.extend(target, templateHelpers);
   },
 
-  // allows for the use of the @ui. syntax within
-  // a given key for triggers and events
-  // swaps the @ui with the associated selector
+
   normalizeUIKeys: function(hash) {
-    if (typeof(hash) === "undefined") {
-      return;
-    }
-
-    _.each(_.keys(hash), function(v) {
-      var split = v.split("@ui.");
-      if (split.length === 2) {
-        hash[split[0]+this.ui[split[1]]] = hash[v];
-        delete hash[v];
-      }
-    }, this);
-
-    return hash;
+    var ui = _.result(this, 'ui');
+    return Marionette.normalizeUIKeys(hash, ui);
   },
 
   // Configure `triggers` to forward DOM events to view
@@ -130,8 +123,13 @@ Marionette.View = Backbone.View.extend({
     if (_.isFunction(events)){ events = events.call(this); }
 
     var combinedEvents = {};
+
+    // look up if this view has behavior events
+    var behaviorEvents = _.result(this, 'behaviorEvents') || {};
     var triggers = this.configureTriggers();
-    _.extend(combinedEvents, events, triggers);
+
+    // behavior events will be overriden by view events and or triggers
+    _.extend(combinedEvents, behaviorEvents, events, triggers);
 
     Backbone.View.prototype.delegateEvents.call(this, combinedEvents);
   },
@@ -156,9 +154,11 @@ Marionette.View = Backbone.View.extend({
   close: function(){
     if (this.isClosed) { return; }
 
+    var args = Array.prototype.slice.call(arguments);
+
     // allow the close to be stopped by returning `false`
     // from the `onBeforeClose` method
-    var shouldClose = this.triggerMethod("before:close");
+    var shouldClose = this.triggerMethod.apply(this, ["before:close"].concat(args));
     if (shouldClose === false){
       return;
     }
@@ -167,7 +167,7 @@ Marionette.View = Backbone.View.extend({
     // prevent infinite loops within "close" event handlers
     // that are trying to close other views
     this.isClosed = true;
-    this.triggerMethod("close");
+    this.triggerMethod.apply(this, ["close"].concat(args));
 
     // unbind UI elements
     this.unbindUIElements();
