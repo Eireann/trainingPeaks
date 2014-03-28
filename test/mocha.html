@@ -39,6 +39,8 @@
                 $
             )
             {
+                var sandbox;
+
                 $.fx.off = true;
 
                 window.fakeXhr = sinon.useFakeXMLHttpRequest();
@@ -74,15 +76,18 @@
                     var obj = {};
                     _.each(methods, function(name)
                     {
-                        obj[name] = window.sinon.stub();
+                        obj[name] = sandbox.stub();
                     });
                     return obj;
                 };
 
                 beforeEach(function()
                 {
-                    if(window.sinon) window.sinon.restore();
-                    window.sinon = sinon.sandbox.create();
+                    sandbox = sinon.sandbox.create();
+                });
+
+                afterEach(function () {
+                    sandbox.restore();
                 });
 
                 // TODO: Ideally we wouldn't stub out setImmediate, but some tests break right now.
