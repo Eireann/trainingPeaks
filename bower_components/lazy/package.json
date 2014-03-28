@@ -1,0 +1,11 @@
+{
+  "name": "lazy",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "grunt": "~0.3.17",
+    "grunt-mocha": "~0.1.7",
+    "mocha": "~1.7.4",
+    "grunt-reloadr": "~0.1.2"
+  }
+}
