@@ -3,17 +3,20 @@ define(
     "jquery",
     "underscore",
     "setImmediate",
-    "TP"
+    "TP",
+    "slick.core",
+    "slick.grid"
 ],
 function(
     $,
     _,
     setImmediate,
-    TP
+    TP,
+    Slick,
+    SlickGrid
 )
 {
 
-    /*
     var DataView = function(sampleData, columns, stateModel)
     {
         this.sampleData = sampleData;
@@ -64,7 +67,6 @@ function(
             };
         }
     });
-    */
 
     var DataGridView = TP.ItemView.extend({
 
@@ -201,7 +203,6 @@ function(
 
             var $grid = this.$(".dataGrid");
 
-            /*
             setImmediate(function()
             {
                 self.grid = new Slick.Grid($grid, new DataView(self.sampleData, columns, self.stateModel), columns, options);
@@ -220,7 +221,6 @@ function(
             $grid.on("dragstart", stopEvent);
             $grid.on("drag", stopEvent);
             $grid.on("dragend", stopEvent);
-            */
         },
 
 
