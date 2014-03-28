@@ -40,7 +40,7 @@ requirejs.config(
         chai: "../bower_components/chai/chai",
         mocha: "../bower_components/mocha/mocha",
         requirejs: "../bower_components/requirejs/require",
-        sinon: "../bower_components/sinon/pkg/sinon",
+        sinon: "../bower_components/sinon/index",
         jquery: "../bower_components/jquery/jquery",
         "sinon-chai": "../bower_components/sinon-chai/lib/sinon-chai",
         q: "../bower_components/q/q",

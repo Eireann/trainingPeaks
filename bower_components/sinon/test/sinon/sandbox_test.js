@@ -297,22 +297,6 @@ if (typeof require == "function" && typeof module == "object") {
                 assert.mock(sandbox.args[1]({}));
             },
 
-            "does not inject properties if they are already present": function() {
-                var server = function(){},
-                    clock = {},
-                    spy = false,
-                    object = { server: server, clock: clock, spy: spy};
-
-                sinon.sandbox.create(sinon.getConfig({
-                    properties: ["server", "clock", "spy"],
-                    injectInto: object
-                }));
-
-                assert.same(object.server, server);
-                assert.same(object.clock, clock);
-                assert.same(object.spy, spy);
-            },
-
             "ajax options": {
                 requiresSupportFor: { "ajax/browser": supportsAjax },
 
@@ -386,7 +370,7 @@ if (typeof require == "function" && typeof module == "object") {
             },
 
             "fakes specified timers": function () {
-                sinon.sandbox.create(sinon.getConfig({
+                var sandbox = sinon.sandbox.create(sinon.getConfig({
                     injectIntoThis: false,
                     properties: ["clock"],
                     useFakeTimers: ["Date", "setTimeout"]

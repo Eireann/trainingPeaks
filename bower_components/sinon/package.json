@@ -1,7 +1,7 @@
 {
     "name": "sinon",
     "description": "JavaScript test spies, stubs and mocks.",
-    "version": "1.9.0",
+    "version": "1.7.3",
     "homepage": "http://cjohansen.no/sinon/",
     "author": "Christian Johansen",
     "repository": {
@@ -22,7 +22,7 @@
         "prepublish": "./build"
     },
     "dependencies": {
-        "formatio": "~1.0"
+        "buster-format": "~0.5"
     },
     "devDependencies": {
         "buster-core": ">=0.6.4",

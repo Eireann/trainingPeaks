@@ -314,6 +314,7 @@ buster.testCase("sinon.test", {
             },
 
             "injects properties into object": function () {
+                var testCase = this.boundTestCase();
                 var obj = {};
 
                 sinon.config = {
@@ -322,43 +323,42 @@ buster.testCase("sinon.test", {
                     properties: ["server", "clock", "spy", "stub", "mock", "requests"]
                 };
 
-                function testFunction() {
-                    assert.equals(arguments.length, 0);
-                    refute.defined(this.server);
-                    refute.defined(this.clock);
-                    refute.defined(this.spy);
-                    refute.defined(this.stub);
-                    refute.defined(this.mock);
-                    refute.defined(this.requests);
-                    assert.fakeServer(obj.server);
-                    assert.clock(obj.clock);
-                    assert.isFunction(obj.spy);
-                    assert.isFunction(obj.stub);
-                    assert.isFunction(obj.mock);
-                    assert.isArray(obj.requests);
-                }
+                sinon.test(testCase.fn).call(testCase);
 
-                sinon.test(testFunction).call({});
+                assert.equals(testCase.args.length, 0);
+                refute.defined(testCase.server);
+                refute.defined(testCase.clock);
+                refute.defined(testCase.spy);
+                refute.defined(testCase.stub);
+                refute.defined(testCase.mock);
+                refute.defined(testCase.requests);
+                assert.fakeServer(obj.server);
+                assert.clock(obj.clock);
+                assert.isFunction(obj.spy);
+                assert.isFunction(obj.stub);
+                assert.isFunction(obj.mock);
+                assert.isArray(obj.requests);
             },
 
             "injects server and clock when only enabling them": function () {
+                var testCase = this.boundTestCase();
+                var obj = {};
+
                 sinon.config = {
                     useFakeTimers: true,
                     useFakeServer: true
                 };
 
-                function testFunction() {
-                    assert.equals(arguments.length, 0);
-                    assert.isFunction(this.spy);
-                    assert.isFunction(this.stub);
-                    assert.isFunction(this.mock);
-                    assert.fakeServer(this.server);
-                    assert.isArray(this.requests);
-                    assert.clock(this.clock);
-                    refute.defined(this.sandbox);
-                }
+                sinon.test(testCase.fn).call(testCase);
 
-                sinon.test(testFunction).call({});
+                assert.equals(testCase.args.length, 0);
+                assert.isFunction(testCase.spy);
+                assert.isFunction(testCase.stub);
+                assert.isFunction(testCase.mock);
+                assert.fakeServer(testCase.server);
+                assert.isArray(testCase.requests);
+                assert.clock(testCase.clock);
+                refute.defined(testCase.sandbox);
             }
         },
 
@@ -393,9 +393,6 @@ buster.testCase("sinon.test", {
                     Date: Date,
                     setTimeout: setTimeout,
                     clearTimeout: clearTimeout,
-                    // clear & setImmediate are not yet available in all environments
-                    setImmediate: (typeof setImmediate !== "undefined" ? setImmediate : undefined),
-                    clearImmediate: (typeof clearImmediate !== "undefined" ? clearImmediate : undefined),
                     setInterval: setInterval,
                     clearInterval: clearInterval
                 };
@@ -404,69 +401,53 @@ buster.testCase("sinon.test", {
             refute.same(props.Date, sinon.timers.Date);
             refute.same(props.setTimeout, sinon.timers.setTimeout);
             assert.same(props.clearTimeout, sinon.timers.clearTimeout);
-            assert.same(props.setImmediate, sinon.timers.setImmediate);
-            assert.same(props.clearImmediate, sinon.timers.clearImmediate);
             assert.same(props.setInterval, sinon.timers.setInterval);
             assert.same(props.clearInterval, sinon.timers.clearInterval);
         },
 
         "injects properties into test case": function () {
-            var testCase = {};
+            var testCase = this.boundTestCase();
 
             sinon.config = {
                 properties: ["clock"]
             };
 
-            function testFunction() {
-                assert.same(this, testCase);
-                assert.equals(arguments.length, 0);
-                assert.clock(this.clock);
-                refute.defined(this.spy);
-                refute.defined(this.stub);
-                refute.defined(this.mock);
-            }
+            sinon.test(testCase.fn).call(testCase);
 
-            sinon.test(testFunction).call(testCase);
+            assert.same(testCase.self, testCase);
+            assert.equals(testCase.args.length, 0);
+            assert.clock(testCase.clock);
+            refute.defined(testCase.spy);
+            refute.defined(testCase.stub);
+            refute.defined(testCase.mock);
         },
 
         "injects functions into test case by default": function () {
-            function testFunction() {
-                assert.equals(arguments.length, 0);
-                assert.isFunction(this.spy);
-                assert.isFunction(this.stub);
-                assert.isFunction(this.mock);
-                assert.isObject(this.clock);
-            }
+            var testCase = this.boundTestCase();
+            var obj = {};
 
-            sinon.test(testFunction).call({});
+            sinon.test(testCase.fn).call(testCase);
+
+            assert.equals(testCase.args.length, 0);
+            assert.isFunction(testCase.spy);
+            assert.isFunction(testCase.stub);
+            assert.isFunction(testCase.mock);
+            assert.isObject(testCase.clock);
         },
 
         "injects sandbox": function () {
-            function testFunction() {
-                assert.equals(arguments.length, 0);
-                assert.isFunction(this.spy);
-                assert.isObject(this.sandbox);
-            }
+            var testCase = this.boundTestCase();
+            var obj = {};
 
             sinon.config = {
                 properties: ["sandbox", "spy"]
             };
 
-            sinon.test(testFunction).call({});
-        },
+            sinon.test(testCase.fn).call(testCase);
 
-        "remove injected properties afterwards": function () {
-            var testCase = {};
-
-            sinon.test(function () {}).call(testCase);
-
-            refute.defined(testCase.spy);
-            refute.defined(testCase.stub);
-            refute.defined(testCase.mock);
-            refute.defined(testCase.sandbox);
-            refute.defined(testCase.clock);
-            refute.defined(testCase.server);
-            refute.defined(testCase.requests);
+            assert.equals(testCase.args.length, 0);
+            assert.isFunction(testCase.spy);
+            assert.isObject(testCase.sandbox);
         },
 
         "uses sinon.test to fake time": function () {

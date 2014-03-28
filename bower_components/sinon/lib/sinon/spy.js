@@ -15,7 +15,7 @@
 "use strict";
 
 (function (sinon) {
-    var commonJSModule = typeof module !== 'undefined' && module.exports;
+    var commonJSModule = typeof module == "object" && typeof require == "function";
     var push = Array.prototype.push;
     var slice = Array.prototype.slice;
     var callId = 0;
@@ -45,6 +45,8 @@
         if (!fakes) {
             return;
         }
+
+        var alen = args.length;
 
         for (var i = 0, l = fakes.length; i < l; i++) {
             if (fakes[i].matches(args, strict)) {
@@ -152,23 +154,17 @@
                 } else {
                     returnValue = (this.func || func).apply(thisValue, args);
                 }
-
-                var thisCall = this.getCall(this.callCount - 1);
-                if (thisCall.calledWithNew() && typeof returnValue !== 'object') {
-                    returnValue = thisValue;
-                }
             } catch (e) {
+                push.call(this.returnValues, undefined);
                 exception = e;
+                throw e;
+            } finally {
+                push.call(this.exceptions, exception);
             }
 
-            push.call(this.exceptions, exception);
             push.call(this.returnValues, returnValue);
 
             createCallProperties.call(this);
-
-            if (exception !== undefined) {
-                throw exception;
-            }
 
             return returnValue;
         },
@@ -181,17 +177,6 @@
             return sinon.spyCall(this, this.thisValues[i], this.args[i],
                                     this.returnValues[i], this.exceptions[i],
                                     this.callIds[i]);
-        },
-
-        getCalls: function () {
-            var calls = [];
-            var i;
-
-            for (i = 0; i < this.callCount; i++) {
-                calls.push(this.getCall(i));
-            }
-
-            return calls;
         },
 
         calledBefore: function calledBefore(spyFn) {
@@ -230,7 +215,6 @@
             var original = this;
             var fake = this._create();
             fake.matchingAguments = args;
-            fake.parent = this;
             push.call(this.fakes, fake);
 
             fake.withArgs = function () {
@@ -271,7 +255,7 @@
 
                 if (typeof formatter == "function") {
                     return formatter.call(null, spy, args);
-                } else if (!isNaN(parseInt(specifyer, 10))) {
+                } else if (!isNaN(parseInt(specifyer), 10)) {
                     return sinon.format(args[specifyer - 1]);
                 }
 

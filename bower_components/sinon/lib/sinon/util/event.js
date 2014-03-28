@@ -40,33 +40,14 @@ if (typeof sinon == "undefined") {
         }
     };
 
-    sinon.ProgressEvent = function ProgressEvent(type, progressEventRaw, target) {
-        this.initEvent(type, false, false, target);
-        this.loaded = progressEventRaw.loaded || null;
-        this.total = progressEventRaw.total || null;
-    };
-
-    sinon.ProgressEvent.prototype = new sinon.Event();
-
-    sinon.ProgressEvent.prototype.constructor =  sinon.ProgressEvent;
-
-    sinon.CustomEvent = function CustomEvent(type, customData, target) {
-        this.initEvent(type, false, false, target);
-        this.detail = customData.detail || null;
-    };
-
-    sinon.CustomEvent.prototype = new sinon.Event();
-
-    sinon.CustomEvent.prototype.constructor =  sinon.CustomEvent;
-
     sinon.EventTarget = {
-        addEventListener: function addEventListener(event, listener) {
+        addEventListener: function addEventListener(event, listener, useCapture) {
             this.eventListeners = this.eventListeners || {};
             this.eventListeners[event] = this.eventListeners[event] || [];
             push.call(this.eventListeners[event], listener);
         },
 
-        removeEventListener: function removeEventListener(event, listener) {
+        removeEventListener: function removeEventListener(event, listener, useCapture) {
             var listeners = this.eventListeners && this.eventListeners[event] || [];
 
             for (var i = 0, l = listeners.length; i < l; ++i) {
