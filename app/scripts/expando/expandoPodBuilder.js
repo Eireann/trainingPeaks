@@ -13,7 +13,7 @@ define(
     "views/expando/mapView",
     "views/expando/lapsSplitsView",
     "views/expando/lapsSplitsColumnChartView",
-    "views/expando/scatterGraphView"
+    "views/expando/scatterGraphView",
     "views/expando/dataGridView"
 ],
 function(

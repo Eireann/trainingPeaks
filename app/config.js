@@ -49,11 +49,10 @@ requirejs.config(
         "handlebars.runtime": "../bower_components/handlebars/handlebars.runtime",
         text: "../bower_components/requirejs-text/text",
         i18n: "../bower_components/requirejs-i18n/i18n",
-        //"slick.core": "../bower_components/slickgrid/slick.core",
-        //"slick.grid": "../bower_components/slickgrid/slick.grid",
+        "slick.core": "../bower_components/slickgrid/slick.core",
+        "slick.grid": "../bower_components/slickgrid/slick.grid",
         lazy: "../bower_components/lazy.js/lazy",
         tpcore: "../tpcore/tpcore.min",
-        //"jquery.event.drag": "../bower_components/slickgrid/lib/jquery.event.drag-2.2",
         backbone: "../bower_components/backbone/backbone",
         "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette",
 
@@ -137,18 +136,15 @@ requirejs.config(
                 "flot/jquery.flot"
             ]
         },
-        /*
         "slick.core": {
             exports: "Slick",
             deps: [
-                "jquery",
-                "jquery.event.drag"
+                "jquery"
             ]
         },
         "slick.grid": [
             "slick.core"
         ],
-        */
         packery: {
             exports: "Packery",
             deps: ['jquery']
