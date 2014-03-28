@@ -17,7 +17,7 @@ Marionette.RegionManager = (function(Marionette){
       var regions = {};
 
       _.each(regionDefinitions, function(definition, name){
-        if (typeof definition === "string"){
+        if (_.isString(definition)){
           definition = { selector: definition };
         }
 
@@ -85,8 +85,7 @@ Marionette.RegionManager = (function(Marionette){
     // manager entirely
     close: function(){
       this.removeRegions();
-      var args = Array.prototype.slice.call(arguments);
-      Marionette.Controller.prototype.close.apply(this, args);
+      Marionette.Controller.prototype.close.apply(this, arguments);
     },
 
     // internal method to store regions
@@ -115,9 +114,9 @@ Marionette.RegionManager = (function(Marionette){
   //
   // Mix in methods from Underscore, for iteration, and other
   // collection related features.
-  var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter', 
-    'select', 'reject', 'every', 'all', 'some', 'any', 'include', 
-    'contains', 'invoke', 'toArray', 'first', 'initial', 'rest', 
+  var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter',
+    'select', 'reject', 'every', 'all', 'some', 'any', 'include',
+    'contains', 'invoke', 'toArray', 'first', 'initial', 'rest',
     'last', 'without', 'isEmpty', 'pluck'];
 
   _.each(methods, function(method) {

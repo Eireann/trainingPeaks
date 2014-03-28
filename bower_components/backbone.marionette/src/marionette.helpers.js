@@ -2,10 +2,7 @@
 // -------
 
 // For slicing `arguments` in functions
-var protoSlice = Array.prototype.slice;
-function slice(args) {
-  return protoSlice.call(args);
-}
+var slice = Array.prototype.slice;
 
 function throwError(message, name) {
   var error = new Error(message);
@@ -35,4 +32,46 @@ Marionette.getOption = function(target, optionName){
   }
 
   return value;
+};
+
+// Marionette.normalizeMethods
+// ----------------------
+
+// Pass in a mapping of events => functions or function names
+// and return a mapping of events => functions
+Marionette.normalizeMethods = function(hash) {
+  var normalizedHash = {}, method;
+  _.each(hash, function(fn, name) {
+    method = fn;
+    if (!_.isFunction(method)) {
+      method = this[method];
+    }
+    if (!method) {
+      return;
+    }
+    normalizedHash[name] = method;
+  }, this);
+  return normalizedHash;
+};
+
+
+// allows for the use of the @ui. syntax within
+// a given key for triggers and events
+// swaps the @ui with the associated selector
+Marionette.normalizeUIKeys = function(hash, ui) {
+  if (typeof(hash) === "undefined") {
+    return;
+  }
+
+  _.each(_.keys(hash), function(v) {
+    var pattern = /@ui.[a-zA-Z_$0-9]*/g;
+    if (v.match(pattern)) {
+      hash[v.replace(pattern, function(r) {
+        return ui[r.slice(4)];
+      })] = hash[v];
+      delete hash[v];
+    }
+  });
+
+  return hash;
 };

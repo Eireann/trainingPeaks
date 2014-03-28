@@ -3,8 +3,10 @@
 
 // A simple module system, used to create privacy and encapsulation in
 // Marionette applications
-Marionette.Module = function(moduleName, app){
+Marionette.Module = function(moduleName, app, options){
   this.moduleName = moduleName;
+  this.options = _.extend({}, this.options, options);
+  this.initialize = options.initialize || this.initialize;
 
   // store sub-modules
   this.submodules = {};
@@ -16,11 +18,21 @@ Marionette.Module = function(moduleName, app){
   this.startWithParent = true;
 
   this.triggerMethod = Marionette.triggerMethod;
+
+  if (_.isFunction(this.initialize)){
+    this.initialize(this.options, moduleName, app);
+  }
 };
+
+Marionette.Module.extend = Marionette.extend;
 
 // Extend the Module prototype with events / listenTo, so that the module
 // can be used as an event aggregator or pub/sub.
 _.extend(Marionette.Module.prototype, Backbone.Events, {
+
+  // Initialize is an empty function by default. Override it with your own
+  // initialization logic when extending Marionette.Module.
+  initialize: function(){},
 
   // Initializer for a specific module. Initializers are run when the
   // module's `start` method is called.
@@ -77,6 +89,8 @@ _.extend(Marionette.Module.prototype, Backbone.Events, {
     this._initializerCallbacks.reset();
     this._finalizerCallbacks.reset();
 
+    this.stopListening();
+
     Marionette.triggerMethod.call(this, "stop");
   },
 
@@ -122,7 +136,7 @@ _.extend(Marionette.Module, {
 
     // get the custom args passed in after the module definition and
     // get rid of the module name and definition function
-    var customArgs = slice(arguments);
+    var customArgs = slice.call(arguments);
     customArgs.splice(0, 3);
 
     // split the module names and get the length
@@ -136,7 +150,7 @@ _.extend(Marionette.Module, {
     // Loop through all the parts of the module definition
     _.each(moduleNames, function(moduleName, i){
       var parentModule = module;
-      module = this._getModule(parentModule, moduleName, app);
+      module = this._getModule(parentModule, moduleName, app, moduleDefinition);
       this._addModuleDefinition(parentModule, module, moduleDefinitions[i], customArgs);
     }, this);
 
@@ -145,12 +159,15 @@ _.extend(Marionette.Module, {
   },
 
   _getModule: function(parentModule, moduleName, app, def, args){
+    var options = _.extend({}, def);
+    var ModuleClass = this.getClass(def);
+
     // Get an existing module of this name if we have one
     var module = parentModule[moduleName];
 
     if (!module){
       // Create a new module if we don't have one
-      module = new Marionette.Module(moduleName, app);
+      module = new ModuleClass(moduleName, app, options);
       parentModule[moduleName] = module;
       // store the module on the parent
       parentModule.submodules[moduleName] = module;
@@ -159,11 +176,25 @@ _.extend(Marionette.Module, {
     return module;
   },
 
+  getClass: function(moduleDefinition) {
+    var ModuleClass = Marionette.Module;
+
+    if (!moduleDefinition) {
+      return ModuleClass;
+    }
+
+    if (moduleDefinition.prototype instanceof ModuleClass) {
+      return moduleDefinition;
+    }
+
+    return moduleDefinition.moduleClass || ModuleClass;
+  },
+
   _addModuleDefinition: function(parentModule, module, def, args){
     var fn;
     var startWithParent;
 
-    if (_.isFunction(def)){
+    if (_.isFunction(def) && !(def.prototype instanceof Marionette.Module)){
       // if a function is supplied for the module definition
       fn = def;
       startWithParent = true;
@@ -171,7 +202,7 @@ _.extend(Marionette.Module, {
     } else if (_.isObject(def)){
       // if an object is supplied
       fn = def.define;
-      startWithParent = def.startWithParent;
+      startWithParent = !_.isUndefined(def.startWithParent) ? def.startWithParent : true;
 
     } else {
       // if nothing is supplied
