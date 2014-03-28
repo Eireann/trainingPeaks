@@ -18,7 +18,7 @@
     "lazy.js": "~0.3.0",
     "slickgrid": "~2.1.0",
     "backbone.marionette": "~1.4.1",
-    "moment": "~2.4.0",
+    "moment": "2.5.1",
     "Flot": "TrainingPeaks/flot#master",
     "almond": "0.2.9"
   }
