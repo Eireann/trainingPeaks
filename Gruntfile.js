@@ -217,15 +217,7 @@ module.exports = function(grunt)
         {
             options:
             {
-                sourceMap: function(dest)
-                {
-                    return dest + ".map";
-                },
-                sourceMappingURL: function(dest)
-                {
-                    return path.basename(dest) + ".map";
-                },
-                sourceMapPrefix: 2,
+                sourceMap: true,
                 beautify:
                 {
                     beautify: false,
