@@ -41,7 +41,7 @@ requirejs.config(
         mocha: "../bower_components/mocha/mocha",
         requirejs: "../bower_components/requirejs/require",
         sinon: "../bower_components/sinon/index",
-        jquery: "../bower_components/jquery/jquery",
+        jquery: "../bower_components/jquery/dist/jquery",
         "sinon-chai": "../bower_components/sinon-chai/lib/sinon-chai",
         q: "../bower_components/q/q",
         "backbone.marionette.handlebars": "../bower_components/backbone.marionette.handlebars/backbone.marionette.handlebars",
