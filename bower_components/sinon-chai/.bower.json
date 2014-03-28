@@ -1,14 +1,14 @@
 {
   "name": "sinon-chai",
-  "_cacheHeaders": {
-    "ETag": "\"74482b8cb313ee79b09d8280846a5e4f\"",
-    "Content-Length": "4529",
-    "Content-Type": "text/plain; charset=utf-8",
-    "Content-Disposition": "inline"
+  "homepage": "https://github.com/domenic/sinon-chai",
+  "version": "2.5.0",
+  "_release": "2.5.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.5.0",
+    "commit": "0c4b229ce05d1930df07b79a2ddf8e8fe9e006c6"
   },
-  "_release": "e-tag:74482b8cb",
-  "main": "index.js",
-  "_source": "https://raw.github.com/domenic/sinon-chai/2.4.0/lib/sinon-chai.js",
-  "_target": "*",
-  "_originalSource": "https://raw.github.com/domenic/sinon-chai/2.4.0/lib/sinon-chai.js"
+  "_source": "git://github.com/domenic/sinon-chai.git",
+  "_target": "2.5.0",
+  "_originalSource": "sinon-chai"
 }
