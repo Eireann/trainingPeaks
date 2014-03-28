@@ -2,6 +2,7 @@
 /*.v11.suo
 /.sass-cache/
 /build/
+/tpcore/*.map
 /BuildTools/
 /junit_reports/
 /bin/
