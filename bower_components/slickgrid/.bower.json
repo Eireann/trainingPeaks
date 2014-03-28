@@ -1,11 +1,11 @@
 {
   "name": "slickgrid",
   "homepage": "https://github.com/TrainingPeaks/SlickGrid",
-  "_release": "c1dc0e434c",
+  "_release": "4999aa0064",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "c1dc0e434cb4b3f27744f1318d4010b4592f308f"
+    "commit": "4999aa006400b282d7719784bf11669a97e073b8"
   },
   "_source": "git://github.com/TrainingPeaks/SlickGrid.git",
   "_target": "master",

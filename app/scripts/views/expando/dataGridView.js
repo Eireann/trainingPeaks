@@ -199,7 +199,8 @@ function(
             var options =
             {
                 fullWidthRows: true,
-                syncColumnCellResize: true,
+                enableColumnResize: false,
+                syncColumnCellResize: false,
                 explicitInitialization: true
             };
 
