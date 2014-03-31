@@ -28,7 +28,7 @@ requirejs.config(
         lodash: "../bower_components/lodash/dist/lodash.compat",
         underscore: "../bower_components/lodash/dist/lodash",
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
-        "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
+        "backbone.stickit": "../bower_components/backbone.stickit/backbone.stickit",
         "marionette.faderegion": "scripts/plugins/marionette.faderegion",
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
@@ -54,7 +54,9 @@ requirejs.config(
         lazy: "../bower_components/lazy.js/lazy",
         tpcore: "../tpcore/tpcore.min",
         backbone: "../bower_components/backbone/backbone",
-        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette",
+        "backbone.babysitter": "../bower_components/backbone.babysitter/lib/amd/backbone.babysitter",
+        "backbone.wreqr": "../bower_components/backbone.wreqr/lib/amd/backbone.wreqr",
+        "backbone.marionette": "../bower_components/backbone.marionette/lib/core/amd/backbone.marionette",
 
         // We need to wrap moment.js to modify some functionality
         moment: "../bower_components/moment/moment",
@@ -66,24 +68,6 @@ requirejs.config(
     shim: {
         handlebars: {
             exports: "Handlebars"
-        },
-        backbone: {
-            deps: [
-                "underscore"
-            ],
-            exports: "Backbone"
-        },
-        "backbone.marionette": {
-            deps: [
-                "backbone"
-            ],
-            exports: "Marionette"
-        },
-        "backbone.stickit": {
-            deps: [
-                "backbone"
-            ],
-            exports: "Backbone"
         },
         "backbone.deepmodel": {
             deps: [

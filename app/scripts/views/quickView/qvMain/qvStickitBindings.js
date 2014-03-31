@@ -153,7 +153,7 @@ function (
             }
         },
 
-        updateTitle: function(newViewValue, options)
+        updateTitle: function(newViewValue, evt, options)
         {
             var self = this;
             var updateModel = function ()
@@ -172,7 +172,7 @@ function (
             // TODO: This required a hack at line ~100 of the Backbone.StickIt library in order to work
             // properly. There does not seem to be any other way to catch which type of event triggered
             // this update request.
-            if (options.eventType === "blur")
+            if (_.contains(["focusout","blur"], evt.type))
                 updateModel();
             else
                 this.updateModelTimeout = setTimeout(updateModel, 2000);
