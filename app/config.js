@@ -28,7 +28,7 @@ requirejs.config(
         lodash: "../bower_components/lodash/dist/lodash.compat",
         underscore: "../bower_components/lodash/dist/lodash",
         "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
-        "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
+        "backbone.stickit": "../bower_components/backbone.stickit/backbone.stickit",
         "marionette.faderegion": "scripts/plugins/marionette.faderegion",
         originalSetImmediate: "../vendor/js/libs/setImmediate",
         setImmediate: "scripts/shared/patches/wrapSetImmediateForRollbar",
@@ -68,12 +68,6 @@ requirejs.config(
     shim: {
         handlebars: {
             exports: "Handlebars"
-        },
-        "backbone.stickit": {
-            deps: [
-                "backbone"
-            ],
-            exports: "Backbone"
         },
         "backbone.deepmodel": {
             deps: [
