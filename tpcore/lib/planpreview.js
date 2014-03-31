@@ -1,4 +1,16 @@
-(function()
+if (typeof define === 'function' && define.amd) {
+    define(["underscore","jquery","backbone"], PlanPreviewFactory);
+}
+else if($ && _ && Backbone)
+{
+    PlanPreviewFactory(_, $, Backbone);
+}
+else
+{
+    throw new Error("PlanPreview requires amd define, or jquery, underscore, and backbone to be available on global scope");
+}
+
+function PlanPreviewFactory(_, $, Backbone)
 {
 
     var PreviewTemplate = _.template(
@@ -148,4 +160,4 @@
         return new PreviewView(_.extend({ model: model, el: element }, options));
     };
 
-})();
+}
