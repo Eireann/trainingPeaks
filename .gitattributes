@@ -22,4 +22,4 @@ web.config text eol=crlf
 #bower_components/** binary
 #node_modules/** binary
 #vendor/** binary
-* binary
+#* binary
