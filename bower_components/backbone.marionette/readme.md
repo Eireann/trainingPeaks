@@ -114,6 +114,11 @@ examples on how to get started, please visit [the Wiki](https://github.com/mario
 * [**Marionette.Layout**](docs/marionette.layout.md): A view that renders a layout and creates region managers to manage areas within it
 * [**Marionette.View**](docs/marionette.view.md): The base View type that other Marionette views extend from (not intended to be used directly)
 
+**Behaviors**
+
+* [**Marionette.Behavior**](docs/marionette.behavior.md): an encapsulated `View` interaction layer that can be mixed into any `view`, helping to DRY up your view code.
+* [**Marionette.Behaviors**](docs/marionette.behaviors.md): A helper class to glue your behaviors to your views.
+
 **View Management**
 
 * [**Marionette.Region**](docs/marionette.region.md): Manage visual regions of your application, including display and removal of content
@@ -162,8 +167,8 @@ ideas and examples to the community, please see the wiki page.
 MarionetteJS currently works with the following libraries:
 
 * [jQuery](http://jquery.com) v1.8+
-* [Underscore](http://underscorejs.org) v1.4.4+
-* [Backbone](http://backbonejs.org) v1.0 is preferred. v0.9.9 and v0.9.10 should work still
+* [Underscore](http://underscorejs.org) v1.4.4 - 1.6.0
+* [Backbone](http://backbonejs.org) v1.0.0 - 1.1.2 are preferred. v0.9.9 and v0.9.10 should work still
 * [Backbone.Wreqr](https://github.com/marionettejs/backbone.wreqr)
 * [Backbone.BabySitter](https://github.com/marionettejs/backbone.babysitter)
 
@@ -246,7 +251,7 @@ LosTechies.com blog.
 
 ## Legal Mumbo Jumbo (MIT License)
 
-Copyright (c) 2012 Derick Bailey; Muted Solutions, LLC
+Copyright (c) 2012-2014 Derick Bailey; Muted Solutions, LLC
 
 Distributed under [MIT license](http://mutedsolutions.mit-license.org/).
 

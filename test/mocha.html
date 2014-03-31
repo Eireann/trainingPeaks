@@ -74,7 +74,7 @@
                     var obj = {};
                     _.each(methods, function(name)
                     {
-                        obj[name] = window.sinon.stub();
+                        obj[name] = sinon.stub();
                     });
                     return obj;
                 };

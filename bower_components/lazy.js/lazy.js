@@ -76,6 +76,13 @@
    * @param {Array|Object|string} source An array, object, or string to wrap.
    * @returns {Sequence} The wrapped lazy object.
    *
+   * @exampleHelpers
+   * // Utility functions to provide to all examples
+   * function increment(x) { return x + 1; }
+   * function isEven(x) { return x % 2 === 0; }
+   * function isPositive(x) { return x > 0; }
+   * function isNegative(x) { return x < 0; }
+   *
    * @examples
    * Lazy([1, 2, 4])       // instanceof Lazy.ArrayLikeSequence
    * Lazy({ foo: "bar" })  // instanceof Lazy.ObjectLikeSequence
@@ -105,8 +112,7 @@
     return new ObjectWrapper(source);
   }
 
-  Lazy.VERSION    = '0.3.0';
-  Lazy.extensions = [];
+  Lazy.VERSION = '0.3.2';
 
   /*** Utility methods of questionable value ***/
 
@@ -274,11 +280,35 @@
   };
 
   /**
+   * Gets the number of elements in the sequence. In some cases, this may
+   * require eagerly evaluating the sequence.
+   *
+   * @public
+   * @returns {number} The number of elements in the sequence.
+   *
+   * @examples
+   * Lazy([1, 2, 3]).size();                 // => 3
+   * Lazy([1, 2]).map(Lazy.identity).size(); // => 2
+   * Lazy([1, 2, 3]).reject(isEven).size();  // => 2
+   * Lazy([1, 2, 3]).take(1).size();         // => 1
+   * Lazy({ foo: 1, bar: 2 }).size();        // => 2
+   * Lazy('hello').size();                   // => 5
+   */
+  Sequence.prototype.size = function size() {
+    return this.getIndex().length();
+  };
+
+  /**
    * Creates an {@link Iterator} object with two methods, `moveNext` -- returning
    * true or false -- and `current` -- returning the current value.
    *
    * This method is used when asynchronously iterating over sequences. Any type
    * inheriting from `Sequence` must implement this method or it can't support
+   * asynchronous iteration.
+   *
+   * Note that **this method is not intended to be used directly by application
+   * code.** Rather, it is intended as a means for implementors to potentially
+   * define custom sequence types that support either synchronous or
    * asynchronous iteration.
    *
    * @public
@@ -298,7 +328,54 @@
   };
 
   /**
+   * Gets the root sequence underlying the current chain of sequences.
+   */
+  Sequence.prototype.root = function root() {
+    return this.parent.root();
+  };
+
+  /**
+   * Evaluates the sequence and produces an appropriate value (an array in most
+   * cases, an object for {@link ObjectLikeSequence}s or a string for
+   * {@link StringLikeSequence}s).
+   */
+  Sequence.prototype.value = function value() {
+    return this.toArray();
+  };
+
+  /**
+   * Applies the current transformation chain to a given source.
+   *
+   * @examples
+   * var sequence = Lazy([])
+   *   .map(function(x) { return x * -1; })
+   *   .filter(function(x) { return x % 2 === 0; });
+   *
+   * sequence.apply([1, 2, 3, 4]); // => [-2, -4]
+   */
+  Sequence.prototype.apply = function apply(source) {
+    var root = this.root(),
+        previousSource = root.source,
+        result;
+
+    try {
+      root.source = source;
+      result = this.value();
+    } finally {
+      root.source = previousSource;
+    }
+
+    return result;
+  };
+
+  /**
    * The Iterator object provides an API for iterating over a sequence.
+   *
+   * The purpose of the `Iterator` type is mainly to offer an agnostic way of
+   * iterating over a sequence -- either synchronous (i.e. with a `while` loop)
+   * or asynchronously (with recursive calls to either `setTimeout` or --- if
+   * available --- `setImmediate`). It is not intended to be used directly by
+   * application code.
    *
    * @public
    * @constructor
@@ -372,8 +449,6 @@
    *     the sequence.
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   *
    * Lazy([1, 2, 3]).filter(isEven)            // instanceof Lazy.Sequence
    * Lazy([1, 2, 3]).filter(isEven).getIndex() // instanceof Lazy.ArrayLikeSequence
    */
@@ -383,6 +458,37 @@
     }
     return this.cachedIndex;
   };
+
+  /**
+   * Provides an indexed, memoized view into the sequence. This will cache the
+   * result whenever the sequence is first iterated, so that subsequent
+   * iterations will access the same element objects.
+   *
+   * @public
+   * @returns {ArrayLikeSequence} An indexed, memoized sequence containing this
+   *     sequence's elements, cached after the first iteration.
+   *
+   * @example
+   * function createObject() { return new Object(); }
+   *
+   * var plain    = Lazy.generate(createObject, 10),
+   *     memoized = Lazy.generate(createObject, 10).memoize();
+   *
+   * plain.toArray()[0] === plain.toArray()[0];       // => false
+   * memoized.toArray()[0] === memoized.toArray()[0]; // => true
+   */
+  Sequence.prototype.memoize = function memoize() {
+    return new MemoizedSequence(this);
+  };
+
+  /**
+   * @constructor
+   */
+  function MemoizedSequence(parent) {
+    this.parent = parent;
+  }
+
+  // MemoizedSequence needs to have its prototype set up after ArrayLikeSequence
 
   /**
    * Creates an object from a sequence of key/value pairs.
@@ -446,8 +552,6 @@
    * @returns {Sequence} The new sequence.
    *
    * @examples
-   * function increment(x) { return x + 1; }
-   *
    * Lazy([]).map(increment)        // sequence: []
    * Lazy([1, 2, 3]).map(increment) // sequence: [2, 3, 4]
    *
@@ -574,8 +678,6 @@
    * @returns {Sequence} The new sequence.
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   *
    * var numbers = [1, 2, 3, 4, 5, 6];
    *
    * Lazy(numbers).filter(isEven) // sequence: [2, 4, 6]
@@ -667,11 +769,12 @@
    * @returns {Sequence} The new sequence.
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   *
-   * Lazy([1, 2, 3, 4, 5]).reject(isEven) // sequence: [1, 3, 5]
+   * Lazy([1, 2, 3, 4, 5]).reject(isEven)              // sequence: [1, 3, 5]
+   * Lazy([{ foo: 1 }, { bar: 2 }]).reject('foo')      // sequence: [{ bar: 2 }]
+   * Lazy([{ foo: 1 }, { foo: 2 }]).reject({ foo: 2 }) // sequence: [{ foo: 1 }]
    */
   Sequence.prototype.reject = function reject(rejectFn) {
+    rejectFn = createCallback(rejectFn);
     return this.filter(function(e) { return !rejectFn(e); });
   };
 
@@ -792,7 +895,7 @@
    * Lazy(left).concat(right, [7, 8]) // sequence: [1, 2, 3, 4, 5, 6, 7, 8]
    */
   Sequence.prototype.concat = function concat(var_args) {
-    return new ConcatenatedSequence(this, Array.prototype.slice.call(arguments, 0));
+    return new ConcatenatedSequence(this, arraySlice.call(arguments, 0));
   };
 
   /**
@@ -974,8 +1077,6 @@
    *     if no count was given).
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   *
    * Lazy([1, 2, 3]).last()                 // => 3
    * Lazy([1, 2, 3]).last(2)                // sequence: [2, 3]
    * Lazy([1, 2, 3]).filter(isEven).last(2) // sequence: [2]
@@ -1330,7 +1431,7 @@
     if (arguments.length === 1) {
       return new SimpleZippedSequence(this, (/** @type {Array} */ var_args));
     } else {
-      return new ZippedSequence(this, Array.prototype.slice.call(arguments, 0));
+      return new ZippedSequence(this, arraySlice.call(arguments, 0));
     }
   };
 
@@ -1406,6 +1507,7 @@
    *
    * @examples
    * Lazy([1, [2, 3], [4, [5]]]).flatten() // sequence: [1, 2, 3, 4, 5]
+   * Lazy([1, Lazy([2, 3])]).flatten()     // sequence: [1, 2, 3]
    */
   Sequence.prototype.flatten = function flatten() {
     return new FlattenedSequence(this);
@@ -1421,31 +1523,19 @@
   FlattenedSequence.prototype = new Sequence();
 
   FlattenedSequence.prototype.each = function each(fn) {
-    var index = 0,
-        done  = false;
+    var index = 0;
 
-    var recurseVisitor = function recurseVisitor(e) {
-      if (done) {
-        return false;
+    return this.parent.each(function recurseVisitor(e) {
+      if (e instanceof Array) {
+        return forEach(e, recurseVisitor);
       }
 
       if (e instanceof Sequence) {
-        e.each(function(seq) {
-          if (recurseVisitor(seq) === false) {
-            done = true;
-            return false;
-          }
-        });
-
-      } else if (e instanceof Array) {
-        return forEach(e, recurseVisitor);
-
-      } else {
-        return fn(e, index++);
+        return e.each(recurseVisitor);
       }
-    };
 
-    this.parent.each(recurseVisitor);
+      return fn(e, index++);
+    });
   };
 
   /**
@@ -1477,7 +1567,7 @@
    * Lazy([1, 2, 3, 4, 5]).without([4, 5]) // sequence: [1, 2, 3]
    */
   Sequence.prototype.without = function without(var_args) {
-    return new WithoutSequence(this, Array.prototype.slice.call(arguments, 0));
+    return new WithoutSequence(this, arraySlice.call(arguments, 0));
   };
 
   Sequence.prototype.difference = function difference(var_args) {
@@ -1497,7 +1587,7 @@
   WithoutSequence.prototype.each = function each(fn) {
     var set = createSet(this.values),
         i = 0;
-    this.parent.each(function(e) {
+    return this.parent.each(function(e) {
       if (!set.contains(e)) {
         return fn(e, i++);
       }
@@ -1538,7 +1628,7 @@
     if (arguments.length === 1 && arguments[0] instanceof Array) {
       return new SimpleIntersectionSequence(this, (/** @type {Array} */ var_args));
     } else {
-      return new IntersectionSequence(this, Array.prototype.slice.call(arguments, 0));
+      return new IntersectionSequence(this, arraySlice.call(arguments, 0));
     }
   };
 
@@ -1560,7 +1650,7 @@
     var setIterator = new UniqueMemoizer(sets.getIterator()),
         i = 0;
 
-    this.parent.each(function(e) {
+    return this.parent.each(function(e) {
       var includedInAll = true;
       setIterator.each(function(set) {
         if (!set.contains(e)) {
@@ -1650,25 +1740,21 @@
    *     for at least one element.
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   * function isPositive(x) { return x > 0; }
-   *
    * var numbers = [1, 2, 3, 4, 5];
+   *
+   * var objects = [{ foo: true }, { foo: false, bar: true }];
    *
    * Lazy(numbers).every(isEven)     // => false
    * Lazy(numbers).every(isPositive) // => true
+   * Lazy(objects).all('foo')        // => false
+   * Lazy(objects).all('bar')        // => false
    */
   Sequence.prototype.every = function every(predicate) {
     predicate = createCallback(predicate);
 
-    var success = true;
-    this.each(function(e, i) {
-      if (!predicate(e, i)) {
-        success = false;
-        return false;
-      }
+    return this.each(function(e, i) {
+      return !!predicate(e, i);
     });
-    return success;
   };
 
   Sequence.prototype.all = function all(predicate) {
@@ -1689,9 +1775,6 @@
    *     the sequence is empty).
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   * function isNegative(x) { return x < 0; }
-   *
    * var numbers = [1, 2, 3, 4, 5];
    *
    * Lazy(numbers).some()           // => true
@@ -1714,6 +1797,31 @@
 
   Sequence.prototype.any = function any(predicate) {
     return this.some(predicate);
+  };
+
+  /**
+   * Checks whether NO elements in this sequence satisfy the given predicate
+   * (the opposite of {@link Sequence#all}, basically).
+   *
+   * @public
+   * @param {Function=} predicate A function to call on (potentially) every element
+   *     in this sequence.
+   * @returns {boolean} True if `predicate` does not return true for any element
+   *     in the sequence. False if `predicate` returns true for at least one
+   *     element.
+   *
+   * @examples
+   * var numbers = [1, 2, 3, 4, 5];
+   *
+   * Lazy(numbers).none()           // => false
+   * Lazy(numbers).none(isEven)     // => false
+   * Lazy(numbers).none(isNegative) // => true
+   * Lazy([]).none(isEven)          // => true
+   * Lazy([]).none(isNegative)      // => true
+   * Lazy([]).none()                // => true
+   */
+  Sequence.prototype.none = function none(predicate) {
+    return !this.any(predicate);
   };
 
   /**
@@ -1768,8 +1876,6 @@
    *     is located, or -1 if the sequence doesn't contain the value.
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   *
    * Lazy(["a", "b", "c", "b", "a"]).lastIndexOf("b")    // => 3
    * Lazy([1, 2, 3]).lastIndexOf(0)                      // => -1
    * Lazy([2, 2, 1, 2, 4]).filter(isEven).lastIndexOf(2) // 2
@@ -1795,8 +1901,6 @@
    *     located, or where it belongs in sorted order.
    *
    * @examples
-   * function isEven(x) { return x % 2 === 0; }
-   *
    * Lazy([1, 3, 6, 9]).sortedIndex(3)                    // => 1
    * Lazy([1, 3, 6, 9]).sortedIndex(7)                    // => 3
    * Lazy([5, 10, 15, 20]).filter(isEven).sortedIndex(10) // => 0
@@ -1968,14 +2072,14 @@
    * @constructor
    */
   function ChunkedSequence(parent, size) {
-    this.parent = parent;
-    this.size   = size;
+    this.parent    = parent;
+    this.chunkSize = size;
   }
 
   ChunkedSequence.prototype = new Sequence();
 
-  ChunkedSequence.prototype.getIterator = function() {
-    return new ChunkedIterator(this.parent, this.size);
+  ChunkedSequence.prototype.getIterator = function getIterator() {
+    return new ChunkedIterator(this.parent, this.chunkSize);
   };
 
   /**
@@ -1986,11 +2090,11 @@
     this.size     = size;
   }
 
-  ChunkedIterator.prototype.current = function() {
+  ChunkedIterator.prototype.current = function current() {
     return this.currentChunk;
   };
 
-  ChunkedIterator.prototype.moveNext = function() {
+  ChunkedIterator.prototype.moveNext = function moveNext() {
     var iterator  = this.iterator,
         chunkSize = this.size,
         chunk     = [];
@@ -2022,7 +2126,7 @@
    * @examples
    * Lazy([1, 2, 3]).tap(fn).each(Lazy.noop); // calls fn 3 times
    */
-  Sequence.prototype.tap = function(callback) {
+  Sequence.prototype.tap = function tap(callback) {
     return new TappedSequence(this, callback);
   };
 
@@ -2057,10 +2161,6 @@
    * @examples
    * function divisibleBy3(x) {
    *   return x % 3 === 0;
-   * }
-   *
-   * function isNegative(x) {
-   *   return x < 0;
    * }
    *
    * var numbers = [5, 6, 7, 8, 9, 10];
@@ -2227,7 +2327,7 @@
     var iterator = new UniqueMemoizer(Lazy(this.array).getIterator()),
         i = 0;
 
-    this.parent.each(function(e) {
+    return this.parent.each(function(e) {
       if (iterator.contains(e)) {
         return fn(e, i++);
       }
@@ -2239,7 +2339,7 @@
         find  = arrayContains,
         i = 0;
 
-    this.parent.each(function(e) {
+    return this.parent.each(function(e) {
       if (find(array, e)) {
         return fn(e, i++);
       }
@@ -2271,7 +2371,7 @@
 
   SimpleZippedSequence.prototype.each = function each(fn) {
     var array = this.array;
-    this.parent.each(function(e, i) {
+    return this.parent.each(function(e, i) {
       return fn([e, array[i]], i);
     });
   };
@@ -2281,6 +2381,9 @@
    * its elements. This extends the API for iterating with the additional methods
    * {@link #get} and {@link #length}, allowing a sequence to act as a "view" into
    * a collection or other indexed data source.
+   *
+   * The initial sequence created by wrapping an array with `Lazy(array)` is an
+   * `ArrayLikeSequence`.
    *
    * All methods of `ArrayLikeSequence` that conceptually should return
    * something like a array (with indexed access) return another
@@ -2470,11 +2573,14 @@
   ArrayLikeSequence.prototype.each = function each(fn) {
     var length = this.length(),
         i = -1;
+
     while (++i < length) {
       if (fn(this.get(i), i) === false) {
-        break;
+        return false;
       }
     }
+
+    return true;
   };
 
   /**
@@ -2602,9 +2708,11 @@
     while (++i < length) {
       e = parent.get(i);
       if (filterFn(e, i) && fn(e, i) === false) {
-        break;
+        return false;
       }
     }
+
+    return true;
   };
 
   /**
@@ -2792,6 +2900,31 @@
     }
   }
 
+  // Now that we've fully initialized the ArrayLikeSequence prototype, we can
+  // set the prototype for MemoizedSequence.
+
+  MemoizedSequence.prototype = new ArrayLikeSequence();
+
+  MemoizedSequence.prototype.cache = function cache() {
+    return this.cachedResult || (this.cachedResult = this.parent.toArray());
+  };
+
+  MemoizedSequence.prototype.get = function get(i) {
+    return this.cache()[i];
+  };
+
+  MemoizedSequence.prototype.length = function length() {
+    return this.cache().length;
+  };
+
+  MemoizedSequence.prototype.slice = function slice(begin, end) {
+    return this.cache().slice(begin, end);
+  };
+
+  MemoizedSequence.prototype.toArray = function toArray() {
+    return this.cache().slice(0);
+  };
+
   /**
    * ArrayWrapper is the most basic {@link Sequence}. It directly wraps an array
    * and implements the same methods as {@link ArrayLikeSequence}, but more
@@ -2804,6 +2937,10 @@
   }
 
   ArrayWrapper.prototype = new ArrayLikeSequence();
+
+  ArrayWrapper.prototype.root = function root() {
+    return this;
+  };
 
   /**
    * Returns the element at the specified index in the source array.
@@ -2828,15 +2965,7 @@
    * An optimized version of {@link Sequence#each}.
    */
   ArrayWrapper.prototype.each = function each(fn) {
-    var source = this.source,
-        length = source.length,
-        i = -1;
-
-    while (++i < length) {
-      if (fn(source[i], i) === false) {
-        break;
-      }
-    }
+    return forEach(this.source, fn);
   };
 
   /**
@@ -2844,7 +2973,7 @@
    */
   ArrayWrapper.prototype.map =
   ArrayWrapper.prototype.collect = function collect(mapFn) {
-    return new MappedArrayWrapper(this.source, createCallback(mapFn));
+    return new MappedArrayWrapper(this, createCallback(mapFn));
   };
 
   /**
@@ -2870,7 +2999,7 @@
    */
   ArrayWrapper.prototype.concat = function concat(var_args) {
     if (arguments.length === 1 && arguments[0] instanceof Array) {
-      return new ConcatArrayWrapper(this.source, (/** @type {Array} */ var_args));
+      return new ConcatArrayWrapper(this, (/** @type {Array} */ var_args));
     } else {
       return ArrayLikeSequence.prototype.concat.apply(this, arguments);
     }
@@ -2886,35 +3015,40 @@
   /**
    * @constructor
    */
-  function MappedArrayWrapper(source, mapFn) {
-    this.source = source;
+  function MappedArrayWrapper(parent, mapFn) {
+    this.parent = parent;
     this.mapFn  = mapFn;
   }
 
   MappedArrayWrapper.prototype = new ArrayLikeSequence();
 
   MappedArrayWrapper.prototype.get = function get(i) {
-    if (i < 0 || i >= this.source.length) {
+    var source = this.parent.source;
+
+    if (i < 0 || i >= source.length) {
       return undefined;
     }
 
-    return this.mapFn(this.source[i]);
+    return this.mapFn(source[i]);
   };
 
   MappedArrayWrapper.prototype.length = function length() {
-    return this.source.length;
+    return this.parent.source.length;
   };
 
   MappedArrayWrapper.prototype.each = function each(fn) {
-    var source = this.source,
-        length = this.source.length,
+    var source = this.parent.source,
+        length = source.length,
         mapFn  = this.mapFn,
         i = -1;
+
     while (++i < length) {
       if (fn(mapFn(source[i], i), i) === false) {
-        return;
+        return false;
       }
     }
+
+    return true;
   };
 
   /**
@@ -2937,9 +3071,11 @@
     while (++i < length) {
       e = source[i];
       if (filterFn(e, i) && fn(e, i) === false) {
-        break;
+        return false;
       }
     }
+
+    return true;
   };
 
   /**
@@ -2971,6 +3107,8 @@
         return false;
       }
     }
+
+    return true;
   };
 
   UniqueArrayWrapper.prototype.eachArrayCache = function eachArrayCache(fn) {
@@ -3009,6 +3147,8 @@
         }
       }
     }
+
+    return true;
   };
 
   UniqueArrayWrapper.prototype.eachSetCache = UniqueSequence.prototype.each;
@@ -3034,29 +3174,30 @@
   /**
    * @constructor
    */
-  function ConcatArrayWrapper(source, other) {
-    this.source = source;
+  function ConcatArrayWrapper(parent, other) {
+    this.parent = parent;
     this.other  = other;
   }
 
   ConcatArrayWrapper.prototype = new ArrayLikeSequence();
 
   ConcatArrayWrapper.prototype.get = function get(i) {
-    var sourceLength = this.source.length;
+    var source = this.parent.source,
+        sourceLength = source.length;
 
     if (i < sourceLength) {
-      return this.source[i];
+      return source[i];
     } else {
       return this.other[i - sourceLength];
     }
   };
 
   ConcatArrayWrapper.prototype.length = function length() {
-    return this.source.length + this.other.length;
+    return this.parent.source.length + this.other.length;
   };
 
   ConcatArrayWrapper.prototype.each = function each(fn) {
-    var source = this.source,
+    var source = this.parent.source,
         sourceLength = source.length,
         other = this.other,
         otherLength = other.length,
@@ -3075,10 +3216,15 @@
         return false;
       }
     }
+
+    return true;
   };
 
   /**
    * An `ObjectLikeSequence` object represents a sequence of key/value pairs.
+   *
+   * The initial sequence you get by wrapping an object with `Lazy(object)` is
+   * an `ObjectLikeSequence`.
    *
    * All methods of `ObjectLikeSequence` that conceptually should return
    * something like an object return another `ObjectLikeSequence`.
@@ -3144,6 +3290,10 @@
     }
 
     return defineSequenceType(ObjectLikeSequence, methodName, overrides);
+  };
+
+  ObjectLikeSequence.prototype.value = function value() {
+    return this.toObject();
   };
 
   /**
@@ -3271,7 +3421,7 @@
     });
 
     if (!done) {
-      this.parent.each(function(value, key) {
+      return this.parent.each(function(value, key) {
         if (!merged.contains(key) && fn(value, key) === false) {
           return false;
         }
@@ -3367,6 +3517,159 @@
   };
 
   /**
+   * Produces an {@link ObjectLikeSequence} consisting of all the recursively
+   * merged values from this and the given object(s) or sequence(s).
+   *
+   * @public
+   * @param {...Object|ObjectLikeSequence} others The other object(s) or
+   *     sequence(s) whose values will be merged into this one.
+   * @param {Function=} mergeFn An optional function used to customize merging
+   *     behavior.
+   * @returns {ObjectLikeSequence} The new sequence consisting of merged values.
+   *
+   * @examples
+   * // These examples are completely stolen from Lo-Dash's documentation:
+   * // lodash.com/docs#merge
+   *
+   * var names = {
+   *   'characters': [
+   *     { 'name': 'barney' },
+   *     { 'name': 'fred' }
+   *   ]
+   * };
+   *
+   * var ages = {
+   *   'characters': [
+   *     { 'age': 36 },
+   *     { 'age': 40 }
+   *   ]
+   * };
+   *
+   * var food = {
+   *   'fruits': ['apple'],
+   *   'vegetables': ['beet']
+   * };
+   *
+   * var otherFood = {
+   *   'fruits': ['banana'],
+   *   'vegetables': ['carrot']
+   * };
+   *
+   * function mergeArrays(a, b) {
+   *   return Array.isArray(a) ? a.concat(b) : undefined;
+   * }
+   *
+   * Lazy(names).merge(ages); // => sequence: { 'characters': [{ 'name': 'barney', 'age': 36 }, { 'name': 'fred', 'age': 40 }] }
+   * Lazy(food).merge(otherFood, mergeArrays); // => sequence: { 'fruits': ['apple', 'banana'], 'vegetables': ['beet', 'carrot'] }
+   *
+   * // ----- Now for my own tests: -----
+   *
+   * // merges objects
+   * Lazy({ foo: 1 }).merge({ foo: 2 }); // => sequence: { foo: 2 }
+   * Lazy({ foo: 1 }).merge({ bar: 2 }); // => sequence: { foo: 1, bar: 2 }
+   *
+   * // goes deep
+   * Lazy({ foo: { bar: 1 } }).merge({ foo: { bar: 2 } }); // => sequence: { foo: { bar: 2 } }
+   * Lazy({ foo: { bar: 1 } }).merge({ foo: { baz: 2 } }); // => sequence: { foo: { bar: 1, baz: 2 } }
+   * Lazy({ foo: { bar: 1 } }).merge({ foo: { baz: 2 } }); // => sequence: { foo: { bar: 1, baz: 2 } }
+   *
+   * // gives precedence to later sources
+   * Lazy({ foo: 1 }).merge({ bar: 2 }, { bar: 3 }); // => sequence: { foo: 1, bar: 3 }
+   *
+   * // undefined gets passed over
+   * Lazy({ foo: 1 }).merge({ foo: undefined }); // => sequence: { foo: 1 }
+   *
+   * // null doesn't get passed over
+   * Lazy({ foo: 1 }).merge({ foo: null }); // => sequence: { foo: null }
+   *
+   * // array contents get merged as well
+   * Lazy({ foo: [{ bar: 1 }] }).merge({ foo: [{ baz: 2 }] }); // => sequence: { foo: [{ bar: 1, baz: 2}] }
+   */
+  ObjectLikeSequence.prototype.merge = function merge(var_args) {
+    var mergeFn = arguments.length > 1 && typeof arguments[arguments.length - 1] === "function" ?
+      arrayPop.call(arguments) : null;
+    return new MergedSequence(this, arraySlice.call(arguments, 0), mergeFn);
+  };
+
+  /**
+   * @constructor
+   */
+  function MergedSequence(parent, others, mergeFn) {
+    this.parent  = parent;
+    this.others  = others;
+    this.mergeFn = mergeFn;
+  }
+
+  MergedSequence.prototype = new ObjectLikeSequence();
+
+  MergedSequence.prototype.each = function each(fn) {
+    var others  = this.others,
+        mergeFn = this.mergeFn || mergeObjects,
+        keys    = {};
+
+    var iteratedFullSource = this.parent.each(function(value, key) {
+      var merged = value;
+
+      forEach(others, function(other) {
+        if (key in other) {
+          merged = mergeFn(merged, other[key]);
+        }
+      });
+
+      keys[key] = true;
+
+      return fn(merged, key);
+    });
+
+    if (iteratedFullSource === false) {
+      return false;
+    }
+
+    var remaining = {};
+
+    forEach(others, function(other) {
+      for (var k in other) {
+        if (!keys[k]) {
+          remaining[k] = mergeFn(remaining[k], other[k]);
+        }
+      }
+    });
+
+    return Lazy(remaining).each(fn);
+  };
+
+  /**
+   * @private
+   * @examples
+   * mergeObjects({ foo: 1 }, { bar: 2 }); // => { foo: 1, bar: 2 }
+   * mergeObjects({ foo: { bar: 1 } }, { foo: { baz: 2 } }); // => { foo: { bar: 1, baz: 2 } }
+   * mergeObjects({ foo: { bar: 1 } }, { foo: undefined }); // => { foo: { bar: 1 } }
+   * mergeObjects({ foo: { bar: 1 } }, { foo: null }); // => { foo: null }
+   */
+  function mergeObjects(a, b) {
+    if (typeof b === 'undefined') {
+      return a;
+    }
+
+    // Unless we're dealing with two objects, there's no merging to do --
+    // just replace a w/ b.
+    if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {
+      return b;
+    }
+
+    var merged = {}, prop;
+    for (prop in a) {
+      merged[prop] = mergeObjects(a[prop], b[prop]);
+    }
+    for (prop in b) {
+      if (!merged[prop]) {
+        merged[prop] = b[prop];
+      }
+    }
+    return merged;
+  }
+
+  /**
    * Creates a {@link Sequence} consisting of the keys from this sequence whose
    *     values are functions.
    *
@@ -3434,7 +3737,7 @@
     var inArray    = arrayContains,
         properties = this.properties;
 
-    this.parent.each(function(value, key) {
+    return this.parent.each(function(value, key) {
       if (inArray(properties, key)) {
         return fn(value, key);
       }
@@ -3481,7 +3784,7 @@
     var inArray    = arrayContains,
         properties = this.properties;
 
-    this.parent.each(function(value, key) {
+    return this.parent.each(function(value, key) {
       if (!inArray(properties, key)) {
         return fn(value, key);
       }
@@ -3543,11 +3846,10 @@
    * Lazy(colorCodes).toObject() // => { red: "#f00", green: "#0f0", blue: "#00f" }
    */
   ObjectLikeSequence.prototype.toObject = function toObject() {
-    var object = {};
-    this.each(function(value, key) {
+    return this.reduce(function(object, value, key) {
       object[key] = value;
-    });
-    return object;
+      return object;
+    }, {});
   };
 
   // Now that we've fully initialized the ObjectLikeSequence prototype, we can
@@ -3611,9 +3913,9 @@
    * *not* work on any arbitrary {@link ObjectLikeSequence}.
    *
    * @public
-   * @param {(string|Array)=} A property name or array of property names to
-   *     watch. If this parameter is `undefined`, all of the object's current
-   *     (enumerable) properties will be watched.
+   * @param {(string|Array)=} propertyNames A property name or array of property
+   *     names to watch. If this parameter is `undefined`, all of the object's
+   *     current (enumerable) properties will be watched.
    * @returns {Sequence} A sequence comprising `{ property, value }` objects
    *     describing each change to the specified property/properties.
    *
@@ -3645,6 +3947,10 @@
 
   ObjectWrapper.prototype = new ObjectLikeSequence();
 
+  ObjectWrapper.prototype.root = function root() {
+    return this;
+  };
+
   ObjectWrapper.prototype.get = function get(key) {
     return this.source[key];
   };
@@ -3655,13 +3961,18 @@
 
     for (key in source) {
       if (fn(source[key], key) === false) {
-        return;
+        return false;
       }
     }
+
+    return true;
   };
 
   /**
    * A `StringLikeSequence` represents a sequence of characters.
+   *
+   * The initial sequence you get by wrapping a string with `Lazy(string)` is a
+   * `StringLikeSequence`.
    *
    * All methods of `StringLikeSequence` that conceptually should return
    * something like a string return another `StringLikeSequence`.
@@ -3727,6 +4038,10 @@
     }
 
     return defineSequenceType(StringLikeSequence, methodName, overrides);
+  };
+
+  StringLikeSequence.prototype.value = function value() {
+    return this.toString();
   };
 
   /**
@@ -4163,10 +4478,8 @@
    * @constructor
    */
   function SplitWithRegExpIterator(source, pattern) {
-    this.source = source;
-
-    // clone the RegExp
-    this.pattern = eval("" + pattern + (!pattern.global ? "g" : ""));
+    this.source  = source;
+    this.pattern = cloneRegex(pattern);
   }
 
   SplitWithRegExpIterator.prototype.current = function current() {
@@ -4241,6 +4554,10 @@
 
   StringWrapper.prototype = new StringLikeSequence();
 
+  StringWrapper.prototype.root = function root() {
+    return this;
+  };
+
   StringWrapper.prototype.get = function get(i) {
     return this.source.charAt(i);
   };
@@ -4250,9 +4567,11 @@
   };
 
   /**
-   * A GeneratedSequence does not wrap an in-memory colllection but rather
+   * A `GeneratedSequence` does not wrap an in-memory colllection but rather
    * determines its elements on-the-fly during iteration according to a generator
    * function.
+   *
+   * You create a `GeneratedSequence` by calling {@link Lazy.generate}.
    *
    * @public
    * @constructor
@@ -4293,11 +4612,14 @@
     var generatorFn = this.get,
         length = this.fixedLength,
         i = 0;
+
     while (typeof length === "undefined" || i < length) {
       if (fn(generatorFn(i++)) === false) {
-        break;
+        return false;
       }
     }
+
+    return true;
   };
 
   GeneratedSequence.prototype.getIterator = function getIterator() {
@@ -4335,6 +4657,10 @@
   /**
    * An `AsyncSequence` iterates over its elements asynchronously when
    * {@link #each} is called.
+   *
+   * You get an `AsyncSequence` by calling {@link Sequence#async} on any
+   * sequence. Note that some sequence types may not support asynchronous
+   * iteration.
    *
    * Returning values
    * ----------------
@@ -4383,6 +4709,18 @@
   }
 
   AsyncSequence.prototype = new Sequence();
+
+  /**
+   * Throws an exception. You cannot manually iterate over an asynchronous
+   * sequence.
+   *
+   * @public
+   * @example
+   * Lazy([1, 2, 3]).async().getIterator() // throws
+   */
+  AsyncSequence.prototype.getIterator = function getIterator() {
+    throw 'An AsyncSequence does not support synchronous iteration.';
+  };
 
   /**
    * An asynchronous version of {@link Sequence#each}.
@@ -4501,7 +4839,7 @@
   /**
    * An async version of {@link Sequence#reverse}.
    */
-  AsyncSequence.prototype.reverse = function() {
+  AsyncSequence.prototype.reverse = function reverse() {
     return this.parent.reverse().async();
   };
 
@@ -4633,7 +4971,7 @@
   /**
    * Just return the same sequence for `AsyncSequence#async` (I see no harm in this).
    */
-  AsyncSequence.prototype.async = function() {
+  AsyncSequence.prototype.async = function async() {
     return this;
   };
 
@@ -4712,7 +5050,7 @@
         done      = false,
         i         = 0;
 
-    this.parent.each(function(chunk) {
+    return this.parent.each(function(chunk) {
       Lazy(chunk).split(delimiter).each(function(piece) {
         if (fn(piece, i++) === false) {
           done = true;
@@ -4747,7 +5085,7 @@
         done      = false,
         i         = 0;
 
-    this.parent.each(function(chunk) {
+    return this.parent.each(function(chunk) {
       Lazy(chunk).match(pattern).each(function(match) {
         if (fn(match, i++) === false) {
           done = true;
@@ -4757,6 +5095,82 @@
 
       return !done;
     });
+  };
+
+  /**
+   * Defines a wrapper for custom {@link StreamLikeSequence}s. This is useful
+   * if you want a way to handle a stream of events as a sequence, but you can't
+   * use Lazy's existing interface (i.e., you're wrapping an object from a
+   * library with its own custom events).
+   *
+   * This method defines a *factory*: that is, it produces a function that can
+   * be used to wrap objects and return a {@link Sequence}. Hopefully the
+   * example will make this clear.
+   *
+   * @public
+   * @param {Function} initializer An initialization function called on objects
+   *     created by this factory. `this` will be bound to the created object,
+   *     which is an instance of {@link StreamLikeSequence}. Use `emit` to
+   *     generate data for the sequence.
+   * @returns {Function} A function that creates a new {@link StreamLikeSequence},
+   *     initializes it using the specified function, and returns it.
+   *
+   * @example
+   * var factory = Lazy.createWrapper(function(eventSource) {
+   *   var sequence = this;
+   *
+   *   eventSource.handleEvent(function(data) {
+   *     sequence.emit(data);
+   *   });
+   * });
+   *
+   * var eventEmitter = {
+   *   triggerEvent: function(data) {
+   *     eventEmitter.eventHandler(data);
+   *   },
+   *   handleEvent: function(handler) {
+   *     eventEmitter.eventHandler = handler;
+   *   },
+   *   eventHandler: function() {}
+   * };
+   *
+   * var events = [];
+   *
+   * factory(eventEmitter).each(function(e) {
+   *   events.push(e);
+   * });
+   *
+   * eventEmitter.triggerEvent('foo');
+   * eventEmitter.triggerEvent('bar');
+   *
+   * events // => ['foo', 'bar']
+   */
+  Lazy.createWrapper = function createWrapper(initializer) {
+    var ctor = function() {
+      this.listeners = [];
+    };
+
+    ctor.prototype = new StreamLikeSequence();
+
+    ctor.prototype.each = function(listener) {
+      this.listeners.push(listener);
+    };
+
+    ctor.prototype.emit = function(data) {
+      var listeners = this.listeners;
+
+      for (var len = listeners.length, i = len - 1; i >= 0; --i) {
+        if (listeners[i](data) === false) {
+          listeners.splice(i, 1);
+        }
+      }
+    };
+
+    return function() {
+      var sequence = new ctor();
+      initializer.apply(sequence, arguments);
+      return sequence;
+    };
   };
 
   /**
@@ -4833,6 +5247,7 @@
   Lazy.StreamLikeSequence = StreamLikeSequence;
   Lazy.GeneratedSequence  = GeneratedSequence;
   Lazy.AsyncSequence      = AsyncSequence;
+  Lazy.AsyncHandle        = AsyncHandle;
 
   /*** Useful utility methods ***/
 
@@ -4845,6 +5260,9 @@
       return fn.apply(this, arguments);
     };
   };
+
+  var arrayPop   = Array.prototype.pop,
+      arraySlice = Array.prototype.slice;
 
   /**
    * Creates a callback... you know, Lo-Dash style.
