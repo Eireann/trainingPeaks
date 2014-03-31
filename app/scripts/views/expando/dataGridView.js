@@ -1,6 +1,7 @@
 define(
 [
     "jquery",
+    "jqueryui/sortable",
     "underscore",
     "setImmediate",
     "TP",
@@ -9,6 +10,7 @@ define(
 ],
 function(
     $,
+    jqueryuiSortable,
     _,
     setImmediate,
     TP,
@@ -164,7 +166,7 @@ function(
             .filter(function(channel) { return _.include(availableChannels, channel.id); })
             .map(function(channel, i)
             {
-                return _.extend({ field: i, width: 100 }, channel);
+                return _.defaults({}, channel, { field: i, width: 100, resizable: false, focusable: false, selectable: false });
             }).value();
 
             var workoutType = self.model.get("workoutTypeValueId");
@@ -197,7 +199,8 @@ function(
             var options =
             {
                 fullWidthRows: true,
-                syncColumnCellResize: true,
+                enableColumnResize: false,
+                syncColumnCellResize: false,
                 explicitInitialization: true
             };
 
@@ -215,12 +218,6 @@ function(
                 self.grid.init();
             });
 
-            // Prevent slick grid from causing packery trouble
-            function stopEvent(event) { event.stopPropagation(); event.preventDefault(); }
-            $grid.on("draginit", stopEvent);
-            $grid.on("dragstart", stopEvent);
-            $grid.on("drag", stopEvent);
-            $grid.on("dragend", stopEvent);
         },
 
 

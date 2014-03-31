@@ -16,7 +16,7 @@
     "lodash": "2.4.1",
     "backbone": "1.1.2",
     "lazy.js": "0.3.2",
-    "slickgrid": "~2.1.0",
+    "slickgrid": "TrainingPeaks/SlickGrid#master",
     "backbone.marionette": "1.7.3",
     "moment": "2.5.1",
     "Flot": "TrainingPeaks/flot#master",

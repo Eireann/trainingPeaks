@@ -150,7 +150,11 @@ function(
             var pods = [
                 {
                     podView: MapView,
-                    cssClass: "expandoMapPod"
+                    cssClass: "expandoMapPod",
+                    options: {
+                        drag: false,
+                        touchZoom: false
+                    }
                 },
                 {
                     podView: GraphView,
@@ -160,7 +164,7 @@ function(
 
             _.each(pods, function(pod)
             {
-                var view = new pod.podView(options);
+                var view = new pod.podView(_.defaults({}, pod.options, options));
                 this._appendExpandoPod(view, pod.cssClass);
                 this.subviews.push(view);
             }, this);
