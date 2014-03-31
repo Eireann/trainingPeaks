@@ -1,15 +1,13 @@
 {
   "name": "slickgrid",
-  "homepage": "https://github.com/mleibman/SlickGrid",
-  "version": "2.1.0",
-  "_release": "2.1.0",
+  "homepage": "https://github.com/TrainingPeaks/SlickGrid",
+  "_release": "4999aa0064",
   "_resolution": {
-    "type": "version",
-    "tag": "2.1.0",
-    "commit": "f171ce2d76ca899c603b7a9532fd97768bb74302"
+    "type": "branch",
+    "branch": "master",
+    "commit": "4999aa006400b282d7719784bf11669a97e073b8"
   },
-  "_source": "git://github.com/mleibman/SlickGrid.git",
-  "_target": "~2.1.0",
-  "_originalSource": "slickgrid",
-  "_direct": true
+  "_source": "git://github.com/TrainingPeaks/SlickGrid.git",
+  "_target": "master",
+  "_originalSource": "TrainingPeaks/SlickGrid"
 }
