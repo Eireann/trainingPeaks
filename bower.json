@@ -17,6 +17,8 @@
     "backbone": "1.1.2",
     "lazy.js": "0.3.2",
     "slickgrid": "TrainingPeaks/SlickGrid#master",
+    "backbone.babysitter": "0.1.1",
+    "backbone.wreqr": "1.0.1",
     "backbone.marionette": "1.7.3",
     "moment": "2.5.1",
     "Flot": "TrainingPeaks/flot#master",

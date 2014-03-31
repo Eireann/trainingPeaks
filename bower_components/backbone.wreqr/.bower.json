@@ -9,6 +9,6 @@
     "commit": "991ad68892486d0269b95420e740474cd8bc9872"
   },
   "_source": "git://github.com/marionettejs/backbone.wreqr.git",
-  "_target": "~1.0.0",
+  "_target": "1.0.1",
   "_originalSource": "backbone.wreqr"
 }

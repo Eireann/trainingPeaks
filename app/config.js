@@ -54,7 +54,9 @@ requirejs.config(
         lazy: "../bower_components/lazy.js/lazy",
         tpcore: "../tpcore/tpcore.min",
         backbone: "../bower_components/backbone/backbone",
-        "backbone.marionette": "../bower_components/backbone.marionette/lib/backbone.marionette",
+        "backbone.babysitter": "../bower_components/backbone.babysitter/lib/amd/backbone.babysitter",
+        "backbone.wreqr": "../bower_components/backbone.wreqr/lib/amd/backbone.wreqr",
+        "backbone.marionette": "../bower_components/backbone.marionette/lib/core/amd/backbone.marionette",
 
         // We need to wrap moment.js to modify some functionality
         moment: "../bower_components/moment/moment",
@@ -66,18 +68,6 @@ requirejs.config(
     shim: {
         handlebars: {
             exports: "Handlebars"
-        },
-        backbone: {
-            deps: [
-                "underscore"
-            ],
-            exports: "Backbone"
-        },
-        "backbone.marionette": {
-            deps: [
-                "backbone"
-            ],
-            exports: "Marionette"
         },
         "backbone.stickit": {
             deps: [
