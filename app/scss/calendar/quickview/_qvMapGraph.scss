@@ -25,7 +25,8 @@
     margin-left: 2px;
     margin-top: -10px;
 
-    background: no-repeat 0 0;
+    background-repeat: no-repeat;
+    background-position: 0 0;
     @extend %mapIconStartBG;
 
 }
@@ -38,7 +39,8 @@
     margin-left: -32px;
     margin-top: -10px;
 
-    background: no-repeat 0 0;
+    background-repeat: no-repeat;
+    background-position: 0 0;
     @extend %mapIconFinishBG;
 }
 
