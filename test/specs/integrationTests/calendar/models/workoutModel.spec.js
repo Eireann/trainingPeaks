@@ -65,6 +65,12 @@ function(
                 workout.moveToDay(tomorrow);
                 expect(workout.save).to.have.been.called;
             });
+
+            it("Should not save if date has not changed", function()
+            {
+                workout.moveToDay(originalDate);
+                expect(workout.save).to.not.have.been.called;
+            });
         });
 
         describe("duplicate save protection", function()

@@ -206,7 +206,11 @@ function (
             {
                 workoutDay: moment(newDate).format(TP.utils.datetime.longDateFormat)
             };
-            return this.save(attrs, { wait: true });
+
+            if(attrs.workoutDay !== this.get("workoutDay"))
+            {
+                return this.save(attrs, { wait: true });
+            }
         },
 
         dropped: function(options)
