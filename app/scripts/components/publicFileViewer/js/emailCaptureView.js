@@ -87,24 +87,19 @@ function(
 
         _login: function()
         {
-            document.location.href = this._getLoginRoot() + "/login?ReturnUrl=" + this._getReturnUrl();
+            document.location.href = this._getLoginRoot() + "/login";
         },
 
         _signup: function()
         {
-            document.location.href = this._getLoginRoot() + "/signup?ReturnUrl=" + this._getReturnUrl();
+            document.location.href = this._getLoginRoot() + "/signup";
         },
 
         _getLoginRoot: function()
         {
             return this.options.cmsRoot.replace(/^\/\//,"https://").replace("http://","https://");
-        },
-
-        _getReturnUrl: function()
-        {
-            return escape(document.location.href).replace(/\//g,"%2F");
         }
-        
+                
     });
 
     return EmailCaptureView;
