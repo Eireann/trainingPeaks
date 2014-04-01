@@ -99,7 +99,8 @@ function (
             "details": null,
             "detailData": null,
             "equipmentBikeId": null,
-            "equipmentShoeId": null
+            "equipmentShoeId": null,
+            "isLocked": null
         },
 
         initialize: function(attrs, options)
