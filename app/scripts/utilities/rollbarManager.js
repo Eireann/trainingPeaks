@@ -9,6 +9,23 @@ function(
     _
 )
 {
+    var _getLastResortStack = function()
+    {
+        var stack = null;
+
+        try
+        {
+            throw new Error("Self-caught tracing error");
+        }
+        catch (e)
+        {
+            if (e.stack)
+                stack = e.stack;
+        } 
+
+        return stack;
+    };
+
     var RollbarManager =
     {
         window: null,
@@ -72,8 +89,8 @@ function(
                 function()
                 {
                     var rollbarScriptTag = doc.createElement("script");
-                    var firstScriptTag = oc.getElementsByTagName("script")[0];
-                    rollbarScriptTag.src = "//d37gvrvc0wt4s1.cloudfront.net/js/1/rollbar.min.js";
+                    var firstScriptTag = doc.getElementsByTagName("script")[0];
+                    rollbarScriptTag.src =  "//d37gvrvc0wt4s1.cloudfront.net/js/v1.0/rollbar.min.js";
                     rollbarScriptTag.async = false;
                     firstScriptTag.parentNode.insertBefore(rollbarScriptTag, firstScriptTag);
                 };
@@ -106,13 +123,16 @@ function(
                     error = "Via window.onerror: " + error;
                 }
                
+                var lastResortStack = _getLastResortStack();
+
                 // Push them to rollbar array or rollbar client
                 this._rollbar.push(
                     {
                         _t: 'uncaught',
                         e: error,
                         u: url,
-                        l: lineNumber
+                        l: lineNumber,
+                        custom: lastResortStack
                     }
                 );
             };
@@ -262,6 +282,12 @@ function(
                         if (item.hasOwnProperty("stack"))
                         {
                             console.log(item.stack);
+                        }
+                        else
+                        {
+                            var lastResortStack = _getLastResortStack();
+                            if (lastResortStack)
+                                console.log(lastResortStack);
                         }
                     }
                 );
