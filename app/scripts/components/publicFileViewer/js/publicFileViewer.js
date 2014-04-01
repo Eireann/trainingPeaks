@@ -152,8 +152,8 @@ function(
                     podView: MapView,
                     cssClass: "expandoMapPod",
                     options: {
-                        drag: false,
-                        touchZoom: false
+                        drag: !this._isMobile(),
+                        touchZoom: !this._isMobile()
                     }
                 },
                 {
@@ -321,6 +321,10 @@ function(
             });
         },
 
+        _isMobile: function()
+        {
+            return $(window).innerWidth() < 1100 || $(window).innerHeight() < 800;
+        }
 
     });
 
