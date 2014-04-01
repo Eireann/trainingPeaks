@@ -221,12 +221,18 @@ body {
         width: 100%;
         position: relative;
         border: none;
+        cursor: default;
 
         &:hover {
             border: none;
+            background-color: inherit;
             .leaflet-control-container {
                 top: 0;
             }
+        }
+
+        &.hover {
+            background-color: inherit;
         }
 
         .leaflet-control-container {
