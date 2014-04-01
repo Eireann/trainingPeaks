@@ -90,7 +90,7 @@ function(
                 {
                     var rollbarScriptTag = doc.createElement("script");
                     var firstScriptTag = doc.getElementsByTagName("script")[0];
-                    rollbarScriptTag.src =  "//d37gvrvc0wt4s1.cloudfront.net/js/v1.0/rollbar.min.js";
+                    rollbarScriptTag.src =  "//d37gvrvc0wt4s1.cloudfront.net/js/1/rollbar.min.js";
                     rollbarScriptTag.async = false;
                     firstScriptTag.parentNode.insertBefore(rollbarScriptTag, firstScriptTag);
                 };
@@ -124,6 +124,8 @@ function(
                 }
                
                 var lastResortStack = _getLastResortStack();
+                if (lastResortStack)
+                    error += ": \n" + lastResortStack;
 
                 // Push them to rollbar array or rollbar client
                 this._rollbar.push(
@@ -131,8 +133,7 @@ function(
                         _t: 'uncaught',
                         e: error,
                         u: url,
-                        l: lineNumber,
-                        custom: lastResortStack
+                        l: lineNumber
                     }
                 );
             };
