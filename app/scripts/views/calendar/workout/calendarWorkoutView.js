@@ -199,6 +199,7 @@ function(
         workoutMousedown: function(event)
         {
             theMarsApp.selectionManager.setSelection(this.model, event);
+            event.preventDefault();
         },
 
         waitingOn: function()
