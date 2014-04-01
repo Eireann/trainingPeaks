@@ -200,14 +200,16 @@ function (
             return this.sortDate;
         },
 
-        moveToDay: function(newDate)
+        moveToDay: function(newDate, options)
         {
+            var featureAuthorizer = options ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
+
             var attrs =
             {
                 workoutDay: moment(newDate).format(TP.utils.datetime.longDateFormat)
             };
 
-            if(attrs.workoutDay !== this.get("workoutDay"))
+            if(attrs.workoutDay !== this.get("workoutDay") && featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, { workout: this }))
             {
                 return this.save(attrs, { wait: true });
             }

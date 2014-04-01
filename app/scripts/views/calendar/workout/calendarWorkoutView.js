@@ -42,7 +42,8 @@ function(
         {
             return this.getWorkoutTypeCssClassName() + " " +
                 this.getComplianceCssClassName() + " " +
-                this.getPastOrCompletedCssClassName();
+                this.getPastOrCompletedCssClassName() + " " +
+                this.getLockedCssClassName()
         },
 
         getWorkoutTypeCssClassName: function()
@@ -68,6 +69,12 @@ function(
             {
                 return "future";
             }
+        },
+
+        getLockedCssClassName: function()
+        {
+            var featureAuthorizer = this._getFeatureAuthorizer();
+            return featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, { workout: this.model }) ? "" : "locked";
         },
 
         attributes: function()
@@ -96,8 +103,11 @@ function(
             this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
             this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
+        },
 
-            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
+        _getFeatureAuthorizer: function()
+        {
+            return this.options.featureAuthorizer ? this.options.featureAuthorizer : theMarsApp.featureAuthorizer;
         },
 
         events:

@@ -6,6 +6,11 @@
     p {
         display: none;
     }
+
+    &.locked
+    {
+        display: none;
+    }
 }
 
 .workout
