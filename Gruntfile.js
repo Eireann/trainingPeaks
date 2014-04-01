@@ -455,7 +455,7 @@ module.exports = function(grunt)
                     minified_url: "http://home.trainingpeaks.com/CMSPages/GetResource.ashx?scriptfile=%2fCMSScripts%2fCustom%2fMarsWebApp%2fpublicFileViewer.js"
                   },
                 },
-                src: "build/components/js/publicFileViewer.js.map",
+                src: "build/components/js/publicFileViewer.map",
                 dest: "source_map"
             }
         },
