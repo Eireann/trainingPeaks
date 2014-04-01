@@ -21,16 +21,19 @@ function($, _, TP, CalendarWorkoutTemplateDragState)
 
         makeDraggable: function()
         {
-            _.bindAll(this, "onDragStart", "onDragStop");
-            this.draggableOptions =
+            if(!this.model.get("isLocked"))
             {
-                appendTo: theMarsApp.getBodyElement(),
-                helper: _.bind(this._makeHelper, this),
-                start: this.onDragStart,
-                stop: this.onDragStop,
-                addClasses: false
-            };
-            this.$el.draggable(this.draggableOptions).data({ handler: this.model });
+                _.bindAll(this, "onDragStart", "onDragStop");
+                this.draggableOptions =
+                {
+                    appendTo: theMarsApp.getBodyElement(),
+                    helper: _.bind(this._makeHelper, this),
+                    start: this.onDragStart,
+                    stop: this.onDragStop,
+                    addClasses: false
+                };
+                this.$el.draggable(this.draggableOptions).data({ handler: this.model });
+            }
         },
 
         _makeHelper: function()
