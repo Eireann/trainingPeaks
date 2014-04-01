@@ -43,7 +43,7 @@ function(
             return this.getWorkoutTypeCssClassName() + " " +
                 this.getComplianceCssClassName() + " " +
                 this.getPastOrCompletedCssClassName() + " " +
-                this.getLockedCssClassName()
+                this.getLockedCssClassName();
         },
 
         getWorkoutTypeCssClassName: function()

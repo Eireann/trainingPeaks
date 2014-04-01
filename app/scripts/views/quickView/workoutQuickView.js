@@ -82,6 +82,8 @@ function(
 
             this.prefetchConfig = {};
 
+            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
+
             if (options.isNewWorkout)
             {
                 this.isNewWorkout = true;

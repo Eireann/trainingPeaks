@@ -48,12 +48,16 @@ function (
             "click .workoutStructureToggle": "_scrollToWorkoutStructure"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+
+            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
+
             this.on("render", this.renderWorkoutComments, this);
             this.on("render", this.setTabOrder, this);
             this.on("render", this.renderEquipmentSelectors, this);
             this.on("render", this.renderWorkoutStructure, this);
+            this.on("render", this.disableLockedInputs, this);
             this.listenTo(this.model.get("details"), "change", this.renderWorkoutStructure);
             this.listenTo(this.model, "change:workoutTypeValueId", this.renderWorkoutStructure);
             this.initializeUserCustomization();
@@ -155,6 +159,14 @@ function (
         reRender: function()
         {
             this.updateUICustomization();
+        },
+
+        disableLockedInputs: function ()
+        {
+            if (!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout: this.model }))
+            {
+                this.$(".workoutStatsPlanned input").attr("disabled", true);
+            }
         }
     };
 

@@ -89,13 +89,27 @@ function (
 
         initializeTimePicker: function()
         {
-            this.$("#startTimeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a", step: 15 });
+            if (this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout: this.model }))
+            {
+                this.$("#startTimeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a", step: 15 });
+            }
+            else
+            {
+                this.$("#startTimeInput").attr("disabled", true);
+            }
         },
 
         onDateClicked: function(e)
         {
             if (this.isNewWorkout && !this.model.get("workoutId"))
+            {
                 return;
+            }
+
+            if (!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout: this.model }))
+            {
+                return;
+            }
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerDateClicked", "eventLabel": "" });
 
