@@ -39,14 +39,16 @@ For version specifications, the following range styles are supported:
 Ranges can be joined with either a space (which implies "and") or a
 `||` (which implies "or").
 
+*!!!WARNING!!!* Always check the change logs for any mention of breaking changes!
 
+1. **bower cache clean**
 1. **bower prune**
 2. Look up the dependency versions we currently request in **bower.json**.
 3. In **bower.json**, specify *specific* versions only. Do not use "~", ">=", etc. (the documentation above be damned)
 4. For each package: **bower update <package name>**
 5. Verify bower updated to the specific version you requested.
-6. Update the RequireJS configuration file as needed. (**config.js**)
+6. Update the RequireJS configuration file as needed. (**config.js**) (Check the shim section as well!)
 7. Build with **grunt build_debug_fast**.
 8. Run all tests with **grunt test**.
 9. Resolve any issue before committing your changes.
-10. Copy the change log of the new dependency version into **dependency_updates/<date>/bower_components**
+10. Copy the change log of the new dependency version into **dependency_updates/<date>/bower_components**. Ensure the file name includes the version you are moving from and the version you are moving to.
