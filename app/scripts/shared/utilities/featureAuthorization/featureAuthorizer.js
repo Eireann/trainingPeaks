@@ -373,6 +373,25 @@ function(
 
                 return userIsCurrentAthleteOrCoach(attributes.athleteId, user);
 
+            }),
+
+            /*
+            attributes: workout
+            options: none
+            */
+            EditLockedWorkout: Feature({}, function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.workout)                
+                {
+                    throw new Error("EditLockedWorkout requires a workout attribute");
+                }
+
+                if(attributes.workout.get("isLocked") && this.user.get("isAthlete"))
+                {
+                    return false;
+                }
+
+                return true;
             })
 
         },

@@ -21,7 +21,7 @@ function($, _, TP, CalendarWorkoutTemplateDragState)
 
         makeDraggable: function()
         {
-            if(!this.model.get("isLocked"))
+            if(this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout :this.model }))
             {
                 _.bindAll(this, "onDragStart", "onDragStop");
                 this.draggableOptions =

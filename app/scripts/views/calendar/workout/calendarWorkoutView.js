@@ -96,6 +96,8 @@ function(
             this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
             this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
+
+            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
         },
 
         events:

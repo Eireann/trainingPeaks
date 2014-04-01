@@ -521,6 +521,29 @@ function(
                 });
 
             });
+
+            describe("EditLockedWorkout", function()
+            {
+                it("Should allow non locked workouts", function()
+                {
+                    var attributes = { workout: new TP.Model({ isLocked: false })};
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, attributes)).to.equal(true);
+                });
+
+                it("Should allow for coaches", function()
+                {
+                    var attributes = { workout: new TP.Model({ isLocked: true })};
+                    featureAuthorizer.user.set("isAthlete", false);
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, attributes)).to.equal(true);
+                });
+
+                it("Should not allow for athletes", function()
+                {
+                    var attributes = { workout: new TP.Model({ isLocked: true })};
+                    featureAuthorizer.user.set("isAthlete", true);
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, attributes)).to.equal(false);
+                });
+            });
         });
 
 
