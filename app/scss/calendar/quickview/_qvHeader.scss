@@ -105,6 +105,16 @@
             padding: 0px;
             cursor:pointer;
         }
+
+        .lockIcon
+        {
+            margin-left: 12px;
+            height: 11px;
+            width: 8px;
+            background-repeat: no-repeat;
+            @extend %lockIconBG;
+            display: inline-block;
+        }
     }
 
     .closeAndSettings {

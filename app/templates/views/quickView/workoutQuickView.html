@@ -15,6 +15,9 @@
                     <span id="calendarDate">{{formatDate workoutDay "MMMM D, YYYY"}}</span>
                 </span> 
                 <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" tabindex="-1" />
+                {{# if isLocked }}
+                <div class="lockIcon"></div>
+                {{/if}}
             </div>
             <div class="workoutBarView"></div>
             <div class="uploadExpandButtons">

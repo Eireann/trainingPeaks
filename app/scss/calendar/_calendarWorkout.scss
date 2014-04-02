@@ -62,6 +62,17 @@
         }
     }
 
+    .lockIcon
+    {
+        top: 5px;
+        right: 20px;
+        height: 11px;
+        width: 8px;
+        position: absolute;
+        background-repeat: no-repeat;
+        @extend %lockIconBG;
+    }
+
     &:hover
     {
         cursor:pointer;

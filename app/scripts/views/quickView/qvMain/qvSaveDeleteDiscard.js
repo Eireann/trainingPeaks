@@ -62,6 +62,12 @@ function(
                 this.on("change:details", this.setChanged, this);
                 this.discardButtonColor = this.$("button#discard").css("color");
                 this.$("button#discard").css("color", "grey");
+
+                if (!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout: this.model }))
+                {
+                    this.$("button#delete").attr("disabled", true);
+                }
+
                 this.saveDeleteDiscardInitialized = true;
             }
         },

@@ -59,8 +59,10 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
             this.inheritedClassNames = options.className;
 
             this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
 
             this.on("render", this._selectSelf, this);
+            this.on("render", this._disableLockedFeatures, this);
         },
 
         attributes: function()
@@ -90,6 +92,15 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
         _selectSelf: function()
         {
             this.selectionManager.setSelection(this.model);
+        },
+
+        _disableLockedFeatures: function()
+        {
+            if (!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout: this.model }))
+            {
+                this.$("#workoutSettingsLabelCut").remove();
+                this.$("#workoutSettingsLabelDelete").remove();
+            }
         }
     });
 });
