@@ -75,11 +75,11 @@ function(
 
             if(activity instanceof MetricModel)
             {
-                this._pasteMetricModelToDay(activity, date);
+                return this._pasteMetricModelToDay(activity, date);
             }
             else if(activity instanceof WorkoutModel)
             {
-                this._pasteWorkoutModelToDay(activity, date);
+                return this._pasteWorkoutModelToDay(activity, date);
             }
         },
 
@@ -116,40 +116,42 @@ function(
 
             if(metric.isNew())
             {
-                var newMetric = metric.clone();
-                newMetric.save(
+                metric = metric.clone();
+                metric.save(
                 {
                     timeStamp: moment.local(date).format(TP.utils.datetime.longDateFormat),
                     athleteId: athleteId
                 });
-                this.calendarManager.addItem(newMetric);
+                this.calendarManager.addItem(metric);
             }
             // Cut metric for different athlete should be ignored
             else if(metric.get("athleteId") === athleteId)
             {
-                this._moveMetricModelToDay(metric, date);
+                this.moveActivityToDay(metric, date);
             }
+
+            return metric;
         },
 
         _pasteWorkoutModelToDay: function(workout, date)
         {
-            var applyPasteWorkout =function()
+            var applyPasteWorkout = function()
             {
                 var athleteId = this.user.getCurrentAthleteId();
                 if(workout.isNew())
                 {
-                    var newWorkout = workout.clone();
-                    newWorkout.save(
+                    workout = workout.clone();
+                    workout.save(
                     {
                         workoutDay: date,
                         athleteId: athleteId
                     });
-                    this.calendarManager.addItem(newWorkout);
+                    this.calendarManager.addItem(workout);
                 }
                 // Cut workout for different athlete should be ignored
                 else if(workout.get("athleteId") === athleteId)
                 {
-                    this._moveWorkoutModelToDay(workout, date);
+                    this.moveActivityToDay(workout, date);
                 }
             };
 
@@ -158,6 +160,8 @@ function(
                 _.bind(applyPasteWorkout, this),
                 { targetDate: date }
             );
+
+            return workout;
         }
 
     });

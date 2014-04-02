@@ -109,7 +109,7 @@ function(
                 expect(featureAuthorizer.showUpgradeMessage).to.not.have.been.called;
             });
 
-            it("Should not run the callback if feature is authorized", function()
+            it("Should not run the callback if feature is not authorized", function()
             {
                 sinon.stub(featureAuthorizer, "showUpgradeMessage");
                 var callback = sinon.stub();

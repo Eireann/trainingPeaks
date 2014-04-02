@@ -1,5 +1,6 @@
 define(
 [
+    "moment",
     "TP",
     "models/workoutModel",
     "shared/models/metricModel",
@@ -9,6 +10,7 @@ define(
     "shared/managers/activityMover"
 ],
 function(
+    moment,
     TP,
     WorkoutModel,
     MetricModel,
@@ -51,10 +53,16 @@ function(
         describe(".moveActivity", function()
         {
 
-            var activityMover;
+            var activityMover, calendarManager;
             beforeEach(function()
             {
-                activityMover = new ActivityMover({ featureAuthorizer: featureAuthorizer, user: user, calendarManager: {} });
+                calendarManager = { addItem: function(){} };
+
+                activityMover = new ActivityMover({ 
+                    featureAuthorizer: featureAuthorizer,
+                    user: user,
+                    calendarManager: calendarManager
+                });
             });
 
             describe("Metric", function()
@@ -144,203 +152,169 @@ function(
 
         });
 
-/*
+        describe(".pasteActivityToDay", function()
+        {
+
+            var activityMover, calendarManager;
+            beforeEach(function()
+            {
+                calendarManager = { addItem: function(){} };
+
+                activityMover = new ActivityMover({ 
+                    featureAuthorizer: featureAuthorizer,
+                    user: user,
+                    calendarManager: calendarManager
+                });
+            });
 
 
+            describe("Metric", function()
+            {
+
+                var metric;
+                var metricAttributes = {
+                    "id": 12345,
+                    "athleteId": 1,
+                    "timeStamp": moment().format("YYYY-MM-DDTHH:mm:ss"),
+                    "details": []
+                };
+
+                beforeEach(function()
+                {
+                    sinon.stub(MetricModel.prototype, "save", function(attrs, options) { this.set(attrs, options); });
+                    metric = new MetricModel(metricAttributes);
+                    sinon.stub(activityMover, "moveActivityToDay");
+                    sinon.stub(calendarManager, "addItem");
+                });
+
+                it("Should call moveActivityToDay when pasting an existing metric from cut", function()
+                {
+                    var cutMetric = metric;
+                    var dateToPasteTo = "2012-10-10";
+                    activityMover.pasteActivityToDay(cutMetric, dateToPasteTo);
+                    expect(activityMover.moveActivityToDay).to.have.been.calledWith(cutMetric, dateToPasteTo);
+                });
+
+                it("Should not call moveActivityToDay when pasting a metric from copy", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    activityMover.pasteActivityToDay(copiedMetric, dateToPasteTo);
+                    expect(activityMover.moveActivityToDay).to.not.have.been.called;
+                });
+
+                it("Should set the correct date on pasted metric from copy", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedMetric = activityMover.pasteActivityToDay(copiedMetric, dateToPasteTo);
+                    expect(pastedMetric.getCalendarDay()).to.equal(dateToPasteTo);
+                });
+
+                it("Should not change the date of the original metric", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedMetric = activityMover.pasteActivityToDay(copiedMetric, dateToPasteTo);
+                    expect(copiedMetric.getCalendarDay()).to.not.equal(dateToPasteTo);
+                    expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
+                });
+
+                it("Should add the new metric to the calendar", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    var pastedMetric = activityMover.pasteActivityToDay(copiedMetric, dateToPasteTo);
+                    expect(calendarManager.addItem).to.have.been.calledWith(pastedMetric);
+                });
 
 
+            });
 
+            describe("Workout", function()
+            {
+                var workout;
+                var workoutAttributes = {
+                    "workoutId": 12345,
+                    "athleteId": 1,
+                    "title": "My Copied Workout",
+                    "workoutTypeValueId": 1,
+                    "workoutDay": "2013-01-01T07:00:00",
+                    "description": "Beach Volleyball",
+                    "coachComments": "you are a horrible volleyball player",
+                    "workoutComments": "beach volleyball is fun",
+                    "distance": 10,
+                    "distancePlanned": 20,
+                    "totalTime": 22,
+                    "totalTimePlanned": 11,
+                    "heartRateMinimum": 100,
+                    "heartRateMaximum": 190,
+                    "heartRateAverage": 145,
+                    "calories": 6500,
+                    "caloriesPlanned": 9000,
+                    "tssActual": 50,
+                    "tssPlanned": 600,
+                    "velocityAverage": 10,
+                    "velocityPlanned": 20,
+                    "energy": 250,
+                    "energyPlanned": 100,
+                    "elevationGain": 5,
+                    "elevationGainPlanned": 1000
+                };
 
-
-
+                beforeEach(function()
+                {
+                    sinon.stub(WorkoutModel.prototype, "save", function(attrs, options) { this.set(attrs, options); });
+                    workout = new WorkoutModel(workoutAttributes);
+                    sinon.stub(activityMover, "moveActivityToDay");
+                    sinon.stub(calendarManager, "addItem");
+                });
 
                 it("Should call moveActivityToDay when pasting an existing workout from cut", function()
                 {
                     var cutWorkout = workout;
-                    sinon.stub(theMarsApp.activityMover, "moveActivityToDay");
                     var dateToPasteTo = "2012-10-10";
-                    cutWorkout.pasted({ date: dateToPasteTo });
-                    expect(theMarsApp.activityMover.moveActivityToDay).to.have.been.calledWith(dateToPasteTo);
+                    activityMover.pasteActivityToDay(cutWorkout, dateToPasteTo);
+                    expect(activityMover.moveActivityToDay).to.have.been.calledWith(cutWorkout, dateToPasteTo);
                 });
 
                 it("Should not call moveActivityToDay when pasting a workout from copy", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
-                    sinon.stub(copiedWorkout, "moveActivityToDay");
                     var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    expect(copiedWorkout.moveActivityToDay).to.not.have.been.called;
+                    activityMover.pasteActivityToDay(copiedWorkout, dateToPasteTo);
+                    expect(activityMover.moveActivityToDay).to.not.have.been.called;
                 });
 
-                it("Should set the correct date on pasted workout", function()
+                it("Should set the correct date on pasted workout from copy", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedWorkout = activityMover.pasteActivityToDay(copiedWorkout, dateToPasteTo);
                     expect(pastedWorkout.getCalendarDay()).to.equal(dateToPasteTo);
                 });
 
-                it("Should not change the date of the copied workout", function()
+                it("Should not change the date of the original workout", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    var pastedWorkout = activityMover.pasteActivityToDay(copiedWorkout, dateToPasteTo);
                     expect(copiedWorkout.getCalendarDay()).to.not.equal(dateToPasteTo);
                     expect(copiedWorkout.getCalendarDay()).to.equal(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
                 });
 
-                it("Should return a workout with all of the copied attributes", function()
+                it("Should add the new workout to the calendar", function()
                 {
                     var copiedWorkout = workout.cloneForCopy();
                     var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
-
-                    _.each(attributesToCopy, function(attributeName)
-                    {
-                        if (attributeName !== "workoutDay")
-                        {
-                            expect(pastedWorkout.get(attributeName)).to.equal(copiedWorkout.get(attributeName));
-                        }
-                    });
-
-                });
-
-
-        // metric
-        describe("Cut, Copy, Paste", function()
-        {
-            var metric;
-            var metricAttributes = {
-                "id": 12345,
-                "athleteId": 67890,
-                "timeStamp": moment().format("YYYY-MM-DDTHH:mm:ss"),
-                "details": []
-            };
-            var attributesToCopy = [
-                "athleteId",
-                "timeStamp",
-                "details"
-            ];
-
-            beforeEach(function()
-            {
-                sinon.spy(testHelpers.theApp.calendarManager, "addItem");
-                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 67890 }));
-                metric = new MetricModel(metricAttributes);
-            });
-
-            describe("cloneForCopy", function()
-            {
-                it("Should implement a cloneForCopy method", function()
-                {
-                    expect(MetricModel.prototype.cloneForCopy).to.not.be.undefined;
-                    expect(typeof MetricModel.prototype.cloneForCopy).to.equal("function");
-
-                });
-
-                it("Should return a MetricModel", function()
-                {
-                    var result = metric.cloneForCopy();
-                    expect(metric instanceof MetricModel).to.equal(true);
-                });
-
-                it("Should have the same attributes (except id)", function()
-                {
-                    var copiedMetric = metric.cloneForCopy();
-                    expect(copiedMetric.attributes).to.eql(_.omit(metric.attributes, "id"));
-                });
-            });
-
-            describe("pasted", function()
-            {
-                it("Should implement an pasted method", function()
-                {
-                    expect(MetricModel.prototype.pasted).to.not.be.undefined;
-                    expect(typeof MetricModel.prototype.pasted).to.equal("function");
-                });
-
-                it("Should call moveToDay when pasting an existing metric from cut", function()
-                {
-                    var cutMetric = metric;
-                    sinon.stub(cutMetric, "moveToDay");
-                    var dateToPasteTo = "2012-10-10";
-                    cutMetric.pasted({ date: dateToPasteTo });
-                    expect(cutMetric.moveToDay).to.have.been.calledWith(dateToPasteTo);
-                });
-                
-                it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
-                {
-                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42}));
-                    var cutMetric = metric;
-                    sinon.stub(cutMetric, "moveToDay");
-                    var dateToPasteTo = "2012-10-10";
-                    cutMetric.pasted({ date: dateToPasteTo });
-                    expect(cutMetric.moveToDay).to.not.have.been.called;
-                });
-
-                it("Should not call moveToDay when pasting a metric from copy", function()
-                {
-                    var copiedMetric = metric.cloneForCopy();
-                    sinon.stub(copiedMetric, "moveToDay");
-                    var dateToPasteTo = "2012-10-10";
-                    copiedMetric.pasted({ date: dateToPasteTo });
-                    expect(copiedMetric.moveToDay).to.not.have.been.called;
-                });
-
-                it("Should return a new metric when pasting a metric from copy", function()
-                {
-                    var copiedMetric = metric.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(pastedMetric instanceof MetricModel).to.equal(true);
-                    expect(pastedMetric).to.not.equal(copiedMetric);
-                });
-
-                it("Should set the correct date on pasted metric", function()
-                {
-                    var copiedMetric = metric.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(pastedMetric.getCalendarDay()).to.equal(dateToPasteTo);
-                });
-
-                it("Should not change the date of the copied metric", function()
-                {
-                    var copiedMetric = metric.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(copiedMetric.getCalendarDay()).to.not.equal(dateToPasteTo);
-                    expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
-                });
-                
-                it("Should set the correct athleteId on pasted metric", function()
-                {
-                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
-                    var copiedMetric = metric.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(pastedMetric.get("athleteId")).to.equal(42);
-                });
-
-                it("Should not change the date of the copied metric", function()
-                {
-                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
-                    var copiedMetric = metric.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedMetric.pasted({ date: dateToPasteTo });
-                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(copiedMetric.get("athleteId")).to.not.equal(42);
+                    var pastedWorkout = activityMover.pasteActivityToDay(copiedWorkout, dateToPasteTo);
+                    expect(calendarManager.addItem).to.have.been.calledWith(pastedWorkout);
                 });
 
             });
-*/
+
+        });
+
     });
 
 });
