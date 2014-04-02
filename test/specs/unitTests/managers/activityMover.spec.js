@@ -45,7 +45,7 @@ function(
         {
             expect(function(){ return new ActivityMover(); }).to.throw();
 
-            expect(function(){ return new ActivityMover({ featureAuthorizer: featureAuthorizer }); }).to.not.throw();
+            expect(function(){ return new ActivityMover({ featureAuthorizer: featureAuthorizer, user: user, calendarManager: {} }); }).to.not.throw();
         });
 
         describe(".moveActivity", function()
@@ -54,7 +54,7 @@ function(
             var activityMover;
             beforeEach(function()
             {
-                activityMover = new ActivityMover({ featureAuthorizer: featureAuthorizer });
+                activityMover = new ActivityMover({ featureAuthorizer: featureAuthorizer, user: user, calendarManager: {} });
             });
 
             describe("Metric", function()
@@ -209,7 +209,137 @@ function(
                 });
 
 
+        // metric
+        describe("Cut, Copy, Paste", function()
+        {
+            var metric;
+            var metricAttributes = {
+                "id": 12345,
+                "athleteId": 67890,
+                "timeStamp": moment().format("YYYY-MM-DDTHH:mm:ss"),
+                "details": []
+            };
+            var attributesToCopy = [
+                "athleteId",
+                "timeStamp",
+                "details"
+            ];
 
+            beforeEach(function()
+            {
+                sinon.spy(testHelpers.theApp.calendarManager, "addItem");
+                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 67890 }));
+                metric = new MetricModel(metricAttributes);
+            });
+
+            describe("cloneForCopy", function()
+            {
+                it("Should implement a cloneForCopy method", function()
+                {
+                    expect(MetricModel.prototype.cloneForCopy).to.not.be.undefined;
+                    expect(typeof MetricModel.prototype.cloneForCopy).to.equal("function");
+
+                });
+
+                it("Should return a MetricModel", function()
+                {
+                    var result = metric.cloneForCopy();
+                    expect(metric instanceof MetricModel).to.equal(true);
+                });
+
+                it("Should have the same attributes (except id)", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    expect(copiedMetric.attributes).to.eql(_.omit(metric.attributes, "id"));
+                });
+            });
+
+            describe("pasted", function()
+            {
+                it("Should implement an pasted method", function()
+                {
+                    expect(MetricModel.prototype.pasted).to.not.be.undefined;
+                    expect(typeof MetricModel.prototype.pasted).to.equal("function");
+                });
+
+                it("Should call moveToDay when pasting an existing metric from cut", function()
+                {
+                    var cutMetric = metric;
+                    sinon.stub(cutMetric, "moveToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    cutMetric.pasted({ date: dateToPasteTo });
+                    expect(cutMetric.moveToDay).to.have.been.calledWith(dateToPasteTo);
+                });
+                
+                it("Should not call moveToDay when pasting an existing metric from cut to a different athlete", function()
+                {
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42}));
+                    var cutMetric = metric;
+                    sinon.stub(cutMetric, "moveToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    cutMetric.pasted({ date: dateToPasteTo });
+                    expect(cutMetric.moveToDay).to.not.have.been.called;
+                });
+
+                it("Should not call moveToDay when pasting a metric from copy", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    sinon.stub(copiedMetric, "moveToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    expect(copiedMetric.moveToDay).to.not.have.been.called;
+                });
+
+                it("Should return a new metric when pasting a metric from copy", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
+                    expect(pastedMetric instanceof MetricModel).to.equal(true);
+                    expect(pastedMetric).to.not.equal(copiedMetric);
+                });
+
+                it("Should set the correct date on pasted metric", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
+                    expect(pastedMetric.getCalendarDay()).to.equal(dateToPasteTo);
+                });
+
+                it("Should not change the date of the copied metric", function()
+                {
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
+                    expect(copiedMetric.getCalendarDay()).to.not.equal(dateToPasteTo);
+                    expect(copiedMetric.getCalendarDay()).to.equal(moment(metricAttributes.timeStamp).format("YYYY-MM-DD"));
+                });
+                
+                it("Should set the correct athleteId on pasted metric", function()
+                {
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
+                    expect(pastedMetric.get("athleteId")).to.equal(42);
+                });
+
+                it("Should not change the date of the copied metric", function()
+                {
+                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
+                    var copiedMetric = metric.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedMetric.pasted({ date: dateToPasteTo });
+                    var pastedMetric = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
+                    expect(copiedMetric.get("athleteId")).to.not.equal(42);
+                });
+
+            });
 */
     });
 

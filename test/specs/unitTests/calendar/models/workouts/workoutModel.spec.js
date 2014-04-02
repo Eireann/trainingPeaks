@@ -155,6 +155,7 @@ function(
             });
 
         });
+
         describe("parse", function()
         {
             it("Should update the post activity comments collection if it already exists", function()
@@ -189,6 +190,7 @@ function(
                
             });
         });
+
     });
 
 });

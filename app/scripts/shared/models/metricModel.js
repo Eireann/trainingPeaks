@@ -81,25 +81,7 @@ function(
         {
             if(options.date)
             {
-                var date = options.date;
-                var athleteId = this._getUser().getCurrentAthleteId();
-
-                if(this.isNew())
-                {
-                    var metric = this.clone();
-                    metric.save(
-                    {
-                        timeStamp: moment.local(date).format(TP.utils.datetime.longDateFormat),
-                        athleteId: athleteId
-                    });
-                    theMarsApp.calendarManager.addItem(metric);
-                }
-                // Cut metric for different athlete should be ignored
-                else if(this.get("athleteId") === athleteId)
-                {
-                    theMarsApp.activityMover.moveActivityToDay(this, date);
-                }
-
+                this._getActivityMover().pasteActivityToDay(this, options.date);
             }
             else
             {
@@ -111,7 +93,7 @@ function(
         {
             if(options && options.date)
             {
-                theMarsApp.activityMover.moveActivityToDay(this, options.date);
+                this._getActivityMover().moveActivityToDay(this, options.date);
             }
         },
 
@@ -130,8 +112,12 @@ function(
             });
 
             return _.isUndefined(keyMetricTypeId) ? null : detailsByType[keyMetricTypeId];
-        }
+        },
 
+        _getActivityMover: function()
+        {
+            return this.options && this.options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
+        }
     });
 
     return MetricModel;

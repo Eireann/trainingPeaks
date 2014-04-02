@@ -110,11 +110,31 @@ function(
             }
         },
 
+        _pasteMetricModelToDay: function(metric, date)
+        {
+            var athleteId = this.user.getCurrentAthleteId();
+
+            if(metric.isNew())
+            {
+                var newMetric = metric.clone();
+                newMetric.save(
+                {
+                    timeStamp: moment.local(date).format(TP.utils.datetime.longDateFormat),
+                    athleteId: athleteId
+                });
+                this.calendarManager.addItem(newMetric);
+            }
+            // Cut metric for different athlete should be ignored
+            else if(metric.get("athleteId") === athleteId)
+            {
+                this._moveMetricModelToDay(metric, date);
+            }
+        },
+
         _pasteWorkoutModelToDay: function(workout, date)
         {
             var applyPasteWorkout =function()
             {
-                var date = date;
                 var athleteId = this.user.getCurrentAthleteId();
                 if(workout.isNew())
                 {
