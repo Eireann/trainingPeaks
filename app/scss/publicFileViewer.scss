@@ -15,6 +15,8 @@ body {
     // needed for correct workout type icon position
 }
 
+@import "globalCSS/throbber";
+
 .pfvContainer
 { 
 
@@ -31,7 +33,6 @@ body {
     @import "globalCSS/tpstylesheet";
     @import "globalCSS/tpfontstyles";
     @import "globalCSS/mixIn";
-    @import "globalCSS/throbber";
 
     @import "globalCSS/packeryCollection";
     @import "globalCSS/table";
@@ -158,14 +159,13 @@ body {
         font-size: 0.857em;
         color: #636569;
     }
-
     
 
     #workOutQuickView, .workoutQuickView
     {
         height: 100%;
         width: 100%;
-        min-width: 1100px;
+        min-width: 1150px;
     }
 
     .headerIcons
@@ -177,7 +177,7 @@ body {
     {
         padding: 0px  14.75%;
         height: calc(100% - 125px);
-        min-width: 1100px;
+        min-width: 1150px;
 
         .expandoRightColumn
         {
