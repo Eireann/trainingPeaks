@@ -82,6 +82,8 @@ function(
 
         load: function()
         {
+            this.$el.addClass("waiting");
+
             var publicWorkoutUrl = this.apiConfig.apiRoot + "/public/v1/workouts/" + this.token;
 
             WorkoutStatsForRangeModel.prototype.urlRoot = function() { return publicWorkoutUrl + "/"; };
@@ -98,6 +100,7 @@ function(
             $.ajax(ajaxOptions).done(function(data)
             {
                 self._setupModels(data);
+                self.$el.removeClass("waiting");
                 self.render();
                 loadPromise.resolve();
             });
