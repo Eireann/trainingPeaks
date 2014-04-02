@@ -103,7 +103,7 @@ function(
                 // Cut metric for different athlete should be ignored
                 else if(this.get("athleteId") === athleteId)
                 {
-                    this.moveToDay(date);
+                    theMarsApp.activityMover.moveActivityToDay(this, date);
                 }
 
             }
@@ -117,7 +117,7 @@ function(
         {
             if(options && options.date)
             {
-                this.moveToDay(options.date);
+                theMarsApp.activityMover.moveActivityToDay(this, options.date);
             }
         },
 

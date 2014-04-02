@@ -107,14 +107,11 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
         },
 
-        moveItemsToDay: function(date, options)
+        moveItemsToDay: function(date)
         {
             this.each(function(activity)
             {
-                if(_.isFunction(activity.moveToDay))
-                {
-                    activity.moveToDay(date, { featureAuthorizer: options.featureAuthorizer });
-                }
+                theMarsApp.activityMover.moveActivityToDay(activity, date);
             });
         },
 
@@ -130,7 +127,8 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
                 theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
                     theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
                     _.bind(function(){
-                        this.moveItemsToDay(options.date, { featureAuthorizer: theMarsApp.featureAuthorizer });
+
+                        this.moveItemsToDay(options.date);
 
                         if(options.target instanceof CalendarDay)
                         {

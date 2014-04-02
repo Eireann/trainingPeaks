@@ -209,7 +209,7 @@ function (
             {
                 theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
                     theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    _.bind(function(){this.moveToDay(options.date);}, this),
+                    _.bind(function(){theMarsApp.activityMover.moveActivityToDay(this, options.date);}, this),
                     {targetDate: options.date}
                 );
             }
@@ -273,7 +273,7 @@ function (
             // Cut workout for different athlete should be ignored
             else if(this.get("athleteId") === athleteId)
             {
-                this.moveToDay(date);
+                theMarsApp.activityMover.moveActivityToDay(this, date);
             }
         },
 

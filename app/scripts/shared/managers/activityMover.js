@@ -46,15 +46,11 @@ function(
             {
                 this._moveWorkouModelToDay(activity, date);
             }
-            else
-            {
-                throw new Error("Unknown activity type for moveActivityToDay");
-            }
         },
 
         _moveMetricModelToDay: function(metric, date)
         {
-            var timeStamp = moment.local(date).format("YYYY-MM-DD") + moment.local(metric.get("timeStamp")).format("THH:mm:ss")
+            var timeStamp = moment.local(date).format("YYYY-MM-DD") + moment.local(metric.get("timeStamp")).format("THH:mm:ss");
 
             if(timeStamp === metric.get("timeStamp"))
             {

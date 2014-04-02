@@ -146,7 +146,7 @@ function (
                 {
                     // prepare our target day collection
                     // theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
-                    workout.moveToDay(newDay);
+                    theMarsApp.activityMover.moveActivityToDay(workout, newDay);
                 };
 
                 theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(

@@ -124,7 +124,7 @@ function(
                 it("Should call the feature authorizer", function()
                 {
                     activityMover.moveActivityToDay(workout, "2014-04-01");
-                    expect(featureAuthorizer.canAccessFeature).to.have.been.calledWith(featureAuthorizer.features.EditLockedWorkout);
+                    expect(featureAuthorizer.canAccessFeature).to.have.been.calledWith(featureAuthorizer.features.EditLockedWorkout, { workout: workout });
                 });
 
                 it("Should save the model with a new workoutDay", function()
