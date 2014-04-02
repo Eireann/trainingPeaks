@@ -417,7 +417,14 @@ function(
         {
             if(_.intersection(["disabledDataChannels", "availableDataChannels", "channelCuts"], _.keys(model.changed)).length)
             {
-                this.drawPlot();
+                this.waitingOn();
+                var self = this;
+                setImmediate(function()
+                {
+                    self.drawPlot();
+                    self.waitingOff();
+                });
+
             }
         },
 
