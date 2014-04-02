@@ -29,8 +29,8 @@ function (
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts";
+            var athleteId = this.user.getCurrentAthleteId();
+            return this.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts";
         },
 
         defaults:
@@ -121,6 +121,9 @@ function (
             }, this);
 
             this.equipment = (options && options.equipment) || null;
+
+            this.user = (options && options.user) || theMarsApp.user;
+            this.apiRoot = (options && options.apiRoot) || theMarsApp.apiRoot;
         },
 
         autosave: AutosaveMergeUtility.mixin.autosave,
@@ -198,21 +201,6 @@ function (
             }
 
             return this.sortDate;
-        },
-
-        moveToDay: function(newDate, options)
-        {
-            var featureAuthorizer = options ? options.featureAuthorizer : theMarsApp.featureAuthorizer;
-
-            var attrs =
-            {
-                workoutDay: moment(newDate).format(TP.utils.datetime.longDateFormat)
-            };
-
-            if(attrs.workoutDay !== this.get("workoutDay") && featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, { workout: this }))
-            {
-                return this.save(attrs, { wait: true });
-            }
         },
 
         dropped: function(options)

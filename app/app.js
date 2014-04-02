@@ -12,6 +12,7 @@ define(
     "shared/managers/selectionManager",
     "shared/managers/athleteManager",
     "shared/managers/fullScreenManager",
+    "shared/managers/activityMover",
     "models/session",
     "models/buildInfo",
     "models/timeZones",
@@ -45,6 +46,7 @@ function(
     SelectionManager,
     AthleteManager,
     FullScreenManager,
+    ActivityMover,
     Session,
     BuildInfoModel,
     TimeZonesModel,
@@ -302,6 +304,12 @@ function(
                 {
                     this.featureAuthorizer.showUpgradeMessage();
                 }, this);
+            });
+
+            // add activity mover
+            this.addInitializer(function()
+            {
+                this.activityMover = new ActivityMover({ featureAuthorizer: this.featureAuthorizer });
             });
 
             // add initial profile view
