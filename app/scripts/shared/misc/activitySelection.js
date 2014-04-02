@@ -30,7 +30,7 @@ function(
 
         deleteAction: function()
         {
-            this._getActivitesCollection().deleteSelectedItems();
+            this._getActivitesCollection(_.bind(this._excludeLockedWorkouts, this)).deleteSelectedItems();
         },
 
         cutAction: function()
@@ -72,10 +72,17 @@ function(
             }
         },
 
-        _getActivitesCollection: function()
+        _getActivitesCollection: function(filterFunction)
         {
-            var activites = this.models.map(_.bind(ActivityModel.wrap, ActivityModel));
+            var activites = this.filter(filterFunction).map(_.bind(ActivityModel.wrap, ActivityModel));
             return new SelectedActivitiesCollection(activites);
+        },
+
+        _excludeLockedWorkouts: function(activity)
+        {
+            activity = ActivityModel.unwrap(activity);
+
+            return (!activity instanceof WorkoutModel) || theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.EditLockedWorkout, { workout: activity });
         }
 
     });

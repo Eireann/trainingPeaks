@@ -3,6 +3,8 @@ define(
     "underscore",
     "moment",
     "TP",
+    "shared/models/activityModel",
+    "models/workoutModel",
     "shared/misc/selection",
     "shared/utilities/calendarUtility",
     "shared/models/selectedActivitiesCollection",
@@ -13,6 +15,8 @@ function(
     _,
     moment,
     TP,
+    ActivityModel,
+    WorkoutModel,
     Selection,
     CalendarUtility,
     SelectedActivitiesCollection,
@@ -62,7 +66,7 @@ function(
 
         deleteAction: function()
         {
-            this._getActivitesCollection().deleteSelectedItems();
+            this._getActivitesCollection(_.bind(this._excludeLockedWorkouts, this)).deleteSelectedItems();
         },
 
         cutAction: function()
@@ -109,9 +113,9 @@ function(
             }
         },
 
-        _getActivitesCollection: function()
+        _getActivitesCollection: function(filterFunction)
         {
-            var activites = this.map(function(day) { return day.itemsCollection.models; });
+            var activites = this.map(function(day) { return day.itemsCollection.filter(filterFunction); });
             activites = _.flatten(activites, true);
 
             return new SelectedActivitiesCollection(activites);
@@ -121,6 +125,13 @@ function(
         {
             var moments = this.map(function(day) { return moment(day.id); });
             return _.min(moments);
+        },
+
+        _excludeLockedWorkouts: function(activity)
+        {
+            activity = ActivityModel.unwrap(activity);
+
+            return (!activity instanceof WorkoutModel) || theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.EditLockedWorkout, { workout: activity });
         }
 
     });
