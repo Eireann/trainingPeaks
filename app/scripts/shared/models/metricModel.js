@@ -17,16 +17,10 @@ function(
         idAttribute: "id",
         webAPIModelName: "Metric",
 
-        initialize: function(attributes, options)
-        {
-            this.user = options.user || theMarsApp.user;
-            this.apiRoot = options.apiRoot || theMarsApp.apiRoot;
-        },
-
         urlRoot: function()
         {
-            var athleteId = this.user.getCurrentAthleteId();
-            return this.apiRoot + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
+            var athleteId = this._getUser().getCurrentAthleteId();
+            return this._getApiRoot() + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
         },
 
         defaults:
@@ -88,7 +82,7 @@ function(
             if(options.date)
             {
                 var date = options.date;
-                var athleteId = this.user.getCurrentAthleteId();
+                var athleteId = this._getUser().getCurrentAthleteId();
 
                 if(this.isNew())
                 {

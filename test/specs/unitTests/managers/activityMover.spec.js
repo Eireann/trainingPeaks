@@ -143,6 +143,74 @@ function(
             });
 
         });
+
+/*
+
+
+
+
+
+
+
+
+
+                it("Should call moveActivityToDay when pasting an existing workout from cut", function()
+                {
+                    var cutWorkout = workout;
+                    sinon.stub(theMarsApp.activityMover, "moveActivityToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    cutWorkout.pasted({ date: dateToPasteTo });
+                    expect(theMarsApp.activityMover.moveActivityToDay).to.have.been.calledWith(dateToPasteTo);
+                });
+
+                it("Should not call moveActivityToDay when pasting a workout from copy", function()
+                {
+                    var copiedWorkout = workout.cloneForCopy();
+                    sinon.stub(copiedWorkout, "moveActivityToDay");
+                    var dateToPasteTo = "2012-10-10";
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    expect(copiedWorkout.moveActivityToDay).to.not.have.been.called;
+                });
+
+                it("Should set the correct date on pasted workout", function()
+                {
+                    var copiedWorkout = workout.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    expect(pastedWorkout.getCalendarDay()).to.equal(dateToPasteTo);
+                });
+
+                it("Should not change the date of the copied workout", function()
+                {
+                    var copiedWorkout = workout.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
+                    expect(copiedWorkout.getCalendarDay()).to.not.equal(dateToPasteTo);
+                    expect(copiedWorkout.getCalendarDay()).to.equal(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
+                });
+
+                it("Should return a workout with all of the copied attributes", function()
+                {
+                    var copiedWorkout = workout.cloneForCopy();
+                    var dateToPasteTo = "2012-10-10";
+                    copiedWorkout.pasted({ date: dateToPasteTo });
+                    var pastedWorkout = theMarsApp.calendarManager.addItem.firstCall.args[0];
+
+                    _.each(attributesToCopy, function(attributeName)
+                    {
+                        if (attributeName !== "workoutDay")
+                        {
+                            expect(pastedWorkout.get(attributeName)).to.equal(copiedWorkout.get(attributeName));
+                        }
+                    });
+
+                });
+
+
+
+*/
     });
 
 });

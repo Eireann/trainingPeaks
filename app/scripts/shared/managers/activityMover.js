@@ -28,7 +28,19 @@ function(
             throw new Error("Activity mover requires feature authorizer");
         }
 
+        if(!options || !options.calendarManager)
+        {
+            throw new Error("Activity mover requires calendar manager");
+        }
+
+        if(!options || !options.user)
+        {
+            throw new Error("Activity mover requires user");
+        }
+
         this.featureAuthorizer = options.featureAuthorizer;
+        this.calendarManager = options.calendarManager;
+        this.user = options.user;
     }
 
     _.extend(ActivityMover.prototype, Backbone.Events,
@@ -44,7 +56,30 @@ function(
             }
             else if(activity instanceof WorkoutModel)
             {
-                this._moveWorkouModelToDay(activity, date);
+                this._moveWorkoutModelToDay(activity, date);
+            }
+        },
+
+        moveWorkoutToDayOrShowUpgradeMessage: function(workout, date)
+        {
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.SaveWorkoutToDate, 
+                _.bind(function(){this._moveWorkoutModelToDay(workout, date);}, this),
+                {targetDate: date}
+            );
+        },
+
+        pasteActivityToDay: function(activity, date)
+        {
+            activity = ActivityModel.unwrap(activity);
+
+            if(activity instanceof MetricModel)
+            {
+                this._pasteMetricModelToDay(activity, date);
+            }
+            else if(activity instanceof WorkoutModel)
+            {
+                this._pasteWorkoutModelToDay(activity, date);
             }
         },
 
@@ -60,7 +95,7 @@ function(
             metric.save({ timeStamp: timeStamp }, { wait: true });
         },
 
-        _moveWorkouModelToDay: function(workout, date)
+        _moveWorkoutModelToDay: function(workout, date)
         {
             var workoutDay = moment(date).format(TP.utils.datetime.longDateFormat);
 
@@ -73,6 +108,36 @@ function(
             {
                 workout.save({ workoutDay: workoutDay }, { wait: true });
             }
+        },
+
+        _pasteWorkoutModelToDay: function(workout, date)
+        {
+            var applyPasteWorkout =function()
+            {
+                var date = date;
+                var athleteId = this.user.getCurrentAthleteId();
+                if(workout.isNew())
+                {
+                    var newWorkout = workout.clone();
+                    newWorkout.save(
+                    {
+                        workoutDay: date,
+                        athleteId: athleteId
+                    });
+                    this.calendarManager.addItem(newWorkout);
+                }
+                // Cut workout for different athlete should be ignored
+                else if(workout.get("athleteId") === athleteId)
+                {
+                    this._moveWorkoutModelToDay(workout, date);
+                }
+            };
+
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.SaveWorkoutToDate, 
+                _.bind(applyPasteWorkout, this),
+                { targetDate: date }
+            );
         }
 
     });

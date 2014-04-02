@@ -309,7 +309,11 @@ function(
             // add activity mover
             this.addInitializer(function()
             {
-                this.activityMover = new ActivityMover({ featureAuthorizer: this.featureAuthorizer });
+                this.activityMover = new ActivityMover({ 
+                    user: this.user,
+                    featureAuthorizer: this.featureAuthorizer,
+                    calendarManager: this.calendarManager
+                });
             });
 
             // add initial profile view
