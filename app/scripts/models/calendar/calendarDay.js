@@ -17,9 +17,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
         initialize: function(attrs, options)
         {
-            options = options || {};
-            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
-
+            this.options = options;
             this.configureDate();
             this.configureCollection();
         },
@@ -107,52 +105,6 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
         },
 
-        moveItemsToDay: function(date)
-        {
-            this.each(function(activity)
-            {
-                if(_.isFunction(activity.moveToDay))
-                {
-                    activity.moveToDay(date);
-                }
-            });
-        },
-
-        dropped: function(options)
-        {
-            if(options.date)
-            {
-                if(options.date === this.id)
-                {
-                    return;
-                }
-
-                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    _.bind(function(){
-                        this.moveItemsToDay(options.date);
-
-                        if(options.target instanceof CalendarDay)
-                        {
-                            this.selectionManager.setSelection(options.target);
-                        }
-                    }, this),
-                    {targetDate: options.date}
-                );
-            }
-        },
-
-        pasted: function(options)
-        {
-            this.each(function(activity)
-            {
-                if(_.isFunction(activity.pasted))
-                {
-                    activity.pasted(options);
-                }
-            });
-        },
-
         cloneForCut: function()
         {
             var clone = this.clone();
@@ -177,7 +129,6 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
                 return !(ActivityModel.unwrap(model) instanceof MetricModel);
             });
         }
-
     });
 
     return CalendarDay;

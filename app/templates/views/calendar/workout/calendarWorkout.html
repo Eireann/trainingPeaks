@@ -3,6 +3,9 @@
     <div class="printOnly sportType">{{ workoutTypeName workoutTypeValueId }}</div>
     <div class="workoutHeader">
         <div class="workoutIcon"></div>
+        {{#if isLocked}}
+        <div class="lockIcon"></div>
+        {{/if}}
         <div class="workoutSettings">
             <button></button>
         </div>

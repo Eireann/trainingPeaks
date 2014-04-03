@@ -109,7 +109,7 @@ function(
                 expect(featureAuthorizer.showUpgradeMessage).to.not.have.been.called;
             });
 
-            it("Should not run the callback if feature is authorized", function()
+            it("Should not run the callback if feature is not authorized", function()
             {
                 sinon.stub(featureAuthorizer, "showUpgradeMessage");
                 var callback = sinon.stub();
@@ -520,6 +520,29 @@ function(
                     expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.ViewPlanStore)).to.equal(true);
                 });
 
+            });
+
+            describe("EditLockedWorkout", function()
+            {
+                it("Should allow non locked workouts", function()
+                {
+                    var attributes = { workout: new TP.Model({ isLocked: false })};
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, attributes)).to.equal(true);
+                });
+
+                it("Should allow for coaches", function()
+                {
+                    var attributes = { workout: new TP.Model({ isLocked: true })};
+                    featureAuthorizer.user.set("isAthlete", false);
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, attributes)).to.equal(true);
+                });
+
+                it("Should not allow for athletes", function()
+                {
+                    var attributes = { workout: new TP.Model({ isLocked: true })};
+                    featureAuthorizer.user.set("isAthlete", true);
+                    expect(featureAuthorizer.canAccessFeature(featureAuthorizer.features.EditLockedWorkout, attributes)).to.equal(false);
+                });
             });
         });
 

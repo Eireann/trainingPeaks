@@ -42,6 +42,21 @@ function($, _, Backbone, DeepModel, moment, utils)
             });
 
             return this._$state;
+        },
+
+        initialize: function(attrs, options)
+        {
+            this.options = options;
+        },
+        
+        _getUser: function()
+        {
+            return this.options && this.options.user ? this.options.user : theMarsApp.user;
+        },
+
+        _getApiRoot: function()
+        {
+            return this.options && this.options.apiRoot ? this.options.apiRoot : theMarsApp.apiRoot;
         }
     };
 

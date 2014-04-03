@@ -29,8 +29,8 @@ function (
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts";
+            var athleteId = this._getUser().getCurrentAthleteId();
+            return this._getApiRoot() + "/fitness/v1/athletes/" + athleteId + "/workouts";
         },
 
         defaults:
@@ -99,7 +99,8 @@ function (
             "details": null,
             "detailData": null,
             "equipmentBikeId": null,
-            "equipmentShoeId": null
+            "equipmentShoeId": null,
+            "isLocked": null
         },
 
         initialize: function(attrs, options)
@@ -120,6 +121,8 @@ function (
             }, this);
 
             this.equipment = (options && options.equipment) || null;
+
+            this.options = options;
         },
 
         autosave: AutosaveMergeUtility.mixin.autosave,
@@ -199,27 +202,6 @@ function (
             return this.sortDate;
         },
 
-        moveToDay: function(newDate)
-        {
-            var attrs =
-            {
-                workoutDay: moment(newDate).format(TP.utils.datetime.longDateFormat)
-            };
-            return this.save(attrs, { wait: true });
-        },
-
-        dropped: function(options)
-        {
-            if(options && options.date)
-            {
-                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    _.bind(function(){this.moveToDay(options.date);}, this),
-                    {targetDate: options.date}
-                );
-            }
-        },
-
         cloneForCopy: function()
         {
             var attributesToCopy = [
@@ -241,45 +223,6 @@ function (
             ];
 
             return new WorkoutModel(this.pick(attributesToCopy));
-        },
-
-        pasted: function(options)
-        {
-
-            if(options.date)
-            {
-                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    _.bind(this._applyPaste, this, options),
-                    { targetDate: options.date }
-                );
-            }
-            else
-            {
-                console.warn("Don't know how to paste to target");
-            }
-
-        },
-
-        _applyPaste: function(options)
-        {
-            var date = options.date;
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            if(this.isNew())
-            {
-                var workout = this.clone();
-                workout.save(
-                {
-                    workoutDay: date,
-                    athleteId: athleteId
-                });
-                theMarsApp.calendarManager.addItem(workout);
-            }
-            // Cut workout for different athlete should be ignored
-            else if(this.get("athleteId") === athleteId)
-            {
-                this.moveToDay(date);
-            }
         },
 
         getPostActivityComments: function()
@@ -322,7 +265,6 @@ function (
             this.fetch();
             this.get("details").fetch();
         }
-
     });
 
     return WorkoutModel;

@@ -3,6 +3,8 @@ define(
     "underscore",
     "moment",
     "TP",
+    "shared/models/activityModel",
+    "models/workoutModel",
     "shared/misc/selection",
     "shared/utilities/calendarUtility",
     "shared/models/selectedActivitiesCollection",
@@ -13,6 +15,8 @@ function(
     _,
     moment,
     TP,
+    ActivityModel,
+    WorkoutModel,
     Selection,
     CalendarUtility,
     SelectedActivitiesCollection,
@@ -62,7 +66,7 @@ function(
 
         deleteAction: function()
         {
-            this._getActivitesCollection().deleteSelectedItems();
+            this._getActivitesCollection(_.bind(this._excludeLockedWorkouts, this)).deleteSelectedItems();
         },
 
         cutAction: function()
@@ -91,15 +95,16 @@ function(
                 var targetMoment =target._firstMoment();
                 var delta = targetMoment.diff(sourceMoment, "days");
 
+                var activityMover = this._getActivityMover();
                 this.each(function(day)
                 {
                     var date = moment(day.id).add(delta, "days").format(CalendarUtility.idFormat);
-                    day.pasted({ date: date });
+                    activityMover.pasteActivitiesToDay(day.items(), date);
                 });
 
                 if(this.isCut)
                 {
-                    theMarsApp.selectionManager.clearClipboard();
+                    this._getSelectionManager().clearClipboard();
                 }
             }
             else
@@ -109,9 +114,9 @@ function(
             }
         },
 
-        _getActivitesCollection: function()
+        _getActivitesCollection: function(filterFunction)
         {
-            var activites = this.map(function(day) { return day.itemsCollection.models; });
+            var activites = this.map(function(day) { return day.itemsCollection.filter(filterFunction); });
             activites = _.flatten(activites, true);
 
             return new SelectedActivitiesCollection(activites);
@@ -121,7 +126,15 @@ function(
         {
             var moments = this.map(function(day) { return moment(day.id); });
             return _.min(moments);
+        },
+
+        _excludeLockedWorkouts: function(activity)
+        {
+            activity = ActivityModel.unwrap(activity);
+
+            return (!activity instanceof WorkoutModel) || theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.EditLockedWorkout, { workout: activity });
         }
+
 
     });
 

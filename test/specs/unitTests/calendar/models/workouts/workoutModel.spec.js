@@ -38,39 +38,6 @@ function(
             expect(workout.getCalendarDay()).to.eql(moment().format("YYYY-MM-DD"));
         });
 
-        describe("moveToDay", function()
-        {
-            var workout;
-            var originalDate = moment().format("YYYY-MM-DD");
-            var tomorrow = moment().add("days", 1).format("YYYY-MM-DD");
-
-            beforeEach(function()
-            {
-                testHelpers.setupFakeAjax();
-                workout = new WorkoutModel({ workoutId: "12345", workoutDay: originalDate });
-                testHelpers.theApp.user.setCurrentAthlete(new TP.Model({athleteId: 1}));
-            });
-
-            afterEach(function()
-            {
-                testHelpers.removeFakeAjax();
-            });
-
-            it("Should update workoutDay on success", function()
-            {
-                workout.moveToDay(tomorrow);
-                testHelpers.resolveRequest("PUT", "", {});
-                expect(workout.getCalendarDay()).to.eql(tomorrow);
-            });
-
-            it("Should not update workoutDay on failure", function()
-            {
-                workout.moveToDay(tomorrow);
-                testHelpers.rejectRequest("PUT", "");
-                expect(workout.getCalendarDay()).to.eql(originalDate);
-            });
-        });
-
         describe("Cut, Copy, Paste", function()
         {
             var workout;
@@ -163,128 +130,44 @@ function(
                 });
             });
 
-            describe("pasted", function()
-            {
-                it("Should implement an pasted method", function()
-                {
-                    expect(WorkoutModel.prototype.pasted).to.not.be.undefined;
-                    expect(typeof WorkoutModel.prototype.pasted).to.equal("function");
-                });
-
-                it("Should call moveToDay when pasting an existing workout from cut", function()
-                {
-                    var cutWorkout = workout;
-                    sinon.stub(cutWorkout, "moveToDay");
-                    var dateToPasteTo = "2012-10-10";
-                    cutWorkout.pasted({ date: dateToPasteTo });
-                    expect(cutWorkout.moveToDay).to.have.been.calledWith(dateToPasteTo);
-                });
-
-                it("Should not call moveToDay when pasting a workout from cut on different athlete", function()
-                {
-                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
-                    var cutWorkout = workout;
-                    sinon.stub(cutWorkout, "moveToDay");
-                    var dateToPasteTo = "2012-10-10";
-                    cutWorkout.pasted({ date: dateToPasteTo });
-                    expect(cutWorkout.moveToDay).to.not.have.been.called;
-                });
-
-                it("Should not call moveToDay when pasting a workout from copy", function()
-                {
-                    var copiedWorkout = workout.cloneForCopy();
-                    sinon.stub(copiedWorkout, "moveToDay");
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    expect(copiedWorkout.moveToDay).to.not.have.been.called;
-                });
-
-                it("Should return a new workout when pasting a workout from copy", function()
-                {
-                    var copiedWorkout = workout.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(pastedWorkout).to.be.an.instanceof(WorkoutModel);
-                    expect(pastedWorkout).to.not.equal(copiedWorkout);
-                });
-
-                it("Should set the correct date on pasted workout", function()
-                {
-                    var copiedWorkout = workout.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(pastedWorkout.getCalendarDay()).to.equal(dateToPasteTo);
-                });
-
-                it("Should not change the date of the copied workout", function()
-                {
-                    var copiedWorkout = workout.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(copiedWorkout.getCalendarDay()).to.not.equal(dateToPasteTo);
-                    expect(copiedWorkout.getCalendarDay()).to.equal(moment(workoutAttributes.workoutDay).format("YYYY-MM-DD"));
-                });
-
-                
-                it("Should set the correct athleteId on pasted workout", function()
-                {
-                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42 }));
-                    var copiedWorkout = workout.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(pastedWorkout.get("athleteId")).to.equal(42);
-                });
-
-                it("Should not change the athleteId of the copied workout", function()
-                {
-                    testHelpers.theApp.user.setCurrentAthlete(new TP.Model({ athleteId: 42}));
-                    var copiedWorkout = workout.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-                    expect(copiedWorkout.get("athleteId")).to.not.equal(42);
-                });
-
-                it("Should return a workout with all of the copied attributes", function()
-                {
-                    var copiedWorkout = workout.cloneForCopy();
-                    var dateToPasteTo = "2012-10-10";
-                    copiedWorkout.pasted({ date: dateToPasteTo });
-                    var pastedWorkout = testHelpers.theApp.calendarManager.addItem.firstCall.args[0];
-
-                    var attributesToCopy = [
-                        "title",
-                        "workoutTypeValueId",
-                        "workoutDay",
-                        "isItAnOr",
-                        "description",
-                        "distancePlanned",
-                        "totalTimePlanned",
-                        "caloriesPlanned",
-                        "tssPlanned",
-                        "ifPlanned",
-                        "velocityPlanned",
-                        "energyPlanned",
-                        "elevationGainPlanned"
-                    ];
-
-                    _.each(attributesToCopy, function(attributeName)
-                    {
-                        if (attributeName !== "workoutDay")
-                        {
-                            expect(pastedWorkout.get(attributeName)).to.equal(copiedWorkout.get(attributeName));
-                        }
-                    });
-
-                });
-
-            });
 
         });
+
+        describe("parse", function()
+        {
+            it("Should update the post activity comments collection if it already exists", function()
+            {
+                var workout = new WorkoutModel();
+                var postActivityComments = workout.getPostActivityComments();
+                expect(postActivityComments.length).to.eql(0);
+                workout.parse({
+                    workoutComments: [
+                        { firstName: "test", lastName: "user", comment: "some comment" }
+                    ]                    
+                });
+                expect(postActivityComments.length).to.eql(1);
+            });
+
+            it("Should not create a post activity comments collection if it does not already exist", function()
+            {
+                var workout = new WorkoutModel();
+                workout.parse({
+                    workoutComments: [
+                        { firstName: "test", lastName: "user", comment: "some comment" }
+                    ]                    
+                });
+                expect(workout.postActivityComments).to.not.be.ok;
+            });
+
+            it("Should remove time zone offset string from start time", function()
+            {
+                var workout = new WorkoutModel();
+                expect(workout.parse({ startTime: "2014-01-01T12:00:00-06:00" }).startTime).to.eql("2014-01-01T12:00");
+                expect(workout.parse({ startTime: "2014-03-19T15:51:49.3923409-06:00" }).startTime).to.eql("2014-03-19T15:51");
+               
+            });
+        });
+
     });
 
 });

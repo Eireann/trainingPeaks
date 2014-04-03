@@ -58,7 +58,7 @@ function(TP, moment, TrainingPlanApplyView, UserConfirmationView, applyTrainingP
             {
                 this.planApplyView.close();
             }
-            this.planApplyView = new TrainingPlanApplyView({model: this.model, parentModal: this});
+            this.planApplyView = new TrainingPlanApplyView({model: this.model, parentModal: this, defaultDate: this.targetDate});
             this.listenTo(this.planApplyView, "planApplied", this._refreshCalendar);
             this.$(".chooseDate").append(this.planApplyView.render().$el);
             this.on("close", this.planApplyView.close, this.planApplyView);

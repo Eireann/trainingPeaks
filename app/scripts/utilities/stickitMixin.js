@@ -57,7 +57,6 @@ function(
             else
                 this.updateModelTimeout = setTimeout(updateModel, saveTimeout);
 
-            console.log(evt.type);
             return false;
         },
 

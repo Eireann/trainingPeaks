@@ -6,6 +6,11 @@
     p {
         display: none;
     }
+
+    &.locked
+    {
+        display: none;
+    }
 }
 
 .workout
@@ -55,6 +60,17 @@
             background-repeat: no-repeat;
             background-position-y: 7px;
         }
+    }
+
+    .lockIcon
+    {
+        top: 5px;
+        right: 20px;
+        height: 11px;
+        width: 8px;
+        position: absolute;
+        background-repeat: no-repeat;
+        @extend %lockIconBG;
     }
 
     &:hover

@@ -29,10 +29,12 @@ function(_, TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
         initialize: function(options)
         {
             this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+            this.featureAuthorizer = options.featureAuthorizer || theMarsApp.featureAuthorizer;
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "contextMenuOpened", "eventLabel": "" });
             
             this.on("before:reposition", this.beforeReposition, this);
+            this.on("render", this._disableLockedFeatures, this);
         },
 
         attributes: function()
@@ -142,7 +144,15 @@ function(_, TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
             hoverBox.removeClass("uparrow");
             var arrow = this.$el.find(".arrow");
             arrow.detach().appendTo(hoverBox);
-        }
+        },
 
+        _disableLockedFeatures: function()
+        {
+            if (!this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.EditLockedWorkout, { workout: this.model }))
+            {
+                this.$("#workoutQuickViewMenuCutLabel").remove();
+                this.$("#workoutQuickViewMenuDeleteLabel").remove();
+            }
+        }
     });
 });

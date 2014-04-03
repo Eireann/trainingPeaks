@@ -12,11 +12,12 @@ function(
     var Selection = TP.Collection.extend(
     {
 
-        initialize: function()
+        initialize: function(options)
         {
             this.active = 0;
             this.on("add", this._onAdd, this);
             this.on("remove", this._onRemove, this);
+            this.options = options;
         },
 
         activate: function()
@@ -61,8 +62,17 @@ function(
         _onRemove: function(model, collection, options)
         {
             collection._deactivateItem(model);
-        }
+        },
 
+        _getActivityMover: function()
+        {
+            return this.options && this.options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
+        },
+
+        _getSelectionManager: function()
+        {
+            return this.options && this.options.selectionManager ? this.options.selectionManager : theMarsApp.selectionManager;
+        }
     });
 
     return Selection;

@@ -58,7 +58,6 @@ function(
                     workouts.push(workout);
                     calendarDay.add(workout);
                     sinon.spy(workout, "cloneForCopy");
-                    sinon.spy(workout, "pasted");
                 }
             });
 
@@ -89,26 +88,6 @@ function(
                     _.each(workouts, function(workout)
                     {
                         expect(workout.cloneForCopy).to.have.been.called;
-                    });
-                });
-
-            });
-
-            describe("pasted", function()
-            {
-
-                it("Should call pasted on each of the copied workouts", function()
-                {
-                    var dateToPasteTo = "2030-12-25";
-                    var copiedItems = calendarDay.cloneForCopy();
-                    copiedItems.each(function(item)
-                    {
-                        sinon.stub(item, "pasted");
-                    });
-                    var pastedItems = copiedItems.pasted({ date: dateToPasteTo });
-                    copiedItems.each(function(item)
-                    {
-                        expect(item.pasted).to.have.been.calledWith({ date: dateToPasteTo });
                     });
                 });
 

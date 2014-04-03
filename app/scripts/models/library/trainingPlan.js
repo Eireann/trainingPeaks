@@ -1,15 +1,11 @@
 ﻿define(
 [
     "TP",
-    "./trainingPlanDetails",
-    "models/calendar/calendarDay",
-    "views/calendar/library/applyTrainingPlanToCalendarConfirmationView"
+    "./trainingPlanDetails"
 ],
 function (
     TP,
-    TrainingPlanDetailsModel,
-    CalendarDay,
-    ApplyTrainingPlanToCalendarConfirmationView
+    TrainingPlanDetailsModel
 )
 {
     var TrainingPlanModel = TP.APIDeepModel.extend(
@@ -21,7 +17,7 @@ function (
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/plans/v1/plans";
+            return this._getApiRoot() + "/plans/v1/plans";
         },
 
         defaults:
@@ -32,17 +28,10 @@ function (
             daysDuration: null
         },
 
-        initialize: function()
+        initialize: function(attributes, options)
         {
+            this.options = options;
             this.details = new TrainingPlanDetailsModel({ planId: this.get("planId") });
-        },
-
-        dropped: function(options)
-        {
-            if(options.target instanceof CalendarDay)
-            {
-                new ApplyTrainingPlanToCalendarConfirmationView({model: this, targetDate: options.target.id}).render();
-            }
         }
 
     });

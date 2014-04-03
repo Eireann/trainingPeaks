@@ -30,6 +30,7 @@ body[data-useragent*="MSIE"] .icon
 %qvBreakthroughInactiveBG { @include inlineBG("../../assets/images/QVImages/breakThrough.png"); }
 %qvBreakthroughActiveBG { @include inlineBG("../../assets/images/QVImages/breakThroughFullOpac.png"); }
 %structureDownArrow { @include inlineBG("../../assets/images/QVImages/arrow-down.png"); }
+%lockIconBG { @include inlineBG("../../assets/images/QVImages/icon-lock.png"); }
 
 // Map Graph
 
@@ -111,6 +112,7 @@ body[data-useragent*="MSIE"] .icon
     %qvBreakthroughInactiveBG { @include inlineRetinaBG("../../assets/images/QVImages/breakThrough@2x.png"); }
     %qvBreakthroughActiveBG { @include inlineRetinaBG("../../assets/images/QVImages/breakThroughFullOpac@2x.png"); }
     %structureDownArrow { @include inlineRetinaBG("../../assets/images/QVImages/arrow-down@2x.png"); }
+    %lockIconBG { @include inlineBG("../../assets/images/QVImages/icon-lock@2x.png"); }
 
     // Map Graph
 

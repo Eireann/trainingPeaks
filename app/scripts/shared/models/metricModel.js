@@ -19,8 +19,8 @@ function(
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
+            var athleteId = this._getUser().getCurrentAthleteId();
+            return this._getApiRoot() + "/metrics/v1/athletes/" + athleteId + "/timedmetrics";
         },
 
         defaults:
@@ -60,19 +60,7 @@ function(
             var timeStamp = moment.local(this.get("timeStamp"));
             timeStamp.hour(time.hour()).minute(time.minute()).second(time.second());
             this.set("timeStamp", timeStamp.format(TP.utils.datetime.longDateFormat));
-        },
-
-        moveToDay: function(date)
-        {
-            date = moment.local(date);
-            var timestamp = moment.local(this.get("timeStamp"));
-            var attrs =
-            {
-                timeStamp: date.format("YYYY-MM-DD")  + timestamp.format("THH:mm:ss")
-            };
-
-            return this.save(attrs, { wait: true });
-        },
+        }, 
 
         isEmpty: function()
         {
@@ -87,44 +75,6 @@ function(
             var clone =  this.clone();
             clone.unset("id");
             return clone;
-        },
-
-        pasted: function(options)
-        {
-            if(options.date)
-            {
-                var date = options.date;
-                var athleteId = theMarsApp.user.getCurrentAthleteId();
-
-                if(this.isNew())
-                {
-                    var metric = this.clone();
-                    metric.save(
-                    {
-                        timeStamp: moment.local(date).format(TP.utils.datetime.longDateFormat),
-                        athleteId: athleteId
-                    });
-                    theMarsApp.calendarManager.addItem(metric);
-                }
-                // Cut metric for different athlete should be ignored
-                else if(this.get("athleteId") === athleteId)
-                {
-                    this.moveToDay(date);
-                }
-
-            }
-            else
-            {
-                console.warn("Can't paste metric on anything but calendar");
-            }
-        },
-
-        dropped: function(options)
-        {
-            if(options && options.date)
-            {
-                this.moveToDay(options.date);
-            }
         },
 
         getKeyStatField: function(userSettingsMetricOrder)
