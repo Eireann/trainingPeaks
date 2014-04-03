@@ -93,7 +93,7 @@ function(
         {
             if(options && options.date)
             {
-                this._getActivityMover().moveActivityToDay(this, options.date);
+                this._getActivityMover().dropActivityOnDay(this, options.date);
             }
         },
 

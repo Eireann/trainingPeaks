@@ -315,6 +315,78 @@ function(
 
         });
 
+        describe(".dropActivityOnDay", function()
+        {
+
+            var activityMover;
+            beforeEach(function()
+            {
+                activityMover = new ActivityMover({ 
+                    featureAuthorizer: featureAuthorizer,
+                    user: user,
+                    calendarManager: {}
+                });
+            });
+
+            it("Should call dropActivitiesOnDay", function()
+            {
+                sinon.stub(activityMover, "dropActivitiesOnDay");
+                activityMover.dropActivityOnDay(new WorkoutModel(), "2014-12-25");
+                expect(activityMover.dropActivitiesOnDay).to.have.been.calledOnce;
+            });
+
+        });
+
+        describe(".dropActivitiesOnDay", function()
+        {
+
+            var activityMover;
+            beforeEach(function()
+            {
+                activityMover = new ActivityMover({ 
+                    featureAuthorizer: featureAuthorizer,
+                    user: user,
+                    calendarManager: {}
+                });
+            });
+
+            it("Should check feature authorizer if workouts are present", function()
+            {
+                sinon.stub(featureAuthorizer, "canAccessFeature").returns(false);
+                sinon.stub(featureAuthorizer, "showUpgradeMessage");
+                sinon.stub(activityMover, "moveActivityToDay");
+                var returnValue = activityMover.dropActivitiesOnDay([new WorkoutModel()], "2014-12-31");
+                expect(featureAuthorizer.canAccessFeature).to.have.been.calledOnce;
+                expect(featureAuthorizer.showUpgradeMessage).to.have.been.calledOnce;
+                expect(activityMover.moveActivityToDay).to.not.have.been.called;
+                expect(returnValue).to.eql(false);
+            });
+
+            it("Should not check feature authorizer if no workouts are present", function()
+            {
+                sinon.stub(featureAuthorizer, "canAccessFeature").returns(false);
+                sinon.stub(featureAuthorizer, "showUpgradeMessage");
+                sinon.stub(activityMover, "moveActivityToDay");
+                var returnValue = activityMover.dropActivitiesOnDay([new MetricModel()], "2014-12-31");
+                expect(featureAuthorizer.canAccessFeature).to.not.have.been.called;
+                expect(featureAuthorizer.showUpgradeMessage).to.not.have.been.called;
+                expect(activityMover.moveActivityToDay).to.have.been.calledOnce;
+                expect(returnValue).to.eql(true);
+            });
+
+            it("Should call moveActivityToDay for each activity", function()
+            {
+                sinon.stub(featureAuthorizer, "canAccessFeature").returns(true);
+                sinon.stub(activityMover, "moveActivityToDay");
+                activityMover.dropActivitiesOnDay([
+                                                    new WorkoutModel(),
+                                                    new MetricModel(),
+                                                    new WorkoutModel()
+                                                  ]);
+                expect(activityMover.moveActivityToDay).to.have.been.calledThrice;
+            });
+        });
+
     });
 
 });

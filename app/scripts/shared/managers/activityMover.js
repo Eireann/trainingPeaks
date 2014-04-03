@@ -60,15 +60,6 @@ function(
             }
         },
 
-        moveWorkoutToDayOrShowUpgradeMessage: function(workout, date)
-        {
-            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                this.featureAuthorizer.features.SaveWorkoutToDate, 
-                _.bind(function(){this._moveWorkoutModelToDay(workout, date);}, this),
-                {targetDate: date}
-            );
-        },
-
         pasteActivityToDay: function(activity, date)
         {
             activity = ActivityModel.unwrap(activity);
@@ -81,6 +72,29 @@ function(
             {
                 return this._pasteWorkoutModelToDay(activity, date);
             }
+        },
+
+        dropActivityOnDay: function(activity, date)
+        {
+            return this.dropActivitiesOnDay([activity], date);
+        },
+
+        dropActivitiesOnDay: function(activities, date)
+        {
+            var containsWorkouts = _.find(activities, function(model) { return ActivityModel.unwrap(model) instanceof WorkoutModel; });
+
+            if(containsWorkouts && !this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.SaveWorkoutToDate, { targetDate: date }))
+            {
+                this.featureAuthorizer.showUpgradeMessage(this.featureAuthorizer.features.SaveWorkoutToDate.options);
+                return false;
+            }
+
+            _.each(activities, function(activity)
+            {
+                this.moveActivityToDay(activity, date);
+            }, this);
+
+            return true;
         },
 
         _moveMetricModelToDay: function(metric, date)

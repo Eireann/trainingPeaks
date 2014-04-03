@@ -17,8 +17,8 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
         initialize: function(attrs, options)
         {
-            options = options || {};
-            this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
+            this.options = options || {};
+            this.selectionManager = this.options.selectionManager || theMarsApp.selectionManager;
 
             this.configureDate();
             this.configureCollection();
@@ -107,14 +107,6 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
         },
 
-        moveItemsToDay: function(date)
-        {
-            this.each(function(activity)
-            {
-                theMarsApp.activityMover.moveActivityToDay(activity, date);
-            });
-        },
-
         dropped: function(options)
         {
             if(options.date)
@@ -124,19 +116,13 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
                     return;
                 }
 
-                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                    _.bind(function(){
-
-                        this.moveItemsToDay(options.date);
-
-                        if(options.target instanceof CalendarDay)
-                        {
-                            this.selectionManager.setSelection(options.target);
-                        }
-                    }, this),
-                    {targetDate: options.date}
-                );
+                if(this._getActivityMover().dropActivitiesOnDay(this.models, options.date))
+                {
+                    if(options.target instanceof CalendarDay)
+                    {
+                        this.selectionManager.setSelection(options.target);
+                    }
+                }
             }
         },
 
@@ -174,6 +160,11 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             {
                 return !(ActivityModel.unwrap(model) instanceof MetricModel);
             });
+        },
+
+        _getActivityMover: function()
+        {
+            return this.options && this.options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
         }
 
     });

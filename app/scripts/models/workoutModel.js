@@ -206,7 +206,7 @@ function (
         {
             if(options && options.date)
             {
-                this._getActivityMover().moveWorkoutToDayOrShowUpgradeMessage(this, options.date); 
+                this._getActivityMover().dropActivityOnDay(this, options.date); 
             }
         },
 
@@ -236,7 +236,7 @@ function (
         pasted: function(options)
         {
 
-            if(options.date)
+            if(options && options.date)
             {
                 this._getActivityMover().pasteActivityToDay(this, options.date);
             }
