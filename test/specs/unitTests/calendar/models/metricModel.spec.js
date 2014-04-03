@@ -104,29 +104,6 @@ function(
                 });
             });
 
-            describe("pasted", function()
-            {
-
-               var activityMover, metric; 
-                beforeEach(function()
-                {
-                    activityMover = { pasteActivityToDay: sinon.stub() };
-                    metric = new MetricModel(metricAttributes, { activityMover: activityMover });
-                });
-
-                it("Should implement a pasted method", function()
-                {
-                    expect(MetricModel.prototype.pasted).to.not.be.undefined;
-                    expect(typeof MetricModel.prototype.pasted).to.equal("function");
-                });
-
-                it("Should call activityMover.pasteActivityToDay", function()
-                {
-                    metric.pasted({ date: "2014-01-01" });
-                    expect(activityMover.pasteActivityToDay).to.have.been.calledWith(metric, "2014-01-01");
-                });
-
-            });
 
         });
 

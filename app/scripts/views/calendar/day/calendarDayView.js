@@ -9,6 +9,7 @@ define(
     "setImmediate",
     "TP",
     "shared/models/activityModel",
+    "models/calendar/calendarDay",
     "views/calendar/workout/calendarWorkoutView",
     "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
@@ -26,6 +27,7 @@ function(
     setImmediate,
     TP,
     ActivityModel,
+    CalendarDayModel,
     CalendarWorkoutView,
     MetricTileView,
     CalendarDaySettingsView,
@@ -61,8 +63,6 @@ function(
 
             this.collection = this.model.itemsCollection;
 
-            this.selectionManager = (options && options.selectionManager) || theMarsApp.selectionManager;
-
             this.on("after:item:added", this.makeItemsDraggable, this);
             this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
@@ -88,7 +88,7 @@ function(
         onSelectedClicked: function(event)
         {
             // pointer-events: none; should prevent the from being called, but IE10 doesn't support pointer-events
-            this.selectionManager.clearSelection();
+            this._getSelectionManager().clearSelection();
         },
 
         onItemSort: function()
@@ -175,9 +175,17 @@ function(
         {
             var handler = ui.draggable.data("handler");
 
-            if(handler && _.isFunction(handler.dropped))
+            if(handler)
             {
-                handler.dropped({ dropTarget: "day", date: this.model.id, target: this.model });
+                if(handler instanceof CalendarDayModel)
+                {
+                    this._getActivityMover().dropActivitiesOnDay(handler.items(), this.model.id);
+                    this._getSelectionManager().setSelection(this.model);
+                }
+                else
+                {
+                    this._getActivityMover().dropActivityOnDay(handler, this.model.id);
+                }
             }
             else
             {
@@ -239,9 +247,9 @@ function(
         _doSelect: function(e)
         {
             e.preventDefault();
-            this.selectionManager.setSelection(this.model, e);
+            this._getSelectionManager().setSelection(this.model, e);
 
-            if(this.selectionManager.selection.length > 1)
+            if(this._getSelectionManager().selection.length > 1)
             {
                 var rangeSettingsView = new SelectedRangeSettingsView();
                 rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
@@ -383,6 +391,16 @@ function(
         _unselectAddWorkoutIcon: function()
         {
             this.$(".addWorkout").removeClass("active");
+        },
+
+        _getActivityMover: function()
+        {
+            return this.options && this. options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
+        },
+
+        _getSelectionManager: function()
+        {
+            return this.options && this.options.selectionManager ? this.options.selectionManager : theMarsApp.selectionManager;
         }
 
     });

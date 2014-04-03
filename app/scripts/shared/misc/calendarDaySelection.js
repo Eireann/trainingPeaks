@@ -95,15 +95,16 @@ function(
                 var targetMoment =target._firstMoment();
                 var delta = targetMoment.diff(sourceMoment, "days");
 
+                var activityMover = this._getActivityMover();
                 this.each(function(day)
                 {
                     var date = moment(day.id).add(delta, "days").format(CalendarUtility.idFormat);
-                    day.pasted({ date: date });
+                    activityMover.pasteActivitiesToDay(day.items(), date);
                 });
 
                 if(this.isCut)
                 {
-                    theMarsApp.selectionManager.clearClipboard();
+                    this._getSelectionManager().clearClipboard();
                 }
             }
             else
@@ -133,6 +134,7 @@ function(
 
             return (!activity instanceof WorkoutModel) || theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.EditLockedWorkout, { workout: activity });
         }
+
 
     });
 

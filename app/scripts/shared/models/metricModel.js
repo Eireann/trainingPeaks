@@ -77,26 +77,6 @@ function(
             return clone;
         },
 
-        pasted: function(options)
-        {
-            if(options.date)
-            {
-                this._getActivityMover().pasteActivityToDay(this, options.date);
-            }
-            else
-            {
-                console.warn("Can't paste metric on anything but calendar");
-            }
-        },
-
-        dropped: function(options)
-        {
-            if(options && options.date)
-            {
-                this._getActivityMover().dropActivityOnDay(this, options.date);
-            }
-        },
-
         getKeyStatField: function(userSettingsMetricOrder)
         {
             var details = this.get("details");
@@ -112,12 +92,8 @@ function(
             });
 
             return _.isUndefined(keyMetricTypeId) ? null : detailsByType[keyMetricTypeId];
-        },
-
-        _getActivityMover: function()
-        {
-            return this.options && this.options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
         }
+
     });
 
     return MetricModel;

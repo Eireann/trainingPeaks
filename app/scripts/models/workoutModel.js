@@ -202,14 +202,6 @@ function (
             return this.sortDate;
         },
 
-        dropped: function(options)
-        {
-            if(options && options.date)
-            {
-                this._getActivityMover().dropActivityOnDay(this, options.date); 
-            }
-        },
-
         cloneForCopy: function()
         {
             var attributesToCopy = [
@@ -231,20 +223,6 @@ function (
             ];
 
             return new WorkoutModel(this.pick(attributesToCopy));
-        },
-
-        pasted: function(options)
-        {
-
-            if(options && options.date)
-            {
-                this._getActivityMover().pasteActivityToDay(this, options.date);
-            }
-            else
-            {
-                console.warn("Don't know how to paste to target");
-            }
-
         },
 
         getPostActivityComments: function()
@@ -286,13 +264,7 @@ function (
         {
             this.fetch();
             this.get("details").fetch();
-        },
-
-        _getActivityMover: function()
-        {
-            return this.options && this.options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
         }
-
     });
 
     return WorkoutModel;

@@ -7,7 +7,10 @@ define(
     "TP",
     "shared/models/activityModel",
     "models/workoutModel",
-    "shared/models/metricModel"
+    "shared/models/metricModel",
+    "models/library/libraryExercise",
+    "models/library/trainingPlan",
+    "views/calendar/library/applyTrainingPlanToCalendarConfirmationView"
 ],
 function(
     $,
@@ -17,7 +20,10 @@ function(
     TP,
     ActivityModel,
     WorkoutModel,
-    MetricModel
+    MetricModel,
+    LibraryExerciseModel,
+    TrainingPlanModel,
+    ApplyTrainingPlanToCalendarConfirmationView
 )
 {
 
@@ -33,6 +39,11 @@ function(
             throw new Error("Activity mover requires calendar manager");
         }
 
+        if(!options || !options.selectionManager)
+        {
+            throw new Error("Activity mover requires selectionManager");
+        }
+
         if(!options || !options.user)
         {
             throw new Error("Activity mover requires user");
@@ -40,6 +51,7 @@ function(
 
         this.featureAuthorizer = options.featureAuthorizer;
         this.calendarManager = options.calendarManager;
+        this.selectionManager = options.selectionManager;
         this.user = options.user;
     }
 
@@ -58,6 +70,22 @@ function(
             {
                 this._moveWorkoutModelToDay(activity, date);
             }
+            else if(activity instanceof LibraryExerciseModel)
+            {
+                this._moveLibraryExerciseToDay(activity, date);
+            }
+            else if(activity instanceof TrainingPlanModel)
+            {
+                this._moveTrainingPlanToDay(activity, date);
+            }
+        },
+
+        pasteActivitiesToDay: function(activities, date)
+        {
+            _.each(activities, function(activity)
+            {
+                this.pasteActivityToDay(activity, date);
+            }, this);
         },
 
         pasteActivityToDay: function(activity, date)
@@ -122,6 +150,26 @@ function(
             {
                 workout.save({ workoutDay: workoutDay }, { wait: true });
             }
+        },
+
+        _moveLibraryExerciseToDay: function(libraryExercise, date)
+        {
+            var createWorkoutFromLibrary = function(){
+                var workout = libraryExercise.createWorkout({ date: date });
+                this.selectionManager.setSelection(workout);
+                this.calendarManager.addItem(workout);
+            };
+
+            this.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                this.featureAuthorizer.features.SaveWorkoutToDate, 
+                _.bind(createWorkoutFromLibrary, this),
+                {targetDate: date}
+            );
+        },
+
+        _moveTrainingPlanToDay: function(trainingPlan, date)
+        {
+            new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: date}).render();
         },
 
         _pasteMetricModelToDay: function(metric, date)

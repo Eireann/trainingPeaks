@@ -130,29 +130,6 @@ function(
                 });
             });
 
-            describe("pasted", function()
-            {
-
-               var activityMover, workout; 
-                beforeEach(function()
-                {
-                    activityMover = { pasteActivityToDay: sinon.stub() };
-                    workout = new WorkoutModel(workoutAttributes, { activityMover: activityMover });
-                });
-
-                it("Should implement a pasted method", function()
-                {
-                    expect(WorkoutModel.prototype.pasted).to.not.be.undefined;
-                    expect(typeof WorkoutModel.prototype.pasted).to.equal("function");
-                });
-
-                it("Should call activityMover.pasteActivityToDay", function()
-                {
-                    workout.pasted({ date: "2014-01-01" });
-                    expect(activityMover.pasteActivityToDay).to.have.been.calledWith(workout, "2014-01-01");
-                });
-
-            });
 
         });
 

@@ -54,15 +54,10 @@ function(
             if(target instanceof CalendarDaySelection)
             {
                 var date = moment(target.first().id).format(CalendarUtility.idFormat);
-
-                this.each(function(activity)
-                {
-                    activity.pasted({ date: date });
-                });
-
+                this._getActivityMover().pasteActivitiesToDay(this.models, date);
                 if(this.isCut)
                 {
-                    theMarsApp.selectionManager.clearClipboard();
+                    this._getSelectionManager().clearClipboard();
                 }
             }
             else

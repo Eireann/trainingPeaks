@@ -17,9 +17,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
         initialize: function(attrs, options)
         {
-            this.options = options || {};
-            this.selectionManager = this.options.selectionManager || theMarsApp.selectionManager;
-
+            this.options = options;
             this.configureDate();
             this.configureCollection();
         },
@@ -107,36 +105,6 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             return this.itemsCollection.map(function(item) { return ActivityModel.unwrap(item); });
         },
 
-        dropped: function(options)
-        {
-            if(options.date)
-            {
-                if(options.date === this.id)
-                {
-                    return;
-                }
-
-                if(this._getActivityMover().dropActivitiesOnDay(this.models, options.date))
-                {
-                    if(options.target instanceof CalendarDay)
-                    {
-                        this.selectionManager.setSelection(options.target);
-                    }
-                }
-            }
-        },
-
-        pasted: function(options)
-        {
-            this.each(function(activity)
-            {
-                if(_.isFunction(activity.pasted))
-                {
-                    activity.pasted(options);
-                }
-            });
-        },
-
         cloneForCut: function()
         {
             var clone = this.clone();
@@ -160,13 +128,7 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
             {
                 return !(ActivityModel.unwrap(model) instanceof MetricModel);
             });
-        },
-
-        _getActivityMover: function()
-        {
-            return this.options && this.options.activityMover ? this.options.activityMover : theMarsApp.activityMover;
         }
-
     });
 
     return CalendarDay;

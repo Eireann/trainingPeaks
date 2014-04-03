@@ -47,7 +47,7 @@ function(
         {
             expect(function(){ return new ActivityMover(); }).to.throw();
 
-            expect(function(){ return new ActivityMover({ featureAuthorizer: featureAuthorizer, user: user, calendarManager: {} }); }).to.not.throw();
+            expect(function(){ return new ActivityMover({ featureAuthorizer: featureAuthorizer, user: user, calendarManager: {}, selectionManager: {} }); }).to.not.throw();
         });
 
         describe(".moveActivity", function()
@@ -61,7 +61,8 @@ function(
                 activityMover = new ActivityMover({ 
                     featureAuthorizer: featureAuthorizer,
                     user: user,
-                    calendarManager: calendarManager
+                    calendarManager: calendarManager,
+                    selectionManager: {}
                 });
             });
 
@@ -152,6 +153,32 @@ function(
 
         });
 
+        describe(".pasteActivitiesToDay", function()
+        {
+
+            var activityMover;
+            beforeEach(function()
+            {
+                activityMover = new ActivityMover({ 
+                    featureAuthorizer: featureAuthorizer,
+                    user: user,
+                    calendarManager: {},
+                    selectionManager: {}
+                });
+            });
+
+            it("Should call pasteActivityToDay for each activity", function()
+            {
+                sinon.stub(activityMover, "pasteActivityToDay");
+                activityMover.pasteActivitiesToDay([
+                                                        new WorkoutModel(),
+                                                        new MetricModel()
+                                                   ], "2014-02-01");
+                expect(activityMover.pasteActivityToDay).to.have.been.calledTwice;
+            });
+
+        });
+
         describe(".pasteActivityToDay", function()
         {
 
@@ -163,7 +190,8 @@ function(
                 activityMover = new ActivityMover({ 
                     featureAuthorizer: featureAuthorizer,
                     user: user,
-                    calendarManager: calendarManager
+                    calendarManager: calendarManager,
+                    selectionManager: {}
                 });
             });
 
@@ -324,7 +352,8 @@ function(
                 activityMover = new ActivityMover({ 
                     featureAuthorizer: featureAuthorizer,
                     user: user,
-                    calendarManager: {}
+                    calendarManager: {},
+                    selectionManager: {}
                 });
             });
 
@@ -346,7 +375,8 @@ function(
                 activityMover = new ActivityMover({ 
                     featureAuthorizer: featureAuthorizer,
                     user: user,
-                    calendarManager: {}
+                    calendarManager: {},
+                    selectionManager: {}
                 });
             });
 
@@ -382,7 +412,7 @@ function(
                                                     new WorkoutModel(),
                                                     new MetricModel(),
                                                     new WorkoutModel()
-                                                  ]);
+                                                  ], "1999-12-31");
                 expect(activityMover.moveActivityToDay).to.have.been.calledThrice;
             });
         });
