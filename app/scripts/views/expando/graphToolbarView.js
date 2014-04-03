@@ -112,12 +112,15 @@ function($,
 
         _onGraphSeriesButtonHover: function(event)
         {
-            this.mouseOverTarget = $(event.target);
-            this._openSeriesOptionsMenuWithDelay({
-                modal: {
-                    overlayClass: "hidden"
-                }
-            });
+            if(this.featureAuthorizer.canAccessFeature(this.featureAuthorizer.features.ViewGraphSeriesOptions))
+            {
+                this.mouseOverTarget = $(event.target);
+                this._openSeriesOptionsMenuWithDelay({
+                    modal: {
+                        overlayClass: "hidden"
+                    }
+                });
+            }
         },
 
         _openSeriesOptionsMenuWithDelay: _.debounce(function(options)

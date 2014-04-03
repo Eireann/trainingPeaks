@@ -30,6 +30,7 @@ function(
         features: {
             ViewGraphRanges: function(){ return this.userIsPremium(); },
             ExpandoDataEditing: function(){ return this.userIsPremium(); },
+            ViewGraphSeriesOptions: function() { return this.userIsPremium(); },
             EditLapNames: false
         },
 
@@ -54,7 +55,7 @@ function(
             {
                 if(this.userType > 0 && !this.userIsPremium())
                 {
-                    this.showUpgradeMessage(_.extend({ }, featureChecker.options, options));
+                    this.showUpgradeMessage(_.extend({ slideId: "map-and-graph" }, featureChecker.options, options));
                 }
             }
         },
