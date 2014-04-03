@@ -4,20 +4,26 @@ define(
     "TP",
     "models/workoutModel",
     "shared/models/metricModel",
+    "models/library/libraryExercise",
+    "models/library/trainingPlan",
     "shared/models/userModel",
     "shared/models/userAccessRightsModel",
     "shared/utilities/featureAuthorization/featureAuthorizer",
-    "shared/managers/activityMover"
+    "shared/managers/activityMover",
+    "views/calendar/library/applyTrainingPlanToCalendarConfirmationView"
 ],
 function(
     moment,
     TP,
     WorkoutModel,
     MetricModel,
+    LibraryExerciseModel,
+    TrainingPlanModel,
     UserModel,
     UserAccessRightsModel,
     FeatureAuthorizer,
-    ActivityMover
+    ActivityMover,
+    ApplyTrainingPlanConfirmationView
 )
 {
 
@@ -53,16 +59,17 @@ function(
         describe(".moveActivity", function()
         {
 
-            var activityMover, calendarManager;
+            var activityMover, calendarManager, selectionManager;
             beforeEach(function()
             {
                 calendarManager = { addItem: function(){} };
+                selectionManager = { setSelection: function() {} };
 
                 activityMover = new ActivityMover({ 
                     featureAuthorizer: featureAuthorizer,
                     user: user,
                     calendarManager: calendarManager,
-                    selectionManager: {}
+                    selectionManager: selectionManager
                 });
             });
 
@@ -149,6 +156,56 @@ function(
                     expect(workout.save.firstCall.args[0].workoutDay).to.contain("2014-04-01");
                 });
                 
+            });
+
+            describe("TrainingPlan", function()
+            {
+
+                it("Should open a confirmation view", function()
+                {
+                    sinon.stub(ApplyTrainingPlanConfirmationView.prototype, "initialize");
+                    sinon.stub(ApplyTrainingPlanConfirmationView.prototype, "render");
+                    activityMover.moveActivityToDay(new TrainingPlanModel(), "2014-03-01");
+                    expect(ApplyTrainingPlanConfirmationView.prototype.render).to.have.been.calledOnce;
+                });
+            });
+
+            describe("LibraryExercise", function()
+            {
+            
+                var libraryExercise;
+                beforeEach(function()
+                {
+                    libraryExercise = new LibraryExerciseModel();
+                    sinon.stub(libraryExercise, "createWorkout").returns(new WorkoutModel({ workoutDay: "2014-04-01" }));
+                    sinon.stub(featureAuthorizer, "canAccessFeature").returns(true);
+                });
+
+                it("Should call the feature authorizer", function()
+                {
+                    activityMover.moveActivityToDay(libraryExercise, "2014-04-01");
+                    expect(featureAuthorizer.canAccessFeature).to.have.been.calledWith(featureAuthorizer.features.SaveWorkoutToDate, { targetDate: "2014-04-01" });
+                });
+                
+                it("Should create a workout", function()
+                {
+                    activityMover.moveActivityToDay(libraryExercise, "2014-04-01");
+                    expect(libraryExercise.createWorkout).to.have.been.calledOnce;
+                });
+
+                it("Should add the workout to the calendar", function()
+                {
+                    sinon.spy(calendarManager, "addItem");
+                    activityMover.moveActivityToDay(libraryExercise, "2014-04-01");
+                    expect(calendarManager.addItem).to.have.been.calledOnce;
+                });
+
+                it("Should select the workout", function()
+                {
+                    sinon.spy(selectionManager, "setSelection");
+                    activityMover.moveActivityToDay(libraryExercise, "2014-04-01");
+                    expect(selectionManager.setSelection).to.have.been.calledOnce;
+                });
             });
 
         });
