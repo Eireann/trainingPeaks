@@ -55,12 +55,7 @@ function($,
         {
             this.on("render", this.enableAllAvailableDownloads, this);
 
-            this.model.get("details").on("change:attachmentFileInfos", this.render, this);
-            this.on("close", function()
-            {
-                this.model.get("details").off("change:attachmentFileInfos", this.render, this);
-            }, this);
-
+            this.listenTo(this.model.get("details"), "change:attachmentFileInfos", _.bind(this.render, this));
         },
 
         onBrowseClicked: function ()
@@ -103,7 +98,7 @@ function($,
 
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteFileConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", _.bind(this.onDeleteFileConfirmed, this));
         },
 
         onDeleteFileConfirmed: function()

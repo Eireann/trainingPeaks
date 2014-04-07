@@ -46,14 +46,9 @@ function (
 
                 this.enableOrDisableSharing();
 
-                this.model.on("change", this.enableOrDisableSharing, this);
-                this.model.get("details").on("change", this.onWorkoutDetailsChanged, this);
+                this.listenTo(this.model, "change", _.bind(this.enableOrDisableSharing, this));
+                this.listenTo(this.model.get("details"), "change", _.bind(this.onWorkoutDetailsChanged, this));
 
-                this.on("close", function()
-                {
-                    this.model.off("change", this.enableOrDisableSharing, this);
-                    this.model.get("details").off("change", this.onWorkoutDetailsChanged, this);
-                }, this);
             }
             else
             {

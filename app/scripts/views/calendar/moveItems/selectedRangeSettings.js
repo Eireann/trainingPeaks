@@ -48,7 +48,7 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
         {
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteRangeConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", this.onDeleteRangeConfirmed);
         },
         
         onDeleteRangeConfirmed: function()

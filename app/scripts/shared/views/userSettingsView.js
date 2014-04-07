@@ -270,7 +270,7 @@ function(
             {
                 this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
                 this.discardConfirmation.render();
-                this.discardConfirmation.on("userConfirmed", this.close, this);
+                this.listenTo(this.discardConfirmation, "userConfirmed", _.bind(this.close, this));
             }
             else
             {

@@ -50,7 +50,7 @@ function(
             // current setup of views it seems to break occasionally.
             // this.render = _.debounce(_.bind(this.render, this), 100, {leading: true, trailing: true, maxWait: 500});
 
-            theMarsApp.user.on("change:units", this.render, this);
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
             
 
             var self = this;
@@ -58,7 +58,7 @@ function(
             {
                 if (item.itemsCollection)
                 {
-                    item.itemsCollection.on("change add remove", self.render, this);
+                    item.listenTo(item.itemsCollection, "change add remove", _.bind(self.render, this));
                 }
             });
         },
@@ -236,12 +236,11 @@ function(
 
             this.summarySettings = new WeekSummarySettings({ model: this.model });
             this.summarySettings.render().center(offset.left - 6).bottom(offset.top + 15);
-            this.summarySettings.on("close", this.onSettingsClosed, this);
+            this.listenTo(this.summarySettings, "close", _.bind(this.onSettingsClosed, this));
 
             this.summarySettings.once("beforeShift", function()
             {
                 this.allowSettingsButtonToHide(e);
-                this.summarySettings.off("close", this.onSettingsClosed, this);
             }, this);
 
             theMarsApp.selectionManager.setMultiSelection(this.model.collection.models, e, CalendarDaySelection);
@@ -268,7 +267,7 @@ function(
             this.summaryBarChartHover = new barChartHover({model: hoverModel});
             this.summaryBarChartHover.render().bottom(offset.top + 20).center(offset.left + centerPoint);
             this.summaryBarChartHover.$el.css('padding', "0px");
-            this.summaryBarChartHover.on("mouseleave", this.onSummaryBarChartMouseLeave, this);
+            this.listenTo(this.summaryBarChartHover, "mouseleave", _.bind(this.onSummaryBarChartMouseLeave, this));
         },
 
         buildHoverModel: function (targetDataType)

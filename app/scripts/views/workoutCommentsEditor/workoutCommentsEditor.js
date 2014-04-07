@@ -77,7 +77,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
                 throw "WorkoutCommentsEditorView requires a model. Aborting";
 
             this.on("render", this.renderComments, this);
-            this.model.on("change:newComment", this.onNewCommentChange, this);
+            this.listenTo(this.model, "change:newComment", _.bind(this.onNewCommentChange, this));
 
             this.on("close", this.unstickit, this);
             this.once("render", this.initializeStickit, this);
@@ -88,7 +88,7 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
         fixNewlinesOnModelDescriptionChange: function()
         {
             // FIXME - we need to handle this on an api level
-            this.model.on("change:description", function ()
+            this.listenTo(this.model, "change:description", function ()
             {
                 this.model.set("description",
                     this.parseUnitsValue("text", this.model.get("description")),
@@ -99,7 +99,6 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
 
         initializeStickit: function ()
         {
-            this.model.off("change", this.render);
             this.stickit();
         },
 
@@ -125,8 +124,8 @@ function(_, setImmediate, TP, WorkoutCommentsCollectionView, stickitMixin, worko
             this.postActivityCommentsView.render();
             this.$("#postActivityCommentsList").append(this.postActivityCommentsView.el);
 
-            this.postActivityCommentsView.on("item:removed", this.saveComments, this);
-            this.postActivityCommentsView.on("itemview:commentedited", this.saveComments, this);
+            this.listenTo(this.postActivityCommentsView, "item:removed", _.bind(this.saveComments, this));
+            this.listenTo(this.postActivityCommentsView, "itemview:commentedited", _.bind(this.saveComments, this));
 
             if (!theMarsApp.user.get("isAthlete") || this.model.get("coachComments"))
             {

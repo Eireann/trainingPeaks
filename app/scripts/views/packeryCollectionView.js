@@ -82,7 +82,7 @@ function(
             this.children.call("trigger", "pod:resize");
             this.packery = this.$el.packery(options.packery).data("packery");
 
-            this.packery.on("dragItemPositioned", _.bind(this._updatePackerySort, this));
+            this.listenTo(this.packery, "dragItemPositioned", _.bind(this._updatePackerySort, this));
             this.children.each(function(itemView)
             {
                 this._setupPackeryItem(itemView, this);

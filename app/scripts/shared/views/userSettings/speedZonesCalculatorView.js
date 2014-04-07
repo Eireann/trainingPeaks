@@ -114,7 +114,7 @@ function(
             this.model.set("speedUnits", TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeId")));
             this.model.set("paceUnits", TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeId")));
 
-            this.unitsModel.on("change:units", this.selectPaceOrSpeed, this);
+            this.listenTo(this.unitsModel, "change:units", _.bind(this.selectPaceOrSpeed, this));
         },
 
         selectPaceOrSpeed: function()

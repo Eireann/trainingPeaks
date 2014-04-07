@@ -66,7 +66,7 @@ function(
             });
 
             confirmationView.render();
-            confirmationView.on("userConfirmed", function()
+            this.listenTo(confirmationView, "userConfirmed", function()
             {
                 self.model.destroy({ wait: true });
             });

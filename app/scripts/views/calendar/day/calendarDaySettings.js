@@ -80,7 +80,7 @@ function(_, moment, TP, setImmediate, jqueryOutside, UserConfirmationView, print
 
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationView });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteDayConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", _.bind(this.onDeleteDayConfirmed, this));
         },
         
         onDeleteDayConfirmed: function()

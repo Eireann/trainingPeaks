@@ -80,11 +80,7 @@ function(
 
         watchForFileChanges: function()
         {
-            this.model.get("details").on("change:workoutDeviceFileInfos", this.render, this);
-            this.on("close", function()
-            {
-                this.model.get("details").off("change:workoutDeviceFileInfos", this.render, this);
-            }, this);
+            this.listenTo(this.model.get("details"), "change:workoutDeviceFileInfos", _.bind(this.render, this));
         },
 
         onDeviceAgentClicked: function()
@@ -142,7 +138,7 @@ function(
 
             this.recalculateConfirmationView = new UserConfirmationView({ template: recalculateConfirmationTemplate });
             this.recalculateConfirmationView.render();
-            this.recalculateConfirmationView.on("userConfirmed", this.onRecalculateConfirmed, this);
+            this.listenTo(this.recalculateConfirmationView, "userConfirmed", _.bind(this.onRecalculateConfirmed, this));
         },
 
         onRecalculateConfirmed: function()
@@ -230,7 +226,7 @@ function(
         {
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteFileConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", _.bind(this.onDeleteFileConfirmed, this));
         },
 
         onDeleteFileConfirmed: function()

@@ -66,7 +66,7 @@ function($, setImmediate, TP, UserConfirmationView, deleteConfirmationTemplate, 
             }
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", this.onDeleteConfirmed);
         },
 
         onDeleteConfirmed: function ()

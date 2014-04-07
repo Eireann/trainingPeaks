@@ -262,7 +262,7 @@ function(
                 });
             });
 
-            this.collection.on("reset", function(models, options)
+            this.listenTo(this.collection, "reset", function(models, options)
             {
                 if (options.target)
                 {

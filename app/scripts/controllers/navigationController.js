@@ -14,7 +14,7 @@ function(TP, NavigationLayout, UserControlsView, NavigationView)
         initialize: function()
         {
             this.layout = new NavigationLayout();
-            this.layout.on("show", this.show, this);
+            this.listenTo(this.layout, "show", this.show);
 
             this.views.userControlsView = new UserControlsView({ model: theMarsApp.user });
             this.views.navigationView = new NavigationView();
@@ -33,7 +33,6 @@ function(TP, NavigationLayout, UserControlsView, NavigationView)
 
         onClose: function()
         {
-            this.layout.off("show", this.show, this);
             this.layout.close();
             this.views.userControlsView.close();
             this.views.navigationView.close();

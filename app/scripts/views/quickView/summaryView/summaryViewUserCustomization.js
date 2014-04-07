@@ -15,14 +15,8 @@ function (
 
         initializeUserCustomization: function ()
         {
-            this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
-            this.on("close", this.userCustomizationOnClose, this);
+            this.listenTo(this.model, "change:workoutDay change:workoutTypeValueId", _.bind(this.updateUICustomization, this));
             this.on("render", this.userCustomizationOnRender, this);
-        },
-
-        userCustomizationOnClose: function ()
-        {
-            this.model.off("change:workoutDay change:workoutTypeValueId", this.updateUICustomization);
         },
 
         userCustomizationOnRender: function ()

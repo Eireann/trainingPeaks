@@ -56,8 +56,8 @@ function(
             this.selectionManager = options.selectionManager || theMarsApp.selectionManager;
             this.listenTo(this.model, "state:change:isSelected", _.bind(this._updateSelected, this));
 
-            this.model.on("select", this.onItemSelect, this);
-            this.model.on("unselect", this.onItemUnSelect, this);
+            this.listenTo(this.model, "select", _.bind(this.onItemSelect, this));
+            this.listenTo(this.model, "unselect", _.bind(this.onItemUnSelect, this));
 
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
 

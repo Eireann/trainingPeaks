@@ -86,7 +86,7 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, c
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             var self = this;
-            this.deleteConfirmationView.on("userConfirmed", function () { self.model.destroy({ wait: true }); });
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", function () { self.model.destroy({ wait: true }); });
         },
 
         _selectSelf: function()

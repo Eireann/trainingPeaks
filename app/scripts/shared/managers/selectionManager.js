@@ -83,7 +83,7 @@ function(
             {
                 var dialog = new UserConfirmationView({ template: deleteConfirmationTemplate });
                 dialog.render();
-                dialog.on("userConfirmed", _.bind(self.execute, self, "delete"));
+                this.listenTo(dialog, "userConfirmed", _.bind(self.execute, self, "delete"));
             }
 
         });

@@ -87,13 +87,12 @@ function($, _, TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTempl
                 return;
             }
             this.detailsView = new TrainingPlanDetailsView.Tomahawk({ model: this.model, target: this.$el, offset: "right" });
-            this.detailsView.on("close", this.onDetailsClose, this);
+            this.listenTo(this.detailsView, "close", _.bind(this.onDetailsClose, this));
             this.detailsView.render();
         },
 
         onDetailsClose: function()
         {
-            this.detailsView.off("close", this.onDetailsClose, this);
             this.detailsView = null;
         }
 

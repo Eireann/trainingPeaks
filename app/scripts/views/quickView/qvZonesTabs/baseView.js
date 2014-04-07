@@ -59,8 +59,7 @@ function(
 
         watchForWorkoutTypeChange: function()
         {
-            this.workoutModel.on("change:workoutTypeValueId", this.onWorkoutTypeChange, this);
-            this.on("close", function() { this.workoutModel.off("change:workoutTypeValueId", this.onWorkoutTypeChange); }, this);
+            this.listenTo(this.workoutModel, "change:workoutTypeValueId", _.bind(this.onWorkoutTypeChange, this));
         },
 
         onWorkoutTypeChange: function()

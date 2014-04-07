@@ -15,22 +15,13 @@ function(
         initialize: function()
         {
             this.on("show", this.bindLibraryAnimate, this);
-            this.on("close", this.unbindLibraryAnimate, this);
         },
 
         bindLibraryAnimate: function()
         {
             if (this.views.library)
             {
-                this.views.library.on("animate", this.onLibraryAnimate, this);
-            }
-        },
-
-        unbindLibraryAnimate: function()
-        {
-            if (this.views.library)
-            {
-                this.views.library.off("animate", this.onLibraryAnimate, this);
+                this.listenTo(this.views.library, "animate", this.onLibraryAnimate, this);
             }
         },
 

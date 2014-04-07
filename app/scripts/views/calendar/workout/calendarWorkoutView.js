@@ -150,8 +150,8 @@ function(
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsView({ model: this.model });
             this.workoutSettings.render().bottom(offset.top + 12).center(offset.left - 4);
-            this.workoutSettings.on("close", this.allowSettingsButtonToHide, this);
-            this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
+            this.listenTo(this.workoutSettings, "close", _.bind(this.allowSettingsButtonToHide, this));
+            this.listenTo(this.workoutSettings, "mouseleave", _.bind(this.onMouseLeave, this));
         },
 
         workoutMouseup: function(e)

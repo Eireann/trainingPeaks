@@ -19,8 +19,8 @@ function(
         initialize: function()
         {
             this.layout = new CoachHomeLayout();
-            this.layout.on("show", this.show, this);
-            this.layout.on("close", this.onLayoutClose, this);
+            this.listenTo(this.layout, "show", _.bind(this.show, this));
+            this.listenTo(this.layout, "close", _.bind(this.onLayoutClose, this));
         },
 
         onLayoutClose: function()

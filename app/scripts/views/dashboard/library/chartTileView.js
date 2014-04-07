@@ -41,8 +41,8 @@ function(
             if (!this.model)
                 throw "Cannot have a ChartTileView without a model";
 
-            this.model.on("select", this.onItemSelect, this);
-            this.model.on("unselect", this.onItemUnSelect, this);
+            this.listenTo(this.model, "select", this.onItemSelect);
+            this.listenTo(this.model, "unselect", this.onItemUnSelect, this);
         },
 
         onRender: function()

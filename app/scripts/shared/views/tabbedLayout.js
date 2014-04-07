@@ -43,7 +43,7 @@ function(
             this.on("after:switchView", this._updateNavigation, this);
             this.onScroll = _.bind(_.debounce(this._onScroll, 100), this);
 
-            this.bodyRegion.on("show", this._updateScrollTargetSize, this);
+            this.listenTo(this.bodyRegion, "show", _.bind(this._updateScrollTargetSize, this));
             $(window).on("resize.tabbedLayout", this._updateScrollTargetSize);
             this.on("close", function(){$(window).off("resize.tabbedLayout");});
         },

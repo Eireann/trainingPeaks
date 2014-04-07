@@ -62,7 +62,8 @@ function(_, moment, TP, ActivityModel, MetricModel, WorkoutModel)
 
                 return key;
             };
-            this.itemsCollection.on("change:startTime change:startTimePlanned change:timeStamp", this.itemsCollection.sort, this.itemsCollection);
+
+            this.listenTo(this.itemsCollection, "change:startTime change:startTimePlanned change:timeStamp", _.bind(this.itemsCollection.sort, this.itemsCollection));
         },
 
 

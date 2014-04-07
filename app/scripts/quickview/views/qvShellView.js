@@ -117,7 +117,7 @@ function(
         {
             var dialog = new UserConfirmationView({ template: deleteConfirmationTemplate });
             dialog.render();
-            dialog.on("userConfirmed", this.destroyAndClose, this);
+            this.listenTo(dialog, "userConfirmed", _.bind(this.destroyAndClose, this));
         },
 
         destroyAndClose: function()
@@ -134,7 +134,7 @@ function(
         {
             var dialog = new UserConfirmationView({ template: discardConfirmationTemplate });
             dialog.render();
-            dialog.on("userConfirmed", this.revertAndClose, this);
+            this.listenTo(dialog, "userConfirmed", _.bind(this.revertAndClose, this));
         },
 
         revertAndClose: function()

@@ -45,13 +45,7 @@ function (
 
         watchForWorkoutFiles: function()
         {
-            this.model.get("details").on("change:workoutDeviceFileInfos", this.updateUploadButtonState, this);
-            this.on("close", this.stopWatchingForWorkoutFiles, this);
-        },
-
-        stopWatchingForWorkoutFiles: function()
-        {
-            this.model.get("details").off("change:workoutDeviceFileInfos", this.updateUploadButtonState, this);
+            this.listenTo(this.model.get("details"), "change:workoutDeviceFileInfos", _.bind(this.updateUploadButtonState, this));
         },
 
         updateUploadButtonState: function()
@@ -85,8 +79,8 @@ function (
 
             this.fileUploadMenu.render();
 
-            this.fileUploadMenu.on("browseFile", this.onUploadFileMenuUploadButtonClicked, this);
-            this.fileUploadMenu.on("close", function() { uploadButton.removeClass("menuOpen"); });
+            this.listenTo(this.fileUploadMenu, "browseFile", _.bind(this.onUploadFileMenuUploadButtonClicked, this));
+            this.listenTo(this.fileUploadMenu, "close", function() { uploadButton.removeClass("menuOpen"); });
         },
 
         onUploadFileMenuUploadButtonClicked: function()

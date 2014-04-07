@@ -57,8 +57,8 @@ function(
                 details.getFetchPromise().done(function() {
                     details.checkpoint();
                 });
-                this.model.on("change", this.saveOnModelChange, this);
-                this.model.on("change", this.setChanged, this);
+                this.listenTo(this.model, "change", _.bind(this.saveOnModelChange, this));
+                this.listenTo(this.model, "change", _.bind(this.setChanged, this));
                 this.on("change:details", this.setChanged, this);
                 this.discardButtonColor = this.$("button#discard").css("color");
                 this.$("button#discard").css("color", "grey");
@@ -74,8 +74,6 @@ function(
 
         removeSaveOnModelChange: function()
         {
-            this.model.off("change", this.saveOnModelChange);
-            this.model.off("change", this.setChanged);
             this.off("change:details", this.setChanged);
         },
 
@@ -117,7 +115,7 @@ function(
             {
                 this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
                 this.discardConfirmation.render();
-                this.discardConfirmation.on("userConfirmed", this.discardAndClose, this);
+                this.listenTo(this.discardConfirmation, "userConfirmed", _.bind(this.discardAndClose, this));
             }
             else
             {
@@ -144,7 +142,7 @@ function(
         {
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteWorkoutConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", _.bind(this.onDeleteWorkoutConfirmed, this));
         },
 
         onDeleteWorkoutConfirmed: function()

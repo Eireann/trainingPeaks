@@ -83,7 +83,7 @@ function(_,
             this.confirmationView.render();
 
             var self = this;
-            this.confirmationView.on("userConfirmed", function()
+            this.listenTo(this.confirmationView, "userConfirmed", function()
             {
                 self.detailDataModel.cutChannel(self.model.get("series"));
             });

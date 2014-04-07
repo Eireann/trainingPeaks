@@ -13,7 +13,6 @@ function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
         initializeStickit: function()
         {
             this.on("render", this.stickitOnRender, this);
-            this.on("close", this.cleanupStickitOnClose, this);
         },
 
         stickitOnRender: function()
@@ -25,13 +24,8 @@ function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
                 this.buildPeaksBindings();
                 this.stickit();
                 this.stickitInitialized = true;
-                this.model.on("change", this.triggerChangeForDiscardButton, this);
+                this.listenTo(this.model, "change", _.bind(this.triggerChangeForDiscardButton, this));
             }
-        },
-
-        cleanupStickitOnClose: function()
-        {
-            this.model.off("change", this.triggerChangeForDiscardButton, this);
         },
 
         buildTimeInZonesBindings: function()

@@ -63,7 +63,7 @@ function(
 
         initialize: function()
         {
-            this.model.details.on("change", this.render, this);
+            this.listenTo(this.model.details, "change", _.bind(this.render, this));
             this.once("render", this.onInitialRender, this);
         },
 
@@ -144,7 +144,7 @@ function(
             var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate, appliedPlanId: appliedPlanId });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.deleteAppliedPlan, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", _.bind(this.deleteAppliedPlan, this));
         },
 
         deleteAppliedPlan: function(options)

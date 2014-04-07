@@ -64,7 +64,7 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
             
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("userConfirmed", this.onDeleteDayConfirmed, this);
+            this.listenTo(this.deleteConfirmationView, "userConfirmed", this.onDeleteDayConfirmed);
         },
         
         onDeleteDayConfirmed: function()

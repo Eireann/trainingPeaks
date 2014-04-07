@@ -46,7 +46,7 @@ function($, _, TP, notYetImplemented)
         {
             // Create & Render library contents
             this.currentLibraryView = this.buildView(libraryName, this.buildViewOptions);
-            this.currentLibraryView.on("select", this.onSelect, this);
+            this.listenTo(this.currentLibraryView, "select", _.bind(this.onSelect, this));
             this.activeLibraryRegion.show(this.currentLibraryView);
 
             // Open the library container itself

@@ -51,7 +51,7 @@ function (
             this.settingsKey = "dateOptions";
             this.on("user:loaded", this.setDefaultDateSettings, this);
             this.on("user:loaded", this.render, this);
-            this.listenTo(this.model, "applyDates", _.bind(this.applyDates, this));
+            this.listenTo(this.model, "applyDates", this.applyDates);
             this.setDefaultDateSettings();
 
             if(!options || !options.fullScreenManager)
@@ -80,7 +80,7 @@ function (
             }
             this.model.set(this.settingsKey, mergedSettings, { silent: true });
 
-            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
+            this.listenTo(theMarsApp.user, "change:dateFormat", this.render);
         },
 
         onClose: function()
@@ -134,7 +134,7 @@ function (
 
             this.dashboardHeaderDatePicker.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
-            this.dashboardHeaderDatePicker.on("close", this._onChartSettingsClose, this);
+            this.listenTo(this.dashboardHeaderDatePicker, "close", this._onChartSettingsClose);
         },
 
         serializeData: function ()

@@ -140,13 +140,7 @@ function (
         {
             this.mapMouseBuffer = MapUtils.addTransparentBuffer(this.map, latLongArray);
 
-            this.mapMouseBuffer.on("mouseout", this.onMapMouseOut, this);
-            this.on("close", this.unbindMouseHoverEvents, this);
-        },
-
-        unbindMouseHoverEvents: function ()
-        {
-            this.mapMouseBuffer.off("mouseout", this.onMapMouseOut, this);
+            this.listenTo(this.mapMouseBuffer, "mouseout", _.bind(this.onMapMouseOut, this));
         },
 
         onMapMouseOut: function (e)

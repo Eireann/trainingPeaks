@@ -178,8 +178,8 @@ function(
             this.updateSelectItemsOptions();
             this.updateShiftByOptions();
             this.rePositionView();
-            this.model.on("change:selectItems", this.updateSelectItemsOptions, this);
-            this.model.on("change:shiftBy", this.updateShiftByOptions, this);
+            this.listenTo(this.model, "change:selectItems", this.updateSelectItemsOptions);
+            this.listenTo(this.model, "change:shiftBy", this.updateShiftByOptions);
 
             // date picker
             this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.formatter.getFormatForDatepicker(), firstDay: CalendarUtility.startOfWeek });

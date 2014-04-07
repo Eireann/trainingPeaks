@@ -191,7 +191,7 @@ function(
             var capture = new EmailCaptureView(this.apiConfig);
             capture.render();
             var self = this;
-            capture.on("close", function(){
+            this.listenTo(capture, "close", function(){
                 self.capture = false;
             });
         },

@@ -145,10 +145,9 @@ function(
                 this.once("render", this.focusTitle, this);
             }
             
-            this.model.on("change:workoutTypeValueId", this.checkShowPaceViews, this);
-            this.on("close", function () { this.model.off("change:workoutTypeValueId", this.checkShowPaceViews, this); });
+            this.listenTo(this.model, "change:workoutTypeValueId", _.bind(this.checkShowPaceViews, this));
 
-            this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
+            this.listenTo(this.model.get("detailData"), "changeSensorData", _.bind(this.onSensorDataChange, this));
         },
        
         stopWorkoutDetailsFetch: function ()

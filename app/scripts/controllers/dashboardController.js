@@ -30,8 +30,8 @@ function(
         {
             this.dataManager = options && options.dataManager ? options.dataManager : new DataManager();
             this.layout = new DashboardLayout();
-            this.layout.on("show", this.show, this);
-            this.layout.on("close", this.onLayoutClose, this);
+            this.listenTo(this.layout, "show", _.bind(this.show, this));
+            this.listenTo(this.layout, "close", _.bind(this.onLayoutClose, this));
 
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);

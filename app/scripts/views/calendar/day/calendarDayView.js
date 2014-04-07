@@ -59,7 +59,9 @@ function(
         initialize: function(options)
         {
             if (theMarsApp)
-                theMarsApp.user.on("change:settings", this.render, this);
+            {
+                this.listenTo(theMarsApp.user, "change:settings", _.bind(this.render, this));
+            }
 
             this.collection = this.model.itemsCollection;
 
@@ -298,7 +300,7 @@ function(
             this._selectAddWorkoutIcon();
 
             this.listenTo(newItemView, "close", _.bind(this._unselectAddWorkoutIcon, this));
-            newItemView.on("openQuickView", this.onOpenQuickViewFromNewItem, this);
+            this.listenTo(newItemView, "openQuickView", _.bind(this.onOpenQuickViewFromNewItem, this));
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "newWorkout", "eventLabel": "" });
         },

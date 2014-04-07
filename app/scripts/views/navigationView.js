@@ -35,7 +35,7 @@ function($, _, TP, navigationViewTemplate)
 
         watchForRouteChange: function()
         {
-            theMarsApp.router.on("route", this.onRouteChange, this);
+            this.listenTo(theMarsApp.router, "route", _.bind(this.onRouteChange, this));
             this.on("close", this.stopWatchingRouteChange, this);
         },
 

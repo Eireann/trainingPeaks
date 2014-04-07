@@ -72,8 +72,8 @@ function(
             this.views = {};
 
             this.layout = new CalendarLayout();
-            this.layout.on("show", this.show, this);
-            this.layout.on("close", this.onLayoutClose, this);
+            this.listenTo(this.layout, "show", _.bind(this.show, this));
+            this.listenTo(this.layout, "close", _.bind(this.onLayoutClose, this));
 
             // call parent constructor
             this.constructor.__super__.initialize.call(this);

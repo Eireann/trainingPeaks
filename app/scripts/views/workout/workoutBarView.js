@@ -38,16 +38,11 @@ function (
         onRender: function()
         {
             this.updateHeaderClass();
-            this.model.on("change", this.updateHeaderClassOnChange, this);
-            this.model.on("change:description", this.setBreakthroughIconState, this);
+            this.listenTo(this.model, "change", _.bind(this.updateHeaderClassOnChange, this));
+            this.listenTo(this.model, "change:description", _.bind(this.setBreakthroughIconState, this));
             this.setBreakthroughIconState();
             this.updateAttachmentIconState();
             this.watchForFileAttachments();
-        },
-        
-        turnOffRenderOnChange: function()
-        {
-            this.model.off("change", this.render);
         },
         
         updateHeaderClass: function ()
@@ -95,13 +90,7 @@ function (
 
         watchForFileAttachments: function()
         {
-            this.model.get("details").on("change:attachmentFileInfos", this.updateAttachmentIconState, this);
-            this.on("close", this.stopWatchingForFileAttachments, this);
-        },
-
-        stopWatchingForFileAttachments: function()
-        {
-            this.model.get("details").off("change:attachmentFileInfos", this.updateAttachmentIconState, this);
+            this.listenTo(this.model.get("details"), "change:attachmentFileInfos", _.bind(this.updateAttachmentIconState, this));
         },
 
         updateAttachmentIconState: function()
@@ -153,7 +142,7 @@ function (
             uploadButton.addClass("menuOpen");
 
             this.attachmentUploadMenu.render();
-            this.attachmentUploadMenu.on("close", function() { uploadButton.removeClass("menuOpen"); });
+            this.listenTo(this.attachmentUploadMenu, "close", function() { uploadButton.removeClass("menuOpen"); });
         },
 
         setBreakthroughIconState: function()

@@ -75,8 +75,7 @@ function (
             if (!this.headerInitialized)
             {
                 var workoutBarView = new WorkoutBarView({ model: this.model });
-                workoutBarView.turnOffRenderOnChange();
-                workoutBarView.on("before:displayAttachmentView", this.checkIfCanAddAttachments, this);
+                this.listenTo(workoutBarView, "before:displayAttachmentView", _.bind(this.checkIfCanAddAttachments, this));
                 workoutBarView.render();
 
                 this.$(".workoutBarView").append(workoutBarView.$el);
@@ -165,7 +164,7 @@ function (
             var icon = this.$(".workoutIconLarge");
             var direction = this.expanded ? "right" : "left";
             var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId"), direction: direction });
-            typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
+            this.listenTo(typesMenu, "selectWorkoutType", _.bind(this.onSelectWorkoutType, this));
 
             if (direction === "right")
                 typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -13 });
@@ -188,10 +187,10 @@ function (
             
             var menuIcon = this.$("#menuIcon");
             var menu = new QVContextMenuView({ model: this.model });
-            menu.on("delete", this.onDeleteWorkout, this);
-            menu.on("cut", this.close, this);
-            menu.on("copy", this.close, this);
-            menu.on("print", this.print, this);
+            this.listenTo(menu, "delete", _.bind(this.onDeleteWorkout, this));
+            this.listenTo(menu, "cut", _.bind(this.close, this));
+            this.listenTo(menu, "copy", _.bind(this.close, this));
+            this.listenTo(menu, "print", _.bind(this.print, this));
             menu.setPosition({ fromElement: menuIcon, bottom: 7, left: -32, top: 6 });
             menu.render();
         },

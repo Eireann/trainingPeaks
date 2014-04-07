@@ -28,7 +28,7 @@ function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithout
             }
             var detailData = this.model.get("detailData");
             detailData.watchForSensorData();
-            detailData.on("changeSensorData", this.updateExpandButton, this);
+            this.listenTo(detailData, "changeSensorData", _.bind(this.updateExpandButton, this));
             this.on("render", this.updateExpandButton, this);
             this.on("detailData:fetched", this.removeExpandWaiting, this);
         },
@@ -40,8 +40,6 @@ function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithout
 
             if(this.expandoRegion)
                 this.expandoRegion.close();
-
-            this.model.get("detailData").off("changeSensorData", this.updateExpandButton, this);
         },
 
         expandEvents:
@@ -139,13 +137,13 @@ function ($, _, TP, ExpandoController, UserConfirmationView, closeExpandoWithout
                 this.confirmationView.render();
 
                 var self = this;
-                this.confirmationView.on("undo", function()
+                this.listenTo(this.confirmationView, "undo", function()
                 {
                     self.model.get("detailData").undoEdits();
                     callback();
                 });
 
-                this.confirmationView.on("save", function()
+                this.listenTo(this.confirmationView, "save", function()
                 {
                     self.model.get("detailData").saveEdits().done(callback);
                 });

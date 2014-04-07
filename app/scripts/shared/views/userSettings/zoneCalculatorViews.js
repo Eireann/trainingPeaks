@@ -279,7 +279,7 @@ function(
 
                 this.confirmationView.render();
 
-                this.confirmationView.on("close", function()
+                this.listenTo(this.confirmationView, "close", function()
                 {
                     this.confirmationView = null;
                 }, this);
@@ -422,7 +422,7 @@ function(
 
                 this.confirmationView.render();
 
-                this.confirmationView.on("close", function()
+                this.listenTo(this.confirmationView, "close", function()
                 {
                     this.confirmationView = null;
                     this.$("." + fieldName).focus();
